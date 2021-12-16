@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require_relative "lib/bullet_train/roles/version"
+require_relative "lib/roles/version"
 
 Gem::Specification.new do |spec|
   spec.name          = "bullet_train-roles"
-  spec.version       = BulletTrain::Roles::VERSION
+  spec.version       = Roles::VERSION
   spec.authors       = ["Prabin Poudel", "Andrew Culver"]
   spec.email         = %w[andrew.culver@gmail.com]
 

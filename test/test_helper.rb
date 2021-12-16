@@ -2,7 +2,7 @@
 
 $LOAD_PATH.unshift File.expand_path("../lib", __dir__)
 
-require "bullet_train/roles"
+require "roles"
 
 require "minitest/autorun"
 
