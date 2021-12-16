@@ -6,10 +6,10 @@ Gem::Specification.new do |spec|
   spec.name          = "bullet_train-roles"
   spec.version       = BulletTrain::Roles::VERSION
   spec.authors       = ["Prabin Poudel", "Andrew Culver"]
-  spec.email         = %w[probnpoudel@gmail.com andrew.culver@gmail.com]
+  spec.email         = %w[andrew.culver@gmail.com]
 
-  spec.summary       = "Yaml-backed ApplicationHash CanCan Roles"
-  spec.description   = "Yaml-backed ApplicationHash CanCan Roles"
+  spec.summary       = "Yaml-backed ApplicationHash for CanCan Roles"
+  spec.description   = "Yaml-backed ApplicationHash for CanCan Roles"
   spec.homepage      = "https://github.com/bullet-train-co/bullet_train-roles"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.4.0")
@@ -30,8 +30,8 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "cancancan", "~> 3.3.0"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "standard", "~> 1.5.0"
 
+  spec.add_dependency "standard", "~> 1.5.0"
   spec.add_dependency "knapsack_pro", "~> 3.1.0"
 
   # For more information and examples about making a new gem, checkout our

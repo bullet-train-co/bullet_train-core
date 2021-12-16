@@ -11,16 +11,16 @@ PATH
   specs:
     bullet_train-roles (0.1.0)
       knapsack_pro (~> 3.1.0)
+      standard (~> 1.5.0)
 
 GEM
   remote: https://rubygems.org/
   specs:
-    activesupport (6.1.4.3)
+    activesupport (7.0.0)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-      zeitwerk (~> 2.3)
     ast (2.4.2)
     cancancan (3.3.0)
     concurrent-ruby (1.1.9)
@@ -57,7 +57,6 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.1.0)
-    zeitwerk (2.5.1)
 
 PLATFORMS
   arm64-darwin-20
@@ -68,7 +67,6 @@ DEPENDENCIES
   cancancan (~> 3.3.0)
   minitest (~> 5.0)
   rake (~> 13.0)
-  standard (~> 1.5.0)
 
 BUNDLED WITH
    2.2.15
