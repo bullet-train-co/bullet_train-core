@@ -160,20 +160,20 @@ module BulletTrain
       end
 
       def add_permit_to_ability_model(top_level_model, associated_model)
-        # TODO: need to make this more smart e.g. should know what parameter is used for user e.g. def initialize(user)
-        # Maybe we should prompt for all the options on the command line instead of interactively?
-        file_location = "app/models/ability.rb"
-        line_to_match = "def initialize(user)"
-        content_to_add = "\n    permit user, through: :#{top_level_model.downcase.pluralize}, parent: :#{associated_model.downcase} if user.present?\n"
-
-        puts("Adding 'permit user, through: :#{top_level_model.downcase}, parent: :#{associated_model.downcase}' to #{associated_model}\n\n")
-
         if line_exists_in_file?(file_location, content_to_add)
           message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in #{associated_model}!!\n\n"
-
           return line_already_exists(message)
         end
 
+        file_location = "app/models/ability.rb"
+        line_to_match = "include CanCan::Ability"
+        content_to_add = "\n  include Roles::Permit\n"
+        puts("Adding 'include Roles::Permit' to #{associated_model}\n\n")
+        add_in_file(file_location, line_to_match, content_to_add)
+
+        line_to_match = "def initialize(user)"
+        content_to_add = "\n    permit user, through: :#{top_level_model.downcase.pluralize}, parent: :#{associated_model.downcase} if user.present?\n"
+        puts("Adding 'permit' to #{associated_model}\n\n")
         add_in_file(file_location, line_to_match, content_to_add)
 
         puts("Success 🎉🎉\n\n")
