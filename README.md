@@ -4,7 +4,7 @@ This Ruby Gem provides a Yaml-based configuration layer on top of CanCanCan's ab
 
 ## Example Domain Model 
 
-For the sake of this document, we're going to assume the following example modeling around users and teams.
+For the sake of this document, we're going to assume the following example modeling around users and teams:
 
 - A `User` belongs to a `Team` via a `Membership`.
 - A `User` only has one `Membership` per team.
