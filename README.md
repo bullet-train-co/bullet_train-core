@@ -1,8 +1,16 @@
 # Bullet Train Roles
 
-Bullet Train Roles provides a Yaml-based configuration layer on top of CanCanCan's ability file. You can use this configuration file to simplify the definition of many common permissions, while still implementing more complicated permissions in CanCanCan's traditional `app/model/ability.rb`. 
+Bullet Train Roles provides a Yaml-based configuration layer on top of [CanCanCan](https://github.com/CanCanCommunity/cancancan). You can use this configuration file to simplify the definition of many common permissions, while still implementing more complicated permissions in CanCanCan's traditional `app/model/ability.rb`. 
 
 Additionally, Bullet Train Roles makes it trivial to assign the same roles and associated permissions at different levels in your application. For example, you can assign someone administrative privileges at a team level, or only at a project level.
+
+## Created By
+
+<a href="https://bullettrain.co" target="_blank">
+  <img src="https://github.com/CanCanCommunity/cancancan/raw/develop/logo/bullet_train.png" alt="Bullet Train" width="400"/>
+</a>
+<br/>
+<br/>
 
 Bullet Train Roles was created by [Andrew Culver](http://twitter.com/andrewculver) and [Adam Pallozzi](https://twitter.com/adampallozzi).
 
