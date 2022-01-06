@@ -11,7 +11,9 @@ For the sake of this document, we're going to assume the following example model
 - A `Membership` can have zero, one, or many `Role`s assigned.
 - A `Membership` without a `Role` is just a default team member.
 
-> You don't have to name your models the same thing in order to use this Ruby Gem, but it does depend on having a similar structure. If you're interested in reading more about how Bullet Train implements this structure, you can [read about it on our blog](https://blog.bullettrain.co/teams-should-be-an-mvp-feature/).
+You don't have to name your models the same thing in order to use this Ruby Gem, but it does depend on having a similar structure. 
+
+> If you're interested in reading more about how Bullet Train implements this structure, you can [read about it on our blog](https://blog.bullettrain.co/teams-should-be-an-mvp-feature/).
 
 ## Installation
 
