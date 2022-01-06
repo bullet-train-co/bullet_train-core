@@ -31,6 +31,7 @@ module BulletTrain
         # TODO: follow back Andrew on question about this in Slack
 
         add_permit_to_ability_model(top_level_model, associated_model)
+        add_concern_to_user
       end
 
       private
@@ -175,6 +176,22 @@ module BulletTrain
         line_to_match = "def initialize(user)"
         content_to_add = "\n    permit user, through: :#{top_level_model.downcase.pluralize}, parent: :#{associated_model.downcase} if user.present?\n"
         puts("Adding 'permit' to #{associated_model}\n\n")
+
+        if line_exists_in_file?(file_location, content_to_add)
+          message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in #{associated_model}!!\n\n"
+          line_already_exists(message)
+        else
+          add_in_file(file_location, line_to_match, content_to_add)
+        end
+
+        puts("Success 🎉🎉\n\n")
+      end
+
+      def add_concern_to_user
+        file_location = "app/models/user.rb"
+        line_to_match = "class User < ApplicationRecord"
+        content_to_add = "\n  include Roles::User\n"
+        puts("Adding 'include Roles::User' to #{associated_model}\n\n")
 
         if line_exists_in_file?(file_location, content_to_add)
           message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in #{associated_model}!!\n\n"
