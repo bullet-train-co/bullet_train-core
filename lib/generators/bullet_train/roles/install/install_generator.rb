@@ -191,10 +191,10 @@ module BulletTrain
         file_location = "app/models/user.rb"
         line_to_match = "class User < ApplicationRecord"
         content_to_add = "\n  include Roles::User\n"
-        puts("Adding 'include Roles::User' to #{associated_model}\n\n")
+        puts("Adding 'include Roles::User' to User\n\n")
 
         if line_exists_in_file?(file_location, content_to_add)
-          message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in #{associated_model}!!\n\n"
+          message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in User!!\n\n"
           line_already_exists(message)
         else
           add_in_file(file_location, line_to_match, content_to_add)
