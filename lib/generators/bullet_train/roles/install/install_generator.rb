@@ -160,12 +160,11 @@ module BulletTrain
       end
 
       def add_permit_to_ability_model(top_level_model, associated_model)
-        # TODO: need to make this more smart e.g.
-        # 1. should know what parameter is used for user e.g. def initialize(user)
-        # 2. what if code doesn't include "if user.present?", maybe we need to handle that, consult with Andrew
+        # TODO: need to make this more smart e.g. should know what parameter is used for user e.g. def initialize(user)
+        # Maybe we should prompt for all the options on the command line instead of interactively?
         file_location = "app/models/ability.rb"
-        line_to_match = "if user.present?"
-        content_to_add = "\n      permit user, through: :#{top_level_model.downcase.pluralize}, parent: :#{associated_model.downcase}\n"
+        line_to_match = "def initialize(user)"
+        content_to_add = "\n    permit user, through: :#{top_level_model.downcase.pluralize}, parent: :#{associated_model.downcase} if user.present?\n"
 
         puts("Adding 'permit user, through: :#{top_level_model.downcase}, parent: :#{associated_model.downcase}' to #{associated_model}\n\n")
 
