@@ -160,21 +160,28 @@ module BulletTrain
       end
 
       def add_permit_to_ability_model(top_level_model, associated_model)
-        if line_exists_in_file?(file_location, content_to_add)
-          message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in #{associated_model}!!\n\n"
-          return line_already_exists(message)
-        end
-
         file_location = "app/models/ability.rb"
         line_to_match = "include CanCan::Ability"
         content_to_add = "\n  include Roles::Permit\n"
         puts("Adding 'include Roles::Permit' to #{associated_model}\n\n")
-        add_in_file(file_location, line_to_match, content_to_add)
+
+        if line_exists_in_file?(file_location, content_to_add)
+          message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in #{associated_model}!!\n\n"
+          line_already_exists(message)
+        else
+          add_in_file(file_location, line_to_match, content_to_add)
+        end
 
         line_to_match = "def initialize(user)"
         content_to_add = "\n    permit user, through: :#{top_level_model.downcase.pluralize}, parent: :#{associated_model.downcase} if user.present?\n"
         puts("Adding 'permit' to #{associated_model}\n\n")
-        add_in_file(file_location, line_to_match, content_to_add)
+
+        if line_exists_in_file?(file_location, content_to_add)
+          message = "#{remove_new_lines_and_spaces(content_to_add)} already exists in #{associated_model}!!\n\n"
+          line_already_exists(message)
+        else
+          add_in_file(file_location, line_to_match, content_to_add)
+        end
 
         puts("Success 🎉🎉\n\n")
       end
