@@ -21,11 +21,14 @@ You don't have to name your models the same thing in order to use this Ruby Gem,
 
 ## Installation
 
-Add this line to your application's Gemfile:
+Add these lines to your application's Gemfile:
 
 ```ruby
+gem "active_hash", github: "bullet-train-co/active_hash"
 gem "bullet_train-roles"
 ```
+
+> We have to link to a specific downstream version of ActiveHash temporarily while working to merge certain fixes and updates upstream.
 
 And then execute the following in your shell:
 
