@@ -55,7 +55,7 @@ The generators currently assume you're using PostgreSQL and `jsonb` will be avai
 
 ## Usage
 
-The provided `Role` model is backed (via [ActiveHash](https://github.com/active-hash/active_hash)) by a Yaml configuration in `config/models/roles.yml`.
+The provided `Role` model is backed by a Yaml configuration in `config/models/roles.yml`.
 
 To help explain this configuration and it's options, we'll provide the following hypothetical example:
 
