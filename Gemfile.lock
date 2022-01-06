@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train-roles (0.1.0)
+    bullet_train-roles (0.1.1)
       active_hash
       activesupport
       cancancan
@@ -173,6 +173,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-21
 
 DEPENDENCIES
   active_hash!
@@ -187,4 +188,4 @@ DEPENDENCIES
   standard (~> 1.5.0)
 
 BUNDLED WITH
-   2.2.15
+   2.3.4
