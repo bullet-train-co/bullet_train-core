@@ -6,16 +6,6 @@ Additionally, Bullet Train Roles makes it trivial to assign the same roles and a
 
 Bullet Train Roles was created by [Andrew Culver](http://twitter.com/andrewculver) and [Adam Pallozzi](https://twitter.com/adampallozzi).
 
-## Sponsored By
-
-<a href="https://bullettrain.co" target="_blank">
-  <img src="https://github.com/CanCanCommunity/cancancan/raw/develop/logo/bullet_train.png" alt="Bullet Train" width="400"/>
-</a>
-<br/>
-<br/>
-
-> Would you like to support Bullet Train Roles development and have your logo featured here? [Reach out!](http://twitter.com/andrewculver)
-
 ## Example Domain Model 
 
 For the sake of this document, we're going to assume the following example modeling around users and teams:
