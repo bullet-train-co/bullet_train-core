@@ -4,7 +4,9 @@ Bullet Train Roles provides a Yaml-based configuration layer on top of [CanCanCa
 
 Additionally, Bullet Train Roles makes it trivial to assign the same roles and associated permissions at different levels in your application. For example, you can assign someone administrative privileges at a team level, or only at a project level.
 
-## Created By
+Bullet Train Roles was created by [Andrew Culver](http://twitter.com/andrewculver) and [Adam Pallozzi](https://twitter.com/adampallozzi).
+
+## Sponsored By
 
 <a href="https://bullettrain.co" target="_blank">
   <img src="https://github.com/CanCanCommunity/cancancan/raw/develop/logo/bullet_train.png" alt="Bullet Train" width="400"/>
@@ -12,7 +14,7 @@ Additionally, Bullet Train Roles makes it trivial to assign the same roles and a
 <br/>
 <br/>
 
-Bullet Train Roles was created by [Andrew Culver](http://twitter.com/andrewculver) and [Adam Pallozzi](https://twitter.com/adampallozzi).
+> Would you like to support Magic Test development and have your logo featured here? [Reach out!](http://twitter.com/andrewculver)
 
 ## Example Domain Model 
 
