@@ -32,15 +32,18 @@ bundle install
 Finally, run the installation generator:
 
 ```
-rails generate bullet_train:roles:install User Membership Team
+rails generate bullet_train:roles:install
 ```
 
-This will:
+The installer defaults to installing a configuration for `Membership` and `Team`, but it will prompt you so you can specify different models if they differ in your application.
+
+The installer will:
 
  - stub out a configuration file in `config/models/roles.yml`.
  - create a database migration to add `role_ids:jsonb` to `Membership`.
  - add `include Role::Support` to `app/models/membership.rb`.
  - add a basic `permit` call in `app/models/ability.rb`.
+
 
 ### Limitations
 
