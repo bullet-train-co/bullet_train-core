@@ -1,0 +1,24 @@
+default:
+  models:
+    Team: read
+    Membership:
+      - read
+      - search
+
+editor:
+  models:
+    Scaffolding::AbsolutelyAbstract::CreativeConcept:
+      - read
+      - update
+
+admin:
+  includes:
+    - editor
+  manageable_roles:
+    - admin
+    - editor
+  models:
+    Team: manage
+    Membership: manage
+    Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
+    Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator: manage
