@@ -14,7 +14,7 @@ Bullet Train Roles was created by [Andrew Culver](http://twitter.com/andrewculve
 <br/>
 <br/>
 
-> Would you like to support development and have your logo featured here? [Reach out!](http://twitter.com/andrewculver)
+> Would you like to support Bullet Train Roles development and have your logo featured here? [Reach out!](http://twitter.com/andrewculver)
 
 ## Example Domain Model 
 
