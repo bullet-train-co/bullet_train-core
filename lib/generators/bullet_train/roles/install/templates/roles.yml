@@ -1,10 +1,8 @@
 default:
   models:
-    -
 
 editor:
   models:
-    -
   manageable_roles:
     - editor
 
