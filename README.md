@@ -60,7 +60,7 @@ The generators currently assume you're using PostgreSQL and `jsonb` will be avai
 
 The provided `Role` model is backed by a Yaml configuration in `config/models/roles.yml`.
 
-To help explain this configuration and it's options, we'll provide the following hypothetical example:
+To help explain this configuration and its options, we'll provide the following hypothetical example:
 
 ```
 default:
