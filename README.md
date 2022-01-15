@@ -1,13 +1,10 @@
 # Bullet Train Scope Validator
 
-Bullet Train Scope Validator provides a simple pattern for protecting `belongs_to` associations from malicious ID
-stuffing. It was created by [Andrew Culver](https://twitter.com/andrewculver) and extracted from [Bullet Train](https://bullettrain.co).
+Bullet Train Scope Validator provides a simple pattern for protecting `belongs_to` associations from malicious ID stuffing. It was created by [Andrew Culver](https://twitter.com/andrewculver) and extracted from [Bullet Train](https://bullettrain.co).
 
 ## Illustrating the Problem
 
-By default in a multitenant Rails application, unless special care is given to validating the ID assigned to a
-`belongs_to` association, malicious users can stuff arbitrary IDs into their request and cause an application to bleed
-data from other tenants.
+By default in a multitenant Rails application, unless special care is given to validating the ID assigned to a `belongs_to` association, malicious users can stuff arbitrary IDs into their request and cause an application to bleed data from other tenants.
 
 Consider the following example from a customer relationship management (CRM) system that two competitive companies use:
 
@@ -49,9 +46,7 @@ class DealsController < ApplicationController
 end
 ```
 
-☝️ Note that Strong Parameters allows `customer_id` to be set by incoming requests and isn't responsible for validating
-the value. We also wouldn't _want_ Strong Parameters to be responible for this, since we'd end up with duplicate
-validation logic in our API controllers and other places. This is a responsibility of the model.
+☝️ Note that Strong Parameters allows `customer_id` to be set by incoming requests and isn't responsible for validating the value. We also wouldn't _want_ Strong Parameters to be responible for this, since we'd end up with duplicate validation logic in our API controllers and other places. This is a responsibility of the model.
 
 ### Example Form
 
@@ -75,8 +70,7 @@ A malicious user can:
  - Inspect the DOM and replace the `<select>` element for `customer_id` with an `<input type="text">` element.
  - Set the value to any number, particularly numbers that are IDs they know don't belong to their account.
  - Submit the form to create the deal.
- - When the deal is shown, it will say "We have a deal with Nintendo!", where "Nintendo" is actually the customer of
-   another team in the system. ☠️ We've bled customer data across our application's tenant boundary.
+ - When the deal is shown, it will say "We have a deal with Nintendo!", where "Nintendo" is actually the customer of another team in the system. ☠️ We've bled customer data across our application's tenant boundary.
 
 ## Usage
 
