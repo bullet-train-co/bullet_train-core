@@ -1,7 +1,7 @@
 # Bullet Train Scope Validator
 
 Bullet Train Scope Validator provides a simple pattern for protecting `belongs_to` associations from malicious ID
-stuffing. It was created by [Andrew Culver](https://twitter.com/andrewculver).
+stuffing. It was created by [Andrew Culver](https://twitter.com/andrewculver) and extracted from [Bullet Train](https://bullettrain.co).
 
 ## Illustrating the Problem
 
