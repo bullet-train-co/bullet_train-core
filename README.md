@@ -105,13 +105,13 @@ class Deal < ApplicationRecord
 end
 ```
 
-Finally, we can also DRY up our form to use the same definition of valid options:
+The link between the validation declaration and the method is one of convention. We've favored a full-blown method definition instead of simply passing in a proc because having a method allows us to also DRY up our form view to use the same definition of valid options, like so:
 
 ```
 <%= form.collection_select(:customer_id, form.object.valid_customers, :id, :name) %>
 ```
 
-That's it. You're done! Any attempts to stuff IDs will be met with an "invalid" Active Record error message.
+So with that, you're done! Any attempts to stuff IDs will be met with an "invalid" Active Record error message.
 
 ## Contributing
 
