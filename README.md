@@ -86,7 +86,7 @@ gem "bullet_train-scope_validator"
 
 Then we add a `scope: true` validation and `def valid_customers` method in the model, like so:
 
-```
+```ruby
 class Deal < ApplicationRecord
   belongs_to :team
   belongs_to :customer
