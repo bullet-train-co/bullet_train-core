@@ -19,10 +19,7 @@ class Integrations::StripeInstallation < ApplicationRecord
   # 🚅 add delegations above.
 
   def process_webhook(webhook)
-    # consider using transactions here. if an error occurs in the processing of a webhook, it's not like user-facing
-    # errors on the web where they see a red screen of death. instead, sidekiq will reattempt the processing of the
-    # entire webhook, which means that earlier portions of your logic will be run more than once unless you're careful
-    # to avoid it.
+    raise "You need to create a `app/models/integrations/stripe_installation.rb` file in your application that does a `Integrations::StripeInstallation.class_eval do ... end` and defines a `def process_webhook(webhook)` method."
   end
 
   # 🚅 add methods above.
