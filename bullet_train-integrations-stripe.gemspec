@@ -1,14 +1,14 @@
 require_relative "lib/bullet_train/integrations/stripe/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "bullet_train-integrations-stripe"
-  spec.version     = BulletTrain::Integrations::Stripe::VERSION
-  spec.authors     = ["Andrew Culver"]
-  spec.email       = ["andrew.culver@gmail.com"]
-  spec.homepage    = "https://github.com/bullet-train-co/bullet_train-integrations-stripe"
-  spec.summary     = "Example Stripe platform integration for Bullet Train applications."
+  spec.name = "bullet_train-integrations-stripe"
+  spec.version = BulletTrain::Integrations::Stripe::VERSION
+  spec.authors = ["Andrew Culver"]
+  spec.email = ["andrew.culver@gmail.com"]
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-integrations-stripe"
+  spec.summary = "Example Stripe platform integration for Bullet Train applications."
   spec.description = spec.summary
-    spec.license     = "MIT"
+  spec.license = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
   # to allow pushing to a single host or delete this section to allow pushing to any host.
