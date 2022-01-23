@@ -1,7 +1,7 @@
 module Users::Core
   extend ActiveSupport::Concern
 
-  include do
+  included do
     if two_factor_authentication_enabled?
       devise :two_factor_authenticatable, :two_factor_backupable, :omniauthable,
         :registerable, :recoverable, :rememberable, :trackable, :validatable,

@@ -1,7 +1,7 @@
 module Memberships::Core
   extend ActiveSupport::Concern
 
-  include do
+  included do
     # See `docs/permissions.md` for details.
     include Roles::Support
 

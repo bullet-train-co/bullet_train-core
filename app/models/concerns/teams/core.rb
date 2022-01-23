@@ -1,7 +1,7 @@
 module Teams::Core
   extend ActiveSupport::Concern
 
-  include do
+  included do
     # super scaffolding
     unless scaffolding_things_disabled?
       has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_updates: true

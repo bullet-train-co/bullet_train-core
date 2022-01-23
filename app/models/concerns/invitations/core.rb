@@ -1,7 +1,7 @@
 module Invitations::Core
   extend ActiveSupport::Concern
 
-  include do
+  included do
     belongs_to :team
     belongs_to :from_membership, class_name: "Membership"
     has_one :membership, dependent: :nullify
