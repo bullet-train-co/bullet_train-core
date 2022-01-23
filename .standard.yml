@@ -1,0 +1,10 @@
+ignore:
+  - '**/*':
+    - Style/TrailingCommaInArguments
+    - Style/TrailingCommaInArrayLiteral
+    - Style/TrailingCommaInHashLiteral
+    - Style/CommentedKeyword
+  - 'app/controllers/**/*':
+    - Style/RedundantAssignment
+  - 'app/models/webhooks/outgoing/delivery_attempt.rb':
+    - Lint/RescueException
