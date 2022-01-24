@@ -1,4 +1,7 @@
 module ThemePartials
+  # TODO This needs to be configurable now that we've moved this file upstream.
+  # TODO Also, this feels almost like it should be set on a per-request basis, since you can have more than one theme
+  # in an app at a time.
   THEME_DIRECTORY_ORDER = [
     "light",
     "tailwind",
@@ -42,6 +45,14 @@ module ThemePartials
     # If we use the Rails caching system, we end up querying it over the wire from Redis or memcached.
     $resolved_theme_partials = {}
 
+    def self.base_path_for(theme)
+      begin
+        "BulletTrain::Themes::#{theme.to_s.classify}::PathSnitch".constantize.method(:confess).source_location.first.split("/lib/bullet_train/themes/").first
+      rescue NameError => _
+        nil
+      end
+    end
+
     def self.resolve(options)
       INCLUDE_TARGETS
         .filter { |include_target| options.start_with? include_target }
@@ -62,8 +73,15 @@ module ThemePartials
         # and other people might also add stuff there.
         unless File.exist?("#{Rails.root}/app/views/#{normal_file_path}.html.erb")
           THEME_DIRECTORY_ORDER.each do |theme_directory|
+            # First we check whether it's defined in the actual application. This takes precedence.
             full_debased_file_path = convert_to_literal_partial(get_full_debased_file_path(debased_file_path, theme_directory))
-            if File.exist?(full_debased_file_path)
+
+            actual_file_path = [
+              "#{Rails.root.to_s}/#{full_debased_file_path}",
+              "#{base_path_for(theme_directory)}/#{full_debased_file_path}",
+            ].detect { |file| File.exist?(file) }
+
+            if actual_file_path
               # Once we've found it, ensure we don't do this again for the same partial.
               $resolved_theme_partials[options] = add_hierarchy_to_path(debased_file_path, theme_directory)
               return $resolved_theme_partials[options]
