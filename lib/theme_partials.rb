@@ -77,9 +77,10 @@ module ThemePartials
             full_debased_file_path = convert_to_literal_partial(get_full_debased_file_path(debased_file_path, theme_directory))
 
             actual_file_path = [
-              "#{Rails.root.to_s}/#{full_debased_file_path}",
-              "#{base_path_for(theme_directory)}/#{full_debased_file_path}",
-            ].detect { |file| File.exist?(file) }
+              Rails.root,
+              # This will return nil if the theme isn't distributed as a Ruby gem.
+              base_path_for(theme_directory),
+            ].compact.map { |path| "#{path}/#{full_debased_file_path}" }.detect { |file| File.exist?(file) }
 
             if actual_file_path
               # Once we've found it, ensure we don't do this again for the same partial.
