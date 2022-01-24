@@ -1,3 +1,5 @@
+require_relative "path_snitch"
+
 module BulletTrain
   module Themes
     module TailwindCss
