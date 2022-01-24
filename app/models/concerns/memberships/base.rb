@@ -1,4 +1,4 @@
-module Memberships::Core
+module Memberships::Base
   extend ActiveSupport::Concern
 
   included do

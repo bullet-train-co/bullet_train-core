@@ -1,4 +1,4 @@
-module Users::Core
+module Users::Base
   extend ActiveSupport::Concern
 
   included do

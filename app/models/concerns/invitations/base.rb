@@ -1,4 +1,4 @@
-module Invitations::Core
+module Invitations::Base
   extend ActiveSupport::Concern
 
   included do

@@ -1,4 +1,4 @@
-module Teams::Core
+module Teams::Base
   extend ActiveSupport::Concern
 
   included do
