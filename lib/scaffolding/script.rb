@@ -1,7 +1,7 @@
-require 'active_support/inflector'
-require 'fileutils'
-require 'pry'
-require 'colorize'
+require "active_support/inflector"
+require "fileutils"
+require "pry"
+require "colorize"
 
 require_relative "#{APP_ROOT}/config/initializers/inflections"
 
@@ -10,11 +10,9 @@ require_relative "#{APP_ROOT}/config/initializers/inflections"
 
 def legacy_replace_in_file(file, before, after)
   puts "Replacing in '#{file}'."
-  target_file_content = File.open(file).read
+  target_file_content = File.read(file)
   target_file_content.gsub!(before, after)
-  File.open(file, "w+") do |f|
-    f.write(target_file_content)
-  end
+  File.write(file, target_file_content)
 end
 
 def legacy_add_line_to_file(file, content, hook, child, parent, options = {})
@@ -26,14 +24,14 @@ def legacy_add_line_to_file(file, content, hook, child, parent, options = {})
   transformed_content = content
   transform_hook = hook
 
-  target_file_content = File.open(transformed_file_name).read
+  target_file_content = File.read(transformed_file_name)
 
   if target_file_content.include?(transformed_content)
     puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'."
   else
     new_target_file_content = []
     target_file_content.split("\n").each do |line|
-      if line.match(/#{Regexp.escape(transform_hook)}\s*$/)
+      if /#{Regexp.escape(transform_hook)}\s*$/.match?(line)
 
         if add_before
           new_target_file_content << "#{line} #{add_before}"
@@ -44,7 +42,7 @@ def legacy_add_line_to_file(file, content, hook, child, parent, options = {})
         end
 
         # get leading whitespace.
-        line.match(/^(\s*).*#{Regexp.escape(transform_hook)}.*/)
+        line =~ /^(\s*).*#{Regexp.escape(transform_hook)}.*/
         leading_whitespace = $1
         new_target_file_content << "#{leading_whitespace}#{"  " if increase_indent}#{transformed_content}"
 
@@ -60,9 +58,7 @@ def legacy_add_line_to_file(file, content, hook, child, parent, options = {})
 
     puts "Updating '#{transformed_file_name}'."
 
-    File.open(transformed_file_name, "w+") do |f|
-      f.write(new_target_file_content.join("\n") + "\n")
-    end
+    File.write(transformed_file_name, new_target_file_content.join("\n") + "\n")
   end
 end
 
@@ -70,10 +66,10 @@ end
 argv = []
 @options = {}
 ARGV.each do |arg|
-  if arg[0..1] == '--'
+  if arg[0..1] == "--"
     arg = arg[2..-1]
-    if arg.split('=').count > 1
-      @options[arg.split('=')[0]] = arg.split('=')[1]
+    if arg.split("=").count > 1
+      @options[arg.split("=")[0]] = arg.split("=")[1]
     else
       @options[arg] = true
     end
@@ -84,17 +80,17 @@ end
 
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
   attributes.each do |attribute|
-    parts = attribute.split(':')
+    parts = attribute.split(":")
     name = parts.shift
-    type = parts.join(':')
+    type = parts.join(":")
 
     # extract any options they passed in with the field.
     type, attribute_options = type.scan(/^(.*)\[(.*)\]/).first || type
 
     # create a hash of the options.
     attribute_options = if attribute_options
-      attribute_options.split(',').map do |s|
-        option_name, option_value = s.split('=')
+      attribute_options.split(",").map do |s|
+        option_name, option_value = s.split("=")
         [option_name.to_sym, option_value || true]
       end.to_h
     else
@@ -105,20 +101,19 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       attribute_options ||= {}
       unless attribute_options[:vanilla]
         name_without_id = if name.match?(/_id$/)
-          name.gsub(/_id$/, '')
+          name.gsub(/_id$/, "")
         elsif name.match?(/_ids$/)
-          name.gsub(/_ids$/, '')
+          name.gsub(/_ids$/, "")
         end
 
         attribute_options[:class_name] ||= name_without_id.classify
 
-
         file_name = "app/models/#{attribute_options[:class_name].underscore}.rb"
-        unless File.exists?(file_name)
+        unless File.exist?(file_name)
           puts ""
           puts "Attributes that end with `_id` or `_ids` trigger awesome, powerful magic in Super Scaffolding. However, because no `#{attribute_options[:class_name]}` class was found defined in `#{file_name}`, you'll need to specify a `class_name` that exists to let us know what model class is on the other side of the association, like so:".red
           puts ""
-          puts "  bin/super-scaffold #{scaffolding_type} #{child}#{" " + parent if parent.present?} #{name}:#{type}[class_name=#{name.gsub(/_ids?$/, '').classify}]".red
+          puts "  bin/super-scaffold #{scaffolding_type} #{child}#{" " + parent if parent.present?} #{name}:#{type}[class_name=#{name.gsub(/_ids?$/, "").classify}]".red
           puts ""
           puts "If `#{name}` is just a regular field and isn't backed by an ActiveRecord association, you can skip all this with the `[vanilla]` option, e.g.:".red
           puts ""
@@ -151,7 +146,7 @@ end
 scaffolding_type = argv.shift
 
 # if we're doing the classic super scaffolding ..
-if scaffolding_type == 'crud'
+if scaffolding_type == "crud"
 
   unless argv.count >= 3
     puts ""
@@ -181,7 +176,7 @@ if scaffolding_type == 'crud'
   end
 
   child = argv[0]
-  parents = argv[1] ? argv[1].split(',') : []
+  parents = argv[1] ? argv[1].split(",") : []
   parents = parents.map(&:classify).uniq
   parent = parents.first
 
@@ -207,7 +202,7 @@ if scaffolding_type == 'crud'
   end
   puts ""
 
-elsif scaffolding_type == 'crud-field'
+elsif scaffolding_type == "crud-field"
 
   unless argv.count >= 2
     puts ""
@@ -244,7 +239,7 @@ elsif scaffolding_type == 'crud-field'
   end
   puts ""
 
-elsif scaffolding_type == 'join-model'
+elsif scaffolding_type == "join-model"
 
   unless argv.count >= 3
     puts ""
@@ -333,7 +328,7 @@ elsif scaffolding_type == 'join-model'
   end
   puts ""
 
-elsif scaffolding_type == 'breadcrumbs'
+elsif scaffolding_type == "breadcrumbs"
 
   unless argv.count == 2
     puts ""
@@ -350,7 +345,7 @@ elsif scaffolding_type == 'breadcrumbs'
   end
 
   child = argv[0]
-  parents = argv[1] ? argv[1].split(',') : []
+  parents = argv[1] ? argv[1].split(",") : []
   parents = parents.map(&:classify).uniq
   parent = parents.first
 
@@ -364,7 +359,7 @@ elsif scaffolding_type == 'breadcrumbs'
   transformer = Scaffolding::Transformer.new(child, parents, @options)
   transformer.scaffold_new_breadcrumbs(child, parents)
 
-elsif scaffolding_type == 'oauth-provider'
+elsif scaffolding_type == "oauth-provider"
 
   unless argv.count >= 5
     puts ""
@@ -397,12 +392,12 @@ elsif scaffolding_type == 'oauth-provider'
     gems_provider_name: gems_provider_name,
     our_provider_name: match[1],
     api_key: api_key,
-    api_secret: api_secret,
+    api_secret: api_secret
   }
 
-  unless File.exists?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
-      File.exists?(oauth_transform_string("./app/models/integrations/stripe_installation.rb", options)) &&
-      File.exists?(oauth_transform_string("./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb", options))
+  unless File.exist?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
+      File.exist?(oauth_transform_string("./app/models/integrations/stripe_installation.rb", options)) &&
+      File.exist?(oauth_transform_string("./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb", options))
     puts ""
     puts oauth_transform_string("🚨 Before doing the actual Super Scaffolding, you'll need to generate the models like so:", options).red
     puts ""
@@ -416,8 +411,8 @@ elsif scaffolding_type == 'oauth-provider'
   end
 
   icon_name = nil
-  if @options['icon'].present?
-    icon_name = @options['icon']
+  if @options["icon"].present?
+    icon_name = @options["icon"]
   else
     puts "OK, great! Let's do this! By default providers will appear with a dollar symbol,"
     puts "but after you hit enter I'll open a page where you can view other icon options."
@@ -430,8 +425,8 @@ elsif scaffolding_type == 'oauth-provider'
     puts "use the dollar symbol:"
     icon_name = STDIN.gets.chomp
     puts ""
-    unless icon_name.length > 0 || icon_name.downcase == 'y'
-      icon_name = 'icon-puzzle'
+    unless icon_name.length > 0 || icon_name.downcase == "y"
+      icon_name = "icon-puzzle"
     end
   end
 
@@ -440,28 +435,28 @@ elsif scaffolding_type == 'oauth-provider'
   [
 
     # User OAuth.
-    './app/models/oauth/stripe_account.rb',
-    './app/models/webhooks/incoming/oauth/stripe_account_webhook.rb',
-    './app/controllers/account/oauth/stripe_accounts_controller.rb',
-    './app/controllers/webhooks/incoming/oauth/stripe_account_webhooks_controller.rb',
-    './app/views/account/oauth/stripe_accounts',
-    './test/models/oauth/stripe_account_test.rb',
-    './test/factories/oauth/stripe_accounts.rb',
-    './config/locales/en/oauth/stripe_accounts.en.yml',
-    './app/views/devise/shared/oauth/_stripe.html.erb',
+    "./app/models/oauth/stripe_account.rb",
+    "./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb",
+    "./app/controllers/account/oauth/stripe_accounts_controller.rb",
+    "./app/controllers/webhooks/incoming/oauth/stripe_account_webhooks_controller.rb",
+    "./app/views/account/oauth/stripe_accounts",
+    "./test/models/oauth/stripe_account_test.rb",
+    "./test/factories/oauth/stripe_accounts.rb",
+    "./config/locales/en/oauth/stripe_accounts.en.yml",
+    "./app/views/devise/shared/oauth/_stripe.html.erb",
 
     # Team Integration.
-    './app/models/integrations/stripe_installation.rb',
+    "./app/models/integrations/stripe_installation.rb",
     # './app/serializers/api/v1/integrations/stripe_installation_serializer.rb',
-    './app/controllers/account/integrations/stripe_installations_controller.rb',
-    './app/views/account/integrations/stripe_installations',
-    './test/models/integrations/stripe_installation_test.rb',
-    './test/factories/integrations/stripe_installations.rb',
-    './config/locales/en/integrations/stripe_installations.en.yml',
+    "./app/controllers/account/integrations/stripe_installations_controller.rb",
+    "./app/views/account/integrations/stripe_installations",
+    "./test/models/integrations/stripe_installation_test.rb",
+    "./test/factories/integrations/stripe_installations.rb",
+    "./config/locales/en/integrations/stripe_installations.en.yml",
 
     # Webhook.
-    './app/models/webhooks/incoming/oauth/stripe_account_webhook.rb',
-    './app/controllers/webhooks/incoming/oauth/stripe_account_webhooks_controller.rb',
+    "./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb",
+    "./app/controllers/webhooks/incoming/oauth/stripe_account_webhooks_controller.rb"
 
   ].each do |name|
     if File.directory?(name)
@@ -493,20 +488,17 @@ elsif scaffolding_type == 'oauth-provider'
 ", "# 🚅 super scaffolding will insert any new oauth providers above.", options, prepend: true)
 
   # find the database migration that defines this relationship.
-  migration_file_name = `grep "create_table #{oauth_transform_string(':oauth_stripe_accounts', options)}" db/migrate/*`.split(":").first
-  legacy_replace_in_file(migration_file_name, 'null: false', 'null: true')
+  migration_file_name = `grep "create_table #{oauth_transform_string(":oauth_stripe_accounts", options)}" db/migrate/*`.split(":").first
+  legacy_replace_in_file(migration_file_name, "null: false", "null: true")
 
-  migration_file_name = `grep "create_table #{oauth_transform_string(':integrations_stripe_installations', options)}" db/migrate/*`.split(":").first
+  migration_file_name = `grep "create_table #{oauth_transform_string(":integrations_stripe_installations", options)}" db/migrate/*`.split(":").first
   legacy_replace_in_file(migration_file_name,
-    oauth_transform_string('t.references :oauth_stripe_account, null: false, foreign_key: true', options),
-    oauth_transform_string('t.references :oauth_stripe_account, null: false, foreign_key: true, index: {name: "index_stripe_installations_on_oauth_stripe_account_id"}', options),
-  )
+    oauth_transform_string("t.references :oauth_stripe_account, null: false, foreign_key: true", options),
+    oauth_transform_string('t.references :oauth_stripe_account, null: false, foreign_key: true, index: {name: "index_stripe_installations_on_oauth_stripe_account_id"}', options))
 
-  migration_file_name = `grep "create_table #{oauth_transform_string(':webhooks_incoming_oauth_stripe_account_webhooks', options)}" db/migrate/*`.split(":").first
-  legacy_replace_in_file(migration_file_name, 'null: false', 'null: true')
-  legacy_replace_in_file(migration_file_name, 'foreign_key: true', 'foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}')
-
-
+  migration_file_name = `grep "create_table #{oauth_transform_string(":webhooks_incoming_oauth_stripe_account_webhooks", options)}" db/migrate/*`.split(":").first
+  legacy_replace_in_file(migration_file_name, "null: false", "null: true")
+  legacy_replace_in_file(migration_file_name, "foreign_key: true", 'foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}')
 
   puts ""
   puts "🎉"

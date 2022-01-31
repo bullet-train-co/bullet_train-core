@@ -1,3 +1,5 @@
 ignore:
   - 'lib/scaffolding/transformer.rb':
     - Layout/EndAlignment
+  # TODO Fix this file up for Standard Ruby.
+  - 'lib/scaffolding/script.rb'
