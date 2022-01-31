@@ -23,4 +23,13 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.0.0"
+  spec.add_dependency "grape", "~> 1.6.0"
+  spec.add_dependency "grape-cancan"
+  spec.add_dependency "grape-jsonapi"
+  spec.add_dependency "grape-swagger"
+  spec.add_dependency "grape_on_rails_routes"
+  spec.add_dependency "wine_bouncer"
+  spec.add_dependency "kaminari"
+  spec.add_dependency "api-pagination"
+  spec.add_dependency "rack-cors"
 end
