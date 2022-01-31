@@ -1,7 +1,7 @@
 module Account::Users::ControllerBase
   extend ActiveSupport::Concern
 
-  include do
+  included do
     load_and_authorize_resource
 
     before_action do

@@ -1,7 +1,7 @@
 module Sessions::ControllerBase
   extend ActiveSupport::Concern
 
-  include do
+  included do
     def pre_otp
       if (@email = params["user"]["email"].downcase.strip.presence)
         @user = User.find_by(email: @email)

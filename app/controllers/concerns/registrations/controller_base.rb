@@ -1,7 +1,7 @@
 module Registrations::ControllerBase
   extend ActiveSupport::Concern
 
-  include do
+  included do
     def new
       if invitation_only?
         unless session[:invitation_uuid] || session[:invitation_key]
