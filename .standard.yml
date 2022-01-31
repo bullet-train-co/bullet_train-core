@@ -1,0 +1,3 @@
+ignore:
+  - 'lib/scaffolding/transformer.rb':
+    - Layout/EndAlignment

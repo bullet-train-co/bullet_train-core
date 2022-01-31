@@ -98,7 +98,7 @@ class Scaffolding::Transformer
 
       # Account namespace vs. others.
       ":account",
-      "/account/",
+      "/account/"
 
     ].each do |needle|
       string = string.gsub(needle, encode_double_replacement_fix(class_names_transformer.replacement_for(needle)))
@@ -1169,7 +1169,7 @@ class Scaffolding::Transformer
         ("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml" unless cli_options["skip-locales"]),
         ("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint.rb" unless cli_options["skip-api"]),
         ("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb" unless cli_options["skip-api"]),
-        ("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb" unless cli_options["skip-api"]),
+        ("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb" unless cli_options["skip-api"])
         # "./app/filters/scaffolding/completely_concrete/tangible_things_filter.rb"
       ].compact
     end
