@@ -1,14 +1,14 @@
 require_relative "lib/bullet_train/obfuscates_id/version"
 
 Gem::Specification.new do |spec|
-  spec.name        = "bullet_train-obfuscates_id"
-  spec.version     = BulletTrain::ObfuscatesId::VERSION
-  spec.authors     = ["Andrew Culver"]
-  spec.email       = ["andrew.culver@gmail.com"]
-  spec.homepage    = "https://github.com/bullet-train-co/bullet_train-obfuscates_id"
-  spec.summary     = "Bullet Train Obfuscates ID"
+  spec.name = "bullet_train-obfuscates_id"
+  spec.version = BulletTrain::ObfuscatesId::VERSION
+  spec.authors = ["Andrew Culver"]
+  spec.email = ["andrew.culver@gmail.com"]
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-obfuscates_id"
+  spec.summary = "Bullet Train Obfuscates ID"
   spec.description = spec.summary
-    spec.license     = "MIT"
+  spec.license = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
   # to allow pushing to a single host or delete this section to allow pushing to any host.
