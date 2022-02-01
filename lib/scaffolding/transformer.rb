@@ -106,6 +106,17 @@ class Scaffolding::Transformer
     decode_double_replacement_fix(string)
   end
 
+  def resolve_template_path(file)
+    # Figure out the actual location of the file.
+    # Originally all the potential source files were in the repository alongside the application.
+    # Now the files could be provided by an included Ruby gem, so we allow those Ruby gems to register their base
+    # path and then we check them in order to see which template we should use.
+    $super_scaffolding_template_paths.reverse.map do |base_path|
+      resolved_path = base_path.join(file).to_s
+      File.exists?(resolved_path) ? resolved_path : file
+    end.compact.first
+  end
+
   def get_transformed_file_content(file)
     transformed_file_content = []
 
@@ -115,7 +126,7 @@ class Scaffolding::Transformer
     parents_to_repeat_for = []
     gathered_lines_for_repeating = nil
 
-    File.open(file).each_line do |line|
+    File.open(resolve_template_path(file)).each_line do |line|
       if line.include?("# 🚅 skip when scaffolding.")
         next
       end
@@ -213,9 +224,9 @@ class Scaffolding::Transformer
       puts "Proceeding to generate '#{transformed_directory_name}'."
     end
 
-    Dir.foreach(directory) do |file|
+    Dir.foreach(resolve_template_path(directory)) do |file|
       file = "#{directory}/#{file}"
-      unless File.directory?(file)
+      unless File.directory?(resolve_template_path(file))
         scaffold_file(file)
       end
     end
@@ -1175,7 +1186,7 @@ class Scaffolding::Transformer
     end
 
     files.each do |name|
-      if File.directory?(name)
+      if File.directory?(resolve_template_path(name))
         scaffold_directory(name)
       else
         scaffold_file(name)
