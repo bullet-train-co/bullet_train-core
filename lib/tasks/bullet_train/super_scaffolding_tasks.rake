@@ -1,4 +1,6 @@
-# desc "Explaining what the task does"
-# task :bullet_train_super_scaffolding do
-#   # Task goes here
-# end
+namespace :bullet_train do
+  desc "Next-level code generation"
+  task :super_scaffolding => :environment do
+    BulletTrain::SuperScaffolding::Runner.new.run
+  end
+end

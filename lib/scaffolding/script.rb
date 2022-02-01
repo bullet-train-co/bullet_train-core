@@ -1,17 +1,9 @@
-require "active_support/inflector"
-require "fileutils"
-require "pry"
-require "colorize"
-require "scaffolding"
-require "#{APP_ROOT}/config/initializers/inflections"
-
-# TODO This is a hack to allow Super Scaffolding modules to register their path. We'll do this differently once we've
-# properly migrated all the code into the Rails engine structure and Rails is being initialized as part of
-# `bin/super-scaffold`.
-$super_scaffolding_template_paths ||= []
-
 # TODO these methods were removed from the global scope in super scaffolding and moved to `Scaffolding::Transformer`,
 # but oauth provider scaffolding hasn't been updated yet.
+
+require "scaffolding/transformer"
+require "scaffolding/class_names_transformer"
+require "scaffolding/routes_file_manipulator"
 
 def legacy_replace_in_file(file, before, after)
   puts "Replacing in '#{file}'."

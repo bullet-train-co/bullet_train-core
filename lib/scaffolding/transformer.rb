@@ -111,7 +111,8 @@ class Scaffolding::Transformer
     # Originally all the potential source files were in the repository alongside the application.
     # Now the files could be provided by an included Ruby gem, so we allow those Ruby gems to register their base
     # path and then we check them in order to see which template we should use.
-    $super_scaffolding_template_paths.reverse.map do |base_path|
+    BulletTrain::SuperScaffolding.template_paths.reverse.map do |base_path|
+      base_path = Pathname.new(base_path)
       resolved_path = base_path.join(file).to_s
       File.exists?(resolved_path) ? resolved_path : file
     end.compact.first
