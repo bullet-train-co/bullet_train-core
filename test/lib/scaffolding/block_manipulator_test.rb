@@ -1,7 +1,7 @@
 require "test_helper"
 require "minitest/spec"
 
-require_relative "../../../lib/scaffolding/block_manipulator"
+require "scaffolding/block_manipulator"
 
 describe Scaffolding::BlockManipulator do
   file_path = "./test/lib/scaffolding/examples/block_manipulator_data.html.erb"

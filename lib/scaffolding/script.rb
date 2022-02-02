@@ -3,6 +3,7 @@
 
 require "scaffolding"
 require "scaffolding/transformer"
+require "scaffolding/block_manipulator"
 require "scaffolding/class_names_transformer"
 require "scaffolding/oauth_providers"
 require "scaffolding/routes_file_manipulator"
