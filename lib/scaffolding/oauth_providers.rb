@@ -1,3 +1,57 @@
+def legacy_replace_in_file(file, before, after)
+  puts "Replacing in '#{file}'."
+  target_file_content = File.read(file)
+  target_file_content.gsub!(before, after)
+  File.write(file, target_file_content)
+end
+
+def legacy_add_line_to_file(file, content, hook, child, parent, options = {})
+  increase_indent = options[:increase_indent]
+  add_before = options[:add_before]
+  add_after = options[:add_after]
+
+  transformed_file_name = file
+  transformed_content = content
+  transform_hook = hook
+
+  target_file_content = File.read(transformed_file_name)
+
+  if target_file_content.include?(transformed_content)
+    puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'."
+  else
+    new_target_file_content = []
+    target_file_content.split("\n").each do |line|
+      if /#{Regexp.escape(transform_hook)}\s*$/.match?(line)
+
+        if add_before
+          new_target_file_content << "#{line} #{add_before}"
+        else
+          unless options[:prepend]
+            new_target_file_content << line
+          end
+        end
+
+        # get leading whitespace.
+        line =~ /^(\s*).*#{Regexp.escape(transform_hook)}.*/
+        leading_whitespace = $1
+        new_target_file_content << "#{leading_whitespace}#{"  " if increase_indent}#{transformed_content}"
+
+        new_target_file_content << "#{leading_whitespace}#{add_after}" if add_after
+
+        if options[:prepend]
+          new_target_file_content << line
+        end
+      else
+        new_target_file_content << line
+      end
+    end
+
+    puts "Updating '#{transformed_file_name}'."
+
+    File.write(transformed_file_name, new_target_file_content.join("\n") + "\n")
+  end
+end
+
 def encode_double_replacement_fix(string)
   string.chars.join("~!@BT@!~")
 end
