@@ -19,8 +19,6 @@ module BulletTrain
     class Runner
       def run
         # Make `rake` invocation compatible with how this was run historically.
-        ARGV.shift
-
         require "scaffolding/script"
       end
     end
