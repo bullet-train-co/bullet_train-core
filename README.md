@@ -54,7 +54,7 @@ The installer will:
 
 ### Limitations
 
-The generators currently assume you're using PostgreSQL and `jsonb` will be available when generating a `role_ids` column. If you're using MySQL, you can edit these migrations and use `json` instead, although you won't be able to set a default value and you'll need to take care of this in the model.
+The generators currently assume you're using PostgreSQL and `jsonb` will be available when generating a `role_ids` column. If you're using MySQL, the generator will use `json` instead, although you won't be able to set a default value and you'll need to take care of this in the model.
 
 ## Usage
 

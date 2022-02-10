@@ -58,6 +58,11 @@ module BulletTrain
         adapter_name
       end
 
+      def db_adapter_supports_defaults?
+        supported_db_adapters = %w[postgresql]
+        supported_db_adapters.include?(db_adapter)
+      end
+
       def find_json_data_type_identifier
         adapter_name = db_adapter
 
@@ -119,7 +124,7 @@ module BulletTrain
 
         generate "migration", "#{migration_file_name} role_ids:#{json_data_type_identifier}"
 
-        add_default_value_to_migration(migration_file_name, top_level_model_table_name)
+        add_default_value_to_migration(migration_file_name, top_level_model_table_name) if db_adapter_supports_defaults?
 
         puts("Success 🎉🎉\n\n")
       end
