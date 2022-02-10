@@ -8,7 +8,7 @@ bundle install
 # We need to cd into the dummy app because it uses a different Rakefile
 cd test/dummy
 bundle install
-rake db:test:prepare
+rake db:reset
 cd ../..
 
 # Do any other automated setup that you need to do here

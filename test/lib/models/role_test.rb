@@ -44,8 +44,6 @@ class RoleTest < ActiveSupport::TestCase
     def setup
       @admin_user = FactoryBot.create :onboarded_user
       @membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: [Role.admin.id]
-      @admin_ability = Ability.new(@admin_user)
-      @parent_ids = [2, 3]
     end
 
     test "default_role#included_by returns the admin role" do
@@ -100,6 +98,37 @@ class RoleTest < ActiveSupport::TestCase
 
     test "admin_role.manageable_by?(default_role) returns false" do
       refute Role.admin.manageable_by?([Role.default])
+    end
+
+    test "deleting a role removes it from the role_ids column" do
+      assert @membership.roles.include?(Role.admin)
+      @membership.roles.delete(Role.admin)
+      refute @membership.role_ids.include?(Role.admin.id)
+    end
+
+    test "Adding a role adds it to the role_ids column" do
+      editor_role = Role.find_by_key "editor"
+      refute @membership.roles.include?(editor_role)
+      @membership.roles << editor_role
+      @membership.reload
+      assert @membership.roles.include?(editor_role)
+    end
+
+    test "When role_ids is nil, we can add a new role" do
+      @membership.update_column(:role_ids, nil)
+      @membership.roles << Role.admin
+      assert @membership.admin?
+    end
+
+    test "When role_ids is nil, we can attempt to delete a role without error" do
+      @membership.update_column(:role_ids, nil)
+      @membership.roles.delete(Role.admin)
+      assert_empty @membership.role_ids
+    end
+
+    test "Calling #roles when role_ids is nil returns the default role only" do
+      @membership.update_column(:role_ids, nil)
+      assert_equal @membership.roles, [Role.find_by_key("default")]
     end
   end
 

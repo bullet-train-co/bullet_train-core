@@ -44,7 +44,7 @@ module Roles
       after_destroy :invalidate_cache
 
       def validate_roles
-        self.role_ids = role_ids.select(&:present?)
+        self.role_ids = role_ids&.select(&:present?) || []
 
         return if @allowed_roles.nil?
 
@@ -66,7 +66,7 @@ module Roles
       end
 
       def roles_without_defaults
-        role_ids.map { |role_id| Role.find(role_id) }
+        role_ids&.map { |role_id| Role.find(role_id) } || []
       end
 
       def manageable_roles

@@ -109,23 +109,21 @@ class Role < ActiveYaml::Base
   class Collection < Array
     def initialize(model, ary)
       @model = model
-
       super(ary)
     end
 
     def <<(role)
       return true if include?(role)
-
-      role_ids = @model.role_ids
-
+      role_ids = @model.role_ids || []
       role_ids << role.id
-
       @model.update(role_ids: role_ids)
     end
 
     def delete(role)
-      @model.role_ids -= [role.key]
-
+      return @model.save unless include?(role)
+      current_role_ids = @model.role_ids || []
+      new_role_ids = current_role_ids - [role.key]
+      @model.role_ids = new_role_ids
       @model.save
     end
   end

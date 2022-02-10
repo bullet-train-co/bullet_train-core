@@ -1,12 +1,12 @@
 # Bullet Train Roles
 
-Bullet Train Roles provides a Yaml-based configuration layer on top of [CanCanCan](https://github.com/CanCanCommunity/cancancan). You can use this configuration file to simplify the definition of many common permissions, while still implementing more complicated permissions in CanCanCan's traditional `app/model/ability.rb`. 
+Bullet Train Roles provides a Yaml-based configuration layer on top of [CanCanCan](https://github.com/CanCanCommunity/cancancan). You can use this configuration file to simplify the definition of many common permissions, while still implementing more complicated permissions in CanCanCan's traditional `app/model/ability.rb`.
 
 Additionally, Bullet Train Roles makes it trivial to assign the same roles and associated permissions at different levels in your application. For example, you can assign someone administrative privileges at a team level, or only at a project level.
 
 Bullet Train Roles was created by [Andrew Culver](http://twitter.com/andrewculver) and [Adam Pallozzi](https://twitter.com/adampallozzi).
 
-## Example Domain Model 
+## Example Domain Model
 
 For the sake of this document, we're going to assume the following example modeling around users and teams:
 
@@ -15,7 +15,7 @@ For the sake of this document, we're going to assume the following example model
 - A `Membership` can have zero, one, or many `Role`s assigned.
 - A `Membership` without a `Role` is just a default team member.
 
-You don't have to name your models the same thing in order to use this Ruby Gem, but it does depend on having a similar structure. 
+You don't have to name your models the same thing in order to use this Ruby Gem, but it does depend on having a similar structure.
 
 > If you're interested in reading more about how and why Bullet Train implements this structure, you can [read about it on our blog](https://blog.bullettrain.co/teams-should-be-an-mvp-feature/).
 
@@ -51,10 +51,6 @@ The installer will:
  - add `include Role::Support` to `app/models/membership.rb`.
  - add a basic `permit` call in `app/models/ability.rb`.
 
-
-### Limitations
-
-The generators currently assume you're using PostgreSQL and `jsonb` will be available when generating a `role_ids` column. If you're using MySQL, the generator will use `json` instead, although you won't be able to set a default value and you'll need to take care of this in the model.
 
 ## Usage
 

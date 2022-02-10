@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2022_01_03_181617) do
   enable_extension "plpgsql"
 
   create_table "memberships", force: :cascade do |t|
-    t.jsonb "role_ids", default: []
+    t.jsonb "role_ids"
     t.bigint "user_id", null: false
     t.bigint "team_id", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -35,7 +35,7 @@ ActiveRecord::Schema.define(version: 2022_01_03_181617) do
   end
 
   create_table "scaffolding_absolutely_abstract_creative_concepts_collaborators", force: :cascade do |t|
-    t.jsonb "role_ids", default: []
+    t.jsonb "role_ids"
     t.bigint "creative_concept_id", null: false
     t.bigint "membership_id", null: false
     t.datetime "created_at", precision: 6, null: false
