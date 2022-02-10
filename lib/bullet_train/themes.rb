@@ -3,6 +3,6 @@ require "bullet_train/themes/engine"
 
 module BulletTrain
   module Themes
-    # Your code goes here...
+    mattr_accessor :themes, default: {}
   end
 end
