@@ -47,7 +47,7 @@ module BulletTrain
       end
 
       def db_adapter
-        allowed_adapter_types = %w[mysql sqlite postgresql]
+        allowed_adapter_types = %w[mysql mysql2 sqlite postgresql]
 
         adapter_name = ActiveRecord::Base.connection.adapter_name.downcase
 
