@@ -58,11 +58,6 @@ module BulletTrain
         adapter_name
       end
 
-      def db_adapter_supports_defaults?
-        supported_db_adapters = %w[postgresql]
-        supported_db_adapters.include?(db_adapter)
-      end
-
       def find_json_data_type_identifier
         adapter_name = db_adapter
 
@@ -95,14 +90,6 @@ module BulletTrain
         File.write(file_location, update_file_content.join)
       end
 
-      def add_default_value_to_migration(file_name, table_name)
-        file_location = Dir["db/migrate/*_#{file_name}.rb"].last
-        line_to_match = "add_column :#{table_name.downcase}, :role_ids"
-        content_to_add = ", default: []\n"
-
-        add_in_file(file_location, line_to_match, content_to_add)
-      end
-
       def migration_file_exists?(file_name)
         file_location = Dir["db/migrate/*_#{file_name}.rb"].last
 
@@ -123,8 +110,6 @@ module BulletTrain
         puts("Generating migration to add role_ids to #{top_level_model}")
 
         generate "migration", "#{migration_file_name} role_ids:#{json_data_type_identifier}"
-
-        add_default_value_to_migration(migration_file_name, top_level_model_table_name) if db_adapter_supports_defaults?
 
         puts("Success 🎉🎉\n\n")
       end
