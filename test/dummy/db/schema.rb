@@ -11,6 +11,7 @@
 # It's strongly recommended that you check this file into your version control system.
 
 ActiveRecord::Schema.define(version: 2022_01_03_181617) do
+
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -30,7 +31,7 @@ ActiveRecord::Schema.define(version: 2022_01_03_181617) do
     t.bigint "team_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
-    t.index ["team_id"], name: "index_scaffold_abstract_creative_on_team_id"
+    t.index ["team_id"], name: "index_scaffold_absolutely_abstract_creative_concept_on_team_id"
   end
 
   create_table "scaffolding_absolutely_abstract_creative_concepts_collaborators", force: :cascade do |t|
