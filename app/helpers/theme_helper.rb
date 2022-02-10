@@ -44,7 +44,7 @@ module ThemeHelper
       #
       # However, if one of those two situations isn't true, then this call here will throw an exception and we can
       # perform the appropriate magic to figure out where amongst the themes the partial should be rendering from.
-      return super
+      super
     rescue ActionView::MissingTemplate => exception
       # The theme engine only supports `<%= render 'shared/box' ... %>` style calls to `render`.
       if options.is_a?(String)
@@ -59,25 +59,23 @@ module ThemeHelper
 
           # TODO We're hard-coding this for now, but this should probably come from the `Current` model.
           current_theme_object.directory_order.each do |theme_path|
-            begin
-              # Update our options from something like `shared/box` to `themes/light/box`.
-              options = "themes/#{theme_path}/#{requested_partial}"
+            # Update our options from something like `shared/box` to `themes/light/box`.
+            options = "themes/#{theme_path}/#{requested_partial}"
 
-              # Try rendering the partial again with the updated options.
-              body = super
+            # Try rendering the partial again with the updated options.
+            body = super
 
-              # 🏆 If we get this far, then we've found the actual path of the theme partial. We should cache it!
-              $resolved_theme_partial_paths[original_options] = options
+            # 🏆 If we get this far, then we've found the actual path of the theme partial. We should cache it!
+            $resolved_theme_partial_paths[original_options] = options
 
-              # We also need to return whatever the rendered body was.
-              return body
+            # We also need to return whatever the rendered body was.
+            return body
 
-            # If calling `render` with the updated options is still resulting in a missing template, we need to
-            # keep iterating over `directory_order` to work our way up the theme stack and see if we can find the
-            # partial there, e.g. going from `light` to `tailwind` to `base`.
-            rescue ActionView::MissingTemplate => _
-              next
-            end
+          # If calling `render` with the updated options is still resulting in a missing template, we need to
+          # keep iterating over `directory_order` to work our way up the theme stack and see if we can find the
+          # partial there, e.g. going from `light` to `tailwind` to `base`.
+          rescue ActionView::MissingTemplate => _
+            next
           end
         end
       end

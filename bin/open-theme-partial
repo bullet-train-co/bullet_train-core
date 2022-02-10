@@ -13,7 +13,11 @@ require 'fileutils'
 require 'colorize'
 
 require_relative '../app/helpers/theme_helper.rb'
+
+# TODO Well, this isn't going to work anymore. We'll have to move this into a Rake task that boots the app, so we can
+# use the new logic in `ThemeHelper`.
 require_relative '../lib/theme_partials.rb'
+
 include ThemeHelper
 include ThemePartials
 

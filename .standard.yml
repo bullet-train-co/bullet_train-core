@@ -4,5 +4,5 @@ ignore:
     - Style/TrailingCommaInArrayLiteral
     - Style/TrailingCommaInHashLiteral
     - Style/CommentedKeyword
-  - 'lib/theme_partials.rb':
+  - 'app/helpers/theme_helper.rb':
     - Style/GlobalVars
