@@ -44,6 +44,10 @@ class Role < ActiveYaml::Base
     key
   end
 
+  def to_s
+    key
+  end
+
   def included_by
     Role.includes(self)
   end
@@ -141,42 +145,38 @@ class Role < ActiveYaml::Base
 
     def actions
       return @actions if @actions
-
       actions = (@ability_data["actions"] if @ability_data.is_a?(Hash)) || @ability_data
-
       actions = [actions] unless actions.is_a?(Array)
-
       @actions = actions.map!(&:to_sym)
     end
 
     def possible_parent_associations
       ary = @parent.to_s.split("::").map(&:underscore)
-
       possibilities = []
       current = nil
-
       until ary.empty?
         current = "#{ary.pop}#{"_" unless current.nil?}#{current}"
         possibilities << current
       end
-
       possibilities.map(&:to_sym)
     end
 
     def condition
       return @condition if @condition
-
       return nil unless @parent_ids
-
       if @model == @parent
         return @condition = {id: @parent_ids}
       end
-
-      parent_association = possible_parent_associations.find { |association| @model.method_defined? association }
-
+      parent_association = possible_parent_associations.find { |association| @model.method_defined?(association) || @model.method_defined?("#{association}_id") }
       return nil unless parent_association.present?
-
-      @condition = {parent_association => {id: @parent_ids}}
+      # If possible, use the team_id attribute because it saves us having to join all the way back to the sorce parent model
+      # In some scenarios this may be quicker, or if the parent model is in a different database shard, it may not even
+      # be possible to do the join
+      if @model.method_defined?("#{parent_association}_id")
+        @condition = {"#{parent_association}_id" => @parent_ids}
+      else
+        @condition = {parent_association => {id: @parent_ids}}
+      end
     end
   end
 end
