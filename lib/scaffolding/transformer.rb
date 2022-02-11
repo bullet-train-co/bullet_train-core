@@ -1,5 +1,6 @@
 require "indefinite_article"
 require "yaml"
+require "scaffolding/class_names_transformer"
 
 class Scaffolding::Transformer
   attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find
@@ -111,11 +112,11 @@ class Scaffolding::Transformer
     # Originally all the potential source files were in the repository alongside the application.
     # Now the files could be provided by an included Ruby gem, so we allow those Ruby gems to register their base
     # path and then we check them in order to see which template we should use.
-    BulletTrain::SuperScaffolding.template_paths.reverse.map do |base_path|
+    BulletTrain::SuperScaffolding.template_paths.map do |base_path|
       base_path = Pathname.new(base_path)
       resolved_path = base_path.join(file).to_s
-      File.exists?(resolved_path) ? resolved_path : file
-    end.compact.first
+      File.exist?(resolved_path) ? resolved_path : nil
+    end.compact.first || raise("Couldn't find the Super Scaffolding template for `#{file}` in any of the following locations:\n\n#{BulletTrain::SuperScaffolding.template_paths.join("\n")}")
   end
 
   def get_transformed_file_content(file)
