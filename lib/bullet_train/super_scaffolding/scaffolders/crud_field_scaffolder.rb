@@ -26,7 +26,7 @@ module BulletTrain
           # get all the attributes.
           attributes = argv[1..-1]
 
-          check_required_options_for_attributes('crud-field', attributes, child)
+          check_required_options_for_attributes("crud-field", attributes, child)
 
           transformer = Scaffolding::Transformer.new(child, parents, @options)
           transformer.add_attributes_to_various_views(attributes, type: :crud_field)

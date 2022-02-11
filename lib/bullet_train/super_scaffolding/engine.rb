@@ -7,7 +7,7 @@ module BulletTrain
         BulletTrain::SuperScaffolding.template_paths << Rails.root.to_s
 
         # Register the base path of this package with the Super Scaffolding engine.
-        BulletTrain::SuperScaffolding.template_paths << File.expand_path('../../../..', __FILE__)
+        BulletTrain::SuperScaffolding.template_paths << File.expand_path("../../../..", __FILE__)
       end
     end
   end

@@ -13,7 +13,7 @@ module BulletTrain
       "crud" => "BulletTrain::SuperScaffolding::Scaffolders::CrudScaffolder",
       "crud-field" => "BulletTrain::SuperScaffolding::Scaffolders::CrudFieldScaffolder",
       "join-model" => "BulletTrain::SuperScaffolding::Scaffolders::JoinModelScaffolder",
-      "oauth-provider" => "BulletTrain::SuperScaffolding::Scaffolders::OauthProviderScaffolder",
+      "oauth-provider" => "BulletTrain::SuperScaffolding::Scaffolders::OauthProviderScaffolder"
     }
 
     class Runner

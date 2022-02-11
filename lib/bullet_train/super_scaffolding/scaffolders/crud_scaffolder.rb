@@ -45,9 +45,7 @@ module BulletTrain
           # get all the attributes.
           attributes = argv[2..-1]
 
-          check_required_options_for_attributes('crud', attributes, child, parent)
-
-          binding.pry
+          check_required_options_for_attributes("crud", attributes, child, parent)
 
           transformer = Scaffolding::Transformer.new(child, parents, @options)
           transformer.scaffold_crud(attributes)
