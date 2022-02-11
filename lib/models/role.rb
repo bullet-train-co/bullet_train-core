@@ -44,6 +44,10 @@ class Role < ActiveYaml::Base
     key
   end
 
+  def to_s
+    key
+  end
+
   def included_by
     Role.includes(self)
   end
