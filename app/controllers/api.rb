@@ -7,8 +7,7 @@
 module Api
   def self.topic
     path = caller.find { |path| path.include?("controllers/api") && !path.include?("app/controllers/api.rb") }
-    path.gsub!(/^#{Rails.root}\/app\/controllers\/api\/v\d+\//, "")
-    path.split("_endpoint.").first
+    path.split(/\/app\/controllers\/api\/v\d+\//).last.split("_endpoint.").first
   end
 
   def self.serializer
