@@ -1,3 +1,3 @@
 class Account::InvitationsController < Account::ApplicationController
-  include Invitations::ControllerBase
+  include Account::Invitations::ControllerBase
 end
