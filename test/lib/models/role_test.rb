@@ -186,7 +186,7 @@ class RoleTest < ActiveSupport::TestCase
     test "it outputs the correct condition hash for a child object" do
       ability_generator = Role::AbilityGenerator.new(@admin_role, "Membership", @admin_user, :memberships, :team)
 
-      assert_equal ({team: {id: [@admin_user.teams.first.id]}}), ability_generator.condition
+      assert_equal ({team_id: [@admin_user.teams.first.id]}), ability_generator.condition
     end
 
     test "when the parent and the model are the same class, the condition hash checks the id attribute directly" do

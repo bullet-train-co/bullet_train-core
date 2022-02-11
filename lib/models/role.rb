@@ -173,7 +173,7 @@ class Role < ActiveYaml::Base
       # In some scenarios this may be quicker, or if the parent model is in a different database shard, it may not even
       # be possible to do the join
       if @model.method_defined?("#{parent_association}_id")
-        @condition = {"#{parent_association}_id" => @parent_ids}
+        @condition = {"#{parent_association}_id".to_sym => @parent_ids}
       else
         @condition = {parent_association => {id: @parent_ids}}
       end
