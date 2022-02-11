@@ -21,17 +21,12 @@ class Role < ActiveYaml::Base
 
   def self.includes(role_or_key)
     role_key = role_or_key.is_a?(Role) ? role_or_key.key : role_or_key
-
     role = Role.find_by_key(role_key)
-
     return Role.all.select(&:assignable?) if role.default?
-
     result = []
-
     all.each do |role|
       result << role if role.includes.include?(role_key)
     end
-
     result
   end
 
@@ -69,20 +64,15 @@ class Role < ActiveYaml::Base
 
   def included_roles
     default_roles = []
-
     default_roles << Role.default unless default?
-
     (default_roles + includes.map { |included_key| Role.find_by_key(included_key) }).uniq.compact
   end
 
   def manageable_by?(role_or_roles)
     return true if default?
-
     roles = role_or_roles.is_a?(Array) ? role_or_roles : [role_or_roles]
-
     roles.each do |role|
       return true if role.manageable_roles.include?(key)
-
       role.included_roles.each do |included_role|
         return true if manageable_by?([included_role])
       end
