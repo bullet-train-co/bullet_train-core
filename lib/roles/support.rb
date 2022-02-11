@@ -13,16 +13,13 @@ module Roles
 
       def assignable_roles
         return Role.assignable if @allowed_roles.nil?
-
         Role.assignable.select { |role| @allowed_roles.include?(role.key.to_sym) }
       end
 
       # Note default_role is an ActiveRecord core class method so we need to use something else here
       def default_roles
         default_role = Role.default
-
         return [default_role] if @allowed_roles.nil?
-
         @allowed_roles.include?(default_role.key.to_sym) ? [default_role] : []
       end
     end
