@@ -3,6 +3,6 @@ require "bullet_train/api/engine"
 
 module BulletTrain
   module Api
-    # Your code goes here...
+    mattr_accessor :endpoints, default: []
   end
 end

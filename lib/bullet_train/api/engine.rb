@@ -11,6 +11,12 @@ require "rack/cors"
 module BulletTrain
   module Api
     class Engine < ::Rails::Engine
+      initializer "bullet_train.api.register_api_endpoints" do |app|
+        if BulletTrain::Api
+          BulletTrain::Api.endpoints << "Api::V1::MeEndpoint"
+          BulletTrain::Api.endpoints << "Api::V1::TeamsEndpoint"
+        end
+      end
     end
   end
 end
