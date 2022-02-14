@@ -2,7 +2,6 @@ module Api::V1::Base
   extend ActiveSupport::Concern
 
   included do
-    include Api::V1::Base
     include Api::V1::Defaults
     include Api::V1::LoadsAndAuthorizesApiResource
 

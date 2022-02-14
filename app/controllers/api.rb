@@ -6,8 +6,12 @@
 
 module Api
   def self.topic
-    path = caller.find { |path| path.include?("controllers/api") && !path.include?("app/controllers/api.rb") }
-    path.split(/\/app\/controllers\/api\/v\d+\//).last.split("_endpoint.").first
+    path = caller.find { |path| (path.include?("controllers/api") || path.include?("app/controllers/concerns/api")) && !path.include?("app/controllers/api.rb") && !path.include?("app/controllers/api/v1/root.rb") && !path.include?("app/controllers/api/base.rb") }
+    if path.include?("controllers/api")
+      path.split(/\/app\/controllers\/api\/v\d+\//).last.split("_endpoint.").first
+    elsif path.include?("app/controllers/concerns/api")
+      path.split(/\/app\/controllers\/concerns\/api\/v\d+\//).last.split("/endpoint_base.").first
+    end
   end
 
   def self.serializer
