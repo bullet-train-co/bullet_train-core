@@ -276,7 +276,7 @@ class Scaffolding::Transformer
     begin
       target_file_content = File.read(transformed_file_name)
     rescue Errno::ENOENT => _
-      puts "Couldn't find '#{transformed_file_name}'".red unless suppress_could_not_find
+      puts "Couldn't find '#{transformed_file_name}'".red unless (suppress_could_not_find || options[:suppress_could_not_find])
       return false
     end
 
@@ -756,7 +756,6 @@ class Scaffolding::Transformer
         end
 
         # field on the form.
-        file_name = "./app/views/account/scaffolding/completely_concrete/tangible_things/_form.html.erb"
         field_attributes = {method: ":#{name}"}
         field_options = {}
 
@@ -800,7 +799,12 @@ class Scaffolding::Transformer
         end
 
         field_content = "<%= render 'shared/fields/#{type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"
-        scaffold_add_line_to_file(file_name, field_content, ERB_NEW_FIELDS_HOOK, prepend: true)
+
+        # TODO Add more of these from other packages?
+        is_core_model = ["Team", "User", "Membership"].include?(child)
+
+        scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_form.html.erb", field_content, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: is_core_model)
+        scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_fields.html.erb", field_content, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: !is_core_model)
       end
 
       #
@@ -1001,12 +1005,8 @@ class Scaffolding::Transformer
 
         # TODO The serializers can't handle these `has_rich_text` attributes.
         unless type == "trix_editor"
-          [
-            "./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder",
-            "./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb"
-          ].each do |file|
-            scaffold_add_line_to_file(file, ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
-          end
+          scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
+          scaffold_add_line_to_file("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
 
           assertion = if type == "date_field"
             "assert_equal Date.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
