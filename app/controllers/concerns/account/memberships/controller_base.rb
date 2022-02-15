@@ -3,8 +3,8 @@ module Account::Memberships::ControllerBase
 
   included do
     account_load_and_authorize_resource :membership, :team,
-      member_actions: [:demote, :promote, :reinvite].merge(defined?(MEMBER_ACTIONS) ? MEMBER_ACTIONS : []),
-      collection_actions: [:search].merge(defined?(COLLECTION_ACTIONS) ? COLLECTION_ACTIONS : [])
+      member_actions: [:demote, :promote, :reinvite] + (defined?(MEMBER_ACTIONS) ? MEMBER_ACTIONS : []),
+      collection_actions: [:search] + (defined?(COLLECTION_ACTIONS) ? COLLECTION_ACTIONS : [])
   end
 
   def index

@@ -77,7 +77,7 @@ en:
     teams: *teams
   activerecord:
     attributes:
-      user:
+      team:
         name: *name
         time_zone: *time_zone
         locale: *locale
