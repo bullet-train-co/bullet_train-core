@@ -57,19 +57,22 @@ module Account::Users::ControllerBase
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     # TODO enforce permissions on updating the user's team name.
-    params.require(:user).permit(
-      :email,
-      :first_name,
-      :last_name,
-      :time_zone,
-      :current_password,
-      :password,
-      :password_confirmation,
-      :profile_photo_id,
-      :locale,
-      *permitted_fields,
-      current_team_attributes: [:name],
-      *permitted_arrays,
+    strong_params = params.require(:user).permit(
+      *([
+        :email,
+        :first_name,
+        :last_name,
+        :time_zone,
+        :current_password,
+        :password,
+        :password_confirmation,
+        :profile_photo_id,
+        :locale,
+      ] + permitted_fields + [
+        {
+          current_team_attributes: [:name]
+        }.merge(permitted_arrays)
+      ])
     )
 
     process_params(strong_params)

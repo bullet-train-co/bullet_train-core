@@ -155,7 +155,6 @@ module Account::Invitations::ControllerBase
 
     end
 
-
     strong_params
   end
 end
