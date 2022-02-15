@@ -2,7 +2,9 @@ module Account::Teams::ControllerBase
   extend ActiveSupport::Concern
 
   included do
-    load_and_authorize_resource :team, class: "Team", prepend: true
+    load_and_authorize_resource :team, class: "Team", prepend: true,
+      member_actions: (defined?(MEMBER_ACTIONS) ? MEMBER_ACTIONS : []),
+      collection_actions: (defined?(COLLECTION_ACTIONS) ? COLLECTION_ACTIONS : [])
 
     prepend_before_action do
       if params["action"] == "new"
@@ -111,16 +113,28 @@ module Account::Teams::ControllerBase
 
   private
 
+  def permitted_fields
+    raise "It looks like you've removed `permitted_fields` from your controller. This will break Super Scaffolding."
+  end
+
+  def permitted_arrays
+    raise "It looks like you've removed `permitted_arrays` from your controller. This will break Super Scaffolding."
+  end
+
+  def process_params(strong_params)
+    raise "It looks like you've removed `process_params` from your controller. This will break Super Scaffolding."
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def team_params
-    params.require(:team).permit(
-      :name,
+    strong_params = params.require(:team).permit(
+      # :name,
       :time_zone,
       :locale,
-      # 🚅 super scaffolding will insert new fields above this line.
-      # 🚅 super scaffolding will insert new arrays above this line.
+      *permitted_fields,
+      *permitted_arrays,
     )
 
-    # 🚅 super scaffolding will insert processing for new fields above this line.
+    process_params(strong_params)
   end
 end

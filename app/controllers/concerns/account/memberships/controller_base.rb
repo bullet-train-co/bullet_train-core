@@ -2,7 +2,9 @@ module Account::Memberships::ControllerBase
   extend ActiveSupport::Concern
 
   included do
-    account_load_and_authorize_resource :membership, :team, member_actions: [:demote, :promote, :reinvite], collection_actions: [:search]
+    account_load_and_authorize_resource :membership, :team,
+      member_actions: [:demote, :promote, :reinvite].merge(defined?(MEMBER_ACTIONS) ? MEMBER_ACTIONS : []),
+      collection_actions: [:search].merge(defined?(COLLECTION_ACTIONS) ? COLLECTION_ACTIONS : [])
   end
 
   def index
@@ -104,8 +106,8 @@ module Account::Memberships::ControllerBase
       :user_first_name,
       :user_last_name,
       :user_profile_photo_id,
-      # 🚅 super scaffolding will insert new fields above this line.
-      # 🚅 super scaffolding will insert new arrays above this line.
+      *permitted_fields,
+      *permitted_arrays,
     )
 
     # after that, we have to be more careful how we update the roles.
@@ -131,6 +133,6 @@ module Account::Memberships::ControllerBase
 
     # 🚅 super scaffolding will insert processing for new fields above this line.
 
-    strong_params
+    process_params(strong_params)
   end
 end

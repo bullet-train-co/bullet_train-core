@@ -112,6 +112,18 @@ module Account::Invitations::ControllerBase
 
   private
 
+  def permitted_fields
+    raise "It looks like you've removed `permitted_fields` from your controller. This will break Super Scaffolding."
+  end
+
+  def permitted_arrays
+    raise "It looks like you've removed `permitted_arrays` from your controller. This will break Super Scaffolding."
+  end
+
+  def process_params(strong_params)
+    raise "It looks like you've removed `process_params` from your controller. This will break Super Scaffolding."
+  end
+
   def manageable_role_keys
     helpers.current_membership.manageable_roles.map(&:key)
   end
@@ -143,7 +155,6 @@ module Account::Invitations::ControllerBase
 
     end
 
-    # 🚅 super scaffolding will insert processing for new fields above this line.
 
     strong_params
   end

@@ -2,7 +2,9 @@ module Account::Users::ControllerBase
   extend ActiveSupport::Concern
 
   included do
-    load_and_authorize_resource
+    load_and_authorize_resource :user, class: "User", prepend: true,
+      member_actions: (defined?(MEMBER_ACTIONS) ? MEMBER_ACTIONS : []),
+      collection_actions: (defined?(COLLECTION_ACTIONS) ? COLLECTION_ACTIONS : [])
 
     before_action do
       # for magic locales.
@@ -40,6 +42,18 @@ module Account::Users::ControllerBase
 
   private
 
+  def permitted_fields
+    raise "It looks like you've removed `permitted_fields` from your controller. This will break Super Scaffolding."
+  end
+
+  def permitted_arrays
+    raise "It looks like you've removed `permitted_arrays` from your controller. This will break Super Scaffolding."
+  end
+
+  def process_params(strong_params)
+    raise "It looks like you've removed `process_params` from your controller. This will break Super Scaffolding."
+  end
+
   # Never trust parameters from the scary internet, only allow the white list through.
   def user_params
     # TODO enforce permissions on updating the user's team name.
@@ -53,11 +67,11 @@ module Account::Users::ControllerBase
       :password_confirmation,
       :profile_photo_id,
       :locale,
-      # 🚅 super scaffolding will insert new fields above this line.
+      *permitted_fields,
       current_team_attributes: [:name],
-      # 🚅 super scaffolding will insert new arrays above this line.
+      *permitted_arrays,
     )
 
-    # 🚅 super scaffolding will insert processing for new fields above this line.
+    process_params(strong_params)
   end
 end

@@ -12,6 +12,7 @@
       <%= render 'shared/fields/buttons', method: :locale, options: t("locale.locales") %>
     <% end %>
 
+    <%= render "account/teams/fields", team: team, form: form %>
     <%# 🚅 super scaffolding will insert new fields above this line. %>
   <% end %>
 
