@@ -1,5 +1,3 @@
-require "bullet_train/themes/base"
-
 module BulletTrain
   module Themes
     module TailwindCss
