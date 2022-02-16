@@ -32,4 +32,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "kaminari"
   spec.add_dependency "api-pagination"
   spec.add_dependency "rack-cors"
+  spec.add_dependency "jsonapi-serializer"
 end
