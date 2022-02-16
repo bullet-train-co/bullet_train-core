@@ -9,6 +9,13 @@ module BulletTrain
         # Register the base path of this package with the Super Scaffolding engine.
         BulletTrain::SuperScaffolding.template_paths << File.expand_path("../../../..", __FILE__)
       end
+
+      initializer "bullet_train.super_scaffolding.templates.register_api_endpoints" do |app|
+        if BulletTrain::Api
+          BulletTrain::Api.endpoints << "Api::V1::Scaffolding::AbsolutelyAbstract::CreativeConceptsEndpoint"
+          BulletTrain::Api.endpoints << "Api::V1::Scaffolding::CompletelyConcrete::TangibleThingsEndpoint"
+        end
+      end
     end
   end
 end
