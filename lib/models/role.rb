@@ -89,9 +89,9 @@ class Role < ActiveYaml::Base
     !default?
   end
 
-  def ability_generator(user, through, parent)
+  def ability_generator(user, through, parent, intermediary)
     models.each do |model_name, _|
-      ag = AbilityGenerator.new(self, model_name, user, through, parent)
+      ag = AbilityGenerator.new(self, model_name, user, through, parent, intermediary)
       yield(ag)
     end
   end
@@ -125,7 +125,7 @@ class Role < ActiveYaml::Base
   class AbilityGenerator
     attr_reader :model
 
-    def initialize(role, model_name, user, through, parent_name)
+    def initialize(role, model_name, user, through, parent_name, intermediary = nil)
       begin
         @model = model_name.constantize
       rescue NameError
@@ -137,6 +137,7 @@ class Role < ActiveYaml::Base
       @through = through
       @parent = user.send(through).reflect_on_association(parent_name)&.klass
       @parent_ids = user.parent_ids_for(@role, @through, parent_name) if @parent
+      @intermediary = intermediary
     end
 
     def valid?
@@ -172,8 +173,11 @@ class Role < ActiveYaml::Base
       # If possible, use the team_id attribute because it saves us having to join all the way back to the sorce parent model
       # In some scenarios this may be quicker, or if the parent model is in a different database shard, it may not even
       # be possible to do the join
-      if @model.method_defined?("#{parent_association}_id")
-        @condition = {"#{parent_association}_id".to_sym => @parent_ids}
+      parent_with_id = "#{parent_association}_id"
+      if @model.column_names.include?(parent_with_id)
+        @condition = { parent_with_id.to_sym => @parent_ids }
+      elsif @model.method_defined?(parent_with_id) && @intermediary.present?
+        @condition = {@intermediary.to_sym => {parent_with_id.to_sym => @parent_ids}}
       else
         @condition = {parent_association => {id: @parent_ids}}
       end
