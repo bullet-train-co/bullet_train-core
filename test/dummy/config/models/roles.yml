@@ -5,6 +5,10 @@ default:
       - read
       - search
 
+crud_role:
+  models:
+    Team: crud
+
 editor:
   models:
     Scaffolding::AbsolutelyAbstract::CreativeConcept:

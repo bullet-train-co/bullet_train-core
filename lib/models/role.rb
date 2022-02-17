@@ -145,9 +145,16 @@ class Role < ActiveYaml::Base
 
     def actions
       return @actions if @actions
-      actions = (@ability_data["actions"] if @ability_data.is_a?(Hash)) || @ability_data
-      actions = [actions] unless actions.is_a?(Array)
-      @actions = actions.map!(&:to_sym)
+      @actions = (@ability_data["actions"] if @ability_data.is_a?(Hash)) || @ability_data
+      # crud is a special value that we substitute for the 4 crud actions
+      # This is instead of :manage which covers all 4 actions _and_ any extra actions the controller may respond to
+      @actions = crud_actions if @actions.to_s.downcase == "crud"
+      @actions = [actions] unless actions.is_a?(Array)
+      @actions.map!(&:to_sym)
+    end
+
+    def crud_actions
+      [:create, :read, :update, :destroy]
     end
 
     def possible_parent_associations

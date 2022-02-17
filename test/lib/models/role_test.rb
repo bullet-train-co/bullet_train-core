@@ -159,6 +159,12 @@ class RoleTest < ActiveSupport::TestCase
       assert_equal @ability_generator.actions, [:manage]
     end
 
+    test "It outputs the correct actions when passed in crud" do
+      ability_generator = Role::AbilityGenerator.new(Role.find_by_key("crud_role"), "Team", @admin_user, :memberships, :team)
+      expected_output = %i[create read update destroy]
+      assert_empty expected_output - ability_generator.actions
+    end
+
     test "it outputs the correct actions when given an array" do
       # Find a role with an array for the permissions
       role = nil

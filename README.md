@@ -68,7 +68,7 @@ editor:
   manageable_roles:
     - editor
   models:
-    Project: manage
+    Project: crud
 
 billing:
   manageable_roles:
@@ -98,7 +98,8 @@ The following things are true given the example configuration above:
  - By default, users on a team are read-only participants.
  - Users with the `editor` role:
    - can give other users the `editor` role.
-   - can modify project details.
+   - can perform crud actions on project (create, read, update and destroy).
+   - cannot perform any custom controller actions the projects controller responds to
  - Users with the `billing` role:
    - can give other users the `billing` role.
    - can create and update billing subscriptions.
