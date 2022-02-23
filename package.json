@@ -2,8 +2,9 @@
   "name": "@bullet-train/bullet-train",
   "version": "0.0.1",
   "description": "Bullet Train - Main JavaScript",
+  "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/bullet-train.esm.js",
-  "main": "app/javascript/index.js",
+  "main": "app/assets/javascripts/bullet-train.js",
   "files": [
     "app/assets/javascripts/*.js",
     "app/assets/javascripts/*.js.map"
