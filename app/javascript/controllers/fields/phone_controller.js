@@ -1,5 +1,5 @@
 import { Controller } from "stimulus"
-import 'intl-tel-input/build/css/intlTelInput.css';
+require("intl-tel-input/build/css/intlTelInput.css");
 import intlTelInput from 'intl-tel-input';
 
 export default class extends Controller {
@@ -14,13 +14,18 @@ export default class extends Controller {
   }
 
   initPluginInstance() {
-    this.plugin = intlTelInput(this.fieldTarget, {
+    let options = {
       hiddenInput: this.fieldTarget.dataset.method,
-      // See `config/webpack/environment.js` for where we copy this into place.
-      // TODO Wish we could somehow incorporate webpacker's cache-breaking hash into this. Anyone know how?
-      utilsScript: "/assets/intl-tel-input/utils.js",
       customContainer: "w-full"
-    });
+    }
+
+    // TODO: add instructions on how to copy this asset into the application's assets path and write the meta tag into the head (via the engine?)
+    const utilsScriptPath = metaContent("intl_tel_input_utils_path")
+    if (utilsScriptPath) {
+      options['utilsScript'] = utilsScriptPath
+    }
+
+    this.plugin = intlTelInput(this.fieldTarget, options);
   }
 
   teardownPluginInstance() {
@@ -29,4 +34,9 @@ export default class extends Controller {
     // revert to original markup, remove any event listeners
     this.plugin.destroy()
   }
+}
+
+function metaContent (name) {
+  const element = document.head.querySelector(`meta[name="${name}"]`)
+  return element && element.content
 }
