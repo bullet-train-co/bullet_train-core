@@ -1,0 +1,10 @@
+{
+  "name": "@bullet-train/bullet-train",
+  "version": "0.0.1",
+  "description": "Bullet Train - Main JavaScript",
+  "main": "app/javascript/index.js",
+  "repository": "https://github.com/bullet-train-co/bullet_train",
+  "author": "Andrew Culver <andrew.culver@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
