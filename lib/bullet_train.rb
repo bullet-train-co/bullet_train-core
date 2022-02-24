@@ -9,4 +9,5 @@ require "bullet_train/scope_validator"
 
 module BulletTrain
   mattr_accessor :routing_concerns, default: []
+  mattr_accessor :linked_gems, default: []
 end
