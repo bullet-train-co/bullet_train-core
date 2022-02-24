@@ -16,6 +16,10 @@ module BulletTrain
           BulletTrain::Api.endpoints << "Api::V1::Scaffolding::CompletelyConcrete::TangibleThingsEndpoint"
         end
       end
+
+      initializer "bullet_train.super_scaffolding.register" do |app|
+        BulletTrain.linked_gems << "bullet_train-super_scaffolding"
+      end
     end
   end
 end
