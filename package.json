@@ -1,0 +1,10 @@
+{
+  "name": "@bullet-train/bullet-train-sortable",
+  "version": "0.0.1",
+  "description": "Bullet Train - Sortable",
+  "main": "app/javascript/index.js",
+  "repository": "https://github.com/bullet-train-co/bullet_train-sortable",
+  "author": "Andrew Culver <andrew.culver@gmail.com>",
+  "license": "MIT",
+  "private": false
+}
