@@ -22,6 +22,7 @@
     "bullet train"
   ],
   "author": "Andrew Culver <andrew.culver@gmail.com>",
+  "homepage": "https://bullettrain.co/",
   "license": "MIT",
   "devDependencies": {
     "@babel/core": "^7.13.16",
