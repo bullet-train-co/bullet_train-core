@@ -6,5 +6,8 @@
   "repository": "https://github.com/bullet-train-co/bullet_train-sortable",
   "author": "Andrew Culver <andrew.culver@gmail.com>",
   "license": "MIT",
-  "private": false
+  "private": false,
+  "dependencies": {
+    "dragula": "^3.7.3"
+  }
 }
