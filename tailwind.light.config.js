@@ -6,7 +6,11 @@ module.exports = {
     './app/views/**/*.html.erb',
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
-    './app/javascript/**/*.js'
+    './app/javascript/**/*.js',
+    './tmp/gems/*/app/views/**/*.html.erb',
+    './tmp/gems/*/app/helpers/**/*.rb',
+    './tmp/gems/*/app/assets/stylesheets/**/*.css',
+    './tmp/gems/*/app/javascript/**/*.js',
   ],
   darkMode: 'media',
   theme: {
