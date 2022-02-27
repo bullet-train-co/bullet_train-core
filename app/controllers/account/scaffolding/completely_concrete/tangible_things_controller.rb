@@ -70,7 +70,6 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
       :boolean_button_value,
       :button_value,
       :color_picker_value,
-      :ckeditor_value,
       :cloudinary_image_value,
       :date_field_value,
       :date_and_time_field_value,

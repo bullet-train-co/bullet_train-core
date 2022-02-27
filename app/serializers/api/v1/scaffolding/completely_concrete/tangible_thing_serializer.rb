@@ -20,7 +20,6 @@ class Api::V1::Scaffolding::CompletelyConcrete::TangibleThingSerializer < Api::V
     # :multiple_super_select_values,
     # :text_area_value,
     # :action_text_value,
-    # :ckeditor_value,
     # 🚅 stop any skipping we're doing now.
     # 🚅 super scaffolding will insert new fields above this line.
     :created_at,

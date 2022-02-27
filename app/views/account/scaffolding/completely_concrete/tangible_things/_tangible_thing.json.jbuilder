@@ -15,7 +15,6 @@ json.extract! tangible_thing,
   :super_select_value,
   :text_area_value,
   :action_text_value,
-  :ckeditor_value,
   # 🚅 stop any skipping we're doing now.
   # 🚅 super scaffolding will insert new fields above this line.
   :created_at,

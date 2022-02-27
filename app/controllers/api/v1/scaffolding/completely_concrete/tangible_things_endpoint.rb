@@ -22,7 +22,6 @@ class Api::V1::Scaffolding::CompletelyConcrete::TangibleThingsEndpoint < Api::V1
       optional :super_select_value, type: String, allow_blank: true, desc: Api.heading(:super_select_value)
       optional :text_area_value, type: String, allow_blank: true, desc: Api.heading(:text_area_value)
       optional :action_text_value, type: String, allow_blank: true, desc: Api.heading(:action_text_value)
-      optional :ckeditor_value, type: String, allow_blank: true, desc: Api.heading(:ckeditor_value)
       # 🚅 stop any skipping we're doing now.
       # 🚅 super scaffolding will insert new fields above this line.
       # 🚅 skip this section when scaffolding.
