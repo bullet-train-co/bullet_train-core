@@ -1,2 +1,2 @@
-require("concerns");
+require("./concerns");
 //# sourceMappingURL=bullet-train.modern.js.map

@@ -1,1 +1,1 @@
-{"version":3,"file":"bullet-train.esm.js","sources":["../../javascript/index.js"],"sourcesContent":["require(\"concerns\")"],"names":["require"],"mappings":"AAAAA,QAAQ"}
+{"version":3,"file":"bullet-train.esm.js","sources":["../../javascript/index.js"],"sourcesContent":["require(\"./concerns\")"],"names":["require"],"mappings":"AAAAA,QAAQ"}

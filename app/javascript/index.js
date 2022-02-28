@@ -1,1 +1,1 @@
-require("concerns")
+require("./concerns")
