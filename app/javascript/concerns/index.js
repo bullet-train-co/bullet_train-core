@@ -1,2 +1,2 @@
-require("./sortable")
-require("./reassignable")
+import "./sortable"
+import "./reassignable"

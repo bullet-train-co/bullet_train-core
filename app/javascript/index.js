@@ -1,1 +1,1 @@
-require("./concerns")
+import "./concerns"
