@@ -1,5 +1,5 @@
-$(document).on('turbo:load', function() {
+document.addEventListener("turbo:load", () => {
   if (navigator.userAgent.toLocaleLowerCase().includes('electron')) {
-    $('body').addClass('electron')
+    document.body.classList.add('electron')
   }
 })
