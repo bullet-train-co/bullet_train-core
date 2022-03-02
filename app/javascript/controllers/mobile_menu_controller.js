@@ -17,8 +17,8 @@ export default class extends Controller {
     this.wrapperTarget.dispatchEvent(new CustomEvent(eventName))
   }
   
-  isWrapperHidden() {
-    this.wrapperTarget.classList.has(this.hiddenClass)
+  get isWrapperHidden() {
+    return this.wrapperTarget.classList.contains(this.hiddenClass)
   }
   
   showWrapper() {
