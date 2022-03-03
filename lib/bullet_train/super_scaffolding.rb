@@ -1,5 +1,6 @@
 require "bullet_train/super_scaffolding/version"
 require "bullet_train/super_scaffolding/engine"
+require "bullet_train/super_scaffolding/exceptions"
 require "bullet_train/super_scaffolding/scaffolder"
 require "bullet_train/super_scaffolding/scaffolders/crud_scaffolder"
 require "bullet_train/super_scaffolding/scaffolders/crud_field_scaffolder"

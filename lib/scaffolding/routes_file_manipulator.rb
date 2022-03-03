@@ -270,7 +270,7 @@ class Scaffolding::RoutesFileManipulator
         lines[resource_line_number].gsub!("\n", " do\n")
         insert_after(["end"], resource_line_number)
       else
-        raise "the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`."
+        raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
       end
     end
 
