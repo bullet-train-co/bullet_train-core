@@ -172,7 +172,9 @@ class Role < ActiveYaml::Base
       # If possible, use the team_id attribute because it saves us having to join all the way back to the sorce parent model
       # In some scenarios this may be quicker, or if the parent model is in a different database shard, it may not even
       # be possible to do the join
-      if @model.method_defined?("#{parent_association}_id")
+      # using method_defined? will break with ActiveRecord 7 because now models have team_id defined if they include
+      # has_one :team, through: :membership
+      if @model.column_names.include?("#{parent_association}_id")
         @condition = {"#{parent_association}_id".to_sym => @parent_ids}
       else
         @condition = {parent_association => {id: @parent_ids}}

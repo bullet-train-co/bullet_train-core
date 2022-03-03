@@ -1,6 +1,7 @@
 default:
   models:
     Team: read
+    Document: read
     Membership:
       - read
       - search
@@ -20,5 +21,6 @@ admin:
   models:
     Team: manage
     Membership: manage
+    Document: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator: manage
