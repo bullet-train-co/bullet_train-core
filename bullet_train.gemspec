@@ -35,7 +35,6 @@ Gem::Specification.new do |spec|
   # spec.add_dependency "rqrcode"
 
   spec.add_dependency "cancancan"
-  spec.add_dependency "doorkeeper"
 
   # We use this to add "'s" as appropriate in certain headings.
   spec.add_dependency "possessive"

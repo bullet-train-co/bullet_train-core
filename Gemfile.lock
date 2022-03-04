@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train (1.0.23)
+    bullet_train (1.0.24)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -12,7 +12,6 @@ PATH
       cancancan
       commonmarker
       devise
-      doorkeeper
       extended_email_reply_parser
       fastimage
       figaro
@@ -101,12 +100,15 @@ GEM
     addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     awesome_print (1.9.2)
+    aws_cf_signer (0.1.3)
     bcrypt (3.1.16)
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.0.3)
-      rails (>= 7.0.0)
+    bullet_train-fields (1.0.4)
+      cloudinary
+      phonelib
+      rails (>= 6.0.0)
     bullet_train-has_uuid (1.0.2)
       rails (>= 7.0.0)
     bullet_train-roles (0.1.6)
@@ -121,6 +123,9 @@ GEM
       thread-local (>= 1.1.0)
     cancancan (3.3.0)
     charlock_holmes (0.7.7)
+    cloudinary (1.22.0)
+      aws_cf_signer
+      rest-client (>= 2.0.0)
     coderay (1.1.3)
     commonmarker (0.23.4)
     concurrent-ruby (1.1.9)
@@ -136,8 +141,8 @@ GEM
       responders
       warden (~> 1.2.3)
     digest (3.1.0)
-    doorkeeper (5.5.4)
-      railties (>= 5)
+    domain_name (0.5.20190701)
+      unf (>= 0.0.5, < 1.0.0)
     email_reply_parser (0.5.10)
     erubi (1.10.0)
     extended_email_reply_parser (0.5.1)
@@ -152,6 +157,9 @@ GEM
       activesupport (>= 5.0)
     hiredis (0.6.3)
     htmlentities (4.3.4)
+    http-accept (1.7.0)
+    http-cookie (1.0.4)
+      domain_name (~> 0.5)
     http_accept_language (2.1.1)
     i18n (1.10.0)
       concurrent-ruby (~> 1.0)
@@ -166,6 +174,9 @@ GEM
     microscope (1.1.1)
       activerecord (>= 4.1.0)
       activesupport (>= 4.1.0)
+    mime-types (3.4.1)
+      mime-types-data (~> 3.2015)
+    mime-types-data (3.2022.0105)
     mini_mime (1.1.2)
     mini_portile2 (2.8.0)
     minitest (5.15.0)
@@ -184,6 +195,7 @@ GEM
       digest
       net-protocol
       timeout
+    netrc (0.11.0)
     nice_partials (0.1.6)
       actionview (>= 4.2.6)
     nio4r (2.5.8)
@@ -191,6 +203,7 @@ GEM
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
     orm_adapter (0.5.0)
+    phonelib (0.6.57)
     possessive (1.0.1)
     premailer (1.15.0)
       addressable
@@ -241,6 +254,11 @@ GEM
     responders (3.0.1)
       actionpack (>= 5.0)
       railties (>= 5.0)
+    rest-client (2.1.0)
+      http-accept (>= 1.7.0, < 2.0)
+      http-cookie (>= 1.0.2, < 2.0)
+      mime-types (>= 1.16, < 4.0)
+      netrc (~> 0.8)
     sidekiq (6.4.1)
       connection_pool (>= 2.2.2)
       rack (~> 2.0)
