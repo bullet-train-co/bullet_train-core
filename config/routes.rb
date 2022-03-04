@@ -1,6 +1,19 @@
 Rails.application.routes.draw do
+  scope module: "public" do
+    root to: "home#index"
+    get "invitation" => "home#invitation", :as => "invitation"
+
+    if Rails.env.production? ? ENV["ENABLE_DOCS"].present? : true
+      get "docs", to: "home#docs"
+      get "docs/*page", to: "home#docs"
+    end
+  end
+
   namespace :account do
     shallow do
+      # TODO we need to either implement a dashboard or deprecate this.
+      root to: "dashboard#index", as: "dashboard"
+
       resource :two_factor, only: [:create, :destroy]
 
       # user-level onboarding tasks.
