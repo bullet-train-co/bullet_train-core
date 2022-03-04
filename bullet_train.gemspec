@@ -22,9 +22,9 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
-  spec.add_dependency "rails", ">= 7.0.0"
+  spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "bullet_train-fields"
-  spec.add_dependency "bullet_train-roles", "0.1.4"
+  spec.add_dependency "bullet_train-roles"
   spec.add_dependency "bullet_train-super_load_and_authorize_resource"
   spec.add_dependency "bullet_train-has_uuid"
   spec.add_dependency "bullet_train-scope_validator"
