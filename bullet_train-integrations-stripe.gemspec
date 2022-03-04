@@ -22,5 +22,12 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
-  spec.add_dependency "rails", ">= 7.0.0"
+  spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "stripe"
+  spec.add_dependency "omniauth"
+  spec.add_dependency "omniauth-stripe-connect"
+
+  # TODO Remove when we're able to properly upgrade Omniauth.
+  # https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284
+  spec.add_dependency "omniauth-rails_csrf_protection"
 end
