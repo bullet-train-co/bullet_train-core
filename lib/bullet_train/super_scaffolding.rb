@@ -7,6 +7,8 @@ require "bullet_train/super_scaffolding/scaffolders/crud_field_scaffolder"
 require "bullet_train/super_scaffolding/scaffolders/join_model_scaffolder"
 require "bullet_train/super_scaffolding/scaffolders/oauth_provider_scaffolder"
 
+require "indefinite_article"
+
 module BulletTrain
   module SuperScaffolding
     mattr_accessor :template_paths, default: []
