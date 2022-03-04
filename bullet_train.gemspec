@@ -28,4 +28,57 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-super_load_and_authorize_resource"
   spec.add_dependency "bullet_train-has_uuid"
   spec.add_dependency "bullet_train-scope_validator"
+  spec.add_dependency "devise"
+
+  # This has been broken since Rails 7.
+  # spec.add_dependency "devise-two-factor"
+  # spec.add_dependency "rqrcode"
+
+  spec.add_dependency "cancancan"
+  spec.add_dependency "doorkeeper"
+
+  # We use this to add "'s" as appropriate in certain headings.
+  spec.add_dependency "possessive"
+
+  # We've standardized on Sidekiq for background job processing.
+  spec.add_dependency "sidekiq"
+
+  # We use this to detect the size of the logo assets.
+  spec.add_dependency "fastimage"
+
+  # We don't want to develop in a world where we don't have `binding.pry` or `object.pry` for debugging.
+  spec.add_dependency "pry"
+  spec.add_dependency "pry-stack_explorer"
+
+  # We don't want to develop in a world where we can't `ap` our objects for a clean presentation of them.
+  spec.add_dependency "awesome_print"
+
+  # Add helpful scopes automatically on booleans and date/time attributes.
+  spec.add_dependency "microscope"
+
+  # Serving language based on browser settings.
+  spec.add_dependency "http_accept_language"
+
+  # Reactive view magic.
+  # The `updates_for` feature replaces Bullet Train's earlier "Cable Collections" feature.
+  spec.add_dependency "cable_ready", "5.0.0.pre8"
+  spec.add_dependency "hiredis"
+
+  # Add named slots to regular Rails partials.
+  spec.add_dependency "nice_partials", "~> 0.1"
+
+  # Inline all CSS for emails.
+  spec.add_dependency "premailer-rails"
+
+  # Define ENV values in `config/application.yml`.
+  spec.add_dependency "figaro"
+
+  # Validate email addresses.
+  spec.add_dependency "valid_email"
+
+  # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
+  spec.add_dependency "commonmarker" # TODO ➡️ `bullet_train-docs`?
+
+  # Extract the body from emails received using action inbox.
+  spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
 end

@@ -12,7 +12,6 @@ module Account::Controllers::Base
     layout "account"
 
     before_action :authenticate_user!
-    before_action :set_paper_trail_whodunnit
     before_action :ensure_onboarding_is_complete_and_set_next_step
   end
 
