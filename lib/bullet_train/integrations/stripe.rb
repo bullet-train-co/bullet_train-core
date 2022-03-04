@@ -7,7 +7,7 @@ require "omniauth-stripe-connect"
 
 # TODO Remove when we're able to properly upgrade Omniauth.
 # https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284
-# require "omniauth-rails_csrf_protection"
+require "omniauth/rails_csrf_protection"
 
 module BulletTrain
   module Integrations
