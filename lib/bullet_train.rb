@@ -1,5 +1,6 @@
 require "bullet_train/version"
 require "bullet_train/engine"
+require "bullet_train/resolver"
 
 require "bullet_train/fields"
 require "bullet_train/roles"

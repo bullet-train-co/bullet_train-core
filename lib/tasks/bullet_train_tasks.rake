@@ -23,4 +23,19 @@ namespace :bullet_train do
       end
     end
   end
+
+  desc "Figure out where something is coming from."
+  task :resolve, [:all_options] => :environment do |t, arguments|
+    ARGV.pop while ARGV.any?
+
+    arguments[:all_options]&.split&.each do |argument|
+      ARGV.push(argument)
+    end
+
+    if ARGV.first.present?
+      BulletTrain::Resolver.new(ARGV.first).run(eject: ARGV.include?("--eject"), open: ARGV.include?("--open"), force: ARGV.include?("--force"))
+    else
+      $stderr.puts "\n🚅 Usage: `bin/resolve [path, partial, or URL] (--eject) (--open)`\n".blue
+    end
+  end
 end
