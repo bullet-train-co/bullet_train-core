@@ -34,15 +34,18 @@ module BulletTrain
               `mkdir -p #{source_file[:project_path].split("/")[0...-1].join("/")}`
               puts "Ejecting `#{source_file[:absolute_path]}` to `#{source_file[:project_path]}`".green
               File.open("#{source_file[:project_path]}", "w+") do |file|
-                file.puts "# Ejected from `#{source_file[:package_name]}`.\n\n"
+                case source_file[:project_path].split(".").last
+                when "rb", "yml"
+                  file.puts "# Ejected from `#{source_file[:package_name]}`.\n\n"
+                when "erb"
+                  file.puts "<% # Ejected from `#{source_file[:package_name]}`. %>\n\n"
+                end
               end
               `cat #{source_file[:absolute_path]} >> #{source_file[:project_path]}`.strip
             end
 
             # Just in case they try to open the file, open it from the new location.
             source_file[:absolute_path] = source_file[:project_path]
-
-            # TODO Do we need to restart the Rails server to pick up the new file?
           else
             puts "This file is already in the local project directory. Skipping ejection.".yellow
             puts ""
@@ -57,8 +60,6 @@ module BulletTrain
       else
         puts "Couldn't resolve `#{@needle}`.".red
       end
-      if open
-      end
     end
 
     def calculate_source_file_details
@@ -68,19 +69,17 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = if class?
-        Object.const_source_location(@needle).first
-      else
-        nil
-      end
+      result[:absolute_path] = class_path || partial_path
 
       if result[:absolute_path]
+        base_path = "bullet_train" + result[:absolute_path].split("/bullet_train").last
+
         # Try to calculate which package the file is from, and what it's path is within that project.
         ["app", "config", "lib"].each do |directory|
           regex = /\/#{directory}\//
-          if result[:absolute_path].match?(regex)
-            project_path = "./#{directory}/#{result[:absolute_path].rpartition(regex).last}"
-            package_name = result[:absolute_path].rpartition(regex).first.split("/").last
+          if base_path.match?(regex)
+            project_path = "./#{directory}/#{base_path.rpartition(regex).last}"
+            package_name = base_path.rpartition(regex).first.split("/").last
             # If the "package name" is actually just the local project directory.
             if package_name == `pwd`.chomp.split("/").last
               package_name = nil
@@ -99,20 +98,22 @@ module BulletTrain
       @needle.match?(/https?:\/\//)
     end
 
-    def class?
+    def class_path
       begin
         @needle.constantize
-        return true
+        return Object.const_source_location(@needle).first
       rescue NameError => _
         return false
       end
-
-      # Literally any class they could want to look at would be namespaced.
-      @needle.match?(/::/)
     end
 
-    def file?
-      @needle.match?(/.rb$/) || @needle.match?(/.erb$/)
+    def partial_path
+      xray_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
+      if xray_path.match(/<!--XRAY START \d+ (.*)-->/)
+        return $1
+      else
+        return nil
+      end
     end
   end
 end
