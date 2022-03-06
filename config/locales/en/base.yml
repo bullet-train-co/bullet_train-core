@@ -30,7 +30,12 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-
+  bullet_train:
+    name: Bullet Train
+    tagline: The Ruby on Rails SaaS Template
+    description: Bullet Train is a Ruby on Rails SaaS-in-a-Box that saves developers weeks of effort.
+    keywords: bullet train ruby on rails saas template starter kit
+    support_email: ask@bullettrain.co
   global:
     or: Or
     more: More
