@@ -35,11 +35,43 @@ module Account::LocaleHelper
   end
 
   def t(key, options = {})
+    # When bundled Ruby gems provide a lot of translations, it can be difficult to figure out which strings in the
+    # application are coming from where. To help with this, you can add `?debug=true` to any URL and we'll output
+    # any rendered strings and their translation keys on the console.
+    unless Rails.env.production?
+      if params[:log_locales] || params[:show_locales]
+        # Often times we're only receiving partial keys like `.section`, so this is a crazy hack to trick I18n.t into
+        # telling us what the full key ended up being.
+        begin
+          super(key + "💣", options.except(:default))
+        rescue I18n::MissingTranslationData => exception
+          full_key = exception.message.rpartition(" ").last.gsub("💣", "")
+        end
+      end
+    end
+
     if account_controller?
-      # give preference to the options they've passed in.
+      # Give preference to the options they've passed in.
       options = models_locales(@child_object, @parent_object).merge(options)
     end
-    super(key, options)
+
+    result = super(key, options)
+
+    unless Rails.env.production?
+      if params[:log_locales]
+        if result == options[:default]
+          puts "🌐 #{full_key}: Not found? Result matched default: \"#{result}\"".yellow
+        else
+          puts "🌐 #{full_key}: \"#{result}\"".green
+        end
+      end
+
+      if params[:show_locales]
+        return full_key
+      end
+    end
+
+    return result
   end
 
   # like 't', but if the key isn't found, it returns nil.
