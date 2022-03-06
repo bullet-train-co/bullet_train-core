@@ -2,6 +2,8 @@ require 'io/wait'
 
 module BulletTrain
   class Resolver
+    include I18n::Backend::Flatten
+
     def initialize(needle)
       @needle = needle
     end
@@ -89,7 +91,7 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = class_path || partial_path || file_path
+      result[:absolute_path] = class_path || partial_path || locale_path || file_path
 
       if result[:absolute_path]
         base_path = "bullet_train" + result[:absolute_path].split("/bullet_train").last
@@ -143,6 +145,23 @@ module BulletTrain
     def file_path
       # We don't have to do anything here... the absolute path is what we're passed, and we just pass it back.
       @needle
+    end
+
+    def locale_path
+      # This is a complete list of translation files provided by this app or any linked Bullet Train packages.
+      (["#{Rails.root.to_s}/config/locales"] + `find ./tmp/gems/*`.lines.map(&:strip).map { |link| File.readlink(link) + "/config/locales" }).each do |locale_source|
+        if File.exist?(locale_source)
+          `find -L #{locale_source} | grep ".yml"`.lines.map(&:strip).each do |file_path|
+            yaml = YAML.load_file(file_path, aliases: true)
+            translations = flatten_translations(nil, yaml, nil, false)
+            if translations[@needle.to_sym].present?
+              return file_path
+            end
+          end
+        end
+      end
+
+      return nil
     end
   end
 end

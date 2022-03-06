@@ -21,7 +21,7 @@ namespace :bullet_train do
       target = `bundle show #{linked_gem}`.chomp
       if target.present?
         puts "Linking '#{linked_gem}' to '#{target}'."
-        puts `ln -s #{target} tmp/gems/#{linked_gem}`
+        `ln -s #{target} tmp/gems/#{linked_gem}`
       end
     end
   end
