@@ -1,3 +1,5 @@
+require 'io/wait'
+
 namespace :bullet_train do
   desc "Symlink registered gems in `./tmp/gems` so their views, etc. can be inspected by Tailwind CSS."
   task :link_gems => :environment do
@@ -32,8 +34,22 @@ namespace :bullet_train do
       ARGV.push(argument)
     end
 
+    if ARGV.include?("--interactive")
+      puts "\nOK, paste what you've got for us and hit <Return>!\n".blue
+
+      input = $stdin.gets.strip
+      $stdin.getc while $stdin.ready?
+
+      # Extract absolute paths from XRAY comments.
+      if input.match(/<!--XRAY START \d+ (.*)-->/)
+        input = $1
+      end
+
+      ARGV.unshift input.strip
+    end
+
     if ARGV.first.present?
-      BulletTrain::Resolver.new(ARGV.first).run(eject: ARGV.include?("--eject"), open: ARGV.include?("--open"), force: ARGV.include?("--force"))
+      BulletTrain::Resolver.new(ARGV.first).run(eject: ARGV.include?("--eject"), open: ARGV.include?("--open"), force: ARGV.include?("--force"), interactive: ARGV.include?("--interactive"))
     else
       $stderr.puts "\n🚅 Usage: `bin/resolve [path, partial, or URL] (--eject) (--open)`\n".blue
     end

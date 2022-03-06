@@ -1,10 +1,12 @@
+require 'io/wait'
+
 module BulletTrain
   class Resolver
     def initialize(needle)
       @needle = needle
     end
 
-    def run(eject: false, open: false, force: false)
+    def run(eject: false, open: false, force: false, interactive: false)
       # Try to figure out what kind of thing they're trying to look up.
       source_file = calculate_source_file_details
 
@@ -24,6 +26,15 @@ module BulletTrain
           puts ""
           puts "Note: If this file was previously ejected from a package, we can no longer see which package it came from. However, it should say at the top of the file where it was ejected from.".yellow
           puts ""
+        end
+
+        if interactive && !eject
+          puts "\nWould you like to eject the file into the local project? (y/n)\n"
+          input = $stdin.gets
+          $stdin.getc while $stdin.ready?
+          if input.first.downcase == 'y'
+            eject = true
+          end
         end
 
         if eject
@@ -52,6 +63,15 @@ module BulletTrain
           end
         end
 
+        if interactive && !open
+          puts "\nWould you like to open `#{source_file[:absolute_path]}`? (y/n)\n"
+          input = $stdin.gets
+          $stdin.getc while $stdin.ready?
+          if input.first.downcase == 'y'
+            open = true
+          end
+        end
+
         if open
           path = source_file[:package_name] ? source_file[:absolute_path] : "#{source_file[:project_path]}"
           puts "Opening `#{path}`.\n".green
@@ -69,7 +89,7 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = class_path || partial_path
+      result[:absolute_path] = class_path || partial_path || file_path
 
       if result[:absolute_path]
         base_path = "bullet_train" + result[:absolute_path].split("/bullet_train").last
@@ -108,12 +128,21 @@ module BulletTrain
     end
 
     def partial_path
-      xray_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
-      if xray_path.match(/<!--XRAY START \d+ (.*)-->/)
-        return $1
-      else
+      begin
+        xray_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
+        if xray_path.match(/<!--XRAY START \d+ (.*)-->/)
+          return $1
+        else
+          raise "It looks like Xray-rails isn't properly enabled?"
+        end
+      rescue ActionView::Template::Error => _
         return nil
       end
+    end
+
+    def file_path
+      # We don't have to do anything here... the absolute path is what we're passed, and we just pass it back.
+      @needle
     end
   end
 end
