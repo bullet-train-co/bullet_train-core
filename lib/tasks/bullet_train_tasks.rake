@@ -1,8 +1,8 @@
 require 'io/wait'
 
-namespace :bullet_train do
+namespace :bt do
   desc "Symlink registered gems in `./tmp/gems` so their views, etc. can be inspected by Tailwind CSS."
-  task :link_gems => :environment do
+  task :link => :environment do
     if Dir.exists?("tmp/gems")
       puts "Removing previously linked gems."
       `rm -f tmp/gems/*`
@@ -25,7 +25,9 @@ namespace :bullet_train do
       end
     end
   end
+end
 
+namespace :bullet_train do
   desc "Figure out where something is coming from."
   task :resolve, [:all_options] => :environment do |t, arguments|
     ARGV.pop while ARGV.any?
