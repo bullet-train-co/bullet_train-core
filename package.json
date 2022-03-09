@@ -1,0 +1,43 @@
+{
+  "name": "@bullet-train/bullet-train",
+  "version": "0.2.3",
+  "description": "Bullet Train - Main JavaScript",
+  "source": "app/javascript/index.js",
+  "module": "app/assets/javascripts/bullet-train.esm.js",
+  "main": "app/assets/javascripts/bullet-train.js",
+  "files": [
+    "app/assets/javascripts/*.js",
+    "app/assets/javascripts/*.js.map"
+  ],
+  "private": false,
+  "repository": "https://github.com/bullet-train-co/bullet_train",
+  "scripts": {
+    "prebuild": "$npm_execpath run clean",
+    "build": "microbundle",
+    "clean": "rimraf app/assets/javascripts",
+    "prerelease": "$npm_execpath run build",
+    "release": "np --any-branch"
+  },
+  "keywords": [
+    "bullet-train",
+    "bullet train"
+  ],
+  "author": "Andrew Culver <andrew.culver@gmail.com>",
+  "homepage": "https://bullettrain.co/",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/core": "^7.13.16",
+    "@babel/plugin-proposal-export-default-from": "^7.16.7",
+    "@babel/plugin-transform-runtime": "^7.13.15",
+    "@babel/preset-env": "^7.13.15",
+    "@babel/runtime": "^7.13.17",
+    "@stimulus/webpack-helpers": "^2.0.0",
+    "babel-loader": "^8.2.2",
+    "microbundle": "^0.13.0",
+    "np": "^7.6.0",
+    "rimraf": "^3.0.2"
+  },
+  "dependencies": {
+    "stimulus": "^2.0.0"
+  }
+}
