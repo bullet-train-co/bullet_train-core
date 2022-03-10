@@ -1347,16 +1347,20 @@ class Scaffolding::Transformer
             $stdin.gets.chomp
             if `which open`.present?
               `open https://themify.me/themify-icons`
-              `open https://fontawesome.com/icons?d=gallery&s=light`
+              if font_awesome?
+                `open https://fontawesome.com/icons?d=gallery&s=light`
+              end
             else
               puts "Sorry! We can't open these URLs automatically on your platform, but you can visit them manually:"
               puts ""
               puts "  https://themify.me/themify-icons"
-              puts "  https://fontawesome.com/icons?d=gallery&s=light"
+              if font_awesome?
+                puts "  https://fontawesome.com/icons?d=gallery&s=light"
+              end
               puts ""
             end
             puts ""
-            puts "Did you find an icon you wanted to use? Enter the full CSS class here (e.g. 'ti ti-world' or 'fal fa-puzzle-piece') or hit enter to just use the puzzle piece:"
+            puts "Did you find an icon you wanted to use? Enter the full CSS class here (e.g. 'ti ti-world'#{" or 'fal fa-puzzle-piece'" if font_awesome?}) or hit enter to just use the puzzle piece:"
             icon_name = $stdin.gets.chomp
             puts ""
             unless icon_name.length > 0 || icon_name.downcase == "y"
