@@ -1356,7 +1356,7 @@ class Scaffolding::Transformer
               puts ""
             end
             puts ""
-            puts "Did you find an icon you wanted to use? Enter the full CSS class here (e.g. 'ti ti-globe' or 'fal fa-puzzle-piece') or hit enter to just use the puzzle piece:"
+            puts "Did you find an icon you wanted to use? Enter the full CSS class here (e.g. 'ti ti-world' or 'fal fa-puzzle-piece') or hit enter to just use the puzzle piece:"
             icon_name = $stdin.gets.chomp
             puts ""
             unless icon_name.length > 0 || icon_name.downcase == "y"
