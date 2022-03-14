@@ -1,63 +1,53 @@
 # Getting Started
 
-This guide specifically covers the process of getting Bullet Train up and running on your local machine so you can start developing your application. If you've just purchased Bullet Train, be sure to see the [overview of first steps as a new Bullet Train customer](https://blog.bullettrain.co/so-youve-bought-bullet-train-whats-next/).
+## Starting a New Project
+To get started with Bullet Train, follow the instructions in our [starter repository](https://github.com/bullet-train-co/bullet_train).
 
-As an optional prerequisite, please read our blog article describing [how and why Bullet Train is distributed the way it is](https://blog.bullettrain.co/how-is-bullet-train-distributed/).
+## Basic Techniques
+If you're using Bullet Train for the first time, once you've got your application up and running locally, start by learning these five techniques:
 
-## 1. Install Dependencies
-Before you can get started with Bullet Train, you must have the following dependencies installed:
+1. Use `rails g model` to create and `bin/super-scaffold` to scaffold a new model:
 
- - Ruby 3.0
- - PostgreSQL 13
- - Redis 6.0
- - Node 16
- - [Chrome](https://www.google.com/search?q=chrome) (for headless browser tests)
+    ```
+    $ rails g model Project team:references name:string
+    $ bin/super-scaffold crud Project Team name:text_field
+    ```
 
-Internally, Bullet Train is developed on macOS and these dependencies (other than Chrome) are installed using [Ruby Version Manager](https://rvm.io/), [Homebrew](https://brew.sh), and [Node Version Manager](https://github.com/nvm-sh/nvm) like so:
+    In this example, `Team` refers to the immediate parent of the `Project` resource. For more details, just run `bin/super-scaffold` or [read the documentation](/docs/super-scaffolding.md).
 
-```
-brew install postgresql
-brew services start postgresql
-brew install redis
-brew services start redis
-nvm install 16
-rvm install ruby-3.1.1
-```
+2. Use `rails g migration` and `bin/super-scaffold` to add a new field to a model you've already scaffolded:
 
-## 2. Clone (Don't Fork) The Repository
-First, [create a new private repository on GitHub](https://github.com/new). (Please be careful that the repository you create is actually private, since otherwise you would be redistributing Bullet Train. 😬)
+    ```
+    $ rails g migration add_description_to_projects description:text
+    $ bin/super-scaffold crud-field Project description:trix_editor
+    ```
 
-Once you have the new repository ready, clone our repository to your local machine.
+    These first two points about Super Scaffolding are just the tip of the iceberg, so be sure to circle around and [read the full documentation](/docs/super-scaffolding.md).
 
-```
-git clone git@github.com:bullet-train-co/bullet-train-tailwind-css.git your-new-app-name
-cd your-new-app-name
-git remote rename origin bullet-train
-git remote add origin git@github.com:your-username/your-new-app-name.git
-git push origin main
-```
+3. Figure out which ERB views are powering something you see in the UI by:
 
-In those steps you've renamed the original Bullet Train repository to be referred to as `bullet-train` and your own repository is now your `origin`. (This means you'll be able to merge in updates from `bullet-train/main`.)
+    - Right clicking the element.
+    - Selecting "Inspect Element".
+    - Looking for the `<!--XRAY START ...-->` comment above the element you've selected.
 
-Using GitHub's "Fork" feature is only for developers when they want to submit a Pull Request to the Bullet Train codebase. It's _not_ the correct way to get started building a new project with Bullet Train.
+4. Figure out the full I18N translation key of any string on the page by adding `?show_locales=true` to the URL.
 
-## 3. Run Bundler and Yarn
-As with any Rails app, you'll need to run `bundle install` and `yarn install`.
+5. Use `bin/resolve` to figure out where framework or theme things are coming from and eject them if you need to customize something locally:
 
-## 4. Name Your Application
-Run `bin/set-name "Whatever Your App Name Is"` to properly configure your database name, session store, and application class name. This tool will spit out some additional instructions as well.
+    ```
+    $ bin/resolve Users::Base
+    $ bin/resolve en.account.teams.show.header --open
+    $ bin/resolve shared/box --open --eject
+    ```
 
-## 5. Set Up Your Database
-Run `rake db:create`, `rake db:migrate`, and `rake db:seed` to get your database into working condition. If you install PostgreSQL the way described above, this should work automatically. If it fails to connect, you'll need to configure your database in whatever way you normally do for Rails development.
+    Also, for inputs that can't be provided on the shell, there's an interactive mode where you can paste them:
 
-## 6. Copy the Local Environment Configuration Template into Place (Required)
-Copy `config/application.yml.example` to `config/application.yml` as a baseline for your local application configuration. Going forward you can edit that file however you need to and it will be ignored by Git.
+    ```
+    $ bin/resolve --interactive --eject --open
+    ```
 
-## 7. Start Sidekiq
-In a terminal, run `bundle exec sidekiq -t 25` and leave it running. Sidekiq will handle executing any background jobs that are delegated by the web server process (which we'll start below).
+    And then paste any input, e.g.:
 
-## 8. Start Webpack Dev Server
-In another terminal, run `bin/webpack-dev-server` and leave it running. This process handles compiling and recompiling any JavaScript and stylesheets.
-
-## 9. Start the Web Server
-Start the server with `rails s` and visit `http://localhost:3000/`. Your application should now be up and running and you can test the sign-up process.
+    ```
+    <!--XRAY START 73 /Users/andrewculver/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/commentary/_box.html.erb-->
+    ```
