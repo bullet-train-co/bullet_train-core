@@ -5,20 +5,20 @@
     <%
     # we're going to use the
     body = Nokogiri::HTML(@body)
-    title = body.css('h1').first.text.presence || t('application.tagline')
+    title = body.css('h1').first.text.presence || t('bullet_train.tagline')
     first_paragraph = body.css('p').first
     preceding_heading = first_paragraph&.xpath("preceding-sibling::h2")
-    description = [preceding_heading&.text, first_paragraph&.text].select(&:present?).join(" — ") || t('application.description')
+    description = [preceding_heading&.text, first_paragraph&.text].select(&:present?).join(" — ") || t('bullet_train.description')
     image_url = "https://avatars.githubusercontent.com/u/5976880?s=280&amp;v=4"
     site_name = "Bullet Train Developer Documentation"
     %>
 
     <% content_for :title do %>
-      <title><%= [site_name, title, t('application.tagline')].select(&:present?).uniq.first(2).reverse.join(' — ') %></title>
+      <title><%= [site_name, title, t('bullet_train.tagline')].select(&:present?).uniq.first(2).reverse.join(' — ') %></title>
     <% end %>
 
     <%= render 'themes/light/layouts/head' %>
-    <meta content="<%= t('application.keywords') %>" name="keywords" />
+    <meta content="<%= t('bullet_train.keywords') %>" name="keywords" />
     <meta content="<%= description.truncate(200) %>" name="description" />
     <meta name="twitter:image:src" content="<%= image_url %>" />
     <meta name="twitter:site" content="@bullettrainco" />

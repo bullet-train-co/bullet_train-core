@@ -2,7 +2,9 @@ module DocumentationSupport
   extend ActiveSupport::Concern
 
   def docs
-    @file = params[:page].presence || "index"
+    target = params[:page].presence || "index"
+    files = `find -L tmp/gems/*/docs | grep \.md`.lines.map(&:chomp).sort
+    @file = files.detect { |file| file.include?(target) }
     render :docs, layout: "docs"
   end
 end
