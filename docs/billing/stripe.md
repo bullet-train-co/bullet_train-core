@@ -2,9 +2,9 @@
 
 Bullet Train provides a base billing package and a Stripe-specific package with support for Stripe Checkout, Stripe Billing's customer portal, and incoming Stripe webhooks.
 
-## 1. Merge the Stripe Billing Branch
+## 1. Add the `bullet_train-billing-stripe` Ruby gem.
 
-You can import both the base billing package and the Stripe package from one branch:
+> TODO Add instructions about subscribing to Bullet Train Pro.
 
 ```
 git merge bullet-train/features/billing-stripe
