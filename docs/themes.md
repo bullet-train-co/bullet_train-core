@@ -7,15 +7,14 @@ Bullet Train has a theme subsystem designed to allow you the flexibility to eith
 To reduce duplication of code across themes, Bullet Train implements an inheritance structure. For example, the official Bullet Train themes are structured hierarchically like so:
 
 - “Base”
-  - “Bootstrap”
-    - “Clean”
-  - “Tailwind”
+  - “Bootstrap” (in the future)
+    - “Clean” (in the future)
+  - “Tailwind CSS”
     - “Light”
-    - “Bold”
 
 Any component partials that can be shared are pushed up the inheritance structure. For example, [Bullet Train's library of field partials](/docs/field-partials.md) provide a good example of this, illustrating the power of the approach we’ve taken here:
 
- - The most general field styling varies substantially between Tailwind CSS and Bootstrap, so a `_field.html.erb` component partial exists in both the foundational “Tailwind” and “Bootstrap” themes, but also a further customized version exists in themes like “Light”.
+ - The most general field styling varies substantially between Tailwind CSS and Bootstrap, so a `_field.html.erb` component partial exists in both the foundational “Tailwind CSS” and “Bootstrap” themes, but also a further customized version exists in themes like “Light”.
  - However, many concrete field types like `_text_field.html.erb` and `_phone_field.html.erb` leverage `_field.html.erb`, and they themselves are completely framework agnostic as a result. These partials can live in the shared “Base” theme.
 
 At run-time, this means:
@@ -34,29 +33,10 @@ To use a theme component, simply include it from "within" `shared` like so:
 
 We say "within" because while a `shared` view partial directory does exist, the referenced `shared/fields/_text_field.html.erb` doesn't actually exist within it. Instead, the theme engine picks up on `shared` and also works its way through the theme directories to find the appropriate match.
 
-### Tools for Indirection
+### Dealing with Indirection
 
-This small bit of indirection does buy us an incredible amount of power in building and extending themes. But indirection also comes at a small cognitive cost. Here are two ways to offset that cost:
+This small piece of indirection buys us an incredible amount of power in building and extending themes, but as with any indirection, it could potentially come at the cost of developer experience. That's why Bullet Train includes additional tools for smoothing over this experience. Be sure to read the section on [dealing with indirection].
 
-#### 1. Xray
-
-We include [Xray](https://github.com/brentd/xray-rails) in Bullet Train by default to ensure it's always crystal clear when viewing the page source where any series of partials are being rendered from. This is an invaluable tool when working with theme component partials.
-
-For example, our earlier example renders the following comments into the page's HTML source in the development environment:
-
-```
-<!--XRAY START 192 .../app/views/themes/base/fields/_text_field.html.erb-->
-<!--XRAY START 191 .../app/views/themes/light/fields/_field.html.erb-->
-...
-<!--XRAY END 191-->
-<!--XRAY END 192-->
-```
-
-This doesn't only help you understand which smaller components a higher-level component is composed of, but it also allows you to quickly identify where in the theme inheritance structure each of those smaller components are being pulled in from.
-
-#### 2. IDE Fuzzy Search
-
-If you don't already, you'll want to use a fuzzy search in your IDE to drill down into `shared` view partials. For example, to drill down into the view partial in the example above, you would search for `fields/text_field`, and choose the appropriate instance of that file from within the themes directory.
 
 ## Theme Configuration
 
@@ -114,11 +94,7 @@ This allows the theme engine to resolve which theme in the inheritance chain to 
 
  - It might come from the “Light” theme today, but if you switch to the “Bold” theme later, it’ll can start pulling it from there.
  - If you start extending “Light”, you can override its `box` implementation and your application will pick up the new customized version from your theme automatically.
- - If (hypothetically) `box` became generalized and move into the parent “Tailwind” theme, your application would pick it up from the appropriate place.
-
-### Avoid modifying the stock templates.
-
-It's not the end of the world if you do, but it sets you up for merge conflicts down the road. It's better if you go through the steps above to create your own theme that extends the theme you're primarily using.
+ - If (hypothetically) `box` became generalized and move into the parent “Tailwind CSS” theme, your application would pick it up from the appropriate place.
 
 ### Let your designer name their theme.
 
