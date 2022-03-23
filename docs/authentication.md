@@ -1,25 +1,13 @@
 # Authentication
 Bullet Train uses [Devise](https://github.com/heartcombo/devise) for authentication and we've done the work of making the related views look pretty and well-integrated with the look-and-feel of the application template.
 
-## Related Files
+## Customizing Controllers
+Bullet Train registers its own slightly customized registration and session controllers for Devise. If you want to customize them further, you can simply eject those controllers from the framework and override them locally, like so:
 
-Devise is very well documented elsewhere, so we'll simply direct you to the places where it lives and is integrated in a Bullet Train application.
+```
+$ bin/resolve RegistrationsController --eject --open
+$ bin/resolve SessionsController --eject --open
+```
 
-### Configuration
- - `config/initializers/devise.rb`
- - `devise_for :users` in `config/routes.rb`
-
-### Customized Controllers
- - `app/controllers/registrations_controller.rb`
-   - We've added some additional functionality to the registrations controller in support of Bullet Train's invitation system and invitation-only sign-up system.
-
-### Views
- - Surrounding layout: `app/views/layouts/devise.html.erb`
- - Sign-in form: `app/views/devise/sessions/new.html.erb`
- - Sign-up form: `app/views/devise/registrations/new.html.erb`
- - Forgot password form: `app/views/devise/registrations/new.html.erb`
- - Reset password form: `app/views/devise/passwords/edit.html.erb`
- - Additional views:  `app/views/devise/*`
-
-## Related Topics
- - [Authentication with Third-Party OAuth Providers](/docs/oauth.md)
+## Customizing Views
+You can customize Devise views using the same workflow you would use to customize any other Bullet Train views.
