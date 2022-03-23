@@ -13,6 +13,8 @@ The "user email" onboarding step is specifically used in situations where a user
 
 ## Relevant Files
 
+# TODO This section needs to be updated now that a bunch of these files are coming in from gems.
+
 ### Controllers
  - `ensure_onboarding_is_complete` in `app/controllers/account/application_controller.rb`
  - `app/controllers/account/onboarding/user_details_controller.rb`

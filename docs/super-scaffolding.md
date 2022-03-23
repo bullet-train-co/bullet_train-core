@@ -23,7 +23,7 @@ Bullet Train's Super Scaffolding engine is a unique approach to code generation,
 
 ## Prerequisites
 
-Before getting started with Super Scaffolding, we recommend reading about [the philosophy of domain modeling in Bullet Train](/docs/philosophy/domain-modeling.md).
+Before getting started with Super Scaffolding, we recommend reading about [the philosophy of domain modeling in Bullet Train](/docs/topics/domain-modeling.md).
 
 ## Usage
 
