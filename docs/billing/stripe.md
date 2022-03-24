@@ -6,10 +6,6 @@ Bullet Train provides a base billing package and a Stripe-specific package with 
 
 > TODO Add instructions about subscribing to Bullet Train Pro.
 
-```
-git merge bullet-train/features/billing-stripe
-```
-
 ## 2. Migrate the Database
 
 ```

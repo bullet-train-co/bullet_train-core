@@ -51,7 +51,14 @@ We include [Honeybadger](http://honeybadger.io) and Sentry (both at a free tier)
 heroku labs:enable runtime-dyno-metadata
 ```
 
-### 4. Adding Your Actual Domain
+### 4. Improve Boot Time
+You can cut your application boot time in half by enabling the following Heroku Labs feature. See [this blog post](https://dev.to/dbackeus/cut-your-rails-boot-times-on-heroku-in-half-with-a-single-command-514d) for more details.
+
+```
+heroku labs:enable build-in-app-dir
+```
+
+### 5. Adding Your Actual Domain
 
 The most common use case for Bullet Train applications is to be hosted at some appropriate subdomain (e.g. `app.YOURDOMAIN.COM`) while a marketing site is hosted with a completely different service at the apex domain (e.g. just `YOURDOMAIN.COM`) or `www.YOURDOMAIN.COM`. To accomplish this, do the following in your shell:
 
