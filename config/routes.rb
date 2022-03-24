@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     root to: "home#index"
     get "invitation" => "home#invitation", :as => "invitation"
 
-    if Rails.env.production? ? ENV["ENABLE_DOCS"].present? : true
+    if Rails.env.development?
       get "docs", to: "home#docs"
       get "docs/*page", to: "home#docs"
     end
