@@ -1,2 +1,2 @@
-class BulletTrain::SuperScaffolding::CannotFindParentResourceException < Exception
+class BulletTrain::SuperScaffolding::CannotFindParentResourceException < RuntimeError
 end

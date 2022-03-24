@@ -276,7 +276,7 @@ class Scaffolding::Transformer
     begin
       target_file_content = File.read(transformed_file_name)
     rescue Errno::ENOENT => _
-      puts "Couldn't find '#{transformed_file_name}'".red unless (suppress_could_not_find || options[:suppress_could_not_find])
+      puts "Couldn't find '#{transformed_file_name}'".red unless suppress_could_not_find || options[:suppress_could_not_find]
       return false
     end
 
@@ -591,7 +591,7 @@ class Scaffolding::Transformer
 
       # extract any options they passed in with the field.
       # will extract options declared with either [] or {}.
-      type, attribute_options = type.scan(/^(.*)[\[|{](.*)[\]|}]/).first || type
+      type, attribute_options = type.scan(/^(.*){(.*)}/).first || type
 
       # create a hash of the options.
       attribute_options = if attribute_options

@@ -25,11 +25,11 @@ module BulletTrain
             puts ""
             puts "  2️⃣  Use `join-model` scaffolding to prepare the join model for use in `crud-field` scaffolding:".blue
             puts ""
-            puts "    bin/super-scaffold join-model Projects::AppliedTag project_id[class_name=Project] tag_id[class_name=Projects::Tag]"
+            puts "    bin/super-scaffold join-model Projects::AppliedTag project_id{class_name=Project} tag_id{class_name=Projects::Tag}"
             puts ""
             puts "  3️⃣  Now you can use `crud-field` scaffolding to actually add the field to the form of the parent model:".blue
             puts ""
-            puts "    bin/super-scaffold crud-field Project tag_ids:super_select[class_name=Projects::Tag]"
+            puts "    bin/super-scaffold crud-field Project tag_ids:super_select{class_name=Projects::Tag}"
             puts ""
             puts "    👋 Heads up! There will be one follow-up step output by this command that you need to take action on."
             puts ""
@@ -45,8 +45,8 @@ module BulletTrain
           attributes = [argv[1], argv[2]]
 
           # Pretend we're doing a `super_select` scaffolding because it will do the correct thing.
-          attributes = attributes.map { |attribute| attribute.gsub("\[", ":super_select\[") }
-          attributes = attributes.map { |attribute| attribute.gsub("\]", ",required\]") }
+          attributes = attributes.map { |attribute| attribute.gsub("{", ":super_select{") }
+          attributes = attributes.map { |attribute| attribute.gsub("}", ",required}") }
 
           transformer = Scaffolding::Transformer.new(child, [primary_parent], @options)
 
@@ -60,14 +60,14 @@ module BulletTrain
           inverse_has_many_through_transformer = Scaffolding::Transformer.new(primary_parent, [secondary_parent], @options)
 
           # However, for the first attribute, we actually don't need the scope validator (and can't really implement it).
-          attributes[0] = attributes[0].gsub("\]", ",unscoped\]")
+          attributes[0] = attributes[0].gsub("}", ",unscoped}")
 
           has_many_through_association = has_many_through_transformer.transform_string("completely_concrete_tangible_things")
           source = transformer.transform_string("absolutely_abstract_creative_concept.valid_$HAS_MANY_THROUGH_ASSOCIATION")
           source.gsub!("$HAS_MANY_THROUGH_ASSOCIATION", has_many_through_association)
 
           # For the second one, we don't want users to have to define the list of valid options in the join model, so we do this:
-          attributes[1] = attributes[1].gsub("\]", ",source=#{source}\]")
+          attributes[1] = attributes[1].gsub("}", ",source=#{source}}")
 
           # This model hasn't been crud scaffolded, so a bunch of views are skipped here, but that's OK!
           # It does what we need on the files that exist.
