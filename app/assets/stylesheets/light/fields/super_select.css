@@ -1,3 +1,10 @@
+.select2-container--default {
+  .select2-selection--single,
+  .select2-selection--multiple {
+    @apply border-gray-300;
+  }
+}
+
 .select2-selection.select2-selection--single {
   min-height: 37px;
   .select2-selection__rendered {

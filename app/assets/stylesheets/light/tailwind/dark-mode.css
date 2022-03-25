@@ -147,8 +147,8 @@
       }
 
       .select2-selection--multiple, .select2-selection--single {
-        @apply bg-sealBlue-300 focus:ring-blue !important;
-        @apply text-sealBlue-900 border-sealBlue-100;
+        @apply bg-sealBlue-300 focus:ring-blue border-sealBlue-100 !important;
+        @apply text-sealBlue-900;
       }
 
       /* For the selected options in the multiple select2 component */
