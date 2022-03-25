@@ -38,8 +38,8 @@ module BulletTrain
           end
 
           child = argv[0]
-          primary_parent = argv[1].split("class_name=").last.split(",").first.split("]").first
-          secondary_parent = argv[2].split("class_name=").last.split(",").first.split("]").first
+          primary_parent = argv[1].split("class_name=").last.split(",").first.split("}").first
+          secondary_parent = argv[2].split("class_name=").last.split(",").first.split("}").first
 
           # There should only be two attributes.
           attributes = [argv[1], argv[2]]

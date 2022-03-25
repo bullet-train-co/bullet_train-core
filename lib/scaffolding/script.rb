@@ -36,7 +36,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     type = parts.join(":")
 
     # extract any options they passed in with the field.
-    type, attribute_options = type.scan(/^(.*)\[(.*)\]/).first || type
+    type, attribute_options = type.scan(/^(.*){(.*)}/).first || type
 
     # create a hash of the options.
     attribute_options = if attribute_options
