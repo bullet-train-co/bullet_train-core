@@ -154,7 +154,7 @@ rails g migration add_lead_to_projects lead:references
 Then, to add the field, we specify the following:
 
 ```
-bin/super-scaffold crud-field Project lead_id:super_select[class_name=Membership]
+bin/super-scaffold crud-field Project lead_id:super_select{class_name=Membership}
 rake db:migrate
 ```
 
@@ -199,7 +199,7 @@ rails g model Projects::AppliedTag project:references tag:references
 We're not going to scaffold this model with the typical `crud` scaffolder, but some preparation is needed before we can use it with the `crud-field` scaffolder, so we need to do the following:
 
 ```
-bin/super-scaffold join-model Projects::AppliedTag project_id[class_name=Project] tag_id[class_name=Projects::Tag]
+bin/super-scaffold join-model Projects::AppliedTag project_id{class_name=Project} tag_id{class_name=Projects::Tag}
 ```
 
 All we're doing here is specifying the name of the join model, and the two attributes and class names of the models it joins. Note again that we specify the `_id` suffix on both of the attributes.
@@ -207,7 +207,7 @@ All we're doing here is specifying the name of the join model, and the two attri
 Now that the join model has been prepared, we can use the `crud-field` scaffolder to create the multi-select field:
 
 ```
-bin/super-scaffold crud-field Project tag_ids:super_select[class_name=Projects::Tag]
+bin/super-scaffold crud-field Project tag_ids:super_select{class_name=Projects::Tag}
 rake db:migrate
 ```
 
