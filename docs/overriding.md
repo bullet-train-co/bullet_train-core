@@ -1,53 +1,21 @@
-# Dealing with Indirection
+# Overriding Framework Defaults
 
-## The Problem with Indirection
+Most of Bullet Train's functionality is distributed via Ruby gems, not the starter template. We provide the `bin/resolve` tool to help developers figure out which Ruby gem packages are providing which classes, modules, views, and translations, and its usage is covered in the [Dealing With Indirection](/docs/indirection.md) section of the documentation.
 
-In software development, indirection is everywhere and takes many forms.
+However, sometimes you will need to do more than just understand where something is coming from and how it works in the framework. In some situations, you'll specifically want to change or override the default framework behavior. The primary workflow for doing this is much the same as the `bin/resolve` workflow for dealing with indirection in the first place, however, instead of just using `--open` to inspect the source of the framework-provided file, you can add `--eject` to have that file copied into the local repository. From there, it will act as a replacement for the framework-provided file, and you can modify the behavior as needed.
 
-For example, in vanilla Rails development, you introduce a type of indirection when you extract a button label out of a view file and use the `t` helper to render the string from a translation YAML file. In the future, when another developer goes to update the button label, they will first open the view, they'll see `t(".submit")` and then have to reason a little bit about which translation file they need to open up in order to update that label.
+## The Important Role of Active Support Concerns in Bullet Train Customization
 
-Our goal in Bullet Train is to improve developer experience, not reduce it, so it was important that along with any instances of indirection we were introducing, we also included new tooling to ensure it was never a burden to developers. Thankfully, in practice we found that some of this new tooling improves even layers of indirection that have always been with us in Rails development.
+When it comes to object-oriented classes, wholesale copying framework files into your local repository just to be able to modify their behavior or extend them would quickly be untenable, as your app would no longer see upstream updates that would otherwise be incorporated into your application via `bundle update`.
 
-## Solving Indirection in Views
-
-### Resolving Partial Paths with `bin/resolve`
-
-Even in vanilla Rails development, when you're looking at a view file, the path you see passed to a `render` call isn't the actual file name of the partial that will be rendered. This is even more true in Bullet Train where certain partial paths are [magically served from theme gems](/docs/themes.md).
-
-`bin/resolve` makes it easy to figure out where where a partial is being served from:
+For this reason, common points of extension like framework-provided models and controllers actually exist as a kind of "stub" in the local repository, but include their base functionality from framework-provided concerns, like so:
 
 ```
-$ bin/resolve shared/box
+class User < ApplicationRecord
+  include Users::Core
+
+  # ...
+end
 ```
 
-### Exposing Rendered Views with Xray
-
-> TODO Is this still true in Rails 7? Does it not do something like this by default now?
-
-If you're looking at a rendered view in the browser, it can be hard to know which file to open in order to make a change. To help, Bullet Train includes [Xray](https://github.com/brentd/xray-rails) by default, so you can right click on any element you see, select "Inspect Element", and you'll see comments in the HTML source telling you which file is powering a particular portion of the view, like this:
-
-```
-<!--XRAY START 90 /Users/andrewculver/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb-->
-```
-
-Note that in the example above, the view in question isn't actually coming from the application repository. Instead, it's being included from the `bullet_train-themes-light` package. For instructions on how to customize it, see [Overriding the Framework](/docs/override).
-
-### Drilling Down on Translation Keys
-
-Even in vanilla Rails applications, extracting strings from view files into I18N translation YAML files introduces a layer of indirection. Bullet Train tries to improve the resulting DX with a couple tools that make it easier to figure out where a translation you see in your browser is coming from.
-
-#### Show Translation Keys in the Browser with `?show_locales=true`
-
-You can see the full translation key of any string on the page by adding `?show_locales=true` to the URL.
-
-#### Log Translation Keys to the Console with `?log_locales=true`
-
-You can also log all the translation key for anything being rendered to the console by adding `?log_locales=true` to the request URL. This can make it easier to copy and paste translation keys for strings that are rendered in non-selectable UI elements.
-
-#### Resolving Translation Keys with `bin/resolve`
-
-Once you have the full I18N translation key, you can use `bin/resolve` to figure out which package and file it's coming from. At that point, if you need to customize it, you can also use the `--eject` option to copy the  the framework for customization in your local application:
-
-```
-$ bin/resolve en.account.onboarding.user_details.edit.header --eject --open
-```
+In this case, for most customizations or extensions you would want to make, you don't need to eject `Users::Core` into your local repository. Instead, you can simply re-define methods from that concern in your local `User` model after the inclusion of the concern.
