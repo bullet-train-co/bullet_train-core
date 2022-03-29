@@ -29,4 +29,7 @@ Gem::Specification.new do |spec|
 
   # Parse and format phone numbers.
   spec.add_dependency "phonelib"
+
+  # Parse dates.
+  spec.add_dependency "chronic"
 end
