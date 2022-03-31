@@ -8,6 +8,6 @@ module Fields::TrixEditorHelper
 
   # TODO Confirm there are no references to this anywhere (in other repositories) and remove it.
   def trix_content(body)
-    html_sanitize(string)
+    html_sanitize(body)
   end
 end
