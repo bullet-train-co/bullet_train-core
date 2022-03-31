@@ -8,7 +8,7 @@
         <% p.content_for :body do %>
           <% with_attribute_settings object: @creative_concept, strategy: :label do %>
             <%= render 'shared/attributes/text', attribute: :name %>
-            <%= render 'shared/attributes/html', attribute: :description %>
+            <%= render 'shared/attributes/text', attribute: :description %>
             <%# 🚅 super scaffolding will insert new fields above this line. %>
 
             <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-3">
