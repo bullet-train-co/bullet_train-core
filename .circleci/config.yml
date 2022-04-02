@@ -41,7 +41,26 @@ aliases:
       # We run this because the DB might not be available for a while due to a race condition.
       run: dockerize -wait tcp://localhost:5432 -timeout 1m
 jobs:
-  'Standard Ruby':
+  'Local Minitest':
+    docker:
+      - <<: *ruby_node_browsers_docker_image
+      - <<: *postgres_docker_image
+      - image: circleci/redis
+    executor: ruby/default
+    steps:
+      - browser-tools/install-browser-tools
+      - checkout
+
+      # Install dependencies
+      - run: "bundle install"
+      - run: "bundle clean --force"
+      - run: "yarn install"
+      - *wait_for_docker
+      - run:
+          name: Run unit tests
+          command: bundle exec rails test
+
+  'Local Standard Ruby':
     docker:
       - <<: *ruby_node_browsers_docker_image
     steps:
@@ -66,7 +85,7 @@ jobs:
           name: Check Standard Ruby
           command: bundle exec standardrb
 
-  'Minitest':
+  'Starter Repo Minitest':
     docker:
       - <<: *ruby_node_browsers_docker_image
       - <<: *postgres_docker_image
@@ -121,7 +140,7 @@ jobs:
       # - store_test_results:
       #     path: test/reports
 
-  'Minitest for Super Scaffolding':
+  'Starter Repo Minitest for Super Scaffolding':
     docker:
       - <<: *ruby_node_browsers_docker_image
       - <<: *postgres_docker_image
@@ -162,6 +181,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - 'Standard Ruby'
-      - 'Minitest'
-      - 'Minitest for Super Scaffolding'
+      - 'Local Minitest'
+      - 'Local Standard Ruby'
+      - 'Starter Repo Minitest'
+      - 'Starter Repo Minitest for Super Scaffolding'

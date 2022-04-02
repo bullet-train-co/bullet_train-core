@@ -12,7 +12,7 @@ For this reason, common points of extension like framework-provided models and c
 
 ```
 class User < ApplicationRecord
-  include Users::Core
+  include Users::Base
 
   # ...
 end
