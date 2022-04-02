@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib,docs}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
+  spec.add_development_dependency "standard"
+
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "bullet_train-fields"
   spec.add_dependency "bullet_train-roles"

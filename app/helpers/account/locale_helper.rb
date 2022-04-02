@@ -46,7 +46,7 @@ module Account::LocaleHelper
           begin
             super(key + "💣", options.except(:default))
           rescue I18n::MissingTranslationData => exception
-            full_key = exception.message.rpartition(" ").last.gsub("💣", "")
+            full_key = exception.message.rpartition(" ").last.delete("💣")
           end
         end
       end
@@ -75,7 +75,7 @@ module Account::LocaleHelper
       end
     end
 
-    return result
+    result
   end
 
   # like 't', but if the key isn't found, it returns nil.

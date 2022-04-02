@@ -1,4 +1,4 @@
-require 'io/wait'
+require "io/wait"
 
 module BulletTrain
   class Resolver
@@ -13,28 +13,26 @@ module BulletTrain
       source_file = calculate_source_file_details
 
       if source_file[:absolute_path]
+        puts ""
         if source_file[:package_name].present?
-          puts ""
           puts "Absolute path:".green
           puts "  #{source_file[:absolute_path]}".green
           puts ""
           puts "Package name:".green
           puts "  #{source_file[:package_name]}".green
-          puts ""
         else
-          puts ""
           puts "Project path:".green
           puts "  #{source_file[:project_path]}".green
           puts ""
           puts "Note: If this file was previously ejected from a package, we can no longer see which package it came from. However, it should say at the top of the file where it was ejected from.".yellow
-          puts ""
         end
+        puts ""
 
         if interactive && !eject
           puts "\nWould you like to eject the file into the local project? (y/n)\n"
           input = $stdin.gets
           $stdin.getc while $stdin.ready?
-          if input.first.downcase == 'y'
+          if input.first.downcase == "y"
             eject = true
           end
         end
@@ -46,7 +44,7 @@ module BulletTrain
             else
               `mkdir -p #{source_file[:project_path].split("/")[0...-1].join("/")}`
               puts "Ejecting `#{source_file[:absolute_path]}` to `#{source_file[:project_path]}`".green
-              File.open("#{source_file[:project_path]}", "w+") do |file|
+              File.open((source_file[:project_path]).to_s, "w+") do |file|
                 case source_file[:project_path].split(".").last
                 when "rb", "yml"
                   file.puts "# Ejected from `#{source_file[:package_name]}`.\n\n"
@@ -69,13 +67,13 @@ module BulletTrain
           puts "\nWould you like to open `#{source_file[:absolute_path]}`? (y/n)\n"
           input = $stdin.gets
           $stdin.getc while $stdin.ready?
-          if input.first.downcase == 'y'
+          if input.first.downcase == "y"
             open = true
           end
         end
 
         if open
-          path = source_file[:package_name] ? source_file[:absolute_path] : "#{source_file[:project_path]}"
+          path = source_file[:package_name] ? source_file[:absolute_path] : (source_file[:project_path]).to_s
           puts "Opening `#{path}`.\n".green
           exec "open #{path}"
         end
@@ -121,25 +119,21 @@ module BulletTrain
     end
 
     def class_path
-      begin
-        @needle.constantize
-        return Object.const_source_location(@needle).first
-      rescue NameError => _
-        return false
-      end
+      @needle.constantize
+      Object.const_source_location(@needle).first
+    rescue NameError => _
+      false
     end
 
     def partial_path
-      begin
-        xray_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
-        if xray_path.match(/<!--XRAY START \d+ (.*)-->/)
-          return $1
-        else
-          raise "It looks like Xray-rails isn't properly enabled?"
-        end
-      rescue ActionView::Template::Error => _
-        return nil
+      xray_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
+      if xray_path =~ /<!--XRAY START \d+ (.*)-->/
+        $1
+      else
+        raise "It looks like Xray-rails isn't properly enabled?"
       end
+    rescue ActionView::Template::Error => _
+      nil
     end
 
     def file_path
@@ -149,7 +143,7 @@ module BulletTrain
 
     def locale_path
       # This is a complete list of translation files provided by this app or any linked Bullet Train packages.
-      (["#{Rails.root.to_s}/config/locales"] + `find ./tmp/gems/*`.lines.map(&:strip).map { |link| File.readlink(link) + "/config/locales" }).each do |locale_source|
+      (["#{Rails.root}/config/locales"] + `find ./tmp/gems/*`.lines.map(&:strip).map { |link| File.readlink(link) + "/config/locales" }).each do |locale_source|
         if File.exist?(locale_source)
           `find -L #{locale_source} | grep ".yml"`.lines.map(&:strip).each do |file_path|
             yaml = YAML.load_file(file_path, aliases: true)
@@ -161,7 +155,7 @@ module BulletTrain
         end
       end
 
-      return nil
+      nil
     end
   end
 end
