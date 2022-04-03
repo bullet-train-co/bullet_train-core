@@ -1,7 +1,7 @@
 require "test_helper"
 require "minitest/spec"
 
-require_relative "../../../lib/scaffolding"
+require "scaffolding/transformer"
 
 describe Scaffolding::Transformer do
   it "initializes" do

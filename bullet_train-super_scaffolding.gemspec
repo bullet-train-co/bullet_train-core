@@ -22,7 +22,10 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
+  spec.add_development_dependency "standard"
+
   spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "bullet_train"
 
   # For Super Scaffolding: "select *a* team member" vs. "select *an* option".
   spec.add_dependency "indefinite_article"

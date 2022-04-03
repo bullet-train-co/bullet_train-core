@@ -1,5 +1,8 @@
 ignore:
   - 'lib/scaffolding/transformer.rb':
     - Layout/EndAlignment
-  # TODO Fix this file up for Standard Ruby.
+  # TODO Fix these files up for Standard Ruby.
   - 'lib/scaffolding/script.rb'
+  - 'lib/bullet_train/super_scaffolding/scaffolders/crud_field_scaffolder.rb'
+  - 'lib/bullet_train/super_scaffolding/scaffolders/crud_scaffolder.rb'
+  - 'lib/bullet_train/super_scaffolding/scaffolders/oauth_provider_scaffolder.rb'
