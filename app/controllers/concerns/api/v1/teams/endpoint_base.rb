@@ -16,7 +16,7 @@ module Api::V1::Teams::EndpointBase
         # `Api::V1::TeamsEndpoint`, but since we can get the latter, we'll use that to fetch whatever proc is defined
         # in ADDITIONAL_PARAMS.
         if defined?(@api.to_s.constantize::PARAMS)
-          instance_eval &@api.to_s.constantize::PARAMS
+          instance_eval(&@api.to_s.constantize::PARAMS)
         end
       end
     end

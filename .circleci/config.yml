@@ -99,7 +99,7 @@ jobs:
 
       - run:
           name: Link starter repository to the Ruby gem being tested.
-          command: "grep -v 'gem \"bullet_train-super_scaffolding\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-super_scaffolding\", path: \"../..\"' >> tmp/starter/Gemfile"
+          command: "grep -v 'gem \"bullet_train-api\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-api\", path: \"../..\"' >> tmp/starter/Gemfile"
 
       # TODO Figure out how to make these work for `tmp/starter`
       # - restore_cache: *restore_bundler_cache
@@ -153,7 +153,7 @@ jobs:
 
       - run:
           name: Link starter repository to the Ruby gem being tested.
-          command: "grep -v 'gem \"bullet_train-super_scaffolding\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-super_scaffolding\", path: \"../..\"' >> tmp/starter/Gemfile"
+          command: "grep -v 'gem \"bullet_train-api\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-api\", path: \"../..\"' >> tmp/starter/Gemfile"
 
       # TODO Figure out how to make these work for `tmp/starter`
       # # Restore dependency caches

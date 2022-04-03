@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
+  spec.add_development_dependency "standard"
+
   spec.add_dependency "rails", ">= 7.0.0"
   spec.add_dependency "grape", "~> 1.6.0"
   spec.add_dependency "grape-cancan"
@@ -35,4 +37,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rack-cors"
   spec.add_dependency "jsonapi-serializer"
   spec.add_dependency "doorkeeper"
+
+  spec.add_dependency "bullet_train"
 end
