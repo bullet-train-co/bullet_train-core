@@ -126,11 +126,11 @@ module BulletTrain
     end
 
     def partial_path
-      xray_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
-      if xray_path =~ /<!--XRAY START \d+ (.*)-->/
+      annotated_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
+      if annotated_path =~ /<!-- BEGIN (.*) -->/
         $1
       else
-        raise "It looks like Xray-rails isn't properly enabled?"
+        raise "It looks like `config.action_view.annotate_rendered_view_with_filenames` isn't enabled?"
       end
     rescue ActionView::Template::Error => _
       nil

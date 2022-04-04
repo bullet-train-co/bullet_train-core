@@ -5,8 +5,8 @@ Bullet Train uses [Devise](https://github.com/heartcombo/devise) for authenticat
 Bullet Train registers its own slightly customized registration and session controllers for Devise. If you want to customize them further, you can simply eject those controllers from the framework and override them locally, like so:
 
 ```
-$ bin/resolve RegistrationsController --eject --open
-$ bin/resolve SessionsController --eject --open
+bin/resolve RegistrationsController --eject --open
+bin/resolve SessionsController --eject --open
 ```
 
 ## Customizing Views

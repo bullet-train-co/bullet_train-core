@@ -42,8 +42,8 @@ namespace :bullet_train do
       input = $stdin.gets.strip
       $stdin.getc while $stdin.ready?
 
-      # Extract absolute paths from XRAY comments.
-      if input =~ /<!--XRAY START \d+ (.*)-->/
+      # Extract absolute paths from annotated views.
+      if input =~ /<!-- BEGIN (.*) -->/
         input = $1
       end
 

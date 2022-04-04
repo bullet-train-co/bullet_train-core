@@ -13,12 +13,12 @@ gem "bullet_train"
 
 And then execute:
 ```bash
-$ bundle
+bundle
 ```
 
 Or install it yourself as:
 ```bash
-$ gem install bullet_train
+gem install bullet_train
 ```
 
 ## Contributing
