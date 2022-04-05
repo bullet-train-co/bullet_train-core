@@ -138,6 +138,7 @@ class Role < ActiveYaml::Base
       @parent = user.send(through).reflect_on_association(parent_name)&.klass
       @parent_ids = user.parent_ids_for(@role, @through, parent_name) if @parent
       @intermediary = intermediary
+      @intermidiary_class = @model.reflect_on_association(intermediary)&.class_name&.constantize if @intermediary.present?
     end
 
     def valid?
@@ -170,13 +171,13 @@ class Role < ActiveYaml::Base
       end
       parent_association = possible_parent_associations.find { |association| @model.method_defined?(association) || @model.method_defined?("#{association}_id") }
       return nil unless parent_association.present?
-      # If possible, use the team_id attribute because it saves us having to join all the way back to the sorce parent model
+      # If possible, use the team_id attribute because it saves us having to join all the way back to the source parent model
       # In some scenarios this may be quicker, or if the parent model is in a different database shard, it may not even
       # be possible to do the join
       parent_with_id = "#{parent_association}_id"
       if @model.column_names.include?(parent_with_id)
         @condition = { parent_with_id.to_sym => @parent_ids }
-      elsif @model.method_defined?(parent_with_id) && @intermediary.present?
+      elsif @intermediary.present? && @model.method_defined?(@intermediary) && @intermediary_class&.method_defined?(parent_with_id.to_sym)
         @condition = {@intermediary.to_sym => {parent_with_id.to_sym => @parent_ids}}
       else
         @condition = {parent_association => {id: @parent_ids}}
