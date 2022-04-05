@@ -138,7 +138,7 @@ class Role < ActiveYaml::Base
       @parent = user.send(through).reflect_on_association(parent_name)&.klass
       @parent_ids = user.parent_ids_for(@role, @through, parent_name) if @parent
       @intermediary = intermediary
-      @intermidiary_class = @model.reflect_on_association(intermediary)&.class_name&.constantize if @intermediary.present?
+      @intermediary_class = @model.reflect_on_association(intermediary)&.class_name&.constantize if @intermediary.present?
     end
 
     def valid?
@@ -177,7 +177,7 @@ class Role < ActiveYaml::Base
       parent_with_id = "#{parent_association}_id"
       if @model.column_names.include?(parent_with_id)
         @condition = { parent_with_id.to_sym => @parent_ids }
-      elsif @intermediary.present? && @model.method_defined?(@intermediary) && @intermediary_class&.method_defined?(parent_with_id.to_sym)
+      elsif @intermediary.present? && @model.method_defined?(@intermediary) && @intermediary_class&.column_names&.include?(parent_with_id)
         @condition = {@intermediary.to_sym => {parent_with_id.to_sym => @parent_ids}}
       else
         @condition = {parent_association => {id: @parent_ids}}
