@@ -7,7 +7,7 @@ class RoleTest < ActiveSupport::TestCase
     def setup
       @admin_user = FactoryBot.create :onboarded_user
       @membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: [Role.admin.id]
-      @document   = FactoryBot.create :document, membership: @membership
+      @document = FactoryBot.create :document, membership: @membership
       @admin_ability = Ability.new(@admin_user)
       @parent_ids = [2, 3]
     end
@@ -196,7 +196,7 @@ class RoleTest < ActiveSupport::TestCase
       # default when you add
       # has_one :team, through: :membership
       # The gem has been updated to use the column_names attribute instead
-      assert_equal ({team: {id: [@admin_user.teams.first.id]} }), ability_generator.condition
+      assert_equal ({team: {id: [@admin_user.teams.first.id]}}), ability_generator.condition
     end
 
     test "when the parent and the model are the same class, the condition hash checks the id attribute directly" do

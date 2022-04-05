@@ -174,10 +174,10 @@ class Role < ActiveYaml::Base
       # be possible to do the join
       # using method_defined? will break with ActiveRecord 7 because now models have team_id defined if they include
       # has_one :team, through: :membership
-      if @model.column_names.include?("#{parent_association}_id")
-        @condition = {"#{parent_association}_id".to_sym => @parent_ids}
+      @condition = if @model.column_names.include?("#{parent_association}_id")
+        {"#{parent_association}_id".to_sym => @parent_ids}
       else
-        @condition = {parent_association => {id: @parent_ids}}
+        {parent_association => {id: @parent_ids}}
       end
     end
   end

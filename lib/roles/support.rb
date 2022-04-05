@@ -71,7 +71,7 @@ module Roles
       end
 
       def roles=(roles)
-        self.update(role_ids: roles.map(&:key))
+        update(role_ids: roles.map(&:key))
       end
 
       def assignable_roles
