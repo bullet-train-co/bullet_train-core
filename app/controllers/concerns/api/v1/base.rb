@@ -4,9 +4,11 @@ module Api::V1::Base
   included do
     include Api::V1::Defaults
     include Api::V1::LoadsAndAuthorizesApiResource
+    include Api::V1::ExceptionsHandler
 
     version "v1"
-    use ::WineBouncer::OAuth2
+
+    use ::WineBouncer::OAuth2, message: "Doorkeeper OAuth2 Authentication"
 
     rescue_from :all do |error|
       handle_api_error(error)
@@ -14,6 +16,11 @@ module Api::V1::Base
 
     BulletTrain::Api.endpoints.each do |endpoint_class|
       mount endpoint_class.constantize
+    end
+
+    after_validation do
+      # Ensure responses never get cached.
+      header "Cache-Control", "no-store"
     end
   end
 

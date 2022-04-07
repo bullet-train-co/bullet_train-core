@@ -8,19 +8,24 @@ class Api::Base < Grape::API
   format :jsonapi
   default_error_formatter :json
 
-  # TODO Shouldn't this be in V1 or not versioned?
-  include Api::V1::ExceptionsHandler
-
   mount Api::V1::Root
 
-  # Swagger docs are available at `/api/swagger_doc.json`.
+  # Swagger docs are available at `/api/docs/swagger.json`.
   add_swagger_documentation \
-    hide_documentation_path: true,
-    array_use_braces: true,
     api_version: "v1",
+    array_use_braces: true,
+    base_path: "/api",
+    doc_version: "1.0",
+    endpoint_auth_wrapper: ::WineBouncer::OAuth2,
+    hide_documentation_path: true,
     info: {
       title: I18n.t("application.name"),
       description: I18n.t("application.description")
     },
-    endpoint_auth_wrapper: WineBouncer::OAuth2
+    mount_path: "/docs/swagger"
+
+  # TODO Reintroduce this once we've got `context` in current attributes.
+  # before do
+  #   Current.context = :api
+  # end
 end
