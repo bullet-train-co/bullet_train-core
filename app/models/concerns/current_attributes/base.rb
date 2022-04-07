@@ -2,7 +2,7 @@ module CurrentAttributes::Base
   extend ActiveSupport::Concern
 
   included do
-    attribute :user, :team, :membership, :ability
+    attribute :user, :team, :membership, :ability, :context
 
     resets do
       Time.zone = nil
