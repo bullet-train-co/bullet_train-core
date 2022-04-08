@@ -92,7 +92,7 @@ module BulletTrain
       result[:absolute_path] = class_path || partial_path || locale_path || file_path
 
       if result[:absolute_path]
-        base_path = "bullet_train" + result[:absolute_path].split("/bullet_train").last
+        base_path = "bullet_train" + result[:absolute_path].partition("/bullet_train").last
 
         # Try to calculate which package the file is from, and what it's path is within that project.
         ["app", "config", "lib"].each do |directory|
@@ -138,7 +138,9 @@ module BulletTrain
 
     def file_path
       # We don't have to do anything here... the absolute path is what we're passed, and we just pass it back.
-      @needle
+      if @needle[0] == "/"
+        @needle
+      end
     end
 
     def locale_path
