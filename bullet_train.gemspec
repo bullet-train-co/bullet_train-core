@@ -82,4 +82,6 @@ Gem::Specification.new do |spec|
 
   # Extract the body from emails received using action inbox.
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
+
+  spec.add_runtime_dependency "unicode-emoji"
 end

@@ -9,7 +9,7 @@ require "bullet_train/has_uuid"
 require "bullet_train/scope_validator"
 
 require "colorizer"
-require "string/emoji"
+require "bullet_train/core_ext/string_emoji_helper"
 
 require "devise"
 # require "devise-two-factor"
