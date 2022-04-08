@@ -98,6 +98,10 @@ jobs:
       - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
 
       - run:
+          name: Rename the directory of the Ruby gem being tested for the partial resolver test.
+          command: "mv /home/circleci/project /home/circleci/bullet_train-base && ln -s /home/circleci/bullet_train-base /home/circleci/project"
+
+      - run:
           name: Link starter repository to the Ruby gem being tested.
           command: "grep -v 'gem \"bullet_train\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train\", path: \"../..\"' >> tmp/starter/Gemfile"
 
