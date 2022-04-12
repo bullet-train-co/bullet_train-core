@@ -64,11 +64,11 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
           puts ""
           puts "Attributes that end with `_id` or `_ids` trigger awesome, powerful magic in Super Scaffolding. However, because no `#{attribute_options[:class_name]}` class was found defined in `#{file_name}`, you'll need to specify a `class_name` that exists to let us know what model class is on the other side of the association, like so:".red
           puts ""
-          puts "  bin/super-scaffold #{scaffolding_type} #{child}#{" " + parent if parent.present?} #{name}:#{type}[class_name=#{name.gsub(/_ids?$/, "").classify}]".red
+          puts "  bin/super-scaffold #{scaffolding_type} #{child}#{" " + parent if parent.present?} #{name}:#{type}{class_name=#{name.gsub(/_ids?$/, "").classify}}".red
           puts ""
-          puts "If `#{name}` is just a regular field and isn't backed by an ActiveRecord association, you can skip all this with the `[vanilla]` option, e.g.:".red
+          puts "If `#{name}` is just a regular field and isn't backed by an ActiveRecord association, you can skip all this with the `{vanilla}` option, e.g.:".red
           puts ""
-          puts "  bin/super-scaffold #{scaffolding_type} #{child}#{" " + parent if parent.present?} #{name}:#{type}[vanilla]".red
+          puts "  bin/super-scaffold #{scaffolding_type} #{child}#{" " + parent if parent.present?} #{name}:#{type}{vanilla}".red
           puts ""
           exit
         end
