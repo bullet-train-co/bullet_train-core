@@ -82,6 +82,13 @@ export default class extends Controller {
     if (imageUrl) {
       imageHtml = '<img src="' + imageUrl + '" /> ';
     }
-    return $('<span>' + imageHtml + opt.text + '</span>');
+    return $('<span>' + imageHtml + sanitizeHTML(opt.text) + '</span>');
   }
 }
+
+// https://portswigger.net/web-security/cross-site-scripting/preventing
+function sanitizeHTML(str) {
+  return str.replace(/[^\w. ]/gi, function (c) {
+    return '&#' + c.charCodeAt(0) + ';';
+  });
+};
