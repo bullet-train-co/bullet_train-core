@@ -78,7 +78,9 @@ module BulletTrain
 
             # User OAuth.
             "./app/models/oauth/stripe_account.rb",
+            "./app/models/concerns/oauth/stripe_accounts/base.rb",
             "./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb",
+            "./app/models/concerns/webhooks/incoming/oauth/stripe_account_webhooks/base.rb",
             "./app/controllers/account/oauth/stripe_accounts_controller.rb",
             "./app/controllers/webhooks/incoming/oauth/stripe_account_webhooks_controller.rb",
             "./app/views/account/oauth/stripe_accounts",
@@ -89,6 +91,7 @@ module BulletTrain
 
             # Team Integration.
             "./app/models/integrations/stripe_installation.rb",
+            "./app/models/concerns/integrations/stripe_installations/base.rb",
             # './app/serializers/api/v1/integrations/stripe_installation_serializer.rb',
             "./app/controllers/account/integrations/stripe_installations_controller.rb",
             "./app/views/account/integrations/stripe_installations",
@@ -101,7 +104,7 @@ module BulletTrain
             "./app/controllers/webhooks/incoming/oauth/stripe_account_webhooks_controller.rb"
 
           ].each do |name|
-            if File.directory?(name)
+            if File.directory?(legacy_resolve_template_path(name))
               oauth_scaffold_directory(name, options)
             else
               oauth_scaffold_file(name, options)
@@ -109,7 +112,7 @@ module BulletTrain
           end
 
           oauth_scaffold_add_line_to_file("./app/views/devise/shared/_oauth.html.erb", "<%= render 'devise/shared/oauth/stripe', verb: verb if stripe_enabled? %>", "<%# 🚅 super scaffolding will insert new oauth providers above this line. %>", options, prepend: true)
-          oauth_scaffold_add_line_to_file("./app/views/account/users/edit.html.erb", "<%= render 'account/oauth/stripe_accounts/index', context: @user, stripe_accounts: @user.oauth_stripe_accounts if stripe_enabled? %>", "<% # 🚅 super scaffolding will insert new oauth providers above this line. %>", options, prepend: true)
+          oauth_scaffold_add_line_to_file("./app/views/account/users/_oauth.html.erb", "<%= render 'account/oauth/stripe_accounts/index', context: @user, stripe_accounts: @user.oauth_stripe_accounts if stripe_enabled? %>", "<% # 🚅 super scaffolding will insert new oauth providers above this line. %>", options, prepend: true)
           oauth_scaffold_add_line_to_file("./config/initializers/devise.rb", "config.omniauth :stripe_connect, ENV['STRIPE_CLIENT_ID'], ENV['STRIPE_SECRET_KEY'], {\n    ## specify options for your oauth provider here, e.g.:\n    # scope: 'read_products,read_orders,write_content',\n  }\n", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./app/controllers/account/oauth/omniauth_callbacks_controller.rb", "def stripe_connect\n    callback(\"Stripe\", team_id_from_env)\n  end\n", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./app/models/team.rb", "has_many :integrations_stripe_installations, class_name: 'Integrations::StripeInstallation', dependent: :destroy if stripe_enabled?", "# 🚅 add oauth providers above.", options, prepend: true)
@@ -122,12 +125,7 @@ module BulletTrain
           oauth_scaffold_add_line_to_file("./Gemfile", "gem 'omniauth-stripe-connect'", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./lib/bullet_train.rb", "def stripe_enabled?\n  ENV['STRIPE_CLIENT_ID'].present? && ENV['STRIPE_SECRET_KEY'].present?\nend\n", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./lib/bullet_train.rb", "stripe_enabled?,", "# 🚅 super scaffolding will insert new oauth provider checks above this line.", options, prepend: true)
-          oauth_scaffold_add_line_to_file("./app/models/ability.rb", "if stripe_enabled?
-                can [:read, :create, :destroy], Oauth::StripeAccount, user_id: user.id
-                can :manage, Integrations::StripeInstallation, team_id: user.team_ids
-                can :destroy, Integrations::StripeInstallation, oauth_stripe_account: {user_id: user.id}
-              end
-        ", "# 🚅 super scaffolding will insert any new oauth providers above.", options, prepend: true)
+          oauth_scaffold_add_line_to_file("./app/models/ability.rb", "if stripe_enabled?\n        can [:read, :create, :destroy], Oauth::StripeAccount, user_id: user.id\n        can :manage, Integrations::StripeInstallation, team_id: user.team_ids\n        can :destroy, Integrations::StripeInstallation, oauth_stripe_account: {user_id: user.id}\n      end\n", "# 🚅 super scaffolding will insert any new oauth providers above.", options, prepend: true)
 
           # find the database migration that defines this relationship.
           migration_file_name = `grep "create_table #{oauth_transform_string(":oauth_stripe_accounts", options)}" db/migrate/*`.split(":").first
@@ -146,6 +144,11 @@ module BulletTrain
           puts "🎉"
           puts ""
           puts "You'll probably need to `bundle install`.".green
+          puts ""
+          puts "You'll need to configure API keys for this provider in `config/application.yml`, like so:"
+          puts ""
+          puts oauth_transform_string("  STRIPE_CLIENT_ID: ...", options)
+          puts oauth_transform_string("  STRIPE_SECRET_KEY: ...", options)
           puts ""
           puts "If the OAuth provider asks you for some whitelisted callback URLs, the URL structure for those is as so:"
           puts ""

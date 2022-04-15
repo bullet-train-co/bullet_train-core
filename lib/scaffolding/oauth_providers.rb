@@ -1,3 +1,15 @@
+def legacy_resolve_template_path(file)
+  # Figure out the actual location of the file.
+  # Originally all the potential source files were in the repository alongside the application.
+  # Now the files could be provided by an included Ruby gem, so we allow those Ruby gems to register their base
+  # path and then we check them in order to see which template we should use.
+  BulletTrain::SuperScaffolding.template_paths.map do |base_path|
+    base_path = Pathname.new(base_path)
+    resolved_path = base_path.join(file).to_s
+    File.exist?(resolved_path) ? resolved_path : nil
+  end.compact.first || raise("Couldn't find the Super Scaffolding template for `#{file}` in any of the following locations:\n\n#{BulletTrain::SuperScaffolding.template_paths.join("\n")}")
+end
+
 def legacy_replace_in_file(file, before, after)
   puts "Replacing in '#{file}'."
   target_file_content = File.read(file)
@@ -61,14 +73,18 @@ def decode_double_replacement_fix(string)
 end
 
 def oauth_scaffold_directory(directory, options)
+  transformed_directory_name = oauth_transform_string(directory, options)
   begin
-    Dir.mkdir(oauth_transform_string(directory, options))
-  rescue
-    nil
+    Dir.mkdir(transformed_directory_name)
+  rescue Errno::EEXIST => _
+    puts "The directory #{transformed_directory_name} already exists, skipping generation.".yellow
+  rescue Errno::ENOENT => _
+    puts "Proceeding to generate '#{transformed_directory_name}'."
   end
-  Dir.foreach(directory) do |file|
+
+  Dir.foreach(legacy_resolve_template_path(directory)) do |file|
     file = "#{directory}/#{file}"
-    unless File.directory?(file)
+    unless File.directory?(legacy_resolve_template_path(file))
       oauth_scaffold_file(file, options)
     end
   end
@@ -80,7 +96,7 @@ def oauth_scaffold_file(file, options)
   transformed_file_content = []
 
   skipping = false
-  File.open(file).each_line do |line|
+  File.open(legacy_resolve_template_path(file)).each_line do |line|
     if line.include?("# 🚅 skip when scaffolding.")
       next
     end
