@@ -97,11 +97,14 @@ def two_factor_authentication_enabled?
   ENV["TWO_FACTOR_ENCRYPTION_KEY"].present?
 end
 
-def any_oauth_enabled?
-  [
-    stripe_enabled?,
-    # 🚅 super scaffolding will insert new oauth provider checks above this line.
-  ].select(&:present?).any?
+# Don't redefine this if an application redefines it locally.
+unless defined?(any_oauth_enabled?)
+  def any_oauth_enabled?
+    [
+      stripe_enabled?,
+      # 🚅 super scaffolding will insert new oauth provider checks above this line.
+    ].select(&:present?).any?
+  end
 end
 
 def invitation_only?
