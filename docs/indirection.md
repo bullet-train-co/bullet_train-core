@@ -35,7 +35,7 @@ bin/resolve shared/box
 If you're looking at a rendered view in the browser, it can be hard to know which file to open in order to make a change. To help, Bullet Train enables `config.action_view.annotate_rendered_view_with_filenames` by default, so you can right click on any element you see, select "Inspect Element", and you'll see comments in the HTML source telling you which file is powering a particular portion of the view, like this:
 
 ```
-<!-- BEGIN /Users/andrewculver/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb -->
+<!-- BEGIN /Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb -->
 ```
 
 Note that in the example above, the view in question isn't actually coming from the application repository. Instead, it's being included from the `bullet_train-themes-light` package. For instructions on how to customize it, see [Overriding Framework Defaults](/docs/overriding.md).

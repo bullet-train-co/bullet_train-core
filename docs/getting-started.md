@@ -51,5 +51,5 @@ If you're using Bullet Train for the first time, begin by learning these five im
     And then paste any input, e.g.:
 
     ```
-    <!-- BEGIN /Users/andrewculver/.rbenv/versions/3.1.1/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/commentary/_box.html.erb -->
+    <!-- BEGIN /Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/commentary/_box.html.erb -->
     ```
