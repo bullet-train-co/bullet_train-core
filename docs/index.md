@@ -12,6 +12,7 @@
  - [Dealing with Indirection](/docs/indirection.md)
  - [Overriding the Framework](/docs/overriding.md)
  - [Setting up a Tunnel](/docs/tunneling.md)
+ - [JavaScript](/docs/javascript.md)
 
 ## Developer Tools
  - [Super Scaffolding](/docs/super-scaffolding.md)
