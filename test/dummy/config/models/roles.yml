@@ -1,9 +1,14 @@
 default:
   models:
     Team: read
+    Document: read
     Membership:
       - read
       - search
+
+crud_role:
+  models:
+    Team: crud
 
 editor:
   models:
@@ -20,5 +25,6 @@ admin:
   models:
     Team: manage
     Membership: manage
+    Document: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator: manage

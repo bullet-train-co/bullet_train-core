@@ -147,9 +147,16 @@ class Role < ActiveYaml::Base
 
     def actions
       return @actions if @actions
-      actions = (@ability_data["actions"] if @ability_data.is_a?(Hash)) || @ability_data
-      actions = [actions] unless actions.is_a?(Array)
-      @actions = actions.map!(&:to_sym)
+      @actions = (@ability_data["actions"] if @ability_data.is_a?(Hash)) || @ability_data
+      # crud is a special value that we substitute for the 4 crud actions
+      # This is instead of :manage which covers all 4 actions _and_ any extra actions the controller may respond to
+      @actions = crud_actions if @actions.to_s.downcase == "crud"
+      @actions = [actions] unless actions.is_a?(Array)
+      @actions.map!(&:to_sym)
+    end
+
+    def crud_actions
+      [:create, :read, :update, :destroy]
     end
 
     def possible_parent_associations
@@ -175,12 +182,12 @@ class Role < ActiveYaml::Base
       # In some scenarios this may be quicker, or if the parent model is in a different database shard, it may not even
       # be possible to do the join
       parent_with_id = "#{parent_association}_id"
-      if @model.column_names.include?(parent_with_id)
-        @condition = { parent_with_id.to_sym => @parent_ids }
+      @condition = if @model.column_names.include?(parent_with_id)
+        { parent_with_id.to_sym => @parent_ids }
       elsif @intermediary.present? && @model.method_defined?(@intermediary) && @intermediary_class&.column_names&.include?(parent_with_id)
-        @condition = {@intermediary.to_sym => {parent_with_id.to_sym => @parent_ids}}
+        {@intermediary.to_sym => {parent_with_id.to_sym => @parent_ids}}
       else
-        @condition = {parent_association => {id: @parent_ids}}
+        {parent_association => {id: @parent_ids}}
       end
     end
   end

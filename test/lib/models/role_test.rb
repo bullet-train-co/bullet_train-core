@@ -7,6 +7,7 @@ class RoleTest < ActiveSupport::TestCase
     def setup
       @admin_user = FactoryBot.create :onboarded_user
       @membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: [Role.admin.id]
+      @document = FactoryBot.create :document, membership: @membership
       @admin_ability = Ability.new(@admin_user)
       @parent_ids = [2, 3]
     end
@@ -159,6 +160,12 @@ class RoleTest < ActiveSupport::TestCase
       assert_equal @ability_generator.actions, [:manage]
     end
 
+    test "It outputs the correct actions when passed in crud" do
+      ability_generator = Role::AbilityGenerator.new(Role.find_by_key("crud_role"), "Team", @admin_user, :memberships, :team)
+      expected_output = %i[create read update destroy]
+      assert_empty expected_output - ability_generator.actions
+    end
+
     test "it outputs the correct actions when given an array" do
       # Find a role with an array for the permissions
       role = nil
@@ -187,6 +194,15 @@ class RoleTest < ActiveSupport::TestCase
       ability_generator = Role::AbilityGenerator.new(@admin_role, "Membership", @admin_user, :memberships, :team)
 
       assert_equal ({team_id: [@admin_user.teams.first.id]}), ability_generator.condition
+    end
+
+    test "If an object responds to team_id but it is not a database column for that object, create the permissing through the team association" do
+      ability_generator = Role::AbilityGenerator.new(@admin_role, "Document", @admin_user, :memberships, :team)
+      # Note: our original technique of using method_defined? breaks in ActiveRecord 7 because AR7 adds a team_id method by
+      # default when you add
+      # has_one :team, through: :membership
+      # The gem has been updated to use the column_names attribute instead
+      assert_equal ({team: {id: [@admin_user.teams.first.id]}}), ability_generator.condition
     end
 
     test "when the parent and the model are the same class, the condition hash checks the id attribute directly" do
