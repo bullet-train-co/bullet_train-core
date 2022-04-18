@@ -10,10 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_01_03_181617) do
-
+ActiveRecord::Schema.define(version: 2022_03_02_235728) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "documents", force: :cascade do |t|
+    t.bigint "membership_id", null: false
+    t.string "name"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["membership_id"], name: "index_documents_on_membership_id"
+  end
 
   create_table "memberships", force: :cascade do |t|
     t.jsonb "role_ids"
@@ -61,6 +68,7 @@ ActiveRecord::Schema.define(version: 2022_01_03_181617) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  add_foreign_key "documents", "memberships"
   add_foreign_key "memberships", "teams"
   add_foreign_key "memberships", "users"
   add_foreign_key "scaffolding_absolutely_abstract_creative_concepts", "teams"
