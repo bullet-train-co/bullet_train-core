@@ -183,7 +183,7 @@ class Role < ActiveYaml::Base
       # be possible to do the join
       parent_with_id = "#{parent_association}_id"
       @condition = if @model.column_names.include?(parent_with_id)
-        { parent_with_id.to_sym => @parent_ids }
+        {parent_with_id.to_sym => @parent_ids}
       elsif @intermediary.present? && @model.method_defined?(@intermediary) && @intermediary_class&.column_names&.include?(parent_with_id)
         {@intermediary.to_sym => {parent_with_id.to_sym => @parent_ids}}
       else
