@@ -176,7 +176,7 @@ class Role < ActiveYaml::Base
       if @model == @parent
         return @condition = {id: @parent_ids}
       end
-      parent_association = possible_parent_associations.find { |association| @model.method_defined?(association) || @model.method_defined?("#{association}_id") }
+      parent_association = possible_parent_associations.find { |association| @model.method_defined?(association) || @model.method_defined?("#{association}_id") || @intermediary_class&.method_defined?(association) || @intermediary_class&.method_defined?("#{association}_id") }
       return nil unless parent_association.present?
       # If possible, use the team_id attribute because it saves us having to join all the way back to the source parent model
       # In some scenarios this may be quicker, or if the parent model is in a different database shard, it may not even
