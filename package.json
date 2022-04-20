@@ -1,13 +1,14 @@
 {
   "name": "@bullet-train/fields",
-  "version": "0.1.7",
+  "version": "1.0.7",
   "description": "Bullet Train Fields",
   "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/fields.esm.js",
   "main": "app/assets/javascripts/fields.js",
   "files": [
     "app/assets/javascripts/*.js",
-    "app/assets/javascripts/*.js.map"
+    "app/assets/javascripts/*.js.map",
+    "app/javascript/**/*.js"
   ],
   "scripts": {
     "prebuild": "$npm_execpath run clean",
