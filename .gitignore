@@ -10,3 +10,4 @@
 /test/dummy/tmp/
 node_modules
 app/assets/javascripts/
+*.tgz
