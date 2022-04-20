@@ -21,7 +21,7 @@ From the directory of the project including this package:
 
 ```bash
 # create a symbolic link in node_modules/ to this package
-yarn link @hammerstone/refine-stimulus
+yarn link <name in package.json>
 ```
 
 Running `yarn` again from your project's directory will revert back to the published version of the package on npm.
