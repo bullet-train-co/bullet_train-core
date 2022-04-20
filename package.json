@@ -1,19 +1,20 @@
 {
   "name": "@bullet-train/bullet-train",
-  "version": "0.2.4",
+  "version": "1.0.33",
   "description": "Bullet Train - Main JavaScript",
   "source": "app/javascript/index.js",
-  "module": "app/assets/javascripts/bullet-train.esm.js",
-  "main": "app/assets/javascripts/bullet-train.js",
+  "module": "app/assets/javascripts/bullet-train.js",
+  "type": "module",
   "files": [
     "app/assets/javascripts/*.js",
-    "app/assets/javascripts/*.js.map"
+    "app/assets/javascripts/*.js.map",
+    "app/javascript/**/*.js
   ],
   "private": false,
   "repository": "https://github.com/bullet-train-co/bullet_train",
   "scripts": {
     "prebuild": "$npm_execpath run clean",
-    "build": "microbundle",
+    "build": "microbundle -i app/javascript/index.js -o app/assets/javascripts/bullet-train.js --no-pkg-main -f esm",
     "clean": "rimraf app/assets/javascripts",
     "prerelease": "$npm_execpath run build",
     "release": "np --any-branch"

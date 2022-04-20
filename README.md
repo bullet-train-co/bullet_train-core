@@ -22,7 +22,8 @@ gem install bullet_train
 ```
 
 ## Contributing
-Contribution directions go here.
+
+See `RELEASE.md` for instructions on local development and for publishing both the gem and the npm package.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
