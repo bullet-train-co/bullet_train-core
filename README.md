@@ -22,7 +22,7 @@ $ gem install bullet_train-sortable
 ```
 
 ## Contributing
-Contribution directions go here.
+See [`RELEASE.md` in bullet_train-base](https://github.com/bullet-train-co/bullet_train-base/blob/main/RELEASE.md) for instructions on local development and for publishing both the gem and the npm package.
 
 ## License
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
