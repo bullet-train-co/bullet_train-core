@@ -5,6 +5,8 @@ require "bullet_train/themes/engine"
 module BulletTrain
   module Themes
     mattr_accessor :themes, default: {}
+    mattr_accessor :logo_asset_path, default: "logo/logo.png"
+    mattr_accessor :logo_height, default: 54
 
     module Base
       class Theme
