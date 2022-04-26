@@ -22,13 +22,13 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib,docs}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
-  s.post_install_message = <<~EOS
+  spec.post_install_message = <<-MESSAGE
     If you're upgrading `bullet_train-*` Ruby gems and you run into any new
     issues, you should probably also pull in updates from the Bullet Train
     starter repository into your local application, just to make sure
     everything is synced up. See https://bullettrain.co/docs/upgrades for
     details.
-  EOS
+  MESSAGE
 
   spec.add_development_dependency "standard"
 
