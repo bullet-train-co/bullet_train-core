@@ -22,6 +22,14 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib,docs}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
+  s.post_install_message = <<~EOS
+    If you're upgrading `bullet_train-*` Ruby gems and you run into any new
+    issues, you should probably also pull in updates from the Bullet Train
+    starter repository into your local application, just to make sure
+    everything is synced up. See https://bullettrain.co/docs/upgrades for
+    details.
+  EOS
+
   spec.add_development_dependency "standard"
 
   spec.add_dependency "rails", ">= 6.0.0"
@@ -30,6 +38,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-super_load_and_authorize_resource"
   spec.add_dependency "bullet_train-has_uuid"
   spec.add_dependency "bullet_train-scope_validator"
+  spec.add_dependency "bullet_train-themes"
   spec.add_dependency "devise"
 
   # This has been broken since Rails 7.
