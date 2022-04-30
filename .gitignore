@@ -11,3 +11,4 @@
 node_modules
 app/assets/javascripts/
 *.tgz
+*.gem
