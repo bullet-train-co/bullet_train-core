@@ -1,0 +1,79 @@
+#!/usr/bin/env ruby
+
+def stream(command, prefix = "  ")
+  puts ""
+  IO.popen(command) do |io|
+    while (line = io.gets) do
+      puts "#{prefix}#{line}"
+    end
+  end
+  puts ""
+end
+
+puts "First we'll check that you're logged into Ruby gems by running `gem signin`. If this hangs, you need to hit <Control + C> and run `gem signin` manually to sign in."
+`gem signin`
+
+puts "You're signed into Ruby gems!"
+puts ""
+
+puts "Now we'll check if you're signed into npm with `npm whoami`."
+unless `npm whoami`.present?
+  puts "You're not signed into npm. Use `npm login` before running `bin/release`."
+  exit
+end
+
+# TODO Figure out a way to check if they're signed into npm.
+
+unless `git branch | grep main`.chomp == "* main"
+  puts "You can only release from the `main` branch."
+  exit
+end
+
+puts "Checking whether we're up-to-date with `origin/main`."
+
+stream "git fetch origin"
+puts output = `git merge origin main`
+
+unless output.include?("Already up to date")
+  puts "Sorry, `main` needed to be up-to-date with `origin/main` before we release, and it looks like it wasn't. We attempted a merge, but you should confirm that went OK before running `bin/release` again!"
+  exit
+end
+
+puts "Bumping Ruby gem version."
+stream "gem install bump"
+puts output = `bump patch`
+version = output.chomp.lines.last.chomp
+puts "Bumped to #{version}."
+
+# Update the `package.json` version.
+puts "Bumping npm package version."
+text = File.read("package.json")
+new_contents = text.gsub(/\"version\": \".*\"/, "\"version\": \"#{version}\"")
+File.open("package.json", "w") { |file| file.puts new_contents }
+`git add ./package.json`
+stream "git commit -m \"Bumping npm package to #{version}.\""
+
+puts "OK! Versions are all bumped. Pushing those to GitHub."
+stream "git push origin main"
+
+puts "Now we'll build the Ruby gem."
+puts output = `gem build`
+gem_file = output.chomp.lines.last.chomp.split.last
+puts gem_file
+
+puts "Now we'll build the npm package."
+puts `yarn build`
+puts output = `yarn pack`
+npm_file = output.chomp.lines[1].split("/").last.split("\"").first
+puts npm_file
+
+puts "OK, actually pushing the Ruby gem now."
+stream "gem push #{gem_file}"
+
+puts "And finally, pushing the npm package now."
+stream "yarn publish #{npm_file} --new-version #{version}"
+
+puts "Cleaning up the files!"
+`rm #{gem_file} #{npm_file}`
+
+puts "Congrats, it's live!"
