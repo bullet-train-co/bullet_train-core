@@ -10,20 +10,6 @@ def stream(command, prefix = "  ")
   puts ""
 end
 
-puts "First we'll check that you're logged into Ruby gems by running `gem signin`. If this hangs, you need to hit <Control + C> and run `gem signin` manually to sign in."
-`gem signin`
-
-puts "You're signed into Ruby gems!"
-puts ""
-
-puts "Now we'll check if you're signed into npm with `npm whoami`."
-unless `npm whoami`.chomp.length > 0
-  puts "You're not signed into npm. Use `npm login` before running `bin/release`."
-  exit
-end
-
-# TODO Figure out a way to check if they're signed into npm.
-
 unless `git branch | grep main`.chomp == "* main"
   puts "You can only release from the `main` branch."
   exit
@@ -67,13 +53,10 @@ puts output = `yarn pack`
 npm_file = output.chomp.lines[1].split("/").last.split("\"").first
 puts npm_file
 
-puts "OK, actually pushing the Ruby gem now."
-stream "gem push #{gem_file}"
 
-puts "And finally, pushing the npm package now."
-stream "yarn publish #{npm_file} --new-version #{version}"
-
-puts "Cleaning up the files!"
-`rm #{gem_file} #{npm_file}`
-
-puts "Congrats, it's live!"
+puts "OK, this last piece we can't do manually (because of 2FA) so copy and the following:"
+puts ""
+puts "  gem push #{gem_file}"
+puts "  yarn publish #{npm_file} --new-version #{version}"
+puts "  rm #{gem_file} #{npm_file}"
+puts ""
