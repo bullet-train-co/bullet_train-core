@@ -17,7 +17,7 @@ puts "You're signed into Ruby gems!"
 puts ""
 
 puts "Now we'll check if you're signed into npm with `npm whoami`."
-unless `npm whoami`.present?
+unless `npm whoami`.chomp.length > 0
   puts "You're not signed into npm. Use `npm login` before running `bin/release`."
   exit
 end
