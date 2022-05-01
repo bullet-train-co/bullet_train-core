@@ -56,4 +56,178 @@ namespace :bullet_train do
       warn "\n🚅 Usage: `bin/resolve [path, partial, or URL] (--eject) (--open)`\n".blue
     end
   end
+
+  task :develop, [:all_options] => :environment do |t, arguments|
+    def stream(command, prefix = "  ")
+      puts ""
+
+      begin
+        trap("SIGINT") { throw :ctrl_c }
+
+        IO.popen(command) do |io|
+          while (line = io.gets)
+            puts "#{prefix}#{line}"
+          end
+        end
+      rescue UncaughtThrowError
+        puts "Received a <Control + C>. Exiting the child process.".blue
+      end
+
+      puts ""
+    end
+
+    # TODO Extract this into a YAML file.
+    framework_packages = {
+      "bullet_train" => {
+        git: "https://github.com/bullet-train-co/bullet_train-base",
+        npm: "@bullet-train/bullet-train"
+      },
+      "bullet_train-api" => {
+        git: "https://github.com/bullet-train-co/bullet_train-api",
+      },
+      "bullet_train-fields" => {
+        git: "https://github.com/bullet-train-co/bullet_train-fields",
+        npm: "@bullet-train/fields"
+      },
+      "bullet_train-has_uuid" => {
+        git: "https://github.com/bullet-train-co/bullet_train-has_uuid",
+      },
+      "bullet_train-incoming_webhooks" => {
+        git: "https://github.com/bullet-train-co/bullet_train-incoming_webhooks",
+      },
+      "bullet_train-integrations" => {
+        git: "https://github.com/bullet-train-co/bullet_train-integrations",
+      },
+      "bullet_train-integrations-stripe" => {
+        git: "https://github.com/bullet-train-co/bullet_train-base-integrations-stripe",
+      },
+      "bullet_train-obfuscates_id" => {
+        git: "https://github.com/bullet-train-co/bullet_train-obfuscates_id",
+      },
+      "bullet_train-outgoing_webhooks" => {
+        git: "https://github.com/bullet-train-co/bullet_train-outgoing_webhooks",
+      },
+      "bullet_train-outgoing_webhooks-core" => {
+        git: "https://github.com/bullet-train-co/bullet_train-outgoing_webhooks-core",
+      },
+      "bullet_train-scope_questions" => {
+        git: "https://github.com/bullet-train-co/bullet_train-scope_questions",
+      },
+      "bullet_train-scope_validator" => {
+        git: "https://github.com/bullet-train-co/bullet_train-scope_validator",
+      },
+      "bullet_train-sortable" => {
+        git: "https://github.com/bullet-train-co/bullet_train-sortable",
+        npm: "@bullet-train/bullet-train-sortable"
+      },
+      "bullet_train-super_scaffolding" => {
+        git: "https://github.com/bullet-train-co/bullet_train-super_scaffolding",
+      },
+      "bullet_train-super_load_and_authorize_resource" => {
+        git: "https://github.com/bullet-train-co/bullet_train-super_load_and_authorize_resource",
+      },
+      "bullet_train-themes" => {
+        git: "https://github.com/bullet-train-co/bullet_train-themes",
+      },
+      "bullet_train-themes-base" => {
+        git: "https://github.com/bullet-train-co/bullet_train-themes-base",
+      },
+      "bullet_train-themes-light" => {
+        git: "https://github.com/bullet-train-co/bullet_train-themes-light",
+      },
+      "bullet_train-themes-tailwind_css" => {
+        git: "https://github.com/bullet-train-co/bullet_train-themes-tailwind_css",
+      },
+    }
+
+    puts "Which framework package do you want to work on?".blue
+    puts ""
+    framework_packages.each do |gem, details|
+      puts "  #{framework_packages.keys.find_index(gem) + 1}. #{gem}".blue
+    end
+    puts ""
+    puts "Enter a number below and hit <Enter>:".blue
+    number = $stdin.gets.chomp
+
+    gem = framework_packages.keys[number.to_i - 1]
+
+    if gem
+      details = framework_packages[gem]
+
+      puts "OK! Let's work on `#{gem}` together!".green
+      puts ""
+      puts "First, we're going to clone a copy of the package repository.".blue
+
+      # TODO Prompt whether they want to check out their own forked version of the repository.
+
+      if File.exist?("local/#{gem}")
+        puts "Can't clone into `local/#{gem}` because it already exists. We will try to use what's already there.".yellow
+        puts "However, it will be up to you to make sure that working copy of the repository is in a clean state and checked out to the `main` branch or whatever you want to work on.".yellow
+        puts "Hit <Enter> to continue.".blue
+        $stdin.gets
+
+        # TODO We should check whether the local copy is in a clean state, and if it is, check out `main`.
+        # TODO We should also pull `origin/main` to make sure we're on the most up-to-date version of the package.
+      else
+        stream "git clone #{details[:git]} local/#{gem}"
+      end
+
+      # TODO Ask them whether they want to check out a specific branch to work on. (List available remote branches.)
+
+      puts ""
+      puts "Now we'll try to link up that repository in the `Gemfile`.".blue
+      if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{gem}\\\""`.chomp.present?
+        puts "This gem is already linked to a checked out copy in `local` in the `Gemfile`.".green
+      elsif `cat Gemfile | grep "gem \\\"#{gem}\\\","`.chomp.present?
+        puts "This gem already has some sort of alternative source configured in the `Gemfile`.".yellow
+        puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
+      elsif `cat Gemfile | grep "gem \\\"#{gem}\\\""`.chomp.present?
+        puts "This gem is directly present in the `Gemfile`, so we'll update that line.".green
+
+        text = File.read("Gemfile")
+        new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{gem}\"")
+        File.open("Gemfile", "w") { |file| file.puts new_contents }
+      else
+        puts "This gem isn't directly present in the `Gemfile`, so we'll add it temporarily.".green
+        File.open("Gemfile", "a+") { |file|
+          file.puts
+          file.puts "gem \"#{gem}\", path: \"local/#{gem}\" # Added by \`bin/develop\`."
+        }
+      end
+
+      puts ""
+      puts "Now we'll run `bundle install`.".blue
+      stream "bundle install"
+
+      puts ""
+      puts "We'll restart any running Rails server now.".blue
+      stream "rails restart"
+
+      puts ""
+      puts "OK, we're opening that package in your IDE, `#{ENV["IDE"] || "code"}`. (You can configure this with `export IDE=whatever`.)".blue
+      `#{ENV["IDE"] || "code"} local/#{gem}`
+
+      puts ""
+      if details[:npm]
+        puts "This package also has an npm package, so we'll link that up as well.".blue
+        stream "cd local/#{gem} && yarn install && yarn link && cd ../.. && yarn link \"#{details[:npm]}\""
+
+        puts ""
+        puts "And now we're going to watch for any changes you make to the JavaScript and recompile as we go.".blue
+        puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
+        stream "cd local/#{gem} && yarn build --watch"
+      else
+        puts "This package has no npm package, so we'll just hang out here and do nothing. However, when you hit <Enter> here, we'll start the process of cleaning all of this up.".blue
+        $stdin.gets
+      end
+
+      puts ""
+      puts "OK, here's a list of things this script still doesn't do you for you:".yellow
+      puts "1. It doesn't clean up the repository that was cloned into `local`.".yellow
+      puts "2. Unless you remove it, it won't update that repository the next time you link to it.".yellow
+    else
+      puts ""
+      puts "Invalid option, \"#{number}\". Try again.".red
+    end
+  end
 end
