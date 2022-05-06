@@ -9,8 +9,13 @@ export default class extends Controller {
     enableSearch: Boolean,
     searchUrl: String,
   }
+  
+  // will be reissued as native dom events name prepended with '$' e.g. '$change', '$select2:closing', etc
+  static jQueryEventsToReissue = [ "change", "select2:closing", "select2:close", "select2:opening", "select2:open", "select2:selecting", "select2:select", "select2:unselecting", "select2:unselect", "select2:clearing", "select2:clear" ]
+  
 
   initialize() {
+    this.dispatchNativeEvent = this.dispatchNativeEvent.bind(this)
     if (this.isSelect2LoadedOnWindowJquery) {
       select2(window.$)
     }
@@ -66,13 +71,35 @@ export default class extends Controller {
     this.cleanupBeforeInit() // in case improperly torn down
     this.pluginMainEl = this.selectTarget // required because this.selectTarget is unavailable on disconnect()
     $(this.pluginMainEl).select2(options);
+
+    this.initReissuePluginEventsAsNativeEvents()
   }
 
   teardownPluginInstance() {
     if (this.pluginMainEl === undefined) { return }
 
+    // ensure there are no orphaned event handlers
+    this.teardownPluginEventsAsNativeEvents()
+    
     // revert to original markup, remove any event listeners
     $(this.pluginMainEl).select2('destroy');
+  }
+
+  initReissuePluginEventsAsNativeEvents() {
+    this.constructor.jQueryEventsToReissue.forEach((eventName) => {
+      $(this.pluginMainEl).on(eventName, this.dispatchNativeEvent)
+    })
+  }
+  
+  teardownPluginEventsAsNativeEvents() {
+    this.constructor.jQueryEventsToReissue.forEach((eventName) => {
+      $(this.pluginMainEl).off(eventName)
+    })
+  }
+  
+  dispatchNativeEvent(event) {
+    const nativeEventName = '$' + event.type // e.g. '$change.select2'
+    this.element.dispatchEvent(new CustomEvent(nativeEventName, { detail: { event: event }, bubbles: true, cancelable: false }))
   }
 
   // https://stackoverflow.com/questions/29290389/select2-add-image-icon-to-option-dynamically
