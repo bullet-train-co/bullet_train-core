@@ -7,13 +7,11 @@
       background-color: rgba(0, 0, 0, 0.15);
     }
 
-    @variants dark {
-      .bg-dark-blue-gradient {
-        &:before {
-          background: linear-gradient(to bottom right, #633d7d, #2867ab 100%);
-        }
+    .bg-dark-blue-gradient {
+      &:before {
         background: linear-gradient(to bottom right, #633d7d, #2867ab 100%);
       }
+      background: linear-gradient(to bottom right, #633d7d, #2867ab 100%);
     }
 
     /**
