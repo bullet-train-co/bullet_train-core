@@ -215,7 +215,7 @@ namespace :bullet_train do
         puts ""
         puts "And now we're going to watch for any changes you make to the JavaScript and recompile as we go.".blue
         puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
-        stream "cd local/#{gem} && yarn build --watch"
+        stream "cd local/#{gem} && yarn watch"
       else
         puts "This package has no npm package, so we'll just hang out here and do nothing. However, when you hit <Enter> here, we'll start the process of cleaning all of this up.".blue
         $stdin.gets
