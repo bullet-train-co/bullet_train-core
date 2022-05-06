@@ -10,12 +10,18 @@
     "app/assets/javascripts/*.js.map",
     "app/javascript/**/*.js"
   ],
+  "watch": {
+    "update-local-installs": "app/javascript/**/*.js"
+  },
   "repository": "https://github.com/bullet-train-co/bullet_train-sortable",
   "private": false,
   "scripts": {
     "prebuild": "$npm_execpath run clean",
     "build": "microbundle",
     "clean": "rimraf app/assets/javascripts",
+    "prewatch": "$npm_execpath run update-local-installs",
+    "watch": "npm-watch",
+    "update-local-installs": "$npm_execpath run build; yalc push",
     "prerelease": "$npm_execpath run build",
     "release": "np --any-branch"
   },
@@ -36,7 +42,9 @@
     "babel-loader": "^8.2.2",
     "microbundle": "^0.13.0",
     "np": "^7.6.0",
-    "rimraf": "^3.0.2"
+    "npm-watch": "^0.11.0",
+    "rimraf": "^3.0.2",
+    "yalc": "^1.0.0-pre.53"
   },
   "dependencies": {
     "dragula": "^3.7.3"
