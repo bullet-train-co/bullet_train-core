@@ -79,64 +79,64 @@ namespace :bullet_train do
     # TODO Extract this into a YAML file.
     framework_packages = {
       "bullet_train" => {
-        git: "https://github.com/bullet-train-co/bullet_train-base",
+        git: "bullet-train-co/bullet_train-base",
         npm: "@bullet-train/bullet-train"
       },
       "bullet_train-api" => {
-        git: "https://github.com/bullet-train-co/bullet_train-api",
+        git: "bullet-train-co/bullet_train-api",
       },
       "bullet_train-fields" => {
-        git: "https://github.com/bullet-train-co/bullet_train-fields",
+        git: "bullet-train-co/bullet_train-fields",
         npm: "@bullet-train/fields"
       },
       "bullet_train-has_uuid" => {
-        git: "https://github.com/bullet-train-co/bullet_train-has_uuid",
+        git: "bullet-train-co/bullet_train-has_uuid",
       },
       "bullet_train-incoming_webhooks" => {
-        git: "https://github.com/bullet-train-co/bullet_train-incoming_webhooks",
+        git: "bullet-train-co/bullet_train-incoming_webhooks",
       },
       "bullet_train-integrations" => {
-        git: "https://github.com/bullet-train-co/bullet_train-integrations",
+        git: "bullet-train-co/bullet_train-integrations",
       },
       "bullet_train-integrations-stripe" => {
-        git: "https://github.com/bullet-train-co/bullet_train-base-integrations-stripe",
+        git: "bullet-train-co/bullet_train-base-integrations-stripe",
       },
       "bullet_train-obfuscates_id" => {
-        git: "https://github.com/bullet-train-co/bullet_train-obfuscates_id",
+        git: "bullet-train-co/bullet_train-obfuscates_id",
       },
       "bullet_train-outgoing_webhooks" => {
-        git: "https://github.com/bullet-train-co/bullet_train-outgoing_webhooks",
+        git: "bullet-train-co/bullet_train-outgoing_webhooks",
       },
       "bullet_train-outgoing_webhooks-core" => {
-        git: "https://github.com/bullet-train-co/bullet_train-outgoing_webhooks-core",
+        git: "bullet-train-co/bullet_train-outgoing_webhooks-core",
       },
       "bullet_train-scope_questions" => {
-        git: "https://github.com/bullet-train-co/bullet_train-scope_questions",
+        git: "bullet-train-co/bullet_train-scope_questions",
       },
       "bullet_train-scope_validator" => {
-        git: "https://github.com/bullet-train-co/bullet_train-scope_validator",
+        git: "bullet-train-co/bullet_train-scope_validator",
       },
       "bullet_train-sortable" => {
-        git: "https://github.com/bullet-train-co/bullet_train-sortable",
+        git: "bullet-train-co/bullet_train-sortable",
         npm: "@bullet-train/bullet-train-sortable"
       },
       "bullet_train-super_scaffolding" => {
-        git: "https://github.com/bullet-train-co/bullet_train-super_scaffolding",
+        git: "bullet-train-co/bullet_train-super_scaffolding",
       },
       "bullet_train-super_load_and_authorize_resource" => {
-        git: "https://github.com/bullet-train-co/bullet_train-super_load_and_authorize_resource",
+        git: "bullet-train-co/bullet_train-super_load_and_authorize_resource",
       },
       "bullet_train-themes" => {
-        git: "https://github.com/bullet-train-co/bullet_train-themes",
+        git: "bullet-train-co/bullet_train-themes",
       },
       "bullet_train-themes-base" => {
-        git: "https://github.com/bullet-train-co/bullet_train-themes-base",
+        git: "bullet-train-co/bullet_train-themes-base",
       },
       "bullet_train-themes-light" => {
-        git: "https://github.com/bullet-train-co/bullet_train-themes-light",
+        git: "bullet-train-co/bullet_train-themes-light",
       },
       "bullet_train-themes-tailwind_css" => {
-        git: "https://github.com/bullet-train-co/bullet_train-themes-tailwind_css",
+        git: "bullet-train-co/bullet_train-themes-tailwind_css",
       },
     }
 
@@ -169,7 +169,7 @@ namespace :bullet_train do
         # TODO We should check whether the local copy is in a clean state, and if it is, check out `main`.
         # TODO We should also pull `origin/main` to make sure we're on the most up-to-date version of the package.
       else
-        stream "git clone #{details[:git]} local/#{gem}"
+        stream "git clone git@github.com:#{details[:git]}.git local/#{gem}"
       end
 
       # TODO Ask them whether they want to check out a specific branch to work on. (List available remote branches.)
