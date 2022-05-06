@@ -40,6 +40,8 @@ a[href^="bullettrain://users"], a[href^="bullettrain://teams"], span.tribute-use
       display: none;
     }
     li {
+      @apply flex items-center justify-between;
+
       span {
         font-weight: normal;
       }

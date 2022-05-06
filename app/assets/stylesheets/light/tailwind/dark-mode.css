@@ -185,6 +185,22 @@
       }
     }
 
+    .tribute-container {
+      ul {
+        @apply bg-sealBlue-300 border-sealBlue-100 !important;
+      }
+    }
+
+    .trix-dialogs {
+      @apply bg-sealBlue-300 border-sealBlue-100 !important;
+    }
+
+    .trix-content {
+      a[href^="bullettrain://"] {
+        @apply bg-sealBlue-600 text-white;
+      }
+    }
+
     /* CKEditor */
     .ck {
       --ck-color-base-background: theme('colors.sealBlue.300');
