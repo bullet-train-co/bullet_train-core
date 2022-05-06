@@ -18,6 +18,7 @@
     "build": "microbundle",
     "copy:intl-tel-input-utils": "cp-cli node_modules/intl-tel-input/build/js/utils.js app/assets/javascripts/intl-tel-input-utils.js",
     "clean": "rimraf app/assets/javascripts",
+    "prewatch": "$npm_execpath run update-local-installs",
     "watch": "npm-watch",
     "update-local-installs": "$npm_execpath run build; yalc push",
     "prerelease": "$npm_execpath run build",
