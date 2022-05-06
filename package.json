@@ -10,11 +10,16 @@
     "app/assets/javascripts/*.js.map",
     "app/javascript/**/*.js"
   ],
+  "watch": {
+    "update-local-installs": "app/javascript/**/*.js"
+  },
   "scripts": {
     "prebuild": "$npm_execpath run clean; $npm_execpath run copy:intl-tel-input-utils",
     "build": "microbundle",
     "copy:intl-tel-input-utils": "cp-cli node_modules/intl-tel-input/build/js/utils.js app/assets/javascripts/intl-tel-input-utils.js",
     "clean": "rimraf app/assets/javascripts",
+    "watch": "npm-watch",
+    "update-local-installs": "$npm_execpath run build; yalc push",
     "prerelease": "$npm_execpath run build",
     "release": "np --any-branch"
   },
@@ -37,7 +42,9 @@
     "cp-cli": "^2.0.0",
     "microbundle": "^0.13.0",
     "np": "^7.6.0",
-    "rimraf": "^3.0.2"
+    "npm-watch": "^0.11.0",
+    "rimraf": "^3.0.2",
+    "yalc": "^1.0.0-pre.53"
   },
   "dependencies": {
     "@simonwep/pickr": "^1.8.1",
