@@ -18,7 +18,7 @@ end
 puts "Checking whether we're up-to-date with `origin/main`."
 
 stream "git fetch origin"
-puts output = `git merge origin main`
+puts output = `git merge origin/main`
 
 unless output.include?("Already up to date")
   puts "Sorry, `main` needed to be up-to-date with `origin/main` before we release, and it looks like it wasn't. We attempted a merge, but you should confirm that went OK before running `bin/release` again!"
