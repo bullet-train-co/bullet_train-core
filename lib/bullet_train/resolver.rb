@@ -92,7 +92,16 @@ module BulletTrain
       result[:absolute_path] = class_path || partial_path || locale_path || file_path
 
       if result[:absolute_path]
-        base_path = "bullet_train" + result[:absolute_path].partition("/bullet_train").last
+        if result[:absolute_path].include?("devise")
+          # The annotated path for devise doesn't actually return an absolute path,
+          # so we have to do some extra steps to get the correct string.
+          relative_partial_path = result[:absolute_path]
+          # If it's a devise partial, it should be coming from bullet_train-base
+          base_path = "#{`bundle show bullet_train`.chomp}/" + relative_partial_path
+          result[:absolute_path] = base_path
+        else
+          base_path = "bullet_train" + result[:absolute_path].partition("/bullet_train").last
+        end
 
         # Try to calculate which package the file is from, and what it's path is within that project.
         ["app", "config", "lib"].each do |directory|
@@ -127,7 +136,7 @@ module BulletTrain
 
     def partial_path
       annotated_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
-      if annotated_path =~ /<!-- BEGIN (.*) -->/
+      if annotated_path =~ /<!-- BEGIN (\S*) -->/
         $1
       else
         raise "It looks like `config.action_view.annotate_rendered_view_with_filenames` isn't enabled?"
