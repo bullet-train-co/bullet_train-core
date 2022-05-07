@@ -747,7 +747,7 @@ class Scaffolding::Transformer
       # FORM FIELD
       #
 
-      unless cli_options["skip-form"]
+      unless cli_options["skip-form"] || attribute_options[:readonly]
 
         # add `has_rich_text` for trix editor fields.
         if type == "trix_editor"
@@ -930,7 +930,7 @@ class Scaffolding::Transformer
       # STRONG PARAMETERS
       #
 
-      unless cli_options["skip-form"]
+      unless cli_options["skip-form"] || attribute_options[:readonly]
 
         # add attributes to strong params.
         [
@@ -1021,8 +1021,10 @@ class Scaffolding::Transformer
         # scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal tangible_thing_attributes['#{name.gsub('_', '-')}'], tangible_thing.#{name}", RUBY_NEW_FIELDS_HOOK, prepend: true)
 
         if attribute_assignment
-          scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", "#{name}: #{attribute_assignment},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
-          scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", "assert_equal @tangible_thing.#{name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
+          unless attribute_options[:readonly]
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", "#{name}: #{attribute_assignment},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", "assert_equal @tangible_thing.#{name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
+          end
         end
       end
 
