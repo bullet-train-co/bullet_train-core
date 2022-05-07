@@ -640,7 +640,7 @@ class Scaffolding::Transformer
         elsif is_id
           "belongs_to"
         else
-          "option"
+          "option#{"s" if is_multiple}"
         end
       when "cloudinary_image"
         attribute_options[:height] = 200
@@ -769,8 +769,14 @@ class Scaffolding::Transformer
           # add_additional_step :yellow, transform_string("We've added a reference to a `placeholder` to the form for the select or super_select field, but unfortunately earlier versions of the scaffolded locales Yaml don't include a reference to `fields: *fields` under `form`. Please add it, otherwise your form won't be able to locate the appropriate placeholder label.")
         end
 
+        # TODO: This feels incorrect.
+        # Should we adjust the partials to only use `{multiple: true}` or `html_options: {multiple_true}`?
         if is_multiple
-          field_options[:multiple] = "true"
+          if type == "super_select"
+            field_options[:multiple] = "true"
+          else
+            field_attributes[:multiple] = "true"
+          end
         end
 
         valid_values = if is_id
@@ -949,7 +955,7 @@ class Scaffolding::Transformer
         [
           "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb"
         ].each do |file|
-          if is_ids
+          if is_ids || is_multiple
             scaffold_add_line_to_file(file, "#{name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
           else
             scaffold_add_line_to_file(file, ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
@@ -1180,6 +1186,10 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "after_validation :remove_#{name}, if: :#{name}_removal?", CALLBACKS_HOOK, prepend: true)
         when "trix_editor"
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{name}", HAS_ONE_HOOK, prepend: true)
+        when "buttons"
+          if boolean_buttons
+            scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
+          end
         end
 
       end
