@@ -1,5 +1,5 @@
 en:
-  me: &me
-  	api:
-			actions: "Actions for the current user"
-			show: "Retrieve info about the current user"
+  me:
+    api:
+      actions: "Actions for the current user"
+      show: "Retrieve info about the current user"
