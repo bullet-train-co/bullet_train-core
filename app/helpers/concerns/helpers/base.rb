@@ -3,4 +3,5 @@ require "pagy"
 
 module Helpers::Base
   include Pagy::Frontend
+  include Pagy::Backend
 end
