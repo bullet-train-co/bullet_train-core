@@ -7,6 +7,7 @@ module Controllers::Base
     include InvitationsHelper
 
     include DeviseCurrentAttributes
+    include Pagy::Backend
 
     around_action :set_locale
     layout :layout_by_resource

@@ -93,4 +93,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
 
   spec.add_runtime_dependency "unicode-emoji"
+
+  spec.add_runtime_dependency "pagy"
 end
