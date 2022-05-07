@@ -913,6 +913,18 @@ class Scaffolding::Transformer
 
             <% end %>
 
+            <% if type == "color_picker" %>
+            options:
+              - '#9C73D2'
+              - '#48CDFE'
+              - '#53F3ED'
+              - '#47E37F'
+              - '#F2593D'
+              - '#F68421'
+              - '#F9DE00'
+              - '#929292'
+            <% end %>
+
           <% if is_association %>
           <%= attribute_name %>: *<%= attribute_name %>
           <% end %>
