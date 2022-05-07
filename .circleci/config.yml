@@ -26,7 +26,7 @@ aliases:
       paths:
         - node_modules
   - &ruby_node_browsers_docker_image
-      - image: cimg/ruby:3.1.2-browsers
+      - image: cimg/ruby:3.1.1-browsers
         environment:
           PGHOST: localhost
           PGUSER: untitled_application
@@ -40,8 +40,6 @@ aliases:
   - &wait_for_docker
       # We run this because the DB might not be available for a while due to a race condition.
       run: dockerize -wait tcp://localhost:5432 -timeout 1m
-  - &link_package
-      run: "grep -v 'gem \"bullet_train-themes-tailwind_css\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-themes-tailwind_css\", path: \"../..\"' >> tmp/starter/Gemfile"
 jobs:
   'Local Minitest':
     docker:
@@ -98,7 +96,10 @@ jobs:
       - browser-tools/install-browser-tools
       - checkout
       - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
-      - *link_package
+
+      - run:
+          name: Link starter repository to the Ruby gem being tested.
+          command: "grep -v 'gem \"bullet_train-themes-tailwind_css\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-themes-tailwind_css\", path: \"../..\"' >> tmp/starter/Gemfile"
 
       # TODO Figure out how to make these work for `tmp/starter`
       # - restore_cache: *restore_bundler_cache
@@ -149,7 +150,10 @@ jobs:
       - browser-tools/install-browser-tools
       - checkout
       - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
-      - *link_package
+
+      - run:
+          name: Link starter repository to the Ruby gem being tested.
+          command: "grep -v 'gem \"bullet_train-themes-tailwind_css\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-themes-tailwind_css\", path: \"../..\"' >> tmp/starter/Gemfile"
 
       # TODO Figure out how to make these work for `tmp/starter`
       # # Restore dependency caches
