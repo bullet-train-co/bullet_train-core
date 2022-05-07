@@ -38,12 +38,12 @@
 
     <% if p.content_for? :actions || pagy %>
       <div class="pb-7 px-8 space-y-7">
-        <div class="flex">
+        <div class="sm:flex">
           <div class="flex-1 space-x">
             <%= p.content_for :actions %>
           </div>
           <% if pagy && pagy.pages > 1 %>
-            <div class="flex-0">
+            <div class="flex-0 mt-3 sm:mt-0">
               <%== pagy_nav(pagy) %>
             </div>
           <% end %>
