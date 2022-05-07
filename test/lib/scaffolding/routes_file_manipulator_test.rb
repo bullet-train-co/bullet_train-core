@@ -91,25 +91,12 @@ describe Scaffolding::RoutesFileManipulator do
         end
       end
     end
-
-    describe "under team" do
-      examples = {
-        ["imports", "csv", "scaffolding"] => {"imports" => 147, "csv" => 148, "scaffolding" => 150}
-      }
-
-      examples.each do |inputs, outputs|
-        it "returns #{outputs} for `#{inputs.first}` under `#{inputs.last}`" do
-          results = subject.new(example_file, nil, nil).find_namespaces(inputs, 143)
-          assert_equal outputs, results
-        end
-      end
-    end
   end
 
   describe "find_block_end" do
     examples = {
       # namespace :account
-      109 => 243
+      109 => 226
     }
 
     examples.each do |starting_line_number, ending_line_number|
