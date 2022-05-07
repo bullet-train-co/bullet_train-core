@@ -32,7 +32,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "grape_on_rails_routes"
   # We can't do this until there is an updated release.
   # spec.add_dependency "wine_bouncer"
-  spec.add_dependency "kaminari"
+  spec.add_dependency "pagy"
   spec.add_dependency "api-pagination"
   spec.add_dependency "rack-cors"
   spec.add_dependency "jsonapi-serializer"
