@@ -1,8 +1,9 @@
 class Api::V1::MeEndpoint < Api::V1::Root
-  resource :me do
+  resource :me, desc: Api.title(:actions) do
+    desc Api.title(:show), &Api.show_desc
     oauth2
-    get "/" do
-      render Api::V1::UserSerializer.new(current_user, include: [:teams, :memberships]).to_json
+    get do
+      render current_user, include: [:teams, :memberships], serializer: "Api::V1::UserSerializer", adapter: :attributes
     end
   end
 end
