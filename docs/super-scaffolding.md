@@ -108,6 +108,11 @@ rake db:migrate
 
 As you can see, when we're using `crud-field`, we don't need to supply the chain of ownership back to `Team`.
 
+If you want to scaffold a new field to use for read-only purposes, add the following option to omit the field from the form and all other files that apply:
+```
+bin/super-scaffold crud-field Project description:trix_editor{readonly}
+```
+
 ### 4. Adding Option Fields with Fixed, Translatable Options
 
 Continuing with the earlier example, let's address the following new requirement:
