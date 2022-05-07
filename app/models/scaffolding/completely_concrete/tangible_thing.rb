@@ -1,6 +1,8 @@
 class Scaffolding::CompletelyConcrete::TangibleThing < ApplicationRecord
   # 🚅 add concerns above.
 
+  # 🚅 add attribute accessors above.
+
   belongs_to :absolutely_abstract_creative_concept, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept"
   # 🚅 add belongs_to associations above.
 
