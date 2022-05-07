@@ -8,6 +8,8 @@ require "scaffolding/class_names_transformer"
 require "scaffolding/oauth_providers"
 require "scaffolding/routes_file_manipulator"
 
+require_relative "../bullet_train/terminal_commands"
+
 # filter out options.
 argv = []
 @options = {}

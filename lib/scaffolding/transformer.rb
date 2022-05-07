@@ -1346,9 +1346,9 @@ class Scaffolding::Transformer
             puts "OK, great! Let's do this! By default these menu items appear with a puzzle piece, but after you hit enter I'll open two different pages where you can view other icon options. When you find one you like, hover your mouse over it and then come back here and and enter the name of the icon you want to use. (Or hit enter to skip this step.)"
             $stdin.gets.chomp
             if `which open`.present?
-              `open https://themify.me/themify-icons`
+              TerminalCommands.open_file_or_link("https://themify.me/themify-icons")
               if font_awesome?
-                `open https://fontawesome.com/icons?d=gallery&s=light`
+                TerminalCommands.open_file_or_link("https://fontawesome.com/icons?d=gallery&s=light")
               end
             else
               puts "Sorry! We can't open these URLs automatically on your platform, but you can visit them manually:"
