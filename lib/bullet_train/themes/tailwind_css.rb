@@ -7,7 +7,7 @@ module BulletTrain
     module TailwindCss
       class Theme < BulletTrain::Themes::Base::Theme
         def directory_order
-          ['tailwind_css'] + super
+          ["tailwind_css"] + super
         end
       end
     end
