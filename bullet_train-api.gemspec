@@ -27,7 +27,8 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rails", ">= 7.0.0"
   spec.add_dependency "grape", "~> 1.6.0"
   spec.add_dependency "grape-cancan"
-  spec.add_dependency "grape-jsonapi"
+  # grape-jsonapi 1.0.1 introduced a data param "feature" that causes malformed Swagger docs
+  spec.add_dependency "grape-jsonapi", "1.0.0"
   spec.add_dependency "grape-swagger"
   spec.add_dependency "grape_on_rails_routes"
   # We can't do this until there is an updated release.
