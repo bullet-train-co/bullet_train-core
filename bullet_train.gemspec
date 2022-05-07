@@ -94,7 +94,7 @@ Gem::Specification.new do |spec|
 
   # Conversations.
   spec.add_runtime_dependency "unicode-emoji"
-  
+
   # Pagination.
   spec.add_runtime_dependency "pagy"
 end
