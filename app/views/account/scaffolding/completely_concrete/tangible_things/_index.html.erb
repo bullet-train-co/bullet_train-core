@@ -4,7 +4,9 @@
 <% hide_actions ||= false %>
 <% hide_back ||= false %>
 
-<%= render 'account/shared/box' do |p| %>
+<% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) %>
+
+<%= render 'account/shared/box', pagy: pagy do |p| %>
   <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
   <% p.content_for :description do %>
     <%= t(".contexts.#{context.class.name.underscore}.description#{"_empty" unless tangible_things.any?}") %>
@@ -70,5 +72,3 @@
     <% end %>
   <% end %>
 <% end %>
-
-<%== pagy_nav(@pagy) if @pagy %>

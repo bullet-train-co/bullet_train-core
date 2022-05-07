@@ -6,7 +6,6 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   def index
     # if you only want these objects shown on their parent's show page, uncomment this:
     # redirect_to [:account, @absolutely_abstract_creative_concept]
-    @pagy, @tangible_things = pagy(@tangible_things)
   end
 
   # GET /account/scaffolding/completely_concrete/tangible_things/:id
