@@ -568,7 +568,7 @@ class Scaffolding::Transformer
   def add_attributes_to_various_views(attributes, scaffolding_options = {})
     sql_type_to_field_type_mapping = {
       # 'binary' => '',
-      "boolean" => "buttons",
+      "boolean" => "options",
       "date" => "date_field",
       "datetime" => "date_and_time_field",
       "decimal" => "text_field",
@@ -634,10 +634,8 @@ class Scaffolding::Transformer
       attribute_partial ||= attribute_options[:attribute] || case type
       when "trix_editor", "ckeditor"
         "html"
-      when "buttons", "super_select", "options"
-        if boolean_buttons
-          "boolean"
-        elsif is_ids
+      when "buttons", "super_select", "options", "boolean"
+        if is_ids
           "has_many"
         elsif is_id
           "belongs_to"
