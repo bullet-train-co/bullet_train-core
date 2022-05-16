@@ -1,3 +1,3 @@
 module BulletTrain
-  VERSION = "1.0.68"
+  VERSION = "1.0.69"
 end

@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.0.68)
+    bullet_train (1.0.69)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -114,7 +114,7 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.0.7)
+    bullet_train-fields (1.0.8)
       chronic
       cloudinary
       phonelib
@@ -315,7 +315,7 @@ GEM
     standard (1.11.0)
       rubocop (= 1.28.2)
       rubocop-performance (= 1.13.3)
-    strscan (3.0.1)
+    strscan (3.0.3)
     thor (1.2.1)
     thread-local (1.1.0)
     timeout (0.2.0)
