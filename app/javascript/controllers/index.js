@@ -1,4 +1,4 @@
-import { identifierForContextKey } from "@stimulus/webpack-helpers"
+import { identifierForContextKey } from "@hotwired/stimulus-webpack-helpers"
 
 import ClipboardController from './clipboard_controller'
 import FormController from './form_controller'

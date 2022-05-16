@@ -1,4 +1,4 @@
-import { Controller } from 'stimulus'
+import { Controller } from "@hotwired/stimulus"
 
 // TODO Some of this feels really specific to the conversation messages form. Should we rename this controller?
 export default class extends Controller {
