@@ -9,8 +9,8 @@ export default class extends Controller {
   static values = {
     includeTime: Boolean,
     defaultTimeZones: Array,
-    cancelButtonLabel: String,
-    applyButtonLabel: String
+    cancelButtonLabel: { type: String, default: "Cancel" },
+    applyButtonLabel: { type: String, default: "Apply" }
   }
 
   connect() {
@@ -86,8 +86,8 @@ export default class extends Controller {
       timePickerIncrement: 5,
       autoUpdateInput: false,
       locale: {
-        cancelLabel: (this.hasCancelButtonLabelValue)? this.cancelButtonLabelValue: "cancel",
-        applyLabel: (this.hasApplyButtonLabelValue)? this.applyButtonLabelValue: "apply",
+        cancelLabel: this.cancelButtonLabelValue,
+        applyLabel: this.applyButtonLabelValue,
         format: this.includeTimeValue ? 'MM/DD/YYYY h:mm A' : 'MM/DD/YYYY'
       }
     })
