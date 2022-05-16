@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 require("select2/dist/css/select2.min.css");
 import select2 from "select2";
 

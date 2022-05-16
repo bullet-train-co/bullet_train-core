@@ -1,4 +1,4 @@
-import { Controller } from "stimulus"
+import { Controller } from "@hotwired/stimulus"
 import '@simonwep/pickr/dist/themes/monolith.min.css'
 
 import Pickr from '@simonwep/pickr';
