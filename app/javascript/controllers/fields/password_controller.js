@@ -8,7 +8,7 @@ export default class extends Controller {
     const result = zxcvbn(e.target.value);
 
     if (result.feedback) {
-      this.strengthIndicatorTarget.innerText = result.feedback.warning;
+      this.strengthIndicatorTarget.innerText = `${result.feedback.warning}.`;
       this.strengthIndicatorTarget.classList.remove("hidden");
     } else {
       this.strengthIndicatorTarget.classList.add("hidden");
