@@ -7,7 +7,7 @@ export default class extends Controller {
   estimateStrength(e) {
     const result = zxcvbn(e.target.value);
 
-    if (result.feedback && result.feedback.length > 0) {
+    if (result.feedback && result.feedback.warning.length > 0) {
       this.strengthIndicatorTarget.innerText = `${result.feedback.warning}.`;
       this.strengthIndicatorTarget.classList.remove("hidden");
     } else {
