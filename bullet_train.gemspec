@@ -97,4 +97,7 @@ Gem::Specification.new do |spec|
 
   # Pagination.
   spec.add_runtime_dependency "pagy"
+
+  # Password strength.
+  spec.add_dependency "devise-pwned_password"
 end

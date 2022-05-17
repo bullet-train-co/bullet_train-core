@@ -3,13 +3,18 @@ module Users::Base
 
   included do
     if two_factor_authentication_enabled?
-      devise :two_factor_authenticatable, :two_factor_backupable, :omniauthable,
-        :registerable, :recoverable, :rememberable, :trackable, :validatable,
-        otp_secret_encryption_key: ENV["TWO_FACTOR_ENCRYPTION_KEY"]
+      devise :two_factor_authenticatable, :two_factor_backupable, otp_secret_encryption_key: ENV["TWO_FACTOR_ENCRYPTION_KEY"]
     else
-      devise :omniauthable, :database_authenticatable, :registerable,
-        :recoverable, :rememberable, :trackable, :validatable
+      devise :database_authenticatable
     end
+
+    devise :omniauthable
+    devise :pwned_password
+    devise :registerable
+    devise :recoverable
+    devise :rememberable
+    devise :trackable
+    devise :validatable
 
     # teams
     has_many :memberships, dependent: :destroy
