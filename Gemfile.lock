@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.0.70)
+    bullet_train (1.0.71)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -20,6 +20,7 @@ PATH
       cancancan
       commonmarker
       devise
+      devise-pwned_password
       extended_email_reply_parser
       fastimage
       figaro
@@ -114,7 +115,7 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.0.10)
+    bullet_train-fields (1.0.14)
       chronic
       cloudinary
       phonelib
@@ -128,7 +129,7 @@ GEM
     bullet_train-scope_validator (1.0.2)
     bullet_train-super_load_and_authorize_resource (1.0.1)
       rails (>= 6.0.0)
-    bullet_train-themes (1.0.10)
+    bullet_train-themes (1.0.11)
       rails (>= 7.0.0)
     cable_ready (5.0.0.pre9)
       actioncable (>= 5.2)
@@ -158,6 +159,9 @@ GEM
       railties (>= 4.1.0)
       responders
       warden (~> 1.2.3)
+    devise-pwned_password (0.1.9)
+      devise (~> 4)
+      pwned (~> 2.0.0)
     digest (3.1.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
@@ -240,6 +244,7 @@ GEM
       binding_of_caller (~> 1.0)
       pry (~> 0.13)
     public_suffix (4.0.7)
+    pwned (2.0.2)
     racc (1.6.0)
     rack (2.2.3)
     rack-test (1.1.0)
