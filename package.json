@@ -1,6 +1,6 @@
 {
   "name": "@bullet-train/fields",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "Bullet Train Fields",
   "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/fields.esm.js",
