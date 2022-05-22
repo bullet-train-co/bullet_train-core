@@ -1430,6 +1430,6 @@ class Scaffolding::Transformer
 
     add_additional_step :yellow, transform_string("If you would like the table view you've just generated to reactively update when a Tangible Thing is updated on the server, please edit `app/models/scaffolding/absolutely_abstract/creative_concept.rb`, locate the `has_many :completely_concrete_tangible_things`, and add `enable_updates: true` to it.")
 
-    restart_server
+    restart_server unless ENV["CI"].present?
   end
 end
