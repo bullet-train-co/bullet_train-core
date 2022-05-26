@@ -20,43 +20,42 @@ module.exports = {
       },
       colors: {
         red: {
-          darker: '#652424',
-          DEFAULT: '#e86060',
-          light: '#ee8989',
+          400: '#ee8989',
+          500: '#e86060',
+          900: '#652424',
         },
+
         yellow: {
-          darker: '#6e6446',
-          DEFAULT: '#fbe6a8',
-          light: '#fcedbe',
+          400: '#fcedbe',
+          500: '#fbe6a8',
+          900: '#6e6446',
         },
-        blue: {
-          light: '#95acff',
-          lightish: '#448eef',
-          DEFAULT: '#047bf8',
-          dark: '#0362c6',
-          darker: '#00369D',
+
+        primary: {
+          300: 'var(--primary-300)',
+          400: 'var(--primary-400)',
+          500: 'var(--primary-500)',
+          600: 'var(--primary-600)',
+          700: 'var(--primary-700)',
+          800: 'var(--primary-800)',
+          900: 'var(--primary-900)',
         },
-        green: {
-          darker: '#166e0c',
-          dark: '#1b850f',
-          DEFAULT: '#71c21a',
-          light: '#c5f0c0',
+
+        darkPrimary: {
+          300: 'var(--dark-primary-300)',
+          400: 'var(--dark-primary-400)',
+          500: 'var(--dark-primary-500)',
+          600: 'var(--dark-primary-600)',
+          700: 'var(--dark-primary-700)',
+          800: 'var(--dark-primary-800)',
+          900: 'var(--dark-primary-900)',
         },
-        sealBlue: {
-          100: '#232942',
-          200: '#293145',
-          300: '#2b344e',
-          400: '#323c58',
-          500: '#4D566F',
-          600: '#777E94',
-          700: '#9facc7',
-          800: '#b3bcde',
-          900: '#ccd9e8'
+
+        // This is a weird one-off for dark-mode.
+        darkAccent: {
+          200: 'var(--dark-accent-200)',
         },
-        vividBlue: {
-          700: '#1c4cc3',
-          800: '#0e369a'
-        },
+
         black: {
           100: '#000000',
           200: '#101112',

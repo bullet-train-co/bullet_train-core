@@ -36,7 +36,7 @@
       vertical-align: -7px;
       &:focus, &:active {
         i {
-          color: #047bf8;
+          color: var(--primary-500);
         }
       }
     }
@@ -49,9 +49,9 @@
       }
     }
     &:focus, &:active {
-      border-color: #047bf8;
+      border-color: var(--primary-500);
       i {
-        color: #047bf8;
+        color: var(--primary-500);
       }
     }
   }

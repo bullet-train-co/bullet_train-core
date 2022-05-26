@@ -1,6 +1,6 @@
 <% conversation ||= subscription.conversation %>
 
-<div class="<%= 'border-l-blue border-l-4 border-blue-700' if subscription.unread? %>">
+<div class="<%= 'border-l-primary-500 border-l-4 border-primary-600' if subscription.unread? %>">
 
   <%= link_to [:account, current_user, :conversations, :subscriptions, conversation_id: subscription.conversation.id], class: "#{current_conversation ? 'bg-gray-100 border-l ' : 'bg-white'} h-28 p-1 flex border-b-2 cursor-pointer hover:no-underline  hover:bg-gray-50 relative items-center" do %>
     <div class="md:w-1/4 w-1/5 lg:inline-block md:hidden flex-shrink-0">

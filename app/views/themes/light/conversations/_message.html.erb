@@ -65,9 +65,9 @@
           data-action="<%= 'mouseenter->reply#showReplyButton click->reply#showReplyButton' unless placeholder_message || show_as_thread %>" data-show-class="<%= current_user_message ? 'mr-10' : 'ml-10' %>"
           >
           <% if placeholder_message %>
-            <div class="cursor-pointer" data-thread-url="<%= url_for([:thread, :account, message.thread_origin_message || message]) %>" data-action="click->reply#reply"><span class="px-2 py-1 text-xs text-gray-300 rounded-lg inline-block <%= rounding_modifier %> border-blue-300 border break-words sm:max-w-sm max-w-tiny"><%= Nokogiri::HTML.fragment(trix_sanitize(message.body)).text.truncate(80) %></span></div>
+            <div class="cursor-pointer" data-thread-url="<%= url_for([:thread, :account, message.thread_origin_message || message]) %>" data-action="click->reply#reply"><span class="px-2 py-1 text-xs text-gray-300 rounded-lg inline-block <%= rounding_modifier %> border-primary-300 border break-words sm:max-w-sm max-w-tiny"><%= Nokogiri::HTML.fragment(trix_sanitize(message.body)).text.truncate(80) %></span></div>
           <% else %>
-            <div><span class="px-4 py-2 rounded-lg inline-block <%= rounding_modifier %> <%= current_user_message ? ' bg-blue-600 text-white' : ' bg-gray-300 text-gray-600' %> "><%= trix_sanitize(message.body) %></span></div>
+            <div><span class="px-4 py-2 rounded-lg inline-block <%= rounding_modifier %> <%= current_user_message ? ' bg-primary-600 text-white' : ' bg-gray-300 text-gray-600' %> "><%= trix_sanitize(message.body) %></span></div>
           <% end %>
         </div>
         <%= avatar %>
@@ -86,7 +86,7 @@
       </div>
       <% if message.replies.any? && !show_as_thread %>
         <div class="<%= 'text-right' if current_user_message %>">
-          <button class="text-xs text-blue-400 text-right mr-12 ml-12" data-thread-url="<%= url_for([:thread, :account, message.thread_origin_message || message]) %>" data-action="reply#reply"><%= message.replies.size %> <%= t("conversations/messages.navigation.reply").pluralize(message.replies.size) %></button>
+          <button class="text-xs text-primary-400 text-right mr-12 ml-12" data-thread-url="<%= url_for([:thread, :account, message.thread_origin_message || message]) %>" data-action="reply#reply"><%= message.replies.size %> <%= t("conversations/messages.navigation.reply").pluralize(message.replies.size) %></button>
         </div>
       <% end %>
 

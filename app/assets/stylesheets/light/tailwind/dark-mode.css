@@ -3,34 +3,35 @@
     /**
      * Color overrides
      **/
-    .bg-blue-darker {
+    .bg-primary-900 {
+      /* TODO We can't really do this. We need to just append a transparency class to these elements. */
       background-color: rgba(0, 0, 0, 0.15);
     }
 
-    .bg-dark-blue-gradient {
+    .bg-dark-gradient {
       &:before {
-        background: linear-gradient(to bottom right, #633d7d, #2867ab 100%);
+        background: linear-gradient(to bottom right, var(--dark-gradient-from), var(--dark-gradient-to) 100%);
       }
-      background: linear-gradient(to bottom right, #633d7d, #2867ab 100%);
+      background: linear-gradient(to bottom right, var(--dark-gradient-from), var(--dark-gradient-to) 100%);
     }
 
     /**
      * General
      **/
     .button {
-      @apply ring-offset-sealBlue-400;
+      @apply ring-offset-darkPrimary-700;
     }
 
     .table {
       th {
-        @apply text-sealBlue-700;
+        @apply text-darkPrimary-400;
       }
 
       tbody {
         @apply border-gray-500;
 
         tr {
-          border-top: 1px solid theme('colors.sealBlue.600');
+          border-top: 1px solid theme('colors.darkPrimary.500');
         }
 
         td {
@@ -38,7 +39,7 @@
 
           a,
           input[type="submit"] {
-            @apply text-sealBlue-800;
+            @apply text-darkAccent-200;
           }
         }
       }
@@ -48,7 +49,7 @@
      * Form components
      **/
     .button-secondary {
-      @apply text-sealBlue-800;
+      @apply text-darkAccent-200;
     }
 
     .button-alternative {
@@ -64,94 +65,94 @@
      **/
     /* Color picker */
     .pcr-app {
-      @apply bg-sealBlue-300 border border-solid border-sealBlue-100;
+      @apply bg-darkPrimary-800 border border-solid border-darkPrimary-900;
 
       .pcr-interaction .pcr-result {
-        @apply text-sealBlue-900 border border-solid border-sealBlue-100 bg-sealBlue-300;
+        @apply text-darkPrimary-300 border border-solid border-darkPrimary-900 bg-darkPrimary-800;
 
         &:focus {
-          box-shadow: 0 0 0 1px theme('colors.blue.500'), 0 0 0 3px theme('colors.blue.500');
+          box-shadow: 0 0 0 1px theme('colors.primary.500'), 0 0 0 3px theme('colors.primary.500');
         }
       }
     }
 
     /* Date range picker */
     .daterangepicker {
-      @apply bg-sealBlue-300 border-sealBlue-100;
+      @apply bg-darkPrimary-800 border-darkPrimary-900;
 
       &::before {
-        border-bottom-color: theme('colors.sealBlue.100');
+        border-bottom-color: theme('colors.darkPrimary.900');
       }
 
       &::after {
-        border-bottom-color: theme('colors.sealBlue.300');
+        border-bottom-color: theme('colors.darkPrimary.800');
       }
 
       .calendar-table {
-        @apply bg-sealBlue-300 text-sealBlue-900;
+        @apply bg-darkPrimary-800 text-darkPrimary-300;
 
         /* navigation arrows */
         .available {
           span {
-            @apply border-blue-500;
+            @apply border-primary-500;
           }
         }
       }
 
       /* Clear and Apply buttons wrapper */
       .drp-buttons {
-        border-top-color: theme('colors.sealBlue.100');
-        @apply text-sealBlue-900;
+        border-top-color: theme('colors.darkPrimary.900');
+        @apply text-darkPrimary-300;
       }
 
       th {
         &.available:hover {
-          @apply bg-sealBlue-500;
+          @apply bg-darkPrimary-600;
         }
       }
 
       td {
         &.off {
-          @apply bg-sealBlue-300 text-white;
+          @apply bg-darkPrimary-800 text-white;
         }
 
         &.available:hover {
-          @apply bg-sealBlue-500;
+          @apply bg-darkPrimary-600;
         }
       }
 
       .hourselect, .minuteselect, .ampmselect {
-        @apply text-sealBlue-900 border-sealBlue-100 bg-sealBlue-300 !important;
+        @apply text-darkPrimary-300 border-darkPrimary-900 bg-darkPrimary-800 !important;
       }
     }
 
     /* Phone field */
     .iti__country-list {
-      @apply bg-sealBlue-300 border border-solid border-sealBlue-100;
+      @apply bg-darkPrimary-800 border border-solid border-darkPrimary-900;
     }
 
     /* Select2 */
     .select2-container {
       .select2-selection__rendered {
-        @apply text-sealBlue-900 !important;
+        @apply text-darkPrimary-300 !important;
       }
 
       .select2-dropdown {
-        @apply bg-sealBlue-400;
+        @apply bg-darkPrimary-700;
       }
 
       .select2-search__field {
-        @apply bg-sealBlue-300 border-sealBlue-100 !important;
+        @apply bg-darkPrimary-800 border-darkPrimary-900 !important;
       }
 
       .select2-selection--multiple, .select2-selection--single {
-        @apply bg-sealBlue-300 focus:ring-blue border-sealBlue-100 !important;
-        @apply text-sealBlue-900;
+        @apply bg-darkPrimary-800 focus:ring-primary-500 border-darkPrimary-900 !important;
+        @apply text-darkPrimary-300;
       }
 
       /* For the selected options in the multiple select2 component */
       .select2-selection__choice {
-        @apply bg-blue-500 border-blue-500 !important;
+        @apply bg-primary-500 border-primary-500 !important;
         @apply text-white;
 
         .select2-selection__choice__remove {
@@ -164,48 +165,48 @@
       }
 
       .select2-results__option {
-        @apply text-sealBlue-900;
+        @apply text-darkPrimary-300;
       }
     }
 
     /* Trix Editor */
     trix-editor {
-      @apply bg-sealBlue-300 border-sealBlue-100 !important;
+      @apply bg-darkPrimary-800 border-darkPrimary-900 !important;
 
       &:focus, &:active {
-        @apply border-blue !important;
+        @apply border-primary-500 !important;
       }
     }
 
     trix-toolbar {
       .trix-button-group, .trix-button {
-        @apply border-sealBlue-100 !important;
+        @apply border-darkPrimary-900 !important;
       }
     }
 
     .tribute-container {
       ul {
-        @apply bg-sealBlue-300 border-sealBlue-100 !important;
+        @apply bg-darkPrimary-800 border-darkPrimary-900 !important;
       }
     }
 
     .trix-dialogs {
-      @apply bg-sealBlue-300 border-sealBlue-100 !important;
+      @apply bg-darkPrimary-800 border-darkPrimary-900 !important;
     }
 
     .trix-content {
       a[href^="bullettrain://"] {
-        @apply bg-sealBlue-600 text-white;
+        @apply bg-darkPrimary-500 text-white;
       }
     }
 
     /* CKEditor */
     .ck {
-      --ck-color-base-background: theme('colors.sealBlue.300');
-      --ck-color-base-border: theme('colors.sealBlue.100');
-      --ck-color-toolbar-background: theme('colors.sealBlue.200');
-      --ck-color-toolbar-border: theme('colors.sealBlue.100');
-      --ck-color-text: theme('colors.sealBlue.900');
+      --ck-color-base-background: theme('colors.darkPrimary.800');
+      --ck-color-base-border: theme('colors.darkPrimary.900');
+      --ck-color-toolbar-background: theme('colors.darkPrimary.800');
+      --ck-color-toolbar-border: theme('colors.darkPrimary.900');
+      --ck-color-text: theme('colors.darkPrimary.300');
 
       .ck-editor__editable:not(.ck-editor__nested-editable) {
         @apply shadow-none;

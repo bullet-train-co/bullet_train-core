@@ -32,7 +32,7 @@ a[href^="bullettrain://users"], a[href^="bullettrain://teams"], span.tribute-use
     border-radius: 5px;
     overflow: hidden;
     box-sizing: border-box;
-    border: 2px solid #047bf8;
+    border: 2px solid var(--primary-500);
     background: white;
     list-style: none;
     padding: 0;
@@ -78,8 +78,8 @@ trix-editor {
   padding-left: 0.75rem;
   @apply shadow-sm border-gray-300 font-light rounded-md;
   &:focus, &:active {
-    border-color: #047bf8;
-    box-shadow: inset 0 0 0 1px #047bf8;
+    border-color: var(--primary-500);
+    box-shadow: inset 0 0 0 1px var(--primary-500);
   }
 }
 

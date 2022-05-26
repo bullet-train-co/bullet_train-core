@@ -1,0 +1,100 @@
+:root, .theme-blue {
+  --primary-300: #95acff;
+  --primary-400: #448eef;
+  --primary-500: #047bf8;
+  --primary-600: #0362c6;
+  --primary-700: #1c4cc3;
+  --primary-800: #0e369a;
+  --primary-900: #00369D;
+
+  --dark-primary-300: #ccd9e8;
+  --dark-primary-400: #9facc7;
+  --dark-primary-500: #777E94;
+  --dark-primary-600: #4D566F;
+  --dark-primary-700: #323c58;
+  --dark-primary-800: #2b344e;
+  --dark-primary-900: #232942;
+
+  --dark-accent-200: #b3bcde;
+
+  --light-gradient-from: #D7BBEA;
+  --light-gradient-to: #65A8F1;
+  --dark-gradient-from: #633d7d;
+  --dark-gradient-to: #2867ab;
+}
+
+.theme-purple {
+  --primary-300: #ac95ff;
+  --primary-400: #8e44ef;
+  --primary-500: #7b04f8;
+  --primary-600: #6203c6;
+  --primary-700: #4c1cc3;
+  --primary-800: #360e9a;
+  --primary-900: #36009D;
+
+  --dark-primary-300: #d9cce8;
+  --dark-primary-400: #ac9fc7;
+  --dark-primary-500: #7E7794;
+  --dark-primary-600: #564D6F;
+  --dark-primary-700: #3c3258;
+  --dark-primary-800: #342b4e;
+  --dark-primary-900: #292342;
+
+  --dark-accent-200: #bcb3de;
+
+  --light-gradient-from: #EABBD7;
+  --light-gradient-to: #A865F1;
+  --dark-gradient-from: #7d3d63;
+  --dark-gradient-to: #6728ab;
+}
+
+.theme-orange {
+  --primary-300: #ffac95;
+  --primary-400: #ef8e44;
+  --primary-500: #f87b04;
+  --primary-600: #c66203;
+  --primary-700: #c34c1c;
+  --primary-800: #9a360e;
+  --primary-900: #9D3600;
+
+  /* TOOD Kind of yuck? */
+  --dark-primary-300: #e8d9cc;
+  --dark-primary-400: #c7ac9f;
+  --dark-primary-500: #947E77;
+  --dark-primary-600: #6F564D;
+  --dark-primary-700: #583c32;
+  --dark-primary-800: #4e342b;
+  --dark-primary-900: #422923;
+
+  --dark-accent-200: #debcb3;
+
+  --light-gradient-from: #EABBD7;
+  --light-gradient-to: #F1A865;
+  --dark-gradient-from: #7d3d63;
+  --dark-gradient-to: #ab6728;
+}
+
+.theme-pink {
+  --primary-300: #ff95ac;
+  --primary-400: #ef448e;
+  --primary-500: #f8047b;
+  --primary-600: #c60362;
+  --primary-700: #c31c4c;
+  --primary-800: #9a0e36;
+  --primary-900: #9D0036;
+
+  --dark-primary-300: #d9cce8;
+  --dark-primary-400: #ac9fc7;
+  --dark-primary-500: #7E7794;
+  --dark-primary-600: #564D6F;
+  --dark-primary-700: #3c3258;
+  --dark-primary-800: #342b4e;
+  --dark-primary-900: #292342;
+
+  --dark-accent-200: #bcb3de;
+
+  --light-gradient-from: #D7BBEA;
+  --light-gradient-to: #F165A8;
+  --dark-gradient-from: #6728ab;
+  --dark-gradient-to: #633d7d;
+}
