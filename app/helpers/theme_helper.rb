@@ -8,12 +8,6 @@ module ThemeHelper
     /^shared\//,
   ]
 
-  def current_theme
-    # Temporarily hardcoded. We actually don't want this to be just an `mattr_accessor` because the same application
-    # can use multiple themes. Need to think about this a bit.
-    :light
-  end
-
   def current_theme_object
     @current_theme_object ||= "BulletTrain::Themes::#{current_theme.to_s.classify}::Theme".constantize.new
   end
