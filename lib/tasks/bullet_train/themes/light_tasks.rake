@@ -21,6 +21,7 @@ namespace :bullet_train do
         puts "Ejecting all theme partials into `./app/views/themes/#{args[:destination]}`."
         `mkdir #{Rails.root}/app/views/themes`
         `cp -R #{theme_base_path}/app/views/themes/light #{Rails.root}/app/views/themes/#{args[:destination]}`
+        `sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/light/#{args[:destination]}/g" #{Rails.root}/app/views/themes/#{args[:destination]}/layouts/_head.html.erb`
 
         puts "Cutting local `Procfile.dev` over from `light` to `#{args[:destination]}`."
         `sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/light/#{args[:destination]}/g" #{Rails.root}/Procfile.dev`
