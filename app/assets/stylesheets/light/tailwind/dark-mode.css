@@ -194,10 +194,8 @@
       @apply bg-darkPrimary-800 border-darkPrimary-900 !important;
     }
 
-    .trix-content {
-      a[href^="bullettrain://"] {
-        @apply bg-darkPrimary-500 text-white;
-      }
+    .trix-content a[href^="bullettrain://"] {
+      @apply text-white bg-darkPrimary-500;
     }
 
     /* CKEditor */
