@@ -1030,10 +1030,14 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
           scaffold_add_line_to_file("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
 
-          assertion = if type == "date_field"
+          assertion = case type
+          when "date_field"
             "assert_equal Date.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
-          elsif type == "date_and_time_field"
+          when "date_and_time_field"
             "assert_equal DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
+          when "file_field"
+            # TODO: If we want to use Cloudinary to handle our files, we should make sure we're getting a URL.
+            "assert_equal tangible_thing_data['#{name}']['record']['id'], tangible_thing.#{name}.record.id"
           else
             "assert_equal tangible_thing_data['#{name}'], tangible_thing.#{name}"
           end
@@ -1276,9 +1280,19 @@ class Scaffolding::Transformer
       else
         transform_string("association :absolutely_abstract_creative_concept, factory: :scaffolding_absolutely_abstract_creative_concept")
       end
+
       scaffold_replace_line_in_file("./test/factories/scaffolding/completely_concrete/tangible_things.rb", content, "absolutely_abstract_creative_concept { nil }")
 
       add_has_many_association
+
+      # Adds file attachment to factory
+      attributes.each do |attribute|
+        attribute_name, partial_type = attribute.split(":")
+        if partial_type == "file_field"
+          content = "#{attribute_name} { Rack::Test::UploadedFile.new(\"test/support/foo.txt\") }"
+          scaffold_replace_line_in_file("./test/factories/scaffolding/completely_concrete/tangible_things.rb", content, "#{attribute_name} { nil }")
+        end
+      end
 
       if class_names_transformer.belongs_to_needs_class_definition?
         scaffold_replace_line_in_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", transform_string("belongs_to :absolutely_abstract_creative_concept, class_name: \"Scaffolding::AbsolutelyAbstract::CreativeConcept\"\n"), transform_string("belongs_to :absolutely_abstract_creative_concept\n"))
