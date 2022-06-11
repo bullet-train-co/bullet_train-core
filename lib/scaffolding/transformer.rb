@@ -655,8 +655,12 @@ class Scaffolding::Transformer
         "email"
       when "color_picker"
         "code"
-      else
+      when "text_field"
         "text"
+      when "text_area"
+        "text"
+      else
+        raise "Invalid attribute type: #{type}."
       end
 
       cell_attributes = if boolean_buttons

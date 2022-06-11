@@ -37,6 +37,12 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     name = parts.shift
     type = parts.join(":")
 
+    unless Scaffolding.valid_attribute_type?(type)
+      raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " +
+            "uses field partials when Super Scaffolding, i.e. - `name:text_field` as opposed to `name:string`. " +
+            "Please refer to the Field Partial documentation to view which attribute types are available."
+    end
+
     # extract any options they passed in with the field.
     type, attribute_options = type.scan(/^(.*){(.*)}/).first || type
 
