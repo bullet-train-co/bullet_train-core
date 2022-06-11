@@ -1,5 +1,5 @@
 class Scaffolding::RoutesFileManipulator
-  attr_accessor :child, :parent, :lines, :transformer_options
+  attr_accessor :child, :parent, :lines, :transformer_options, :block_manipulator
 
   def initialize(filename, child, parent, transformer_options = {})
     self.child = child
@@ -7,6 +7,7 @@ class Scaffolding::RoutesFileManipulator
     @filename = filename
     self.lines = File.readlines(@filename)
     self.transformer_options = transformer_options
+    self.block_manipulator = Scaffolding::BlockManipulator.new(@filename)
   end
 
   def child_parts
@@ -141,7 +142,12 @@ class Scaffolding::RoutesFileManipulator
     current_namespace = nil
     while namespaces.any?
       current_namespace = namespaces.shift
-      namespace_lines = find_namespaces(created_namespaces + [current_namespace], within)
+      namespace_lines = if within.nil?
+        find_namespaces(created_namespaces + [current_namespace], within)
+      else
+        scope_namespace_to_parent(current_namespace, within)
+      end
+
       unless namespace_lines[current_namespace]
         lines_to_add = ["namespace :#{current_namespace} do", "end"]
         if created_namespaces.any?
@@ -154,6 +160,35 @@ class Scaffolding::RoutesFileManipulator
     end
     namespace_lines = find_namespaces(created_namespaces + [current_namespace], within)
     namespace_lines ? namespace_lines[current_namespace] : nil
+  end
+
+  # Since it's possible for multiple namespaces to exist on different levels,
+  # We scope the namespace we're trying to scaffold to its proper parent before processing it.
+  #
+  # i.e:
+  # Parent: Insight => Child: Personality::CharacterTrait
+  # Parent: Team    => Child: Personality::Disposition
+  # In this case, the :personality namespace under :insights should be
+  # ignored when Super Scaffolding Personality::Dispositon.
+  #
+  # resources do :insights do
+  #   namespace :personality do
+  #     resources :character_traits
+  #   end
+  # end
+  #
+  # namespace :personality do
+  #   resources :dispositions
+  # end
+  #
+  # In this case, Personality::CharacterTrait is under Team just like Personality::Disposition,
+  # but Personality::CharacterTrait's DIRECT parent is Insight so we shouldn't scaffold its routes there.
+  def scope_namespace_to_parent(namespace, within)
+    namespace_block_start = namespace_blocks_directly_under_parent(within).map do |namespace_block|
+      namespace_line_number = namespace_block.begin
+      namespace_line_number if lines[namespace_line_number].match?(/ +namespace :#{namespace}/)
+    end.compact
+    namespace_block_start.present? ? {namespace => namespace_block_start} : {}
   end
 
   def find(needle, within = nil)
@@ -220,6 +255,8 @@ class Scaffolding::RoutesFileManipulator
     result
   end
 
+  # Finds namespace blocks no matter how many levels deep they are nested in resource blocks, etc.
+  # However, will not find namespace blocks inside namespace blocks.
   def top_level_namespace_block_lines(within)
     local_namespace_blocks = []
     lines_within(within).each do |line|
@@ -251,6 +288,24 @@ class Scaffolding::RoutesFileManipulator
     end
 
     local_namespace_blocks
+  end
+
+  # Whereas top_level_namespace_block_lines grabs all namespace blocks that
+  # appear first no matter how many resource blocks they're nested in,
+  # this method grabs namespace blocks that are only indented one level deep.
+  def namespace_blocks_directly_under_parent(within)
+    blocks = []
+    if lines[within].match?(/do$/)
+      parent_indentation_size = block_manipulator.block_indentation_size(within)
+      within_block_end = find_block_end(within)
+      within.upto(within_block_end) do |line_number|
+        if lines[line_number].match?(/^#{" " * (parent_indentation_size + 2)}namespace/)
+          namespace_block_lines = line_number..find_block_end(line_number)
+          blocks << namespace_block_lines
+        end
+      end
+    end
+    blocks
   end
 
   def find_or_create_resource_block(parts, options = {})
@@ -300,7 +355,6 @@ class Scaffolding::RoutesFileManipulator
     child_namespaces, child_resource, parent_namespaces, parent_resource = divergent_parts
 
     within = find_or_create_namespaces(base_namespaces)
-    within = find_or_create_namespaces(common_namespaces, within) if common_namespaces.any?
 
     # e.g. Project and Projects::Deliverable
     if parent_namespaces.empty? && child_namespaces.one? && parent_resource == child_namespaces.first
@@ -326,14 +380,14 @@ class Scaffolding::RoutesFileManipulator
       #   resources :deliverables, except: collection_actions
       # end
 
+      # We want to see if there are any namespaces one level above the parent itself,
+      # because namespaces with the same name as the resource can exist on the same level.
+      parent_block_start = find_block_parent(parent_within)
+      namespace_line_within = find_or_create_namespaces(child_namespaces, parent_block_start)
+      find_or_create_resource([child_resource], options: "except: collection_actions", within: namespace_line_within)
       unless find_namespaces(child_namespaces, within)[child_namespaces.last]
-        insert_after(["", "namespace :#{child_namespaces.last} do", "end"], find_block_end(scope_within))
-        unless find_namespaces(child_namespaces, within)[child_namespaces.last]
-          raise "tried to insert `namespace :#{child_namespaces.last}` but it seems we failed"
-        end
+        raise "tried to insert `namespace :#{child_namespaces.last}` but it seems we failed"
       end
-
-      find_or_create_resource(child_namespaces + [child_resource], options: "except: collection_actions", within: within)
 
     # e.g. Projects::Deliverable and Objective Under It, Abstract::Concept and Concrete::Thing
     elsif parent_namespaces.any?
@@ -341,18 +395,16 @@ class Scaffolding::RoutesFileManipulator
       # namespace :projects do
       #   resources :deliverables
       # end
-      #
+      top_parent_namespace = find_namespaces(parent_namespaces, within)[parent_namespaces.first]
+      find_or_create_resource(child_namespaces + [child_resource], within: top_parent_namespace)
+
       # resources :projects_deliverables, path: 'projects/deliverables' do
       #   resources :objectives
       # end
-
-      find_resource(parent_namespaces + [parent_resource], within: within)
-      top_parent_namespace = find_namespaces(parent_namespaces, within)[parent_namespaces.first]
       block_parent_within = find_block_parent(top_parent_namespace)
       parent_namespaces_and_resource = (parent_namespaces + [parent_resource]).join("_")
       parent_within = find_or_create_resource_block([parent_namespaces_and_resource], options: "path: '#{parent_namespaces_and_resource.tr("_", "/")}'", within: block_parent_within)
       find_or_create_resource(child_namespaces + [child_resource], within: parent_within)
-
     else
 
       begin

@@ -223,13 +223,13 @@ Rails.application.routes.draw do
         scope module: 'teams' do
           resources :logs, only: collection_actions
         end
-
-        namespace :teams do
-          resources :logs, except: collection_actions
-        end
       end
       member do
         post :switch_to
+      end
+
+      namespace :teams do
+        resources :logs, except: collection_actions
       end
     end
   end

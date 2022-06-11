@@ -137,4 +137,8 @@ class Scaffolding::BlockManipulator
     end
     current_line
   end
+
+  def block_indentation_size(line_number)
+    lines[line_number].scan(/^\s+/).first.size
+  end
 end

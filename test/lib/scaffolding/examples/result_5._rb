@@ -160,6 +160,8 @@ Rails.application.routes.draw do
                 resources :delivery_attempts, only: [:index, :show]
               end
             end
+
+            resources :logs
           end
 
           resources :outgoing_events, path: 'outgoing/events' do
