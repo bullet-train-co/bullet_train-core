@@ -1,8 +1,10 @@
 module Account::DatesHelper
   # e.g. October 11, 2018
-  def display_date(timestamp)
+  def display_date(timestamp, custom_date_format = nil)
     return nil unless timestamp
-    if local_time(timestamp).year == local_time(Time.now).year
+    if custom_date_format
+      local_time(timestamp).strftime(custom_date_format)
+    elsif local_time(timestamp).year == local_time(Time.now).year
       local_time(timestamp).strftime("%B %-d")
     else
       local_time(timestamp).strftime("%B %-d, %Y")
@@ -12,23 +14,23 @@ module Account::DatesHelper
   # e.g. October 11, 2018 at 4:22 PM
   # e.g. Yesterday at 2:12 PM
   # e.g. April 24 at 7:39 AM
-  def display_date_and_time(timestamp)
+  def display_date_and_time(timestamp, custom_date_format = nil, custom_time_format = nil)
     return nil unless timestamp
 
     # today?
     if local_time(timestamp).to_date == local_time(Time.now).to_date
-      "Today at #{display_time(timestamp)}"
+      "Today at #{display_time(timestamp, custom_time_format)}"
     # yesterday?
     elsif (local_time(timestamp).to_date) == (local_time(Time.now).to_date - 1.day)
-      "Yesterday at #{display_time(timestamp)}"
+      "Yesterday at #{display_time(timestamp, custom_time_format)}"
     else
-      "#{display_date(timestamp)} at #{display_time(timestamp)}"
+      "#{display_date(timestamp, custom_date_format)} at #{display_time(timestamp, custom_time_format)}"
     end
   end
 
   # e.g. 4:22 PM
-  def display_time(timestamp)
-    local_time(timestamp).strftime("%l:%M %p")
+  def display_time(timestamp, custom_time_format = nil)
+    local_time(timestamp).strftime(custom_time_format || "%l:%M %p")
   end
 
   def local_time(time)
