@@ -26,7 +26,6 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "bullet_train"
-  spec.add_dependency "spring"
 
   # For Super Scaffolding: "select *a* team member" vs. "select *an* option".
   spec.add_dependency "indefinite_article"
