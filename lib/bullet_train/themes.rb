@@ -10,7 +10,7 @@ module BulletTrain
     module Base
       class Theme
         def directory_order
-          ['base']
+          ["base"]
         end
       end
     end
