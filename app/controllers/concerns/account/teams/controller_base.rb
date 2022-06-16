@@ -81,7 +81,7 @@ module Account::Teams::ControllerBase
         format.html { redirect_to [:account, @team], notice: I18n.t("teams.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @team] }
       else
-        format.html { render :new, layout: "devise" }
+        format.html { render :new, layout: "devise", status: :unprocessable_entity }
         format.json { render json: @team.errors, status: :unprocessable_entity }
       end
     end
