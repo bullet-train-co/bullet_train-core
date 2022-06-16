@@ -1,6 +1,6 @@
 {
   "name": "@bullet-train/bullet-train",
-  "version": "1.0.78",
+  "version": "1.0.79",
   "description": "Bullet Train - Main JavaScript",
   "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/bullet-train.js",
