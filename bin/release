@@ -47,6 +47,8 @@ puts output = `gem build`
 gem_file = output.chomp.lines.last.chomp.split.last
 puts gem_file
 
+puts `yarn global add rimraf`
+
 puts "Now we'll build the npm package."
 puts `yarn build`
 puts output = `yarn pack`
