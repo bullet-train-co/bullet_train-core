@@ -9,6 +9,10 @@ namespace :bullet_train do
         puts "Ejecting Tailwind configuration into `./tailwind.#{args[:destination]}.config.js`."
         `cp #{theme_base_path}/tailwind.light.config.js #{Rails.root}/tailwind.#{args[:destination]}.config.js`
 
+        puts "Ejecting Tailwind mailer configuration into `./tailwind.mailer.#{args[:destination]}.config.js`."
+        `cp #{theme_base_path}/tailwind.mailer.light.config.js #{Rails.root}/tailwind.mailer.#{args[:destination]}.config.js`
+        `sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/light/#{args[:destination]}/g" #{Rails.root}/tailwind.mailer.#{args[:destination]}.config.js`
+
         puts "Ejecting stylesheets into `./app/assets/stylesheets/#{args[:destination]}`."
         `mkdir #{Rails.root}/app/assets/stylesheets`
         `cp -R #{theme_base_path}/app/assets/stylesheets/light #{Rails.root}/app/assets/stylesheets/#{args[:destination]}`
@@ -31,7 +35,7 @@ namespace :bullet_train do
 
         # Stub out the class that represents this theme and establishes its inheritance structure.
         target_path = "#{Rails.root}/app/lib/bullet_train/themes/#{args[:destination]}.rb"
-        puts "Stubbing out a class that represents this theme in `./#{target_path}`."
+        puts "Stubbing out a class that represents this theme in `.#{target_path}`."
         `mkdir -p #{Rails.root}/app/lib/bullet_train/themes`
         `cp #{theme_base_path}/lib/bullet_train/themes/light.rb #{target_path}`
         `sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/module Light/module #{args[:destination].titlecase}/g" #{target_path}`
