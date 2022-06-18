@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md", "tailwind.light.config.js", ".bt-link"]
   end
 
-  spec.add_dependency "rails", ">= 7.0.0"
+  spec.add_development_dependency "standard"
+
+  spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "bullet_train-themes-tailwind_css"
 end

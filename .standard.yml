@@ -1,0 +1,12 @@
+ignore:
+  - 'lib/tasks/bullet_train/themes/light_tasks.rake':
+    - Style/CommandLiteral
+  - '**/*':
+    - Style/TrailingCommaInArguments
+    - Style/TrailingCommaInArrayLiteral
+    - Style/TrailingCommaInHashLiteral
+    - Style/CommentedKeyword
+  - 'app/controllers/**/*':
+    - Style/RedundantAssignment
+  - 'config/routes.rb':
+    - Lint/UselessAssignment
