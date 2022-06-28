@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.0.81)
+    bullet_train (1.0.82)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -139,7 +139,7 @@ GEM
       activesupport (>= 5.2)
       railties (>= 5.2)
       thread-local (>= 1.1.0)
-    cancancan (3.3.0)
+    cancancan (3.4.0)
     charlock_holmes (0.7.7)
     chronic (0.10.2)
     cloudinary (1.23.0)
@@ -277,7 +277,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
-    redis (4.6.0)
+    redis (4.7.0)
     regexp_parser (2.3.1)
     responders (3.0.1)
       actionpack (>= 5.0)
@@ -330,7 +330,7 @@ GEM
       unf_ext
     unf_ext (0.0.8.2)
     unicode-display_width (2.1.0)
-    unicode-emoji (3.1.0)
+    unicode-emoji (3.2.0)
       unicode-version (~> 1.0)
     unicode-version (1.2.0)
     valid_email (0.1.4)
