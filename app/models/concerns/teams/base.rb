@@ -18,6 +18,17 @@ module Teams::Base
     # integrations
     has_many :integrations_stripe_installations, class_name: "Integrations::StripeInstallation", dependent: :destroy if stripe_enabled?
 
+    # TODO Probably we can provide a way for gem packages to define these kinds of extensions.
+    if billing_enabled?
+      # subscriptions
+      has_many :billing_subscriptions, class_name: "Billing::Subscription", dependent: :destroy, foreign_key: :team_id
+
+      # TODO We need a way for `bullet_train-billing-stripe` to define these.
+      if defined?(Billing::Stripe::Subscription)
+        has_many :billing_stripe_subscriptions, class_name: "Billing::Stripe::Subscription", dependent: :destroy, foreign_key: :team_id
+      end
+    end
+
     # validations
     validates :name, presence: true
     validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.all.map(&:name)}, allow_nil: true
@@ -47,5 +58,13 @@ module Teams::Base
     # some generic features appeal to the `team` method for security or scoping purposes, but sometimes those same
     # generic functions need to function for a team model as well, so we do this.
     self
+  end
+
+  # TODO Probably we can provide a way for gem packages to define these kinds of extensions.
+  if billing_enabled?
+    def needs_billing_subscription?
+      return false if freemium_enabled?
+      billing_subscriptions.active.empty?
+    end
   end
 end

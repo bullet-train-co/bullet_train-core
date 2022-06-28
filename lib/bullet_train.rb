@@ -61,7 +61,12 @@ def inbound_email_enabled?
   ENV["INBOUND_EMAIL_DOMAIN"].present?
 end
 
-def subscriptions_enabled?
+def billing_enabled?
+  defined?(BulletTrain::Billing)
+end
+
+# TODO This should be in an initializer or something.
+def billing_subscription_creation_disabled?
   false
 end
 

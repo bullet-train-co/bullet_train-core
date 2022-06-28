@@ -5,6 +5,10 @@ module Account::Controllers::Base
     include LoadsAndAuthorizesResource
     include Fields::ControllerSupport
 
+    if billing_enabled?
+      include Billing::ControllerSupport
+    end
+
     before_action :set_last_seen_at, if: proc {
       user_signed_in? && (current_user.last_seen_at.nil? || current_user.last_seen_at < 1.minute.ago)
     }
@@ -106,6 +110,11 @@ module Account::Controllers::Base
         end
       end
 
+      # TODO Maybe in this context we should check whether `Billing::ControllerSupport` is included instead of just defined?
+      if defined?(Billing::ControllerSupport)
+        enforce_billing_requirements
+        # See `app/controllers/concerns/billing_support.rb` for details.
+      end
     end
 
     true
