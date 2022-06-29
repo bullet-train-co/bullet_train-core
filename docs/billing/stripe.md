@@ -6,7 +6,7 @@ We also provide a Stripe-specific adapter package with support for auto-configur
 
 ## 1. Purchase the Bullet Train Billing for Stripe package.
 
-First, [purchase Bullet Train Billing for Stripe]. Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. (This process is currently manually, so please be patient.)
+First, [purchase Bullet Train Billing for Stripe](https://buy.stripe.com/28o8zg4dBbrd59u7sM). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. (This process is currently manually, so please be patient.)
 
 ## 2. Installing the package.
 
