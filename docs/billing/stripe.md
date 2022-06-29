@@ -4,15 +4,15 @@ When you're ready to start billing customers for the product you've created with
 
 We also provide a Stripe-specific adapter package with support for auto-configuring those products and prices in your Stripe account. It also takes advantage of completely modern Stripe workflows, like allowing customers to purchase your product with Stripe Checkout and later manage their subscription using Stripe Billing's customer portal. It also automatically handles incoming Stripe webhooks as well, to keep subscription state in your application up-to-date with activity that has happened on Stripe's platform.
 
-## 1. Purchase the Bullet Train Billing for Stripe package.
+## 1. Purchase Bullet Train Billing for Stripe
 
-First, [purchase Bullet Train Billing for Stripe](https://buy.stripe.com/28o8zg4dBbrd59u7sM). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. (This process is currently manually, so please be patient.)
+First, [purchase Bullet Train Billing for Stripe](https://buy.stripe.com/28o8zg4dBbrd59u7sM). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. (This process is currently completed manually, so please be patient.)
 
-## 2. Installing the package.
+## 2. Install the Package
 
-### 2.1. Add the `bullet_train-billing` and `bullet_train-billing-stripe` Ruby gems.
+### 2.1. Add the Private Ruby Gems
 
-You'll need to specify both Ruby gems in your `Gemfile`, since we have to specify a special source for both:
+You'll need to specify both Ruby gems in your `Gemfile`, since we have to specify a private source for both:
 
 ```
 source "https://YOUR_TOKEN_HERE@gem.fury.io/bullettrain" do
@@ -56,7 +56,7 @@ Bullet Train defines subscription plans and pricing options in `config/models/bi
  - Visit https://dashboard.stripe.com/test/apikeys.
  - Create a new secret key.
 
-Note: By default we're linking to the "test mode" page for API keys so you can get up and running in development. When you're ready to deploy to production, you'll have to repeat this step and toggle the "test mode" option off to provision real API keys for live payments.
+**Note:** By default we're linking to the "test mode" page for API keys so you can get up and running in development. When you're ready to deploy to production, you'll have to repeat this step and toggle the "test mode" option off to provision real API keys for live payments.
 
 ### 4.2. Configure Stripe API Keys Locally
 
@@ -68,28 +68,28 @@ STRIPE_SECRET_KEY: sk_0CJw2Iu5wwIKXUDdqphrt2zFZyOCH
 
 ### 4.3. Populate Stripe with Locally Configured Products
 
-Before you can use Stripe Checkout or Stripe Billing's customer portal, your locally configured products will have to be created on Stripe as well. To accomplish this, you can have all locally defined products automatically created on Stripe by running the following:
+Before you can use Stripe Checkout or Stripe Billing's customer portal, your locally configured products will have to be created on Stripe as well. To accomplish this, you can have all locally defined products automatically created on Stripe via API by running the following:
 
 ```
 rake billing:stripe:populate_products_in_stripe
 ```
 
-## 4.4. Add Additional Environment Variables
+### 4.4. Add Additional Environment Variables
 
 The script in the previous step will output some additional environment variables you need to copy into `config/application.yml`.
 
 
-## 5. Wire up Stripe Webhooks
+## 5. Wire Up Webhooks
 
 Basic subscription creation will work without receiving and processing Stripe's webhooks. However, advanced payment workflows like SCA payments and customer portal cancelations and plan changes require receiving webhooks and processing them.
 
-## 5.1. Ensure HTTP Tunneling is Enabled
+### 5.1. Ensure HTTP Tunneling is Enabled
 
-Although Stripe provides free tooling for receiving webhooks in your local environment, the officially supported mechanism for doing so in Bullet Train is using [HTTP Tunneling with ngrok](/docs/tunneling.md). This is because we provide support for many types of webhooks across different packages, so we already need to have ngrok in play.
+Although Stripe provides free tooling for receiving webhooks in your local environment, the officially supported mechanism for doing so in Bullet Train is using [HTTP Tunneling with ngrok](/docs/tunneling.md). This is because we provide support for many types of webhooks across different platforms and packages, so we already need to have ngrok in play.
 
-Ensure you've completed the steps from the [HTTP Tunneling with ngrok](/docs/tunneling.md) page, including updating `BASE_URL` in `config/application.yml` and restarting your Rails server.
+Ensure you've completed the steps from [HTTP Tunneling with ngrok](/docs/tunneling.md), including updating `BASE_URL` in `config/application.yml` and restarting your Rails server.
 
-## 5.2. Enable Stripe Webhooks
+### 5.2. Enable Stripe Webhooks
 
  - Visit https://dashboard.stripe.com/test/webhooks/create.
  - Use the default "add an endpoint" form.
@@ -97,7 +97,7 @@ Ensure you've completed the steps from the [HTTP Tunneling with ngrok](/docs/tun
  - Under "select events to listen to" choose "select all events" and click "add events".
  - Finalize the creation of the endpoint by clicking "add endpoint".
 
-## 5.3. Configure Stripe Webhooks Signing Secret
+### 5.3. Configure Stripe Webhooks Signing Secret
 
 After creating the webhook endpoint, click "reveal" under the heading "signing secret". Copy the `whsec_...` value into your `config/application.yml` like so:
 
@@ -105,7 +105,7 @@ After creating the webhook endpoint, click "reveal" under the heading "signing s
 STRIPE_WEBHOOKS_ENDPOINT_SECRET: whsec_vchvkw3hrLK7SmUiEenExipUcsCgahf9
 ```
 
-## 5.4. Test Sample Webhook Delivery
+### 5.4. Test Sample Webhook Delivery
 
  - Restart your Rails server with `rails restart`.
  - Trigger a test webhook just to ensure it's resulting in an HTTP status code of 201.
@@ -124,7 +124,7 @@ You should be in "test mode" on Stripe, so when prompted for a credit card numbe
 
 This "products" list is what Stripe will display to users as upgrade and downgrade options in the customer portal. You shouldn't list any products here that aren't properly configured in your Rails app, otherwise the resulting webhook will fail to process. If you want to stop offering a plan, you should remove it from this list as well.
 
-## 8. Test Webhooks by Managing a Subscription
+## 8. Finalize Webhooks Testing by Managing a Subscription
 
 In the same account where you created your first test subscription, go into the "billing" menu and click "manage" on that subscription. This will take you to the Stripe Billing customer portal.
 
