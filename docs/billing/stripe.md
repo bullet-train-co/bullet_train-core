@@ -53,7 +53,7 @@ Bullet Train defines subscription plans and pricing options in `config/models/bi
 ### 4.1. Create API Keys with Stripe
 
  - Create a Stripe account if you don't already have one.
- - Visit https://dashboard.stripe.com/test/apikeys.
+ - Visit [https://dashboard.stripe.com/test/apikeys](https://dashboard.stripe.com/test/apikeys).
  - Create a new secret key.
 
 **Note:** By default we're linking to the "test mode" page for API keys so you can get up and running in development. When you're ready to deploy to production, you'll have to repeat this step and toggle the "test mode" option off to provision real API keys for live payments.
@@ -91,7 +91,7 @@ Ensure you've completed the steps from [HTTP Tunneling with ngrok](/docs/tunneli
 
 ### 5.2. Enable Stripe Webhooks
 
- - Visit https://dashboard.stripe.com/test/webhooks/create.
+ - Visit [https://dashboard.stripe.com/test/webhooks/create](https://dashboard.stripe.com/test/webhooks/create).
  - Use the default "add an endpoint" form.
  - Set "endpoint URL" to `https://YOUR-SUBDOMAIN.ngrok.io/webhooks/incoming/stripe_webhooks`.
  - Under "select events to listen to" choose "select all events" and click "add events".
@@ -118,7 +118,7 @@ You should be in "test mode" on Stripe, so when prompted for a credit card numbe
 
 ## 7. Configure Stripe Billing's Customer Portal
 
-  - Visit https://dashboard.stripe.com/test/settings/billing/portal.
+  - Visit [https://dashboard.stripe.com/test/settings/billing/portal](https://dashboard.stripe.com/test/settings/billing/portal).
   - Complete all required fields.
   - Be sure to add all of your actively available plans under "products".
 
