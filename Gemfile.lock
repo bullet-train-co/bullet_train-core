@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.0.89)
+    bullet_train (1.0.90)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -277,7 +277,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
-    redis (4.7.0)
+    redis (4.7.1)
     regexp_parser (2.3.1)
     responders (3.0.1)
       actionpack (>= 5.0)
