@@ -3,6 +3,7 @@
 @import "./tailwind/dark-mode";
 @import "./tailwind/colors";
 
+@import './bulk_actions';
 @import "./electron";
 @import './fields';
 @import './turn';
