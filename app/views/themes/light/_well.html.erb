@@ -1,0 +1,23 @@
+<% yield p = np %>
+
+<div class="border border-gray-300 rounded-md py-5 px-6 bg-gray-50 space-y">
+  <div class="space-y-2">
+    <% if p.content_for? :title %>
+      <h2 class="text-base font-semibold">
+        <%= p.content_for :title %>
+      </h2>
+    <% end %>
+
+    <% if p.content_for? :description %>
+      <p class="text-gray-400 font-light leading-normal">
+        <%= p.content_for :description %>
+      </p>
+    <% end %>
+  </div>
+
+  <% if p.content_for? :body %>
+    <div class="space-y">
+      <%= p.content_for :body %>
+    </div>
+  <% end %>
+</div>
