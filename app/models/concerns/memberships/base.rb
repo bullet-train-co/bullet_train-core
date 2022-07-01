@@ -13,7 +13,6 @@ module Memberships::Base
 
     has_many :scaffolding_completely_concrete_tangible_things_assignments, class_name: "Scaffolding::CompletelyConcrete::TangibleThings::Assignment", dependent: :destroy
     has_many :scaffolding_completely_concrete_tangible_things, through: :scaffolding_completely_concrete_tangible_things_assignments, source: :tangible_thing
-    has_many :reassignments_scaffolding_completely_concrete_tangible_things_reassignments, class_name: "Memberships::Reassignments::ScaffoldingCompletelyConcreteTangibleThingsReassignment", dependent: :destroy, foreign_key: :membership_id
 
     has_many :scaffolding_absolutely_abstract_creative_concepts_collaborators, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator", dependent: :destroy
 
