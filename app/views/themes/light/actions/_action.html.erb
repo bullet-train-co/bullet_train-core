@@ -9,22 +9,7 @@
       <div class="flex">
         <div class="flex-1 space-y-4 py-1">
           <div>
-            <%= action.label_string %> on
-            <%= target_description = capture do %>
-              <% if action.is_a?(Actions::TargetsMany) %>
-                <% if action.target_all? %>
-                  all Tangible Things
-                <% else %>
-                  <% if action.target_ids.one? %>
-                    <%= action.targeted.first.label_string %>
-                  <% else %>
-                    <%= action.target_ids.count %> <%= "Tangible Thing".pluralize(action.target_ids.count) %>
-                  <% end %>
-                <% end %>
-              <% else %>
-                <%= action.targeted.label_string %>
-              <% end %>
-            <% end %>
+            <%= action.label_string %>
           </div>
         </div>
         <div class="flex-0">
@@ -38,7 +23,7 @@
           <% end %>
           <% if can? :edit, action %>
             <%= link_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.edit"), [:edit, :account, action], class: 'button-secondary button-smaller' %>
-          <% end %>
+          <% end unless action.started_at # TODO This is the wrong way to do this, we need to do this in `roles.yml` when we can. %>
           <% if can? :destroy, action %>
             <%= button_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.destroy"), [:account, action], method: :delete, data: { confirm: t("#{action.class.name.pluralize.underscore}.buttons.confirmations.destroy", model_locales(action)) }, class: 'button-secondary button-smaller' %>
           <% end %>
