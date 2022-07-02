@@ -1,13 +1,13 @@
 <% color ||= 'yellow' %>
 
-<div class="rounded-md bg-<%= color %>-400 border border-<%= color %>-500 py-4 px-5 mb-3">
-  <h3 class="text-sm text-<%= color %>-900 font-light">
+<div class="rounded-md bg-<%= color %>-400 border border-<%= color %>-500 dark:border-<%= color %>-200 py-4 px-5 mb-3">
+  <h3 class="text-sm text-<%= color %>-600 dark:text-<%= color %>-200 font-light">
     <%= yield %>
   </h3>
 </div>
 
 <% # we have to list out the evaluations we want possible above so purgecss includes them in production. %>
 <% if false %>
-  <div class="bg-yellow-400 border-yellow-500 text-yellow-900"></div>
-  <div class="bg-red-400 border-red-500 text-red-900"></div>
+  <div class="bg-yellow-400 border-yellow-500 dark:border-yellow-200 text-yellow-600 dark:text-yellow-200"></div>
+  <div class="bg-red-400 border-red-500 dark:border-red-200 text-red-600 dark:text-red-200"></div>
 <% end %>
