@@ -72,9 +72,10 @@
             <% end %>
           <% end %>
 
-          <% unless hide_back %>
           <%# 🚅 super scaffolding will insert new bulk action model buttons above this line. %>
           <%= render "shared/bulk_action_select" %>
+
+          <% unless hide_back %>
             <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary(:completely_concrete_tangible_thing)} back" %>
           <% end %>
         <% end %>
