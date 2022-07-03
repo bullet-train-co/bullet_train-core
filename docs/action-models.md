@@ -44,7 +44,7 @@ end
 
 ### 1. Purchase Bullet Train Pro
 
-First, [purchase Bullet Train Pro](#). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to way a little to receive your keys.
+First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to way a little to receive your keys.
 
 ### 2. Install the Package
 
@@ -56,7 +56,7 @@ source "https://YOUR_TOKEN_HERE@gem.fury.io/bullettrain" do
 end
 ```
 
-Don't forget to run `bundle install` and `rails restart`. 
+Don't forget to run `bundle install` and `rails restart`.
 
 ## Super Scaffolding Commands
 
@@ -93,7 +93,7 @@ def perform_on_target(project)
 end
 ```
 
-You're done! 
+You're done!
 
 ## Additional Examples
 
@@ -133,7 +133,7 @@ Action Models that _can_ target many objects are by far the most common, but it'
 
 ### Targets One
 
-Sometimes you have an action that will only ever target one object at a time. In this case, they're generated a little differently and live under (and belong to) the model they target. 
+Sometimes you have an action that will only ever target one object at a time. In this case, they're generated a little differently and live under (and belong to) the model they target.
 
 When deciding between "targets many" and "targets one", our recommendation is that you only use "targets one" for actions that you know for certain could never make sense targeting more than one object at the same time. For example, if you're creating a send action for an email that includes configuration options and scheduling details, you may be reasonably confident that you never need users to be able to schedule two different emails at the same time with the same settings. That would be a good candidate for a "targets one" action.
 
