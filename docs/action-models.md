@@ -13,7 +13,7 @@ Examples of real-world features that can be easily implemented using Action Mode
 
  - A project manager can archive multiple projects at once.
  - A customer service agent can refund multiple payments at once.
- - A user can see updates while their infrastructure is provisioned.
+ - A user can see progress updates while their 100,000 row CSV file is imported.
  - A marketing manager can publish a blog post now or schedule it for publication tomorrow at 9 AM.
  - A contributor can propose a content template change that will be applied after review and approval.
 
@@ -115,10 +115,32 @@ def perform_on_target(project)
 end
 ```
 
+## Action Types
+
+Action Models can be generated in three flavors:
+
+ - `action-model:targets-many`
+ - `action-model:targets-one`
+ - `action-model:targets-one-parent`
+
+### Targets Many
+
+Action Models that _can_ target many objects are by far the most common, be it's important to understand that they're not only presented to users as bulk actions. Instead, by default, they're presented to users as an action available for each individual object, but they're also presented as a bulk action that is available when users have selected multiple objects.
+
+It's important to understand that "targets many" Action Models live at the same level in the domain model (and belong to the same parent) as the model they target. If this doesn't make immediate sense, just consider that it would be impossible for instances of these actions to live under multiple targets at the same time.
+
+### Targets One
+
+Sometimes you have Action Models that will only ever target one object at a time. In this case, they're generated a little differently and live under (and belong to) the model they target. When deciding between "targets many" and "targets one", our recommendation is that you only use "targets one" for actions that you know for certain could never make sense targeting more than one object at the same time.
+
+For example, if you're creating a send action for an email that includes configuration options and scheduling details, you may be reasonably confident that you never need users to be able to schedule two different emails at the same time with the same settings. That would be a good candidate for a "targets one" action.
+
+### Targets One Parent
+
+This final type of Action Models scaffolding is available for actions like importers that don't necessarily target specific existing objects by ID, but instead create or affect many existing objects under a specific parent based on the configuration of the action (like an attached CSV file.) These objects don't "target many" per se, but they live at the same level (and belong to the same parent) as the models they end up creating or affecting.
+
 ## Frequently Asked Questions
 
 ### Do Action Models have to be persisted to the database?
 
 No. Action Models extend from `ApplicationRecord` by default, but if you're not using features that depend on persistence to the database, you can make them `include ActiveModel::API` instead. That said, it's probably not worth the trouble. As an alternative, consider just including `Actions::CleansUp` in your action to ensure it removes itself from the database after completion.
-
-### 
