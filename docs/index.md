@@ -16,6 +16,7 @@
 
 ## Developer Tools
  - [Super Scaffolding](/docs/super-scaffolding.md)
+ - [Action Models](/docs/action-models.md)
  - [Database Seeds](/docs/seeds.md)
  - [Test Suite](/docs/testing.md)
  - [Point-and-Click Test Writing](https://github.com/bullet-train-co/magic_test) <i class="ti ti-new-window ml-2"></i>

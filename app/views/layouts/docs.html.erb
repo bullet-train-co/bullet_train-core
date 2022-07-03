@@ -119,6 +119,12 @@
                   <% end %>
                 <% end %>
 
+                <%= render 'account/shared/menu/item', url: '/docs/action-models', label: 'Action Models' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-bars-progress ti ti-target"></i>
+                  <% end %>
+                <% end %>
+
                 <%= render 'account/shared/menu/item', url: '/docs/seeds', label: 'Database Seeds' do |p| %>
                   <% p.content_for :icon do %>
                     <i class="fal fa-seedling ti ti-server"></i>
