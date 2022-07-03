@@ -9,7 +9,15 @@ Action Models make it easy to scaffold and implement user-facing custom actions 
  - Actions where you want to keep an in-app record of when it happened and who initiated the action.
  - Tasks that one team member can initiate, but a team member with elevated privileges has to approve.
 
-Importantly, Action Models aren't a special new layer in your application or a special section of your code base. Instead, they're just regular models (with corresponding views and controllers) that exist alongside the rest of your domain model, leveraging Bullet Train's existing strengths around domain modeling and Super Scaffolding.
+Examples of real-world features that can be easily implemented using Action Models include:
+
+ - A project manager can archive multiple projects at once.
+ - A customer service agent can refund multiple payments at once.
+ - A user can see updates while their infrastructure is provisioned.
+ - A marketing manager can publish a blog post now or schedule it for publication tomorrow at 9 AM.
+ - A contributor can propose a content template change that will be applied after review and approval.
+
+Importantly, Action Models aren't a special new layer in your application or a special section of your code base. Instead, they're just regular models (with corresponding views and controllers) that exist alongside the rest of your domain model, leveraging Bullet Train's existing strengths around domain modeling and code generation with Super Scaffolding.
 
 They're also super simple and very DRY. Consider the following example, assuming the process of archiving a project is very complicated and takes a lot of time:
 
@@ -89,10 +97,13 @@ end
 
 ### Adding configuration options to an action.
 
-Because Action Models are just regular models, you can add new fields to them with Super Scaffolding the same as any other model. For example:
+Because Action Models are just regular models, you can add new fields to them with Super Scaffolding the same as any other model. This is an incredible strength, because it means the configuration options for your Action Models can leverage the entire suite of form field types available in Bullet Train, and maintaining the presentation of those options to users is like maintaining any other model form in your application.
+
+For example:
 
 ```
 rails g migration add notify_users_to_projects_archive_actions notify_users:boolean
+# side quest: update the migration with `default: false` on the new boolean field.
 bin/super-scaffold crud-field Projects::ArchiveAction notify_users:boolean
 ```
 
@@ -103,3 +114,11 @@ def perform_on_target(project)
   project.archive(send_notification: notify_users)
 end
 ```
+
+## Frequently Asked Questions
+
+### Do Action Models have to be persisted to the database?
+
+No. Action Models extend from `ApplicationRecord` by default, but if you're not using features that depend on persistence to the database, you can make them `include ActiveModel::API` instead. That said, it's probably not worth the trouble. As an alternative, consider just including `Actions::CleansUp` in your action to ensure it removes itself from the database after completion.
+
+### 
