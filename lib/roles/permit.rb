@@ -3,9 +3,6 @@
 module Roles
   module Permit
     def permit(user, through:, parent:, debug: false, intermediary: nil)
-      # Without this, you need to restart the server each time you make changes to the config/models/role.yml file
-      Role.reload(true) if Rails.env.development?
-
       # When changing permissions during development, you may also want to do this on each request:
       # User.update_all ability_cache: nil if Rails.env.development?
       output = []
