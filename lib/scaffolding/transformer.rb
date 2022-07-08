@@ -775,6 +775,10 @@ class Scaffolding::Transformer
           # add_additional_step :yellow, transform_string("We've added a reference to a `placeholder` to the form for the select or super_select field, but unfortunately earlier versions of the scaffolded locales Yaml don't include a reference to `fields: *fields` under `form`. Please add it, otherwise your form won't be able to locate the appropriate placeholder label.")
         end
 
+        if type == "color_picker"
+          field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.color_picker_value.options')"
+        end
+
         # TODO: This feels incorrect.
         # Should we adjust the partials to only use `{multiple: true}` or `html_options: {multiple_true}`?
         if is_multiple
