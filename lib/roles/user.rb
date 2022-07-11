@@ -24,6 +24,10 @@ module Roles
         # current_cache[key] = value
         # update_column :ability_cache, current_cache
       end
+
+      def invalidate_ability_cache
+        update_column :ability_cache, {}
+      end
     end
   end
 end

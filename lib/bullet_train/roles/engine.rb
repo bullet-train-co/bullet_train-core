@@ -7,7 +7,7 @@ module BulletTrain
         role_reloader = ActiveSupport::FileUpdateChecker.new([Role.full_path]) do
           Role.reload(true)
         end
-        
+
         ActiveSupport::Reloader.to_prepare do
           role_reloader.execute_if_updated
         end
