@@ -660,7 +660,7 @@ class Scaffolding::Transformer
       when "text_area"
         "text"
       when "file_field"
-        "text"
+        "file"
       else
         raise "Invalid attribute type: #{type}."
       end
