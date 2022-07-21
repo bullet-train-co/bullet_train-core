@@ -31,6 +31,8 @@ export default class extends Controller {
   applyDateToField(event, picker) {
     const format = this.includeTimeValue ? 'MM/DD/YYYY h:mm A' : 'MM/DD/YYYY'
     $(this.fieldTarget).val(picker.startDate.format(format))
+    // bubble up a change event when the input is updated for other listeners
+    this.fieldTarget.dispatchEvent(new CustomEvent('change', { detail: { picker: picker }}))
   }
 
   showTimeZoneButtons(event) {
