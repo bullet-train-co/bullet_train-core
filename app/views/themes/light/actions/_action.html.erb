@@ -17,7 +17,7 @@
         <div class="flex-0">
           <%= p.yield :actions if p.content_for? :actions %>
           <% if action.is_a?(Actions::RequiresApproval) %>
-            <% if can? :approve, action %>
+            <% if !action.approved? && can?(:approve, action) %>
               <%= button_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.approve"), [:approve, :account, action], method: :post, class: 'button-secondary button-smaller' %>
             <% end %>
           <% end %>
