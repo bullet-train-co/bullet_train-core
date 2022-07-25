@@ -62,7 +62,7 @@ module Memberships::Base
   end
 
   def tombstone?
-    user.nil? && invitation.nil?
+    user.nil? && invitation.nil? && !platform_agent?
   end
 
   def last_admin?
@@ -137,5 +137,9 @@ module Memberships::Base
   # members shouldn't receive notifications unless they are either an active user or an outstanding invitation.
   def should_receive_notifications?
     invitation.present? || user.present?
+  end
+
+  def platform_agent?
+    platform_agent_of_id.present?
   end
 end
