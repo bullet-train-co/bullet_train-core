@@ -37,6 +37,8 @@ require "devise/pwned_password"
 module BulletTrain
   mattr_accessor :routing_concerns, default: []
   mattr_accessor :linked_gems, default: ["bullet_train"]
+  mattr_accessor :parent_class, default: "Team"
+  mattr_accessor :base_class, default: "ApplicationRecord"
 end
 
 def default_url_options_from_base_url
