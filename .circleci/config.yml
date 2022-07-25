@@ -178,6 +178,65 @@ jobs:
           name: 'Run Super Scaffolding Test'
           command: "cd tmp/starter && bundle exec rails test test/system/super_scaffolding_test.rb"
 
+  'Eject Theme Test':
+    docker:
+      - <<: *ruby_node_browsers_docker_image
+      - <<: *postgres_docker_image
+      - image: circleci/redis
+    executor: ruby/default
+    parallelism: 16
+    steps:
+      - browser-tools/install-browser-tools
+      - checkout
+      - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
+
+      - run:
+          name: Link starter repository to the Ruby gem being tested.
+          command: "grep -v 'gem \"bullet_train-themes-light\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train-themes-light\", path: \"../..\"' >> tmp/starter/Gemfile"
+
+      # TODO Figure out how to make these work for `tmp/starter`
+      # - restore_cache: *restore_bundler_cache
+      # - restore_cache: *restore_yarn_cache
+
+      # Install dependencies
+      - run: "cd tmp/starter && bundle install"
+      - run: "cd tmp/starter && bundle clean --force"
+      - run: "cd tmp/starter && bundle exec rake bt:link"
+      - run: "cd tmp/starter && yarn install"
+      - run: "cd tmp/starter && yarn build"
+      - run: "cd tmp/starter && yarn build:css"
+
+      # Eject theme to Starter Repo
+      - run: "cd tmp/starter && rake bullet_train:themes:light:eject[foo]"
+      - run: "cd tmp/starter && yarn foo:build; yarn foo:build:css; yarn foo:build:mailer:css"
+
+      - *wait_for_docker
+
+      - run:
+          name: Run tests with Knapsack Pro
+          command: |
+            cd tmp/starter
+            export RAILS_ENV=test
+            SKIP_RESOLVE_TEST=1 bundle exec rails "knapsack_pro:queue:minitest[--verbose]"
+          environment:
+            KNAPSACK_PRO_CI_NODE_TOTAL: 16
+
+      # If you don't want to use Knapsack Pro, then use this configuration:
+      #
+      # - run:
+      #     name: Run unit tests
+      #     command: bundle exec rails test
+      # - run:
+      #     name: Run system tests
+      #     command: bundle exec rails test:system
+      #
+      # If you want to gather test results in CircleCI when not running tests in parallel,
+      # include `minitest-ci` in your Gemfile and uncomment the following step.
+      # You can access the test results via the "Tests" tab within each build in CircleCI.
+      #
+      # - store_test_results:
+      #     path: test/reports
+
 workflows:
   version: 2
   build:
@@ -187,3 +246,4 @@ workflows:
       - 'Local Standard Ruby'
       - 'Starter Repo Minitest'
       - 'Starter Repo Minitest for Super Scaffolding'
+      - 'Eject Theme Test'
