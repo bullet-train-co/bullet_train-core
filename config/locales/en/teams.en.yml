@@ -21,6 +21,7 @@ en:
     new:
       header: Create a New Team
       former_user_header: Join a Team
+      default_team_name: Your Team
       buttons: *buttons
       you_can: "You can either:"
       invitation_header: Accept an invitation
