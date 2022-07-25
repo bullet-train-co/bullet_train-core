@@ -42,9 +42,13 @@ module Account::Invitations::ControllerBase
   # POST /invitations/1/accept
   # POST /invitations/1/accept.json
   def accept
+    # The user should be alerted when there is no
+    # invitation regardless if they're registered or not.
+    @invitation = Invitation.find_by(uuid: params[:id])
+    flash[:alert] = t("invitations.notifications.doesnt_exist") if @invitation.nil?
+
     # unless the user is signed in.
     if !current_user.present?
-
       # keep track of the uuid of the invitation so we can reload it
       # after they sign up. at this point we don't even know if it's
       # valid, but that's fine.
@@ -56,22 +60,16 @@ module Account::Invitations::ControllerBase
       # assume the user needs to create an account.
       # this is not the default for devise, but a sensible default here.
       redirect_to new_user_registration_path
-
-    else
-
-      @invitation = Invitation.find_by(uuid: params[:id])
-
-      if @invitation
-        @team = @invitation.team
-        if @invitation.is_for?(current_user) || request.post?
-          @invitation.accept_for(current_user)
-          redirect_to account_dashboard_path, notice: I18n.t("invitations.notifications.welcome", team_name: @team.name)
-        else
-          redirect_to account_invitation_path(@invitation.uuid)
-        end
+    elsif @invitation
+      @team = @invitation.team
+      if @invitation.is_for?(current_user) || request.post?
+        @invitation.accept_for(current_user)
+        redirect_to account_dashboard_path, notice: I18n.t("invitations.notifications.welcome", team_name: @team.name)
       else
-        redirect_to account_dashboard_path
+        redirect_to account_invitation_path(@invitation.uuid)
       end
+    else
+      redirect_to account_dashboard_path
 
     end
   end
