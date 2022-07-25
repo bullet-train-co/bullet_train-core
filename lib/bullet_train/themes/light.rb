@@ -1,6 +1,8 @@
 require "bullet_train/themes/light/version"
 require "bullet_train/themes/light/engine"
 require "bullet_train/themes/tailwind_css"
+require "bullet_train/themes/light/file_replacer"
+require "bullet_train/themes/light/custom_theme_file_replacer"
 
 module BulletTrain
   module Themes
