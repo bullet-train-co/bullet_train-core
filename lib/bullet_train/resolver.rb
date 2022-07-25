@@ -14,16 +14,13 @@ module BulletTrain
 
       if source_file[:absolute_path]
         puts ""
+        puts "Absolute path:".green
+        puts "  #{source_file[:absolute_path]}".green
+        puts ""
         if source_file[:package_name].present?
-          puts "Absolute path:".green
-          puts "  #{source_file[:absolute_path]}".green
-          puts ""
           puts "Package name:".green
           puts "  #{source_file[:package_name]}".green
         else
-          puts "Project path:".green
-          puts "  #{source_file[:project_path]}".green
-          puts ""
           puts "Note: If this file was previously ejected from a package, we can no longer see which package it came from. However, it should say at the top of the file where it was ejected from.".yellow
         end
         puts ""
@@ -89,37 +86,28 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = class_path || partial_path || locale_path || file_path
-
+      result[:absolute_path] = file_path || class_path || partial_path || locale_path
       if result[:absolute_path]
-        if result[:absolute_path].include?("devise")
-          # The annotated path for devise doesn't actually return an absolute path,
-          # so we have to do some extra steps to get the correct string.
-          relative_partial_path = result[:absolute_path]
-          # If it's a devise partial, it should be coming from bullet_train-base
-          base_path = "#{`bundle show bullet_train`.chomp}/" + relative_partial_path
-          result[:absolute_path] = base_path
-        else
+        if result[:absolute_path].include?("/bullet_train")
           base_path = "bullet_train" + result[:absolute_path].partition("/bullet_train").last
-        end
 
-        # Try to calculate which package the file is from, and what it's path is within that project.
-        ["app", "config", "lib"].each do |directory|
-          regex = /\/#{directory}\//
-          if base_path.match?(regex)
-            project_path = "./#{directory}/#{base_path.rpartition(regex).last}"
-            package_name = base_path.rpartition(regex).first.split("/").last
-            # If the "package name" is actually just the local project directory.
-            if package_name == `pwd`.chomp.split("/").last
-              package_name = nil
+          # Try to calculate which package the file is from, and what it's path is within that project.
+          ["app", "config", "lib"].each do |directory|
+            regex = /\/#{directory}\//
+            if base_path.match?(regex)
+              project_path = "./#{directory}/#{base_path.rpartition(regex).last}"
+              package_name = base_path.rpartition(regex).first.split("/").last
+              # If the "package name" is actually just the local project directory.
+              if package_name == `pwd`.chomp.split("/").last
+                package_name = nil
+              end
+
+              result[:project_path] = project_path
+              result[:package_name] = package_name
             end
-
-            result[:project_path] = project_path
-            result[:package_name] = package_name
           end
         end
       end
-
       result
     end
 
@@ -135,9 +123,24 @@ module BulletTrain
     end
 
     def partial_path
-      annotated_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
+      begin
+        annotated_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
+      rescue ActionView::Template::Error => e
+        # This is a really hacky way to get the file name, but the reason we're getting an error in the first place is because
+        # the partial requires locals that we aren't providing in the ApplicationController.render call above,
+        # resulting in an undefined local variable error. We do however get the file name, which we can pass back to the developer.
+        return e.file_name
+      end
+
       if annotated_path =~ /<!-- BEGIN (\S*) -->/
-        $1
+        # If the developer enters a partial that is in bullet_train-base like devise/shared/oauth or devise/shared/links,
+        # it will return a string starting with app/ so we simply point them to the file in this repository.
+        if annotated_path.match?(/^<!-- BEGIN app/) && !ejected_theme?
+          gem_path = `bundle show bullet_train`.chomp
+          "#{gem_path}/#{$1}"
+        else
+          $1
+        end
       else
         raise "It looks like `config.action_view.annotate_rendered_view_with_filenames` isn't enabled?"
       end
@@ -167,6 +170,12 @@ module BulletTrain
       end
 
       nil
+    end
+
+    def ejected_theme?
+      current_theme_symbol = File.read("#{Rails.root}/app/helpers/application_helper.rb").split("\n").find { |str| str.match?(/\s+:.*/) }
+      current_theme = current_theme_symbol.delete(":").strip
+      current_theme != "light" && Dir.exist?("#{Rails.root}/app/assets/stylesheets/#{current_theme}")
     end
   end
 end
