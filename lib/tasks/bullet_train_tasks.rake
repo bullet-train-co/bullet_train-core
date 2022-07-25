@@ -116,7 +116,7 @@ namespace :bullet_train do
           exit
         end
 
-        current_branch = (`git #{work_tree_flag} #{git_dir_flag} branch`).split("\n").select { |branch_name| branch_name.match?(/^\*\s/) }.pop.gsub(/^\*\s/, "")
+        current_branch = `git #{work_tree_flag} #{git_dir_flag} branch`.split("\n").select { |branch_name| branch_name.match?(/^\*\s/) }.pop.gsub(/^\*\s/, "")
         unless current_branch == "main"
           puts "Previously on #{current_branch}.".blue
           puts "Switching local/#{gem} to main branch.".blue
