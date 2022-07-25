@@ -169,7 +169,8 @@ namespace :bullet_train do
         # TODO We should check whether the local copy is in a clean state, and if it is, check out `main`.
         # TODO We should also pull `origin/main` to make sure we're on the most up-to-date version of the package.
       else
-        stream "git clone git@github.com:#{details[:git]}.git local/#{gem}"
+        # Use https:// URLs when using this task in Gitpod.
+        stream "git clone #{`whoami`.chomp == "gitpod" ? "https://github.com/" : "git@github.com:"}#{details[:git]}.git local/#{gem}"
       end
 
       # TODO Ask them whether they want to check out a specific branch to work on. (List available remote branches.)
