@@ -217,7 +217,7 @@ namespace :bullet_train do
       puts ""
       if details[:npm]
         puts "This package also has an npm package, so we'll link that up as well.".blue
-        stream "cd local/#{gem} && yarn install && npx yalc link && cd ../.. && npx yalc link \"#{details[:npm]}\""
+        stream "cd local/#{gem} && yarn install && npm_config_yes=true npx yalc link && cd ../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
 
         puts ""
         puts "And now we're going to watch for any changes you make to the JavaScript and recompile as we go.".blue
