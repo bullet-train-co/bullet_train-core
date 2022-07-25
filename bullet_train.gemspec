@@ -56,10 +56,6 @@ Gem::Specification.new do |spec|
   # We use this to detect the size of the logo assets.
   spec.add_dependency "fastimage"
 
-  # We don't want to develop in a world where we don't have `binding.pry` or `object.pry` for debugging.
-  spec.add_dependency "pry"
-  spec.add_dependency "pry-stack_explorer"
-
   # We don't want to develop in a world where we can't `ap` our objects for a clean presentation of them.
   spec.add_dependency "awesome_print"
 
@@ -97,6 +93,10 @@ Gem::Specification.new do |spec|
 
   # Pagination.
   spec.add_runtime_dependency "pagy"
+
+  # We don't want to develop in a world where we don't have `binding.pry` or `object.pry` for debugging.
+  spec.add_development_dependency "pry"
+  spec.add_development_dependency "pry-stack_explorer"
 
   # Password strength.
   spec.add_dependency "devise-pwned_password"
