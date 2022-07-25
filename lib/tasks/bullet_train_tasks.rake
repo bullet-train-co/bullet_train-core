@@ -82,69 +82,7 @@ namespace :bullet_train do
       puts ""
     end
 
-    # TODO Extract this into a YAML file.
-    framework_packages = {
-      "bullet_train" => {
-        git: "bullet-train-co/bullet_train-base",
-        npm: "@bullet-train/bullet-train"
-      },
-      "bullet_train-api" => {
-        git: "bullet-train-co/bullet_train-api",
-      },
-      "bullet_train-fields" => {
-        git: "bullet-train-co/bullet_train-fields",
-        npm: "@bullet-train/fields"
-      },
-      "bullet_train-has_uuid" => {
-        git: "bullet-train-co/bullet_train-has_uuid",
-      },
-      "bullet_train-incoming_webhooks" => {
-        git: "bullet-train-co/bullet_train-incoming_webhooks",
-      },
-      "bullet_train-integrations" => {
-        git: "bullet-train-co/bullet_train-integrations",
-      },
-      "bullet_train-integrations-stripe" => {
-        git: "bullet-train-co/bullet_train-base-integrations-stripe",
-      },
-      "bullet_train-obfuscates_id" => {
-        git: "bullet-train-co/bullet_train-obfuscates_id",
-      },
-      "bullet_train-outgoing_webhooks" => {
-        git: "bullet-train-co/bullet_train-outgoing_webhooks",
-      },
-      "bullet_train-outgoing_webhooks-core" => {
-        git: "bullet-train-co/bullet_train-outgoing_webhooks-core",
-      },
-      "bullet_train-scope_questions" => {
-        git: "bullet-train-co/bullet_train-scope_questions",
-      },
-      "bullet_train-scope_validator" => {
-        git: "bullet-train-co/bullet_train-scope_validator",
-      },
-      "bullet_train-sortable" => {
-        git: "bullet-train-co/bullet_train-sortable",
-        npm: "@bullet-train/bullet-train-sortable"
-      },
-      "bullet_train-super_scaffolding" => {
-        git: "bullet-train-co/bullet_train-super_scaffolding",
-      },
-      "bullet_train-super_load_and_authorize_resource" => {
-        git: "bullet-train-co/bullet_train-super_load_and_authorize_resource",
-      },
-      "bullet_train-themes" => {
-        git: "bullet-train-co/bullet_train-themes",
-      },
-      "bullet_train-themes-base" => {
-        git: "bullet-train-co/bullet_train-themes-base",
-      },
-      "bullet_train-themes-light" => {
-        git: "bullet-train-co/bullet_train-themes-light",
-      },
-      "bullet_train-themes-tailwind_css" => {
-        git: "bullet-train-co/bullet_train-themes-tailwind_css",
-      },
-    }
+    framework_packages = I18n.t("framework_packages")
 
     puts "Which framework package do you want to work on?".blue
     puts ""
@@ -162,24 +100,46 @@ namespace :bullet_train do
 
       puts "OK! Let's work on `#{gem}` together!".green
       puts ""
-      puts "First, we're going to clone a copy of the package repository.".blue
-
-      # TODO Prompt whether they want to check out their own forked version of the repository.
 
       if File.exist?("local/#{gem}")
-        puts "Can't clone into `local/#{gem}` because it already exists. We will try to use what's already there.".yellow
-        puts "However, it will be up to you to make sure that working copy of the repository is in a clean state and checked out to the `main` branch or whatever you want to work on.".yellow
-        puts "Hit <Enter> to continue.".blue
-        $stdin.gets
+        puts "We found the repository in `local/#{gem}`. We will try to use what's already there.".yellow
+        puts ""
 
-        # TODO We should check whether the local copy is in a clean state, and if it is, check out `main`.
-        # TODO We should also pull `origin/main` to make sure we're on the most up-to-date version of the package.
+        # Adding these flags enables us to execute git commands in the gem from our starter repo.
+        work_tree_flag = "--work-tree=local/#{gem}"
+        git_dir_flag = "--git-dir=local/#{gem}/.git"
+
+        git_status = `git #{work_tree_flag} #{git_dir_flag} status`
+        unless git_status.match?("nothing to commit, working tree clean")
+          puts "This package currently has uncommitted changes.".red
+          puts "Please make sure the branch is clean and try again.".red
+          exit
+        end
+
+        current_branch = (`git #{work_tree_flag} #{git_dir_flag} branch`).split("\n").select { |branch_name| branch_name.match?(/^\*\s/) }.pop.gsub(/^\*\s/, "")
+        unless current_branch == "main"
+          puts "Previously on #{current_branch}.".blue
+          puts "Switching local/#{gem} to main branch.".blue
+          stream("git #{work_tree_flag} #{git_dir_flag} checkout main")
+        end
+
+        puts "Updating the main branch with the latest changes.".blue
+        stream("git #{work_tree_flag} #{git_dir_flag} pull origin main")
       else
         # Use https:// URLs when using this task in Gitpod.
         stream "git clone #{`whoami`.chomp == "gitpod" ? "https://github.com/" : "git@github.com:"}#{details[:git]}.git local/#{gem}"
       end
 
-      # TODO Ask them whether they want to check out a specific branch to work on. (List available remote branches.)
+      stream("git #{work_tree_flag} #{git_dir_flag} fetch")
+      stream("git #{work_tree_flag} #{git_dir_flag} branch -r")
+      puts "The above is a list of remote branches.".blue
+      puts "If there's one you'd like to work on, please enter the branch name and press <Enter>.".blue
+      puts "If not, just press <Enter> to continue.".blue
+      input = $stdin.gets.strip
+      unless input.empty?
+        puts "Switching to #{input.gsub("origin/", "")}".blue # TODO: Should we remove origin/ here if the developer types it?
+        stream("git #{work_tree_flag} #{git_dir_flag} checkout #{input}")
+      end
 
       puts ""
       puts "Now we'll try to link up that repository in the `Gemfile`.".blue
