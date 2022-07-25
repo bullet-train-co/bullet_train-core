@@ -8,6 +8,7 @@ export default class extends Controller {
     "removeFileButton",
     "selectFileButton",
     "progressBar",
+    "progressLabel",
   ];
 
   connect() {
@@ -16,10 +17,10 @@ export default class extends Controller {
       "direct-upload:initialize",
       (event) => {
         this.selectFileButtonTarget.classList.add("hidden");
-        this.progressBarTarget.innerText = "0%";
         this.progressBarTarget.style.width = "0%";
         this.progressBarTarget.setAttribute("aria-valuenow", 0);
         this.progressBarTarget.parentNode.classList.remove("hidden");
+        this.progressLabel.innerText = "0%";
       }
     );
 
@@ -29,9 +30,13 @@ export default class extends Controller {
         const { progress } = event.detail;
         const width = `${progress.toFixed(1)}%`;
 
-        this.progressBarTarget.innerText = width;
         this.progressBarTarget.setAttribute("aria-valuenow", progress);
         this.progressBarTarget.style.width = width;
+        this.progressLabelTarget.innerText = width;
+
+        if (progress >= 50 && !this.progressLabelTarget.classList.contains("animate-pulse")) {
+          this.progressLabelTarget.classList.add("animate-pulse");
+        }
       }
     );
 
