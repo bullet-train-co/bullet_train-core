@@ -38,7 +38,32 @@ If you're looking at a rendered view in the browser, it can be hard to know whic
 <!-- BEGIN /Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb -->
 ```
 
-Note that in the example above, the view in question isn't actually coming from the application repository. Instead, it's being included from the `bullet_train-themes-light` package. For instructions on how to customize it, see [Overriding Framework Defaults](/docs/overriding.md).
+If you want to customize files like this that you find annotated in your browser, you can use the `--interactive` flag to eject the file to your main application, or simply open it in your code editor.
+
+```
+> bin/resolve --interactive
+
+OK, paste what you've got for us and hit <Return>!
+
+<!-- BEGIN /Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb -->
+
+Absolute path:
+  /Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb
+
+Package name:
+  bullet_train-themes-light-1.0.10
+
+
+Would you like to eject the file into the local project? (y/n)
+n
+
+Would you like to open `/Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb`? (y/n)
+y
+```
+
+You may also want to consider using `bin/develop`, which will clone the Bullet Train package of your choice to `local/` within your main application's root directory. Running this command will also automatically link the package to your main application and open it in the code editor for you, so you can start using the cloned repository and make changes to your main application right away.
+
+Note that in the example above, the view in question isn't actually coming from the application repository. Instead, it's being included from the `bullet_train-themes-light` package. For further instructions on how to customize it, see [Overriding Framework Defaults](/docs/overriding.md).
 
 ### Drilling Down on Translation Keys
 
