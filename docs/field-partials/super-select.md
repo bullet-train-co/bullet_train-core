@@ -56,3 +56,14 @@ Here is the same example, with search enabled:
   choices: @project.valid_memberships.map { |membership| [membership.name, membership.id] },
   html_options: {multiple: true}, other_options: {search: true} %>
 </code></pre>
+
+## Accepting New Entries
+
+Here is an example allowing a new option to be entered by the user:
+
+<pre><code><%= render 'shared/fields/super_select', form: form, method: :delay_minutes,
+  choices: %w(1 5 10 30).map { |value| [value, value] },
+  other_options: {accepts_new: true} %>
+</code></pre>
+
+Note: this will set the option `value` (which will be submitted to the server) to the entered text.
