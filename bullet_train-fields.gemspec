@@ -22,6 +22,8 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md", ".bt-link"]
   end
 
+  spec.add_development_dependency "standard"
+
   spec.add_dependency "rails", ">= 6.0.0"
 
   # Cloud image hosting, resizing, and CDN.
