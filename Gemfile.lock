@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.0.93)
+    bullet_train (1.0.94)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -31,8 +31,6 @@ PATH
       pagy
       possessive
       premailer-rails
-      pry
-      pry-stack_explorer
       rails (>= 6.0.0)
       sidekiq
       unicode-emoji
@@ -115,14 +113,14 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.0.15)
+    bullet_train-fields (1.0.18)
       chronic
       cloudinary
       phonelib
       rails (>= 6.0.0)
     bullet_train-has_uuid (1.0.3)
       rails (>= 6.0.0)
-    bullet_train-roles (0.1.7)
+    bullet_train-roles (0.1.8)
       active_hash
       activesupport
       cancancan
@@ -216,7 +214,7 @@ GEM
       net-protocol
       timeout
     netrc (0.11.0)
-    nice_partials (0.1.6)
+    nice_partials (0.1.7)
       actionview (>= 4.2.6)
     nio4r (2.5.8)
     nokogiri (1.13.6)
@@ -320,7 +318,7 @@ GEM
     standard (1.12.1)
       rubocop (= 1.29.1)
       rubocop-performance (= 1.13.3)
-    strscan (3.0.3)
+    strscan (3.0.4)
     thor (1.2.1)
     thread-local (1.1.0)
     timeout (0.3.0)
@@ -350,6 +348,8 @@ PLATFORMS
 DEPENDENCIES
   active_hash!
   bullet_train!
+  pry
+  pry-stack_explorer
   sprockets-rails
   sqlite3
   standard
