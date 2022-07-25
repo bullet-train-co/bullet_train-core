@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.0.95)
+    bullet_train (1.0.96)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -215,7 +215,7 @@ GEM
       net-protocol
       timeout
     netrc (0.11.0)
-    nice_partials (0.1.6)
+    nice_partials (0.1.7)
       actionview (>= 4.2.6)
     nio4r (2.5.8)
     nokogiri (1.13.8)
