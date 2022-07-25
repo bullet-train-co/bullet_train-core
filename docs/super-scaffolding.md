@@ -249,3 +249,4 @@ HIDE_THINGS: true
 
 ## Advanced Examples
  - [Super Scaffolding with Delegated Types](/docs/super-scaffolding/delegated-types.md)
+ - [Super Scaffolding with the `--sortable` option](/docs/super-scaffolding/sortable.md)
