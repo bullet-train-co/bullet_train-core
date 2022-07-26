@@ -21,6 +21,7 @@ class Scaffolding::Transformer
   RUBY_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will insert new fields above this line."
   RUBY_ADDITIONAL_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will also insert new fields above this line."
   RUBY_EVEN_MORE_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will additionally insert new fields above this line."
+  RUBY_FILES_HOOK = "# 🚅 super scaffolding will insert file-related logic above this line."
   ENDPOINTS_HOOK = "# 🚅 super scaffolding will mount new endpoints above this line."
   ERB_NEW_FIELDS_HOOK = "<%#{RUBY_NEW_FIELDS_HOOK} %>"
   CONCERNS_HOOK = "# 🚅 add concerns above."
@@ -439,7 +440,7 @@ class Scaffolding::Transformer
       current_parent = working_parents.pop
     end
 
-    setup_lines << current_transformer.transform_string("@tangible_thing = create(:scaffolding_completely_concrete_tangible_thing, #{previous_assignment})")
+    setup_lines << current_transformer.transform_string("@tangible_thing = build(:scaffolding_completely_concrete_tangible_thing, #{previous_assignment})")
 
     setup_lines
   end
@@ -574,7 +575,9 @@ class Scaffolding::Transformer
       is_id = name.match?(/_id$/)
       is_ids = name.match?(/_ids$/)
       # if this is the first attribute of a newly scaffolded model, that field is required.
-      is_required = attribute_options[:required] || (scaffolding_options[:type] == :crud && index == 0)
+      unless type == "file_field"
+        is_required = attribute_options[:required] || (scaffolding_options[:type] == :crud && index == 0)
+      end
       is_vanilla = attribute_options&.key?(:vanilla)
       is_belongs_to = is_id && !is_vanilla
       is_has_many = is_ids && !is_vanilla
@@ -1007,7 +1010,7 @@ class Scaffolding::Transformer
         # TODO The serializers can't handle these `has_rich_text` attributes.
         unless type == "trix_editor"
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
-          scaffold_add_line_to_file("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
+          scaffold_add_line_to_file("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true) unless type == "file_field"
 
           assertion = case type
           when "date_field"
@@ -1016,11 +1019,29 @@ class Scaffolding::Transformer
             "assert_equal DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
           when "file_field"
             # TODO: If we want to use Cloudinary to handle our files, we should make sure we're getting a URL.
-            "assert_equal tangible_thing_data['#{name}']['record']['id'], tangible_thing.#{name}.record.id"
+            "assert tangible_thing_data['#{name}'].match?('foo.txt') unless response.status == 201"
           else
             "assert_equal tangible_thing_data['#{name}'], tangible_thing.#{name}"
           end
           scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", assertion, RUBY_NEW_FIELDS_HOOK, prepend: true)
+        end
+
+        # File fields are handled in a specific way when using the jsonapi-serializer.
+        if type == "file_field"
+          file_name = "./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb"
+          content = <<~RUBY
+            attribute :#{name} do |object|
+              rails_blob_path(object.#{name}, disposition: "attachment", only_path: true) if object.#{name}.attached?
+            end
+
+          RUBY
+          hook = RUBY_FILES_HOOK
+          scaffold_add_line_to_file(file_name, content, hook, prepend: true)
+
+          # We also want to make sure we attach the dummy file in the endpoint test on setup
+          file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb"
+          content = "@#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")"
+          scaffold_add_line_to_file(file_name, content, hook, prepend: true)
         end
 
         # scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal tangible_thing_attributes['#{name.gsub('_', '-')}'], tangible_thing.#{name}", RUBY_NEW_FIELDS_HOOK, prepend: true)
@@ -1263,15 +1284,6 @@ class Scaffolding::Transformer
       scaffold_replace_line_in_file("./test/factories/scaffolding/completely_concrete/tangible_things.rb", content, "absolutely_abstract_creative_concept { nil }")
 
       add_has_many_association
-
-      # Adds file attachment to factory
-      attributes.each do |attribute|
-        attribute_name, partial_type = attribute.split(":")
-        if partial_type == "file_field"
-          content = "#{attribute_name} { Rack::Test::UploadedFile.new(\"test/support/foo.txt\") }"
-          scaffold_replace_line_in_file("./test/factories/scaffolding/completely_concrete/tangible_things.rb", content, "#{attribute_name} { nil }")
-        end
-      end
 
       if class_names_transformer.belongs_to_needs_class_definition?
         scaffold_replace_line_in_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", transform_string("belongs_to :absolutely_abstract_creative_concept, class_name: \"Scaffolding::AbsolutelyAbstract::CreativeConcept\"\n"), transform_string("belongs_to :absolutely_abstract_creative_concept\n"))

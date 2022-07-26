@@ -26,11 +26,12 @@ class Api::V1::Scaffolding::CompletelyConcrete::TangibleThingSerializer < Api::V
     :created_at,
     :updated_at
 
-  # We can serialize file fields with jsonapi-serializer in the following way.
-  # https://github.com/jsonapi-serializer/jsonapi-serializer/issues/131
+  # 🚅 skip this section when scaffolding.
   attribute :file_field_value do |object|
     rails_blob_path(object.file_field_value, disposition: "attachment", only_path: true) if object.file_field_value.attached?
   end
+  # 🚅 stop any skipping we're doing now.
+  # 🚅 super scaffolding will insert file-related logic above this line.
 
   belongs_to :absolutely_abstract_creative_concept, serializer: Api::V1::Scaffolding::AbsolutelyAbstract::CreativeConceptSerializer
 end
