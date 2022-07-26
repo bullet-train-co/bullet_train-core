@@ -8,6 +8,7 @@ module Scaffolding
       "date_and_time_field",
       "date_field",
       "email_field",
+      "emoji_field",
       "file_field",
       "options",
       "password_field",
