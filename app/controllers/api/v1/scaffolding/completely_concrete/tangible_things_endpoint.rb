@@ -16,6 +16,7 @@ class Api::V1::Scaffolding::CompletelyConcrete::TangibleThingsEndpoint < Api::V1
       optional :date_field_value, type: Date, allow_blank: true, desc: Api.heading(:date_field_value)
       optional :date_and_time_field_value, type: DateTime, allow_blank: true, desc: Api.heading(:date_and_time_field_value)
       optional :email_field_value, type: String, allow_blank: true, desc: Api.heading(:email_field_value)
+      optional :file_field_value, type: String, allow_blank: true, desc: Api.heading(:file_field_value)
       optional :password_field_value, type: String, allow_blank: true, desc: Api.heading(:password_field_value)
       optional :phone_field_value, type: String, allow_blank: true, desc: Api.heading(:phone_field_value)
       optional :option_value, type: String, allow_blank: true, desc: Api.heading(:option_value)
