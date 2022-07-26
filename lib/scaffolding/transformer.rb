@@ -765,13 +765,14 @@ class Scaffolding::Transformer
         # field on the form.
         field_attributes = {method: ":#{name}"}
         field_options = {}
+        options = {}
 
         if scaffolding_options[:type] == :crud && index == 0
           field_options[:autofocus] = "true"
         end
 
         if is_id && type == "super_select"
-          field_options[:include_blank] = "t('.fields.#{name}.placeholder')"
+          options[:include_blank] = "t('.fields.#{name}.placeholder')"
           # add_additional_step :yellow, transform_string("We've added a reference to a `placeholder` to the form for the select or super_select field, but unfortunately earlier versions of the scaffolded locales Yaml don't include a reference to `fields: *fields` under `form`. Please add it, otherwise your form won't be able to locate the appropriate placeholder label.")
         end
 
@@ -796,12 +797,19 @@ class Scaffolding::Transformer
         end
 
         # https://stackoverflow.com/questions/21582464/is-there-a-ruby-hashto-s-equivalent-for-the-new-hash-syntax
-        if field_options.any?
+        if field_options.any? || options.any?
           field_options_key = if ["buttons", "super_select", "options"].include?(type)
+            if options.any?
+              field_attributes[:options] = "{" + field_options.map { |key, value| "#{key}: #{value}" }.join(", ") + "}"
+            end
+
             :html_options
           else
+            field_options.merge!(options)
+
             :options
           end
+
           field_attributes[field_options_key] = "{" + field_options.map { |key, value| "#{key}: #{value}" }.join(", ") + "}"
         end
 
