@@ -107,6 +107,7 @@ class Scaffolding::BlockManipulator
     insert_line(block_content[1], block_end + 1)
   end
 
+  # TODO: Delete this because it only really needs to be in the FileManipulator
   def write
     File.write(@filepath, @lines.join)
   end

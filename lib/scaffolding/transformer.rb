@@ -1,5 +1,6 @@
 require "indefinite_article"
 require "yaml"
+require "scaffolding/file_manipulator"
 require "scaffolding/class_names_transformer"
 
 class Scaffolding::Transformer
@@ -235,36 +236,6 @@ class Scaffolding::Transformer
     end
   end
 
-  # pass in an array where this content should be inserted within the yml file.  For example, to add content
-  # to admin.models pass in [:admin, :models]
-  def add_line_to_yml_file(file, content, location_array)
-    # First check that the given location array actually exists in the yml file:
-    yml = YAML.safe_load(File.read(file))
-    location_array.map!(&:to_s)
-    return nil if yml.dig(*location_array).nil? # Should we raise an error?
-    content += "\n" unless content[-1] == "\n"
-    # Find the location in the file where the location_array is
-    lines = File.readlines(file)
-    current_needle = location_array.shift.to_s
-    current_space = ""
-    insert_after = 1
-    lines.each_with_index do |line, index|
-      break if current_needle.nil?
-      if line.strip == current_needle + ":"
-        current_needle = location_array.shift.to_s
-        insert_after = index
-        current_space = line.match(/\s+/).to_s
-      end
-    end
-    new_lines = []
-    current_space += "  "
-    lines.each_with_index do |line, index|
-      new_lines << line
-      new_lines << current_space + content if index == insert_after
-    end
-    File.write(file, new_lines.join)
-  end
-
   def add_line_to_file(file, content, hook, options = {})
     increase_indent = options[:increase_indent]
     add_before = options[:add_before]
@@ -346,23 +317,11 @@ class Scaffolding::Transformer
     add_line_to_file(file, content, hook, options)
   end
 
-  def replace_line_in_file(file, content, in_place_of)
-    target_file_content = File.read(file)
-
-    if target_file_content.include?(content)
-      puts "No need to update '#{file}'. It already has '#{content}'."
-    else
-      puts "Updating '#{file}'."
-      target_file_content.gsub!(in_place_of, content)
-      File.write(file, target_file_content)
-    end
-  end
-
   def scaffold_replace_line_in_file(file, content, in_place_of)
     file = transform_string(file)
     # we specifically don't transform the content, we assume a builder function created this content.
     in_place_of = transform_string(in_place_of)
-    replace_line_in_file(file, content, in_place_of)
+    Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of)
   end
 
   # if class_name isn't specified, we use `child`.
@@ -451,8 +410,8 @@ class Scaffolding::Transformer
     model_names = class_names || [child]
     role_file = "./config/models/roles.yml"
     model_names.each do |model_name|
-      add_line_to_yml_file(role_file, "#{model_name}: read", [:default, :models])
-      add_line_to_yml_file(role_file, "#{model_name}: manage", [:admin, :models])
+      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: read", [:default, :models])
+      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: manage", [:admin, :models])
     end
   end
 
@@ -1415,7 +1374,7 @@ class Scaffolding::Transformer
         add_additional_step :yellow, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
       end
 
-      routes_manipulator.write
+      Scaffolding::FileManipulator.write("config/routes.rb", routes_manipulator.lines)
     end
 
     unless cli_options["skip-parent"]

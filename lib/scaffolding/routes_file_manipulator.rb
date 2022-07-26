@@ -82,6 +82,7 @@ class Scaffolding::RoutesFileManipulator
     results
   end
 
+  # TODO: Remove this and use the BlockManipulator
   def insert_before(new_lines, line_number, options = {})
     options[:indent] ||= false
     before = lines[0..(line_number - 1)]
@@ -90,6 +91,7 @@ class Scaffolding::RoutesFileManipulator
     self.lines = before + (options[:prepend_newline] ? ["\n"] : []) + new_lines + after
   end
 
+  # TODO: Remove this and use the BlockManipulator
   def insert_after(new_lines, line_number, options = {})
     options[:indent] ||= false
     before = lines[0..line_number]
@@ -164,21 +166,13 @@ class Scaffolding::RoutesFileManipulator
     namespace_block_start.present? ? {namespace => namespace_block_start} : {}
   end
 
-  def find(needle, within = nil)
-    lines_within(within).each_with_index do |line, line_number|
-      return (within + (within ? 1 : 0) + line_number) if line.match?(needle)
-    end
-
-    nil
-  end
-
   def find_in_namespace(needle, namespaces, within = nil, ignore = nil)
     if namespaces.any?
       namespace_lines = find_namespaces(namespaces, within)
       within = namespace_lines[namespaces.last]
     end
 
-    lines_within(within).each_with_index do |line, line_number|
+    Scaffolding::FileManipulator.lines_within(lines, within, block_manipulator).each_with_index do |line, line_number|
       # + 2 because line_number starts from 0, and within starts one line after
       actual_line_number = (within + line_number + 2)
 
@@ -232,7 +226,7 @@ class Scaffolding::RoutesFileManipulator
   # However, will not find namespace blocks inside namespace blocks.
   def top_level_namespace_block_lines(within)
     local_namespace_blocks = []
-    lines_within(within).each do |line|
+    Scaffolding::FileManipulator.lines_within(lines, within, block_manipulator).each do |line|
       # i.e. - Retrieve "foo" from "namespace :foo do"
       match_data = line.match(/(\s*namespace\s:)(.*)(\sdo$)/)
 
@@ -286,11 +280,6 @@ class Scaffolding::RoutesFileManipulator
     find_or_convert_resource_block(parts.last, options)
   end
 
-  def lines_within(within)
-    return lines unless within
-    lines[(within + 1)..(block_manipulator.find_block_end(starting_from: within, lines: lines) + 1)]
-  end
-
   def find_or_convert_resource_block(parent_resource, options = {})
     unless find_resource_block([parent_resource], options)
       if (resource_line_number = find_resource([parent_resource], options))
@@ -310,6 +299,7 @@ class Scaffolding::RoutesFileManipulator
     within
   end
 
+  # TODO: Remove this and use the BlockManipulator
   def insert(lines_to_add, within)
     insertion_line = block_manipulator.find_block_end(starting_from: within, lines: lines)
     result_line = insertion_line
@@ -343,7 +333,7 @@ class Scaffolding::RoutesFileManipulator
       # add the new resource within that namespace.
       line = "scope module: '#{parent_resource}' do"
       # TODO you haven't tested this yet.
-      unless (scope_within = find(/#{line}/, parent_within))
+      unless (scope_within = Scaffolding::FileManipulator.find(lines, /#{line}/, parent_within, block_manipulator))
         scope_within = insert([line, "end"], parent_within)
       end
 
@@ -398,12 +388,5 @@ class Scaffolding::RoutesFileManipulator
 
     return if concerns.empty?
     "concerns: #{concerns}"
-  end
-
-  def write
-    puts "Updating '#{@filename}'."
-    File.open(@filename, "w+") do |file|
-      file.puts(lines.join.strip + "\n")
-    end
   end
 end
