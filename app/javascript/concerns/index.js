@@ -1,2 +1,1 @@
-import "./sortable"
 import "./reassignable"

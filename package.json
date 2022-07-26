@@ -32,12 +32,17 @@
   "author": "Andrew Culver <andrew.culver@gmail.com>",
   "homepage": "https://bullettrain.co/",
   "license": "MIT",
+  "browserslist": [
+    "defaults",
+    "not IE 11"
+  ],
   "devDependencies": {
     "@babel/core": "^7.13.16",
     "@babel/plugin-proposal-export-default-from": "^7.16.7",
     "@babel/plugin-transform-runtime": "^7.13.15",
     "@babel/preset-env": "^7.13.15",
     "@babel/runtime": "^7.13.17",
+    "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@stimulus/webpack-helpers": "^2.0.0",
     "babel-loader": "^8.2.2",
     "microbundle": "^0.13.0",
@@ -47,6 +52,7 @@
     "yalc": "^1.0.0-pre.53"
   },
   "dependencies": {
+    "@hotwired/stimulus": "^3.0.1",
     "dragula": "^3.7.3"
   }
 }
