@@ -625,8 +625,10 @@ class Scaffolding::Transformer
         "text"
       when "file_field"
         "file"
+      when "password_field"
+        "string"
       else
-        raise "Invalid attribute type: #{type}."
+        raise "Invalid field type: #{type}."
       end
 
       cell_attributes = if boolean_buttons
