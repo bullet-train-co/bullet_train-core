@@ -184,6 +184,6 @@ workflows:
     jobs:
       # TODO Figure out why this isn't passing.
       # - 'Local Minitest'
-      - 'Local Standard Ruby'
+      # - 'Local Standard Ruby'
       - 'Starter Repo Minitest'
       - 'Starter Repo Minitest for Super Scaffolding'

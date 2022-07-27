@@ -1,7 +1,7 @@
 class Api::V1::Webhooks::Outgoing::EndpointsEndpoint < Api::V1::Root
   helpers do
-    params :team_id do
-      requires :team_id, type: Integer, allow_blank: false, desc: "Team ID"
+    params BulletTrain::OutgoingWebhooks.parent_association_id  do
+      requires BulletTrain::OutgoingWebhooks.parent_association_id, type: Integer, allow_blank: false, desc: "#{BulletTrain::OutgoingWebhooks.parent_class} ID"
     end
 
     params :id do
@@ -19,7 +19,7 @@ class Api::V1::Webhooks::Outgoing::EndpointsEndpoint < Api::V1::Root
     end
   end
 
-  resource "teams", desc: Api.title(:collection_actions) do
+  resource BulletTrain::OutgoingWebhooks.parent_resource, desc: Api.title(:collection_actions) do
     after_validation do
       load_and_authorize_api_resource Webhooks::Outgoing::Endpoint
     end
@@ -30,11 +30,11 @@ class Api::V1::Webhooks::Outgoing::EndpointsEndpoint < Api::V1::Root
 
     desc Api.title(:index), &Api.index_desc
     params do
-      use :team_id
+      use BulletTrain::OutgoingWebhooks.parent_association_id
     end
     oauth2
     paginate per_page: 100
-    get "/:team_id/webhooks/outgoing/endpoints" do
+    get "/:#{BulletTrain::OutgoingWebhooks.parent_association_id}/webhooks/outgoing/endpoints" do
       @paginated_endpoints = paginate @endpoints
       render @paginated_endpoints, serializer: Api.serializer
     end
@@ -45,12 +45,12 @@ class Api::V1::Webhooks::Outgoing::EndpointsEndpoint < Api::V1::Root
 
     desc Api.title(:create), &Api.create_desc
     params do
-      use :team_id
+      use BulletTrain::OutgoingWebhooks.parent_association_id
       use :endpoint
     end
     route_setting :api_resource_options, permission: :create
     oauth2 "write"
-    post "/:team_id/webhooks/outgoing/endpoints" do
+    post "/:#{BulletTrain::OutgoingWebhooks.parent_association_id}/webhooks/outgoing/endpoints" do
       if @endpoint.save
         render @endpoint, serializer: Api.serializer
       else

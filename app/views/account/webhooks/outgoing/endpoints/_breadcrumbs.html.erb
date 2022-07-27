@@ -1,5 +1,5 @@
 <% endpoint ||= @endpoint %>
-<% team ||= @team || endpoint&.team %>
+<% team ||= @parent || endpoint&.send(BulletTrain::OutgoingWebhooks.parent_association) %>
 <%= render 'account/teams/breadcrumbs', team: team %>
 <%= render 'account/shared/breadcrumb', label: t('.label'), url: [:account, team, :webhooks_outgoing_endpoints] %>
 <% if endpoint&.persisted? %>

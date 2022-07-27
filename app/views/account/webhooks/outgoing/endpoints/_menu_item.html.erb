@@ -1,6 +1,6 @@
-<% if can? :read, Webhooks::Outgoing::Endpoint.new(team: current_team) %>
+<% if can? :read, Webhooks::Outgoing::Endpoint.new(BulletTrain::OutgoingWebhooks.parent_association => send(BulletTrain::OutgoingWebhooks.current_parent_method)) %>
   <%= render 'account/shared/menu/item', {
-    url: main_app.polymorphic_path([:account, current_team, :webhooks_outgoing_endpoints]),
+    url: main_app.polymorphic_path([:account, send(BulletTrain::OutgoingWebhooks.current_parent_method), :webhooks_outgoing_endpoints]),
     label: t('webhooks/outgoing/endpoints.navigation.label'),
   } do |p| %>
     <% p.content_for :icon do %>

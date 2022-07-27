@@ -1,5 +1,6 @@
 class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationController
-  account_load_and_authorize_resource :endpoint, through: :team, through_association: :webhooks_outgoing_endpoints
+  account_load_and_authorize_resource :endpoint, through: BulletTrain::OutgoingWebhooks.parent_association, through_association: :webhooks_outgoing_endpoints
+  before_action { @parent = instance_variable_get("@#{BulletTrain::OutgoingWebhooks.parent_association}") }
 
   # GET /account/teams/:team_id/webhooks/outgoing/endpoints
   # GET /account/teams/:team_id/webhooks/outgoing/endpoints.json
@@ -26,7 +27,7 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
   def create
     respond_to do |format|
       if @endpoint.save
-        format.html { redirect_to [:account, @team, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.created") }
+        format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @endpoint] }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -54,7 +55,7 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
   def destroy
     @endpoint.destroy
     respond_to do |format|
-      format.html { redirect_to [:account, @team, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.destroyed") }
+      format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.destroyed") }
       format.json { head :no_content }
     end
   end

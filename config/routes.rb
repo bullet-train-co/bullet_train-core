@@ -1,7 +1,7 @@
 Rails.application.routes.draw do
   namespace :account do
     shallow do
-      resources :teams do
+      resources BulletTrain::OutgoingWebhooks.parent_resource do
         namespace :webhooks do
           namespace :outgoing do
             resources :events
