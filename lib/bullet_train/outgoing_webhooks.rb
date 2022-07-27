@@ -7,7 +7,7 @@ module BulletTrain
       klass.respond_to?(method) ? klass.send(method) || default_value : default_value
     end
 
-    mattr_accessor :parent_class, default: default_for(BulletTrain, :parent_class, "Team" )
+    mattr_accessor :parent_class, default: default_for(BulletTrain, :parent_class, "Team")
     mattr_accessor :base_class, default: default_for(BulletTrain, :base_class, "ApplicationRecord")
 
     def self.parent_association

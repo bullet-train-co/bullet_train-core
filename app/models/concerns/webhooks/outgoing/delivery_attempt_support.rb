@@ -1,9 +1,9 @@
 module Webhooks::Outgoing::DeliveryAttemptSupport
   extend ActiveSupport::Concern
 
-  included do
-    SUCCESS_RESPONSE_CODES = [200, 201, 202, 203, 204, 205, 206, 207, 226].freeze
+  SUCCESS_RESPONSE_CODES = [200, 201, 202, 203, 204, 205, 206, 207, 226].freeze
 
+  included do
     belongs_to :delivery
     has_one :team, through: :delivery unless BulletTrain::OutgoingWebhooks.parent_class_specified?
     scope :successful, -> { where(response_code: SUCCESS_RESPONSE_CODES) }
@@ -40,7 +40,7 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
       self.response_message = response.message
       self.response_code = response.code
       self.response_body = response.body
-    rescue Exception => exception
+    rescue => exception
       self.response_code = 0
       self.error_message = exception.message
     end

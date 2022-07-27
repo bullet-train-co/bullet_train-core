@@ -1,6 +1,6 @@
 class Api::V1::Webhooks::Outgoing::EndpointsEndpoint < Api::V1::Root
   helpers do
-    params BulletTrain::OutgoingWebhooks.parent_association_id  do
+    params BulletTrain::OutgoingWebhooks.parent_association_id do
       requires BulletTrain::OutgoingWebhooks.parent_association_id, type: Integer, allow_blank: false, desc: "#{BulletTrain::OutgoingWebhooks.parent_class} ID"
     end
 

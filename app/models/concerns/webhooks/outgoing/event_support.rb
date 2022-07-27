@@ -2,7 +2,7 @@ module Webhooks::Outgoing::EventSupport
   extend ActiveSupport::Concern
   include HasUuid
 
-  included  do
+  included do
     belongs_to BulletTrain::OutgoingWebhooks.parent_association
     belongs_to :event_type, class_name: "Webhooks::Outgoing::EventType"
     belongs_to :subject, polymorphic: true
@@ -42,5 +42,4 @@ module Webhooks::Outgoing::EventSupport
   def label_string
     short_uuid
   end
-
 end
