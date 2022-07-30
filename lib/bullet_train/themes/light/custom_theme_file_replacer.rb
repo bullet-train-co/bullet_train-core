@@ -34,8 +34,12 @@ module BulletTrain
             custom_gem_file[:file_name] = adjust_directory_hierarchy(custom_gem_file[:file_name], original_theme)
 
             # The content in the main app should replace the cloned gem files.
-            if custom_gem_file[:must_compare] && !BulletTrain::Themes::Light::FileReplacer.files_have_same_content?(custom_gem_file[:file_name], main_app_file)
-              BulletTrain::Themes::Light::FileReplacer.replace_content(old: custom_gem_file[:file_name], new: main_app_file)
+            begin
+              if custom_gem_file[:must_compare] && !BulletTrain::Themes::Light::FileReplacer.files_have_same_content?(custom_gem_file[:file_name], main_app_file)
+                BulletTrain::Themes::Light::FileReplacer.replace_content(old: custom_gem_file[:file_name], new: main_app_file)
+              end
+            rescue => exception
+              puts "Skipping \`#{main_app_file}\` because it isn't present."
             end
 
             # Only rename file names that still have the original theme in them, i.e. - ./tailwind.config.light.js
