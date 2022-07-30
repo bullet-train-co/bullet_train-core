@@ -38,7 +38,7 @@ module BulletTrain
               if custom_gem_file[:must_compare] && !BulletTrain::Themes::Light::FileReplacer.files_have_same_content?(custom_gem_file[:file_name], main_app_file)
                 BulletTrain::Themes::Light::FileReplacer.replace_content(old: custom_gem_file[:file_name], new: main_app_file)
               end
-            rescue => exception
+            rescue Errno::ENOENT => _
               puts "Skipping \`#{main_app_file}\` because it isn't present."
             end
 
