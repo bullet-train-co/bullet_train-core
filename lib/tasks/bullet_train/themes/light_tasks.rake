@@ -156,6 +156,19 @@ namespace :bullet_train do
         puts string.blue
         $stdin.gets.strip
       end
+
+      desc "List view partials in theme that haven't changed since ejection from \"Light\"."
+      task :clean, [:theme] => :environment do |task, args|
+        theme_base_path = `bundle show --paths bullet_train-themes-light`.chomp
+        `find app/views/themes/#{args[:theme]} | grep html.erb`.lines.map(&:chomp).each do |path|
+          _, file = path.split("app/views/themes/#{args[:theme]}/")
+          light_path = "#{theme_base_path}/app/views/themes/light/#{file}"
+          if File.read(path) == File.read(light_path)
+            puts "No changes in \`#{path}\` since being ejected. Removing."
+            `rm #{path}`
+          end
+        end
+      end
     end
   end
 end
