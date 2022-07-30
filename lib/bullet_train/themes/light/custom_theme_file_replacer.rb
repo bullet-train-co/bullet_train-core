@@ -170,7 +170,9 @@ module BulletTrain
             "./app/assets/stylesheets/#{custom_theme}.tailwind.css",
             "./app/javascript/application.#{custom_theme}.js",
             "./app/lib/bullet_train/themes/#{custom_theme}.rb",
-            Dir.glob("./app/views/themes/#{custom_theme}/**/*.html.erb")
+            Dir.glob("./app/views/themes/#{custom_theme}/**/*.html.erb"),
+            "./tailwind.mailer.#{custom_theme}.config.js",
+            "./tailwind.#{custom_theme}.config.js",
           ].flatten
         end
 
