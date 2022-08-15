@@ -160,6 +160,14 @@ class Scaffolding::ClassNamesTransformer
       parent_in_namespace_class_name.titlecase.pluralize
     when "Tangible Things"
       in_namespace_class_name.titlecase.pluralize
+    when "Creative concepts"
+      parent_in_namespace_class_name.titlecase.downcase.capitalize.pluralize
+    when "Tangible things"
+      in_namespace_class_name.titlecase.downcase.capitalize.pluralize
+    when "creative concepts"
+      parent_in_namespace_class_name.titlecase.downcase.pluralize
+    when "tangible things"
+      in_namespace_class_name.titlecase.downcase.pluralize
     when "creative-concepts"
       parent_in_namespace_class_name.underscore.gsub(/[\/_]/, "-").pluralize
     when "tangible-things"
@@ -173,6 +181,14 @@ class Scaffolding::ClassNamesTransformer
       parent_in_namespace_class_name.titlecase
     when "Tangible Thing"
       in_namespace_class_name.titlecase
+    when "Creative concept"
+      parent_in_namespace_class_name.titlecase.downcase.capitalize
+    when "Tangible thing"
+      in_namespace_class_name.titlecase.downcase.capitalize
+    when "creative concept"
+      parent_in_namespace_class_name.titlecase.downcase
+    when "tangible thing"
+      in_namespace_class_name.titlecase.downcase
     when "creative-concept"
       parent_in_namespace_class_name.underscore.gsub(/[\/_]/, "-")
     when "tangible-thing"

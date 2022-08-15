@@ -6,6 +6,12 @@ require "scaffolding/class_names_transformer"
 class Scaffolding::Transformer
   attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find
 
+  def code_for_child_on_parent_show_page
+  end
+
+  def update_models_abstract_class
+  end
+
   def initialize(child, parents, cli_options = {})
     self.child = child
     self.parent = parents.first
@@ -91,6 +97,10 @@ class Scaffolding::Transformer
       "tangible-things",
       "Creative Concepts",
       "Tangible Things",
+      "Creative concepts",
+      "Tangible things",
+      "creative concepts",
+      "tangible things",
 
       # just class name plural.
       "creative_concept",
@@ -99,6 +109,10 @@ class Scaffolding::Transformer
       "tangible-thing",
       "Creative Concept",
       "Tangible Thing",
+      "Creative concept",
+      "Tangible thing",
+      "creative concept",
+      "tangible thing",
 
       # Account namespace vs. others.
       ":account",
@@ -1291,6 +1305,8 @@ class Scaffolding::Transformer
         scaffold_replace_line_in_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", transform_string("belongs_to :absolutely_abstract_creative_concept, class_name: \"Scaffolding::AbsolutelyAbstract::CreativeConcept\"\n"), transform_string("belongs_to :absolutely_abstract_creative_concept\n"))
       end
 
+      update_models_abstract_class
+
       # add user permissions.
       add_ability_line_to_roles_yml
     end
@@ -1301,7 +1317,12 @@ class Scaffolding::Transformer
 
     # add children to the show page of their parent.
     unless cli_options["skip-parent"] || parent == "None"
-      scaffold_add_line_to_file("./app/views/account/scaffolding/absolutely_abstract/creative_concepts/show.html.erb", "<%= render 'account/scaffolding/completely_concrete/tangible_things/index', tangible_things: @creative_concept.completely_concrete_tangible_things, hide_back: true %>", "<%# 🚅 super scaffolding will insert new children above this line. %>", prepend: true)
+      scaffold_add_line_to_file(
+        "./app/views/account/scaffolding/absolutely_abstract/creative_concepts/show.html.erb",
+        code_for_child_on_parent_show_page || "<%= render 'account/scaffolding/completely_concrete/tangible_things/index', tangible_things: @creative_concept.completely_concrete_tangible_things, hide_back: true %>",
+        "<%# 🚅 super scaffolding will insert new children above this line. %>",
+        prepend: true
+      )
     end
 
     unless cli_options["skip-model"]
