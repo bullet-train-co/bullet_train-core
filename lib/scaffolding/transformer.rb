@@ -12,6 +12,21 @@ class Scaffolding::Transformer
   def update_models_abstract_class
   end
 
+  def created_by_reference(created_by_index_name)
+  end
+
+  def approved_by_reference(approved_by_index_name)
+  end
+
+  def has_one_team_replacement
+  end
+
+  def has_one_to_dedupe
+  end
+
+  def update_action_models_abstract_class(targets_n)
+  end
+
   def initialize(child, parents, cli_options = {})
     self.child = child
     self.parent = parents.first

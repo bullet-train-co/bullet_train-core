@@ -1,4 +1,10 @@
 module Scaffolding
+  mattr_accessor :database, default: :postgresql
+
+  def self.mysql?
+    database == :mysql
+  end
+
   def self.valid_attribute_type?(type)
     [
       "boolean",
