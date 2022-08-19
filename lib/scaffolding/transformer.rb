@@ -18,10 +18,12 @@ class Scaffolding::Transformer
   def approved_by_reference(approved_by_index_name)
   end
 
-  def has_one_team_replacement
+  def permit_parents
+    ["Team"]
   end
 
-  def has_one_to_dedupe
+  def last_joinable_parent
+    "Team"
   end
 
   def update_action_models_abstract_class(targets_n)
