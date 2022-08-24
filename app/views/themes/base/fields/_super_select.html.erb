@@ -7,7 +7,7 @@ form ||= current_fields_form
 options ||= {}
 other_options ||= {}
 html_options ||= {}
-html_options[:id] ||= id_for(form, method)
+html_options[:id] ||= form.field_id(method)
 html_options[:class] = "form-control select2 #{html_options[:class]}".strip
 choices_url ||= nil
 if choices_url.nil?
