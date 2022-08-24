@@ -1,5 +1,6 @@
 module Webhooks::Outgoing::EndpointSupport
   extend ActiveSupport::Concern
+  include Webhooks::Outgoing::UriFiltering
 
   included do
     belongs_to BulletTrain::OutgoingWebhooks.parent_association
@@ -11,9 +12,15 @@ module Webhooks::Outgoing::EndpointSupport
 
     validates :name, presence: true
 
+    before_validation { url&.strip! }
+
+    validates :url, presence: true, allowed_uri: true
+
     after_initialize do
       self.event_type_ids ||= []
     end
+
+    after_save :touch_parent
   end
 
   def valid_event_types
@@ -22,5 +29,9 @@ module Webhooks::Outgoing::EndpointSupport
 
   def event_types
     event_type_ids.map { |id| Webhooks::Outgoing::EventType.find(id) }
+  end
+
+  def touch_parent
+    send(BulletTrain::OutgoingWebhooks.parent_association).touch
   end
 end
