@@ -24,7 +24,7 @@ module BulletTrain
           child = argv[0]
 
           # get all the attributes.
-          attributes = argv[1..-1]
+          attributes = argv[1..]
 
           check_required_options_for_attributes("crud-field", attributes, child)
 

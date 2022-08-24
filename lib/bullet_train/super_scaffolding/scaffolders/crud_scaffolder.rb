@@ -36,14 +36,14 @@ module BulletTrain
           parent = parents.first
 
           unless parents.include?("Team")
-            raise "Parents for #{child} should trace back to the Team model, but Team wasn't provided. Please confirm that all of the parents tracing back to the Team model are present and try again.\n" +
-              "E.g.:\n" +
-              "rails g model Section page:references title:text body:text\n" +
+            raise "Parents for #{child} should trace back to the Team model, but Team wasn't provided. Please confirm that all of the parents tracing back to the Team model are present and try again.\n" \
+              "E.g.:\n" \
+              "rails g model Section page:references title:text body:text\n" \
               "bin/super-scaffold crud Section Page,Site,Team title:text body:text\n"
           end
 
           # get all the attributes.
-          attributes = argv[2..-1]
+          attributes = argv[2..]
 
           check_required_options_for_attributes("crud", attributes, child, parent)
 

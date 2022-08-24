@@ -15,7 +15,7 @@ argv = []
 @options = {}
 ARGV.each do |arg|
   if arg[0..1] == "--"
-    arg = arg[2..-1]
+    arg = arg[2..]
     if arg.split("=").count > 1
       @options[arg.split("=")[0]] = arg.split("=")[1]
     else
@@ -38,9 +38,9 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     type = parts.join(":")
 
     unless Scaffolding.valid_attribute_type?(type)
-      raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " +
-            "uses field partials when Super Scaffolding, i.e. - `name:text_field` as opposed to `name:string`. " +
-            "Please refer to the Field Partial documentation to view which attribute types are available."
+      raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " \
+        "uses field partials when Super Scaffolding, i.e. - `name:text_field` as opposed to `name:string`. " \
+        "Please refer to the Field Partial documentation to view which attribute types are available."
     end
 
     # extract any options they passed in with the field.
