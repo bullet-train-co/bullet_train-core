@@ -33,8 +33,7 @@ module Controllers::Base
         end
       else
         respond_to do |format|
-          # TODO we do this for now because it ensures `current_team` doesn't remain set in an invalid state.
-          format.html { redirect_to [:account, current_user.teams.first], alert: exception.message }
+          format.html { redirect_to account_teams_url, alert: exception.message }
         end
       end
     end
