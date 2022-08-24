@@ -5,7 +5,7 @@ stimulus_controller = 'fields--color-picker'
 
 form ||= current_fields_form
 html_options ||= {}
-html_options[:id] ||= id_for(form, method)
+html_options[:id] ||= form.field_id(method)
 multiple ||= false
 other_options ||= {}
 options ||= options_for(form, method)

@@ -7,7 +7,7 @@ stimulus_controller = 'fields--cloudinary-image'
 
 form ||= current_fields_form
 options ||= {}
-options[:id] ||= id_for(form, method)
+options[:id] ||= form.field_id(method)
 options[:width] ||= 100
 options[:height] ||= 100
 options[:cloud_name] ||= Cloudinary.config.cloud_name

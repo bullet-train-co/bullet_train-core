@@ -3,7 +3,7 @@
 <%
 form ||= current_fields_form
 options ||= {}
-options[:id] ||= id_for(form, method)
+options[:id] ||= form.field_id(method)
 options[:class] = "form-control single-daterange w-full border-gray-300 dark:bg-darkPrimary-800 dark:border-darkPrimary-900 #{options[:class]}".strip
 options[:value] = form.object.send(method)&.in_time_zone(current_team.time_zone)&.strftime(t('global.formats.date_and_time'))
 options = options.merge({ data: {'fields--date-target': 'field' }})

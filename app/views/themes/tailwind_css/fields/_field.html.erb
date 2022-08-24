@@ -5,7 +5,7 @@ form ||= current_fields_form
 # returns a struct with `label`, `placeholder`, and `help` methods.
 labels = labels_for(form, method)
 options ||= {}
-options[:id] ||= id_for(form, method)
+options[:id] ||= form.field_id(method)
 # options[:disabled] ||= !field_editable?(form.object, method) if user_signed_in?
 options[:placeholder] ||= labels.placeholder if labels.placeholder
 other_options ||= {}
