@@ -1,27 +1,22 @@
-class Scaffolding::BlockManipulator
-  attr_accessor :lines
+require "scaffolding/file_manipulator"
 
-  def initialize(filepath)
-    @filepath = filepath
-    @lines = File.readlines(filepath)
-  end
-
+module Scaffolding::BlockManipulator
   #
   # Wrap a block of ruby code with another block on the outside.
   #
   # @param [String] `starting` A string to search for at the start of the block. Eg "<%= updates_for context, collection do"
   # @param [Array] `with` An array with two String elements. The text that should wrap the block. Eg ["<%= action_model_select_controller do %>", "<% end %>"]
   #
-  def wrap_block(starting:, with:)
+  def self.wrap_block(starting:, with:, lines:)
     with[0] += "\n" unless with[0].match?(/\n$/)
     with[1] += "\n" unless with[1].match?(/\n$/)
-    starting_line = find_block_start(starting)
-    end_line = find_block_end(starting_from: starting_line, lines: @lines)
+    starting_line = find_block_start(starting_from: starting, lines: lines)
+    end_line = find_block_end(starting_from: starting_line, lines: lines)
 
     final = []
     block_indent = ""
     spacer = "  "
-    @lines.each_with_index do |line, index|
+    lines.each_with_index do |line, index|
       line += "\n" unless line.match?(/\n$/)
       if index < starting_line
         final << line
@@ -39,80 +34,77 @@ class Scaffolding::BlockManipulator
       end
     end
 
-    @lines = final
-    unless @lines.last.match?(/\n$/)
-      @lines.last += "\n"
+    lines = final
+    unless lines.last.match?(/\n$/)
+      lines[-1] += "\n"
     end
+    lines
   end
 
-  def insert(content, within: nil, after: nil, before: nil, after_block: nil, append: false)
+  def self.insert(content, lines:, within: nil, after: nil, before: nil, after_block: nil, append: false)
     # Search for before like we do after, we'll just inject before it.
     after ||= before
 
     # If within is given, find the start and end lines of the block
     content += "\n" unless content.match?(/\n$/)
     start_line = 0
-    end_line = @lines.count - 1
+    end_line = lines.count - 1
     if within.present?
-      start_line = find_block_start(within)
-      end_line = find_block_end(starting_from: start_line, lines: @lines)
+      start_line = find_block_start(starting_from: within, lines: lines)
+      end_line = find_block_end(starting_from: start_line, lines: lines)
       # start_line += 1 # ensure we actually insert the content _within_ the given block
       # end_line += 1 if end_line == start_line
     end
     if after_block.present?
-      block_start = find_block_start(after_block)
-      block_end = find_block_end(starting_from: block_start, lines: @lines)
+      block_start = find_block_start(starting_from: after_block, lines: lines)
+      block_end = find_block_end(starting_from: block_start, lines: lines)
       start_line = block_end
-      end_line = @lines.count - 1
+      end_line = lines.count - 1
     end
     index = start_line
     match = false
     while index < end_line && !match
-      line = @lines[index]
+      line = lines[index]
       if after.nil? || line.match?(after)
         unless append
           match = true
           # We adjust the injection point if we really wanted to insert before.
-          insert_line(content, index - (before ? 1 : 0))
+          lines = insert_line(content, index - (before ? 1 : 0), lines)
         end
       end
       index += 1
     end
 
-    return if match
+    return lines if match
 
     # Match should always be false here.
     if append && !match
-      insert_line(content, index - 1)
+      lines = insert_line(content, index - 1, lines)
     end
+    lines
   end
 
-  def insert_line(content, insert_at_index)
+  def self.insert_line(content, insert_at_index, lines)
     content += "\n" unless content.match?(/\n$/)
     final = []
-    @lines.each_with_index do |line, index|
+    lines.each_with_index do |line, index|
       indent = line.match(/^\s*/).to_s
       final << line
       if index == insert_at_index
         final << indent + content
       end
     end
-    @lines = final
+    final
   end
 
-  def insert_block(block_content, after_block:)
-    block_start = find_block_start(after_block)
-    block_end = find_block_end(starting_from: block_start, lines: @lines)
-    insert_line(block_content[0], block_end)
-    insert_line(block_content[1], block_end + 1)
+  def self.insert_block(block_content, after_block:, lines:)
+    block_start = find_block_start(starting_from: after_block, lines: lines)
+    block_end = find_block_end(starting_from: block_start, lines: lines)
+    lines = insert_line(block_content[0], block_end, lines)
+    insert_line(block_content[1], block_end + 1, lines)
   end
 
-  # TODO: Delete this because it only really needs to be in the FileManipulator
-  def write
-    File.write(@filepath, @lines.join)
-  end
-
-  def find_block_parent(starting_line_number, lines)
+  def self.find_block_parent(starting_line_number, lines)
     return nil unless indentation_of(starting_line_number, lines)
     cursor = starting_line_number
     while cursor >= 0
@@ -124,11 +116,11 @@ class Scaffolding::BlockManipulator
     nil
   end
 
-  def find_block_start(starting_string)
-    matcher = Regexp.escape(starting_string)
+  def self.find_block_start(starting_from:, lines:)
+    matcher = Regexp.escape(starting_from)
     starting_line = 0
 
-    @lines.each_with_index do |line, index|
+    lines.each_with_index do |line, index|
       if line.match?(matcher)
         starting_line = index
         break
@@ -137,7 +129,7 @@ class Scaffolding::BlockManipulator
     starting_line
   end
 
-  def find_block_end(starting_from:, lines:)
+  def self.find_block_end(starting_from:, lines:)
     # This loop was previously in the RoutesFileManipulator.
     lines.each_with_index do |line, line_number|
       next unless line_number > starting_from
@@ -148,7 +140,7 @@ class Scaffolding::BlockManipulator
 
     depth = 0
     current_line = starting_from
-    @lines[starting_from..@lines.count].each_with_index do |line, index|
+    lines[starting_from..lines.count].each_with_index do |line, index|
       current_line = starting_from + index
       depth += 1 if line.match?(/\s*<%.+ do .*%>/)
       depth += 1 if line.match?(/\s*<% if .*%>/)
@@ -162,7 +154,7 @@ class Scaffolding::BlockManipulator
   # TODO: We shouldn't need this second argument, but since
   # we have `lines` here and in the RoutesFileManipulator,
   # the lines diverge from one another when we edit them individually.
-  def indentation_of(line_number, lines)
+  def self.indentation_of(line_number, lines)
     lines[line_number].match(/^( +)/)[1]
   rescue
     nil

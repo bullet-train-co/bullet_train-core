@@ -102,7 +102,7 @@ describe Scaffolding::RoutesFileManipulator do
     examples.each do |starting_line_number, ending_line_number|
       it "returns #{ending_line_number} for #{starting_line_number}" do
         results = subject.new(example_file, "Something", "Nothing")
-        results = results.block_manipulator.find_block_end(starting_from: starting_line_number, lines: results.lines)
+        results = Scaffolding::BlockManipulator.find_block_end(starting_from: starting_line_number, lines: results.lines)
         assert_equal ending_line_number, results
       end
     end

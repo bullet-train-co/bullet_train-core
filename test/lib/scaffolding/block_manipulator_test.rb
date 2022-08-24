@@ -5,21 +5,23 @@ require "scaffolding/block_manipulator"
 
 describe Scaffolding::BlockManipulator do
   file_path = "./test/lib/scaffolding/examples/block_manipulator_data.html.erb"
-  initial_file_contents = File.open(file_path).readlines.join
+  initial_file_contents =
+    <<~INITIAL
+
+      <% test_block do %>
+        <p>with some content</p>
+      <% end %>
+    INITIAL
 
   after :all do
     File.write(file_path, initial_file_contents)
-  end
-
-  it "initializes" do
-    Scaffolding::BlockManipulator.new(file_path)
   end
 
   def initialize_demo_file file_path, data = nil
     File.write(file_path, data)
   end
 
-  it "Inserts within a block and after the given location" do
+  it "inserts within a block and after the given location" do
     initial_data =
       <<~INITIAL
 
@@ -28,11 +30,12 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       INITIAL
-
     initialize_demo_file(file_path, initial_data)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.insert("a new string", within: "<% test_block", after: "<p>")
-    block_manipulator.write
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.insert("a new string", within: "<% test_block", after: "<p>", lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~RESULT
 
@@ -42,6 +45,7 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 
@@ -56,9 +60,11 @@ describe Scaffolding::BlockManipulator do
 
       INITIAL
     initialize_demo_file(file_path, initial_data)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.insert("  Some new content", within: "<% inner_block")
-    block_manipulator.write
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.insert("  Some new content", within: "<% inner_block", lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~EXPECTED
 
@@ -69,10 +75,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       EXPECTED
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 
-  it "Inserts content after the given block" do
+  it "inserts content after the given block" do
     initial_data =
       <<~INITIAL
 
@@ -83,9 +90,11 @@ describe Scaffolding::BlockManipulator do
 
       INITIAL
     initialize_demo_file(file_path, initial_data)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.insert("Post content", after_block: "<% inner_block")
-    block_manipulator.write
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.insert("Post content", after_block: "<% inner_block", lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~EXPECTED
 
@@ -96,22 +105,24 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       EXPECTED
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 
   it "appends a line after the block" do
-    initial_data_state =
+    initial_data =
       <<~DATA
 
         <% test_block do %>
         <% end %>
 
       DATA
+    initialize_demo_file(file_path, initial_data)
+    initial_lines = File.readlines(file_path)
 
-    initialize_demo_file(file_path, initial_data_state)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.insert("This is a new line", after_block: "<% test_block")
-    block_manipulator.write
+    new_lines = Scaffolding::BlockManipulator.insert("This is a new line", after_block: "<% test_block", lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~RESULT
 
@@ -120,10 +131,11 @@ describe Scaffolding::BlockManipulator do
         This is a new line
 
       RESULT
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 
-  it "Inserts within an if statement" do
+  it "inserts within an if statement" do
     initial_data =
       <<~INITIAL
 
@@ -132,11 +144,12 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       INITIAL
-
     initialize_demo_file(file_path, initial_data)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.insert("a new string", within: "<% if a_test", after: "<p>")
-    block_manipulator.write
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.insert("a new string", within: "<% if a_test", after: "<p>", lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~RESULT
 
@@ -146,6 +159,7 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 
@@ -160,10 +174,12 @@ describe Scaffolding::BlockManipulator do
 
       INITIAL
     initialize_demo_file(file_path, initial_data)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.insert_block(["<% new_block do %>", "<% end %>"], after_block: "<% inner_block")
-    block_manipulator.insert("  an inner line", within: "<% new_block")
-    block_manipulator.write
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.insert_block(["<% new_block do %>", "<% end %>"], after_block: "<% inner_block", lines: initial_lines)
+    new_lines = Scaffolding::BlockManipulator.insert("  an inner line", within: "<% new_block", lines: new_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~EXPECTED
 
@@ -176,22 +192,24 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       EXPECTED
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 
-  it "Wraps a block with a new block" do
-    initial_data_state =
+  it "wraps a block with a new block" do
+    initial_data =
       <<~DATA
 
         <% test_block do %>
         <% end %>
 
       DATA
+    initialize_demo_file(file_path, initial_data)
+    initial_lines = File.readlines(file_path)
 
-    initialize_demo_file(file_path, initial_data_state)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.wrap_block(starting: "<% test_block", with: ["<% outer_block do %>", "<% end %>"])
-    block_manipulator.write
+    new_lines = Scaffolding::BlockManipulator.wrap_block(starting: "<% test_block", with: ["<% outer_block do %>", "<% end %>"], lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~RESULT
 
@@ -201,11 +219,12 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 
-  it "Wraps a nested block" do
-    initial_state =
+  it "wraps a nested block" do
+    initial_data =
       <<~INITIAL
 
         <% test_block do %>
@@ -214,6 +233,12 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       INITIAL
+    initialize_demo_file(file_path, initial_data)
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.wrap_block(starting: "<% inner_block do", with: ["<% wrapping_block do %>", "<% end %>"], lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
     expected_result =
       <<~RESULT
 
@@ -225,10 +250,7 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
-    initialize_demo_file(file_path, initial_state)
-    block_manipulator = Scaffolding::BlockManipulator.new(file_path)
-    block_manipulator.wrap_block(starting: "<% inner_block do", with: ["<% wrapping_block do %>", "<% end %>"])
-    block_manipulator.write
+    assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
 end
