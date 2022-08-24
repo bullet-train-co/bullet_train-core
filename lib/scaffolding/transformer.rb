@@ -1085,6 +1085,20 @@ class Scaffolding::Transformer
             scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", "assert_equal @tangible_thing.#{name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
           end
         end
+
+        # We need to update our new Tangible Thing's
+        # jbuilder files if it's scoped under "account".
+        # TODO: Should we run this if `namespace.present?` instead?
+        if namespace == "account"
+          target_string = "#{transform_string("scaffolding/completely_concrete/tangible_things")}/#{transform_string("tangible_thing")}"
+          replacement_string = "#{namespace}/#{target_string}"
+          [
+            "app/views/account/completely_concrete/tangible_things/index.json.jbuilder",
+            "app/views/account/completely_concrete/tangible_things/show.json.jbuilder"
+          ].each do |path|
+            scaffold_replace_line_in_file(path, replacement_string, target_string)
+          end
+        end
       end
 
       #
