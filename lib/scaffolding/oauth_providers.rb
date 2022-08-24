@@ -11,7 +11,7 @@ def legacy_resolve_template_path(file)
 end
 
 def legacy_replace_in_file(file, before, after)
-  puts "Replacing in '#{file}'."
+  puts "Replacing in '#{file}'." unless silence_logs?
   target_file_content = File.read(file)
   target_file_content.gsub!(before, after)
   File.write(file, target_file_content)
@@ -58,7 +58,7 @@ def legacy_add_line_to_file(file, content, hook, child, parent, options = {})
       end
     end
 
-    puts "Updating '#{transformed_file_name}'."
+    puts "Updating '#{transformed_file_name}'." unless silence_logs?
 
     File.write(transformed_file_name, new_target_file_content.join("\n") + "\n")
   end
@@ -137,7 +137,7 @@ def oauth_scaffold_file(file, options)
     FileUtils.mkdir_p(transformed_directory_name)
   end
 
-  puts "Writing '#{transformed_file_name}'."
+  puts "Writing '#{transformed_file_name}'." unless silence_logs?
 
   File.write(transformed_file_name, transformed_file_content)
 end

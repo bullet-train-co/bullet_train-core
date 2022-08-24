@@ -240,12 +240,12 @@ class Scaffolding::Transformer
       FileUtils.mkdir_p(transformed_directory_name)
     end
 
-    puts "Writing '#{transformed_file_name}'."
+    puts "Writing '#{transformed_file_name}'." unless silence_logs?
 
     File.write(transformed_file_name, transformed_file_content.strip + "\n")
 
     if transformed_file_name.split(".").last == "rb"
-      puts "Fixing Standard Ruby on '#{transformed_file_name}'."
+      puts "Fixing Standard Ruby on '#{transformed_file_name}'." unless silence_logs?
       # `standardrb --fix #{transformed_file_name} 2> /dev/null`
     end
   end
@@ -285,7 +285,7 @@ class Scaffolding::Transformer
     end
 
     if target_file_content.include?(transformed_content)
-      puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'."
+      puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'." unless silence_logs?
 
     else
 
@@ -335,7 +335,7 @@ class Scaffolding::Transformer
         end
       end
 
-      puts "Updating '#{transformed_file_name}'."
+      puts "Updating '#{transformed_file_name}'." unless silence_logs?
 
       File.write(transformed_file_name, new_target_file_content.join("\n").strip + "\n")
 
@@ -477,7 +477,7 @@ class Scaffolding::Transformer
   end
 
   def replace_in_file(file, before, after, target_regexp = nil)
-    puts "Replacing in '#{file}'."
+    puts "Replacing in '#{file}'." unless silence_logs?
     if target_regexp.present?
       target_file_content = ""
       File.open(file).each_line do |l|
