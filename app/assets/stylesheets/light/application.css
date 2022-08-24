@@ -5,6 +5,7 @@
 
 @import './bulk_actions';
 @import "./electron";
+@import './devise';
 @import './fields';
 @import './turn';
 
