@@ -15,8 +15,13 @@ module Scaffolding::FileManipulator
     lines[(within + 1)..(Scaffolding::BlockManipulator.find_block_end(starting_from: within, lines: lines) + 1)]
   end
 
-  def self.replace_line_in_file(file, content, in_place_of)
-    target_file_content = File.read(file)
+  def self.replace_line_in_file(file, content, in_place_of, options = {})
+    begin
+      target_file_content = File.read(file)
+    rescue Errno::ENOENT => _
+      puts "Couldn't find '#{file}'".red unless options[:suppress_could_not_find]
+      return false
+    end
 
     if target_file_content.include?(content)
       puts "No need to update '#{file}'. It already has '#{content}'."

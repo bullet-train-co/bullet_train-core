@@ -353,7 +353,7 @@ class Scaffolding::Transformer
     file = transform_string(file)
     # we specifically don't transform the content, we assume a builder function created this content.
     in_place_of = transform_string(in_place_of)
-    Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of)
+    Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of, suppress_could_not_find: suppress_could_not_find)
   end
 
   # if class_name isn't specified, we use `child`.
