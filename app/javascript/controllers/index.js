@@ -5,6 +5,7 @@ import BulkActionsController from './bulk_actions_controller'
 import ClipboardController from './clipboard_controller'
 import FormController from './form_controller'
 import MobileMenuController from './mobile_menu_controller'
+import TextToggleController from './text_toggle_controller'
 
 export const controllerDefinitions = [
   [BulkActionFormController, 'bulk_action_form_controller.js'],
@@ -12,6 +13,7 @@ export const controllerDefinitions = [
   [ClipboardController, 'clipboard_controller.js'],
   [FormController, 'form_controller.js'],
   [MobileMenuController, 'mobile_menu_controller.js'],
+  [TextToggleController, 'text_toggle_controller.js'],
 ].map(function(d) {
   const key = d[1]
   const controller = d[0]
