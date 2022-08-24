@@ -64,7 +64,7 @@ end
   <% end %>
 
   <% # any help text. %>
-  <% if content_for?(:help) || other_options[:help] || content_for?(:after_help) %>
+  <% if content_for?(:help) || other_options[:help].present? || content_for?(:after_help) %>
     <p class="mt-1.5 text-xs text-gray-500 dark:text-gray-400">
       <%= yield :help %>
       <% flush_content_for :help %>
