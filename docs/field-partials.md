@@ -109,23 +109,30 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 
 ## Available Field Partials
 
-| Field Partial | Multiple Values? | Assignment Helpers | JavaScript Library | Description | Commercial License Required |
-| --- | --- | --- | --- | --- | --- |
-| `boolean` | | `assign_boolean` | | | |
-| [`buttons`](/docs/field-partials/buttons.md) | Optionally | `assign_checkboxes` | | | |
-| `cloudinary_image` | | | | | |
-| `color_picker` | | | [pickr](https://simonwep.github.io/pickr/) | | |
-| `date_and_time_field` | | `assign_date_and_time` | [Date Range Picker](https://www.daterangepicker.com) | | |
-| `date_field` | | `assign_date` | [Date Range Picker](https://www.daterangepicker.com) | | |
-| `email_field` | | | | | |
-| `file_field` | | | [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) | | |
-| `options` | Optionally | `assign_checkboxes` | | | |
-| `password_field` | | | | | |
-| `phone_field` | | | [International Telephone Input](https://intl-tel-input.com) | Ensures telephone numbers are in a format that can be used by providers like Twilio. | |
-| [`super_select`](/docs/field-partials/super-select.md) | Optionally | `assign_select_options` | [Select2](https://select2.org) | Provides powerful option search, AJAX search, and multi-select functionality. | |
-| `text_area` | | | | | |
-| `text_field` | | | | | |
-| `trix_editor` | | | [Trix](https://github.com/basecamp/trix) | Basic HTML-powered formatting features and support for at-mentions amongst team members. | |
+| Field Partial | Data Type | Multiple Values? | Assignment Helpers | JavaScript Library | Description | Commercial License Required |
+| --- | --- | --- | --- | --- | --- | --- |
+| `boolean` | `boolean` | `assign_boolean` | | | |
+| [`buttons`](/docs/field-partials/buttons.md) | `string` | Optionally | `assign_checkboxes` | | | |
+| `cloudinary_image` | `string` | | | | | |
+| `color_picker` | | | | [pickr](https://simonwep.github.io/pickr/) | | |
+| `date_and_time_field` | `datetime` | | `assign_date_and_time` | [Date Range Picker](https://www.daterangepicker.com) | | |
+| `date_field` | `date` | | `assign_date` | [Date Range Picker](https://www.daterangepicker.com) | | |
+| `email_field` | `string` | | | | | |
+| `file_field` | `attachment` | | [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) | | |
+| `options` | `string` | Optionally | `assign_checkboxes` | | | |
+| `password_field` | `string` | | | | | |
+| `phone_field` | `string` | | | [International Telephone Input](https://intl-tel-input.com) | Ensures telephone numbers are in a format that can be used by providers like Twilio. | |
+| [`super_select`](/docs/field-partials/super-select.md) | `string` | Optionally | `assign_select_options` | [Select2](https://select2.org) | Provides powerful option search, AJAX search, and multi-select functionality. | |
+| `text_area` | `text` | | | | | |
+| `text_field` | `string` | | | | | |
+| `trix_editor` | `text` | | | [Trix](https://github.com/basecamp/trix) | Basic HTML-powered formatting features and support for at-mentions amongst team members. | |
+
+## A Note On Data Types
+Set the data type to `jsonb` whenever passing the `multiple` option to a new attribute.
+```
+> rails generate model Project team:references multiple_buttons:jsonb
+> bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
+```
 
 ## Additional Field Partials Documentation
  - [`buttons`](/docs/field-partials/buttons.md)
