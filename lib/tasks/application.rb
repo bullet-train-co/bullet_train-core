@@ -36,6 +36,9 @@ module BulletTrain
         puts "Cutting local `package.json` over from `#{theme_name}` to `#{ejected_theme_name}`."
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/package.json)
 
+        puts "Cutting `test/system/resolver_system_test.rb` over from `#{theme_name}` to `#{ejected_theme_name}`."
+        %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/light/#{ejected_theme_name}/g" #{Rails.root}/test/system/resolver_system_test.rb)
+
         # Stub out the class that represents this theme and establishes its inheritance structure.
         target_path = "#{Rails.root}/app/lib/bullet_train/themes/#{ejected_theme_name}.rb"
         puts "Stubbing out a class that represents this theme in `.#{target_path}`."
