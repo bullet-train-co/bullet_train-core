@@ -42,12 +42,12 @@
             <%= form.submit t('global.buttons.sign_in'), class: 'button full' %>
           </div>
 
-          <div class="flex items-center">
-            <input id="remember_me" name="remember_me" type="checkbox" class="h-4 w-4 text-blue focus:ring-blue-dark border-gray-300 rounded">
-            <label for="remember_me" class="ml-2 block">
-              Remember me
-            </label>
-          </div>
+          <% if devise_mapping.rememberable? %>
+            <div class="flex items-center">
+              <%= form.check_box :remember_me, class: "h-4 w-4 text-blue focus:ring-blue-dark border-gray-300 rounded" %>
+              <%= form.label :remember_me, class: "ml-2 block" %>
+            </div>
+          <% end %>
         <% end %>
       <% end %>
     <% end %>
