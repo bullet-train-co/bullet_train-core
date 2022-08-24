@@ -34,7 +34,7 @@ rails g model Message subject:string
 rails g model Comment content:text
 ```
 
-Note that in this specific approach we don't need a `team:references` on `Message` and `Comment`. That's because in this approach there are no controllers specific to `Message` and `Comment`, so all permissions are being inforced by checking the ownership of `Entry`. (That's not to say it would be wrong to add them for other reasons, we're just keeping it as simple as possible here.)
+Note that in this specific approach we don't need a `team:references` on `Message` and `Comment`. That's because in this approach there are no controllers specific to `Message` and `Comment`, so all permissions are being enforced by checking the ownership of `Entry`. (That's not to say it would be wrong to add them for other reasons, we're just keeping it as simple as possible here.)
 
 ### 2. Super Scaffolding for `Entry`
 
@@ -59,7 +59,33 @@ fields: &fields
       "Comment": Comment
 ```
 
-<small>TODO Insert a live example of what `shared/fields/buttons` looks like with these options passed in.</small>
+We will add this block below in the next step on our `new.html.erb` page so you don't have to worry about it now, but with the options above in place, our buttons partial will now allow your users to select either a `Message` or a `Comment` before creating the `Entry` itself:
+
+```
+<% with_field_settings form: form do %>
+  <%= render 'shared/fields/buttons', method: :entryable_type, html_options: {autofocus: true} %>
+  <%# 🚅 super scaffolding will insert new fields above this line. %>
+<% end %>
+```
+
+This will produce the following HTML:
+```
+<div>
+  <label class="btn-toggle" data-controller="fields--button-toggle">
+    <input data-fields--button-toggle-target="shadowField" type="radio" value="Message" name="entry[entryable_type]" id="entry_entryable_type_message">
+    <button type="button" class="button-alternative mb-1.5 mr-1" data-action="fields--button-toggle#clickShadowField">
+      Message
+    </button>
+  </label>
+  <label class="btn-toggle" data-controller="fields--button-toggle">
+    <input data-fields--button-toggle-target="shadowField" type="radio" value="Comment" name="entry[entryable_type]" id="entry_entryable_type_comment">
+    <button type="button" class="button-alternative mb-1.5 mr-1" data-action="fields--button-toggle#clickShadowField">
+      Comment
+    </button>
+  </label>
+</div>
+```
+
 
 ### 4. Add Our First Step to `new.html.erb`
 
@@ -234,9 +260,11 @@ We add this _below_ the Super Scaffolding hook because we want any additional fi
 
 ### 10. Add Attributes of the Concrete Children to `show.html.erb`
 
-Under the Super Scaffolding hook in `app/views/account/entries/show.html.erb`, add the following:
+Add the following in `app/views/account/entries/show.html.erb` under the Super Scaffolding hook shown in the example code below:
 
 ```
+<%# 🚅 super scaffolding will insert new fields above this line. %>
+
 <% with_attribute_settings object: @entry.entryable, strategy: :label do %>
   <% case @entry.entryable %>
   <% when Message %>
