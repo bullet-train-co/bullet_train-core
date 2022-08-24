@@ -178,8 +178,18 @@
     }
 
     trix-toolbar {
+      @apply opacity-50 !important;
+
+      &.visible {
+        @apply opacity-100 !important;
+      }
+
       .trix-button-group, .trix-button {
-        @apply border-darkPrimary-900 !important;
+        @apply border-darkPrimary-400 !important;
+      }
+
+      .trix-button:disabled::before {
+        @apply opacity-25;
       }
     }
 
