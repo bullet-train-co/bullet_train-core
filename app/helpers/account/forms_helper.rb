@@ -27,10 +27,6 @@ module Account::FormsHelper
     string.present? ? string : nil
   end
 
-  def id_for(form, method)
-    [form.object.class.name, form.index, method].compact.join("_").underscore
-  end
-
   def model_key(form)
     form.object.class.name.pluralize.underscore
   end
