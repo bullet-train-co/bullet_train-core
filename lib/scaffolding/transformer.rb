@@ -1047,14 +1047,14 @@ class Scaffolding::Transformer
 
           assertion = case type
           when "date_field"
-            "assert_equal Date.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
+            "assert_equal_or_nil Date.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
           when "date_and_time_field"
-            "assert_equal DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
+            "assert_equal_or_nil DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
           when "file_field"
             # TODO: If we want to use Cloudinary to handle our files, we should make sure we're getting a URL.
             "assert tangible_thing_data['#{name}'].match?('foo.txt') unless response.status == 201"
           else
-            "assert_equal tangible_thing_data['#{name}'], tangible_thing.#{name}"
+            "assert_equal_or_nil tangible_thing_data['#{name}'], tangible_thing.#{name}"
           end
           scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", assertion, RUBY_NEW_FIELDS_HOOK, prepend: true)
         end
