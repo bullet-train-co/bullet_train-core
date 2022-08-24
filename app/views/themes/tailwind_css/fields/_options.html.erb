@@ -21,7 +21,8 @@ labels = labels_for(form, method)
             <div class="flex items-center h-5">
 
               <% if multiple %>
-                <%= form.check_box method, {multiple: multiple, checked: form.object.send(method).map(&:to_s).include?(value.to_s), class: "focus:ring-blue h-4 w-4 text-blue border-gray-300 rounded"}, value, "" %>
+                <% checked_value = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
+                <%= form.check_box method, {multiple: multiple, checked: checked_value, class: "focus:ring-blue h-4 w-4 text-blue border-gray-300 rounded"}, value, "" %>
               <% else %>
                 <%= form.radio_button method, value, {class: "focus:ring-blue h-4 w-4 text-blue border-gray-300"} %>
               <% end %>
