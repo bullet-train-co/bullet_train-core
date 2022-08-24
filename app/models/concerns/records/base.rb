@@ -1,3 +1,5 @@
+require "rake"
+
 module Records::Base
   extend ActiveSupport::Concern
 
@@ -64,5 +66,13 @@ module Records::Base
     model_name = self.class
     # parent_key = model_name.reflect_on_all_associations(:belongs_to).first.name
     raise "You're trying to use a feature that requires #{model_name} to have a `collection` method defined that returns the Active Record association that this model belongs to within its parent object."
+  end
+
+  def seeding?
+    rake_tasks = ObjectSpace.each_object(Rake::Task)
+    return false if rake_tasks.count.zero?
+
+    db_seed_task = rake_tasks.find { |task| task.name.match?(/^db:seed$/) }
+    db_seed_task.already_invoked
   end
 end
