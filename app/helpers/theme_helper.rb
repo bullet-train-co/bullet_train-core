@@ -36,7 +36,7 @@ end
 
 module ThemeHelper
   def current_theme_object
-    BulletTrain::Themes.themes[current_theme]
+    @current_theme_object ||= "BulletTrain::Themes::#{current_theme.to_s.classify}::Theme".constantize.new
   end
 
   def render(options = {}, locals = {}, &block)
