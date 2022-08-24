@@ -19,14 +19,11 @@ module Registrations::ControllerBase
 
       # if current_user is defined, that means they were successful registering.
       if current_user
-
-        # TODO i think this might be redundant. we've added a hook into `session["user_return_to"]` in the
-        # `invitations#accept` action and that might be enough to get them where they're supposed to be after
-        # either creating a new account or signing into an existing account.
-        handle_outstanding_invitation
-
         # if the user doesn't have a team at this point, create one.
-        unless current_user.teams.any?
+        # If the user is accepting an invitation, then the user's current_team is populated
+        # with the information attached to their invitation via `@invitation.accept_for` later on,
+        # so we don't have to create a default team for them here.
+        unless current_user.teams.any? || session[:invitation_uuid].present?
           current_user.create_default_team
         end
 
