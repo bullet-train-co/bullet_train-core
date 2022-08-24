@@ -129,3 +129,7 @@ end
 def multiple_locales?
   @multiple_locales ||= I18n.available_locales.many?
 end
+
+def silence_logs?
+  ENV["SILENCE_LOGS"].present?
+end
