@@ -88,7 +88,6 @@ jobs:
     steps:
       - checkout
 
-      # TODO Figure out how to make these work for `tmp/starter`
       # # Restore dependency caches
       - restore_cache: *restore_bundler_cache
       - restore_cache: *restore_yarn_cache
@@ -127,13 +126,11 @@ jobs:
           name: Link starter repository to the Ruby gem being tested.
           command: "grep -v 'gem \"bullet_train\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train\", path: \"../..\"' >> tmp/starter/Gemfile"
 
-      # TODO Figure out how to make these work for `tmp/starter`
       - restore_cache: *restore_tmp_bundler_cache
       - restore_cache: *restore_tmp_yarn_cache
 
       # Install dependencies
       - run: "cd tmp/starter && bundle install --path=vendor/bundle"
-      # - run: "cd tmp/starter && bundle clean --force"
       - run: "cd tmp/starter && bundle exec rake bt:link"
       - run: "cd tmp/starter && yarn install"
       - run: "cd tmp/starter && yarn build"
@@ -184,18 +181,19 @@ jobs:
           name: Link starter repository to the Ruby gem being tested.
           command: "grep -v 'gem \"bullet_train\"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp && mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile && echo 'gem \"bullet_train\", path: \"../..\"' >> tmp/starter/Gemfile"
 
-      # TODO Figure out how to make these work for `tmp/starter`
       # # Restore dependency caches
-      - restore_cache: *restore_bundler_cache
-      - restore_cache: *restore_yarn_cache
+      - restore_cache: *restore_tmp_bundler_cache
+      - restore_cache: *restore_tmp_yarn_cache
 
       # Install dependencies
       - run: "cd tmp/starter && bundle install"
-      - run: "cd tmp/starter && bundle clean --force"
       - run: "cd tmp/starter && bundle exec rake bt:link"
       - run: "cd tmp/starter && yarn install"
       - run: "cd tmp/starter && yarn build"
       - run: "cd tmp/starter && yarn build:css"
+
+      - save_cache: *save_tmp_bundle_cache
+      - save_cache: *save_tmp_yarn_cache
 
       - *wait_for_docker
 
