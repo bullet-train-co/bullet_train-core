@@ -1,6 +1,6 @@
 # Examples for the `super_select` Field Partial
 
-The `super_select` partial provides a wonderful default UI (in contrast to the vanilla browser experience for this, which is horrible) with optional search and multi-select functionality out-of-the-box. It invokes the [Select2](https://select2.org) library to provide you these features.
+The `super_select` partial provides a wonderful default UI (in contrast to the vanilla browser experience for this, which is horrible) with optional search and multi-select functionality out-of-the-box. It invokes the [Select2][select2] library to provide you these features.
 
 ## Define Available Buttons via Localization Yaml
 
@@ -67,3 +67,61 @@ Here is an example allowing a new option to be entered by the user:
 </code></pre>
 
 Note: this will set the option `value` (which will be submitted to the server) to the entered text.
+## Events
+
+All events dispatched from the `super_select` partial are [Select2's jQuery events][select2_events] re-dispatched as native DOM events with the following caveats:
+
+1. The native DOM event name is pre-pended with `$`
+2. The original jQuery event is passed through under `event.detail.event`
+
+| Select2 event name  | DOM event name       |
+|---------------------|----------------------|
+| change              | $change              |
+| select2:closing     | $select2:closing     |
+| select2:close       | $select2:close       |
+| select2:opening     | $select2:opening     |
+| select2:open        | $select2:open        |
+| select2:selecting   | $select2:selecting   |
+| select2:select      | $select2:select      |
+| select2:unselecting | $select2:unselecting |
+| select2:unselect    | $select2:unselect    |
+| select2:clearing    | $select2:clearing    |
+| select2:clear       | $select2:clear       |
+
+For example, catching the `$change` events in a parent `dependent-form-fields` Stimulus controller with a single `updateDependentFields` method would look like this:
+
+<pre><code>&lt;div data-controller="dependent-form-fields"&gt;
+  &lt;div data-action="$change->dependent-form-fields#updateDependentFields"&gt;
+    <%= render 'shared/fields/super_select', form: form, method: :category_id,
+      choices: Category.all.map { |category| [category.label_string, category.id] } %>
+  &lt;/div&gt;
+  &lt;div&gt;
+    &lt;!-- This is the dependent field that would get updated when the previous one changes --&gt;
+    <%= render 'shared/fields/super_select', form: form, method: :category_id,
+      choices: Category.all.map { |category| [category.label_string, category.id] },
+      html_options: { data: { 'dependent-form-fields-target': 'dependentField' }} %>
+  &lt;/div&gt;
+&lt;/div&gt;</code></pre>
+
+And this is an example of what the `dependent-form-fields` Stimulus controller would look like.
+
+<pre><code>
+// dependent_form_fields_controller.js
+import { Controller } from "stimulus"
+
+export default class extends Controller {
+  static targets = [ "dependentField" ]
+  
+  updateDependentFields(event) {
+    const originalSelect2Event = event.detail.event
+    console.log(`catching event ${event.type}`, originalSelect2Event)
+    
+    this.dependentFieldTargets.forEach((dependentField) => {
+      // update dependentField based on value found in originalSelect2Event.target.value
+    })
+  }
+}
+</code></pre>
+
+[select2]: https://select2.org
+[select2_events]: https://select2.org/programmatic-control/events
