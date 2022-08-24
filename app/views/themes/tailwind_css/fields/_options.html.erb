@@ -5,6 +5,7 @@ form ||= current_fields_form
 html_options ||= {}
 html_options[:id] ||= id_for(form, method)
 multiple ||= false
+use_columns ||= false
 other_options ||= {}
 options ||= options_for(form, method)
 labels = labels_for(form, method)
@@ -13,11 +14,11 @@ labels = labels_for(form, method)
 <%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
   <% content_for :field do %>
     <div class="pt-1.5 pb-1 sm:col-span-2">
-      <div class="max-w-lg space-y-3">
+      <%= tag.div class: ["max-w-lg": !use_columns, "max-w-3xl": use_columns, "columns-[var(--column-width,_15ch)_3]": use_columns] do %>
 
         <% options.each do |value, label| %>
 
-          <label class="relative flex items-start">
+          <label class="relative flex items-start mb-3">
             <div class="flex items-center h-5">
 
               <% if multiple %>
@@ -40,7 +41,7 @@ labels = labels_for(form, method)
 
         <% end %>
 
-      </div>
+      <% end %>
     </div>
   <% end %>
 <% end %>
