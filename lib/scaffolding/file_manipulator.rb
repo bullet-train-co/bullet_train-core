@@ -15,6 +15,11 @@ module Scaffolding::FileManipulator
     lines[(within + 1)..(Scaffolding::BlockManipulator.find_block_end(starting_from: within, lines: lines) + 1)]
   end
 
+  # TODO I was running into an error in a downstream application where it couldn't find silence_logs? We should implement it in this package.
+  def self.silence_logs?
+    ENV["SILENCE_LOGS"].present?
+  end
+
   def self.replace_line_in_file(file, content, in_place_of, options = {})
     begin
       target_file_content = File.read(file)
@@ -66,7 +71,7 @@ module Scaffolding::FileManipulator
   end
 
   def self.write(file_name, lines, strip: true)
-    puts "Updating '#{file_name}'." unless ENV["SILENCE_LOGS"].present?
+    puts "Updating '#{file_name}'." unless silence_logs?
     if strip
       File.open(file_name, "w+") do |file|
         file.puts(lines.join.strip + "\n")

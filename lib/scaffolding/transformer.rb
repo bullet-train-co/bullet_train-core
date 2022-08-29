@@ -231,9 +231,17 @@ class Scaffolding::Transformer
     transformed_file_content.join
   end
 
-  def scaffold_file(file)
+  # TODO I was running into an error in a downstream application where it couldn't find silence_logs? We should implement it in this package.
+  def silence_logs?
+    ENV["SILENCE_LOGS"].present?
+  end
+
+  def scaffold_file(file, overrides: false)
     transformed_file_content = get_transformed_file_content(file)
     transformed_file_name = transform_string(file)
+
+    # Remove `_overrides` from the file name if we're sourcing from a local override folder.
+    transformed_file_name.gsub!("_overrides", "") if overrides
 
     transformed_directory_name = File.dirname(transformed_file_name)
     unless File.directory?(transformed_directory_name)
@@ -264,6 +272,22 @@ class Scaffolding::Transformer
       file = "#{directory}/#{file}"
       unless File.directory?(resolve_template_path(file))
         scaffold_file(file)
+      end
+    end
+
+    # Allow local developers to override just certain files of a directory.
+    override_path = begin
+      resolve_template_path(directory + "_overrides")
+    rescue RuntimeError
+      nil
+    end
+
+    if override_path
+      Dir.foreach(override_path) do |file|
+        file = "#{directory}_overrides/#{file}"
+        unless File.directory?(resolve_template_path(file))
+          scaffold_file(file, overrides: true)
+        end
       end
     end
   end
