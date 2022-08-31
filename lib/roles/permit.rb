@@ -13,8 +13,18 @@ module Roles
         build_permissions(user, through, parent, intermediary)
       end
 
-      permissions.each do |permission|
-        can(permission.actions, permission.model.constantize, permission.condition) unless permission.is_debug
+      begin
+        assign_permissions(permissions)
+      rescue NameError => e
+        if cache_key
+          # Cache has become stale with model classes that no longer exist
+          Rails.logger.info "Found missing models in cache - #{e.message.squish} - building fresh permissions"
+          Rails.cache.delete(cache_key)
+          permissions = build_permissions(user, through, parent, intermediary)
+          assign_permissions(permissions)
+        else
+          raise e
+        end
       end
 
       if debug
@@ -28,6 +38,12 @@ module Roles
           end
         end
         puts "############################"
+      end
+    end
+
+    def assign_permissions(permissions)
+      permissions.each do |permission|
+        can(permission.actions, permission.model.constantize, permission.condition) unless permission.is_debug
       end
     end
 
