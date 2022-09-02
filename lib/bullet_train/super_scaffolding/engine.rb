@@ -10,13 +10,6 @@ module BulletTrain
         BulletTrain::SuperScaffolding.template_paths << File.expand_path("../../../..", __FILE__)
       end
 
-      initializer "bullet_train.super_scaffolding.templates.register_api_endpoints" do |app|
-        if defined?(BulletTrain::Api)
-          BulletTrain::Api.endpoints << "Api::V1::Scaffolding::AbsolutelyAbstract::CreativeConceptsEndpoint"
-          BulletTrain::Api.endpoints << "Api::V1::Scaffolding::CompletelyConcrete::TangibleThingsEndpoint"
-        end
-      end
-
       initializer "bullet_train.super_scaffolding.register" do |app|
         # Older versions of Bullet Train have a `BulletTrain` module, but it doesn't have `linked_gems`.
         if BulletTrain.respond_to?(:linked_gems)

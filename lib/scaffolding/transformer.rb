@@ -45,7 +45,6 @@ class Scaffolding::Transformer
   RUBY_ADDITIONAL_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will also insert new fields above this line."
   RUBY_EVEN_MORE_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will additionally insert new fields above this line."
   RUBY_FILES_HOOK = "# 🚅 super scaffolding will insert file-related logic above this line."
-  ENDPOINTS_HOOK = "# 🚅 super scaffolding will mount new endpoints above this line."
   ERB_NEW_FIELDS_HOOK = "<%#{RUBY_NEW_FIELDS_HOOK} %>"
   CONCERNS_HOOK = "# 🚅 add concerns above."
   ATTR_ACCESSORS_HOOK = "# 🚅 add attribute accessors above."
@@ -715,6 +714,8 @@ class Scaffolding::Transformer
         "'another.email@test.com'"
       when "phone_field"
         "'+19053871234'"
+      when "color_picker"
+        "'#47E37F'"
       end
 
       # don't do table columns for certain types of fields and attribute partials
@@ -992,7 +993,8 @@ class Scaffolding::Transformer
 
         # add attributes to strong params.
         [
-          "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb"
+          "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
+          "./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb"
         ].each do |file|
           if is_ids || is_multiple
             scaffold_add_line_to_file(file, "#{name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
@@ -1027,38 +1029,6 @@ class Scaffolding::Transformer
       end
 
       #
-      # API ENDPOINT
-      #
-
-      unless cli_options["skip-api"]
-
-        # add attributes to endpoint.
-        if name.match?(/_ids$/)
-          scaffold_add_line_to_file("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint.rb", "optional :#{name}, type: Array, desc: Api.heading(:#{name})", RUBY_NEW_ARRAYS_HOOK, prepend: true)
-        else
-          api_type = case type
-          when "date_field"
-            "Date"
-          when "date_and_time_field"
-            "DateTime"
-          when "buttons"
-            if boolean_buttons
-              "Boolean"
-            else
-              "String"
-            end
-          when "file_field"
-            "File"
-          else
-            "String"
-          end
-
-          scaffold_add_line_to_file("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint.rb", "optional :#{name}, type: #{api_type}, desc: Api.heading(:#{name})", RUBY_NEW_FIELDS_HOOK, prepend: true)
-        end
-
-      end
-
-      #
       # API SERIALIZER
       #
 
@@ -1066,8 +1036,7 @@ class Scaffolding::Transformer
 
         # TODO The serializers can't handle these `has_rich_text` attributes.
         unless type == "trix_editor"
-          scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
-          scaffold_add_line_to_file("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true) unless type == "file_field"
+          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
 
           assertion = case type
           when "date_field"
@@ -1075,52 +1044,27 @@ class Scaffolding::Transformer
           when "date_and_time_field"
             "assert_equal_or_nil DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
           when "file_field"
-            # TODO: If we want to use Cloudinary to handle our files, we should make sure we're getting a URL.
-            "assert tangible_thing_data['#{name}'].match?('foo.txt') unless response.status == 201"
+            # TODO Get this working again.
+            "# assert tangible_thing_data['#{name}'].match?('foo.txt') unless response.status == 201"
           else
             "assert_equal_or_nil tangible_thing_data['#{name}'], tangible_thing.#{name}"
           end
-          scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", assertion, RUBY_NEW_FIELDS_HOOK, prepend: true)
+          scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", assertion, RUBY_NEW_FIELDS_HOOK, prepend: true)
         end
 
         # File fields are handled in a specific way when using the jsonapi-serializer.
         if type == "file_field"
-          file_name = "./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb"
-          content = <<~RUBY
-            attribute :#{name} do |object|
-              rails_blob_path(object.#{name}, disposition: "attachment", only_path: true) if object.#{name}.attached?
-            end
-
-          RUBY
-          hook = RUBY_FILES_HOOK
-          scaffold_add_line_to_file(file_name, content, hook, prepend: true)
-
-          # We also want to make sure we attach the dummy file in the endpoint test on setup
-          file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb"
-          content = "@#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")"
-          scaffold_add_line_to_file(file_name, content, hook, prepend: true)
+          # TODO Get this working again.
+          # We also want to make sure we attach the dummy file in the API test on setup
+          file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb"
+          content = "# @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")"
+          scaffold_add_line_to_file(file_name, content, RUBY_FILES_HOOK, prepend: true)
         end
-
-        # scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal tangible_thing_attributes['#{name.gsub('_', '-')}'], tangible_thing.#{name}", RUBY_NEW_FIELDS_HOOK, prepend: true)
 
         if attribute_assignment
           unless attribute_options[:readonly]
-            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", "#{name}: #{attribute_assignment},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
-            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", "assert_equal @tangible_thing.#{name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
-          end
-        end
-
-        # We need to update our new Tangible Thing's
-        # jbuilder files if it's scoped under "account".
-        # TODO: Should we run this if `namespace.present?` instead?
-        if namespace == "account"
-          target_string = "#{transform_string("scaffolding/completely_concrete/tangible_things")}/#{transform_string("tangible_thing")}"
-          replacement_string = "#{namespace}/#{target_string}"
-          [
-            "app/views/account/completely_concrete/tangible_things/index.json.jbuilder",
-            "app/views/account/completely_concrete/tangible_things/show.json.jbuilder"
-          ].each do |path|
-            scaffold_replace_line_in_file(path, replacement_string, target_string)
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "#{name}: #{attribute_assignment},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal @tangible_thing.#{name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
           end
         end
       end
@@ -1307,10 +1251,10 @@ class Scaffolding::Transformer
       [
         "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
         "./app/views/account/scaffolding/completely_concrete/tangible_things",
+        "./app/views/api/v1/scaffolding/completely_concrete/tangible_things",
         ("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml" unless cli_options["skip-locales"]),
-        ("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint.rb" unless cli_options["skip-api"]),
-        ("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb" unless cli_options["skip-api"]),
-        ("./app/serializers/api/v1/scaffolding/completely_concrete/tangible_thing_serializer.rb" unless cli_options["skip-api"])
+        ("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb" unless cli_options["skip-api"]),
+        ("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb" unless cli_options["skip-api"])
         # "./app/filters/scaffolding/completely_concrete/tangible_things_filter.rb"
       ].compact
     end
@@ -1321,13 +1265,6 @@ class Scaffolding::Transformer
       else
         scaffold_file(name)
       end
-    end
-
-    unless cli_options["skip-api"]
-
-      # add endpoint to the api.
-      scaffold_add_line_to_file("./app/controllers/api/v1/root.rb", "mount Api::V1::Scaffolding::CompletelyConcrete::TangibleThingsEndpoint", ENDPOINTS_HOOK, prepend: true)
-
     end
 
     unless cli_options["skip-model"]
@@ -1367,7 +1304,7 @@ class Scaffolding::Transformer
     end
 
     unless cli_options["skip-api"]
-      scaffold_replace_line_in_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_endpoint_test.rb", build_factory_setup.join("\n"), "# 🚅 super scaffolding will insert factory setup in place of this line.")
+      scaffold_replace_line_in_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", build_factory_setup.join("\n"), "# 🚅 super scaffolding will insert factory setup in place of this line.")
     end
 
     # add children to the show page of their parent.
@@ -1466,6 +1403,18 @@ class Scaffolding::Transformer
       end
 
       Scaffolding::FileManipulator.write("config/routes.rb", routes_manipulator.lines)
+
+      unless cli_options["skip-api"]
+        begin
+          api_routes_manipulator = Scaffolding::RoutesFileManipulator.new("config/routes/api/#{BulletTrain::Api.current_version}.rb", child, parent, cli_options)
+          api_routes_manipulator.apply([BulletTrain::Api.current_version.to_sym])
+        rescue => e
+          puts "We weren't able to automatically add your `api/#{BulletTrain::Api.current_version}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ .".send(:yellow)
+          raise e
+        end
+
+        Scaffolding::FileManipulator.write("config/routes/api/#{BulletTrain::Api.current_version}.rb", api_routes_manipulator.lines)
+      end
     end
 
     unless cli_options["skip-parent"]

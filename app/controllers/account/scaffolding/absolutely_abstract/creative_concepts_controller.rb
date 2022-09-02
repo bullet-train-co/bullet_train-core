@@ -68,7 +68,7 @@ class Account::Scaffolding::AbsolutelyAbstract::CreativeConceptsController < Acc
 
   private
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Only allow a list of trusted parameters through.
   def creative_concept_params
     params.require(:scaffolding_absolutely_abstract_creative_concept).permit(
       :name,

@@ -7,6 +7,7 @@ json.extract! tangible_thing,
   :color_picker_value,
   :cloudinary_image_value,
   :date_field_value,
+  :date_and_time_field_value,
   :email_field_value,
   :password_field_value,
   :phone_field_value,
@@ -19,4 +20,7 @@ json.extract! tangible_thing,
   # 🚅 super scaffolding will insert new fields above this line.
   :created_at,
   :updated_at
-json.url account_scaffolding_completely_concrete_tangible_thing_url(tangible_thing, format: :json)
+
+# if tangible_thing.persisted?
+#   json.url api_v1_scaffolding_completely_concrete_tangible_thing_url(tangible_thing, format: :json)
+# end

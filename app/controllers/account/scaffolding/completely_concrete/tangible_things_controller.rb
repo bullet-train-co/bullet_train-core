@@ -4,13 +4,13 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things.json
   def index
-    # if you only want these objects shown on their parent's show page, uncomment this:
-    # redirect_to [:account, @absolutely_abstract_creative_concept]
+    delegate_json_to_api
   end
 
   # GET /account/scaffolding/completely_concrete/tangible_things/:id
   # GET /account/scaffolding/completely_concrete/tangible_things/:id.json
   def show
+    delegate_json_to_api
   end
 
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things/new
@@ -61,37 +61,9 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
 
   private
 
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def tangible_thing_params
-    strong_params = params.require(:scaffolding_completely_concrete_tangible_thing).permit(
-      # 🚅 skip this section when scaffolding.
-      :text_field_value,
-      :action_text_value,
-      :boolean_button_value,
-      :button_value,
-      :color_picker_value,
-      :cloudinary_image_value,
-      :date_field_value,
-      :date_and_time_field_value,
-      :date_and_time_field_value_time_zone,
-      :email_field_value,
-      :file_field_value,
-      :file_field_value_removal,
-      :option_value,
-      :password_field_value,
-      :phone_field_value,
-      :super_select_value,
-      :text_area_value,
-      # 🚅 stop any skipping we're doing now.
-      # 🚅 super scaffolding will insert new fields above this line.
-      # 🚅 skip this section when scaffolding.
-      multiple_button_values: [],
-      multiple_option_values: [],
-      multiple_super_select_values: []
-      # 🚅 stop any skipping we're doing now.
-      # 🚅 super scaffolding will insert new arrays above this line.
-    )
+  include strong_parameters_from_api
 
+  def process_params(strong_params)
     # 🚅 skip this section when scaffolding.
     assign_boolean(strong_params, :boolean_button_value)
     assign_date_and_time(strong_params, :date_and_time_field_value)
@@ -100,7 +72,5 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
     assign_select_options(strong_params, :multiple_super_select_values)
     # 🚅 stop any skipping we're doing now.
     # 🚅 super scaffolding will insert processing for new fields above this line.
-
-    strong_params
   end
 end

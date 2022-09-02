@@ -61,7 +61,7 @@ class Account::Scaffolding::AbsolutelyAbstract::CreativeConcepts::CollaboratorsC
 
   private
 
-  # Never trust parameters from the scary internet, only allow the white list through.
+  # Only allow a list of trusted parameters through.
   def collaborator_params
     role_ids = params.dig(:scaffolding_absolutely_abstract_creative_concepts_collaborator, :role_ids)
     role_ids = [role_ids] unless role_ids.is_a?(Array)
