@@ -25,14 +25,6 @@ module BulletTrain
           audit_callback: ->(obj, uri) { Rails.logger.error("BlockedURI obj=#{obj.persisted? ? obj.to_global_id : "New #{obj.class}"} uri=#{uri}") }
         }
       end
-
-      initializer "bullet_train.outgoing_webhooks.register_api_endpoints" do |app|
-        if Object.const_defined?("BulletTrain::Api")
-          BulletTrain::Api.endpoints << "Api::V1::Webhooks::Outgoing::EndpointsEndpoint"
-          BulletTrain::Api.endpoints << "Api::V1::Webhooks::Outgoing::DeliveriesEndpoint"
-          BulletTrain::Api.endpoints << "Api::V1::Webhooks::Outgoing::DeliveryAttemptsEndpoint"
-        end
-      end
     end
   end
 end

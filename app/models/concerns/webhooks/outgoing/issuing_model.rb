@@ -45,7 +45,9 @@ module Webhooks::Outgoing::IssuingModel
 
   def generate_webhook_perform(action)
     event_type = Webhooks::Outgoing::EventType.find_by(id: "#{self.class.name.underscore}.#{action}")
-    data = "Api::V1::#{self.class.name}Serializer".constantize.new(self).serializable_hash[:data]
+    # TODO This is crazy that we generate JSON just to parse it. Can't be good for performance.
+    # Does Jbuilder support generating a hash instead of a JSON string?
+    data = JSON.parse(to_api_json)
     webhook = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_events.create(event_type_id: event_type.id, subject: self, data: data)
     webhook.deliver
   end
