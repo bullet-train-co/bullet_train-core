@@ -75,4 +75,21 @@ module Records::Base
     db_seed_task = rake_tasks.find { |task| task.name.match?(/^db:seed$/) }
     db_seed_task.already_invoked
   end
+
+  # TODO This should really be in the API package and included from there.
+  if defined?(BulletTrain::Api)
+    def to_api_json
+      # TODO So many performance improvements available here.
+      controller = "Api::#{BulletTrain::Api.current_version.upcase}::ApplicationController".constantize.new
+      # TODO We need to fix host names here.
+      controller.request = ActionDispatch::Request.new({})
+      local_class_key = self.class.name.underscore.split("/").last.to_sym
+      controller.render_to_string(
+        "api/#{BulletTrain::Api.current_version}/#{self.class.name.underscore.pluralize}/_#{local_class_key}",
+        locals: {
+          local_class_key => self
+        }
+      )
+    end
+  end
 end

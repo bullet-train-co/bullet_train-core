@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.0.99)
+    bullet_train (1.1.0)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -120,14 +120,14 @@ GEM
       rails (>= 6.0.0)
     bullet_train-has_uuid (1.0.3)
       rails (>= 6.0.0)
-    bullet_train-roles (0.1.8)
+    bullet_train-roles (0.1.10)
       active_hash
       activesupport
       cancancan
     bullet_train-scope_validator (1.0.2)
     bullet_train-super_load_and_authorize_resource (1.0.1)
       rails (>= 6.0.0)
-    bullet_train-themes (1.0.21)
+    bullet_train-themes (1.0.23)
       rails (>= 6.0.0)
     cable_ready (5.0.0.pre9)
       actioncable (>= 5.2)
@@ -303,10 +303,10 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
-    sidekiq (6.5.5)
-      connection_pool (>= 2.2.2)
+    sidekiq (6.5.6)
+      connection_pool (>= 2.2.5)
       rack (~> 2.0)
-      redis (>= 4.5.0)
+      redis (>= 4.5.0, < 5)
     simpleidn (0.2.1)
       unf (~> 0.1.4)
     sprockets (4.1.1)
