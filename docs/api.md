@@ -69,6 +69,36 @@ def show
 end
 ```
 
+## Usage Example
+
+First, provision a platform application in section titled "Your Applications" ih the "Developers" menu of the application. When you create a new platform application, an access token that doesn't expire will be automatically provisioned along with it. You can then use the access token to hit the API, as seen in the following Ruby-based example:
+
+```ruby
+require 'net/http'
+require 'uri'
+
+# Configure an API client.
+client = Net::HTTP.new('localhost', 3000)
+
+headers = {
+  "Content-Type" => "application/json",
+  "Authorization" => "Bearer GfNLkDmzOTqAacR1Kqv0VJo7ft2TT-S_p8C6zPDBFhg"
+}
+
+# Fetch the team details.
+response = client.get("/api/v1/teams/1", headers)
+
+# Parse response.
+team = JSON.parse(response.body)
+
+# Update team name.
+team["name"] = "Updated Team Name"
+
+# Push the update to the API.
+# Note that the team attributes are nested under a `team` key in the JSON body.
+response = client.patch("/api/v1/teams/1", {team: team}.to_json, headers)
+```
+
 ## Advanced Topics
  - [API Versioning](/docs/api/versioning.md)
 
