@@ -70,8 +70,7 @@ end
 ```
 
 ## Usage Example
-
-First, provision a platform application in section titled "Your Applications" ih the "Developers" menu of the application. When you create a new platform application, an access token that doesn't expire will be automatically provisioned along with it. You can then use the access token to hit the API, as seen in the following Ruby-based example:
+First, provision a platform application in section titled "Your Applications" in the "Developers" menu of the application. When you create a new platform application, an access token that doesn't automatically expire will be automatically provisioned along with it. You can then use the access token to hit the API, as seen in the following Ruby-based example:
 
 ```ruby
 require 'net/http'
