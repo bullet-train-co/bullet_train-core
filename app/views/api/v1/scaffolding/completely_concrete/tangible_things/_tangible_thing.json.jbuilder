@@ -20,7 +20,3 @@ json.extract! tangible_thing,
   # 🚅 super scaffolding will insert new fields above this line.
   :created_at,
   :updated_at
-
-# if tangible_thing.persisted?
-#   json.url api_v1_scaffolding_completely_concrete_tangible_thing_url(tangible_thing, format: :json)
-# end
