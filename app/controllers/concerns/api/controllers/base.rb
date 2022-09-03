@@ -4,6 +4,10 @@ require "pagy_cursor/pagy/extras/uuid_cursor"
 module Api::Controllers::Base
   extend ActiveSupport::Concern
 
+  # TODO Why doesn't `before_action :doorkeeper_authorize!` throw an exception?
+  class NotAuthenticatedError < StandardError
+  end
+
   included do
     include ActionController::Helpers
     helper ApplicationHelper
@@ -18,10 +22,6 @@ module Api::Controllers::Base
       render json: {error: "Not found"}, status: :not_found
     end
 
-    # TODO Why doesn't `before_action :doorkeeper_authorize!` throw an exception?
-    class NotAuthenticatedError < StandardError 
-    end
-    
     rescue_from NotAuthenticatedError do |exception|
       render json: {error: "Invalid token"}, status: :unauthorized
     end
@@ -47,7 +47,7 @@ module Api::Controllers::Base
 
   def current_team
     # Application agents are users but only have one team.
-    current_user&.teams.first
+    current_user&.teams&.first
   end
 
   def apply_pagination
@@ -63,7 +63,7 @@ module Api::Controllers::Base
 
   class_methods do
     def regex_to_remove_controller_namespace
-      /^#{self.name.split("::").first(2).join("::") + "::"}/
+      /^#{name.split("::").first(2).join("::") + "::"}/
     end
   end
 end
