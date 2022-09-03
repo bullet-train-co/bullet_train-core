@@ -31,7 +31,7 @@ API endpoints are defined in three parts:
 3. Jbuilder views are defined in the `app/views/api/v1` directory.
 
 ## "API First" and Supporting Account Controllers
-As mentioned earlier, there is a lot of shared logic between account and API controllers. Importantly, there are a couple of responsbilities that are implemented "API first" in API controllers and then utilized by account controllers.
+As previously mentioned, there is a lot of shared logic between account and API controllers. Importantly, there are a couple of responsbilities that are implemented "API first" in API controllers and then utilized by account controllers.
 
 ### Strong Parameters
 The primary definition of Strong Parameters for a given resource is defined in the most recent version of the API controller and included from there by the account controller. In account controllers, where you might expect to see a Strong Parameters definition, you'll see the following instead:
