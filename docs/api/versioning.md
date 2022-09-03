@@ -54,10 +54,10 @@ By versioning our API tests, we lock in a copy of what the assumptions were for 
 ## Advanced Topics
 
 ### Object-Oriented Inheritance
-In order to reduce the surface area of legacy API controllers that you're maintaining, it might in some cases make sense to have an older API controller simply inherit from the current version of the same API controller. For example, this might make sense for endpoints that you know didn't have breaking changes across API versions.
+In order to reduce the surface area of legacy API controllers that you're maintaining, it might make sense in some cases to have an older versioned API controller simply inherit from a newer version or the current version of the same API controller. For example, this might make sense for endpoints that you know didn't have breaking changes across API versions.
 
 ### Backporting New Features to Legacy API Versions
-Typically we would recommend you use new feature availability to encourage existing API users to upgrade to the latest version of the API. However, in some situations you may really need to make a newer API feature available to a customer who is locked into a legacy version of your API for some other endpoint. This is totally fine as long as the feature is only additive. For example, if you're just adding a newer API endpoint in a legacy version of the API, you can simply have the new API controller in the legacy version of the API inherit from the API controller in the current version of the API.
+Typically we'd recommend you use new feature availability to encourage existing API users to upgrade to the latest version of the API. However, in some situations you may really need to make a newer API feature available to a user who is locked into a legacy version of your API for some other endpoint. This is totally fine if the feature is only additive. For example, if you're just adding a newer API endpoint in a legacy version of the API, you can simply have the new API controller in the legacy version of the API inherit from the API controller in the current version of the API.
 
 ### Pruning Unused Legacy API Endpoints
 Maintaining legacy endpoints has a very real cost, so you may choose to identify which endpoints aren't being used on legacy versions of your API and prune them from that version entirely. This has the effect of requiring existing API users to keep their API usage up-to-date before expanding the surface area of usage, which may or may not be desirable for you.
