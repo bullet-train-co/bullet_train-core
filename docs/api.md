@@ -55,6 +55,7 @@ end
 
 def process_params(strong_params)
   assign_checkboxes(strong_params, :some_checkboxes)
+  strong_params
 end
 ```
 
