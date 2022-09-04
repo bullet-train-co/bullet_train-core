@@ -20,6 +20,7 @@ module Users::Base
     has_many :memberships, dependent: :destroy
     has_many :scaffolding_absolutely_abstract_creative_concepts_collaborators, through: :memberships
     has_many :teams, through: :memberships
+    has_many :collaborating_users, through: :teams, source: :users
     belongs_to :current_team, class_name: "Team", optional: true
     accepts_nested_attributes_for :current_team
 

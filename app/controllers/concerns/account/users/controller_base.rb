@@ -55,6 +55,7 @@ module Account::Users::ControllerBase
   end
 
   # Never trust parameters from the scary internet, only allow the white list through.
+  # TODO Update this to use `include strong_parameters_from_api`.
   def user_params
     # TODO enforce permissions on updating the user's team name.
     strong_params = params.require(:user).permit(

@@ -18,6 +18,10 @@ module Account::Teams::ControllerBase
       # for magic locales.
       @child_object = @team
     end
+
+    private
+
+    include strong_parameters_from_api
   end
 
   # GET /teams
@@ -123,18 +127,5 @@ module Account::Teams::ControllerBase
 
   def process_params(strong_params)
     raise "It looks like you've removed `process_params` from your controller. This will break Super Scaffolding."
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  def team_params
-    strong_params = params.require(:team).permit(
-      :name,
-      :time_zone,
-      :locale,
-      *permitted_fields,
-      *permitted_arrays,
-    )
-
-    process_params(strong_params)
   end
 end
