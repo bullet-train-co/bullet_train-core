@@ -1,10 +1,12 @@
 Rails.application.routes.draw do
-  collection_actions = [:index, :new, :create]
+  # See `config/routes.rb` for details.
+  collection_actions = [:index, :new, :create] # standard:disable Lint/UselessAssignment
+  extending = {only: []}
 
   namespace :api do
     namespace :v1 do
       shallow do
-        resources :teams do
+        resources :teams, extending do
           unless scaffolding_things_disabled?
             namespace :scaffolding do
               namespace :absolutely_abstract do
