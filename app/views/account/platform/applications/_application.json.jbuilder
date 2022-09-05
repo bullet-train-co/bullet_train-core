@@ -2,7 +2,6 @@ json.extract! application,
   :id,
   :team_id,
   :name,
-  :scopes,
   :redirect_uri,
   # 🚅 super scaffolding will insert new fields above this line.
   :created_at,

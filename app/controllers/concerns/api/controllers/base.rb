@@ -42,6 +42,7 @@ module Api::Controllers::Base
 
   def current_user
     raise NotAuthenticatedError unless doorkeeper_token.present?
+    doorkeeper_token.update(last_used_at: Time.zone.now)
     @current_user ||= User.find_by(id: doorkeeper_token[:resource_owner_id])
   end
 

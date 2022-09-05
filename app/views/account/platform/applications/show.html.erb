@@ -5,15 +5,13 @@
       <% p.content_for :title, t('.header') %>
       <% p.content_for :description do %>
         <%= t('.description') %>
-        <%= t('.manage_description') if can? :manage, @application %>
       <% end %>
 
       <% p.content_for :body do %>
         <% with_attribute_settings object: @application, strategy: :label do %>
           <%= render 'shared/attributes/text', attribute: :name %>
           <%= render 'shared/attributes/code', attribute: :uid %>
-          <%= render 'shared/attributes/code', attribute: :secret %>
-          <%= render 'shared/attributes/text', attribute: :scopes %>
+          <%= render 'shared/attributes/code', attribute: :secret, secret: true %>
           <%= render 'shared/attributes/text', attribute: :redirect_uri %>
           <%# 🚅 super scaffolding will insert new fields above this line. %>
         <% end %>
@@ -26,6 +24,7 @@
       <% end %>
     <% end %>
 
+    <%= render 'account/platform/access_tokens/index', access_tokens: @application.access_tokens.accessible_by(current_ability), hide_back: true %>
     <%# 🚅 super scaffolding will insert new children above this line. %>
   <% end %>
 <% end %>

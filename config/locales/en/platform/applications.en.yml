@@ -7,7 +7,7 @@ en:
       label: Your Applications
       icon: fal fa-browser ti ti-plug
     buttons: &buttons
-      new: Add New Platform Application
+      new: Provision New Platform Application
       create: Provision Platform Application
       edit: Edit Platform Application
       update: Update Platform Application
@@ -18,7 +18,7 @@ en:
         disconnect: Disconnect
       confirmations:
         # TODO customize for your use-case.
-        destroy: Are you sure you want to remove %{application_name}? This will also remove it's associated data. This can't be undone.
+        destroy: Are you sure you want to remove %{application_name}? This will break any integrations using this client UID and secret and any associated API access tokens. This can't be undone.
         disconnect: Are you sure you want to disconnect %{application_name}? This might affect an ongoing service provided by %{application_name} and can not be undone.
     fields: &fields
       name:
@@ -26,17 +26,11 @@ en:
         label: *name
         heading: Application Name
 
-      scopes:
-        _: &scopes Scopes
-        label: *scopes
-        heading: *scopes
-        help: Scopes are like permissions. An OAuth application can have read, write, and/or delete access. Separate scopes with spaces. Leave this field blank to use the default scope, e.g. "read". Optional scopes are "write" and "delete".
-
       redirect_uri:
         _: &redirect_uri Redirect URI
         label: *redirect_uri
         heading: *redirect_uri
-        help: You can leave this field blank.
+        help: This is only required if you're building an OAuth2-powered integration for other users.
 
       uid:
         heading: Client UID
@@ -61,15 +55,13 @@ en:
       contexts:
         team:
           header: Platform Applications
-          description: Below is a list of Platform Applications that have been provisioned for %{team_name}.
-          description_empty: No Platform Applications have been provisioned for %{team_name}.
+          description: Platform Applications allow you to build API integrations for %{team_name} or build OAuth2-powered integrations that %{team_name} can share with others.
       fields: *fields
       buttons: *buttons
     show:
       section: "%{application_name}"
       header: Platform Application Details
-      description: Below are the details we have for %{application_name}.
-      manage_description: You'll also find options for updating these details or removing %{application_name} from %{team_name} entirely.
+      description: Below is the configuration and OAuth2 credentials for %{application_name}.
       fields: *fields
       buttons: *buttons
     form: &form
@@ -96,7 +88,6 @@ en:
     attributes:
       platform/application:
         name: *name
-        scopes: *scopes
         redirect_uri: *redirect_uri
         # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at

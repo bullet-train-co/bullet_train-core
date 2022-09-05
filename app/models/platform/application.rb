@@ -20,6 +20,7 @@ class Platform::Application < ApplicationRecord
   # 🚅 add validations above.
 
   after_create :create_user_and_membership
+  after_create :create_access_token
   after_update :update_user_and_membership
   before_destroy :destroy_user
   # 🚅 add callbacks above.
@@ -35,6 +36,10 @@ class Platform::Application < ApplicationRecord
     create_user(email: "noreply+#{SecureRandom.hex}@bullettrain.co", password: faux_password, password_confirmation: faux_password, first_name: label_string)
     create_membership(team: team, user: user)
     membership.roles << Role.admin
+  end
+
+  def create_access_token
+    access_tokens.create(resource_owner_id: user.id, description: "Default Access Token", provisioned: true)
   end
 
   def update_user_and_membership

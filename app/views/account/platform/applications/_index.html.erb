@@ -7,7 +7,7 @@
 <%= render 'account/shared/box' do |p| %>
   <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
   <% p.content_for :description do %>
-    <%= t(".contexts.#{context.class.name.underscore}.description#{"_empty" unless applications.any?}") %>
+    <%= t(".contexts.#{context.class.name.underscore}.description") %>
   <% end %>
 
   <% p.content_for :table do %>
@@ -16,7 +16,6 @@
         <thead>
           <tr>
             <th><%= t('.fields.name.heading') %></th>
-            <th><%= t('.fields.scopes.heading') %></th>
             <%# 🚅 super scaffolding will insert new field headers above this line. %>
             <th><%= t('.fields.created_at.heading') %></th>
             <th class="text-right"></th>
@@ -27,7 +26,6 @@
             <% with_attribute_settings object: application do %>
               <tr data-id="<%= application.id %>">
                 <td><%= render 'shared/attributes/text', attribute: :name, url: [:account, application] %></td>
-                <td><%= render 'shared/attributes/text', attribute: :scopes %></td>
                 <%# 🚅 super scaffolding will insert new fields above this line. %>
                 <td><%= display_date_and_time(application.created_at) %></td>
                 <td class="buttons">

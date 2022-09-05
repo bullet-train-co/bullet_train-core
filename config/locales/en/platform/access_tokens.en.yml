@@ -1,0 +1,109 @@
+en:
+  platform/access_tokens: &access_tokens
+    label: &label API Access Tokens
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-puzzle-piece
+    buttons: &buttons
+      new: Provision New Access Token
+      create: Create Access Token
+      edit: Edit Access Token
+      update: Update Access Token
+      destroy: Remove Access Token
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{access_token_name}? This will break any active integrations using this token and can't be undone.
+    fields: &fields
+      id:
+        heading: Access Token ID
+      application_id:
+        heading: Application ID
+      token:
+        _: &token Token
+        label: *token
+        heading: *token
+      expires_in:
+        _: &expires_in Expires In
+        label: *expires_in
+        heading: *expires_in
+      scopes:
+        _: &scopes Scopes
+        label: *scopes
+        heading: *scopes
+      last_used_at:
+        _: &last_used_at Last Used At
+        label: *last_used_at
+        heading: *last_used_at
+      description:
+        _: &description Description
+        label: *description
+        heading: *description
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Created
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: "Collection Actions for Access Tokens"
+      index: "List Access Tokens"
+      create: "Add a New Access Token"
+      member_actions: "Actions for an Individual Access Token"
+      show: "Retrieve a Access Token"
+      update: "Update a Access Token"
+      destroy: "Delete a Access Token"
+      fields: *fields
+    index:
+      section: "%{applications_possessive} API Access Tokens"
+      contexts:
+        platform/application:
+          header: API Access Tokens
+          description: You can use Access Tokens to allow %{application_name} to make requests to the API.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{access_token_name}"
+      header: Access Token Details
+      description: Below are the details we have for %{access_token_name}.
+      manage_description: You'll also find options for updating these details or removing %{access_token_name} from %{application_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Access Token for %{application_name}"
+      header: New Access Token Details
+      description: Please provide the details of the new Access Token you'd like to add to %{application_name}.
+      form: *form
+    edit:
+      section: "%{access_token_name}"
+      header: Edit Access Token Details
+      description: You can update the settings for %{access_token_name} below.
+      form: *form
+    notifications:
+      created: Access Token was successfully created.
+      updated: Access Token was successfully updated.
+      destroyed: Access Token was successfully destroyed.
+  account:
+    platform:
+      access_tokens: *access_tokens
+  activerecord:
+    attributes:
+      platform/access_token:
+        token: *token
+        expires_in: *expires_in
+        scopes: *scopes
+        last_used_at: *last_used_at
+        description: *description
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

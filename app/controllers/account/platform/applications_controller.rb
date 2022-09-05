@@ -26,7 +26,7 @@ class Account::Platform::ApplicationsController < Account::ApplicationController
   def create
     respond_to do |format|
       if @application.save
-        format.html { redirect_to [:account, @team, :platform_applications], notice: I18n.t("platform/applications.notifications.created") }
+        format.html { redirect_to [:account, @application], notice: I18n.t("platform/applications.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @application] }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -63,16 +63,13 @@ class Account::Platform::ApplicationsController < Account::ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def application_params
-    strong_params = params.require(:platform_application).permit(
+    params.require(:platform_application).permit(
       :name,
-      :scopes,
       :redirect_uri,
       # 🚅 super scaffolding will insert new fields above this line.
       # 🚅 super scaffolding will insert new arrays above this line.
     )
 
     # 🚅 super scaffolding will insert processing for new fields above this line.
-
-    strong_params
   end
 end
