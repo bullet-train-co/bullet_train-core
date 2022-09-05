@@ -17,7 +17,7 @@ en:
         destroy: Delete
       confirmations:
         # TODO customize for your use-case.
-        destroy: Are you sure you want to remove %{tangible_thing_name}? This will also remove it's associated data. This can't be undone.
+        destroy: Are you sure you want to remove %{tangible_thing_name}? This will also remove any child resources and can't be undone.
     fields: &fields
       id:
         heading: Tangible Thing ID
