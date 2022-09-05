@@ -53,7 +53,7 @@ end
 
   <% # any error messages. %>
   <% if has_errors %>
-    <p class="mt-1.5 text-xs text-red">
+    <p class="mt-1.5 text-xs text-red-500">
       <%= errors.map { |error| error + ". " }.join %>
       <%= yield :error %>
       <% flush_content_for :error %>
