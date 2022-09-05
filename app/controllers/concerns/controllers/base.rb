@@ -134,9 +134,9 @@ module Controllers::Base
   def process_params(strong_params)
   end
 
-  def delegate_json_to_api
+  def delegate_json_to_api(&block)
     respond_to do |format|
-      format.html
+      format.html &block
       format.json { render "#{params[:controller].gsub(/^account\//, "api/#{BulletTrain::Api.current_version}/")}/#{params[:action]}" }
     end
   end
