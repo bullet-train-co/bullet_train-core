@@ -60,8 +60,11 @@ en:
         heading: *locale
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
-        _: &created_at Created
+        _: &created_at Signed Up At
         heading: *created_at
+      updated_at:
+        _: &updated_at Updated At
+        heading: *updated_at
     _: &self
       name:
         label: Your Team Name
@@ -84,3 +87,4 @@ en:
         locale: *locale
         # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at
+        updated_at: *updated_at

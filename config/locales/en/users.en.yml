@@ -27,6 +27,10 @@ en:
     notifications:
       updated: User was successfully updated.
     fields: &fields
+      id:
+        _: &id Team ID
+        label: *id
+        heading: *id
       name:
         heading: Name
       first_name:
@@ -64,8 +68,11 @@ en:
         help: By default the interface language will adjust based on each team's language setting, but you can set a global personal preference for your account here.
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
-        _: &created_at Signed Up
+        _: &created_at Signed Up At
         heading: *created_at
+      updated_at:
+        _: &updated_at Updated At
+        heading: *updated_at
     # this is how we define customizations to fields for a specific namespace.
     _: &self
       email:
@@ -105,6 +112,7 @@ en:
         time_zone: *time_zone
         locale: *locale
         # 🚅 super scaffolding will insert new activerecord attributes above this line.
-        created_at: *created_at
         password: *password
         password_confirmation: *password_confirmation
+        created_at: *created_at
+        updated_at: *updated_at
