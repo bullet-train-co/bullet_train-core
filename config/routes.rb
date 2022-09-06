@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   # See `config/routes.rb` for details.
-  collection_actions = [:index, :new, :create] # standard:disable Lint/UselessAssignment
+  collection_actions = [:index, :new, :create]
   extending = {only: []}
 
   namespace :api do
