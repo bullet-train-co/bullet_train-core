@@ -1,0 +1,55 @@
+/teams:
+  get:
+    tags:
+      - Teams
+    summary: "List Teams"
+    operationId: listTeams
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items: 
+                    $ref: "#/components/schemas/Team::Attributes"
+                has_more:
+                  type: boolean
+/teams/{id}:
+  get:
+    tags:
+      - Teams
+    summary: "Fetch Team"
+    operationId: fetchTeam
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Team::Attributes"
+  put:
+    tags:
+      - Teams
+    summary: "Update Team"
+    operationId: updateTeam
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Team::Parameters"

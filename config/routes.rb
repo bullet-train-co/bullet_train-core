@@ -18,6 +18,8 @@ Rails.application.routes.draw do
   end
 
   namespace :api do
+    match "*version/openapi.yaml" => "open_api#index", :via => :get
+
     namespace :v1 do
       shallow do
         resources :users

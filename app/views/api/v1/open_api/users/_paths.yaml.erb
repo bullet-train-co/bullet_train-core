@@ -1,0 +1,55 @@
+/users:
+  get:
+    tags:
+      - Users
+    summary: "List Users"
+    operationId: listUsers
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items: 
+                    $ref: "#/components/schemas/User::Attributes"
+                has_more:
+                  type: boolean
+/users/{id}:
+  get:
+    tags:
+      - Users
+    summary: "Fetch User"
+    operationId: fetchUser
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User::Attributes"
+  put:
+    tags:
+      - Users
+    summary: "Update User"
+    operationId: updateUser
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/User::Parameters"
