@@ -1,9 +1,15 @@
-/scaffolding/completely_concrete/tangible_things:
+/scaffolding/absolutely_abstract/creative_concepts/{absolutely_abstract_creative_concepts_id}/completely_concrete/tangible_things:
   get:
     tags:
-      - Scaffolding Completely Concrete Tangible Things
+      - "Scaffolding/Completely Concrete/Tangible Things"
     summary: "List Tangible Things"
     operationId: listScaffoldingCompletelyConcreteTangibleThings
+    parameters:
+      - name: absolutely_abstract_creative_concepts_id
+        in: path
+        required: true
+        schema:
+          type: string
     responses:
       "404":
         description: "Not Found"
@@ -20,10 +26,30 @@
                     $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Attributes"
                 has_more:
                   type: boolean
+  post:
+    tags:
+      - "Scaffolding/Completely Concrete/Tangible Things"
+    summary: "Create Tangible Thing"
+    operationId: createScaffoldingCompletelyConcreteTangibleThings
+    parameters:
+      - name: absolutely_abstract_creative_concepts_id
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      "404":
+        description: "Not Found"
+      "201":
+        description: "Created"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Attributes"
 /scaffolding/completely_concrete/tangible_things/{id}:
   get:
     tags:
-      - Scaffolding Completely Concrete Tangible Things
+      - "Scaffolding/Completely Concrete/Tangible Things"
     summary: "Fetch Tangible Thing"
     operationId: getScaffoldingCompletelyConcreteTangibleThings
     parameters:
@@ -39,7 +65,7 @@
               $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Attributes"
   put:
     tags:
-      - Scaffolding Completely Concrete Tangible Things
+      - "Scaffolding/Completely Concrete/Tangible Things"
     summary: "Update Tangible Thing"
     operationId: updateScaffoldingCompletelyConcreteTangibleThings
     parameters:
@@ -53,3 +79,15 @@
           application/json:
             schema:
               $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Parameters"
+  delete:
+    tags:
+      - "Scaffolding/Completely Concrete/Tangible Things"
+    summary: "Remove Tangible Thing"
+    operationId: removeScaffoldingCompletelyConcreteTangibleThings
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"

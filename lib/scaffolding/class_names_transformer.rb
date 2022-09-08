@@ -92,6 +92,18 @@ class Scaffolding::ClassNamesTransformer
       parent.pluralize
     when "Scaffolding::CompletelyConcrete::TangibleThings"
       child.pluralize
+    when "ScaffoldingAbsolutelyAbstractCreativeConcepts"
+      parent.pluralize.gsub("::", "")
+    when "ScaffoldingCompletelyConcreteTangibleThings"
+      child.pluralize.gsub("::", "")
+    when "Scaffolding Absolutely Abstract Creative Concepts"
+      parent.pluralize.titlecase.tr("/", " ")
+    when "Scaffolding Completely Concrete Tangible Things"
+      child.pluralize.titlecase.tr("/", " ")
+    when "Scaffolding/Absolutely Abstract/Creative Concepts"
+      parent.pluralize.titlecase
+    when "Scaffolding/Completely Concrete/Tangible Things"
+      child.pluralize.titlecase
     when "scaffolding/absolutely_abstract/creative_concepts"
       parent.underscore.pluralize
     when "scaffolding/completely_concrete/tangible_things"
@@ -113,6 +125,18 @@ class Scaffolding::ClassNamesTransformer
       parent
     when "Scaffolding::CompletelyConcrete::TangibleThing"
       child
+    when "ScaffoldingAbsolutelyAbstractCreativeConcept"
+      parent.gsub("::", "")
+    when "ScaffoldingCompletelyConcreteTangibleThing"
+      child.gsub("::", "")
+    when "Scaffolding Absolutely Abstract Creative Concept"
+      parent.titlecase.tr("/", " ")
+    when "Scaffolding Completely Concrete Tangible Thing"
+      child.titlecase.tr("/", " ")
+    when "Scaffolding/Absolutely Abstract/Creative Concept"
+      parent.titlecase
+    when "Scaffolding/Completely Concrete/Tangible Thing"
+      child.titlecase
     when "scaffolding/absolutely_abstract/creative_concept"
       parent.underscore
     when "scaffolding/completely_concrete/tangible_thing"

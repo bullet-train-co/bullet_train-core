@@ -72,6 +72,12 @@ class Scaffolding::Transformer
       # full class name plural.
       "Scaffolding::AbsolutelyAbstract::CreativeConcepts",
       "Scaffolding::CompletelyConcrete::TangibleThings",
+      "ScaffoldingAbsolutelyAbstractCreativeConcepts",
+      "ScaffoldingCompletelyConcreteTangibleThings",
+      "Scaffolding Absolutely Abstract Creative Concepts",
+      "Scaffolding Completely Concrete Tangible Things",
+      "Scaffolding/Absolutely Abstract/Creative Concepts",
+      "Scaffolding/Completely Concrete/Tangible Things",
       "scaffolding/absolutely_abstract/creative_concepts",
       "scaffolding/completely_concrete/tangible_things",
       "scaffolding/completely_concrete/_tangible_things",
@@ -83,6 +89,12 @@ class Scaffolding::Transformer
       # full class name singular.
       "Scaffolding::AbsolutelyAbstract::CreativeConcept",
       "Scaffolding::CompletelyConcrete::TangibleThing",
+      "ScaffoldingAbsolutelyAbstractCreativeConcept",
+      "ScaffoldingCompletelyConcreteTangibleThing",
+      "Scaffolding Absolutely Abstract Creative Concept",
+      "Scaffolding Completely Concrete Tangible Thing",
+      "Scaffolding/Absolutely Abstract/Creative Concept",
+      "Scaffolding/Completely Concrete/Tangible Thing",
       "scaffolding/absolutely_abstract/creative_concept",
       "scaffolding/completely_concrete/tangible_thing",
       "scaffolding_absolutely_abstract_creative_concept",
@@ -1070,6 +1082,26 @@ class Scaffolding::Transformer
       end
 
       #
+      # OPENAPI DOCUMENTS
+      #
+
+      unless cli_options["skip-api"]
+        scaffold_add_line_to_file(
+          "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things/_components.yaml.erb",
+          "<%= attribute :#{name} %>",
+          "<%# 🚅 super scaffolding will insert new attributes above this line. %>",
+          prepend: true
+        )
+
+        scaffold_add_line_to_file(
+          "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things/_components.yaml.erb",
+          "<%= parameter :#{name} %>",
+          "<%# 🚅 super scaffolding will insert new parameter above this line. %>",
+          prepend: true
+        )
+      end
+
+      #
       # MODEL ASSOCATIONS
       #
 
@@ -1252,6 +1284,7 @@ class Scaffolding::Transformer
         "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
         "./app/views/account/scaffolding/completely_concrete/tangible_things",
         "./app/views/api/v1/scaffolding/completely_concrete/tangible_things",
+        "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things",
         ("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml" unless cli_options["skip-locales"]),
         ("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb" unless cli_options["skip-api"]),
         ("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb" unless cli_options["skip-api"])
@@ -1313,6 +1346,24 @@ class Scaffolding::Transformer
         "./app/views/account/scaffolding/absolutely_abstract/creative_concepts/show.html.erb",
         code_for_child_on_parent_show_page || "<%= render 'account/scaffolding/completely_concrete/tangible_things/index', tangible_things: @creative_concept.completely_concrete_tangible_things, hide_back: true %>",
         "<%# 🚅 super scaffolding will insert new children above this line. %>",
+        prepend: true
+      )
+    end
+
+    unless cli_options["skip-api"]
+      # add children to the show page of their parent.
+      scaffold_add_line_to_file(
+        "./app/views/api/#{BulletTrain::Api.current_version}/open_api/index.yaml.erb",
+        "<%= components_for Scaffolding::CompletelyConcrete::TangibleThing %>",
+        "<%# 🚅 super scaffolding will insert new components above this line. %>",
+        prepend: true
+      )
+
+      # add children to the show page of their parent.
+      scaffold_add_line_to_file(
+        "./app/views/api/#{BulletTrain::Api.current_version}/open_api/index.yaml.erb",
+        "<%= paths_for Scaffolding::CompletelyConcrete::TangibleThing %>",
+        "<%# 🚅 super scaffolding will insert new paths above this line. %>",
         prepend: true
       )
     end
