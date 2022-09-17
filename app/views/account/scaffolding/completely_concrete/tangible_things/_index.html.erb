@@ -13,6 +13,7 @@
       <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
       <% p.content_for :description do %>
         <%= t(".contexts.#{context.class.name.underscore}.description#{"_empty" unless tangible_things.any?}") %>
+        <%= render "shared/limits/index", model: tangible_things.model %>
       <% end %>
 
       <% p.content_for :table do %>

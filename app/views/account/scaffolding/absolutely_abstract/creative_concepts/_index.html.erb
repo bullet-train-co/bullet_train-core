@@ -7,6 +7,7 @@
     <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
     <% p.content_for :description do %>
       <%= t(".contexts.#{context.class.name.underscore}.#{creative_concepts.any? ? 'description' : 'description_empty'}") %>
+      <%= render "shared/limits/index", model: creative_concepts.model %>
     <% end %>
 
     <% if creative_concepts.any? %>
