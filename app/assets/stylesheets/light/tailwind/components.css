@@ -13,10 +13,24 @@
 
   .button {
     @apply shadow-sm text-white hover:text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 hover:no-underline;
+
+    &.button-red {
+      @apply bg-red-500 hover:bg-red-600 focus:ring-red-600;
+    }
   }
 
   .button-secondary {
     @apply text-primary-500 hover:text-primary-600 hover:underline;
+    &.button-increase-contrast {
+      @apply text-primary-700 hover:text-primary-900;
+    }
+
+    &.button-red {
+      @apply text-red-500 hover:text-red-600;
+      &.button-increase-contrast {
+        @apply text-red-700 hover:text-red-900;
+      }
+    }
   }
 
   .button, .button-secondary, .button-alternative {
@@ -63,6 +77,24 @@
 
   form.form {
     @apply space-y-5;
+
+    .form-wrapper {
+      @apply space-y-5;
+      &[disabled] {
+        opacity: 0.3;
+        position: relative;
+        user-select: none;
+        &:before {
+          content: "";
+          position: absolute;
+          background-color: transparent;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+        }
+      }
+    }
 
     /*
     This is the best way I know how to solve the problem of Tailwind's `space-y-5` creating extra space at the top
