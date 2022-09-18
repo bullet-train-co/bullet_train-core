@@ -84,11 +84,16 @@ module Account::Memberships::ControllerBase
   end
 
   def reinvite
-    @invitation = Invitation.new(membership: @membership, team: @team, email: @membership.user_email, from_membership: current_membership)
-    if @invitation.save
-      redirect_to [:account, @team, :memberships], notice: I18n.t("account.memberships.notifications.reinvited")
+    if helpers.current_limits.can?(:create, Membership)
+      @invitation = Invitation.new(membership: @membership, team: @team, email: @membership.user_email, from_membership: current_membership)
+      if @invitation.save
+        redirect_to [:account, @team, :memberships], notice: I18n.t("account.memberships.notifications.reinvited")
+      else
+        redirect_to [:account, @team, :memberships], notice: "There was an error creating the invitation (#{@invitation.errors.full_messages.to_sentence})"
+      end
     else
-      redirect_to [:account, @team, :memberships], notice: "There was an error creating the invitation (#{@invitation.errors.full_messages.to_sentence})"
+      flash[:error] = :create_limit
+      redirect_to [:account, @team, :memberships]
     end
   end
 

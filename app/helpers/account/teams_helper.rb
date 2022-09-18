@@ -1,5 +1,7 @@
 module Account::TeamsHelper
   def current_team
+    # TODO We do not want this to be based on the `current_team_id`.
+    # TODO We want this to be based on the current resource being loaded.
     current_user&.current_team
   end
 
@@ -76,5 +78,13 @@ module Account::TeamsHelper
 
   def can_invite?
     can?(:create, Invitation.new(team: current_team))
+  end
+
+  def current_limits
+    @limiter ||= if billing_enabled? && defined?(Billing::Limiter)
+      Billing::Limiter.new(current_team)
+    else
+      Billing::MockLimiter.new(current_team)
+    end
   end
 end

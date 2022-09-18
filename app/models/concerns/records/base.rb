@@ -4,6 +4,10 @@ module Records::Base
   extend ActiveSupport::Concern
 
   included do
+    if billing_enabled? && defined?(Billing::UsageSupport)
+      include Billing::UsageSupport
+    end
+
     if defined?(Webhooks::Outgoing::IssuingModel)
       include Webhooks::Outgoing::IssuingModel
     end

@@ -31,7 +31,7 @@ module Memberships::Base
 
     # TODO Probably we can provide a way for gem packages to define these kinds of extensions.
     if billing_enabled?
-      scope :billable, -> { current }
+      scope :billable, -> { current_and_invited }
     end
   end
 
