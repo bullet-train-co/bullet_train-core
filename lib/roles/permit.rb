@@ -31,10 +31,10 @@ module Roles
         puts "###########################"
         puts "Auto generated `ability.rb` content:"
         permissions.map do |permission|
-          if permission.is_debug
-            puts permission.info
+          if permission[:is_debug]
+            puts permission[:info]
           else
-            puts "can #{permission.actions}, #{permission.model}, #{permission.condition}"
+            puts "can #{permission[:actions]}, #{permission[:model]}, #{permission[:condition]}"
           end
         end
         puts "############################"
@@ -43,7 +43,7 @@ module Roles
 
     def assign_permissions(permissions)
       permissions.each do |permission|
-        can(permission.actions, permission.model.constantize, permission.condition) unless permission.is_debug
+        can(permission[:actions], permission[:model].constantize, permission[:condition]) unless permission[:is_debug]
       end
     end
 
@@ -52,14 +52,14 @@ module Roles
       permissions = []
       user.send(through).map(&:roles).flatten.uniq.each do |role|
         unless added_roles.include?(role)
-          permissions << OpenStruct.new(is_debug: true, info: "########### ROLE: #{role.key}")
+          permissions << {is_debug: true, info: "########### ROLE: #{role.key}"}
           permissions += add_abilities_for(role, user, through, parent, intermediary)
           added_roles << role
         end
 
         role.included_roles.each do |included_role|
           unless added_roles.include?(included_role)
-            permissions << OpenStruct.new(is_debug: true, info: "############# INCLUDED ROLE: #{included_role.key}")
+            permissions << {is_debug: true, info: "############# INCLUDED ROLE: #{included_role.key}"}
             permissions += add_abilities_for(included_role, user, through, parent, intermediary)
           end
         end
@@ -72,9 +72,9 @@ module Roles
       permissions = []
       role.ability_generator(user, through, parent, intermediary) do |ag|
         permissions << if ag.valid?
-          OpenStruct.new(is_debug: false, actions: ag.actions, model: ag.model.to_s, condition: ag.condition)
+          {is_debug: false, actions: ag.actions, model: ag.model.to_s, condition: ag.condition}
         else
-          OpenStruct.new(is_debug: true, info: "# #{ag.model} does not respond to #{parent} so we're not going to add an ability for the #{through} context")
+          {is_debug: true, info: "# #{ag.model} does not respond to #{parent} so we're not going to add an ability for the #{through} context"}
         end
       end
       permissions
