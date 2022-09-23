@@ -2,11 +2,11 @@
 
 module Roles
   module Permit
-    def permit(user, through:, parent:, debug: false, intermediary: nil, cache_key: nil)
+    def permit(user, through:, parent:, debug: false, intermediary: nil, rails_cache_key: nil)
       # When changing permissions during development, you may also want to do this on each request:
       # User.update_all ability_cache: nil if Rails.env.development?
-      permissions = if cache_key
-        Rails.cache.fetch(cache_key) do
+      permissions = if rails_cache_key
+        Rails.cache.fetch(rails_cache_key) do
           build_permissions(user, through, parent, intermediary)
         end
       else
@@ -16,10 +16,10 @@ module Roles
       begin
         assign_permissions(permissions)
       rescue NameError => e
-        if cache_key
+        if rails_cache_key
           # Cache has become stale with model classes that no longer exist
           Rails.logger.info "Found missing models in cache - #{e.message.squish} - building fresh permissions"
-          Rails.cache.delete(cache_key)
+          Rails.cache.delete(rails_cache_key)
           permissions = build_permissions(user, through, parent, intermediary)
           assign_permissions(permissions)
         else
