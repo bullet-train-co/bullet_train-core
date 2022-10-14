@@ -1363,7 +1363,7 @@ class Scaffolding::Transformer
       # add children to the show page of their parent.
       scaffold_add_line_to_file(
         "./app/views/api/#{BulletTrain::Api.current_version}/open_api/index.yaml.erb",
-        "<%= automatic_paths_for Scaffolding::CompletelyConcrete::TangibleThing %>",
+        "<%= automatic_paths_for Scaffolding::CompletelyConcrete::TangibleThing, Scaffolding::AbsolutelyAbstract::CreativeConcept %>",
         "<%# 🚅 super scaffolding will insert new paths above this line. %>",
         prepend: true
       )

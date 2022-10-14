@@ -22,8 +22,8 @@
               properties:
                 data:
                   type: array
-                  items: 
-                    $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Attributes"
+                  items:
+                    $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
                 has_more:
                   type: boolean
   post:
@@ -45,7 +45,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Parameters"
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
 /scaffolding/completely_concrete/tangible_things/{id}:
   get:
     tags:
@@ -62,7 +62,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Attributes"
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
   put:
     tags:
       - "Scaffolding/Completely Concrete/Tangible Things"
@@ -78,7 +78,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Scaffolding::CompletelyConcrete::TangibleThing::Parameters"
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
   delete:
     tags:
       - "Scaffolding/Completely Concrete/Tangible Things"
