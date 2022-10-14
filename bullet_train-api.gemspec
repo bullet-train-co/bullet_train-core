@@ -29,6 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "pagy_cursor"
   spec.add_dependency "rack-cors"
   spec.add_dependency "doorkeeper"
+  spec.add_dependency "jbuilder-schema"
 
   spec.add_dependency "bullet_train"
 end
