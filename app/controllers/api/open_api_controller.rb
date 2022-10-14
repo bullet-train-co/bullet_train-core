@@ -60,8 +60,8 @@ module OpenApiHelper
     parameters_output["properties"].select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
 
     (
-      indent(attributes_output.to_yaml.gsub("---", "#{model.name}::Attributes:"), 3) +
-      indent("    " + parameters_output.to_yaml.gsub("---", "#{model.name}::Parameters:"), 3)
+      indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
+      indent("    " + parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Parameters:"), 3)
     ).html_safe
   end
 

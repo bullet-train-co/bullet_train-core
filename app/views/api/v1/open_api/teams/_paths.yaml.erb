@@ -16,8 +16,8 @@
               properties:
                 data:
                   type: array
-                  items: 
-                    $ref: "#/components/schemas/Team::Attributes"
+                  items:
+                    $ref: "#/components/schemas/TeamAttributes"
                 has_more:
                   type: boolean
 /teams/{id}:
@@ -36,7 +36,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Team::Attributes"
+              $ref: "#/components/schemas/TeamAttributes"
   put:
     tags:
       - Teams
@@ -52,4 +52,4 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/Team::Parameters"
+              $ref: "#/components/schemas/TeamParameters"

@@ -17,7 +17,7 @@
                 data:
                   type: array
                   items:
-                    $ref: "#/components/schemas/User::Attributes"
+                    $ref: "#/components/schemas/UserAttributes"
                 has_more:
                   type: boolean
 /users/{id}:
@@ -36,7 +36,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User::Attributes"
+              $ref: "#/components/schemas/UserAttributes"
   put:
     tags:
       - Users
@@ -52,4 +52,4 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/User::Parameters"
+              $ref: "#/components/schemas/UserParameters"
