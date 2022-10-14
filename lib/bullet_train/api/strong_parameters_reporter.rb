@@ -1,5 +1,3 @@
-require "pry"
-
 module BulletTrain
   module Api
     class StrongParametersReporter
