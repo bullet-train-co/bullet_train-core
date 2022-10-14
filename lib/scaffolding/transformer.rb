@@ -1086,6 +1086,7 @@ class Scaffolding::Transformer
       #
 
       unless cli_options["skip-api"]
+        # It's OK that this won't be found most of the time.
         scaffold_add_line_to_file(
           "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things/_components.yaml.erb",
           "<%= attribute :#{name} %>",
@@ -1093,6 +1094,7 @@ class Scaffolding::Transformer
           prepend: true
         )
 
+        # It's OK that this won't be found most of the time.
         scaffold_add_line_to_file(
           "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things/_components.yaml.erb",
           "<%= parameter :#{name} %>",
@@ -1284,7 +1286,6 @@ class Scaffolding::Transformer
         "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
         "./app/views/account/scaffolding/completely_concrete/tangible_things",
         "./app/views/api/v1/scaffolding/completely_concrete/tangible_things",
-        "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things",
         ("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml" unless cli_options["skip-locales"]),
         ("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb" unless cli_options["skip-api"]),
         ("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb" unless cli_options["skip-api"])
@@ -1354,7 +1355,7 @@ class Scaffolding::Transformer
       # add children to the show page of their parent.
       scaffold_add_line_to_file(
         "./app/views/api/#{BulletTrain::Api.current_version}/open_api/index.yaml.erb",
-        "<%= components_for Scaffolding::CompletelyConcrete::TangibleThing %>",
+        "<%= automatic_components_for Scaffolding::CompletelyConcrete::TangibleThing %>",
         "<%# 🚅 super scaffolding will insert new components above this line. %>",
         prepend: true
       )
@@ -1362,7 +1363,7 @@ class Scaffolding::Transformer
       # add children to the show page of their parent.
       scaffold_add_line_to_file(
         "./app/views/api/#{BulletTrain::Api.current_version}/open_api/index.yaml.erb",
-        "<%= paths_for Scaffolding::CompletelyConcrete::TangibleThing %>",
+        "<%= automatic_paths_for Scaffolding::CompletelyConcrete::TangibleThing %>",
         "<%# 🚅 super scaffolding will insert new paths above this line. %>",
         prepend: true
       )
