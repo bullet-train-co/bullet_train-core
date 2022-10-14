@@ -41,8 +41,10 @@ module OpenApiHelper
       paths: view_paths.map(&:path),
       model: model,
       locals: {
-        model.name.underscore.split("/").last.to_sym => model.first,
-        :current_user => User.first
+        # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
+        model.name.underscore.split("/").last.to_sym => model.new,
+        # Same here, if we ever need this to be a real object, this should be `test@example.com` with an `SecureRandom.hex` password.
+        :current_user => User.new
       }.merge(locals))
 
     attributes_output = JSON.parse(schema_json)
