@@ -142,6 +142,31 @@ permit user, through: :projects_collaborators, parent: :project
 
 In this example, `permit` is smart enough to only apply the permissions granted by a `Projects::Collaborator` record at the level of the `Project` it belongs to. You can turn any model into a grant model by adding `include Roles::Support` and adding a `role_ids:jsonb` attribute. You can look at `Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator` for an example.
 
+
+## Restricting Available Roles
+
+In some situations, you don't want all roles to be available to all Grant Models.  For example, you might have a `project_editor` role that only makes sense when applied at the Project level.  Note that this is only necessary if you want your project_editor to have more limited permissions than an admin user.  If a `project_editor` has full control of their project, you should probably just use the `admin` role.
+
+By default all Grant Models will show all roles as options.  If you want to limit the roles available to a model, use the `roles_only` class method:
+
+```
+class Membership < ApplicationRecord
+  include Roles::Support
+  roles_only :admin, :editor, :reader # Add this line to restrict the Membership model to only these roles
+end
+```
+
+To access the array of all roles available for a particular model, use the `assignable_roles` class method.  For example, in your Membership form, you probably _only_ want to show the assignable_roles as options.  Your view could look like this:
+
+```
+<% Membership.assignable_roles.each do |role| %>
+  <% if role.manageable_by?(current_membership.roles) %>
+    <!-- View component for showing a role option. Probably a checkbox -->
+  <% end %>
+<% end %>
+```
+
+
 ## Debugging
 If you want to see what CanCanCan directives are being created by your permit calls, you can add the `debug: true` option to your `permit` statement in `app/models/ability.rb`.
 
