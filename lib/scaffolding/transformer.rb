@@ -1086,6 +1086,10 @@ class Scaffolding::Transformer
       #
 
       unless cli_options["skip-api"]
+        # We always want to suppress this error for this file, since it doesn't exist by default. We reset this below.
+        suppress_could_not_find_state = suppress_could_not_find
+        self.suppress_could_not_find = true
+
         # It's OK that this won't be found most of the time.
         scaffold_add_line_to_file(
           "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things/_components.yaml.erb",
@@ -1101,6 +1105,8 @@ class Scaffolding::Transformer
           "<%# 🚅 super scaffolding will insert new parameter above this line. %>",
           prepend: true
         )
+
+        self.suppress_could_not_find = suppress_could_not_find_state
       end
 
       #
