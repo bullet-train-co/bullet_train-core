@@ -39,6 +39,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-has_uuid"
   spec.add_dependency "bullet_train-scope_validator"
   spec.add_dependency "bullet_train-themes"
+  spec.add_dependency "bullet_train-routes"
   spec.add_dependency "devise"
 
   # This has been broken since Rails 7.

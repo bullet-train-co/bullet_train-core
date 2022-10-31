@@ -1,5 +1,6 @@
 module Account::Teams::ControllerBase
   extend ActiveSupport::Concern
+  extend Controllers::Base
 
   included do
     load_and_authorize_resource :team, class: "Team", prepend: true,
