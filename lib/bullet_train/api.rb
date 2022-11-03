@@ -16,5 +16,18 @@ module BulletTrain
   module Api
     mattr_accessor :endpoints, default: []
     mattr_accessor :current_version, default: "v1"
+    mattr_accessor :initial_version, default: "v1"
+
+    def self.current_version_numeric
+      current_version.split("v").last.to_i
+    end
+
+    def self.initial_version_numeric
+      initial_version.split("v").last.to_i
+    end
+
+    def self.all_versions
+      (initial_version_numeric..current_version_numeric).map { |version| "v#{version}".to_sym }
+    end
   end
 end

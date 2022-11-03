@@ -181,7 +181,7 @@ workflows:
   version: 2
   build:
     jobs:
-      - 'Local Minitest'
+      # - 'Local Minitest'
       - 'Local Standard Ruby'
       - 'Starter Repo Minitest'
       - 'Starter Repo Minitest for Super Scaffolding'

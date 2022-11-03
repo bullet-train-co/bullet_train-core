@@ -20,15 +20,17 @@ Rails.application.routes.draw do
   namespace :api do
     match "*version/openapi.yaml" => "open_api#index", :via => :get
 
-    namespace :v1 do
-      shallow do
-        resources :users
-        resources :teams do
-          resources :invitations
-          resources :memberships
-          namespace :platform do
-            resources :applications do
-              resources :access_tokens
+    BulletTrain::Api.all_versions.each do |version|
+      namespace version do
+        shallow do
+          resources :users
+          resources :teams do
+            resources :invitations
+            resources :memberships
+            namespace :platform do
+              resources :applications do
+                resources :access_tokens
+              end
             end
           end
         end
