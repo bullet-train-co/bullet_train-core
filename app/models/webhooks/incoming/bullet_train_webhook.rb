@@ -5,6 +5,7 @@ class Webhooks::Incoming::BulletTrainWebhook < ApplicationRecord
   # there are many ways a service might ask you to verify the validity of a webhook.
   # whatever that method is, you would implement it here.
   def verify_authenticity
+    # 🚅 skip this section when scaffolding.
     # trying to fix integration tests. if this fixes it, i don't know why puma won't accept another connection here.
     return true if Rails.env.test?
 
@@ -19,6 +20,7 @@ class Webhooks::Incoming::BulletTrainWebhook < ApplicationRecord
 
     # ensure that the payload on the server is the same as the payload we received.
     JSON.parse(response.body) == data
+    # 🚅 stop any skipping we're doing now.
   end
 
   def process
