@@ -25,31 +25,29 @@ module OpenApiHelper
   end
 
   def automatic_paths_for(model, parent, except: [])
-    output = render("api/v1/open_api/shared/paths", except: except)
+    output = render("api/#{@version}/open_api/shared/paths", except: except)
     output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
     indent(output, 1)
   end
 
   def automatic_components_for(model, locals: {})
-    extend JbuilderSchema
+    jbuilder = Jbuilder::Schema.renderer("app/views/api/#{@version}", locals: {
+      # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
+      model.name.underscore.split("/").last.to_sym => model.new,
+      # Same here, if we ever need this to be a real object, this should be `test@example.com` with an `SecureRandom.hex` password.
+      :current_user => User.new
+    }.merge(locals))
 
-    schema_json = jbuilder_schema("api/v1/#{model.name.underscore.pluralize}/_#{model.name.underscore.split("/").last}",
+    schema_json = jbuilder.json(
+      model.new,
       title: I18n.t("#{model.name.underscore.pluralize}.label"),
       # TODO Improve this. We don't have a generic description for models we can use here.
       description: I18n.t("#{model.name.underscore.pluralize}.label"),
-      format: :json,
-      paths: view_paths.map(&:path),
-      model: model,
-      locals: {
-        # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
-        model.name.underscore.split("/").last.to_sym => model.new,
-        # Same here, if we ever need this to be a real object, this should be `test@example.com` with an `SecureRandom.hex` password.
-        :current_user => User.new
-      }.merge(locals))
+    )
 
     attributes_output = JSON.parse(schema_json)
 
-    strong_params_module = "Api::V1::#{model.name.pluralize}Controller::StrongParameters".constantize
+    strong_params_module = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
     strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module).report
     if strong_parameter_keys.last.is_a?(Hash)
       strong_parameter_keys += strong_parameter_keys.pop.keys
