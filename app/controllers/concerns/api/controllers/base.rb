@@ -70,8 +70,7 @@ module Api::Controllers::Base
     # TODO Make this logic configurable so that downstream developers can write different methods for this column getting updated.
     begin
       doorkeeper_token.update(last_used_at: Time.zone.now)
-    rescue
-      ActiveRecord::StatementInvalid
+    rescue ActiveRecord::StatementInvalid => _
     end
     @current_user ||= User.find_by(id: doorkeeper_token[:resource_owner_id])
   end
