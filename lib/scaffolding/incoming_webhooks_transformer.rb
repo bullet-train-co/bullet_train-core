@@ -58,6 +58,22 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
     end
 
     Scaffolding::FileManipulator.write(new_model_file_name, new_model_file_lines)
+
+    # Apply new routes
+    begin
+      [
+        "config/routes.rb",
+        "config/routes/api/v1.rb"
+      ].each do |routes_file|
+        # Since the webhooks routes don't live under a parent resource, we can't use the `apply` method to apply routes.
+        routes_manipulator = Scaffolding::RoutesFileManipulator.new(routes_file, "", "")
+        resources_line = "  resources :#{replacement_for('bullet_train_webhooks')}"
+        new_routes_lines = Scaffolding::BlockManipulator.insert(resources_line, lines: routes_manipulator.lines, after: "namespace :incoming")
+        Scaffolding::FileManipulator.write(routes_file, new_routes_lines)
+      end
+    rescue BulletTrain::SuperScaffolding::CannotFindParentResourceException => exception
+      add_additional_step :red, "We were not able to generate the routes for your Incoming Webhook automatically because: \"#{exception.message}\" You'll need to add them manually, which admittedly can be complicated. See https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ for guidance. 🙇🏻‍♂️"
+    end
   end
 
   def transform_string(string)
@@ -73,6 +89,8 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
     case string
     when "bullet_train_webhook"
       "#{provider_name.tableize.singularize}_webhook"
+    when "bullet_train_webhooks"
+      "#{provider_name.tableize.singularize}_webhooks"
     when "Webhooks::Incoming::BulletTrainWebhook"
       "Webhooks::Incoming::#{provider_name}Webhook"
     end
