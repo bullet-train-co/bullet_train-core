@@ -16,7 +16,7 @@ module BulletTrain
           provider_name = argv.shift
           transformer = Scaffolding::IncomingWebhooksTransformer.new(provider_name)
 
-          `yes n | bin/rails g model #{provider_name} data:jsonb processed_at:datetime verified_at:datetime`
+          `yes n | bin/rails g model webhooks_incoming_#{provider_name.tableize.singularize}_webhook data:jsonb processed_at:datetime verified_at:datetime`
 
           transformer.scaffold_incoming_webhook
           transformer.restart_server
