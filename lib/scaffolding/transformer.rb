@@ -149,6 +149,17 @@ class Scaffolding::Transformer
     ].each do |needle|
       string = string.gsub(needle, encode_double_replacement_fix(class_names_transformer.replacement_for(needle)))
     end
+
+    {
+      "/v1/" => "/#{BulletTrain::Api.current_version}/",
+      "::V1::" => "::#{BulletTrain::Api.current_version}::",
+      "_v1_" => "_#{BulletTrain::Api.current_version}_",
+      ":v1," => ":#{BulletTrain::Api.current_version},"
+    }.each do |from, to|
+      string = string.gsub(from.upcase, encode_double_replacement_fix(to.upcase))
+      string = string.gsub(from.downcase, encode_double_replacement_fix(to.downcase))
+    end
+
     decode_double_replacement_fix(string)
   end
 
