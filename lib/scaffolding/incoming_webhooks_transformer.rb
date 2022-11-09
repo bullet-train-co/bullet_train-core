@@ -22,7 +22,7 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
 
     # Rename files according to their provider name.
     file_name_hook = "bullet_train_webhook"
-    new_model_file_name, new_controller_file_name = files.map { |file| file.gsub(file_name_hook, replacement_for(file_name_hook))}
+    new_model_file_name, new_controller_file_name = files.map { |file| file.gsub(file_name_hook, replacement_for(file_name_hook)) }
     File.rename("./app/models/webhooks/incoming/bullet_train_webhook.rb", new_model_file_name)
     File.rename("./app/controllers/webhooks/incoming/bullet_train_webhooks_controller.rb", new_controller_file_name)
 
@@ -45,11 +45,11 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
     new_model_file_lines = File.open(new_model_file_name).map.with_index do |line, idx|
       if line.match?("def verify_authenticity")
         indentation = Scaffolding::BlockManipulator.indentation_of(idx, model_file_lines)
-        new_comment_lines = comment_lines.map{|comment_line| "#{indentation}#{comment_line}"}.join
+        new_comment_lines = comment_lines.map { |comment_line| "#{indentation}#{comment_line}" }.join
 
         new_comment_lines +
-        "#{line}" +
-        "#{indentation}  true\n"
+          "#{line}" \
+          "#{indentation}  true\n"
       elsif lines_to_ignore.include?(line)
         next
       else
@@ -67,7 +67,7 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
       ].each do |routes_file|
         # Since the webhooks routes don't live under a parent resource, we can't use the `apply` method to apply routes.
         routes_manipulator = Scaffolding::RoutesFileManipulator.new(routes_file, "", "")
-        resources_line = "  resources :#{replacement_for('bullet_train_webhooks')}"
+        resources_line = "  resources :#{replacement_for("bullet_train_webhooks")}"
         new_routes_lines = Scaffolding::BlockManipulator.insert(resources_line, lines: routes_manipulator.lines, after: "namespace :incoming")
         Scaffolding::FileManipulator.write(routes_file, new_routes_lines)
       end
