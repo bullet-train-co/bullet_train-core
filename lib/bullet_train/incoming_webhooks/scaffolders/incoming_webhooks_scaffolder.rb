@@ -1,5 +1,4 @@
 require "scaffolding/incoming_webhooks_transformer"
-require "pry"
 
 module BulletTrain
   module IncomingWebhooks
