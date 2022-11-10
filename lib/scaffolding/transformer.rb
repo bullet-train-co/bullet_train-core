@@ -822,7 +822,7 @@ class Scaffolding::Transformer
         end
 
         if type == "color_picker"
-          field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.color_picker_value.options')"
+          field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
         end
 
         # TODO: This feels incorrect.
