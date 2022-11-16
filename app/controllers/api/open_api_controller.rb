@@ -31,7 +31,9 @@ module OpenApiHelper
   end
 
   def automatic_components_for(model, locals: {})
-    jbuilder = Jbuilder::Schema.renderer("app/views/api/#{@version}", locals: {
+    path = "app/views/api/#{@version}"
+    paths = ([path] + `bundle show --paths`.lines.map { |gem_path| "#{gem_path.chomp}/#{path}" })
+    jbuilder = Jbuilder::Schema.renderer(paths, locals: {
       # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
       model.name.underscore.split("/").last.to_sym => model.new,
       # Same here, if we ever need this to be a real object, this should be `test@example.com` with an `SecureRandom.hex` password.
