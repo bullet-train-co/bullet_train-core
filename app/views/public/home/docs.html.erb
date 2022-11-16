@@ -1,6 +1,6 @@
-<% @body = markdown(File.read(Rails.root.to_s + "/#{@file}").gsub('.md)', ')')) %>
+<% @body = markdown(File.read(@path).gsub('.md)', ')')) %>
 
-<% if @file == "tmp/gems/bullet_train/docs/index.md" %>
+<% if @path.include?("docs/index.md") %>
   <% header, groups = @body.split("<h2>", 2) %>
   <%= header.html_safe %>
 

@@ -3,8 +3,8 @@ module DocumentationSupport
 
   def docs
     target = params[:page].presence || "index"
-    files = `find -L tmp/gems/*/docs | grep \.md`.lines.map(&:chomp).sort
-    @file = files.detect { |file| file.include?(target) }
+    all_paths = ([Rails.root.to_s] + `bundle show --paths`.lines.map(&:chomp))
+    @path = all_paths.map { |path| path + "/docs/#{target}.md" }.detect { |path| File.exists?(path) }
     render :docs, layout: "docs"
   end
 end
