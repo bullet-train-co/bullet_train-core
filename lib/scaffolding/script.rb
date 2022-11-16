@@ -95,7 +95,7 @@ def show_usage
     puts "  #{key}"
   end
   puts ""
-  puts "Try \`bin/super-scaffold [type]` for usage examples.".blue
+  puts "Try `bin/super-scaffold [type]` for usage examples.".blue
   puts ""
 end
 
