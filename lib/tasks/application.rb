@@ -30,6 +30,11 @@ module BulletTrain
         `cp -R #{theme_base_path}/app/views/themes/#{theme_name} #{Rails.root}/app/views/themes/#{ejected_theme_name}`
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/app/views/themes/#{ejected_theme_name}/layouts/_head.html.erb)
 
+        # Eject files from `bullet_train-themes-tailwind_css`.
+        puts "Ejecting Tailwind CSS templates into `app/views/themes/tailwind_css/`."
+        tailwind_css_path = `bundle show --paths bullet_train-themes-tailwind_css`.chomp
+        `cp -R #{tailwind_css_path}/app/views/themes/tailwind_css #{Rails.root}/app/views/themes`
+
         puts "Cutting local `Procfile.dev` over from `#{theme_name}` to `#{ejected_theme_name}`."
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/Procfile.dev)
 
@@ -73,7 +78,7 @@ module BulletTrain
         puts ""
         puts "When you're done, copy the SSH path from the new repository and return here.".blue
         ask "We'll ask you to paste it to us in the next step."
-        `#{Gem::Platform.local.os == "linux" ? "xdg-open" : "open"} https://github.com/new`
+        `#{(Gem::Platform.local.os == "linux") ? "xdg-open" : "open"} https://github.com/new`
 
         ssh_path = ask "OK, what was the SSH path? (It should look like `git@github.com:your-account/your-new-repo.git`.)"
         puts ""
@@ -165,7 +170,7 @@ module BulletTrain
           _, file = path.split("app/views/themes/#{args[:theme]}/")
           original_theme_path = "#{theme_base_path}/app/views/themes/#{theme_name}/#{file}"
           if File.read(path) == File.read(original_theme_path)
-            puts "No changes in \`#{path}\` since being ejected. Removing."
+            puts "No changes in `#{path}` since being ejected. Removing."
             `rm #{path}`
           end
         end

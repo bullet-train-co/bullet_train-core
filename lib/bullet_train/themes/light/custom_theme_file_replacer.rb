@@ -39,7 +39,7 @@ module BulletTrain
                 BulletTrain::Themes::Light::FileReplacer.replace_content(old: custom_gem_file[:file_name], new: main_app_file)
               end
             rescue Errno::ENOENT => _
-              puts "Skipping \`#{main_app_file}\` because it isn't present."
+              puts "Skipping `#{main_app_file}` because it isn't present."
             end
 
             # Only rename file names that still have the original theme in them, i.e. - ./tailwind.config.light.js
