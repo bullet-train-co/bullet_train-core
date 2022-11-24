@@ -63,7 +63,7 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
     begin
       [
         "config/routes.rb",
-        "config/routes/api/v1.rb"
+        # "config/routes/api/v1.rb"
       ].each do |routes_file|
         # Since the webhooks routes don't live under a parent resource, we can't use the `apply` method to apply routes.
         routes_manipulator = Scaffolding::RoutesFileManipulator.new(routes_file, "", "")
