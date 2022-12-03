@@ -5,9 +5,4 @@ module Fields::TrixEditorHelper
   def trix_sanitize(html)
     html_sanitize(html)
   end
-
-  # TODO Confirm there are no references to this anywhere (in other repositories) and remove it.
-  def trix_content(body)
-    html_sanitize(body)
-  end
 end
