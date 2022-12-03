@@ -25,15 +25,29 @@ module BulletTrain
         puts "Ejecting JavaScript into `./app/javascript/application.#{ejected_theme_name}.js`."
         `cp #{theme_base_path}/app/javascript/application.#{theme_name}.js #{Rails.root}/app/javascript/application.#{ejected_theme_name}.js`
 
-        puts "Ejecting all theme partials into `./app/views/themes/#{ejected_theme_name}`."
         `mkdir #{Rails.root}/app/views/themes`
-        `cp -R #{theme_base_path}/app/views/themes/#{theme_name} #{Rails.root}/app/views/themes/#{ejected_theme_name}`
-        %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/app/views/themes/#{ejected_theme_name}/layouts/_head.html.erb)
 
-        # Eject files from `bullet_train-themes-tailwind_css`.
-        puts "Ejecting Tailwind CSS templates into `app/views/themes/tailwind_css/`."
-        tailwind_css_path = `bundle show --paths bullet_train-themes-tailwind_css`.chomp
-        `cp -R #{tailwind_css_path}/app/views/themes/tailwind_css #{Rails.root}/app/views/themes`
+        {
+          "bullet_train-themes" => "base",
+          "bullet_train-themes-tailwind_css" => "tailwind_css",
+          "bullet_train-themes-light" => "light"
+        }.each do |gem, theme_name|
+          gem_path = `bundle show --paths #{gem}`.chomp
+          `find #{gem_path}/app/views/themes`.lines.map(&:chomp).each do |file_or_directory|
+            target_file_or_directory = file_or_directory.gsub(gem_path, "").gsub("/#{theme_name}", "/#{ejected_theme_name}")
+            target_file_or_directory = Rails.root.to_s + target_file_or_directory
+
+            if File.directory?(file_or_directory)
+              puts "Creating `#{target_file_or_directory}`."
+              `mkdir #{target_file_or_directory}`
+            else
+              puts "Copying `#{target_file_or_directory}`."
+              `cp #{file_or_directory} #{target_file_or_directory}`
+            end
+          end
+        end
+
+        %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/app/views/themes/#{ejected_theme_name}/layouts/_head.html.erb)
 
         puts "Cutting local `Procfile.dev` over from `#{theme_name}` to `#{ejected_theme_name}`."
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/Procfile.dev)
