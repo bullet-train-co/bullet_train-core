@@ -20,7 +20,7 @@ export default class extends Controller {
         this.progressBarTarget.style.width = "0%";
         this.progressBarTarget.setAttribute("aria-valuenow", 0);
         this.progressBarTarget.parentNode.classList.remove("hidden");
-        this.progressLabel.innerText = "0%";
+        this.progressLabelTarget.innerText = "0%";
       }
     );
 
