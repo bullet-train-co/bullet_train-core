@@ -5044,10 +5044,10 @@ trim-newlines@^3.0.0:
   resolved "https://registry.npmjs.org/trim-newlines/-/trim-newlines-3.0.1.tgz"
   integrity sha512-c1PTsA3tYrIsLGkJkzHF+w9F2EyxfXGo4UyJc4pFL++FMjnq0HJS69T3M7d//gKrFKwy429bouPescbjecU+Zw==
 
-trix@^1.3.0:
-  version "1.3.1"
-  resolved "https://registry.npmjs.org/trix/-/trix-1.3.1.tgz"
-  integrity sha512-BbH6mb6gk+AV4f2as38mP6Ucc1LE3OD6XxkZnAgPIduWXYtvg2mI3cZhIZSLqmMh9OITEpOBCCk88IVmyjU7bA==
+trix@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/trix/-/trix-2.0.1.tgz#d4ade25250ecf3437ea8a3d8b8873e6be028cb14"
+  integrity sha512-oK3vGoI7dIXXc8dGoLWvQDWP2ZmxjxHiyy+ZGTkRvYL91u6Tl6YPdRR7l0aunt9qAivn7NnTqmUf+eF0ZI8D+g==
 
 tslib@2.0.1:
   version "2.0.1"
