@@ -16,13 +16,13 @@ export default class extends Controller {
 
   initialize() {
     this.dispatchNativeEvent = this.dispatchNativeEvent.bind(this)
-    if (this.isSelect2LoadedOnWindowJquery) {
-      select2(window.$)
+    if (!this.isSelect2LoadedOnWindowJquery) {
+      select2()
     }
   }
 
   get isSelect2LoadedOnWindowJquery() {
-    return (window.$ !== undefined && window.$.select2 === undefined)
+    return window?.$?.fn?.select2 !== undefined
   }
 
   connect() {
