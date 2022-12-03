@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+IFS=$'\n\t'
+set -vx
+
+bundle install
+
+# We need to cd into the dummy app because it uses a different Rakefile
+cd test/dummy
+bundle install
+rake db:reset
+cd ../..
+
+# Do any other automated setup that you need to do here

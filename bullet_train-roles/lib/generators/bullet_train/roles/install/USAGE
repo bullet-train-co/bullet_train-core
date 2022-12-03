@@ -1,0 +1,11 @@
+Description:
+  Install required configuration
+
+Example:
+    rails generate bullet_train:roles:install
+
+    This will:
+        create config/models/roles.yml
+        create migration file to add role_ids to top level model
+        add include Role::Support to top level model
+        add permit line to app/models/ability.rb
