@@ -1,4 +1,9 @@
-# desc "Explaining what the task does"
-# task :bullet_train_themes do
-#   # Task goes here
-# end
+require_relative "../application"
+
+namespace :bullet_train do
+  namespace :themes do
+    task :install, [:theme_name] => :environment do |task, args|
+      BulletTrain::Themes::Application.install_theme(args[:theme_name])
+    end
+  end
+end
