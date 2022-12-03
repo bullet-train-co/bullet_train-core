@@ -15,8 +15,7 @@ other_options ||= {}
     <div class="date-input relative" data-controller="fields--date" data-fields--date-include-time-value="true" data-fields--date-default-time-zones-value="<%= "[\"#{current_user.current_team.time_zone}\",\"#{current_user.time_zone}\"]" %>">
       <%= form.text_field method, options %>
       <% unless options[:disabled] %>
-      <button type="button" class="clear py-2 px-3 border border-transparent inline-flex items-center whitespace-nowrap absolute rounded-md"
-        style="top: 2px; right: 2px;"
+      <button type="button" class="clear py-2 px-3 border border-transparent inline-flex items-center whitespace-nowrap absolute rounded-md top-1 md:top-0.5 right-0.5"
         data-fields--date-target="clearButton"
         data-action="fields--date#clearDate"
       >
