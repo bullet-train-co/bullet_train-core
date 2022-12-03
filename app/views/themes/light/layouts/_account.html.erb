@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html class="theme-<%= BulletTrain::Themes::Light.color %>">
+<html class="theme-<%= BulletTrain::Themes::Light.color %> <%= "theme-secondary-#{BulletTrain::Themes::Light.secondary_color}" if BulletTrain::Themes::Light.secondary_color %> <%= "theme-logo-color-shift" if BulletTrain::Themes::Light.logo_color_shift %>">
   <head>
     <%= render 'shared/layouts/head' %>
   </head>
@@ -13,7 +13,7 @@
 
         <% menu = capture do %>
           <div class="flex items-center flex-shrink-0 p-4 bg-primary-900 md:rounded-tl-lg electron-draggable electron-title-bar dark:bg-black dark:bg-opacity-10">
-            <%= image_tag image_path("logo/logo.png"), class: 'h-5 w-auto mx-auto' %>
+            <%= image_tag image_path("logo/logo.png"), class: 'theme-logo h-5 w-auto mx-auto' %>
 
             <div class="lg:hidden absolute right-0">
               <button class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:ring-transparent"
@@ -39,7 +39,7 @@
                     <div class="text-white">
                       <%= current_user.name %>
                     </div>
-                    <div class="text-2xs tracking-widest uppercase text-primary-300 group-hover:text-white dark:text-gray-500">
+                    <div class="text-2xs tracking-widest uppercase text-secondary-300 group-hover:text-white dark:text-gray-500">
                       <%= current_team.name %>
                     </div>
                   </div>

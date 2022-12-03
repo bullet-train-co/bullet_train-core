@@ -1,6 +1,6 @@
 @layer components {
   a {
-    @apply text-primary-500 hover:text-primary-600 hover:underline;
+    @apply text-secondary-500 hover:text-secondary-600 hover:underline;
   }
 
   b, strong {
@@ -20,9 +20,9 @@
   }
 
   .button-secondary {
-    @apply text-primary-500 hover:text-primary-600 hover:underline;
+    @apply text-secondary-500 hover:text-secondary-600 hover:underline;
     &.button-increase-contrast {
-      @apply text-primary-700 hover:text-primary-900;
+      @apply text-secondary-700 hover:text-secondary-900;
     }
 
     &.button-red {

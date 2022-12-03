@@ -51,6 +51,26 @@ module.exports = {
           900: 'var(--dark-primary-900)',
         },
 
+        secondary: {
+          300: 'var(--secondary-300)',
+          400: 'var(--secondary-400)',
+          500: 'var(--secondary-500)',
+          600: 'var(--secondary-600)',
+          700: 'var(--secondary-700)',
+          800: 'var(--secondary-800)',
+          900: 'var(--secondary-900)',
+        },
+
+        darkSecondary: {
+          300: 'var(--dark-secondary-300)',
+          400: 'var(--dark-secondary-400)',
+          500: 'var(--dark-secondary-500)',
+          600: 'var(--dark-secondary-600)',
+          700: 'var(--dark-secondary-700)',
+          800: 'var(--dark-secondary-800)',
+          900: 'var(--dark-secondary-900)',
+        },
+
         // This is a weird one-off for dark-mode.
         darkAccent: {
           200: 'var(--dark-accent-200)',

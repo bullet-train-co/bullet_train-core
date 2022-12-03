@@ -9,6 +9,8 @@ module BulletTrain
     module Light
       # TODO Not sure this is the right place for this in the long-term.
       mattr_accessor :color, default: :blue
+      mattr_accessor :secondary_color, default: nil
+      mattr_accessor :logo_color_shift, default: false
       mattr_accessor :original_devise_path
 
       class Theme < BulletTrain::Themes::TailwindCss::Theme
