@@ -32,12 +32,19 @@ module BulletTrain
         end
 
         def resolved_partial_path_for(lookup_context, path, locals)
-          # TODO This caching should be disabled in development so new templates are taken into account without restarting the server.
+          # We disable partial path caching in development so new templates are taken into account without restarting the server.
+          partial_paths = {}
+
           BulletTrain::Themes.partial_paths.fetch(path) do
             if (theme_path = BulletTrain::Themes.theme_invocation_path_for(path))
               # TODO directory_order should probably come from the `Current` model.
               if (partial = lookup_context.find_all(theme_path, directory_order.map { "themes/#{_1}" }, true, locals.keys).first)
-                BulletTrain::Themes.partial_paths[path] = partial.virtual_path.gsub("/_", "/")
+                resolved_partial = partial.virtual_path.gsub("/_", "/")
+                if Rails.env.development?
+                  partial_paths[path] = resolved_partial
+                else
+                  BulletTrain::Themes.partial_paths[path] = resolved_partial
+                end
               end
             end
           end
