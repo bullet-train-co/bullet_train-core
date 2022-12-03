@@ -1,4 +1,3 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,7 +7,7 @@
     <%= stylesheet_link_tag 'application', media: 'all'%>
     <%= stylesheet_link_tag 'application.mailer.light', media: 'all' %>
 
-    <% # TODO replace with Tailwind CSS styles. %>
+    <% # TODO: Find out why Tailwind colors aren't working properly. %>
     <style type="text/css">
       *:not(br):not(tr):not(html) {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -44,34 +43,17 @@
       /* Layout ------------------------------ */
 
       .email-wrapper {
-        width: 100%;
-        margin: 0;
-        padding: 0;
         background-color: #F6F7F8;
       }
-
-      .email-content {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-      }
       /* Masthead ----------------------- */
-
-      .email-masthead {
-        padding: 25px 0;
-        text-align: center;
-      }
 
       .email-masthead_logo {
         width: 94px;
       }
 
       .email-masthead_name {
-        font-size: 16px;
-        /*font-weight: bold;*/
         color: #bbbfc3;
         text-decoration: none;
-        /*text-shadow: 0 1px 0 white;*/
       }
       /* Body ------------------------------ */
 
@@ -86,17 +68,7 @@
       }
 
       .email-body_inner {
-        width: 570px;
-        margin: 0 auto;
-        padding: 0;
         background-color: #FFFFFF;
-      }
-
-      .email-footer {
-        width: 570px;
-        margin: 0 auto;
-        padding: 0;
-        text-align: center;
       }
 
       .email-footer p {
@@ -111,13 +83,7 @@
       }
 
       .body-sub {
-        margin-top: 25px;
-        padding-top: 25px;
         border-top: 1px solid #EDEFF2;
-      }
-
-      .content-cell {
-        padding: 35px;
       }
 
       .preheader {
@@ -248,19 +214,6 @@
       .purchase_total--label {
         padding: 0 15px 0 0;
       }
-      /* Utilities ------------------------------ */
-
-      .align-right {
-        text-align: right;
-      }
-
-      .align-left {
-        text-align: left;
-      }
-
-      .align-center {
-        text-align: center;
-      }
       /*Media Queries ------------------------------ */
 
       @media only screen and (max-width: 600px) {
@@ -356,14 +309,6 @@
         text-align: left;
       }
 
-      p.sub {
-        font-size: 12px;
-      }
-
-      p.center {
-        text-align: center;
-      }
-
       .body-action.less-footer {
         margin-bottom: 10px;
       }
@@ -373,34 +318,34 @@
     <% if content_for? :preheader %>
     <span class="preheader"><% yield :preheader %></span>
     <% end %>
-    <table class="email-wrapper" width="100%" cellpadding="0" cellspacing="0">
+    <table class="email-wrapper w-full m-0 p-0" cellpadding="0" cellspacing="0">
       <tr>
         <td align="center">
-          <table class="email-content" width="100%" cellpadding="0" cellspacing="0">
+          <table class="email-content w-full m-0 p-0" cellpadding="0" cellspacing="0">
             <tr>
-              <td class="email-masthead">
-                <a href="<%= root_url %>" class="email-masthead_name">
+              <td class="email-masthead p-6 text-center">
+                <a href="<%= root_url %>" class="email-masthead_name text-base no-underline">
                   <%= email_image_tag("logo/logo.png", width: image_width_for_height("logo/logo.png", BulletTrain::Themes.logo_height), height: BulletTrain::Themes.logo_height, style: "width: #{image_width_for_height('logo/logo.png', BulletTrain::Themes.logo_height)}px; height: #{BulletTrain::Themes.logo_height}px;") %>
                 </a>
               </td>
             </tr>
             <!-- Email Body -->
             <tr>
-              <td class="email-body" width="100%" cellpadding="0" cellspacing="0">
-                <table class="email-body_inner" align="center" width="570" cellpadding="0" cellspacing="0">
+              <td class="email-body w-full m-0 p-0" cellpadding="0" cellspacing="0">
+                <table class="email-body_inner w-[570px] m-auto p-0" align="center" width="570" cellpadding="0" cellspacing="0">
                   <!-- Body content -->
                   <tr>
-                    <td class="content-cell">
+                    <td class="content-cell p-9">
 
                       <%= yield %>
 
                       <% if false %>
                       <!-- Sub copy -->
-                      <table class="body-sub">
+                      <table class="body-sub mt-6 pt-6">
                         <tr>
                           <td>
-                            <p class="sub"><%= t('.trouble') %></p>
-                            <p class="sub">{{action_url}}</p>
+                            <p class="text-xs"><%= t('.trouble') %></p>
+                            <p class="text-xs">{{action_url}}</p>
                           </td>
                         </tr>
                       </table>
@@ -412,10 +357,10 @@
             </tr>
             <tr>
               <td>
-                <table class="email-footer" align="center" width="570" cellpadding="0" cellspacing="0">
+                <table class="email-footer w-[570px] m-auto p-0 text-center" cellpadding="0" cellspacing="0">
                   <tr>
                     <td class="content-cell" align="center">
-                      <p class="sub align-center">&copy; <%= t('layouts.mailer.all_rights_reserved', year: Date.today.year, product_name: t('application.name')) %></p>
+                      <p class="text-xs text-center">&copy; <%= t('layouts.mailer.all_rights_reserved', year: Date.today.year, product_name: t('application.name')) %></p>
                     </td>
                   </tr>
                 </table>
