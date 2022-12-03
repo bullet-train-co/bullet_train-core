@@ -1,5 +1,6 @@
 import { identifierForContextKey } from "@hotwired/stimulus-webpack-helpers"
 
+import FieldController from './fields/field_controller'
 import ButtonToggleController from './fields/button_toggle_controller'
 import CloudinaryImageController from './fields/cloudinary_image_controller'
 import ColorPickerController from './fields/color_picker_controller'
@@ -11,6 +12,7 @@ import PhoneController from './fields/phone_controller'
 import SuperSelectController from './fields/super_select_controller'
 
 export const controllerDefinitions = [
+  [FieldController, 'fields/field_controller.js'],
   [ButtonToggleController, 'fields/button_toggle_controller.js'],
   [CloudinaryImageController, 'fields/cloudinary_image_controller.js'],
   [ColorPickerController, 'fields/color_picker_controller.js'],
@@ -30,6 +32,7 @@ export const controllerDefinitions = [
 })
 
 export {
+  FieldController,
   ButtonToggleController,
   CloudinaryImageController,
   ColorPickerController,
