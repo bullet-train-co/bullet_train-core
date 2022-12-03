@@ -1,0 +1,8 @@
+ignore:
+  - '**/*':
+    - Style/TrailingCommaInArguments
+    - Style/TrailingCommaInArrayLiteral
+    - Style/TrailingCommaInHashLiteral
+    - Style/CommentedKeyword
+  - 'app/helpers/theme_helper.rb':
+    - Style/GlobalVars
