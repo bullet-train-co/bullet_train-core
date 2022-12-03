@@ -180,4 +180,10 @@
   .pagy-nav-js .page.active {
     @apply button;
   }
+  
+  /* Fix Safari issue related to <summary> / <details> arrow */
+  details > summary.list-none::-webkit-details-marker,
+  details > summary.list-none::marker {
+    display: none;
+  }
 }
