@@ -1,7 +1,7 @@
 @layer components {
   .date-input {
     .single-daterange {
-      @apply rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 font-light text-sm;
+      @apply rounded-md shadow-sm focus:ring-primary-500 focus:border-primary-500 font-light text-base md:text-sm;
     }
   }
 

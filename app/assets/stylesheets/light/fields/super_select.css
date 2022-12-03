@@ -20,6 +20,7 @@
 .select2-container .select2-search--inline .select2-search__field {
   font-weight: 300;
   margin-top: 6px;
+  @apply text-base md:text-sm;
 }
 
 .select2 {
