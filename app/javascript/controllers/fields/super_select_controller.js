@@ -40,7 +40,9 @@ export default class extends Controller {
   }
 
   initPluginInstance() {
-    let options = {};
+    let options = {
+      dropdownParent: $(this.element)
+    };
 
     if (!this.enableSearchValue) {
       options.minimumResultsForSearch = -1;
