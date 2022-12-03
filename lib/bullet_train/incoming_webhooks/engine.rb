@@ -1,4 +1,5 @@
 require "bullet_train/incoming_webhooks/scaffolders/incoming_webhooks_scaffolder"
+require "bullet_train/super_scaffolding"
 
 module BulletTrain
   module IncomingWebhooks

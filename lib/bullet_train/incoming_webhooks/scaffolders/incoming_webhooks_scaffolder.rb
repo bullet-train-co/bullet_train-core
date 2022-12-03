@@ -1,4 +1,5 @@
 require "scaffolding/incoming_webhooks_transformer"
+require "bullet_train/super_scaffolding/scaffolder"
 
 module BulletTrain
   module IncomingWebhooks

@@ -1,3 +1,6 @@
+require "scaffolding"
+require "scaffolding/transformer"
+
 class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
   attr_accessor :provider_name
 
