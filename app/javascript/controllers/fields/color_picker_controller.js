@@ -1,18 +1,32 @@
 import { Controller } from "@hotwired/stimulus"
 import '@simonwep/pickr/dist/themes/monolith.min.css'
 
-import Pickr from '@simonwep/pickr';
+import Pickr from '@simonwep/pickr'
 
-const pickerHexInputSelector = 'input.pcr-result'
+const generatedPickerHexInputSelector = 'input.pcr-result'
 
 export default class extends Controller {
-  static targets = [ "colorPickerValue", "colorField", "colorInput", "userSelectedColor", "colorOptions", "pickerContainer", "togglePickerButton", "colorButton" ];
+  static targets = [
+    'colorPickerValue',
+    'colorField',
+    'colorInput',
+    'userSelectedColor',
+    'colorOptions',
+    'pickerContainer',
+    'togglePickerButton',
+    'colorButton',
+  ]
   static values = { initialColor: String }
-  static classes = [ "colorSelected" ]
+  static classes = ['colorSelected']
 
   connect() {
     this.initPluginInstance()
-    this.colorOptions = $(this.colorOptionsTarget).find('button').map(function (_, button) { return $(button).attr('data-color'); }).get()
+    this.colorOptions = $(this.colorOptionsTarget)
+      .find('button')
+      .map(function (_, button) {
+        return $(button).attr('data-color').toLowerCase()
+      })
+      .get()
   }
 
   disconnect() {
@@ -20,60 +34,59 @@ export default class extends Controller {
   }
 
   pickColor(event) {
-    event.preventDefault();
+    event.preventDefault()
 
-    const targetEl = event.target;
-    const color = targetEl.dataset.color;
+    const targetEl = event.target
+    const color = targetEl.dataset.color
 
-    $(this.colorInputTarget).val(color);
-    $(this.colorPickerValueTarget).val(color);
-    $(this.userSelectedColorTarget).data('color', color);
-    this.highlightColorButtonsMatchingSelectedColor()
+    $(this.colorInputTarget).val(color)
+    $(this.colorPickerValueTarget).val(color)
+    $(this.userSelectedColorTarget).data('color', color)
 
-    this.pickr.setColor(color);
+    this.pickr.setColor(color)
   }
 
   pickRandomColor(event) {
-    event.preventDefault();
+    event.preventDefault()
 
-    const r = Math.floor(Math.random() * 256);
-    const g = Math.floor(Math.random() * 256);
-    const b = Math.floor(Math.random() * 256);
+    const r = Math.floor(Math.random() * 256)
+    const g = Math.floor(Math.random() * 256)
+    const b = Math.floor(Math.random() * 256)
 
-    this.pickr.setColor(`rgb ${r} ${g} ${b}`);
-    const hexColor = this.pickr.getColor().toHEXA().toString();
-    this.pickr.setColor(hexColor);
+    this.pickr.setColor(`rgb ${r} ${g} ${b}`)
+    const hexColor = this.pickr.getColor().toHEXA().toString()
+    this.pickr.setColor(hexColor)
 
-    this.showUserSelectedColor(hexColor);
+    this.showUserSelectedColor(hexColor)
   }
 
   showUserSelectedColor(color) {
-    $(this.colorInputTarget).val(color);
-    $(this.colorPickerValueTarget).val(color);
-
-    this.highlightColorButtonsMatchingSelectedColor()
+    $(this.colorInputTarget).val(color)
+    $(this.colorPickerValueTarget).val(color)
 
     $(this.userSelectedColorTarget)
-      .addClass('ring-2')
-      .addClass('ring-offset-2')
       .css('background-color', color)
       .css('--tw-ring-color', color)
       .attr('data-color', color)
-      .show();
+      .show()
   }
 
   unpickColor(event) {
-    event.preventDefault();
-    $(this.colorPickerValueTarget).val('');
-    $(this.colorInputTarget).val('');
-    $(this.userSelectedColorTarget).hide();
-    this.highlightColorButtonsMatchingSelectedColor()
+    event.preventDefault()
+    $(this.colorPickerValueTarget).val('')
+    $(this.colorInputTarget).val('')
+    $(this.userSelectedColorTarget).hide()
+    this.dispatchChangeEvent()
   }
-  
+
+  dispatchChangeEvent() {
+    this.colorInputTarget.dispatchEvent(new Event('change'))
+  }
+
   highlightColorButtonsMatchingSelectedColor() {
     this.colorButtonTargets.forEach((button) => {
       const buttonColor = button.dataset?.color
-      if (this.selectedColor !== undefined && buttonColor === this.selectedColor) {
+      if (this.selectedColor !== undefined && buttonColor.toLowerCase() === this.selectedColor.toLowerCase()) {
         button.classList.add(...this.colorSelectedClasses)
       } else {
         button.classList.remove(...this.colorSelectedClasses)
@@ -82,7 +95,7 @@ export default class extends Controller {
   }
 
   togglePickr(event) {
-    event.preventDefault();
+    event.preventDefault()
   }
 
   initPluginInstance() {
@@ -102,22 +115,28 @@ export default class extends Controller {
           input: true,
           save: true,
         },
-      }
-    });
+      },
+    })
 
     this.pickr.on('save', (color, _instance) => {
-      const hexaColor = color.toHEXA().toString()
+      const hexaColor = color.toHEXA().toString().toLowerCase()
       if (!this.colorOptions.includes(hexaColor)) {
-        this.showUserSelectedColor(hexaColor);
+        this.showUserSelectedColor(hexaColor)
       }
-      this.pickr.hide();
-    });
+      this.dispatchChangeEvent()
+      this.highlightColorButtonsMatchingSelectedColor()
+      this.pickr.hide()
+    })
   }
-  
+
   handleKeydown(event) {
-    if (!event.target.matches(pickerHexInputSelector)) { return }
-    if (event.key !== 'Enter') { return }
-    
+    if (!event.target.matches(generatedPickerHexInputSelector)) {
+      return
+    }
+    if (event.key !== 'Enter') {
+      return
+    }
+
     event.preventDefault()
     event.stopPropagation()
     this.pickr.applyColor(false)
@@ -126,7 +145,7 @@ export default class extends Controller {
   teardownPluginInstance() {
     this.pickr.destroy()
   }
-  
+
   get selectedColor() {
     return $(this.colorInputTarget).val()
   }
