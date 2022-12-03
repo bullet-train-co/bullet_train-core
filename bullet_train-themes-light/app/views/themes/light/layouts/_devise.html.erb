@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html class="theme-<%= BulletTrain::Themes::Light.color %> <%= "theme-secondary-#{BulletTrain::Themes::Light.secondary_color}" if BulletTrain::Themes::Light.secondary_color %> <%= "theme-logo-color-shift" if BulletTrain::Themes::Light.logo_color_shift %>">
+  <head>
+    <%= render 'shared/layouts/head' %>
+  </head>
+  <body class="devise_layout bg-light-gradient text-gray-700 text-sm font-normal electron-draggable dark:bg-dark-gradient dark:text-darkPrimary-300">
+    <div data-turn-enter data-turn-exit>
+      <%= yield %>
+    </div>
+  </body>
+</html>
