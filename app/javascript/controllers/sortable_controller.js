@@ -1,4 +1,5 @@
 import { Controller } from "@hotwired/stimulus"
+import { post } from '@rails/request.js'
 require("dragula/dist/dragula.min.css")
 
 import dragula from 'dragula';
@@ -74,7 +75,7 @@ export default class extends Controller {
   saveSortOrder() {
     var idsInOrder = Array.from(this.element.childNodes).map((el) => { return parseInt(el.dataset?.id) });
     
-    $.post(this.reorderPathValue, {ids_in_order: idsInOrder})
+    post(this.reorderPathValue, { body: JSON.stringify({ids_in_order: idsInOrder}) })
   }
 
 }
