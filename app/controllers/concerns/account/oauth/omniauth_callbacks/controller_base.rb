@@ -109,7 +109,7 @@ module Account::Oauth::OmniauthCallbacks::ControllerBase
       # however, this is secure because even if someone controlled `bullettrain.co`,
       # they would never be able to guess the hex code to reset the password.
       # even that is a rare edge case, because we force people to update this in onboarding.
-      email = auth.info.email.present? ? auth.info.email : "noreply+#{SecureRandom.hex}@bullettrain.co"
+      email = auth.info.email.present? ? auth.info.email : "noreply@#{SecureRandom.hex}.example.com"
 
       # if the user already exists with the email address on the account ..
       if User.find_by(email: email)
