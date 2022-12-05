@@ -97,17 +97,18 @@ namespace :bullet_train do
 
     if gem
       details = framework_packages[gem]
+      package = details[:git].split("/").last
 
       puts "OK! Let's work on `#{gem}` together!".green
       puts ""
 
-      if File.exist?("local/#{gem}")
-        puts "We found the repository in `local/#{gem}`. We will try to use what's already there.".yellow
+      if File.exist?("local/#{package}")
+        puts "We found the repository in `local/#{package}`. We will try to use what's already there.".yellow
         puts ""
 
         # Adding these flags enables us to execute git commands in the gem from our starter repo.
-        work_tree_flag = "--work-tree=local/#{gem}"
-        git_dir_flag = "--git-dir=local/#{gem}/.git"
+        work_tree_flag = "--work-tree=local/#{package}"
+        git_dir_flag = "--git-dir=local/#{package}/.git"
 
         git_status = `git #{work_tree_flag} #{git_dir_flag} status`
         unless git_status.match?("nothing to commit, working tree clean")
@@ -119,7 +120,7 @@ namespace :bullet_train do
         current_branch = `git #{work_tree_flag} #{git_dir_flag} branch`.split("\n").select { |branch_name| branch_name.match?(/^\*\s/) }.pop.gsub(/^\*\s/, "")
         unless current_branch == "main"
           puts "Previously on #{current_branch}.".blue
-          puts "Switching local/#{gem} to main branch.".blue
+          puts "Switching local/#{package} to main branch.".blue
           stream("git #{work_tree_flag} #{git_dir_flag} checkout main")
         end
 
@@ -127,7 +128,7 @@ namespace :bullet_train do
         stream("git #{work_tree_flag} #{git_dir_flag} pull origin main")
       else
         # Use https:// URLs when using this task in Gitpod.
-        stream "git clone #{`whoami`.chomp == "gitpod" ? "https://github.com/" : "git@github.com:"}#{details[:git]}.git local/#{gem}"
+        stream "git clone #{(`whoami`.chomp == "gitpod") ? "https://github.com/" : "git@github.com:"}#{details[:git]}.git local/#{package}"
       end
 
       stream("git #{work_tree_flag} #{git_dir_flag} fetch")
@@ -141,24 +142,27 @@ namespace :bullet_train do
         stream("git #{work_tree_flag} #{git_dir_flag} checkout #{input}")
       end
 
+      glob = if package == "bullet_train-core"
+        ", glob: \"#{gem}/#{gem}.gemspec\""
+      end
+
       puts ""
       puts "Now we'll try to link up that repository in the `Gemfile`.".blue
-      if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{gem}\\\""`.chomp.present?
+      if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
         puts "This gem is already linked to a checked out copy in `local` in the `Gemfile`.".green
       elsif `cat Gemfile | grep "gem \\\"#{gem}\\\","`.chomp.present?
         puts "This gem already has some sort of alternative source configured in the `Gemfile`.".yellow
         puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
       elsif `cat Gemfile | grep "gem \\\"#{gem}\\\""`.chomp.present?
         puts "This gem is directly present in the `Gemfile`, so we'll update that line.".green
-
         text = File.read("Gemfile")
-        new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{gem}\"")
+        new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{package}\"#{glob}")
         File.open("Gemfile", "w") { |file| file.puts new_contents }
       else
         puts "This gem isn't directly present in the `Gemfile`, so we'll add it temporarily.".green
         File.open("Gemfile", "a+") { |file|
           file.puts
-          file.puts "gem \"#{gem}\", path: \"local/#{gem}\" # Added by \`bin/develop\`."
+          file.puts "gem \"#{gem}\", path: \"local/#{package}\"#{glob} # Added by `bin/develop`."
         }
       end
 
@@ -172,7 +176,7 @@ namespace :bullet_train do
 
       puts ""
       puts "OK, we're opening that package in your IDE, `#{ENV["IDE"] || "code"}`. (You can configure this with `export IDE=whatever`.)".blue
-      `#{ENV["IDE"] || "code"} local/#{gem}`
+      `#{ENV["IDE"] || "code"} local/#{package}`
 
       puts ""
       if details[:npm]

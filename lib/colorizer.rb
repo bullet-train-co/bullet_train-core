@@ -21,7 +21,7 @@ module Colorizer
     r = l
     g = l
     b = l
-    v = l <= 0.5 ? (l * (1.0 + sl)) : (l + sl - l * sl)
+    v = (l <= 0.5) ? (l * (1.0 + sl)) : (l + sl - l * sl)
     if v > 0
       m = l + l - v
       sv = (v - m) / v

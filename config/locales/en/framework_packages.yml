@@ -6,38 +6,34 @@ en:
     bullet_train-api:
       git: "bullet-train-co/bullet_train-api"
     bullet_train-fields:
-      git: "bullet-train-co/bullet_train-fields"
+      git: "bullet-train-co/bullet_train-core"
       npm: "@bullet-train/fields"
     bullet_train-has_uuid:
-      git: "bullet-train-co/bullet_train-has_uuid"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-incoming_webhooks:
-      git: "bullet-train-co/bullet_train-incoming_webhooks"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-integrations:
-      git: "bullet-train-co/bullet_train-integrations"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-integrations-stripe:
-      git: "bullet-train-co/bullet_train-base-integrations-stripe"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-obfuscates_id:
-      git: "bullet-train-co/bullet_train-obfuscates_id"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-outgoing_webhooks:
       git: "bullet-train-co/bullet_train-outgoing_webhooks"
-    bullet_train-outgoing_webhooks-core:
-      git: "bullet-train-co/bullet_train-outgoing_webhooks-core"
     bullet_train-scope_questions:
-      git: "bullet-train-co/bullet_train-scope_questions"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-scope_validator:
-      git: "bullet-train-co/bullet_train-scope_validator"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-sortable:
-      git: "bullet-train-co/bullet_train-sortable"
+      git: "bullet-train-co/bullet_train-core"
       npm: "@bullet-train/bullet-train-sortable"
     bullet_train-super_scaffolding:
       git: "bullet-train-co/bullet_train-super_scaffolding"
     bullet_train-super_load_and_authorize_resource:
-      git: "bullet-train-co/bullet_train-super_load_and_authorize_resource"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-themes:
-      git: "bullet-train-co/bullet_train-themes"
-    bullet_train-themes-base:
-      git: "bullet-train-co/bullet_train-themes-base"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-themes-light:
-      git: "bullet-train-co/bullet_train-themes-light"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-themes-tailwind_css:
-      git: "bullet-train-co/bullet_train-themes-tailwind_css"
+      git: "bullet-train-co/bullet_train-core"
