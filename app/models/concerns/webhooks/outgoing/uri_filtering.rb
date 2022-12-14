@@ -58,7 +58,7 @@ module Webhooks::Outgoing::UriFiltering
 
     cached = Rails.cache.read(cache_key)
     if cached
-      return cached == "invalid" ? nil : cached
+      return (cached == "invalid") ? nil : cached
     end
 
     begin

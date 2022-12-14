@@ -10,3 +10,4 @@
 /test/dummy/tmp/
 .ruby-version
 Gemfile.lock
+/.idea/

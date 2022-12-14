@@ -24,6 +24,11 @@ en:
         label: *id
         heading: *id
 
+      team_id:
+        _: &team_id Team ID
+        label: *team_id
+        heading: *team_id
+
       name:
         _: &name Name
         label: *name
