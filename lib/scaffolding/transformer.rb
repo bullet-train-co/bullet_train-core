@@ -1466,23 +1466,19 @@ class Scaffolding::Transformer
 
       begin
         routes_manipulator.apply([routes_namespace])
-      rescue => e
-        puts "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ .".send(:yellow)
-        raise e
+        Scaffolding::FileManipulator.write("config/routes.rb", routes_manipulator.lines)
+      rescue => _
+        add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
       end
-
-      Scaffolding::FileManipulator.write("config/routes.rb", routes_manipulator.lines)
 
       unless cli_options["skip-api"]
         begin
           api_routes_manipulator = Scaffolding::RoutesFileManipulator.new("config/routes/api/#{BulletTrain::Api.current_version}.rb", child, parent, cli_options)
           api_routes_manipulator.apply([BulletTrain::Api.current_version.to_sym])
-        rescue => e
-          puts "We weren't able to automatically add your `api/#{BulletTrain::Api.current_version}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ .".send(:yellow)
-          raise e
+          Scaffolding::FileManipulator.write("config/routes/api/#{BulletTrain::Api.current_version}.rb", api_routes_manipulator.lines)
+        rescue => _
+          add_additional_step :red, "We weren't able to automatically add your `api/#{BulletTrain::Api.current_version}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
         end
-
-        Scaffolding::FileManipulator.write("config/routes/api/#{BulletTrain::Api.current_version}.rb", api_routes_manipulator.lines)
       end
     end
 
