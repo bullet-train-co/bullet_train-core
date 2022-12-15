@@ -81,6 +81,8 @@ en:
       created: Platform Application was successfully created.
       updated: Platform Application was successfully updated.
       destroyed: Platform Application was successfully destroyed.
+      test_application_created: Test Platform Application was successfully created.
+      test_application_failure: You must provide the proper testing provision key to create a test application.
   account:
     platform:
       applications: *applications

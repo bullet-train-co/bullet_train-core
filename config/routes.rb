@@ -17,6 +17,10 @@ Rails.application.routes.draw do
     end
   end
 
+  if ENV["TESTING_PROVISION_KEY"].present?
+    get "/testing/provision", to: "account/platform/applications#provision"
+  end
+
   namespace :api do
     match "*version/openapi.yaml" => "open_api#index", :via => :get
 

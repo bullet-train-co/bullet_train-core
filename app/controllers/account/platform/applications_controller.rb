@@ -21,6 +21,23 @@ class Account::Platform::ApplicationsController < Account::ApplicationController
   def edit
   end
 
+  def provision
+    if ENV["TESTING_PROVISION_KEY"].present? && params[:key] == ENV["TESTING_PROVISION_KEY"]
+      user = User.create(email: "test@#{SecureRandom.hex}.example.com", password: (password = SecureRandom.hex), password_confirmation: password)
+      provision_team = current_user.teams.create(name: "provision-team-#{SecureRandom.hex}", time_zone: user.time_zone)
+      test_application = Platform::Application.new(name: "test-application-#{SecureRandom.hex}", team: provision_team)
+
+      if test_application.save
+        access_token = test_application.create_access_token
+        render json: {message: I18n.t("platform/applications.notifications.test_application_created"), team_id: provision_team.id, access_token: access_token.token}
+      else
+        render json: {errors: test_application.errors, status: :unprocessable_entity}
+      end
+    else
+      render json: {message: I18n.t("platform/applications.notifications.test_application_failure")}
+    end
+  end
+
   # POST /account/teams/:team_id/platform/applications
   # POST /account/teams/:team_id/platform/applications.json
   def create
