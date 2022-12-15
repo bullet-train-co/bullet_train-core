@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+
+packages=( 
+  "base"
+  "api" 
+  "fields" 
+  "has_uuid"
+  "incoming_webhooks"
+  "integrations"
+  "integrations-stripe"
+  "obfuscates_id"
+  "outgoing_webhooks"
+  "roles"
+  "scope_questions"
+  "scope_validator"
+  "sortable"
+  "super_load_and_authorize_resource"
+  "super_scaffolding"
+  "themes"
+  "themes-light"
+  "themes-tailwind_css"
+)
+
+for package in "${packages[@]}"
+do
+  : 
+  cd bullet_train-${package}
+  echo bullet_train-${package}
+  bump $1
+  cd .. 
+done
