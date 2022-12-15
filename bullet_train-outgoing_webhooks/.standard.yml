@@ -1,0 +1,10 @@
+ignore:
+  - 'app/models/webhooks/outgoing/delivery_attempt.rb':
+    - Lint/RescueException # TODO would it be okay to rescue `StandardError`?
+  - '**/*':
+    - Style/TrailingCommaInArguments
+    - Style/TrailingCommaInArrayLiteral
+    - Style/TrailingCommaInHashLiteral
+    - Style/CommentedKeyword
+  - 'app/controllers/**/*':
+    - Style/RedundantAssignment
