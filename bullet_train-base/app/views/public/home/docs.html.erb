@@ -1,0 +1,18 @@
+<% @body = markdown(File.read(@path).gsub('.md)', ')')) %>
+
+<% if @path.include?("docs/index.md") %>
+  <% header, groups = @body.split("<h2>", 2) %>
+  <%= header.html_safe %>
+
+  <% # Restore the leading <h2> to the groups of links. %>
+  <% groups = "<h2>#{groups}" %>
+  <div class="xl:grid grid-cols-3 gap-20">
+    <% groups.split("<h2>").select(&:present?).map { |s| "<h2>#{s}" }.in_groups(3).each do |group| %>
+        <div>
+        <%= group.join.html_safe %>
+      </div>
+    <% end %>
+  </div>
+<% else %>
+  <%= @body %>
+<% end %>

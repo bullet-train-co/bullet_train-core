@@ -1,0 +1,4 @@
+<%= render 'account/shared/breadcrumb', label: 'Your Account', first: true %>
+<% if action_name == 'edit' && controller_name == 'users' %>
+  <%= render 'account/shared/breadcrumb', label: 'Settings' %>
+<% end %>

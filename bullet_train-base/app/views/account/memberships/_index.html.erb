@@ -1,0 +1,38 @@
+<% context ||= @team %>
+<% hide_actions ||= false %>
+<% hide_back ||= false %>
+
+<%= updates_for context, :memberships do %>
+  <%= render 'account/shared/box' do |p| %>
+    <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
+    <% p.content_for :description do %>
+      <%= raw t(".contexts.#{context.class.name.underscore}.#{@memberships.any? ? 'description' : 'description_empty'}") %>
+      <%= render "shared/limits/index", model: @memberships.model %>
+    <% end %>
+
+    <% p.content_for :table do %>
+      <% if @memberships.any? %>
+        <table class="table">
+          <thead>
+            <tr>
+              <th><%= t('memberships.singular') %></th>
+              <th><%= t('memberships.fields.role_ids.heading') %></th>
+              <%# 🚅 super scaffolding will insert new field headers above this line. %>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody data-model="Membership" data-scope="current">
+            <%= yield %>
+          </tbody>
+        </table>
+      <% end %>
+    <% end %>
+
+    <% unless hide_actions %>
+      <% p.content_for :actions do %>
+        <%= link_to t('invitations.buttons.new'), new_account_team_invitation_path(@team, cancel_path: account_team_memberships_path(@team)), class: "#{first_button_primary}" %>
+        <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary} back" unless hide_back %>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

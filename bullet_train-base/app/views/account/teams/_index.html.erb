@@ -1,0 +1,9 @@
+<ul class="space-y">
+  <%= yield %>
+</ul>
+
+<% if show_sign_up_options? && can?(:create, Team.new) %>
+  <div class="pt-5">
+    <%= link_to t('.buttons.create'), new_account_team_path(@team), class: 'button'  %>
+  </div>
+<% end %>
