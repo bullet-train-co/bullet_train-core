@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter
+
+# This one is a little different.
+grep -v 'gem "bullet_train"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
+mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
+echo 'gem "bullet_train", path: "../../bullet_train-base"' >> tmp/starter/Gemfile
+
+packages=( 
+  "api" 
+  "fields" 
+  "has_uuid"
+  "incoming_webhooks"
+  "integrations"
+  "integrations-stripe"
+  "obfuscates_id"
+  "outgoing_webhooks"
+  "roles"
+  "scope_questions"
+  "scope_validator"
+  "sortable"
+  "super_load_and_authorize_resource"
+  "themes"
+  "themes-light"
+  "themes-tailwind_css"
+)
+
+for package in "${packages[@]}"
+do
+  : 
+  grep -v "gem \"bullet_train-${package}\"" tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
+  mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
+  echo "gem \"bullet_train-${package}\", path: \"../../bullet_train-${package}\"" >> tmp/starter/Gemfile
+done
