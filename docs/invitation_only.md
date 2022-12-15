@@ -9,5 +9,5 @@ INVITATION_KEYS: ofr9h5h9ghzeodh
 
 In this case, the user will be able to register their own account by accessing the following link:
 ```
-http://localhost:3000/invitations?key=ofr9h5h9ghzeodh
+http://localhost:3000/invitation?key=ofr9h5h9ghzeodh
 ```

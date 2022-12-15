@@ -118,7 +118,7 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 | `date_and_time_field` | `datetime` | | `assign_date_and_time` | [Date Range Picker](https://www.daterangepicker.com) | | |
 | `date_field` | `date` | | `assign_date` | [Date Range Picker](https://www.daterangepicker.com) | | |
 | `email_field` | `string` | | | | | |
-| `file_field` | `attachment` | | [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) | | |
+| [`file_field`](/docs/field-partials/file-field.md) | `attachment` | | [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) | | |
 | `options` | `string` | Optionally | `assign_checkboxes` | | | |
 | `password_field` | `string` | | | | | |
 | `phone_field` | `string` | | | [International Telephone Input](https://intl-tel-input.com) | Ensures telephone numbers are in a format that can be used by providers like Twilio. | |
@@ -137,3 +137,5 @@ Set the data type to `jsonb` whenever passing the `multiple` option to a new att
 ## Additional Field Partials Documentation
  - [`buttons`](/docs/field-partials/buttons.md)
  - [`super_select`](/docs/field-partials/super-select.md)
+ - [`file_field`](/docs/field-partials/file-field.md)
+
