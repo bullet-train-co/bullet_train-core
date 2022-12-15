@@ -21,6 +21,7 @@ packages=(
   "scope_validator"
   "sortable"
   "super_load_and_authorize_resource"
+  "super_scaffolding"
   "themes"
   "themes-light"
   "themes-tailwind_css"
