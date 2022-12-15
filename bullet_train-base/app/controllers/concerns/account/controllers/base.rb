@@ -28,6 +28,10 @@ module Account::Controllers::Base
     end
   end
 
+  def namespace
+    "account"
+  end
+
   def adding_user_email?
     is_a?(Account::Onboarding::UserEmailController)
   end

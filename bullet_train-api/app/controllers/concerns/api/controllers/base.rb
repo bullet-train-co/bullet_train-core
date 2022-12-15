@@ -87,8 +87,12 @@ module Api::Controllers::Base
   end
 
   class_methods do
+    def controller_namespace
+      name.split("::").first(2).join("::")
+    end
+
     def regex_to_remove_controller_namespace
-      /^#{name.split("::").first(2).join("::") + "::"}/
+      /^#{controller_namespace + "::"}/
     end
   end
 end

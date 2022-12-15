@@ -44,9 +44,11 @@ module ActiveModel
     module ClassMethods
       def _to_partial_path # :nodoc:
         @_to_partial_path ||= begin
-          element = ActiveSupport::Inflector.underscore(ActiveSupport::Inflector.demodulize(name))
-          collection = ActiveSupport::Inflector.tableize(name)
-          "#{collection.split("/").last}/#{element}"
+          if Current.namespace 
+            "#{Current.namespace}/#{name.underscore.pluralize}/#{name.underscore.split("/").last}"
+          else
+            "#{name.underscore.pluralize}/#{name.underscore.split("/").last}"
+          end
         end
       end
     end

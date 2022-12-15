@@ -2,11 +2,24 @@ module CurrentAttributes::Base
   extend ActiveSupport::Concern
 
   included do
-    attribute :user, :team, :membership, :ability, :context
+    attribute :user, :team, :membership, :ability, :context, :_namespaces
 
     resets do
+      self._namespaces = []
       Time.zone = nil
     end
+  end
+
+  # TODO There has got to be a better way to set a default value on a current attribute.
+  def namespaces 
+    _namespaces || begin
+      self._namespaces = []
+      _namespaces
+    end
+  end
+
+  def namespace
+    namespaces.last
   end
 
   def user=(user)
