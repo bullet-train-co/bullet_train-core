@@ -23,7 +23,7 @@ module Api::Controllers::Base
       uri = URI.parse(url)
       query = Rack::Utils.parse_query(uri.query)
       new_params.each do |key, value|
-        query[key] = value
+        query[key.to_s] = value
       end
       uri.query = Rack::Utils.build_query(query)
       uri.to_s
@@ -35,8 +35,9 @@ module Api::Controllers::Base
       if @pagy.has_more?
         if (collection = instance_variable_get(collection_variable))
           next_cursor = collection.last.id
-          # TODO Probably not great that we're clobbering any `Link` header that might be set.
-          response.headers["Link"] = "<#{modify_url_params(request.url, after: next_cursor)}>; rel=next"
+          link_header = response.headers["Link"]
+          link_value = "<#{modify_url_params(request.url, after: next_cursor)}>; rel=\"next\""
+          response.headers["Link"] = link_header ? "#{link_header}, #{link_value}" : link_value
           response.headers["Pagination-Next"] = next_cursor
         end
       end

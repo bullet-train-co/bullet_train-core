@@ -4,22 +4,24 @@
       - Teams
     summary: "List Teams"
     operationId: listTeams
+    parameters:
+      - $ref: "#/components/parameters/after"
     responses:
       "404":
         description: "Not Found"
       "200":
         description: "OK"
+        headers:
+          Pagination-Next:
+            $ref: "#/components/headers/PaginationNext"
+          Link:
+            $ref: "#/components/headers/Link"
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/TeamAttributes"
-                has_more:
-                  type: boolean
+              type: array
+              items:
+                $ref: "#/components/schemas/TeamAttributes"
 /teams/{id}:
   get:
     tags:
@@ -44,6 +46,17 @@
     operationId: updateTeam
     parameters:
       - $ref: "#/components/parameters/id"
+    requestBody:
+      description: "Information about updated fields in Team"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              team:
+                type: object
+                $ref: "#/components/schemas/TeamParameters"
     responses:
       "404":
         description: "Not Found"
@@ -52,4 +65,4 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/TeamParameters"
+              $ref: "#/components/schemas/TeamAttributes"

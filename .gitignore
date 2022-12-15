@@ -11,3 +11,4 @@
 Gemfile.lock
 yarn.lock
 /node_modules
+/.idea/

@@ -13,22 +13,23 @@
         required: true
         schema:
           type: string
+      - $ref: "#/components/parameters/after"
     responses:
       "404":
         description: "Not Found"
       "200":
         description: "OK"
+        headers:
+          Pagination-Next:
+            $ref: "#/components/headers/PaginationNext"
+          Link:
+            $ref: "#/components/headers/Link"
         content:
           application/json:
             schema:
-              type: object
-              properties:
-                data:
-                  type: array
-                  items:
-                    $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
-                has_more:
-                  type: boolean
+              type: array
+              items:
+                $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
   <% end %>
   <% unless except.include?(:create) %>
   post:
@@ -42,6 +43,17 @@
         required: true
         schema:
           type: string
+    requestBody:
+      description: "Information about a new Tangible Thing"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              scaffolding_completely_concrete_tangible_thing:
+                type: object
+                $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
     responses:
       "404":
         description: "Not Found"
@@ -50,7 +62,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
   <% end %>
 <% end %>
 <% unless except.include?(:show) && except.include?(:update) && except.include?(:destroy) %>
@@ -81,6 +93,17 @@
     operationId: updateScaffoldingCompletelyConcreteTangibleThings
     parameters:
       - $ref: "#/components/parameters/id"
+    requestBody:
+      description: "Information about updated fields in Tangible Thing"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              scaffolding_completely_concrete_tangible_thing:
+                type: object
+                $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
     responses:
       "404":
         description: "Not Found"
@@ -89,7 +112,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
   <% end %>
   <% unless except.include?(:destroy) %>
   delete:
@@ -102,7 +125,7 @@
     responses:
       "404":
         description: "Not Found"
-      "200":
-        description: "OK"
+      "204":
+        description: "No Content"
   <% end %>
 <% end %>
