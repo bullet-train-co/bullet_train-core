@@ -112,8 +112,8 @@ namespace :bullet_train do
             new_lines = gemfile_lines.map do |line|
               packages.each do |package|
                 if line.match?(package)
-                  original_path = "gem \"bullet_train#{"-" + package unless package == "base"}\""
-                  local_path = "gem \"bullet_train#{"-" + package unless package == "base"}\", path: \"local/bullet_train-#{package}\""
+                  original_path = "gem \"bullet_train#{"-" + package if package}\""
+                  local_path = "gem \"bullet_train#{"-" + package if package}\", path: \"local/bullet_train#{"-" + package if package}\""
 
                   case process[:flag]
                   when :link

@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
+cd bullet_train
+echo bullet_train
+bump $1
+cd .. 
+
 packages=( 
-  "base"
   "api" 
   "fields" 
   "has_uuid"
