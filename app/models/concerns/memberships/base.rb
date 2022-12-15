@@ -130,7 +130,7 @@ module Memberships::Base
   end
 
   def first_name_last_initial
-    [first_name, last_initial].map(&:present?).join(" ")
+    [first_name, last_initial].select(&:present?).join(" ")
   end
 
   # TODO utilize this.
