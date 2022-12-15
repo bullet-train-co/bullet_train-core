@@ -82,6 +82,55 @@ namespace :bullet_train do
       puts ""
     end
 
+    # Process any flags that were passed.
+    if arguments[:all_options].present?
+      flags_with_values = []
+
+      arguments[:all_options].split(/\s+/).each do |option|
+        if option.match?(/^--/)
+          flags_with_values << {flag: option.gsub(/^--/, "").to_sym, values: []}
+        else
+          flags_with_values.last[:values] << option
+        end
+      end
+
+      if flags_with_values.any?
+        flags_with_values.each do |process|
+          if process[:flag] == :link || process[:flag] == :reset
+            packages = process[:values]
+
+            gemfile_lines = File.readlines("./Gemfile")
+            new_lines = gemfile_lines.map do |line|
+              packages.each do |package|
+                if line.match?(package)
+                  original_path = "gem \"bullet_train#{"-" + package unless package == "base"}\""
+                  local_path = "gem \"bullet_train#{"-" + package unless package == "base"}\", path: \"local/bullet_train-#{package}\""
+
+                  case process[:flag]
+                  when :link
+                    line.gsub!(original_path, local_path)
+                    puts "Setting local '#{package}' package to the Gemfile...".blue
+                    break
+                  when :reset
+                    line.gsub!(local_path, original_path)
+                    puts "Resetting '#{package}' package in the Gemfile...".blue
+                    break
+                  end
+                end
+              end
+
+              line
+            end
+
+            File.write("./Gemfile", new_lines.join)
+            system "bundle install"
+          end
+        end
+
+        exit
+      end
+    end
+
     framework_packages = I18n.t("framework_packages")
 
     puts "Which framework package do you want to work on?".blue
