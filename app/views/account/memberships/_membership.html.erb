@@ -1,0 +1,29 @@
+<tr data-id="<%= membership.id %>">
+  <td class="px-6 py-4 whitespace-nowrap">
+    <%= link_to [:account, membership], class: 'block flex items-center group hover:no-underline no-underline' do %>
+      <div class="flex-shrink-0 h-10 w-10">
+        <%= image_tag membership_profile_photo_url(membership), title: membership.label_string, class: 'h-10 w-10 rounded-full' %>
+      </div>
+
+      <div class="ml-3">
+        <span class="group-hover:underline"><%= membership.label_string %></span>
+        <% if membership.unclaimed? %>
+          <span class="ml-1.5 px-2 inline-flex text-xs text-green-dark bg-green-light border border-green-dark rounded-md">
+            Invited
+          </span>
+        <% end %>
+      </div>
+    <% end %>
+  </td>
+
+  <td>
+    <% if membership.roles_without_defaults.any? %>
+      <%= membership.roles_without_defaults.map { |role| t("memberships.fields.role_ids.options.#{role.key}.label") }.to_sentence %>
+    <% else %>
+      <%= t("memberships.fields.role_ids.options.default.label") %>
+    <% end %>
+  </td>
+  <td class="text-right">
+    <%= link_to t('.buttons.show'), [:account, membership], class: 'button-secondary button-smaller' %>
+  </td>
+</tr>
