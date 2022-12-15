@@ -34,6 +34,25 @@ module ActionView
   end
 end
 
+# When rendering collections (i.e. - @foos) with partials, Rails uses this method to build a string
+# such as `foos/foo`. This ultimately references the partial `app/views/foos/_foo.html.erb` for rendering.
+# However, Super Scaffolding class names are namespaced in such a way that `collection` below
+# returns a string with the full path: `scaffolding/absolutely_abstract/creative_concepts/creative_concept`.
+# We only need `creative_concepts/creative_concept`, so we split the string and remove any unncessary elements.
+module ActiveModel
+  module Conversion
+    module ClassMethods
+      def _to_partial_path # :nodoc:
+        @_to_partial_path ||= begin
+          element = ActiveSupport::Inflector.underscore(ActiveSupport::Inflector.demodulize(name))
+          collection = ActiveSupport::Inflector.tableize(name)
+          "#{collection.split("/").last}/#{element}"
+        end
+      end
+    end
+  end
+end
+
 module ThemeHelper
   def current_theme_object
     @current_theme_object ||= "BulletTrain::Themes::#{current_theme.to_s.classify}::Theme".constantize.new
