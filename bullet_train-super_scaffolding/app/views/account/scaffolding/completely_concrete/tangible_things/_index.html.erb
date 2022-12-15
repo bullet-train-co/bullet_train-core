@@ -1,3 +1,4 @@
+<% tangible_things = tangible_things.accessible_by(current_ability) %>
 <% absolutely_abstract_creative_concept = @absolutely_abstract_creative_concept || @creative_concept %>
 <% context ||= absolutely_abstract_creative_concept %>
 <% collection ||= :completely_concrete_tangible_things %>
@@ -35,7 +36,9 @@
               </tr>
             </thead>
             <tbody>
-              <%= yield %>
+              <% tangible_things.each do |tangible_thing| %>
+                <%= render 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', tangible_things: tangible_things, tangible_thing: tangible_thing %>
+              <% end %>
             </tbody>
           </table>
         <% end %>

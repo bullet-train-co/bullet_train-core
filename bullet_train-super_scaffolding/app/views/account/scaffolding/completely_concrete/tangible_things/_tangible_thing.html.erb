@@ -18,10 +18,10 @@
     <td class="buttons">
       <% unless hide_actions %>
         <% if can? :edit, tangible_thing %>
-          <%= link_to t('account.scaffolding.completely_concrete.tangible_things.buttons.shorthand.edit'), [:edit, :account, tangible_thing], class: 'button-secondary button-smaller' %>
+          <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, tangible_thing], class: 'button-secondary button-smaller' %>
         <% end %>
         <% if can? :destroy, tangible_thing %>
-          <%= button_to t('account.scaffolding.completely_concrete.tangible_things.buttons.shorthand.destroy'), [:account, tangible_thing], method: :delete, data: { confirm: t('account.scaffolding.completely_concrete.tangible_things.buttons.confirmations.destroy', model_locales(tangible_thing)) }, class: 'button-secondary button-smaller' %>
+          <%= button_to t('.buttons.shorthand.destroy'), [:account, tangible_thing], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(tangible_thing)) }, class: 'button-secondary button-smaller' %>
         <% end %>
         <%# 🚅 super scaffolding will insert new action model buttons above this line. %>
       <% end %>
