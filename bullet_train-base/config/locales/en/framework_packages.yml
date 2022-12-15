@@ -1,10 +1,10 @@
 en:
   framework_packages:
     bullet_train:
-      git: "bullet-train-co/bullet_train-base"
+      git: "bullet-train-co/bullet_train-core"
       npm: "@bullet-train/bullet-train"
     bullet_train-api:
-      git: "bullet-train-co/bullet_train-api"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-fields:
       git: "bullet-train-co/bullet_train-core"
       npm: "@bullet-train/fields"
@@ -19,7 +19,7 @@ en:
     bullet_train-obfuscates_id:
       git: "bullet-train-co/bullet_train-core"
     bullet_train-outgoing_webhooks:
-      git: "bullet-train-co/bullet_train-outgoing_webhooks"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-scope_questions:
       git: "bullet-train-co/bullet_train-core"
     bullet_train-scope_validator:
@@ -28,7 +28,7 @@ en:
       git: "bullet-train-co/bullet_train-core"
       npm: "@bullet-train/bullet-train-sortable"
     bullet_train-super_scaffolding:
-      git: "bullet-train-co/bullet_train-super_scaffolding"
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-super_load_and_authorize_resource:
       git: "bullet-train-co/bullet_train-core"
     bullet_train-themes:
