@@ -1,0 +1,68 @@
+/teams:
+  get:
+    tags:
+      - Teams
+    summary: "List Teams"
+    operationId: listTeams
+    parameters:
+      - $ref: "#/components/parameters/after"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        headers:
+          Pagination-Next:
+            $ref: "#/components/headers/PaginationNext"
+          Link:
+            $ref: "#/components/headers/Link"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/TeamAttributes"
+/teams/{id}:
+  get:
+    tags:
+      - Teams
+    summary: "Fetch Team"
+    operationId: fetchTeam
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamAttributes"
+  put:
+    tags:
+      - Teams
+    summary: "Update Team"
+    operationId: updateTeam
+    parameters:
+      - $ref: "#/components/parameters/id"
+    requestBody:
+      description: "Information about updated fields in Team"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              team:
+                type: object
+                $ref: "#/components/schemas/TeamParameters"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/TeamAttributes"

@@ -1,0 +1,68 @@
+/users:
+  get:
+    tags:
+      - Users
+    summary: "List Users"
+    operationId: listUsers
+    parameters:
+      - $ref: "#/components/parameters/after"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        headers:
+          Pagination-Next:
+            $ref: "#/components/headers/PaginationNext"
+          Link:
+            $ref: "#/components/headers/Link"
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: "#/components/schemas/UserAttributes"
+/users/{id}:
+  get:
+    tags:
+      - Users
+    summary: "Fetch User"
+    operationId: fetchUser
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAttributes"
+  put:
+    tags:
+      - Users
+    summary: "Update User"
+    operationId: updateUser
+    parameters:
+      - $ref: "#/components/parameters/id"
+    requestBody:
+      description: "Information about updated fields in User"
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              user:
+                type: object
+                $ref: "#/components/schemas/UserParameters"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UserAttributes"

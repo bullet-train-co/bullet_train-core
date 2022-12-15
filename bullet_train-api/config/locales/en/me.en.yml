@@ -1,0 +1,5 @@
+en:
+  me:
+    api:
+      actions: "Actions for the current user"
+      show: "Retrieve info about the current user"

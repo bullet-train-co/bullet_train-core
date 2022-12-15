@@ -1,0 +1,11 @@
+ignore:
+  - 'app/controllers/api/v1/loads_and_authorizes_api_resource.rb':
+    - Security/Eval # TODO Requires an audit.
+    - Style/EvalWithLocation # TODO Requires an audit.
+  - '**/*':
+    - Style/TrailingCommaInArguments
+    - Style/TrailingCommaInArrayLiteral
+    - Style/TrailingCommaInHashLiteral
+    - Style/CommentedKeyword
+  - 'app/controllers/**/*':
+    - Style/RedundantAssignment

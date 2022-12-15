@@ -1,0 +1,8 @@
+<% access_token ||= @access_token %>
+<% application ||= @application || access_token&.application %>
+<%= render 'account/platform/applications/breadcrumbs', application: application %>
+<%= render 'account/shared/breadcrumb', label: t('.label'), url: [:account, application, :access_tokens] %>
+<% if access_token&.persisted? %>
+  <%= render 'account/shared/breadcrumb', label: access_token.label_string, url: [:account, access_token] %>
+<% end %>
+<%= render 'account/shared/breadcrumbs/actions', only_for: 'platform/access_tokens' %>

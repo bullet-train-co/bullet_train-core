@@ -1,0 +1,96 @@
+en:
+  platform/applications: &applications
+    label: &label Platform Applications
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: Your Applications
+      icon: fal fa-browser ti ti-plug
+    buttons: &buttons
+      new: Provision New Platform Application
+      create: Provision Platform Application
+      edit: Edit Platform Application
+      update: Update Platform Application
+      destroy: Remove Platform Application
+      shorthand:
+        edit: Edit
+        destroy: Delete
+        disconnect: Disconnect
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{application_name}? This will break any integrations using this client UID and secret and any associated API access tokens. This can't be undone.
+        disconnect: Are you sure you want to disconnect %{application_name}? This might affect an ongoing service provided by %{application_name} and can not be undone.
+    fields: &fields
+      name:
+        _: &name Name
+        label: *name
+        heading: Application Name
+
+      redirect_uri:
+        _: &redirect_uri Redirect URI
+        label: *redirect_uri
+        heading: *redirect_uri
+        help: This is only required if you're building an OAuth2-powered integration for other users.
+
+      uid:
+        heading: Client UID
+
+      secret:
+        heading: Client Secret
+
+      label_string:
+        heading: Application Name
+
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at Added
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated
+        label: *updated_at
+        heading: *updated_at
+    index:
+      section: "%{teams_possessive} Platform Applications"
+      contexts:
+        team:
+          header: Platform Applications
+          description: Platform Applications allow you to build API integrations for %{team_name} or build OAuth2-powered integrations that %{team_name} can share with others.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{application_name}"
+      header: Platform Application Details
+      description: Below is the configuration and OAuth2 credentials for %{application_name}.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "New Platform Application for %{team_name}"
+      header: New Platform Application Details
+      description: Please provide the details of the new Platform Application you'd like to provision for %{team_name}.
+      form: *form
+    edit:
+      section: "%{application_name}"
+      header: Edit Platform Application Details
+      description: You can update the details or settings for %{application_name} below.
+      form: *form
+    notifications:
+      created: Platform Application was successfully created.
+      updated: Platform Application was successfully updated.
+      destroyed: Platform Application was successfully destroyed.
+      test_application_created: Test Platform Application was successfully created.
+      test_application_failure: You must provide the proper testing provision key to create a test application.
+  account:
+    platform:
+      applications: *applications
+  activerecord:
+    attributes:
+      platform/application:
+        name: *name
+        redirect_uri: *redirect_uri
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at
+        updated_at: *updated_at

@@ -1,0 +1,10 @@
+<% if can? :read, Platform::AccessToken.new(team: current_team) %>
+  <%= render 'account/shared/menu/item', {
+    url: main_app.polymorphic_path([:account, current_team, :platform_access_tokens]),
+    label: t('platform/access_tokens.navigation.label'),
+  } do |p| %>
+    <% p.content_for :icon do %>
+      <i class="<%= t('platform/access_tokens.navigation.icon') %>"></i>
+    <% end %>
+  <% end %>
+<% end %>
