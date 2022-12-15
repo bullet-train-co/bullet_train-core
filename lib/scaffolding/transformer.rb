@@ -710,7 +710,7 @@ class Scaffolding::Transformer
       when "file_field"
         "file"
       when "password_field"
-        "string"
+        "text"
       else
         raise "Invalid field type: #{type}."
       end
@@ -919,6 +919,10 @@ class Scaffolding::Transformer
           <%= render 'shared/attributes/#{attribute_partial}', attribute: :#{attribute_name} %>
         ERB
 
+        if type == "password_field"
+          field_content.gsub!(/\s%>/, ", options: { password: true } %>")
+        end
+
         scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/show.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true)
 
       end
@@ -946,6 +950,10 @@ class Scaffolding::Transformer
         field_content = <<-ERB
           <td#{cell_attributes}><%= render 'shared/attributes/#{attribute_partial}', attribute: :#{attribute_name}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
         ERB
+
+        if type == "password_field"
+          field_content.gsub!(/\s%>/, ", options: { password: true } %>")
+        end
 
         unless ["Team", "User"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true)
