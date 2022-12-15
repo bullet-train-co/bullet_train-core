@@ -61,7 +61,9 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
 
   private
 
-  include strong_parameters_from_api
+  if defined?(Api::V1::ApplicationController)
+    include strong_parameters_from_api
+  end
 
   def process_params(strong_params)
     # 🚅 skip this section when scaffolding.
