@@ -28,7 +28,16 @@ module Webhooks::Outgoing::EventSupport
   end
 
   def endpoints
-    send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_endpoints.listening_for_event_type_id(event_type_id)
+    endpoints = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_endpoints.listening_for_event_type_id(event_type_id)
+
+    case self.class.name
+    when "Scaffolding::AbsolutelyAbstract::CreativeConcept"
+      endpoints.where(scaffolding_absolutely_abstract_creative_concept_id: [object.id, nil])
+    when "Scaffolding::CompletelyConcrete::TangibleThing"
+      endpoints.where(scaffolding_absolutely_abstract_creative_concept_id: [object.absolutely_abstract_creative_concept_id, nil])
+    else
+      endpoints
+    end
   end
 
   def deliver

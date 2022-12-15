@@ -67,6 +67,7 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
     strong_params = params.require(:webhooks_outgoing_endpoint).permit(
       :name,
       :url,
+      :scaffolding_absolutely_abstract_creative_concept_id,
       # 🚅 super scaffolding will insert new fields above this line.
       event_type_ids: [],
       # 🚅 super scaffolding will insert new arrays above this line.

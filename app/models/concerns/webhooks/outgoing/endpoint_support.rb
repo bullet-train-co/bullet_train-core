@@ -4,6 +4,7 @@ module Webhooks::Outgoing::EndpointSupport
 
   included do
     belongs_to BulletTrain::OutgoingWebhooks.parent_association
+    belongs_to :scaffolding_absolutely_abstract_creative_concept, optional: true, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept"
 
     has_many :deliveries, class_name: "Webhooks::Outgoing::Delivery", dependent: :destroy, foreign_key: :endpoint_id
     has_many :events, -> { distinct }, through: :deliveries
@@ -25,6 +26,10 @@ module Webhooks::Outgoing::EndpointSupport
 
   def valid_event_types
     Webhooks::Outgoing::EventType.all
+  end
+
+  def creative_concepts
+    team.scaffolding_absolutely_abstract_creative_concepts
   end
 
   def event_types
