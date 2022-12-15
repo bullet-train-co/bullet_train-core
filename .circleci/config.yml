@@ -74,7 +74,6 @@ jobs:
       # Install dependencies
       - ruby/bundle-install
       - run: bundle clean --force
-      - run: yarn install
 
       # # Save dependency caches
       # # We only do this as part of this job, because it's time consuming and we don't want it to slow down test runners.
