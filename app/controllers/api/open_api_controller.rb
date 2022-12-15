@@ -74,15 +74,20 @@ module OpenApiHelper
 
   def attribute(attribute)
     heading = t("#{current_model.name.underscore.pluralize}.fields.#{attribute}.heading")
-    # TODO A lot of logic to be done here.
-    indent("#{attribute}:\n  description: \"#{heading}\"\n  type: string", 2)
-  end
+    attribute_data = current_model.columns_hash[attribute.to_s]
 
-  def parameter(attribute)
-    heading = t("#{current_model.name.underscore.pluralize}.fields.#{attribute}.heading")
-    # TODO A lot of logic to be done here.
-    indent("#{attribute}:\n  description: \"#{heading}\"\n  type: string", 2)
+    # TODO: File fields don't show up in the columns_hash. How should we handle these?
+    # Default to `string` when the type returns nil.
+    type = attribute_data.nil? ? "string" : attribute_data.type
+
+    attribute_block = <<~YAML
+      #{attribute}:
+        description: "#{heading}"
+        type: #{type}
+    YAML
+    indent(attribute_block.chomp, 2)
   end
+  alias_method :parameter, :attribute
 end
 
 class Api::OpenApiController < ApplicationController
