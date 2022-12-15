@@ -33,3 +33,14 @@ do
   mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
   echo "gem \"bullet_train-${package}\", path: \"../../bullet_train-${package}\"" >> tmp/starter/Gemfile
 done
+
+cd tmp/starter
+
+bundle install
+bundle clean --force
+bundle exec rake bt:link
+yarn install
+yarn build
+yarn build:css
+
+cd ../..

@@ -95,19 +95,11 @@ jobs:
     steps:
       - browser-tools/install-browser-tools
       - checkout
-      - run: "bin/checkout_and_link_starter_repo"
+      - run: "bin/checkout-and-link-starter-repo"
 
       # TODO Figure out how to make these work for `tmp/starter`
       # - restore_cache: *restore_bundler_cache
       # - restore_cache: *restore_yarn_cache
-
-      # Install dependencies
-      - run: "cd tmp/starter && bundle install"
-      - run: "cd tmp/starter && bundle clean --force"
-      - run: "cd tmp/starter && bundle exec rake bt:link"
-      - run: "cd tmp/starter && yarn install"
-      - run: "cd tmp/starter && yarn build"
-      - run: "cd tmp/starter && yarn build:css"
 
       - *wait_for_docker
 
@@ -145,7 +137,7 @@ jobs:
     steps:
       - browser-tools/install-browser-tools
       - checkout
-      - run: "bin/checkout_and_link_starter_repo"
+      - run: "bin/checkout-and-link-starter-repo"
 
       # TODO Figure out how to make these work for `tmp/starter`
       # # Restore dependency caches
