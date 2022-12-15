@@ -13,6 +13,7 @@
  - [Overriding the Framework](/docs/overriding.md)
  - [Setting up a Tunnel](/docs/tunneling.md)
  - [JavaScript](/docs/javascript.md)
+ - [Internationalization](/docs/i18n.md)
 
 ## Developer Tools
  - [Super Scaffolding](/docs/super-scaffolding.md)
