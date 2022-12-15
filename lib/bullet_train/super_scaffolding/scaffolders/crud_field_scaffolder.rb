@@ -9,7 +9,7 @@ module BulletTrain
             puts ""
             puts "E.g. add a description and body to Pages:"
             puts "  rails g migration add_description_etc_to_pages description:text body:text"
-            puts "  bin/super-scaffold crud-field Page description:text body:text"
+            puts "  bin/super-scaffold crud-field Page description:text_area body:text_area"
             puts ""
             puts "Options:"
             puts ""
