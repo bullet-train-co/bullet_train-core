@@ -1518,7 +1518,7 @@ class Scaffolding::Transformer
             puts "enter the name of the icon you want to use."
             puts "(Or hit enter when choosing to skip this step.)"
             $stdin.gets.chomp
-            if (TerminalCommands.macosx? && `which open`.present?) || TerminalCommands.linux?
+            if TerminalCommands.can_open?
               TerminalCommands.open_file_or_link("https://themify.me/themify-icons")
               if font_awesome?
                 TerminalCommands.open_file_or_link("https://fontawesome.com/icons?d=gallery&s=light")

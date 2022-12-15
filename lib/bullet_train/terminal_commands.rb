@@ -20,6 +20,11 @@ module TerminalCommands
     os == linux
   end
 
+  def self.can_open?
+    (TerminalCommands.macosx? && `which open`.present?) ||
+      (TerminalCommands.linux? && `which xdg-open`.present?)
+  end
+
   def self.macosx
     "darwin"
   end

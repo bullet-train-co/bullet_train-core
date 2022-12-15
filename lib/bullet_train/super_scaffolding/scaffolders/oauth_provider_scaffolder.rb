@@ -61,7 +61,13 @@ module BulletTrain
             puts "When you find one you like, hover your mouse over it and then come back here and"
             puts "and enter the name of the icon you want to use."
             response = $stdin.gets.chomp
-            TerminalCommands.open_file_or_link("http://light.pinsupreme.com/icon_fonts_themefy.html")
+            if TerminalCommands.can_open?
+              TerminalCommands.open_file_or_link("http://light.pinsupreme.com/icon_fonts_themefy.html")
+            else
+              puts "Sorry! We can't open these URLs automatically on your platform, but you can visit them manually:"
+              puts ""
+              puts "  http://light.pinsupreme.com/icon_fonts_themefy.html"
+            end
             puts ""
             puts "Did you find an icon you wanted to use? Enter the name here or hit enter to just"
             puts "use the dollar symbol:"
