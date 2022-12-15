@@ -109,26 +109,6 @@ module Users::Base
     end
   end
 
-  def administrating_team_ids
-    parent_ids_for(Role.admin, :memberships, :team)
-  end
-
-  def parent_ids_for(role, through, parent)
-    parent_id_column = "#{parent}_id"
-    key = "#{role.key}_#{through}_#{parent_id_column}s"
-    return ability_cache[key] if ability_cache && ability_cache[key]
-    role = nil if role.default?
-    value = send(through).with_role(role).distinct.pluck(parent_id_column)
-    current_cache = ability_cache || {}
-    current_cache[key] = value
-    update_column :ability_cache, current_cache
-    value
-  end
-
-  def invalidate_ability_cache
-    update_column(:ability_cache, {})
-  end
-
   def otp_qr_code
     issuer = I18n.t("application.name")
     label = "#{issuer}:#{email}"
