@@ -10,7 +10,6 @@ module Controllers::Base
     include Pagy::Backend
 
     around_action :set_locale
-    around_action :set_namespace
     layout :layout_by_resource
 
     before_action { @updating = request.headers["X-Cable-Ready"] == "update" }
@@ -83,20 +82,6 @@ module Controllers::Base
       unless helpers.invited?
         redirect_to [:account, :teams], notice: t("teams.notifications.invitation_only")
       end
-    end
-  end
-
-  def namespace
-    nil
-  end
-
-  def set_namespace
-    if namespace
-      Current.namespaces.push "account"
-      yield
-      Current.namespaces.pop
-    else
-      yield
     end
   end
 

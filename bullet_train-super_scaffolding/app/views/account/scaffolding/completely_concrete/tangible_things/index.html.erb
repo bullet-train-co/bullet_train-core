@@ -1,10 +1,6 @@
 <%= render 'account/shared/page' do |p| %>
   <% p.content_for :title, t('.section') %>
   <% p.content_for :body do %>
-    <% pagy, tangible_things = pagy(@tangible_things, page_param: :tangible_things_page) %>
-
-    <%= render 'index', tangible_things: @tangible_things, pagy: pagy do %>
-      <%= render tangible_things %>
-    <% end %>
+    <%= render 'index', tangible_things: @tangible_things %>
   <% end %>
 <% end %>
