@@ -1,7 +1,12 @@
 #!/usr/bin/env bash
 
+cd bullet_train
+gem build
+gem push *.gem
+rm *.gem
+cd ..
+
 packages=( 
-  "base"
   "api" 
   "fields" 
   "has_uuid"
