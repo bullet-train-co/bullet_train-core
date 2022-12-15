@@ -7,6 +7,12 @@ class Scaffolding::Transformer
   attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find
 
   def code_for_child_on_parent_show_page
+    <<~ERB
+      <% pagy, tangible_things = pagy(@team.tangible_things, page_param: :tangible_things_page) %>
+      <%= render 'account/tangible_things/index', tangible_things: tangible_things, hide_back: true, pagy: pagy do %>
+        <%= render tangible_things %>
+      <% end %>
+    ERB
   end
 
   def update_models_abstract_class
@@ -101,6 +107,7 @@ class Scaffolding::Transformer
       "scaffolding_completely_concrete_tangible_thing",
       "scaffolding-absolutely-abstract-creative-concept",
       "scaffolding-completely-concrete-tangible-thing",
+      "scaffolding.completely_concrete.tangible_things",
 
       # class name in context plural.
       "absolutely_abstract_creative_concepts",
@@ -941,7 +948,7 @@ class Scaffolding::Transformer
         ERB
 
         unless ["Team", "User"].include?(child)
-          scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true)
+          scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true)
         end
 
       end
@@ -1304,7 +1311,8 @@ class Scaffolding::Transformer
     files = if cli_options["only-index"]
       [
         "./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb",
-        "./app/views/account/scaffolding/completely_concrete/tangible_things/index.html.erb"
+        "./app/views/account/scaffolding/completely_concrete/tangible_things/index.html.erb",
+        "./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.html.erb"
       ]
     else
       # copy a ton of files over and do the appropriate string replace.

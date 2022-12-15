@@ -54,7 +54,14 @@
       <% end %>
     <% end %>
 
-    <%= render 'account/scaffolding/completely_concrete/tangible_things/index', tangible_things: @creative_concept.completely_concrete_tangible_things.accessible_by(current_ability), hide_back: true %>
+    <% tangible_things = @creative_concept.completely_concrete_tangible_things.accessible_by(current_ability) %>
+    <% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) %>
+    <%= render 'account/scaffolding/completely_concrete/tangible_things/index', tangible_things: tangible_things, pagy: pagy, hide_back: true do %>
+      <%# We can't do collection rendering here because the path is in a different directory. %>
+      <% tangible_things.each do |tangible_thing| %>
+        <%= render 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', tangible_things: tangible_things, tangible_thing: tangible_thing %>
+      <% end %>
+    <% end %>
 
     <% if can? :read, Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator.new(creative_concept: @creative_concept) %>
       <%= render 'account/scaffolding/absolutely_abstract/creative_concepts/collaborators/index', collaborators: @creative_concept.collaborators, hide_back: true %>

@@ -4,8 +4,9 @@
 <% hide_actions ||= false %>
 <% hide_back ||= false %>
 
-<% tangible_things = tangible_things.order(:id) unless has_order?(tangible_things) %>
-<% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) %>
+<% unless defined?(pagy) %>
+  <% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) %>
+<% end %>
 
 <%= action_model_select_controller do %>
   <% updates_for context, collection do %>
@@ -34,32 +35,7 @@
               </tr>
             </thead>
             <tbody>
-              <% tangible_things.each do |tangible_thing| %>
-                <% with_attribute_settings object: tangible_thing do %>
-                  <tr data-id="<%= tangible_thing.id %>">
-                    <%= render "shared/tables/checkbox", object: tangible_thing %>
-                    <%# 🚅 skip this section when scaffolding. %>
-                    <td><%= render 'shared/attributes/text', attribute: :text_field_value, url: [:account, tangible_thing] %></td>
-                    <td><%= render 'shared/attributes/boolean', attribute: :boolean_button_value %></td>
-                    <td><%= render 'shared/attributes/option', attribute: :button_value %></td>
-                    <td><%= render 'shared/attributes/options', attribute: :multiple_button_values %></td>
-                    <%# 🚅 stop any skipping we're doing now. %>
-                    <%# 🚅 super scaffolding will insert new fields above this line. %>
-                    <td><%= render 'shared/attributes/date_and_time', attribute: :created_at %></td>
-                    <td class="buttons">
-                      <% unless hide_actions %>
-                        <% if can? :edit, tangible_thing %>
-                          <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, tangible_thing], class: 'button-secondary button-smaller' %>
-                        <% end %>
-                        <% if can? :destroy, tangible_thing %>
-                          <%= button_to t('.buttons.shorthand.destroy'), [:account, tangible_thing], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(tangible_thing)) }, class: 'button-secondary button-smaller' %>
-                        <% end %>
-                        <%# 🚅 super scaffolding will insert new action model buttons above this line. %>
-                      <% end %>
-                    </td>
-                  </tr>
-                <% end %>
-              <% end %>
+              <%= yield %>
             </tbody>
           </table>
         <% end %>

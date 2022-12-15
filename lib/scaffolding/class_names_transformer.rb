@@ -100,6 +100,11 @@ class Scaffolding::ClassNamesTransformer
       parent.pluralize.titlecase.tr("/", " ")
     when "Scaffolding Completely Concrete Tangible Things"
       child.pluralize.titlecase.tr("/", " ")
+
+    # This is a specific example for locales where we only leave tangible_things.
+    when "scaffolding.completely_concrete.tangible_things"
+      child.underscore.pluralize
+
     when "Scaffolding/Absolutely Abstract/Creative Concepts"
       parent.pluralize.titlecase
     when "Scaffolding/Completely Concrete/Tangible Things"
