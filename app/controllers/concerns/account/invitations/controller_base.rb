@@ -49,17 +49,9 @@ module Account::Invitations::ControllerBase
 
     # unless the user is signed in.
     if !current_user.present?
-      # keep track of the uuid of the invitation so we can reload it
-      # after they sign up. at this point we don't even know if it's
-      # valid, but that's fine.
-      session[:invitation_uuid] = params[:id]
-
-      # also, we'll queue devise up to return to the invitation url after a sign in.
-      session["user_return_to"] = request.path
-
-      # assume the user needs to create an account.
-      # this is not the default for devise, but a sensible default here.
-      redirect_to new_user_registration_path
+      # We need them to register.
+      # We have to send `invitation_uuid` via params, not session, because Safari doesn't set cookies on redirect.
+      redirect_to new_user_registration_path(invitation_uuid: @invitation&.uuid)
 
     # session[:invitation_uuid] should only be present if the user is registering for the first time.
     elsif (@invitation = Invitation.find_by(uuid: session[:invitation_uuid] || params[:id]))

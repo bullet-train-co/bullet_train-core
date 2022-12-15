@@ -16,15 +16,15 @@
             <%= render 'shared/fields/text_field', form: f, method: :last_name %>
           </div>
 
-          <div class="sm:col-span-2">
-            <% # only edit the team name if this user is an admin and they are the first user. %>
-            <% # yes, that's redundant. %>
-            <% if can?(:edit, f.object.current_team) && f.object.current_team.users.count == 1 %>
+          <% # only edit the team name if this user is an admin and they are the first user. %>
+          <% # yes, that's redundant. %>
+          <% if can?(:edit, f.object.current_team) && f.object.current_team.users.count == 1 %>
+            <div class="sm:col-span-2">
               <%= f.fields_for :current_team do |tf| %>
                 <%= render 'shared/fields/text_field', form: tf, method: :name %>
               <% end %>
-            <% end %>
-          </div>
+            </div>
+          <% end %>
 
           <div class="sm:col-span-2">
             <%= render 'shared/fields/super_select', form: f, method: :time_zone,
