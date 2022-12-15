@@ -5,9 +5,8 @@
 <% hide_actions ||= false %>
 <% hide_back ||= false %>
 
-<% unless defined?(pagy) %>
-  <% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) %>
-<% end %>
+<% pagy ||= nil %>
+<% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) unless pagy %>
 
 <%= action_model_select_controller do %>
   <% updates_for context, collection do %>
