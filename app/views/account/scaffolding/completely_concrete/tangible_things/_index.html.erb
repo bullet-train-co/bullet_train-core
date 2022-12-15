@@ -8,7 +8,7 @@
 <% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) %>
 
 <%= action_model_select_controller do %>
-  <%= updates_for context, collection do %>
+  <% updates_for context, collection do %>
     <%= render 'account/shared/box', pagy: pagy do |p| %>
       <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
       <% p.content_for :description do %>
