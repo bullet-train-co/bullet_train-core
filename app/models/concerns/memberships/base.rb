@@ -27,7 +27,7 @@ module Memberships::Base
 
     scope :current_and_invited, -> { includes(:invitation).where("user_id IS NOT NULL OR invitations.id IS NOT NULL").references(:invitation) }
     scope :current, -> { where("user_id IS NOT NULL") }
-    scope :tombstones, -> { includes(:invitation).where("user_id IS NULL AND invitations.id IS NULL").references(:invitation) }
+    scope :tombstones, -> { includes(:invitation).where("user_id IS NULL AND invitations.id IS NULL AND platform_agent IS FALSE").references(:invitation) }
 
     # TODO Probably we can provide a way for gem packages to define these kinds of extensions.
     if billing_enabled?
@@ -62,7 +62,7 @@ module Memberships::Base
   end
 
   def tombstone?
-    user.nil? && invitation.nil? && !platform_agent?
+    user.nil? && invitation.nil? && !platform_agent
   end
 
   def last_admin?
@@ -137,9 +137,5 @@ module Memberships::Base
   # members shouldn't receive notifications unless they are either an active user or an outstanding invitation.
   def should_receive_notifications?
     invitation.present? || user.present?
-  end
-
-  def platform_agent?
-    platform_agent_of_id.present?
   end
 end
