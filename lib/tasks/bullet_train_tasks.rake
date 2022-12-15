@@ -59,7 +59,16 @@ namespace :bullet_train do
     if ARGV.first.present?
       BulletTrain::Resolver.new(ARGV.first).run(eject: ARGV.include?("--eject"), open: ARGV.include?("--open"), force: ARGV.include?("--force"), interactive: ARGV.include?("--interactive"))
     else
-      warn "\n🚅 Usage: `bin/resolve [path, partial, or URL] (--eject) (--open)`\n".blue
+      warn <<~MSG
+      🚅 Usage: #{('`bin/resolve [path, partial, or URL] (--eject) (--open)`').blue}
+
+      OR
+
+      #{('`bin/resolve --interactive`').blue}
+      When you use the interactive flag, we will prompt you to pass an annotated partial like so and either eject or open the file.
+      These annotated paths can be found in your browser when inspecting elements:
+      <!-- BEGIN /your/path/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.51/app/views/themes/light/_notices.html.erb -->
+      MSG
     end
   end
 
