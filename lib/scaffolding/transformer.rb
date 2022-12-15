@@ -1225,6 +1225,25 @@ class Scaffolding::Transformer
           end
         end
 
+        # Add `default: false` to boolean migrations.
+        if boolean_buttons
+          confirmation_reference = "create_table :#{class_names_transformer.table_name}"
+          confirmation_migration_file_name = `grep "#{confirmation_reference}" db/migrate/*`.split(":").first
+
+          old_line, new_line = nil
+          File.open(confirmation_migration_file_name) do |migration_file|
+            old_lines = migration_file.readlines
+            old_lines.each do |line|
+              target_attribute = line.match?(/\s*t\.boolean :#{name}/)
+              if target_attribute
+                old_line = line
+                new_line = "#{old_line.chomp}, default: false\n"
+              end
+            end
+          end
+          replace_in_file(confirmation_migration_file_name, old_line, new_line)
+        end
+
       end
 
       #
