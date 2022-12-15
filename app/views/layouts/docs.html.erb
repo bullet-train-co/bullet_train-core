@@ -146,6 +146,12 @@
                     <i class="fal fa-check ti ti-video-camera"></i>
                   <% end %>
                 <% end %>
+
+                <%= render 'account/shared/menu/item', url: 'docs/application-options.md', label: 'Application Options' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-gear ti ti-settings"></i>
+                  <% end %>
+                <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Accounts & Teams' do %>
