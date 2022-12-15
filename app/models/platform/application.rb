@@ -34,7 +34,7 @@ class Platform::Application < ApplicationRecord
   def create_user_and_membership
     faux_password = SecureRandom.hex
     create_user(email: "noreply+#{SecureRandom.hex}@bullettrain.co", password: faux_password, password_confirmation: faux_password, first_name: label_string)
-    create_membership(team: team, user: user)
+    create_membership(team: team, user: user, platform_agent: true)
     membership.roles << Role.admin
   end
 
