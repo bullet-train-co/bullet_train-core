@@ -4,10 +4,6 @@ require "pagy_cursor/pagy/extras/uuid_cursor"
 module Api::Controllers::Base
   extend ActiveSupport::Concern
 
-  # TODO Why doesn't `before_action :doorkeeper_authorize!` throw an exception?
-  class NotAuthenticatedError < StandardError
-  end
-
   included do
     include ActionController::Helpers
     helper ApplicationHelper
@@ -16,7 +12,6 @@ module Api::Controllers::Base
     include Pagy::Backend
 
     before_action :set_default_response_format
-    before_action :doorkeeper_authorize!
     after_action :set_pagination_headers
 
     def modify_url_params(url, new_params)
@@ -47,10 +42,6 @@ module Api::Controllers::Base
       render json: {error: "Not found"}, status: :not_found
     end
 
-    rescue_from NotAuthenticatedError do |exception|
-      render json: {error: "Invalid token"}, status: :unauthorized
-    end
-
     before_action :apply_pagination, only: [:index]
   end
 
@@ -66,7 +57,7 @@ module Api::Controllers::Base
   end
 
   def current_user
-    raise NotAuthenticatedError unless doorkeeper_token.present?
+    raise Doorkeeper::Errors::InvalidToken unless doorkeeper_token.present?
     # TODO Remove this rescue once workspace clusters can write to this column on the identity server.
     # TODO Make this logic configurable so that downstream developers can write different methods for this column getting updated.
     begin
