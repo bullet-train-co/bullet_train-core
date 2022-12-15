@@ -11,6 +11,9 @@ module Api::V1::Users::ControllerBase
         :last_name,
         :time_zone,
         :locale,
+        :current_password,
+        :password,
+        :password_confirmation,
         # 🚅 super scaffolding will insert new fields above this line.
         *permitted_arrays,
         # 🚅 super scaffolding will insert new arrays above this line.
