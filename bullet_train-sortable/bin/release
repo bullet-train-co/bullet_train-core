@@ -3,7 +3,7 @@
 def stream(command, prefix = "  ")
   puts ""
   IO.popen(command) do |io|
-    while (line = io.gets) do
+    while (line = io.gets)
       puts "#{prefix}#{line}"
     end
   end
@@ -34,7 +34,7 @@ puts "Bumped to #{version}."
 # Update the `package.json` version.
 puts "Bumping npm package version."
 text = File.read("package.json")
-new_contents = text.gsub(/\"version\": \".*\"/, "\"version\": \"#{version}\"")
+new_contents = text.gsub(/"version": ".*"/, "\"version\": \"#{version}\"")
 File.open("package.json", "w") { |file| file.puts new_contents }
 `git add ./package.json`
 stream "git commit -m \"Bumping npm package to #{version}.\""
@@ -54,7 +54,6 @@ puts `yarn build`
 puts output = `yarn pack`
 npm_file = output.chomp.lines[1].split("/").last.split("\"").first
 puts npm_file
-
 
 puts "OK, this last piece we can't do manually (because of 2FA) so copy and the following:"
 puts ""

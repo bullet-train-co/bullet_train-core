@@ -11,7 +11,7 @@ module CurrentAttributes::Base
   end
 
   # TODO There has got to be a better way to set a default value on a current attribute.
-  def namespaces 
+  def namespaces
     _namespaces || begin
       self._namespaces = []
       _namespaces

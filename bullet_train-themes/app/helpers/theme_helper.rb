@@ -43,12 +43,10 @@ module ActiveModel
   module Conversion
     module ClassMethods
       def _to_partial_path # :nodoc:
-        @_to_partial_path ||= begin
-          if Current.namespace 
-            "#{Current.namespace}/#{name.underscore.pluralize}/#{name.underscore.split("/").last}"
-          else
-            "#{name.underscore.pluralize}/#{name.underscore.split("/").last}"
-          end
+        @_to_partial_path ||= if Current.namespace
+          "#{Current.namespace}/#{name.underscore.pluralize}/#{name.underscore.split("/").last}"
+        else
+          "#{name.underscore.pluralize}/#{name.underscore.split("/").last}"
         end
       end
     end

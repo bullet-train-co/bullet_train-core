@@ -152,7 +152,7 @@ module BulletTrain
 
           # Pop off the version so we can call `bundle show` correctly.
           # Also change `bullet_train-base` to `bullet_train`.
-          partial_view_package.gsub!(/[\-|.0-9]*$/, "") if partial_view_package.match?(/[\-|.0-9]*$/)
+          partial_view_package.gsub!(/[-|.0-9]*$/, "") if partial_view_package.match?(/[-|.0-9]*$/)
           partial_view_package.gsub!("-base", "") if /base/.match?(@needle)
 
           local_package_path = `bundle show #{partial_view_package}`.chomp

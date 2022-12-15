@@ -15,7 +15,7 @@ module BulletTrain
             puts ""
             standard_protip
             puts ""
-            return 
+            return
           end
 
           provider_name = argv.shift

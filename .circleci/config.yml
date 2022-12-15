@@ -167,6 +167,6 @@ workflows:
   build:
     jobs:
       # - 'Local Minitest'
-      # - 'Local Standard Ruby'
+      - 'Local Standard Ruby'
       - 'Starter Repo Minitest'
       # - 'Starter Repo Minitest for Super Scaffolding'

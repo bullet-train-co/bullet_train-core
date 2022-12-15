@@ -84,7 +84,7 @@ module Account::Oauth::OmniauthCallbacks::ControllerBase
       # if the account is already connected to a user, we can't connect it again.
       # this would potentially lock someone else out of their account.
       if oauth_account.user
-        message_key = oauth_account.user == current_user ? "omniauth.user.reconnected" : "omniauth.user.already_registered"
+        message_key = (oauth_account.user == current_user) ? "omniauth.user.reconnected" : "omniauth.user.already_registered"
         redirect_to edit_account_user_path(current_user), notice: t(message_key, provider: t(auth.provider))
       else
         oauth_account.update(user: current_user)

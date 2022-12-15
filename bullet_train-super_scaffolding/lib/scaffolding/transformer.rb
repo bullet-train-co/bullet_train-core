@@ -1101,8 +1101,8 @@ class Scaffolding::Transformer
           # We also want to make sure we attach the dummy file in the API test on setup
           file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb"
           content = <<~RUBY
-            @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")
-            @another_#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")
+            @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
+            @another_#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
           RUBY
           scaffold_add_line_to_file(file_name, content, RUBY_FILES_HOOK, prepend: true)
         end
