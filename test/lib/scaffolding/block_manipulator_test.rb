@@ -253,4 +253,94 @@ describe Scaffolding::BlockManipulator do
     assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
+
+  it "unwraps a nested block" do
+    initial_data =
+      <<~INITIAL
+
+        <% block_to_remove do %>
+          <% block_to_unwrap do %>
+          <% end %>
+        <% end %>
+
+      INITIAL
+
+    initialize_demo_file(file_path, initial_data)
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.unwrap_block(lines: initial_lines, block_start: "block_to_unwrap")
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
+    expected_result =
+      <<~RESULT
+
+        <% block_to_unwrap do %>
+        <% end %>
+
+      RESULT
+
+    assert_equal(File.readlines(file_path), new_lines)
+    assert_equal(File.read(file_path), expected_result)
+  end
+
+  # Using an Array instead of a Heredoc to get the test the proper spacing.
+  it "shifts a block's contents to the left" do
+    initial_data =
+      [
+        "block_with_contents do\n",
+        "    puts 'contents'\n",
+        "end\n"
+      ]
+
+    initialize_demo_file(file_path, initial_data.join)
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.shift_block(
+      lines: initial_lines,
+      block_start: initial_data.first,
+      shift_contents_only: true
+    )
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
+    expected_result =
+      [
+        "block_with_contents do\n",
+        "  puts 'contents'\n",
+        "end\n"
+      ]
+
+    assert_equal(File.readlines(file_path), new_lines)
+    assert_equal(File.read(file_path), expected_result.join)
+  end
+
+  # Using an Array instead of a Heredoc to get the test the proper spacing.
+  it "shifts a block's contents to the right" do
+    initial_data =
+      [
+        "block_with_contents do\n",
+        "puts 'contents'\n",
+        "end\n"
+      ]
+
+    initialize_demo_file(file_path, initial_data.join)
+    initial_lines = File.readlines(file_path)
+
+    new_lines = Scaffolding::BlockManipulator.shift_block(
+      lines: initial_lines,
+      direction: :right,
+      block_start: initial_data.first,
+      shift_contents_only: true
+    )
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
+    expected_result =
+      [
+        "block_with_contents do\n",
+        "  puts 'contents'\n",
+        "end\n"
+      ]
+
+    assert_equal(File.readlines(file_path), new_lines)
+    assert_equal(File.read(file_path), expected_result.join)
+  end
 end

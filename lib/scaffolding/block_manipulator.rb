@@ -41,6 +41,30 @@ module Scaffolding::BlockManipulator
     lines
   end
 
+  # This method unwraps the block from the perspective of the child.
+  #
+  # 2.times do
+  #   3.times do
+  #     puts "foo"
+  #   end
+  # end
+  #
+  # Here we would pass the index of `"3.times do\n"` to
+  # `block_start` which would result in removing the outer block.
+  def self.unwrap_block(lines:, block_start:)
+    block_start = if block_start.is_a? String
+      block_start_line = lines.find { |line| line.match?(block_start) }
+      lines.index(block_start_line)
+    end
+
+    # Find the proper indices for both child and parent blocks.
+    block_parent_start = find_block_parent(block_start, lines)
+    block_parent_end = find_block_end(starting_from: block_parent_start, lines: lines)
+
+    new_lines = shift_block(lines: lines, block_start: block_start)
+    new_lines.reject.with_index { |lines, idx| idx == block_parent_start || idx == block_parent_end }
+  end
+
   def self.insert(content, lines:, within: nil, after: nil, before: nil, after_block: nil, append: false)
     # Search for before like we do after, we'll just inject before it.
     after ||= before
@@ -133,7 +157,7 @@ module Scaffolding::BlockManipulator
     # This loop was previously in the RoutesFileManipulator.
     lines.each_with_index do |line, line_number|
       next unless line_number > starting_from
-      if /^#{indentation_of(starting_from, lines)}end\s+/.match?(line)
+      if /^#{indentation_of(starting_from, lines)}end\s*/.match?(line)
         return line_number
       end
     end
@@ -158,5 +182,28 @@ module Scaffolding::BlockManipulator
     lines[line_number].match(/^( +)/)[1]
   rescue
     nil
+  end
+
+  # Shifts the block either to the left or right.
+  def self.shift_block(lines:, block_start:, direction: :left, amount: 2, shift_contents_only: false)
+    block_start = lines.index(block_start) if block_start.is_a? String
+    block_range = (block_start..(find_block_end(starting_from: block_start, lines: lines)))
+    block_range = (block_range.first + 1)..(block_range.last - 1) if shift_contents_only
+    new_lines = []
+
+    lines.each_with_index do |line, line_number|
+      if block_range.cover?(line_number)
+        # If we're shifting a block to the left, we want to safeguard
+        # the String so it doesn't delete any excess characters.
+        if direction == :left
+          amount.times { line = line.gsub(/^\s/, "") }
+        elsif direction == :right
+          line = "\s" * amount + line
+        end
+      end
+      new_lines << line
+    end
+
+    new_lines
   end
 end
