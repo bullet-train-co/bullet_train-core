@@ -53,8 +53,13 @@ def default_url_options_from_base_url
 
   # the name of this property doesn't match up.
   default_url_options[:protocol] = parsed_base_url.scheme
+  default_url_options.compact!
 
-  default_url_options.compact
+  if default_url_options.empty?
+    raise "ENV['BASE_URL'] has not been configured correctly. Please check your environment variables and try one more time."
+  end
+
+  default_url_options
 end
 
 def inbound_email_enabled?
