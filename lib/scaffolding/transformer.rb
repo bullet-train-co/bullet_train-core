@@ -1059,7 +1059,9 @@ class Scaffolding::Transformer
 
         # TODO The serializers can't handle these `has_rich_text` attributes.
         unless type == "trix_editor"
-          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
+          unless type == "file_field"
+            scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
+          end
 
           assertion = case type
           when "date_field"
@@ -1067,8 +1069,7 @@ class Scaffolding::Transformer
           when "date_and_time_field"
             "assert_equal_or_nil DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
           when "file_field"
-            # TODO Get this working again.
-            "# assert tangible_thing_data['#{name}'].match?('foo.txt') unless response.status == 201"
+            "assert_equal tangible_thing_data['#{name}'], rails_blob_path(@tangible_thing.#{name}) unless controller.action_name == 'create'"
           else
             "assert_equal_or_nil tangible_thing_data['#{name}'], tangible_thing.#{name}"
           end
@@ -1077,10 +1078,13 @@ class Scaffolding::Transformer
 
         # File fields are handled in a specific way when using the jsonapi-serializer.
         if type == "file_field"
-          # TODO Get this working again.
+          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", "json.#{name} url_for(tangible_thing.#{name}) if tangible_thing.#{name}.attached?", RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
           # We also want to make sure we attach the dummy file in the API test on setup
           file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb"
-          content = "# @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")"
+          content = <<~RUBY
+            @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")
+            @another_#{child.underscore}.#{name} = Rack::Test::UploadedFile.new(\"test/support/foo.txt\")
+          RUBY
           scaffold_add_line_to_file(file_name, content, RUBY_FILES_HOOK, prepend: true)
         end
 
