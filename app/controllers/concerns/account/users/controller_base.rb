@@ -10,6 +10,10 @@ module Account::Users::ControllerBase
       # for magic locales.
       @child_object = @user
     end
+
+    private
+
+    include strong_parameters_from_api
   end
 
   # GET /account/users/1/edit
@@ -52,30 +56,5 @@ module Account::Users::ControllerBase
 
   def process_params(strong_params)
     raise "It looks like you've removed `process_params` from your controller. This will break Super Scaffolding."
-  end
-
-  # Never trust parameters from the scary internet, only allow the white list through.
-  # TODO Update this to use `include strong_parameters_from_api`.
-  def user_params
-    # TODO enforce permissions on updating the user's team name.
-    strong_params = params.require(:user).permit(
-      *([
-        :email,
-        :first_name,
-        :last_name,
-        :time_zone,
-        :current_password,
-        :password,
-        :password_confirmation,
-        :profile_photo_id,
-        :locale,
-      ] + permitted_fields + [
-        {
-          current_team_attributes: [:name]
-        }.merge(permitted_arrays)
-      ])
-    )
-
-    process_params(strong_params)
   end
 end
