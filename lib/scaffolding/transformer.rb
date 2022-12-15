@@ -1047,6 +1047,10 @@ class Scaffolding::Transformer
           elsif is_multiple
             "assign_checkboxes(strong_params, :#{name})"
           end
+        when "options"
+          if is_multiple
+            "assign_checkboxes(strong_params, :#{name})"
+          end
         when "super_select"
           if boolean_buttons
             "assign_boolean(strong_params, :#{name})"
