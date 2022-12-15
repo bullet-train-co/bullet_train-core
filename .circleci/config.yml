@@ -2,6 +2,7 @@ version: 2.1
 orbs:
   ruby: circleci/ruby@0.1.2
   browser-tools: circleci/browser-tools@1.1
+  jq: circleci/jq@2.2.0
 aliases:
   - &restore_bundler_cache
       name: Restore Bundler cache
@@ -116,7 +117,9 @@ jobs:
     steps:
       - browser-tools/install-browser-tools
       - checkout
-      - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
+      - run:
+          name: Clone Starter Repository for testing
+          command: bash ./.circleci/matching_branch_check
 
       - run:
           name: Rename the directory of the Ruby gem being tested for the partial resolver test.
@@ -175,7 +178,9 @@ jobs:
     steps:
       - browser-tools/install-browser-tools
       - checkout
-      - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
+      - run:
+          name: Clone Starter Repository for testing
+          command: bash ./.circleci/matching_branch_check
 
       - run:
           name: Link starter repository to the Ruby gem being tested.
