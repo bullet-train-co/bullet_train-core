@@ -66,25 +66,30 @@ module Scaffolding::BlockManipulator
   end
 
   def self.insert(content, lines:, within: nil, after: nil, before: nil, after_block: nil, append: false)
+    content = prepare_content_array(content)
+
+    # We initialize the search with the entire file's lines and look for the block below.
+    start_line = 0
+    end_line = lines.count - 1
+
     # Search for before like we do after, we'll just inject before it.
     after ||= before
 
     # If within is given, find the start and end lines of the block
-    content += "\n" unless content.match?(/\n$/)
-    start_line = 0
-    end_line = lines.count - 1
     if within.present?
       start_line = find_block_start(starting_from: within, lines: lines)
       end_line = find_block_end(starting_from: start_line, lines: lines)
       # start_line += 1 # ensure we actually insert the content _within_ the given block
       # end_line += 1 if end_line == start_line
     end
+
     if after_block.present?
       block_start = find_block_start(starting_from: after_block, lines: lines)
       block_end = find_block_end(starting_from: block_start, lines: lines)
       start_line = block_end
       end_line = lines.count - 1
     end
+
     index = start_line
     match = false
     while index < end_line && !match
@@ -92,8 +97,10 @@ module Scaffolding::BlockManipulator
       if after.nil? || line.match?(after)
         unless append
           match = true
+          indent = !(before.present? || after.present? || after_block.present?)
+
           # We adjust the injection point if we really wanted to insert before.
-          lines = insert_line(content, index - (before ? 1 : 0), lines)
+          lines = insert_lines(content, index - (before ? 1 : 0), lines, indent)
         end
       end
       index += 1
@@ -103,29 +110,38 @@ module Scaffolding::BlockManipulator
 
     # Match should always be false here.
     if append && !match
-      lines = insert_line(content, index - 1, lines)
+      lines = insert_lines(content, index - 1, lines)
     end
     lines
   end
 
-  def self.insert_line(content, insert_at_index, lines)
-    content += "\n" unless content.match?(/\n$/)
+  def self.insert_lines(content, insert_at_index, lines, indent)
     final = []
     lines.each_with_index do |line, index|
-      indent = line.match(/^\s*/).to_s
+      indentation = line.match(/^\s*/).to_s
+      indentation += "\s" * 2 if indent
+
       final << line
-      if index == insert_at_index
-        final << indent + content
-      end
+      content.each { |new_line| final << indentation + new_line } if index == insert_at_index
     end
     final
   end
 
+  # TODO: We should eventually replace this with `insert_lines``,
+  # I just want to make sure everything doesn't break first.
+  def self.insert_line(content, insert_at_index, lines, indent = true)
+    insert_lines(prepare_content_array(content), insert_at_index, lines, indent)
+  end
+
   def self.insert_block(block_content, after_block:, lines:)
+    # Since `after_block` must be present for this method to work,
+    # the assumption is we never inseart a block inside an empty block, but
+    # always after the end of one. For that reason, ident defaults to false.
+    indent = false
     block_start = find_block_start(starting_from: after_block, lines: lines)
     block_end = find_block_end(starting_from: block_start, lines: lines)
-    lines = insert_line(block_content[0], block_end, lines)
-    insert_line(block_content[1], block_end + 1, lines)
+    lines = insert_line(block_content[0], block_end, lines, indent)
+    insert_line(block_content[1], block_end + 1, lines, indent)
   end
 
   def self.find_block_parent(starting_line_number, lines)
@@ -205,5 +221,18 @@ module Scaffolding::BlockManipulator
     end
 
     new_lines
+  end
+
+  private
+
+  def self.prepare_content_array(content)
+    # Ensure content is an Array
+    content = [content].flatten
+
+    # Ensure there are no stray new lines within each string
+    content = content.map { |line| line.split("\n") }.flatten
+
+    # Ensure each new line has a line break at the end.
+    content.map { |line| line.match?(/\n$/) ? line : "#{line}\n" }
   end
 end

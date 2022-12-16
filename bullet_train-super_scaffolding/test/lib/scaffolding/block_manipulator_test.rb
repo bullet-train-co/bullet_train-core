@@ -48,6 +48,60 @@ describe Scaffolding::BlockManipulator do
     assert_equal(File.readlines(file_path), new_lines)
     assert_equal(File.read(file_path), expected_result)
   end
+  it "inserts multiple lines within a block using the proper indentation" do
+    initial_data =
+      <<~INITIAL
+        <% test_block do %>
+        <% end %>
+      INITIAL
+    initialize_demo_file(file_path, initial_data)
+    initial_lines = File.readlines(file_path)
+
+    content = ["first", "second", "third"]
+    new_lines = Scaffolding::BlockManipulator.insert(content, within: "<% test_block do %>", lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
+    expected_result =
+      <<~RESULT
+        <% test_block do %>
+          first
+          second
+          third
+        <% end %>
+      RESULT
+    assert_equal(File.readlines(file_path), new_lines)
+    assert_equal(File.read(file_path), expected_result)
+  end
+
+  it "inserts multiple lines within a block when using a heredoc" do
+    initial_data =
+      <<~INITIAL
+        <% test_block do %>
+        <% end %>
+      INITIAL
+    initialize_demo_file(file_path, initial_data)
+    initial_lines = File.readlines(file_path)
+
+    content = <<~CONTENT
+      first
+      second
+      third
+    CONTENT
+
+    new_lines = Scaffolding::BlockManipulator.insert(content, within: "<% test_block do %>", lines: initial_lines)
+    Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
+
+    expected_result =
+      <<~RESULT
+        <% test_block do %>
+          first
+          second
+          third
+        <% end %>
+      RESULT
+    assert_equal(File.readlines(file_path), new_lines)
+    assert_equal(File.read(file_path), expected_result)
+  end
 
   it "inserts into an empty block" do
     initial_data =
@@ -62,7 +116,7 @@ describe Scaffolding::BlockManipulator do
     initialize_demo_file(file_path, initial_data)
     initial_lines = File.readlines(file_path)
 
-    new_lines = Scaffolding::BlockManipulator.insert("  Some new content", within: "<% inner_block", lines: initial_lines)
+    new_lines = Scaffolding::BlockManipulator.insert("Some new content", within: "<% inner_block", lines: initial_lines)
     Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
 
     expected_result =
@@ -177,7 +231,7 @@ describe Scaffolding::BlockManipulator do
     initial_lines = File.readlines(file_path)
 
     new_lines = Scaffolding::BlockManipulator.insert_block(["<% new_block do %>", "<% end %>"], after_block: "<% inner_block", lines: initial_lines)
-    new_lines = Scaffolding::BlockManipulator.insert("  an inner line", within: "<% new_block", lines: new_lines)
+    new_lines = Scaffolding::BlockManipulator.insert("an inner line", within: "<% new_block", lines: new_lines)
     Scaffolding::FileManipulator.write(file_path, new_lines, strip: false)
 
     expected_result =
