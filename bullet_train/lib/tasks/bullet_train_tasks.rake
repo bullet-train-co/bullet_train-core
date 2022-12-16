@@ -1,4 +1,5 @@
 require "io/wait"
+require "pry"
 
 namespace :bt do
   desc "Symlink registered gems in `./tmp/gems` so their views, etc. can be inspected by Tailwind CSS."
@@ -72,7 +73,7 @@ namespace :bullet_train do
     end
   end
 
-  task :develop, [:all_options] => :environment do |t, arguments|
+  task :hack, [:all_options] => :environment do |t, arguments|
     def stream(command, prefix = "  ")
       puts ""
 
@@ -106,14 +107,14 @@ namespace :bullet_train do
       if flags_with_values.any?
         flags_with_values.each do |process|
           if process[:flag] == :link || process[:flag] == :reset
-            packages = process[:values]
+            packages = I18n.t("framework_packages").keys.map { |key| key.to_s }
 
             gemfile_lines = File.readlines("./Gemfile")
             new_lines = gemfile_lines.map do |line|
               packages.each do |package|
-                if line.match?(package)
-                  original_path = "gem \"bullet_train#{"-" + package if package}\""
-                  local_path = "gem \"bullet_train#{"-" + package if package}\", path: \"local/bullet_train#{"-" + package if package}\""
+                if line.match?(/\"#{package}\"/)
+                  original_path = "gem \"#{package}\""
+                  local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
 
                   case process[:flag]
                   when :link
@@ -140,123 +141,101 @@ namespace :bullet_train do
       end
     end
 
+    puts "Welcome! Let's get hacking 💻".blue
+    puts ""
+
     framework_packages = I18n.t("framework_packages")
 
-    puts "Which framework package do you want to work on?".blue
-    puts ""
-    framework_packages.each do |gem, details|
-      puts "  #{framework_packages.keys.find_index(gem) + 1}. #{gem}".blue
-    end
-    puts ""
-    puts "Enter a number below and hit <Enter>:".blue
-    number = $stdin.gets.chomp
-
-    gem = framework_packages.keys[number.to_i - 1]
-
-    if gem
-      details = framework_packages[gem]
-      package = details[:git].split("/").last
-
-      puts "OK! Let's work on `#{gem}` together!".green
+    if File.exist?("local/bullet_train-core")
+      puts "We found the repository in `local/bullet_train-core`. We will try to use what's already there.".yellow
       puts ""
 
-      if File.exist?("local/#{package}")
-        puts "We found the repository in `local/#{package}`. We will try to use what's already there.".yellow
-        puts ""
+      # Adding these flags enables us to execute git commands in the gem from our starter repo.
+      work_tree_flag = "--work-tree=local/bullet_train-core"
+      git_dir_flag = "--git-dir=local/bullet_train-core/.git"
 
-        # Adding these flags enables us to execute git commands in the gem from our starter repo.
-        work_tree_flag = "--work-tree=local/#{package}"
-        git_dir_flag = "--git-dir=local/#{package}/.git"
-
-        git_status = `git #{work_tree_flag} #{git_dir_flag} status`
-        unless git_status.match?("nothing to commit, working tree clean")
-          puts "This package currently has uncommitted changes.".red
-          puts "Please make sure the branch is clean and try again.".red
-          exit
-        end
-
-        current_branch = `git #{work_tree_flag} #{git_dir_flag} branch`.split("\n").select { |branch_name| branch_name.match?(/^\*\s/) }.pop.gsub(/^\*\s/, "")
-        unless current_branch == "main"
-          puts "Previously on #{current_branch}.".blue
-          puts "Switching local/#{package} to main branch.".blue
-          stream("git #{work_tree_flag} #{git_dir_flag} checkout main")
-        end
-
-        puts "Updating the main branch with the latest changes.".blue
-        stream("git #{work_tree_flag} #{git_dir_flag} pull origin main")
-      else
-        # Use https:// URLs when using this task in Gitpod.
-        stream "git clone #{(`whoami`.chomp == "gitpod") ? "https://github.com/" : "git@github.com:"}#{details[:git]}.git local/#{package}"
+      git_status = `git #{work_tree_flag} #{git_dir_flag} status`
+      unless git_status.match?("nothing to commit, working tree clean")
+	puts "This package currently has uncommitted changes.".red
+	puts "Please make sure the branch is clean and try again.".red
+	exit
       end
 
-      stream("git #{work_tree_flag} #{git_dir_flag} fetch")
-      stream("git #{work_tree_flag} #{git_dir_flag} branch -r")
-      puts "The above is a list of remote branches.".blue
-      puts "If there's one you'd like to work on, please enter the branch name and press <Enter>.".blue
-      puts "If not, just press <Enter> to continue.".blue
-      input = $stdin.gets.strip
-      unless input.empty?
-        puts "Switching to #{input.gsub("origin/", "")}".blue # TODO: Should we remove origin/ here if the developer types it?
-        stream("git #{work_tree_flag} #{git_dir_flag} checkout #{input}")
+      current_branch = `git #{work_tree_flag} #{git_dir_flag} branch`.split("\n").select { |branch_name| branch_name.match?(/^\*\s/) }.pop.gsub(/^\*\s/, "")
+      unless current_branch == "main"
+	puts "Previously on #{current_branch}.".blue
+	puts "Switching local/bullet_train-core to main branch.".blue
+	stream("git #{work_tree_flag} #{git_dir_flag} checkout main")
       end
 
-      glob = if package == "bullet_train-core"
-        ", glob: \"#{gem}/#{gem}.gemspec\""
-      end
-
-      puts ""
-      puts "Now we'll try to link up that repository in the `Gemfile`.".blue
-      if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
-        puts "This gem is already linked to a checked out copy in `local` in the `Gemfile`.".green
-      elsif `cat Gemfile | grep "gem \\\"#{gem}\\\","`.chomp.present?
-        puts "This gem already has some sort of alternative source configured in the `Gemfile`.".yellow
-        puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
-      elsif `cat Gemfile | grep "gem \\\"#{gem}\\\""`.chomp.present?
-        puts "This gem is directly present in the `Gemfile`, so we'll update that line.".green
-        text = File.read("Gemfile")
-        new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{package}\"#{glob}")
-        File.open("Gemfile", "w") { |file| file.puts new_contents }
-      else
-        puts "This gem isn't directly present in the `Gemfile`, so we'll add it temporarily.".green
-        File.open("Gemfile", "a+") { |file|
-          file.puts
-          file.puts "gem \"#{gem}\", path: \"local/#{package}\"#{glob} # Added by `bin/develop`."
-        }
-      end
-
-      puts ""
-      puts "Now we'll run `bundle install`.".blue
-      stream "bundle install"
-
-      puts ""
-      puts "We'll restart any running Rails server now.".blue
-      stream "rails restart"
-
-      puts ""
-      puts "OK, we're opening that package in your IDE, `#{ENV["IDE"] || "code"}`. (You can configure this with `export IDE=whatever`.)".blue
-      `#{ENV["IDE"] || "code"} local/#{package}`
-
-      puts ""
-      if details[:npm]
-        puts "This package also has an npm package, so we'll link that up as well.".blue
-        stream "cd local/#{gem} && yarn install && npm_config_yes=true npx yalc link && cd ../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
-
-        puts ""
-        puts "And now we're going to watch for any changes you make to the JavaScript and recompile as we go.".blue
-        puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
-        stream "cd local/#{gem} && yarn watch"
-      else
-        puts "This package has no npm package, so we'll just hang out here and do nothing. However, when you hit <Enter> here, we'll start the process of cleaning all of this up.".blue
-        $stdin.gets
-      end
-
-      puts ""
-      puts "OK, here's a list of things this script still doesn't do you for you:".yellow
-      puts "1. It doesn't clean up the repository that was cloned into `local`.".yellow
-      puts "2. Unless you remove it, it won't update that repository the next time you link to it.".yellow
+      puts "Updating the main branch with the latest changes.".blue
+      stream("git #{work_tree_flag} #{git_dir_flag} pull origin main")
     else
-      puts ""
-      puts "Invalid option, \"#{number}\". Try again.".red
+      # Use https:// URLs when using this task in Gitpod.
+      stream "git clone #{(`whoami`.chomp == "gitpod") ? "https://github.com/" : "git@github.com:"}/bullet-train-co/bullet_train-core.git local/bullet_train-core"
     end
+
+    stream("git #{work_tree_flag} #{git_dir_flag} fetch")
+    stream("git #{work_tree_flag} #{git_dir_flag} branch -r")
+    puts "The above is a list of remote branches.".blue
+    puts "If there's one you'd like to work on, please enter the branch name and press <Enter>.".blue
+    puts "If not, just press <Enter> to continue.".blue
+    input = $stdin.gets.strip
+    unless input.empty?
+      puts "Switching to #{input.gsub("origin/", "")}".blue # TODO: Should we remove origin/ here if the developer types it?
+      stream("git #{work_tree_flag} #{git_dir_flag} checkout #{input}")
+    end
+
+    glob = if package == "bullet_train-core"
+      ", glob: \"#{gem}/#{gem}.gemspec\""
+    end
+
+    puts ""
+    puts "Now we'll try to link up that repository in the `Gemfile`.".blue
+    if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
+      puts "This gem is already linked to a checked out copy in `local` in the `Gemfile`.".green
+    elsif `cat Gemfile | grep "gem \\\"#{gem}\\\","`.chomp.present?
+      puts "This gem already has some sort of alternative source configured in the `Gemfile`.".yellow
+      puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
+    elsif `cat Gemfile | grep "gem \\\"#{gem}\\\""`.chomp.present?
+      puts "This gem is directly present in the `Gemfile`, so we'll update that line.".green
+      text = File.read("Gemfile")
+      new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{package}\"#{glob}")
+      File.open("Gemfile", "w") { |file| file.puts new_contents }
+    else
+      puts "This gem isn't directly present in the `Gemfile`, so we'll add it temporarily.".green
+      File.open("Gemfile", "a+") { |file|
+	file.puts
+	file.puts "gem \"#{gem}\", path: \"local/#{package}\"#{glob} # Added by `bin/develop`."
+      }
+    end
+
+    puts ""
+    puts "Now we'll run `bundle install`.".blue
+    stream "bundle install"
+
+    puts ""
+    puts "We'll restart any running Rails server now.".blue
+    stream "rails restart"
+
+    puts ""
+    puts "OK, we're opening bullet_train-core in your IDE, `#{ENV["IDE"] || "code"}`. (You can configure this with `export IDE=whatever`.)".blue
+    `#{ENV["IDE"] || "code"} local/#{package}`
+
+    puts ""
+
+    # TODO: Get all the packages that have an npm key and run this code
+    puts "Bullet Train also has some npm packages, so we'll link those up as well.".blue
+    stream "cd local/#{gem} && yarn install && npm_config_yes=true npx yalc link && cd ../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
+
+    puts ""
+    puts "And now we're going to watch for any changes you make to the JavaScript and recompile as we go.".blue
+    puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
+    stream "cd local/#{gem} && yarn watch"
+
+    puts ""
+    puts "OK, here's a list of things this script still doesn't do you for you:".yellow
+    puts "1. It doesn't clean up the repository that was cloned into `local`.".yellow
+    puts "2. Unless you remove it, it won't update that repository the next time you link to it.".yellow
   end
 end
