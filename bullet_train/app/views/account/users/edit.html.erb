@@ -5,7 +5,7 @@
       <%= render 'account/shared/forms/errors', form: form %>
     <% end if @user.errors.any? %>
 
-    <div class="grid grid-cols-1 gap-y gap-x-8 xl:grid-cols-2">
+    <div class="grid grid-cols-1 gap-y gap-x-8 lg:grid-cols-2">
       <div class="xl:col-span-1 space-y-8">
         <%= render 'account/shared/box', divider: true do |p| %>
           <% p.content_for :title, t('.profile.header') %>

@@ -1,6 +1,10 @@
-<div class="pb-3">
-  <%= render 'account/shared/menu/heading' do %>
-    <%= title %>
+<% title ||= nil %>
+
+<div class="<%= @menu_orientation == :top ? "grow flex flex-row" : "pb-3" %>">
+  <% if title %>
+    <%= render 'account/shared/menu/heading' do %>
+      <%= title %>
+    <% end %>
   <% end %>
 
   <%= yield %>
