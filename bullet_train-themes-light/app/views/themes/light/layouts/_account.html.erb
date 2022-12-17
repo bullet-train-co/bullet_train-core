@@ -6,109 +6,22 @@
   <body class="bg-light-gradient text-gray-700 text-sm font-normal dark:bg-dark-gradient dark:text-darkPrimary-300">
     <div class="p-4 bg-primary-900 electron-draggable electron-title-bar hidden electron-mobile-only"></div>
     <div class="md:p-5 main-container-padding">
-      <div class="h-screen md:h-auto overflow-hidden md:rounded-lg flex shadow main-container"
+      <div class="h-screen md:h-auto md:rounded-lg flex shadow main-container"
         data-controller="mobile-menu"
         data-mobile-menu-hidden-class="hidden"
       >
+        <%= render "account/shared/menu/mobile" %>
 
-        <% menu = capture do %>
-          <div class="flex items-center flex-shrink-0 p-4 bg-primary-900 md:rounded-tl-lg electron-draggable electron-title-bar dark:bg-black dark:bg-opacity-10">
-            <%= image_tag image_path("logo/logo.png"), class: 'theme-logo h-5 w-auto mx-auto' %>
-
-            <div class="lg:hidden absolute right-0">
-              <button class="ml-1 flex items-center justify-center h-10 w-10 rounded-full focus:outline-none focus:ring-2 focus:ring-inset focus:ring-white dark:ring-transparent"
-                id="mobile-menu-close"
-                data-action="mobile-menu#close"
-              >
-                <span class="sr-only">Close Application Menu</span>
-                <svg class="h-6 w-6 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              </button>
-            </div>
-          </div>
-
-          <nav class="flex-1 space-y-1 overflow-y-auto select-none">
-            <div class="flex-shrink-0 flex shadow px-5 py-4">
-              <div class="flex-shrink-0 w-full group block no-underline">
-                <div class="flex items-center">
-                  <div class="inline-block rounded-full border border-white p-1">
-                    <%= image_tag membership_profile_photo_url(current_membership), class: 'h-9 w-9 rounded-full', alt: current_user.name %>
-                  </div>
-                  <div class="ml-3">
-                    <div class="text-white">
-                      <%= current_user.name %>
-                    </div>
-                    <div class="text-2xs tracking-widest uppercase text-secondary-300 group-hover:text-white dark:text-gray-500">
-                      <%= current_team.name %>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div class="px-5 py-4 menu">
-              <%= render 'account/shared/menu' %>
-            </div>
-          </nav>
-        <% end %>
-
-        <div class="lg:hidden hidden"
-          data-mobile-menu-target="wrapper"
-          id="mobile-menu-backdrop"
-        >
-          <div class="fixed inset-0 flex z-40">
-            <button
-              data-mobile-menu-target="revealable"
-              data-action="mobile-menu#close"
-            
-              data-transition-enter="transition-opacity ease-linear duration-200"
-              data-transition-enter-start="opacity-0"
-              data-transition-enter-end="opacity-100"
-              data-transition-leave="transition-opacity ease-linear duration-200"
-              data-transition-leave-start="opacity-100"
-              data-transition-leave-end="opacity-0"
-
-              class="hidden fixed inset-0" aria-hidden="true"
-            >
-              <div class="absolute inset-0 bg-light-gradient opacity-75"></div>
-            </button>
-            <div
-              data-mobile-menu-target="revealable"
-              
-              data-transition-enter="transition ease-in-out duration-200 transform"
-              data-transition-enter-start="-trandarkPrimary-x-full"
-              data-transition-enter-end="trandarkPrimary-x-0"
-              data-transition-leave="transition ease-in-out duration-200 transform"
-              data-transition-leave-start="trandarkPrimary-x-0"
-              data-transition-leave-end="-trandarkPrimary-x-full"
-
-              class="hidden relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-dark-gradient shadow-xl"
-            >
-              <%= menu %>
-            </div>
-            <div class="flex-shrink-0 w-14" aria-hidden="true"></div>
-          </div>
-        </div>
-
-        <div class="hidden lg:flex lg:flex-shrink-0 overflow-y-auto bg-gradient-to-b from-primary-700 to-primary-800 dark:from-darkPrimary-800 dark:to-darkPrimary-800">
+        <div class="hidden lg:flex lg:flex-shrink-0 bg-gradient-to-b from-primary-700 to-primary-800 dark:from-darkPrimary-800 dark:to-darkPrimary-800 md:rounded-l-lg">
           <div class="w-64">
-            <%= menu %>
+            <%= render "account/shared/menu/sidebar" %>
           </div>
         </div>
 
-        <div class="flex flex-col w-0 flex-1 overflow-y-auto bg-gray-100 dark:bg-darkPrimary-800 lg:border-l dark:border-gray-500">
+        <div class="flex flex-col w-0 flex-1 overflow-y-auto bg-gray-100 dark:bg-darkPrimary-800 lg:border-l dark:border-gray-500 md:rounded-lg lg:rounded-l-none">
           <main class="flex-1 relative z-0 focus:outline-none" tabindex="0">
             <div class="flex flex-row items-center shadow-sm electron-draggable">
-              <button class="lg:hidden h-12 w-12 ml-1 flex-none inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500"
-                id="mobile-menu-open"
-                data-action="mobile-menu#open"
-              >
-                <span class="sr-only">Open Application Menu</span>
-                <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                </svg>
-              </button>
+              <%= render "account/shared/menu/open" %>
 
               <nav class="flex px-1 lg:px-4 py-2 overflow-x-auto select-none" aria-label="Breadcrumb">
                 <ol class="breadcrumb whitespace-nowrap flex items-center space-x-3 py-0.5 pr-3">

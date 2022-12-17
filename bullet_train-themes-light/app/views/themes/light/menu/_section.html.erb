@@ -1,6 +1,10 @@
+<% title ||= nil %>
+
 <div class="pb-3">
-  <%= render 'account/shared/menu/heading' do %>
-    <%= title %>
+  <% if title %>
+    <%= render 'account/shared/menu/heading' do %>
+      <%= title %>
+    <% end %>
   <% end %>
 
   <%= yield %>
