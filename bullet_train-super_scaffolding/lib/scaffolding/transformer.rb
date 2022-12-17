@@ -699,7 +699,7 @@ class Scaffolding::Transformer
       when "text_area"
         "text"
       when "file_field"
-        "file"
+        "file#{"s" if is_multiple}"
       when "password_field"
         "text"
       else
@@ -1027,6 +1027,9 @@ class Scaffolding::Transformer
         ].each do |file|
           if is_ids || is_multiple
             scaffold_add_line_to_file(file, "#{name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            if type == "file_field"
+              scaffold_add_line_to_file(file, "#{name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            end
           else
             scaffold_add_line_to_file(file, ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
             if type == "file_field"
@@ -1261,7 +1264,27 @@ class Scaffolding::Transformer
 
         case type
         when "file_field"
-          remove_file_methods =
+          remove_file_methods = if is_multiple
+            <<~RUBY
+              def #{name}_removal?
+                #{name}_removal&.any?
+              end
+
+              def remove_#{name}
+                #{name}_attachments.where(id: #{name}_removal).map(&:purge)
+              end
+
+              def #{name}=(attachables)
+                attachables = Array(attachables).compact_blank
+            
+                if attachables.any?
+                  attachment_changes["#{name}"] =
+                    ActiveStorage::Attached::Changes::CreateMany.new("#{name}", self, #{name}.blobs + attachables)
+                end
+              end
+
+            RUBY
+          else
             <<~RUBY
               def #{name}_removal?
                 #{name}_removal.present?
@@ -1271,6 +1294,7 @@ class Scaffolding::Transformer
                 #{name}.purge
               end
             RUBY
+          end
 
           # Generating a model with an `attachment(s)` data type (i.e. - `rails g ModelName file:attachment`)
           # adds `has_one_attached` or `has_many_attached` to our model, just not directly above the
