@@ -1,7 +1,7 @@
 <% expand ||= false %>
 <% hide_shadow ||= false %>
 
-<div class="relative <%= "group" unless expand %> <%= "shadow" unless hide_shadow %>">
+<div class="relative <%= "group" unless expand %> <%= "shadow" unless hide_shadow %>" id="user">
   <%= render "account/shared/menu/user" %>
   <div class="invisible group-hover:visible">
     <div class="absolute top-0 left-0 right-0 z-50">
