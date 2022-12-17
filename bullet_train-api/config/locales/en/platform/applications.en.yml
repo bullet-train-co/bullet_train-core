@@ -4,7 +4,7 @@ en:
     breadcrumbs:
       label: *label
     navigation:
-      label: Your Applications
+      label: API
       icon: fal fa-browser ti ti-plug
     buttons: &buttons
       new: Provision New Platform Application

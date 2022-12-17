@@ -103,6 +103,8 @@ en:
         integrations: Integrations
         developers: Developers
         your_account: Your Account
+        team: Team
+        team_settings: Team Settings
 
   breadcrumbs:
     your_dashboard: Your Dashboard

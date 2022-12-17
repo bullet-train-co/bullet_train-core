@@ -9,7 +9,7 @@
 @import './fields';
 @import './turn';
 
-/* TODO there is probably a better way to do this. */
+/* TODO We should be able to do this in Tailwind CSS. */
 .hover-indent-child {
   .indent-child {
     transition: transform 0.2s ease;
