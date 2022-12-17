@@ -1,6 +1,6 @@
 <% title ||= nil %>
 
-<div class="pb-3">
+<div class="<%= @menu_orientation == :top ? "grow flex flex-row space-x-1" : "pb-3" %>">
   <% if title %>
     <%= render 'account/shared/menu/heading' do %>
       <%= title %>
