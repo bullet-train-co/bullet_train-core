@@ -109,10 +109,11 @@ namespace :bullet_train do
         flags_with_values.each do |process|
           case process[:flag]
           when :link, :reset
-            set_core_gems(process[:flag], framework_packages)
+            package_names = framework_packages.keys
+            set_core_gems(process[:flag], package_names)
             stream "bundle install"
           when :link_js
-            package = framework_packages.select { |package|  package.to_s == process[:values].first }
+            package = framework_packages.select { |package| package.to_s == process[:values].first }
             package_name = package.keys.first
             puts "Linking JavaScript for #{package_name}".blue
             stream "cd local/bullet_train-core/#{package_name} && pwd && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && pwd && npm_config_yes=true npx yalc link \"#{package[package_name][:npm]}\""
@@ -186,7 +187,7 @@ namespace :bullet_train do
 
     puts ""
     puts "Bullet Train also has some npm packages, so we'll link those up as well.".blue
-    npm_packages = framework_packages.select { |key, value|  value[:npm].present? }
+    npm_packages = framework_packages.select { |key, value| value[:npm].present? }
     npm_packages.each do |key, details|
       puts "Installing packages for #{key}"
       stream "cd local/bullet_train-core/#{key} && pwd && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && pwd && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
@@ -212,11 +213,10 @@ namespace :bullet_train do
 
   # Pass :link or :reset as a flag to set the gems.
   def set_core_gems(flag, packages)
-    packages = I18n.t("framework_packages").keys.map { |key| key.to_s }
     gemfile_lines = File.readlines("./Gemfile")
     new_lines = gemfile_lines.map do |line|
       packages.each do |package|
-        if line.match?(/\"#{package}\"/)
+        if line.match?(/"#{package}"/)
           original_path = "gem \"#{package}\""
           local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
 
