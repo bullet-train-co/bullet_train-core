@@ -1,5 +1,4 @@
 require "io/wait"
-require "pry"
 
 namespace :bt do
   desc "Symlink registered gems in `./tmp/gems` so their views, etc. can be inspected by Tailwind CSS."
