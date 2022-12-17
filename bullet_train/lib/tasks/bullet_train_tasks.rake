@@ -107,65 +107,37 @@ namespace :bullet_train do
       if flags_with_values.any?
         flags_with_values.each do |process|
           if process[:flag] == :link || process[:flag] == :reset
-            packages = I18n.t("framework_packages").keys.map { |key| key.to_s }
-
-            gemfile_lines = File.readlines("./Gemfile")
-            new_lines = gemfile_lines.map do |line|
-              packages.each do |package|
-                if line.match?(/\"#{package}\"/)
-                  original_path = "gem \"#{package}\""
-                  local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
-
-                  case process[:flag]
-                  when :link
-                    line.gsub!(original_path, local_path)
-                    puts "Setting local '#{package}' package to the Gemfile...".blue
-                    break
-                  when :reset
-                    line.gsub!(local_path, original_path)
-                    puts "Resetting '#{package}' package in the Gemfile...".blue
-                    break
-                  end
-                end
-              end
-
-              line
-            end
-
-            File.write("./Gemfile", new_lines.join)
-            system "bundle install"
+            set_core_gems(process[:flag])
+            system("bundle install")
+            exit
           end
         end
-
-        exit
       end
     end
 
     puts "Welcome! Let's get hacking 💻".blue
-    puts ""
 
+    # Adding these flags enables us to execute git commands in the gem from our starter repo.
+    work_tree_flag = "--work-tree=local/bullet_train-core"
+    git_dir_flag = "--git-dir=local/bullet_train-core/.git"
     framework_packages = I18n.t("framework_packages")
 
     if File.exist?("local/bullet_train-core")
       puts "We found the repository in `local/bullet_train-core`. We will try to use what's already there.".yellow
       puts ""
 
-      # Adding these flags enables us to execute git commands in the gem from our starter repo.
-      work_tree_flag = "--work-tree=local/bullet_train-core"
-      git_dir_flag = "--git-dir=local/bullet_train-core/.git"
-
       git_status = `git #{work_tree_flag} #{git_dir_flag} status`
       unless git_status.match?("nothing to commit, working tree clean")
-	puts "This package currently has uncommitted changes.".red
-	puts "Please make sure the branch is clean and try again.".red
-	exit
+        puts "This package currently has uncommitted changes.".red
+        puts "Please make sure the branch is clean and try again.".red
+        exit
       end
 
       current_branch = `git #{work_tree_flag} #{git_dir_flag} branch`.split("\n").select { |branch_name| branch_name.match?(/^\*\s/) }.pop.gsub(/^\*\s/, "")
       unless current_branch == "main"
-	puts "Previously on #{current_branch}.".blue
-	puts "Switching local/bullet_train-core to main branch.".blue
-	stream("git #{work_tree_flag} #{git_dir_flag} checkout main")
+        puts "Previously on #{current_branch}.".blue
+        puts "Switching local/bullet_train-core to main branch.".blue
+        stream("git #{work_tree_flag} #{git_dir_flag} checkout main")
       end
 
       puts "Updating the main branch with the latest changes.".blue
@@ -186,29 +158,9 @@ namespace :bullet_train do
       stream("git #{work_tree_flag} #{git_dir_flag} checkout #{input}")
     end
 
-    glob = if package == "bullet_train-core"
-      ", glob: \"#{gem}/#{gem}.gemspec\""
-    end
-
-    puts ""
-    puts "Now we'll try to link up that repository in the `Gemfile`.".blue
-    if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
-      puts "This gem is already linked to a checked out copy in `local` in the `Gemfile`.".green
-    elsif `cat Gemfile | grep "gem \\\"#{gem}\\\","`.chomp.present?
-      puts "This gem already has some sort of alternative source configured in the `Gemfile`.".yellow
-      puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
-    elsif `cat Gemfile | grep "gem \\\"#{gem}\\\""`.chomp.present?
-      puts "This gem is directly present in the `Gemfile`, so we'll update that line.".green
-      text = File.read("Gemfile")
-      new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{package}\"#{glob}")
-      File.open("Gemfile", "w") { |file| file.puts new_contents }
-    else
-      puts "This gem isn't directly present in the `Gemfile`, so we'll add it temporarily.".green
-      File.open("Gemfile", "a+") { |file|
-	file.puts
-	file.puts "gem \"#{gem}\", path: \"local/#{package}\"#{glob} # Added by `bin/develop`."
-      }
-    end
+    # Link all of the local gems to the current Gemfile.
+    puts "Now we'll try to link up the Bullet Train core repositories in the `Gemfile`.".blue
+    set_core_gems(:link)
 
     puts ""
     puts "Now we'll run `bundle install`.".blue
@@ -220,22 +172,59 @@ namespace :bullet_train do
 
     puts ""
     puts "OK, we're opening bullet_train-core in your IDE, `#{ENV["IDE"] || "code"}`. (You can configure this with `export IDE=whatever`.)".blue
-    `#{ENV["IDE"] || "code"} local/#{package}`
+    `#{ENV["IDE"] || "code"} local/bullet_train-core`
 
     puts ""
 
     # TODO: Get all the packages that have an npm key and run this code
+    exit
     puts "Bullet Train also has some npm packages, so we'll link those up as well.".blue
-    stream "cd local/#{gem} && yarn install && npm_config_yes=true npx yalc link && cd ../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
+    stream "cd local/bullet_train-core && yarn install && npm_config_yes=true npx yalc link && cd ../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
 
     puts ""
     puts "And now we're going to watch for any changes you make to the JavaScript and recompile as we go.".blue
     puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
-    stream "cd local/#{gem} && yarn watch"
+    stream "cd local/bullet_train-core && yarn watch"
 
     puts ""
     puts "OK, here's a list of things this script still doesn't do you for you:".yellow
     puts "1. It doesn't clean up the repository that was cloned into `local`.".yellow
     puts "2. Unless you remove it, it won't update that repository the next time you link to it.".yellow
+  end
+
+  # Pass :link or :reset to set the gems.
+  def set_core_gems(flag)
+    packages = I18n.t("framework_packages").keys.map { |key| key.to_s }
+
+    gemfile_lines = File.readlines("./Gemfile")
+    new_lines = gemfile_lines.map do |line|
+      packages.each do |package|
+        if line.match?(/\"#{package}\"/)
+          original_path = "gem \"#{package}\""
+          local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
+
+          case flag
+          when :link
+            if `cat Gemfile | grep "gem \\\"#{package}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
+              puts "#{package} is already linked to a checked out copy in `local` in the `Gemfile`.".green
+            elsif `cat Gemfile | grep "gem \\\"#{package}\\\","`.chomp.present?
+              puts "#{package} already has some sort of alternative source configured in the `Gemfile`.".yellow
+              puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
+            elsif `cat Gemfile | grep "gem \\\"#{package}\\\""`.chomp.present?
+              puts "#{package} is directly present in the `Gemfile`, so we'll update that line.".green
+              line.gsub!(original_path, local_path)
+            end
+            break
+          when :reset
+            line.gsub!(local_path, original_path)
+            puts "Resetting '#{package}' package in the Gemfile...".blue
+            break
+          end
+        end
+      end
+      line
+    end
+
+    File.write("./Gemfile", new_lines.join)
   end
 end
