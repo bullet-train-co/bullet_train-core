@@ -171,7 +171,8 @@ namespace :bullet_train do
 
     # Link all of the local gems to the current Gemfile.
     puts "Now we'll try to link up the Bullet Train core repositories in the `Gemfile`.".blue
-    set_core_gems(:link, framework_packages)
+    package_names = framework_packages.keys
+    set_core_gems(:link, package_names)
 
     puts ""
     puts "Now we'll run `bundle install`.".blue
