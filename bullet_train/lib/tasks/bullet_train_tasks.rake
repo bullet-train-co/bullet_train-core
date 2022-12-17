@@ -73,7 +73,7 @@ namespace :bullet_train do
     end
   end
 
-  task :hack, [:all_options] => :environment do |t, arguments|
+  task :develop, [:all_options] => :environment do |t, arguments|
     def stream(command, prefix = "  ")
       puts ""
 
@@ -92,6 +92,8 @@ namespace :bullet_train do
       puts ""
     end
 
+    framework_packages = I18n.t("framework_packages")
+
     # Process any flags that were passed.
     if arguments[:all_options].present?
       flags_with_values = []
@@ -106,21 +108,30 @@ namespace :bullet_train do
 
       if flags_with_values.any?
         flags_with_values.each do |process|
-          if process[:flag] == :link || process[:flag] == :reset
-            set_core_gems(process[:flag])
-            system("bundle install")
-            exit
+          case process[:flag]
+          when :link, :reset
+            set_core_gems(process[:flag], framework_packages)
+            stream "bundle install"
+          when :link_js
+            package = framework_packages.select { |package|  package.to_s == process[:values].first }
+            package_name = package.keys.first
+            puts "Linking JavaScript for #{package_name}".blue
+            stream "cd local/bullet_train-core/#{package_name} && pwd && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && pwd && npm_config_yes=true npx yalc link \"#{package[package_name][:npm]}\""
+            puts "#{package_name} has been linked, preparing to watch changes.".blue
+            stream "cd local/bullet_train-core/#{package_name} && yarn watch"
+            break
           end
         end
+
+        exit
       end
     end
 
-    puts "Welcome! Let's get hacking 💻".blue
+    puts "Welcome! Let's get hacking.".blue
 
     # Adding these flags enables us to execute git commands in the gem from our starter repo.
     work_tree_flag = "--work-tree=local/bullet_train-core"
     git_dir_flag = "--git-dir=local/bullet_train-core/.git"
-    framework_packages = I18n.t("framework_packages")
 
     if File.exist?("local/bullet_train-core")
       puts "We found the repository in `local/bullet_train-core`. We will try to use what's already there.".yellow
@@ -160,7 +171,7 @@ namespace :bullet_train do
 
     # Link all of the local gems to the current Gemfile.
     puts "Now we'll try to link up the Bullet Train core repositories in the `Gemfile`.".blue
-    set_core_gems(:link)
+    set_core_gems(:link, framework_packages)
 
     puts ""
     puts "Now we'll run `bundle install`.".blue
@@ -175,27 +186,34 @@ namespace :bullet_train do
     `#{ENV["IDE"] || "code"} local/bullet_train-core`
 
     puts ""
-
-    # TODO: Get all the packages that have an npm key and run this code
-    exit
     puts "Bullet Train also has some npm packages, so we'll link those up as well.".blue
-    stream "cd local/bullet_train-core && yarn install && npm_config_yes=true npx yalc link && cd ../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
+    npm_packages = framework_packages.select { |key, value|  value[:npm].present? }
+    npm_packages.each do |key, details|
+      puts "Installing packages for #{key}"
+      stream "cd local/bullet_train-core/#{key} && pwd && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && pwd && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
+    end
 
     puts ""
-    puts "And now we're going to watch for any changes you make to the JavaScript and recompile as we go.".blue
+    puts "And now we're going to watch for any changes you make to the JavaScript in the `bullet_train` package and recompile as we go.".blue
+    puts "Take note that this doesn't watch for changes in the following packages:".blue
+    npm_packages.delete(:bullet_train)
+    npm_packages.each_with_index { |package, idx| puts "#{idx + 1}. #{package.first}" }
+    puts "You can run `bin/hack --link_js package-name` in another terminal to watch for JavaScript in either of these packages.".blue
+    puts ""
+
     puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
-    stream "cd local/bullet_train-core && yarn watch"
+    stream "cd local/bullet_train-core/bullet_train && yarn watch"
 
     puts ""
     puts "OK, here's a list of things this script still doesn't do you for you:".yellow
     puts "1. It doesn't clean up the repository that was cloned into `local`.".yellow
     puts "2. Unless you remove it, it won't update that repository the next time you link to it.".yellow
+    puts "3. Watch for changes in other packages that contain JavaScript.".yellow
   end
 
-  # Pass :link or :reset to set the gems.
-  def set_core_gems(flag)
+  # Pass :link or :reset as a flag to set the gems.
+  def set_core_gems(flag, packages)
     packages = I18n.t("framework_packages").keys.map { |key| key.to_s }
-
     gemfile_lines = File.readlines("./Gemfile")
     new_lines = gemfile_lines.map do |line|
       packages.each do |package|
