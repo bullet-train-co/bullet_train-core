@@ -55,6 +55,9 @@ module BulletTrain
             puts ""
             puts "#{index + 1}. #{message}".send(color)
           end
+
+          puts ""
+          puts "Testing the Bullet Train contribution process."
           puts ""
         end
       end
