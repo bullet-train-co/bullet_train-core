@@ -99,7 +99,7 @@ namespace :bullet_train do
 
       arguments[:all_options].split(/\s+/).each do |option|
         if option.match?(/^--/)
-          flags_with_values << {flag: option.gsub(/^--/, "").to_sym, values: []}
+          flags_with_values << {flag: option, values: []}
         else
           flags_with_values.last[:values] << option
         end
@@ -108,17 +108,26 @@ namespace :bullet_train do
       if flags_with_values.any?
         flags_with_values.each do |process|
           case process[:flag]
-          when :link, :reset
+          when "--help"
+            puts "bin/hack: Clone bullet_train-core and link up gems (will only link up gems if already cloned).".blue
+            puts "bin/hack --link: Link all of your Bullet Train gems to `local/bullet_train-core`".blue
+            puts "bin/hack --reset: Resets all of your gems to their original definition.".blue
+            puts "bin/hack --watch-js: Watches for any changes in JavaScript files gems that have an npm package.".blue
+            puts "bin/hack --clean-js: Resets all of your npm packages from `local/bullet_train-core` to their original definition".blue
+            exit
+          when "--link", "--reset"
             package_names = framework_packages.keys
             set_core_gems(process[:flag], package_names)
             stream "bundle install"
-          when :link_js
-            package = framework_packages.select { |package| package.to_s == process[:values].first }
-            package_name = package.keys.first
-            puts "Linking JavaScript for #{package_name}".blue
-            stream "cd local/bullet_train-core/#{package_name} && pwd && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && pwd && npm_config_yes=true npx yalc link \"#{package[package_name][:npm]}\""
-            puts "#{package_name} has been linked, preparing to watch changes.".blue
-            stream "cd local/bullet_train-core/#{package_name} && yarn watch"
+          when "--watch-js"
+            set_npm_packages(process[:flag], framework_packages)
+
+            puts "Proceeding to reset your Bullet Train npm packages according to your root directory's `package.json`.".yellow
+            puts "If you press `Ctrl + C` before the process completely exits, just run `bin/hack --clean-js`".yellow
+            set_npm_packages("--clean-js", framework_packages)
+            break
+          when "--clean-js"
+            set_npm_packages(process[:flag], framework_packages)
             break
           end
         end
@@ -172,7 +181,7 @@ namespace :bullet_train do
     # Link all of the local gems to the current Gemfile.
     puts "Now we'll try to link up the Bullet Train core repositories in the `Gemfile`.".blue
     package_names = framework_packages.keys
-    set_core_gems(:link, package_names)
+    set_core_gems("--link", package_names)
 
     puts ""
     puts "Now we'll run `bundle install`.".blue
@@ -185,34 +194,26 @@ namespace :bullet_train do
     puts ""
     puts "OK, we're opening bullet_train-core in your IDE, `#{ENV["IDE"] || "code"}`. (You can configure this with `export IDE=whatever`.)".blue
     `#{ENV["IDE"] || "code"} local/bullet_train-core`
-
-    puts ""
-    puts "Bullet Train also has some npm packages, so we'll link those up as well.".blue
-    npm_packages = framework_packages.select { |key, value| value[:npm].present? }
-    npm_packages.each do |key, details|
-      puts "Installing packages for #{key}"
-      stream "cd local/bullet_train-core/#{key} && pwd && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && pwd && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
-    end
-
-    puts ""
-    puts "And now we're going to watch for any changes you make to the JavaScript in the `bullet_train` package and recompile as we go.".blue
-    puts "Take note that this doesn't watch for changes in the following packages:".blue
-    npm_packages.delete(:bullet_train)
-    npm_packages.each_with_index { |package, idx| puts "#{idx + 1}. #{package.first}" }
-    puts "You can run `bin/hack --link_js package-name` in another terminal to watch for JavaScript in either of these packages.".blue
     puts ""
 
+    puts "Bullet Train has a few npm packages, so we will and install those now.".blue
+    puts "We will also watch for any changes in your JavaScript files and recompile as we go.".blue
     puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
-    stream "cd local/bullet_train-core/bullet_train && yarn watch"
+    puts ""
+    set_npm_packages("--watch-js", framework_packages)
+
+    # Clean up the npm packages after the developer enters `Ctrl + C`.
+    puts "Cleaning up npm packages...".blue
+    puts "If you cancel out of this process early, just run `bin/hack --clean-js` to revert to your original npm packages.".blue
+    set_npm_packages("--clean-js", framework_packages)
 
     puts ""
     puts "OK, here's a list of things this script still doesn't do you for you:".yellow
     puts "1. It doesn't clean up the repository that was cloned into `local`.".yellow
     puts "2. Unless you remove it, it won't update that repository the next time you link to it.".yellow
-    puts "3. Watch for changes in other packages that contain JavaScript.".yellow
   end
 
-  # Pass :link or :reset as a flag to set the gems.
+  # Pass "--link" or "--reset" as a flag to set the gems.
   def set_core_gems(flag, packages)
     gemfile_lines = File.readlines("./Gemfile")
     new_lines = gemfile_lines.map do |line|
@@ -222,7 +223,7 @@ namespace :bullet_train do
           local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
 
           case flag
-          when :link
+          when "--link"
             if `cat Gemfile | grep "gem \\\"#{package}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
               puts "#{package} is already linked to a checked out copy in `local` in the `Gemfile`.".green
             elsif `cat Gemfile | grep "gem \\\"#{package}\\\","`.chomp.present?
@@ -233,7 +234,7 @@ namespace :bullet_train do
               line.gsub!(original_path, local_path)
             end
             break
-          when :reset
+          when "--reset"
             line.gsub!(local_path, original_path)
             puts "Resetting '#{package}' package in the Gemfile...".blue
             break
@@ -244,5 +245,38 @@ namespace :bullet_train do
     end
 
     File.write("./Gemfile", new_lines.join)
+  end
+
+  def set_npm_packages(flag, framework_packages)
+    packages = framework_packages.select {|k, v| v[:npm].present?}.compact
+
+    if flag == "--watch-js"
+      puts "Make sure your server is running before proceeding. When you're ready, press <Enter>".blue
+      input = $stdin.gets.strip
+
+      puts "Linking npm packages...".blue
+      puts ""
+
+      yarn_watch_command = []
+      packages.each do |package_name, details|
+	puts "Linking JavaScript for #{package_name}".blue
+	stream "cd local/bullet_train-core/#{package_name} && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
+	puts "#{package_name} has been linked.".blue
+	puts ""
+	yarn_watch_command << "yarn --cwd local/bullet_train-core/#{package_name} watch"
+      end
+
+      # We use `&` to run the processes in parallel.
+      puts "Preparing to watch changes".blue
+      stream yarn_watch_command.join(" & ")
+    elsif flag == "--clean-js"
+      puts "Resetting packages to their original path".blue
+      puts ""
+
+      packages.each do |package_name, details|
+	system "yarn yalc remove #{details[:npm]}"
+	system "yarn add #{details[:npm]}"
+      end
+    end
   end
 end
