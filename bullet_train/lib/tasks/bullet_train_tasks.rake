@@ -248,22 +248,22 @@ namespace :bullet_train do
   end
 
   def set_npm_packages(flag, framework_packages)
-    packages = framework_packages.select {|k, v| v[:npm].present?}.compact
+    packages = framework_packages.select { |k, v| v[:npm].present? }.compact
 
     if flag == "--watch-js"
       puts "Make sure your server is running before proceeding. When you're ready, press <Enter>".blue
-      input = $stdin.gets.strip
+      $stdin.gets.strip
 
       puts "Linking npm packages...".blue
       puts ""
 
       yarn_watch_command = []
       packages.each do |package_name, details|
-	puts "Linking JavaScript for #{package_name}".blue
-	stream "cd local/bullet_train-core/#{package_name} && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
-	puts "#{package_name} has been linked.".blue
-	puts ""
-	yarn_watch_command << "yarn --cwd local/bullet_train-core/#{package_name} watch"
+        puts "Linking JavaScript for #{package_name}".blue
+        stream "cd local/bullet_train-core/#{package_name} && yarn install && npm_config_yes=true && npx yalc link && cd ../../.. && npm_config_yes=true npx yalc link \"#{details[:npm]}\""
+        puts "#{package_name} has been linked.".blue
+        puts ""
+        yarn_watch_command << "yarn --cwd local/bullet_train-core/#{package_name} watch"
       end
 
       # We use `&` to run the processes in parallel.
@@ -274,8 +274,8 @@ namespace :bullet_train do
       puts ""
 
       packages.each do |package_name, details|
-	system "yarn yalc remove #{details[:npm]}"
-	system "yarn add #{details[:npm]}"
+        system "yarn yalc remove #{details[:npm]}"
+        system "yarn add #{details[:npm]}"
       end
     end
   end
