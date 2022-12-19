@@ -1103,12 +1103,12 @@ class Scaffolding::Transformer
             RUBY
           else
             "json.#{name} url_for(tangible_thing.#{name}) if tangible_thing.#{name}.attached?"
-          end 
+          end
 
           scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", jbuilder_content, RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
           # We also want to make sure we attach the dummy file in the API test on setup
           file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb"
-          content = if is_multiple 
+          content = if is_multiple
             <<~RUBY
               @#{child.underscore}.#{name} = [Rack::Test::UploadedFile.new("test/support/foo.txt")]
               @another_#{child.underscore}.#{name} = [Rack::Test::UploadedFile.new("test/support/foo.txt")]
