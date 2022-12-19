@@ -116,8 +116,7 @@ namespace :bullet_train do
             puts "bin/hack --clean-js: Resets all of your npm packages from `local/bullet_train-core` to their original definition".blue
             exit
           when "--link", "--reset"
-            package_names = framework_packages.keys
-            set_core_gems(process[:flag], package_names)
+            set_core_gems(process[:flag], framework_packages)
             stream "bundle install"
           when "--watch-js"
             set_npm_packages(process[:flag], framework_packages)
@@ -180,8 +179,7 @@ namespace :bullet_train do
 
     # Link all of the local gems to the current Gemfile.
     puts "Now we'll try to link up the Bullet Train core repositories in the `Gemfile`.".blue
-    package_names = framework_packages.keys
-    set_core_gems("--link", package_names)
+    set_core_gems("--link", framework_packages)
 
     puts ""
     puts "Now we'll run `bundle install`.".blue
@@ -214,7 +212,8 @@ namespace :bullet_train do
   end
 
   # Pass "--link" or "--reset" as a flag to set the gems.
-  def set_core_gems(flag, packages)
+  def set_core_gems(flag, framework_packages)
+    packages = framework_packages.keys
     gemfile_lines = File.readlines("./Gemfile")
     new_lines = gemfile_lines.map do |line|
       packages.each do |package|
