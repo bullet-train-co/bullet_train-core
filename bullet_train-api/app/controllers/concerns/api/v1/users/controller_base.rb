@@ -4,7 +4,6 @@ module Api::V1::Users::ControllerBase
   module StrongParameters
     # Only allow a list of trusted parameters through.
     def user_params
-      selected_fields = []
       password_fields = [
         :password,
         :current_password,
@@ -21,7 +20,7 @@ module Api::V1::Users::ControllerBase
       selected_fields = if params.is_a?(BulletTrain::Api::StrongParametersReporter)
         password_fields + general_fields
       else
-	params["commit"] == t(".buttons.update_password") ? password_fields : general_fields
+        (params["commit"] == t(".buttons.update_password")) ? password_fields : general_fields
       end
 
       strong_params = params.require(:user).permit(
