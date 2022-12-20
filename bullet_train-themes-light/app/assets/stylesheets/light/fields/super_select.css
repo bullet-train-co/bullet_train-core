@@ -49,11 +49,14 @@
     box-shadow: inset 0 0 0 1px var(--primary-500) !important;
     outline: 0 !important;
   }
+  
+  .select2-selection--single {
+    height: 38px !important;
+  }
 
   .select2-selection--single, .select2-selection--multiple {
     @apply border-gray-300;
     @apply rounded-md shadow-sm pt-0 focus:ring-primary-500 !important;
-    height: 38px !important;
 
     &.focus-visible {
       @extend .select2-border;
