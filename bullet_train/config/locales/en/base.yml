@@ -90,6 +90,7 @@ en:
         logout: Logout
         skip: Skip For Now
         dashboard: Dashboard
+        admin: Admin
         team_members: Team Members
         webhooks: Webhooks
         invitations: Invitations

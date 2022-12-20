@@ -223,10 +223,14 @@ class Scaffolding::ClassNamesTransformer
     when "tangible-thing"
       in_namespace_class_name.underscore.gsub(/[\/_]/, "-")
 
+    when "Account"
+      "#{namespace.capitalize}"
     when ":account"
       ":#{namespace}"
-    when "/account/"
-      "/#{namespace}/"
+    when "account/"
+      "#{namespace}/"
+    when "account_"
+      "#{namespace}_"
 
     else
       "🛑"

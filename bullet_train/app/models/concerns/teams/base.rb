@@ -7,6 +7,8 @@ module Teams::Base
       has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_updates: true
     end
 
+    belongs_to :application
+
     # memberships and invitations
     has_many :memberships, dependent: :destroy
     has_many :users, through: :memberships

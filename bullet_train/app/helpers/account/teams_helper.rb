@@ -1,5 +1,10 @@
 module Account::TeamsHelper
+  def current_namespace
+    controller.class.name.underscore.split("/").first
+  end
+  
   def current_team
+    return nil if current_namespace == "admin"
     # TODO We do not want this to be based on the `current_team_id`.
     # TODO We want this to be based on the current resource being loaded.
     @team || current_user&.current_team

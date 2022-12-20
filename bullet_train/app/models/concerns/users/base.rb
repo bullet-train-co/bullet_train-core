@@ -24,6 +24,8 @@ module Users::Base
     belongs_to :current_team, class_name: "Team", optional: true
     accepts_nested_attributes_for :current_team
 
+    belongs_to :application
+
     # oauth providers
     has_many :oauth_stripe_accounts, class_name: "Oauth::StripeAccount" if stripe_enabled?
 

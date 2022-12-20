@@ -5,42 +5,19 @@ en:
     breadcrumbs:
       label: *label
     navigation:
-      label: Team
+      label: Teams
+      icon: fal fa-home-lg-alt ti ti-home
     buttons: &buttons
       new: Add New Team
       create: Create Team
       edit: Edit Team
       update: Update Team
-    index:
-      section: Teams
-      header: Your Teams
-      create: Create New Team
-      buttons: *buttons
-    show:
-      header: '%{teams_possessive} Dashboard'
-    new:
-      header: Create a New Team
-      former_user_header: Join a Team
-      default_team_name: Your Team
-      buttons: *buttons
-      you_can: "You can either:"
-      invitation_header: Accept an invitation
-      logout_header: Log out of this account
-      new_team_header: Create a new team
-      alert: The account <b>%{user_email}</b> is not currently a member of any teams.
-      invitation: If you have received an email inviting you to join a new team, click the link in that email to accept the invitation.
-      log_out: You can log out of this account and log in with a different account that is a member of a team.
-      new_team: You can use the form below to create a new team of your own.
-    edit:
-      section: '%{team_name}'
-      header: Edit Team Details
-      description: You can update the details of and settings for this team below.
-    notifications:
-      created: Team was successfully created.
-      updated: Team was successfully updated.
-      invitation_only: Creating new teams is currently limited to users who have been invited for early access. If you've received an early access URL, please visit it before trying again.
-    form:
-      buttons: *buttons
+      destroy: Remove Team
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        destroy: Are you sure you want to remove %{team_name}? This will also remove any child resources and can't be undone.
     fields: &fields
       id:
         _: &id Team ID
@@ -65,6 +42,52 @@ en:
       updated_at:
         _: &updated_at Updated At
         heading: *updated_at
+    index:
+      section: "%{applications_possessive} Teams"
+      header: Your Teams
+      create: Create New Team
+      buttons: *buttons
+      contexts:
+        application:
+          header: Teams
+          description: Below is a list of Teams that have been added for %{application_name}.
+          description_empty: No Teams have been added for %{application_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{team_name}"
+      header: Team Details
+      description: Below are the details we have for %{team_name}.
+      manage_description: You'll also find options for updating these details or removing %{team_name} from %{application_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      fields: *fields
+      buttons: *buttons
+    new:
+      header: Create a New Team
+      section: "New Team for %{application_name}"
+      description: Please provide the details of the new Team you'd like to add to %{application_name}.
+      former_user_header: Join a Team
+      default_team_name: Your Team
+      you_can: "You can either:"
+      invitation_header: Accept an invitation
+      logout_header: Log out of this account
+      new_team_header: Create a new team
+      alert: The account <b>%{user_email}</b> is not currently a member of any teams.
+      invitation: If you have received an email inviting you to join a new team, click the link in that email to accept the invitation.
+      log_out: You can log out of this account and log in with a different account that is a member of a team.
+      new_team: You can use the form below to create a new team of your own.
+      buttons: *buttons
+      form: *form
+    edit:
+      section: '%{team_name}'
+      header: Edit Team Details
+      description: You can update the details of and settings for this team below.
+    notifications:
+      created: Team was successfully created.
+      updated: Team was successfully updated.
+      invitation_only: Creating new teams is currently limited to users who have been invited for early access. If you've received an early access URL, please visit it before trying again.
     _: &self
       name:
         label: Your Team Name
@@ -78,6 +101,8 @@ en:
       update: "Update a Team"
       fields: *fields
   account:
+    teams: *teams
+  admin:
     teams: *teams
   activerecord:
     attributes:

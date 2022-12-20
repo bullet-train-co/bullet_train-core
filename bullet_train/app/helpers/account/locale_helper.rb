@@ -29,11 +29,14 @@ module Account::LocaleHelper
     hash
   end
 
-  # this is a bit scary, no?
   def account_controller?
     controller.class.name.match(/^Account::/)
   end
 
+  def admin_controller?
+    controller.class.name.match(/^Admin::/)
+  end
+  
   def t(key, options = {})
     # When bundled Ruby gems provide a lot of translations, it can be difficult to figure out which strings in the
     # application are coming from where. To help with this, you can add `?debug=true` to any URL and we'll output
@@ -52,7 +55,8 @@ module Account::LocaleHelper
       end
     end
 
-    if account_controller?
+    # TODO This is a bug. We need this magic to function for any controller namespace they want to Super Scaffold into.
+    if account_controller? || admin_controller?
       # Give preference to the options they've passed in.
       options = models_locales(@child_object, @parent_object).merge(options)
     end

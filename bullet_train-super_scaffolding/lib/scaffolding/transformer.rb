@@ -141,8 +141,10 @@ class Scaffolding::Transformer
       "tangible thing",
 
       # Account namespace vs. others.
+      "Account",
       ":account",
-      "/account/"
+      "account_",
+      "account/",
 
     ].each do |needle|
       string = string.gsub(needle, encode_double_replacement_fix(class_names_transformer.replacement_for(needle)))
@@ -927,7 +929,7 @@ class Scaffolding::Transformer
         # table header.
         field_content = "<th#{cell_attributes.present? ? " " + cell_attributes : ""}><%= t('.fields.#{attribute_name}.heading') %></th>"
 
-        unless ["Team", "User"].include?(child)
+        unless namespace == "account" && ["Team", "User"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content, "<%# 🚅 super scaffolding will insert new field headers above this line. %>", prepend: true)
         end
 
@@ -946,10 +948,9 @@ class Scaffolding::Transformer
           field_content.gsub!(/\s%>/, ", options: { password: true } %>")
         end
 
-        unless ["Team", "User"].include?(child)
+        unless namespace == "account" && ["Team", "User"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true)
         end
-
       end
 
       #
@@ -1023,8 +1024,8 @@ class Scaffolding::Transformer
         # add attributes to strong params.
         [
           "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
-          "./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb"
-        ].each do |file|
+          ("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb" unless cli_options["skip-api"])
+        ].compact.each do |file|
           if is_ids || is_multiple
             scaffold_add_line_to_file(file, "#{name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
           else
@@ -1341,7 +1342,7 @@ class Scaffolding::Transformer
       [
         "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
         "./app/views/account/scaffolding/completely_concrete/tangible_things",
-        "./app/views/api/v1/scaffolding/completely_concrete/tangible_things",
+        ("./app/views/api/v1/scaffolding/completely_concrete/tangible_things" unless cli_options["skip-api"]),
         ("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml" unless cli_options["skip-locales"]),
         ("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb" unless cli_options["skip-api"]),
         ("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb" unless cli_options["skip-api"])
@@ -1356,6 +1357,9 @@ class Scaffolding::Transformer
         scaffold_file(name)
       end
     end
+
+    # Fix `admin_load_and_authorize_resource` error if the namespace isn't account.
+    replace_in_file(transform_string("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb"), "#{namespace}_load_and_authorize_resource", "account_load_and_authorize_resource")
 
     unless cli_options["skip-model"]
       # find the database migration that defines this relationship.
@@ -1487,14 +1491,13 @@ class Scaffolding::Transformer
         end
 
         File.write(routes_path, <<~RUBY)
-          collection_actions = [:index, :new, :create]
+          # See `config/routes.rb` for details.
+          collection_actions = [:index, :new, :create] # standard:disable Lint/UselessAssignment
+          extending = {only: []} # standard:disable Lint/UselessAssignment
 
-          # 🚅 Don't remove this block, it will break Super Scaffolding.
-          begin do
+          shallow do
             namespace :#{routes_namespace} do
-              shallow do
-                resources :teams do
-                end
+              resources :teams do
               end
             end
           end
@@ -1505,7 +1508,7 @@ class Scaffolding::Transformer
 
       begin
         routes_manipulator.apply([routes_namespace])
-        Scaffolding::FileManipulator.write("config/routes.rb", routes_manipulator.lines)
+        Scaffolding::FileManipulator.write(routes_path, routes_manipulator.lines)
       rescue => _
         add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
       end
@@ -1575,7 +1578,7 @@ class Scaffolding::Transformer
         end
         if icon_name.present?
           replace_in_file(transform_string("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml"), "fal fa-puzzle-piece", icon_name)
-          scaffold_add_line_to_file("./app/views/account/shared/_menu.html.erb", "<%= render 'account/scaffolding/completely_concrete/tangible_things/menu_item' %>", "<% # added by super scaffolding. %>")
+          scaffold_add_line_to_file("./app/views/#{namespace}/shared/_menu.html.erb", "<%= render '#{namespace}/scaffolding/completely_concrete/tangible_things/menu_item' %>", "<% # added by super scaffolding. %>")
         end
       end
     end

@@ -35,7 +35,7 @@ module BulletTrain
           parents = parents.map(&:classify).uniq
           parent = parents.first
 
-          unless parents.include?("Team")
+          unless parents.include?("Team") || parents.include?("Application")
             raise "Parents for #{child} should trace back to the Team model, but Team wasn't provided. Please confirm that all of the parents tracing back to the Team model are present and try again.\n" \
               "E.g.:\n" \
               "rails g model Section page:references title:text body:text\n" \

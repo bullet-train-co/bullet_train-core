@@ -3,27 +3,22 @@ en:
     label: &label Users
     breadcrumbs:
       label: *label
+    navigation:
+      label: *label
+      icon: fal fa-user-cog ti ti-user
     buttons: &buttons
       update_profile: Update Profile
       update_password: Update Password
-    edit:
-      section: "%{users_possessive} Profile"
-      profile:
-        header: Update Your Profile
-        description: You can update the email address where you'll receive notifications and also update the way your name is displayed.
-      password:
-        header: Update Your Password
-      two_factor:
-        header: Two-Factor Authentication
-        description_enabled: 2FA is currently enabled for your account.
-        description_disabled: You can increase the security of your account by enabling two-factor authentication.
-        warning: "In order to complete set up, you <strong>must</strong> complete the steps below. <strong>The information below will not be shown again.</strong> If you don't complete setting up now, you must disable two-factor authentication to avoid being locked out of your account."
-        instructions: "Install <a href='https://authy.com/download/' target='_blank'>Authy</a> or <a href='https://support.google.com/accounts/answer/1066447'>Google Authentication</a> on your phone and scan the barcode displayed below."
-        recovery_codes: "You can also make a copy of the following recovery codes. Each one can help you get back into your account once should you lose access to the device you're using for two-factor authentication."
-        buttons:
-          enable: Enable
-          disable: Disable
-      buttons: *buttons
+      new: Add New User
+      create: Create User
+      edit: Edit User
+      update: Update User
+      destroy: Remove User
+      shorthand:
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        destroy: Are you sure you want to remove %{user_name}? This will also remove any child resources and can't be undone.
     notifications:
       updated: User was successfully updated.
     fields: &fields
@@ -98,9 +93,51 @@ en:
         label: New Password
     update_self:
       <<: [*update_self, *self, *fields]
-    form:
+    index:
+      section: "%{applications_possessive} Users"
+      header: Your Users
+      create: Create New User
       buttons: *buttons
+      contexts:
+        application:
+          header: Users
+          description: Below is a list of Users that have been added for %{application_name}.
+          description_empty: No Users have been added for %{application_name}.
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{user_name}"
+      header: User Details
+      description: Below are the details we have for %{user_name}.
+      manage_description: You'll also find options for updating these details or removing %{user_name} from %{application_name} entirely.
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+    edit:
+      section: "%{users_possessive} Profile"
+      header: Edit User Details
+      description: You can update the details of and settings for this user below.
+      profile:
+        header: Update Your Profile
+        description: You can update the email address where you'll receive notifications and also update the way your name is displayed.
+      password:
+        header: Update Your Password
+      two_factor:
+        header: Two-Factor Authentication
+        description_enabled: 2FA is currently enabled for your account.
+        description_disabled: You can increase the security of your account by enabling two-factor authentication.
+        warning: "In order to complete set up, you <strong>must</strong> complete the steps below. <strong>The information below will not be shown again.</strong> If you don't complete setting up now, you must disable two-factor authentication to avoid being locked out of your account."
+        instructions: "Install <a href='https://authy.com/download/' target='_blank'>Authy</a> or <a href='https://support.google.com/accounts/answer/1066447'>Google Authentication</a> on your phone and scan the barcode displayed below."
+        recovery_codes: "You can also make a copy of the following recovery codes. Each one can help you get back into your account once should you lose access to the device you're using for two-factor authentication."
+        buttons:
+          enable: Enable
+          disable: Disable
+      buttons: *buttons
+      form: *form
   account:
+    users: *users
+  admin:
     users: *users
   activerecord:
     attributes:
