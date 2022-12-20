@@ -4,7 +4,7 @@ module Api::V1::Users::ControllerBase
   module StrongParameters
     # Only allow a list of trusted parameters through.
     def user_params
-      general_fields = if params["commit"] == t('.buttons.update_password')
+      general_fields = if params["commit"] == t(".buttons.update_password")
         [
           :password,
           :current_password,
