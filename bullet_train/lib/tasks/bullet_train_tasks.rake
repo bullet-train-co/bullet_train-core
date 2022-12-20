@@ -200,13 +200,9 @@ namespace :bullet_train do
         stream("git #{work_tree_flag} #{git_dir_flag} checkout #{input}")
       end
 
-      glob = if package == "bullet_train-core"
-        ", glob: \"#{gem}/#{gem}.gemspec\""
-      end
-
       puts ""
       puts "Now we'll try to link up that repository in the `Gemfile`.".blue
-      if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
+      if `cat Gemfile | grep "gem \\\"#{gem}\\\", path: \\\"local/#{package}/#{gem}\\\""`.chomp.present?
         puts "This gem is already linked to a checked out copy in `local` in the `Gemfile`.".green
       elsif `cat Gemfile | grep "gem \\\"#{gem}\\\","`.chomp.present?
         puts "This gem already has some sort of alternative source configured in the `Gemfile`.".yellow
@@ -214,13 +210,13 @@ namespace :bullet_train do
       elsif `cat Gemfile | grep "gem \\\"#{gem}\\\""`.chomp.present?
         puts "This gem is directly present in the `Gemfile`, so we'll update that line.".green
         text = File.read("Gemfile")
-        new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{package}\"#{glob}")
+        new_contents = text.gsub(/gem "#{gem}"/, "gem \"#{gem}\", path: \"local/#{package}/#{gem}\"")
         File.open("Gemfile", "w") { |file| file.puts new_contents }
       else
         puts "This gem isn't directly present in the `Gemfile`, so we'll add it temporarily.".green
         File.open("Gemfile", "a+") { |file|
           file.puts
-          file.puts "gem \"#{gem}\", path: \"local/#{package}\"#{glob} # Added by `bin/develop`."
+          file.puts "gem \"#{gem}\", path: \"local/#{package}/#{gem}\" # Added by `bin/hack`."
         }
       end
 
