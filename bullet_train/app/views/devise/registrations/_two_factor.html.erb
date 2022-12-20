@@ -1,11 +1,11 @@
-<%= render 'account/shared/box', divider: @backup_codes do |p| %>
+<%= render 'shared/box', divider: @backup_codes do |p| %>
   <% p.content_for :title, t("users.edit.two_factor.header") %>
   <% p.content_for :description, t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
   <% p.content_for :body do %>
     <% if current_user.otp_required_for_login? %>
       <% if @backup_codes %>
 
-        <%= render 'account/shared/alert' do %>
+        <%= render 'shared/alert' do %>
           <%= t('users.edit.two_factor.warning').html_safe %>
         <% end %>
 

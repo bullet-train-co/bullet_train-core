@@ -1,13 +1,13 @@
-<%= render 'account/shared/page' do |p| %>
+<%= render 'shared/page' do |p| %>
   <% p.content_for :title, t('.section') %>
   <% p.content_for :body do %>
     <%= form_for [:account, @user] do |form| %>
-      <%= render 'account/shared/forms/errors', form: form %>
+      <%= render 'shared/forms/errors', form: form %>
     <% end if @user.errors.any? %>
 
     <div class="grid grid-cols-1 gap-y gap-x-8 lg:grid-cols-2">
       <div class="xl:col-span-1 space-y-8">
-        <%= render 'account/shared/box', divider: true do |p| %>
+        <%= render 'shared/box', divider: true do |p| %>
           <% p.content_for :title, t('.profile.header') %>
           <% p.content_for :description, t('.profile.description') %>
           <% p.content_for :body do %>
@@ -25,7 +25,7 @@
       <div class="xl:col-span-1 space-y-8">
         <%= render 'account/users/oauth' %>
 
-        <%= render 'account/shared/box', divider: true do |p| %>
+        <%= render 'shared/box', divider: true do |p| %>
           <% p.content_for :title, t('.password.header') %>
           <% p.content_for :body do %>
             <% within_fields_namespace(:update_self) do %>

@@ -12,7 +12,7 @@
     <% if message.replies.any? %>
       <div class="space-y-2 mt-2 mb-2">
         <% message.replies.oldest.each do |reply| %>
-          <%= render 'account/shared/comment', message: reply %>
+          <%= render 'shared/comment', message: reply %>
         <% end %>
       </div>
     <% end %>

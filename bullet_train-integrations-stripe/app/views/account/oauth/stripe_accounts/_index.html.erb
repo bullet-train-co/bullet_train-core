@@ -1,7 +1,7 @@
 <% context ||= @user %>
 <% hide_actions ||= false %>
 
-<%= render 'account/shared/box' do |p| %>
+<%= render 'shared/box' do |p| %>
   <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
   <% p.content_for :description do %>
     <%= raw t(".contexts.#{context.class.name.underscore}.#{stripe_accounts.any? ? 'description' : 'description_empty'}") %>

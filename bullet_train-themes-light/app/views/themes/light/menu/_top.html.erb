@@ -1,4 +1,4 @@
-<%= render "account/shared/menu/logo" %>
+<%= render "shared/menu/logo" %>
 
 <% # Ugly, but works. %>
 <% @menu_orientation = :top %>
@@ -9,6 +9,6 @@
     <%= render "#{controller.class.name.underscore.split("/").first}/shared/menu" %>
   </div>
   <div>
-    <%= render "account/shared/menu/account", hide_shadow: true %>
+    <%= render "shared/menu/account", hide_shadow: true %>
   <div>
 </nav>

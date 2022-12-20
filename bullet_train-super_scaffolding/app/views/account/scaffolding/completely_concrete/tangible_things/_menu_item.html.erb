@@ -1,5 +1,5 @@
 <% if can? :read, Scaffolding::CompletelyConcrete::TangibleThing.new(team: current_team) %>
-  <%= render 'account/shared/menu/item', {
+  <%= render 'shared/menu/item', {
     url: main_app.polymorphic_path([:account, current_team, :scaffolding_completely_concrete_tangible_things]),
     label: t('scaffolding/completely_concrete/tangible_things.navigation.label'),
   } do |p| %>

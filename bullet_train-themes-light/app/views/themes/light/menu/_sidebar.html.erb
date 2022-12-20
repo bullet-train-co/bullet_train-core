@@ -3,10 +3,10 @@
 <% # Ugly, but works. %>
 <% @menu_orientation = :side %>
 
-<%= render "account/shared/menu/logo" %>
+<%= render "shared/menu/logo" %>
 
 <nav class="flex-1 space-y-1 select-none">
-  <%= render "account/shared/menu/account", expand: expand %>
+  <%= render "shared/menu/account", expand: expand %>
   <div class="px-5 py-4 menu">
     <%= render "#{controller.class.name.underscore.split("/").first}/shared/menu", expand: expand %>
   </div>

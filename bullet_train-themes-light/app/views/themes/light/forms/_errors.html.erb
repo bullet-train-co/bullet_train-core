@@ -1,7 +1,7 @@
 <% attributes ||= [] %>
 <% attributes.select! { |attribute| form.object.errors[attribute].any? } %>
 <% if form.object.errors[:base].any? || form.object.errors.present? || attributes.any? %>
-  <%= render 'account/shared/alert', color: 'red' do %>
+  <%= render 'shared/alert', color: 'red' do %>
     <% if form.object.errors[:base].any? || attributes.any? %>
       <%= form.object.errors[:base].join(' ') %>
       <% attributes.each do |attribute| %>

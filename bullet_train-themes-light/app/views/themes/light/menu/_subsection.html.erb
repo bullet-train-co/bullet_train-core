@@ -2,7 +2,7 @@
 
 <% if expand %>
   <div class="mb-3">
-    <%= render 'account/shared/menu/heading' do %>
+    <%= render 'shared/menu/heading' do %>
       <%= title %>
     <% end %>
 
@@ -11,7 +11,7 @@
 <% else %>
   <div>
     <div class="inline-block relative group" id="<%= title.underscore %>">
-      <%= render 'account/shared/menu/heading' do %>
+      <%= render 'shared/menu/heading' do %>
         <%= title %>
 
         <svg class="inline-block flex-shrink-0 h-3 w-3 <%= @menu_orientation == :top ? "rotate-90 -mt-0.5" : "" %>" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">

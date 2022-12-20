@@ -1,8 +1,8 @@
-<%= render 'account/shared/page' do |p| %>
+<%= render 'shared/page' do |p| %>
   <% p.content_for :title, t('.section') %>
   <% p.content_for :body do %>
     <%= updates_for @creative_concept do %>
-      <%= render 'account/shared/box', divider: true do |p| %>
+      <%= render 'shared/box', divider: true do |p| %>
         <% p.content_for :title, t('.header') %>
         <% p.content_for :description, t('.description') %>
         <% p.content_for :body do %>
@@ -16,7 +16,7 @@
                 <%= render 'shared/attributes/base' do |p| %>
                   <% p.content_for :heading, t(".fields.admins.heading") %>
                   <% p.content_for :body do %>
-                    <%= render 'account/shared/memberships/photos', memberships: (@team.admins + @creative_concept.admins).uniq %>
+                    <%= render 'shared/memberships/photos', memberships: (@team.admins + @creative_concept.admins).uniq %>
                   <% end %>
                 <% end %>
               </div>
@@ -26,7 +26,7 @@
                   <%= render 'shared/attributes/base' do |p| %>
                     <% p.content_for :heading, t(".fields.editors.heading") %>
                     <% p.content_for :body do %>
-                      <%= render 'account/shared/memberships/photos', memberships: @creative_concept.editors %>
+                      <%= render 'shared/memberships/photos', memberships: @creative_concept.editors %>
                     <% end %>
                   <% end %>
                 </div>
@@ -37,7 +37,7 @@
                   <%= render 'shared/attributes/base' do |p| %>
                     <% p.content_for :heading, t(".fields.viewers.heading") %>
                     <% p.content_for :body do %>
-                      <%= render 'account/shared/memberships/photos', memberships: @creative_concept.viewers %>
+                      <%= render 'shared/memberships/photos', memberships: @creative_concept.viewers %>
                     <% end %>
                   <% end %>
                 </div>

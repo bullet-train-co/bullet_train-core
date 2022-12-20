@@ -1,8 +1,8 @@
-<%= render 'account/shared/page' do |p| %>
+<%= render 'shared/page' do |p| %>
   <% p.content_for :title, t('.section') %>
   <% p.content_for :body do %>
     <%= updates_for @tangible_thing do %>
-      <%= render 'account/shared/box', divider: true do |p| %>
+      <%= render 'shared/box', divider: true do |p| %>
         <% p.content_for :title, t('.header') %>
         <% p.content_for :description do %>
           <%= t('.description') %>

@@ -1,9 +1,9 @@
-<%= render 'account/shared/workflow/box' do |p| %>
+<%= render 'shared/workflow/box' do |p| %>
   <% p.content_for :title, t('devise.titles.reset_password') %>
   <% p.content_for :body do %>
     <% within_fields_namespace(:sign_up) do %>
       <%= form_for resource, as: resource_name, url: password_path(resource_name), html: {method: :post, class: 'form'} do |f| %>
-        <%= render 'account/shared/forms/errors', form: f %>
+        <%= render 'shared/forms/errors', form: f %>
 
         <%= render 'shared/fields/email_field', form: f, method: :email, options: {autofocus: true} do %>
           <% if show_sign_up_options? %>

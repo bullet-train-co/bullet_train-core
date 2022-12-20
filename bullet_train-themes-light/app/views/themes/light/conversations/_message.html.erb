@@ -45,7 +45,7 @@
 <% show_borders = !show_as_thread && threaded_message %>
 
 <% if out_of_thread_message %>
-  <%= render 'account/shared/message', message: message.thread_origin_message, next_message: message, placeholder_message: true, show_as_thread: show_as_thread %>
+  <%= render 'shared/message', message: message.thread_origin_message, next_message: message, placeholder_message: true, show_as_thread: show_as_thread %>
 <% end %>
 
 

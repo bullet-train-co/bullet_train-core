@@ -1,6 +1,6 @@
 <%= form_with(model: [:account, (@team unless invitation.persisted?), invitation], class: 'form', local: true) do |form| %>
   <%= render "shared/limits/form", form: form, model: invitation.membership, cancel_path: @cancel_path || [:account, invitation] do %>
-    <%= render 'account/shared/forms/errors', form: form %>
+    <%= render 'shared/forms/errors', form: form %>
 
     <%= render 'shared/fields/email_field', form: form, method: :email, options: {autofocus: true} %>
 

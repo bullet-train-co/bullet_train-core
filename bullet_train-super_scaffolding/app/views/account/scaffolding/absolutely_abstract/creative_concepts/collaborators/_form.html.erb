@@ -1,5 +1,5 @@
 <%= form_with model: collaborator, url: (collaborator.persisted? ? [:account, collaborator] : [:account, @creative_concept, :collaborators]), local: true, class: 'form' do |form| %>
-  <%= render 'account/shared/forms/errors', form: form %>
+  <%= render 'shared/forms/errors', form: form %>
 
   <%= render 'shared/fields/super_select', form: form, method: :membership_id, options: {autofocus: true, include_blank: t('.fields.membership_id.placeholder')},
     choices_url: url_for([:search, :account, @team, :memberships]), other_options: {search: true} %>

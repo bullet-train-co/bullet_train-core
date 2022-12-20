@@ -9,7 +9,7 @@
 
 <%= action_model_select_controller do %>
   <%= updates_for context, collection do %>
-    <%= render 'account/shared/box', pagy: pagy do |p| %>
+    <%= render 'shared/box', pagy: pagy do |p| %>
       <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
       <% p.content_for :description do %>
         <%= t(".contexts.#{context.class.name.underscore}.description") %>

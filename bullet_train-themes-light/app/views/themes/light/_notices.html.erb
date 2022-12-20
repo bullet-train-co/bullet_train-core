@@ -2,7 +2,7 @@
 <% attributes.select! { |attribute| form.object.errors[attribute].any? } %>
 
 <% if notice.present? %>
-  <%= render 'account/shared/alert' do %>
+  <%= render 'shared/alert' do %>
     <%= notice %>
   <% end %>
 <% end %>
@@ -14,7 +14,7 @@
 <% end %>
 
 <% if alert.present? || flash[:error] %>
-  <%= render 'account/shared/alert', color: 'red' do %>
+  <%= render 'shared/alert', color: 'red' do %>
     <%= alert %>
     <%= flash[:error] %>
   <% end %>

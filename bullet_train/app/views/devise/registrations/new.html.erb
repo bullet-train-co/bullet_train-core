@@ -1,10 +1,10 @@
-<%= render 'account/shared/workflow/box' do |p| %>
+<%= render 'shared/workflow/box' do |p| %>
   <% p.content_for :title, t('devise.headers.create_account') %>
   <% p.content_for :body do %>
     <% within_fields_namespace(:sign_up) do %>
      <%= form_for resource, as: resource_name, url: registration_path(resource_name), html: {class: 'form'} do |f| %>
-       <%= render 'account/shared/notices' %>
-       <%= render 'account/shared/forms/errors', form: f %>
+       <%= render 'shared/notices' %>
+       <%= render 'shared/forms/errors', form: f %>
 
        <%= render 'shared/fields/email_field', form: f, method: :email, options: {autofocus: true} do %>
          <% content_for :help do %>

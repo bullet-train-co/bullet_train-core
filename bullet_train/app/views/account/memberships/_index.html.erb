@@ -3,7 +3,7 @@
 <% hide_back ||= false %>
 
 <%= updates_for context, :memberships do %>
-  <%= render 'account/shared/box' do |p| %>
+  <%= render 'shared/box' do |p| %>
     <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
     <% p.content_for :description do %>
       <%= raw t(".contexts.#{context.class.name.underscore}.#{@memberships.any? ? 'description' : 'description_empty'}") %>

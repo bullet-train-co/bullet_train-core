@@ -1,5 +1,5 @@
 <%= form_with(model: [:account, (@team unless membership.persisted?), membership], class: 'form', local: true) do |form| %>
-  <%= render 'account/shared/forms/errors', form: form %>
+  <%= render 'shared/forms/errors', form: form %>
 
   <% if membership.unclaimed? || membership.tombstone? %>
     <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-6">
