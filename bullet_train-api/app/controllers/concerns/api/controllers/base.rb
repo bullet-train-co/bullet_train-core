@@ -66,10 +66,10 @@ module Api::Controllers::Base
 
   def current_user
     @current_user ||= if doorkeeper_token
-                        User.find_by(id: doorkeeper_token[:resource_owner_id])
-                      else
-                        warden.authenticate(scope: :user)
-                      end
+      User.find_by(id: doorkeeper_token[:resource_owner_id])
+    else
+      warden.authenticate(scope: :user)
+    end
 
     # TODO Remove this rescue once workspace clusters can write to this column on the identity server.
     # TODO Make this logic configurable so that downstream developers can write different methods for this column getting updated.
