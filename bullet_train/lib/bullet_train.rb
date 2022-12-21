@@ -83,6 +83,10 @@ def stripe_enabled?
   ENV["STRIPE_CLIENT_ID"].present?
 end
 
+def action_models_enabled?
+  defined?(BulletTrain::ActionModels)
+end
+
 # 🚅 super scaffolding will insert new oauth providers above this line.
 
 def webhooks_enabled?

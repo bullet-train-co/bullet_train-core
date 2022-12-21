@@ -7,4 +7,19 @@ module BaseHelper
       false
     end
   end
+
+  # If developers are using Action Models, this method will
+  # add the "Select Multiple" functionality to their html.
+  # Since the Action Model select controller needs to be
+  # rendered as well, we build the content here first before
+  # passing it back to <%= ... %> as a whole.
+  def render_with_action_model_check(content)
+    if action_models_enabled?
+      action_model_select_controller do
+        content
+      end
+    else
+      content
+    end
+  end
 end
