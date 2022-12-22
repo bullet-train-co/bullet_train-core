@@ -25,6 +25,10 @@ module OpenApiHelper
     result
   end
 
+  def gem_paths
+    @gem_paths ||= `bundle show --paths`.lines.map { |gem_path| gem_path.chomp }
+  end
+
   def automatic_paths_for(model, parent, except: [])
     output = render("api/#{@version}/open_api/shared/paths", except: except)
     output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
@@ -33,7 +37,7 @@ module OpenApiHelper
 
   def automatic_components_for(model, locals: {})
     path = "app/views/api/#{@version}"
-    paths = ([path] + `bundle show --paths`.lines.map { |gem_path| "#{gem_path.chomp}/#{path}" })
+    paths = ([path] + gem_paths.map { |gem_path| "#{gem_path}/#{path}" })
     jbuilder = Jbuilder::Schema.renderer(paths, locals: {
       # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
       model.name.underscore.split("/").last.to_sym => model.new,
