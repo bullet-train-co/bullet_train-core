@@ -1,5 +1,3 @@
-# frozen_string_literal: true
-
 module BulletTrain
   class Configuration
     attr_accessor :strong_passwords

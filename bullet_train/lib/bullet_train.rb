@@ -38,6 +38,7 @@ module BulletTrain
   mattr_accessor :linked_gems, default: ["bullet_train"]
   mattr_accessor :parent_class, default: "Team"
   mattr_accessor :base_class, default: "ApplicationRecord"
+
   def self.configure
     if block_given?
       yield(BulletTrain::Configuration.default)
