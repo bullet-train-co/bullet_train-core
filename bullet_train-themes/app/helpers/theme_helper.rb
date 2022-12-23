@@ -41,7 +41,7 @@ module ThemeHelper
 
   def render(options = {}, locals = {}, &block)
     if (theme_path = BulletTrain::Themes.theme_invocation_path_for(options))
-      partial = current_theme_object.resolved_partial_path_for(@lookup_context, options, locals)
+      partial = @lookup_context.find_all(theme_path, current_theme_object.prefixes, true, locals.keys).first
       options = partial ? partial.virtual_path.gsub("/_", "/") : options
     end
 

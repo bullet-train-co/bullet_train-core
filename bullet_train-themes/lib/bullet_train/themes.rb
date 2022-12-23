@@ -29,11 +29,6 @@ module BulletTrain
         def prefixes
           @prefixes ||= directory_order.map { "themes/#{_1}" }
         end
-
-        def resolved_partial_path_for(lookup_context, path, locals)
-          # TODO directory_order should probably come from the `Current` model.
-          lookup_context.find_all(theme_path, prefixes, true, locals.keys).first
-        end
       end
     end
   end
