@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require "bullet_train/themes/version"
 require "bullet_train/themes/engine"
 # require "bullet_train/themes/base/theme"
@@ -10,19 +12,14 @@ module BulletTrain
     mattr_reader :partial_paths, default: {}
 
     # TODO Do we want this to be configurable by downstream applications?
-    INVOCATION_PATTERNS = [
-      # ❌ This path is included for legacy purposes, but you shouldn't reference partials like this in new code.
-      /^account\/shared\//,
-
-      # ✅ This is the correct path to generically reference theme component partials with.
-      /^shared\//,
-    ]
+    INVOCATION_PATTERNS = Regexp.union(
+      /^account\/shared\//, # ❌ This path is included for legacy purposes, but you shouldn't reference partials like this in new code.
+      /^shared\//, # ✅ This is the correct path to generically reference theme component partials with.
+    )
 
     def self.theme_invocation_path_for(path)
       # Themes only support `<%= render 'shared/box' ... %>` style calls to `render`, so check `path` is a string first.
-      if path.is_a?(String) && (pattern = INVOCATION_PATTERNS.find { _1.match? path })
-        path.remove(pattern)
-      end
+      path.dup.gsub!(INVOCATION_PATTERNS, "") if path.is_a?(String)
     end
 
     module Base
