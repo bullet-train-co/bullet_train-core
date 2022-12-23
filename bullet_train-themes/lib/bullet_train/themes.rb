@@ -26,10 +26,14 @@ module BulletTrain
           ["base"]
         end
 
+        def prefixes
+          @prefixes ||= directory_order.map { "themes/#{_1}" }
+        end
+
         def resolved_partial_path_for(lookup_context, path, locals)
           if (theme_path = BulletTrain::Themes.theme_invocation_path_for(path))
             # TODO directory_order should probably come from the `Current` model.
-            if (partial = lookup_context.find_all(theme_path, directory_order.map { "themes/#{_1}" }, true, locals.keys).first)
+            if (partial = lookup_context.find_all(theme_path, prefixes, true, locals.keys).first)
               partial.virtual_path.gsub("/_", "/")
             end
           end
