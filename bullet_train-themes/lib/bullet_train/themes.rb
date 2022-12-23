@@ -31,11 +31,9 @@ module BulletTrain
         end
 
         def resolved_partial_path_for(lookup_context, path, locals)
-          if (theme_path = BulletTrain::Themes.theme_invocation_path_for(path))
-            # TODO directory_order should probably come from the `Current` model.
-            if (partial = lookup_context.find_all(theme_path, prefixes, true, locals.keys).first)
-              partial.virtual_path.gsub("/_", "/")
-            end
+          # TODO directory_order should probably come from the `Current` model.
+          if (partial = lookup_context.find_all(theme_path, prefixes, true, locals.keys).first)
+            partial.virtual_path.gsub("/_", "/")
           end
         end
       end

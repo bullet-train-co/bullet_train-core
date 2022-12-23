@@ -40,7 +40,9 @@ module ThemeHelper
   end
 
   def render(options = {}, locals = {}, &block)
-    options = current_theme_object.resolved_partial_path_for(@lookup_context, options, locals) || options
+    if (theme_path = BulletTrain::Themes.theme_invocation_path_for(options))
+      options = current_theme_object.resolved_partial_path_for(@lookup_context, options, locals) || options
+    end
 
     # This is where we try to just lean on Rails default behavior. If someone renders `shared/box` and also has a
     # `app/views/shared/_box.html.erb`, then no error will be thrown and we will have never interfered in the normal
