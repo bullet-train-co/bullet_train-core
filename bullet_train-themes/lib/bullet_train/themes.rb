@@ -32,9 +32,7 @@ module BulletTrain
 
         def resolved_partial_path_for(lookup_context, path, locals)
           # TODO directory_order should probably come from the `Current` model.
-          if (partial = lookup_context.find_all(theme_path, prefixes, true, locals.keys).first)
-            partial.virtual_path.gsub("/_", "/")
-          end
+          lookup_context.find_all(theme_path, prefixes, true, locals.keys).first
         end
       end
     end

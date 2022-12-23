@@ -41,7 +41,8 @@ module ThemeHelper
 
   def render(options = {}, locals = {}, &block)
     if (theme_path = BulletTrain::Themes.theme_invocation_path_for(options))
-      options = current_theme_object.resolved_partial_path_for(@lookup_context, options, locals) || options
+      partial = current_theme_object.resolved_partial_path_for(@lookup_context, options, locals)
+      options = partial ? partial.virtual_path.gsub("/_", "/") : options
     end
 
     # This is where we try to just lean on Rails default behavior. If someone renders `shared/box` and also has a
