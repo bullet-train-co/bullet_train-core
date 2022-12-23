@@ -41,20 +41,19 @@ module ThemeHelper
 
   def render(options = {}, locals = {}, &block)
     if (theme_path = BulletTrain::Themes.theme_invocation_path_for(options))
-      partial = @lookup_context.find_all(theme_path, current_theme_object.prefixes, true, locals.keys).first
-      options = partial ? partial.virtual_path.gsub("/_", "/") : options
+      super(partial: theme_path, prefixes: current_theme_object.prefixes, locals: locals, &block)
+    else
+      # This is where we try to just lean on Rails default behavior. If someone renders `shared/box` and also has a
+      # `app/views/shared/_box.html.erb`, then no error will be thrown and we will have never interfered in the normal
+      # Rails behavior.
+      #
+      # We also don't do anything special if someone renders `shared/box` and we've already previously resolved that
+      # partial to be served from `themes/light/box`. In that case, we've already replaced `shared/box` with the
+      # actual path of the partial, and Rails will do the right thing from this point.
+      #
+      # However, if one of those two situations isn't true, then this call here will throw an exception and we can
+      # perform the appropriate magic to figure out where amongst the themes the partial should be rendering from.
+      super
     end
-
-    # This is where we try to just lean on Rails default behavior. If someone renders `shared/box` and also has a
-    # `app/views/shared/_box.html.erb`, then no error will be thrown and we will have never interfered in the normal
-    # Rails behavior.
-    #
-    # We also don't do anything special if someone renders `shared/box` and we've already previously resolved that
-    # partial to be served from `themes/light/box`. In that case, we've already replaced `shared/box` with the
-    # actual path of the partial, and Rails will do the right thing from this point.
-    #
-    # However, if one of those two situations isn't true, then this call here will throw an exception and we can
-    # perform the appropriate magic to figure out where amongst the themes the partial should be rendering from.
-    super
   end
 end
