@@ -28,14 +28,19 @@ module Webhooks::Outgoing::DeliverySupport
   def deliver_async
     if still_attempting?
       Webhooks::Outgoing::DeliveryJob.set(wait: next_reattempt_delay).perform_later(self)
+    else
+      endpoint.disabled_from_failure = true
+      endpoint.save
     end
   end
 
   def deliver
-    if delivery_attempts.create.attempt
-      touch(:delivered_at)
-    else
-      deliver_async
+    unless disabled?
+      if delivery_attempts.create.attempt
+        touch(:delivered_at)
+      else
+        deliver_async
+      end
     end
   end
 
@@ -54,6 +59,10 @@ module Webhooks::Outgoing::DeliverySupport
 
   def failed?
     !(delivered? || still_attempting?)
+  end
+
+  def disabled?
+    endpoint.disabled_from_failure
   end
 
   def name
