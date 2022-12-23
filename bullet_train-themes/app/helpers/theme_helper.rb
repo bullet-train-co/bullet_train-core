@@ -41,7 +41,9 @@ module ThemeHelper
 
   def render(options = {}, locals = {}, &block)
     if (theme_path = BulletTrain::Themes.theme_invocation_path_for(options))
-      super(partial: theme_path, prefixes: current_theme_object.prefixes, locals: locals, &block)
+      # Rails may have a bug here. Don't understand why `partial:` is set to `layout:` when it hasn't been passed in?
+      # https://github.com/rails/rails/blob/a7902034089e8b6bff747c08d93eeac4b1377032/actionview/lib/action_view/helpers/rendering_helper.rb#L35
+      super(partial: theme_path, layout: theme_path, prefixes: current_theme_object.prefixes, locals: locals, &block)
     else
       # This is where we try to just lean on Rails default behavior. If someone renders `shared/box` and also has a
       # `app/views/shared/_box.html.erb`, then no error will be thrown and we will have never interfered in the normal
