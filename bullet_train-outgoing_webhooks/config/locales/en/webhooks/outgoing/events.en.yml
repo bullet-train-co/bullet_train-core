@@ -50,3 +50,8 @@ en:
         _: &subject_type Subject Type
         label: *subject_type
         heading: *subject_type
+
+      short_uuid:
+        _: &event_id Short UUID
+        label: *event_id
+        heading: *event_id
