@@ -20,8 +20,8 @@ class Api::V1::Webhooks::Outgoing::EventsController < Api::V1::ApplicationContro
         *permitted_fields,
         # 🚅 super scaffolding will insert new fields above this line.
         *permitted_arrays,
-      # 🚅 super scaffolding will insert new arrays above this line.
-        )
+        # 🚅 super scaffolding will insert new arrays above this line.
+      )
 
       process_params(strong_params)
 
