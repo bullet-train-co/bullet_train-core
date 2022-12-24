@@ -66,9 +66,9 @@ module OpenApiHelper
         indent("    " + parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Parameters:"), 3)
       ).html_safe
     else
-      (
-        indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
-      ).html_safe
+
+      indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
+        .html_safe
     end
   end
 
