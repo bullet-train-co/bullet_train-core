@@ -52,6 +52,11 @@ en:
         heading: *subject_type
 
       short_uuid:
-        _: &event_id Short UUID
-        label: *event_id
-        heading: *event_id
+        _: &short_uuid Short UUID
+        label: *short_uuid
+        heading: *short_uuid
+
+      event_type_name:
+        _: &event_type_name Event Type Name
+        label: *event_type_name
+        heading: *event_type_name
