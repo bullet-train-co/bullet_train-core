@@ -33,6 +33,7 @@ zapier env:set 1.0.0 \
   BASE_URL=https://andrewculver.ngrok.io \
   CLIENT_ID=... \
   CLIENT_SECRET=...
+cd ..
 ```
 
 You're done and can now test creating Zaps that react to example objects being created or create example objects based on other triggers.

@@ -35,7 +35,8 @@ class BulletTrain::Platform::ConnectionWorkflow
             faux_membership = team.memberships.create(
               user: faux_user,
               platform_agent: true,
-              platform_agent_of: @application
+              platform_agent_of: @application,
+              added_by: team.memberships.find_by(user: current_user)
             )
 
             faux_membership.roles << Role.admin
