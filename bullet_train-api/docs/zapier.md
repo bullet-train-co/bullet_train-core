@@ -1,4 +1,4 @@
-# Zapier
+# Integrating with Zapier
 Bullet Train provides support for Zapier out-of-the-box. New Bullet Train projects include a preconfigured Zapier CLI application that is ready to `zapier deploy`. 
 
 ## Background
