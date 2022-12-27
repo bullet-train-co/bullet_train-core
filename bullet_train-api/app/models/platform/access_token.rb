@@ -30,6 +30,7 @@ class Platform::AccessToken < ApplicationRecord
   end
 
   def system_level?
+    return false unless application
     !application.team_id
   end
 
