@@ -23,10 +23,21 @@ class BulletTrain::Platform::ConnectionWorkflow
             # Create a faux membership and user that represent this connection.
             # We have to do this because all our permissions are based on users, so team-level connections need a user.
             faux_password = SecureRandom.hex
-            faux_user = User.create(email: "noreply+#{SecureRandom.hex}@bullettrain.co", password: faux_password, password_confirmation: faux_password, first_name: "Connect of Application")
+            faux_user = User.create(
+              email: "noreply+#{SecureRandom.hex}@bullettrain.co",
+              password: faux_password,
+              password_confirmation: faux_password,
+              platform_agent_of: @application,
+              first_name: @application.name
+            )
 
             # TODO I think we can get rid of `platform_agent` because we have `platform_agent_of_id`.
-            faux_membership = team.memberships.create(user: faux_user, platform_agent: true, platform_agent_of: @application)
+            faux_membership = team.memberships.create(
+              user: faux_user,
+              platform_agent: true,
+              platform_agent_of: @application
+            )
+
             faux_membership.roles << Role.admin
 
             # We're done! Return the user, it'll be associated with the access grant and subsequent access token.
