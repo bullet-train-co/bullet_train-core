@@ -1,5 +1,5 @@
 # Integrating with Zapier
-Bullet Train provides support for Zapier out-of-the-box. New Bullet Train projects include a preconfigured Zapier CLI application that is ready to `zapier deploy`. 
+Bullet Train provides out-of-the-box support for Zapier. New Bullet Train projects include a preconfigured Zapier CLI application that is ready to `zapier deploy`.
 
 ## Background
 Zapier was designed to take advantage of an application's existing [REST API](/docs/api.md), [outgoing webhook capabilities](/docs/webhooks/outgoing.md), and OAuth2 authorization workflows. Thankfully for us, Bullet Train provides the first two and pre-configures Doorkeeper to provide the latter.
