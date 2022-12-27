@@ -1,6 +1,7 @@
 require "bullet_train/api/version"
 require "bullet_train/api/engine"
 require "bullet_train/api/strong_parameters_reporter"
+require "bullet_train/platform/connection_workflow"
 
 # require "wine_bouncer"
 require "pagy"

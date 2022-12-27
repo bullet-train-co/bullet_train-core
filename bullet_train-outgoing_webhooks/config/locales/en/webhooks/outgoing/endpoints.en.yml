@@ -46,11 +46,12 @@ en:
         all: All Events
       event_types: *event_types
 
-      scaffolding_absolutely_abstract_creative_concept_id:
-        _: &scaffolding_absolutely_abstract_creative_concept_id Creative Concept
+      scaffolding_absolutely_abstract_creative_concept_id: &scaffolding_absolutely_abstract_creative_concept
+        _: &scaffolding_absolutely_abstract_creative_concept_id Within Creative Concept
         label: *scaffolding_absolutely_abstract_creative_concept_id
         heading: *scaffolding_absolutely_abstract_creative_concept_id
-        placeholder: "Type your response here"
+
+      scaffolding_absolutely_abstract_creative_concept: *scaffolding_absolutely_abstract_creative_concept
 
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:

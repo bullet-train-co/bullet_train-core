@@ -16,7 +16,7 @@
                 <%= render 'shared/attributes/base' do |p| %>
                   <% p.content_for :heading, t(".fields.admins.heading") %>
                   <% p.content_for :body do %>
-                    <%= render 'account/shared/memberships/photos', memberships: (@team.admins + @creative_concept.admins).uniq %>
+                    <%= render 'account/shared/memberships/photos', memberships: (@team.admins.reject(&:platform_agent?) + @creative_concept.admins.reject(&:platform_agent?)).uniq %>
                   <% end %>
                 <% end %>
               </div>
@@ -26,7 +26,7 @@
                   <%= render 'shared/attributes/base' do |p| %>
                     <% p.content_for :heading, t(".fields.editors.heading") %>
                     <% p.content_for :body do %>
-                      <%= render 'account/shared/memberships/photos', memberships: @creative_concept.editors %>
+                      <%= render 'account/shared/memberships/photos', memberships: @creative_concept.editors.reject(&:platform_agent?) %>
                     <% end %>
                   <% end %>
                 </div>
@@ -37,7 +37,7 @@
                   <%= render 'shared/attributes/base' do |p| %>
                     <% p.content_for :heading, t(".fields.viewers.heading") %>
                     <% p.content_for :body do %>
-                      <%= render 'account/shared/memberships/photos', memberships: @creative_concept.viewers %>
+                      <%= render 'account/shared/memberships/photos', memberships: @creative_concept.viewers.reject(&:platform_agent?) %>
                     <% end %>
                   <% end %>
                 </div>

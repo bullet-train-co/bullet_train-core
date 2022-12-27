@@ -4,7 +4,7 @@ class Platform::Application < ApplicationRecord
   include Doorkeeper::Orm::ActiveRecord::Mixins::Application
   # 🚅 add concerns above.
 
-  belongs_to :team
+  belongs_to :team, optional: true
   # 🚅 add belongs_to associations above.
 
   # 🚅 add has_many associations above.

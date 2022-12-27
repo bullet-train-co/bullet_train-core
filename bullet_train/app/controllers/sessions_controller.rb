@@ -10,6 +10,18 @@ class SessionsController < Devise::SessionsController
   end
   helper_method :user_return_to_is_oauth
 
+  def new
+    # We allow people to pass in a URL to redirect to after sign in is complete. We have to do this because Safari
+    # doesn't allow them to set this in a session before a redirect if there isn't already a session. However, for
+    # security reasons we have to make sure we control the URL where we will redirect to, otherwise people could
+    # trick folks into redirecting to a fake destination in a phishing scheme.
+    if params[:return_url]&.start_with?(ENV["BASE_URL"])
+      store_location_for(resource_name, params[:return_url])
+    end
+
+    super
+  end
+
   def destroy
     if params.include?(:onboard_logout)
       signed_out = (Devise.sign_out_all_scopes ? sign_out : sign_out(resource_name))
