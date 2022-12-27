@@ -26,6 +26,7 @@ module Memberships::Base
     end
 
     scope :excluding_platform_agents, -> { where(platform_agent_of: nil) }
+    scope :platform_agents, -> { where.not(platform_agent_of: nil) }
     scope :current_and_invited, -> { includes(:invitation).where("user_id IS NOT NULL OR invitations.id IS NOT NULL").references(:invitation) }
     scope :current, -> { where("user_id IS NOT NULL") }
     scope :tombstones, -> { includes(:invitation).where("user_id IS NULL AND invitations.id IS NULL AND platform_agent IS FALSE").references(:invitation) }
