@@ -41,8 +41,10 @@ class Api::V1::Webhooks::Outgoing::EndpointsController < Api::V1::ApplicationCon
         *permitted_fields,
         :url,
         :name,
+        :scaffolding_absolutely_abstract_creative_concept_id,
         # 🚅 super scaffolding will insert new fields above this line.
         *permitted_arrays,
+        event_type_ids: [],
         # 🚅 super scaffolding will insert new arrays above this line.
       )
 
