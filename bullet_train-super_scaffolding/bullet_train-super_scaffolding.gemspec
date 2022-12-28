@@ -20,9 +20,9 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     Dir["{app,config,db,exe,lib,docs}/**/*", "MIT-LICENSE", "Rakefile", "README.md", ".bt-link"]
-    spec.bindir = "exe"
-    spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   end
+  spec.bindir = "exe"
+  spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
 
   spec.add_development_dependency "standard"
 
@@ -31,5 +31,5 @@ Gem::Specification.new do |spec|
 
   # For Super Scaffolding: "select *a* team member" vs. "select *an* option".
   spec.add_dependency "indefinite_article"
-  spec.add_dependecy "colorize"
+  spec.add_dependency "colorize"
 end

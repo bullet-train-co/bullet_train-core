@@ -1,4 +1,4 @@
-require "scaffolding/utiles"
+require "scaffolding/utils"
 
 Rails.application.routes.draw do
   extend Scaffolding::Utils
