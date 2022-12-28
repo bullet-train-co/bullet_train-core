@@ -29,7 +29,6 @@
  - [Roles and Permissions](/docs/permissions.md)
  - [Onboarding](/docs/onboarding.md)
  - [Namespacing](/docs/namespacing.md)
- - [Invitation Only Mode](/docs/invitation_only.md)
 
 ## UI
  - [Field Partials](/docs/field-partials.md)
