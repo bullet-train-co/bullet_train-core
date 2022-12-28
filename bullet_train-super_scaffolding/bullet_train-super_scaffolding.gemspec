@@ -19,7 +19,9 @@ Gem::Specification.new do |spec|
   # spec.metadata["changelog_uri"] = "TODO: Put your gem's CHANGELOG.md URL here."
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{app,config,db,lib,docs}/**/*", "MIT-LICENSE", "Rakefile", "README.md", ".bt-link"]
+    Dir["{app,config,db,exe,lib,docs}/**/*", "MIT-LICENSE", "Rakefile", "README.md", ".bt-link"]
+    spec.bindir = "exe"
+    spec.executables = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   end
 
   spec.add_development_dependency "standard"
@@ -29,4 +31,5 @@ Gem::Specification.new do |spec|
 
   # For Super Scaffolding: "select *a* team member" vs. "select *an* option".
   spec.add_dependency "indefinite_article"
+  spec.add_dependecy "colorize"
 end

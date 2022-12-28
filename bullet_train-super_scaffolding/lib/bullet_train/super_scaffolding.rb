@@ -8,10 +8,12 @@ require "bullet_train/super_scaffolding/scaffolders/join_model_scaffolder"
 require "bullet_train/super_scaffolding/scaffolders/oauth_provider_scaffolder"
 
 require "indefinite_article"
+require "colorize"
+require "fileutils"
 
 module BulletTrain
   module SuperScaffolding
-    mattr_accessor :template_paths, default: []
+    mattr_accessor :template_paths, default: [File.expand_path("../..", __dir__), Dir.pwd]
     mattr_accessor :scaffolders, default: {
       "crud" => "BulletTrain::SuperScaffolding::Scaffolders::CrudScaffolder",
       "crud-field" => "BulletTrain::SuperScaffolding::Scaffolders::CrudFieldScaffolder",

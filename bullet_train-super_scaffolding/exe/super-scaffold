@@ -1,0 +1,3 @@
+#!/usr/bin/env ruby
+require "bullet_train/super_scaffolding"
+BulletTrain::SuperScaffolding::Runner.new.run
