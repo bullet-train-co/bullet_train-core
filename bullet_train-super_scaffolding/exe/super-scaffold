@@ -1,3 +1,5 @@
 #!/usr/bin/env ruby
+require "rails/engine"
 require "bullet_train/super_scaffolding"
+require "bullet_train/api"
 BulletTrain::SuperScaffolding::Runner.new.run

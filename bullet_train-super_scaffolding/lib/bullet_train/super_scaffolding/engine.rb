@@ -1,6 +1,7 @@
 require "active_support"
 require "rails/engine"
 require "scaffolding"
+require "jbuilder"
 
 module BulletTrain
   module SuperScaffolding
