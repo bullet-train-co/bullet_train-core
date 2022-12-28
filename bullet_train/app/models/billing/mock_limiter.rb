@@ -9,4 +9,8 @@ class Billing::MockLimiter
   def can?(action, model)
     true
   end
+
+  def exhausted?(model)
+    false
+  end
 end
