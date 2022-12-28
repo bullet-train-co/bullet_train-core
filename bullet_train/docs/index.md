@@ -40,11 +40,12 @@
  - [Stripe](/docs/billing/stripe.md)
 
 ## Integration
- - [OAuth Providers](/docs/oauth.md)
  - [REST API](/docs/api.md)
+ - [Zapier](/docs/zapier.md)
+ - [OAuth Providers](/docs/oauth.md)
  - [Outgoing Webhooks](/docs/webhooks/outgoing.md)
  - [Incoming Webhooks](/docs/webhooks/incoming.md)
-
+ 
 ## Add-Ons
  - [Font Awesome Pro](/docs/font-awesome-pro.md)
 
