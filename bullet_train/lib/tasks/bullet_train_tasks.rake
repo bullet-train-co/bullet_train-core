@@ -120,12 +120,12 @@ namespace :bullet_train do
             stream "bundle install"
           when "--watch-js", "--clean-js"
             package_name = process[:values].pop
-            framework_package = framework_packages.select {|k, v| k.to_s == package_name }
+            framework_package = framework_packages.select { |k, v| k.to_s == package_name }
             if framework_package.empty?
               puts "Sorry, we couldn't find the package you're looking for.".red
               puts ""
 
-              npm_packages = framework_packages.select {|name, details| details[:npm].present?}
+              npm_packages = framework_packages.select { |name, details| details[:npm].present? }
               puts "Please enter one of the following package names when running `bin/hack --watch-js` or `bin/hack --clean-js`:"
               npm_packages.each_with_index do |package, idx|
                 puts "#{idx + 1}. #{package.first}"
