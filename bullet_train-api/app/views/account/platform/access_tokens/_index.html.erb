@@ -36,14 +36,7 @@
                     <%= render "shared/tables/checkbox", object: access_token %>
                     <td><%= render 'shared/attributes/code', attribute: :token, secret: true %></td>
                     <td><%= render 'shared/attributes/text', attribute: :description %></td>
-                    <td>
-                      <% if access_token.last_used_at %>
-                        <%= render 'shared/attributes/date_and_time', attribute: :last_used_at %>
-                      <% else %>
-                        <% # TODO Make it so we can just define a `default` key for `last_used_at` in the locale file and it will us that when present. %>
-                        Never
-                      <% end %>
-                    </td>
+                    <td><%= render 'shared/attributes/date_and_time', attribute: :last_used_at %></td>
                     <%# 🚅 super scaffolding will insert new fields above this line. %>
                     <td><%= render 'shared/attributes/date_and_time', attribute: :created_at %></td>
                     <td class="buttons">
