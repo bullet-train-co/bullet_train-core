@@ -269,7 +269,7 @@ namespace :bullet_train do
         # Provide a help message after the developer kills the process with `Ctrl + C`.
         puts "Run `bin/hack --clean-js #{name}` to revert to using the original npm package in your application.".blue
       elsif flag == "--clean-js"
-        puts "Going back to using original `#{name}` in application.".blue
+        puts "Going back to using original `#{name}` npm package in application.".blue
         puts ""
 
         system "yarn yalc remove #{details[:npm]}"
