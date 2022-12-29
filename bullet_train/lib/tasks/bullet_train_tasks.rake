@@ -211,7 +211,7 @@ namespace :bullet_train do
     # Revert to using the original bullet_train npm package after the developer enters `Ctrl + C`.
     puts "Reverting to original npm package...".blue
     puts "If you cancel out of this process early, just run `bin/hack --clean-js bullet_train` to revert to your original npm package.".blue
-    set_npm_packages("--clean-js", bt_package)
+    set_npm_package("--clean-js", bt_package)
 
     puts ""
     puts "OK, here's a list of things this script still doesn't do you for you:".yellow
