@@ -4,6 +4,10 @@ require "pagy_cursor/pagy/extras/uuid_cursor"
 module Api::Controllers::Base
   extend ActiveSupport::Concern
 
+  # We need this to show custom error that user is not authenticated
+  # neither with Doorkeeper nor with Devise
+  class NotAuthenticatedError < StandardError; end
+
   included do
     include ActionController::Helpers
     helper ApplicationHelper
@@ -42,6 +46,10 @@ module Api::Controllers::Base
       render json: {error: "Not found"}, status: :not_found
     end
 
+    rescue_from NotAuthenticatedError do |exception|
+      render json: {error: "Invalid token or no user signed in"}, status: :unauthorized
+    end
+
     before_action :apply_pagination, only: [:index]
   end
 
@@ -57,14 +65,24 @@ module Api::Controllers::Base
   end
 
   def current_user
-    raise Doorkeeper::Errors::InvalidToken unless doorkeeper_token.present?
+    @current_user ||= if doorkeeper_token
+      User.find_by(id: doorkeeper_token[:resource_owner_id])
+    else
+      warden.authenticate(scope: :user)
+    end
+
     # TODO Remove this rescue once workspace clusters can write to this column on the identity server.
     # TODO Make this logic configurable so that downstream developers can write different methods for this column getting updated.
-    begin
-      doorkeeper_token.update(last_used_at: Time.zone.now)
-    rescue ActiveRecord::StatementInvalid => _
+    if doorkeeper_token
+      begin
+        doorkeeper_token.update(last_used_at: Time.zone.now)
+      rescue ActiveRecord::StatementInvalid => _
+      end
     end
-    @current_user ||= User.find_by(id: doorkeeper_token[:resource_owner_id])
+
+    raise NotAuthenticatedError unless @current_user
+
+    @current_user
   end
 
   def current_team
