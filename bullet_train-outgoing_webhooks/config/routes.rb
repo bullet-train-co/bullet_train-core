@@ -6,10 +6,9 @@ Rails.application.routes.draw do
       resources BulletTrain::OutgoingWebhooks.parent_resource do
         namespace :webhooks do
           namespace :outgoing do
-            resources :events
             resources :endpoints do
-              resources :deliveries, only: [:index, :show] do
-                resources :delivery_attempts, only: [:index, :show]
+              resources :deliveries, only: %i[index show] do
+                resources :delivery_attempts, only: %i[index show]
               end
             end
           end
@@ -25,6 +24,7 @@ Rails.application.routes.draw do
           namespace :webhooks do
             namespace :outgoing do
               resources :endpoints, defaults: {format: :json}
+              resources :events, only: %i[index show], defaults: {format: :json}
             end
           end
         end

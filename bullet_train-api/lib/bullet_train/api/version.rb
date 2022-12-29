@@ -1,5 +1,5 @@
 module BulletTrain
   module Api
-    VERSION = "1.2.3"
+    VERSION = "1.2.9"
   end
 end

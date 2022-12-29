@@ -67,6 +67,9 @@ en:
         platform/application:
           header: API Access Tokens
           description: You can use Access Tokens to allow %{application_name} to make requests to the API.
+        team:
+          header: Platform Connections
+          description: The following Platform Applications are connected to your account. The Access Tokens issued to these Platform Applications are available below in case you need to debug these integrations.
       fields: *fields
       buttons: *buttons
     show:

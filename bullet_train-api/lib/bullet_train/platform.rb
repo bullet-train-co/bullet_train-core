@@ -1,0 +1,2 @@
+module BulletTrain::Platform
+end

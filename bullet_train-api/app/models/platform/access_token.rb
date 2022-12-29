@@ -28,5 +28,18 @@ class Platform::AccessToken < ApplicationRecord
   def label_string
     description
   end
+
+  def system_level?
+    return false unless application
+    !application.team_id
+  end
+
+  def description
+    if system_level?
+      application.name
+    else
+      super
+    end
+  end
   # 🚅 add methods above.
 end

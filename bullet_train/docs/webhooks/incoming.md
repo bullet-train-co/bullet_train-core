@@ -1,3 +1,7 @@
 # Incoming Webhooks
 
-> TODO This section needs to be written and should probably delegate a lot of details to the README of the [Bullet Train Incoming Webhooks repository](https://github.com/bullet-train-co/bullet_train-incoming_webhooks).
+Bullet Train makes it trivial to scaffold new endpoints where external systems can send you webhooks and they can be processed asyncronously in a background job. For more information, run:
+
+```
+bin/super-scaffold incoming-webhooks
+```

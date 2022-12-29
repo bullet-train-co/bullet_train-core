@@ -13,7 +13,7 @@ module BulletTrain
       mattr_accessor :logo_color_shift, default: false
       mattr_accessor :show_logo_in_account, default: false
       mattr_accessor :navigation, default: :top
-      mattr_accessor :original_devise_path
+      mattr_accessor :original_devise_path # TODO: Obsolete: remove after shipping a new BulletTrain version with usage removed.
 
       class Theme < BulletTrain::Themes::TailwindCss::Theme
         def directory_order
