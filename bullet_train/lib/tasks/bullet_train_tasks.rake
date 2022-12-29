@@ -208,11 +208,6 @@ namespace :bullet_train do
     bt_package = framework_packages.select { |k, v| k == :bullet_train }
     set_npm_package("--watch-js", bt_package)
 
-    # Revert to using the original bullet_train npm package after the developer enters `Ctrl + C`.
-    puts "Reverting to original npm package...".blue
-    puts "If you cancel out of this process early, just run `bin/hack --clean-js bullet_train` to revert to your original npm package.".blue
-    set_npm_package("--clean-js", bt_package)
-
     puts ""
     puts "OK, here's a list of things this script still doesn't do you for you:".yellow
     puts "1. It doesn't clean up the repository that was cloned into `local`.".yellow
