@@ -50,4 +50,10 @@ module Api::V1::Users::ControllerBase
   # GET /api/v1/users/:id
   def show
   end
+
+  # PUT /api/v1/users/:id
+  # TODO: Implement this!
+  def update
+    raise "Not implemented"
+  end
 end

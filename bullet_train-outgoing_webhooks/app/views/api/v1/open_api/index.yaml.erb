@@ -16,6 +16,7 @@ components:
       scheme: bearer
   schemas:
     <%= automatic_components_for Webhooks::Outgoing::Endpoint %>
+    <%= automatic_components_for Webhooks::Outgoing::Event %>
     <%# 🚅 super scaffolding will insert new components above this line. %>
   parameters:
     id:
@@ -28,4 +29,5 @@ security:
   - BearerAuth: []
 paths:
   <%= automatic_paths_for Webhooks::Outgoing::Endpoint, Team %>
+  <%= automatic_paths_for Webhooks::Outgoing::Event, Team, except: %i[create update delete] %>
   <%# 🚅 super scaffolding will insert new paths above this line. %>
