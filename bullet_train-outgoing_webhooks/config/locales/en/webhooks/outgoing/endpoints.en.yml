@@ -39,6 +39,13 @@ en:
         label: *url
         heading: *url
 
+      api_version:
+        _: &api_version API Version
+        label: *api_version
+        heading: *api_version
+        options:
+          1: V1
+
       event_type_ids: &event_types
         _: &event_type_ids Event Types
         label: *event_type_ids
@@ -114,8 +121,9 @@ en:
       webhooks/outgoing/endpoint:
         name: *name
         url: *url
+        api_version: *api_version
         event_type_ids: *event_type_ids
+        scaffolding_absolutely_abstract_creative_concept_id: *scaffolding_absolutely_abstract_creative_concept_id
         # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at
         updated_at: *updated_at
-        scaffolding_absolutely_abstract_creative_concept_id: *scaffolding_absolutely_abstract_creative_concept_id

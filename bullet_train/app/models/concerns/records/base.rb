@@ -82,18 +82,17 @@ module Records::Base
 
   # TODO This should really be in the API package and included from there.
   if defined?(BulletTrain::Api)
-    def to_api_json
-      # TODO So many performance improvements available here.
-      controller = "Api::#{BulletTrain::Api.current_version.upcase}::ApplicationController".constantize.new
+    # We default this to the current version of the API, but developers can request a specific version.
+    def to_api_json(api_version = BulletTrain::Api.current_version_numeric)
+      controller = "Api::V#{api_version}::ApplicationController".constantize.new
       # TODO We need to fix host names here.
       controller.request = ActionDispatch::Request.new({})
       local_class_key = self.class.name.underscore.split("/").last.to_sym
-      controller.render_to_string(
-        "api/#{BulletTrain::Api.current_version}/#{self.class.name.underscore.pluralize}/_#{local_class_key}",
-        locals: {
-          local_class_key => self
-        }
-      )
+
+      # Returns a hash, not string.
+      JbuilderTemplate.new(controller.view_context) do |json|
+        json.partial! "api/#{BulletTrain::Api.current_version}/#{self.class.name.underscore.pluralize}/#{local_class_key}", local_class_key: self
+      end.attributes!
     end
   end
 end
