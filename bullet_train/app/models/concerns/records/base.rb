@@ -91,7 +91,7 @@ module Records::Base
 
       # Returns a hash, not string.
       JbuilderTemplate.new(controller.view_context) do |json|
-        json.partial! "api/#{BulletTrain::Api.current_version}/#{self.class.name.underscore.pluralize}/#{local_class_key}", local_class_key: self
+        json.partial! "api/#{BulletTrain::Api.current_version}/#{self.class.name.underscore.pluralize}/#{local_class_key}", local_class_key => self
       end.attributes!
     end
   end
