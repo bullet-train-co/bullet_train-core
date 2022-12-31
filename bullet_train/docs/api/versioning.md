@@ -31,8 +31,6 @@ If you're in a situation where you know you need to bump your API version to hel
 rake bullet_train:api:bump_version
 ```
 
-> TODO This Rake task doesn't exist yet.
-
 ## What happens when you bump an API version?
 When you bump your API version, all of the files and directories that are namespaced with the API version number will be duplicated into a new namespace for the new API version number.
 
@@ -42,6 +40,7 @@ For example, when bumping from "V1" to "V2":
  - A copy of all the JSON views in `app/views/api/v1` are copied into `app/views/api/v2`.
  - A copy of all the routes in `config/routes/api/v1.rb` are copied into `config/routes/api/v2.rb`.
  - A copy of all the tests in `test/controllers/api/v1` are copied into `test/controllers/api/v2`.
+ - The new API version is added as an available option (and becomes the new default) for [outgoing webhook endpoints](/docs/webhooks/outgoing.md).
 
 We also bump the value of `BulletTrain::Api.current_version` in `config/initializers/api.rb` so tools like Super Scaffolding know which version of your API to update going forward.
 
