@@ -46,15 +46,15 @@ module Webhooks::Outgoing::IssuingModel
 
   def generate_webhook_perform(action, api_versions)
     event_type = Webhooks::Outgoing::EventType.find_by(id: "#{self.class.name.underscore}.#{action}")
-    
+
     api_versions.each do |api_version|
       webhook = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_events.create(
-        event_type_id: event_type.id, 
-        subject: self, 
-        data: self.to_api_json(api_version), 
+        event_type_id: event_type.id,
+        subject: self,
+        data: to_api_json(api_version),
         api_version: api_version
       )
-      
+
       webhook.deliver
     end
   end
