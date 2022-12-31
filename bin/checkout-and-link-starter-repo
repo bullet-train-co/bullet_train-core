@@ -20,7 +20,7 @@ then
   done
 
   echo "Cloning from ${STARTER_REPO_BRANCH}..."
-  git clone -b $STARTER_REPO_BRANCH https://github.com/$CIRCLE_USERNAME/bullet_train.git tmp/starter
+  git clone -b $STARTER_REPO_BRANCH https://github.com/bullet-train-co/bullet_train.git tmp/starter
 else
   git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter
 fi
