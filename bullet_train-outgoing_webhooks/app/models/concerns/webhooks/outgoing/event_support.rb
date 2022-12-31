@@ -28,7 +28,7 @@ module Webhooks::Outgoing::EventSupport
   end
 
   def endpoints
-    endpoints = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_endpoints.listening_for_event_type_id(event_type_id)
+    endpoints = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_endpoints.where(api_version: api_version).listening_for_event_type_id(event_type_id)
 
     case subject_type
     when "Scaffolding::AbsolutelyAbstract::CreativeConcept"

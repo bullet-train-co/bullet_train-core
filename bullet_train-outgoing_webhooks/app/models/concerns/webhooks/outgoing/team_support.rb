@@ -12,15 +12,19 @@ module Webhooks::Outgoing::TeamSupport
     true
   end
 
-  def endpoints_listening_for_event_type?(event_type)
+  def endpoint_api_versions_for_event_type(event_type)
+    webhooks_outgoing_endpoints.listening_for_event_type_id(event_type.id).pluck(:api_version).uniq
+  end
+
+  def endpoint_api_versions_listening_for_event_type(event_type)
     if should_cache_endpoints_listening_for_event_type?
-      key = "#{cache_key_with_version}/endpoints_for_event_type/#{event_type.cache_key}"
+      key = "#{cache_key_with_version}/endpoints_for_event_type/#{event_type.cache_key}/api_version"
 
       Rails.cache.fetch(key, expires_in: 24.hours, race_condition_ttl: 5.seconds) do
-        webhooks_outgoing_endpoints.listening_for_event_type_id(event_type.id).any?
+        endpoint_api_versions_for_event_type(event_type)
       end
     else
-      webhooks_outgoing_endpoints.listening_for_event_type_id(event_type.id).any?
+      endpoint_api_versions_for_event_type(event_type)
     end
   end
 
