@@ -16,11 +16,7 @@ module BulletTrain
 
     def register_defaults(subject, parent, value, key = nil)
       if value.is_a?(Hash)
-        puts "Value at key #{key} is a hash that looks like this:"
-        puts value.inspect
-
         value.each do |child_key, child_value|
-          puts "Calling recursively"
           register_defaults(subject, parent, child_value, [key, child_key].compact.join("."))
         end
       elsif value.is_a?(String)
@@ -31,11 +27,7 @@ module BulletTrain
         final_value = final_value.gsub("%{subject_name}", "%{#{subject.name.underscore.split("/").last}_name}")
         final_value = final_value.gsub("%{parent_name}", "%{#{parent.name.underscore.split("/").last}_name}")
         final_value = final_value.gsub("%{parents_possessive}", "%{#{parent.name.underscore.split("/").last.pluralize}_possessive}")
-        puts "Value is a string! We'll register '#{final_key}' as '#{final_value}'"
-        puts key_to_hash_with_value(final_key, final_value).inspect
-        if I18n.t(final_key, default: nil)
-          puts "This already exists!"
-        else
+        unless I18n.t(final_key, default: nil)
           I18n.backend.store_translations(:en, key_to_hash_with_value(final_key, final_value))
         end
       end
