@@ -17,7 +17,6 @@ module Account::LocaleHelper
     prefix = model.class.name.split("::").last.underscore
     hash[:"#{prefix}_name"] = name
     hash[:"#{prefix.pluralize}_possessive"] = possessive_string(name)
-
     hash
   end
 
