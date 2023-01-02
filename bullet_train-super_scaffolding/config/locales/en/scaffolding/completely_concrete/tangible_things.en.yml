@@ -2,6 +2,7 @@ en:
   scaffolding/completely_concrete/tangible_things:
     label: Tangible Things
     navigation:
+      parent: scaffolding/absolutely_abstract/creative_concept
       icon: fal fa-puzzle-piece
     fields:
       id:
