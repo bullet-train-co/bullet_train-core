@@ -57,6 +57,16 @@ module BulletTrain
 
       I18n.backend.store_translations(:en, {
         subject.name.underscore.pluralize.to_s => {
+          index: {
+            contexts: {
+              parent.name.underscore => I18n.t("#{subject.name.underscore.pluralize}.index.contexts.parent")
+            }
+          }
+        }
+      })
+
+      I18n.backend.store_translations(:en, {
+        subject.name.underscore.pluralize.to_s => {
           breadcrumbs: {
             label: I18n.t("#{subject.name.underscore.pluralize}.label")
           },

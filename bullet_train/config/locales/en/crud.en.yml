@@ -23,7 +23,7 @@ en:
       index:
         section: "%{parents_possessive} %{subjects}"
         contexts:
-          scaffolding/absolutely_abstract/creative_concept:
+          parent:
             header: "%{subjects}"
             description: Below is a list of %{subjects} that have been added for %{parent_name}.
             description_empty: No %{subjects} have been added for %{parent_name}.
