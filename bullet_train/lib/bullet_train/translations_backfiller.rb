@@ -106,17 +106,8 @@ module BulletTrain
 
       # Copy to all the namespaces that are in play.
       [:account].each do |namespace|
-        I18n.backend.store_translations(:en, {
-          namespace => {
-            # TODO Need to make this programatic.
-            scaffolding: {
-              completely_concrete: {
-                # TODO Would this overwrite existing values if they defined some?
-                tangible_things: I18n.t(subject.name.underscore.pluralize.to_s)
-              }
-            }
-          }
-        })
+        # TODO Would this overwrite existing values if they defined some?
+        I18n.backend.store_translations(:en, key_to_hash_with_value("#{namespace}.#{subject.name.underscore.pluralize.gsub("/", ".")}", I18n.t(subject.name.underscore.pluralize.to_s)))
       end
     end
   end
