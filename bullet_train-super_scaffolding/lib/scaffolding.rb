@@ -26,3 +26,7 @@ module Scaffolding
     ].include?(type.gsub(/{.*}/, "")) # Pop off curly brackets such as `super_select{class_name=Membership}`
   end
 end
+
+require_relative "scaffolding/transformer"
+require_relative "scaffolding/class_names_transformer"
+require_relative "scaffolding/routes_file_manipulator"
