@@ -25,14 +25,7 @@ module BulletTrain
 
     initializer "showcase.themed" do
       config.after_initialize do
-        module Showcase::CurrentThemeHelper
-          def current_theme
-            :light # TODO: Figure out how to make this dynamic.
-          end
-        end
-
-        application_defined_helpers = ApplicationController.all_helpers_from_path(ApplicationController.helpers_path)
-        Showcase::ApplicationController.helper *application_defined_helpers, Showcase::CurrentThemeHelper
+        Showcase::ApplicationController.helper *ApplicationController.all_helpers_from_path(ApplicationController.helpers_path)
       end if defined?(Showcase)
     end
   end
