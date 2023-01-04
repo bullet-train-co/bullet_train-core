@@ -1,0 +1,15 @@
+<% showcase.sample "Default" do %>
+  <%= render "shared/box" do |partial| %>
+    <% partial.content_for :title, "Title" %>
+    <% partial.content_for :description, "Description" %>
+    <% partial.content_for :body, "Lorem ipsum dolor sit amet…" %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "With Divider" do %>
+  <%= render "shared/box", divider: true do |partial| %>
+    <% partial.content_for :title, "Title" %>
+    <% partial.content_for :description, "Description" %>
+    <% partial.content_for :body, "Lorem ipsum dolor sit amet…" %>
+  <% end %>
+<% end %>

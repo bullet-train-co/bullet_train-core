@@ -15,5 +15,25 @@ end
 
 module BulletTrain
   class Engine < ::Rails::Engine
+    initializer "showcase.sample_renderer" do
+      if defined?(Showcase)
+        # TODO: Figure out how to trigger Markdown's syntax highlighting without needing the 4-spaces minimum hack.
+        options = %i[UNSAFE HARDBREAKS]
+        Showcase.sample_renderer = ->(lines) { CommonMarker.render_html(lines.join.gsub(/^/, "  "), options).html_safe }
+      end
+    end
+
+    initializer "showcase.themed" do
+      config.after_initialize do
+        module Showcase::CurrentThemeHelper
+          def current_theme
+            :light # TODO: Figure out how to make this dynamic.
+          end
+        end
+
+        application_defined_helpers = ApplicationController.all_helpers_from_path(ApplicationController.helpers_path)
+        Showcase::ApplicationController.helper *application_defined_helpers, Showcase::CurrentThemeHelper
+      end if defined?(Showcase)
+    end
   end
 end

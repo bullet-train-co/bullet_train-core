@@ -86,6 +86,9 @@ Gem::Specification.new do |spec|
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
   spec.add_dependency "commonmarker" # TODO ➡️ `bullet_train-docs`?
 
+  # Allow users to document and showcase their partials, components, view helpers, etc.
+  spec.add_dependency "showcase-rails"
+
   # Extract the body from emails received using action inbox.
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
 
