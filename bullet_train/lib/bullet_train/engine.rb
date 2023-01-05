@@ -22,11 +22,5 @@ module BulletTrain
         Showcase.sample_renderer = ->(lines) { CommonMarker.render_html(lines.join.gsub(/^/, "  "), options).html_safe }
       end
     end
-
-    initializer "showcase.themed" do
-      config.after_initialize do
-        Showcase::ApplicationController.helper *ApplicationController.all_helpers_from_path(ApplicationController.helpers_path)
-      end if defined?(Showcase)
-    end
   end
 end
