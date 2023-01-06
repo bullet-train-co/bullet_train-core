@@ -41,6 +41,7 @@ class Scaffolding::Transformer
   RUBY_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will insert new fields above this line."
   RUBY_ADDITIONAL_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will also insert new fields above this line."
   RUBY_EVEN_MORE_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will additionally insert new fields above this line."
+  RUBY_NEW_API_VERSION_HOOK = "# 🚅 super scaffolding will insert new api versions above this line."
   RUBY_FILES_HOOK = "# 🚅 super scaffolding will insert file-related logic above this line."
   ERB_NEW_FIELDS_HOOK = "<%#{RUBY_NEW_FIELDS_HOOK} %>"
   CONCERNS_HOOK = "# 🚅 add concerns above."

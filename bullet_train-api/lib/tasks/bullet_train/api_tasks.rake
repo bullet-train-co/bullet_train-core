@@ -8,7 +8,8 @@ namespace :bullet_train do
       # Calculate new version.
       initializer_content = File.new("config/initializers/api.rb").readline
       previous_version = initializer_content.scan(/v\d+/).pop
-      new_version = "v#{previous_version.scan(/\d+/).pop.to_i + 1}"
+      new_version_int = previous_version.scan(/\d+/).pop.to_i + 1
+      new_version = "v#{new_version_int}"
 
       # Update initializer.
       File.write("config/initializers/api.rb", initializer_content.gsub(previous_version, new_version))
@@ -69,6 +70,21 @@ namespace :bullet_train do
         end
       end
       Scaffolding::FileManipulator.write("config/routes.rb", updated_file_contents)
+
+      # Update application locale for each locale that exists.
+      I18n.available_locales.each do |lang|
+        file = "config/locales/#{lang}/application.#{lang}.yml"
+        transformer = Scaffolding::Transformer.new("", "")
+
+        if File.exist?(file)
+          transformer.add_line_to_file(
+            file,
+            "#{new_version_int}: #{new_version.upcase}",
+            Scaffolding::Transformer::RUBY_NEW_API_VERSION_HOOK,
+            prepend: true
+          )
+        end
+      end
 
       puts "Finished bumping to #{new_version}"
     end
