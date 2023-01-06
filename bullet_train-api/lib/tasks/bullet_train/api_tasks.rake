@@ -81,7 +81,7 @@ namespace :bullet_train do
             file,
             "#{new_version_int}: #{new_version.upcase}",
             Scaffolding::Transformer::RUBY_NEW_API_VERSION_HOOK,
-            append: true
+            prepend: true
           )
         end
       end
