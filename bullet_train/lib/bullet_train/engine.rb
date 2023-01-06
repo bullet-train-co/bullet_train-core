@@ -15,5 +15,12 @@ end
 
 module BulletTrain
   class Engine < ::Rails::Engine
+    initializer "showcase.sample_renderer" do
+      if defined?(Showcase)
+        # TODO: Figure out how to trigger Markdown's syntax highlighting without needing the 4-spaces minimum hack.
+        options = %i[UNSAFE HARDBREAKS]
+        Showcase.sample_renderer = ->(lines) { CommonMarker.render_html(lines.join.gsub(/^/, "  "), options).html_safe }
+      end
+    end
   end
 end
