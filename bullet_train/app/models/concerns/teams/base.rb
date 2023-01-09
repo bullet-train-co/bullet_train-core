@@ -35,7 +35,7 @@ module Teams::Base
   end
 
   def platform_agent_access_tokens
-    Platform::AccessToken.joins(:application).where(resource_owner_id: users.where.not(platform_agent_of_id: nil))
+    Platform::AccessToken.joins(:application).where(resource_owner_id: users.where.not(platform_agent_of_id: nil), application: {team: nil})
   end
 
   def admins
