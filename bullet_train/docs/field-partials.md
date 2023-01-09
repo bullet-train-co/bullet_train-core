@@ -139,4 +139,3 @@ Set the data type to `jsonb` whenever passing the `multiple` option to a new att
  - [`buttons`](/docs/field-partials/buttons.md)
  - [`super_select`](/docs/field-partials/super-select.md)
  - [`file_field`](/docs/field-partials/file-field.md)
-
