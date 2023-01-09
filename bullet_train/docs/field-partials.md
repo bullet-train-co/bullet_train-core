@@ -126,6 +126,7 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 | `text_area` | `text` | | | | | |
 | `text_field` | `string` | | | | | |
 | `trix_editor` | `text` | | | [Trix](https://github.com/basecamp/trix) | Basic HTML-powered formatting features and support for at-mentions amongst team members. | |
+| `emoji_field` | `string` | | | [Emoji Mart](https://missiveapp.com/open/emoji-mart) | A front-end library which allows users to browse and select emojis with ease. | |
 
 ## A Note On Data Types
 Set the data type to `jsonb` whenever passing the `multiple` option to a new attribute.
@@ -138,4 +139,3 @@ Set the data type to `jsonb` whenever passing the `multiple` option to a new att
  - [`buttons`](/docs/field-partials/buttons.md)
  - [`super_select`](/docs/field-partials/super-select.md)
  - [`file_field`](/docs/field-partials/file-field.md)
-
