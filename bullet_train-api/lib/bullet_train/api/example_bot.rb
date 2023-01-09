@@ -4,6 +4,8 @@ require "active_support/inflector/methods"
 module BulletTrain
   module Api
     module ExampleBot
+      FactoryBot.definition_file_paths << "app/views/api/v1/open_api/examples"
+
       SUFFIX = "-bullet_train-api-example"
 
       def define(&block)
@@ -32,5 +34,12 @@ module BulletTrain
     end
 
     extend ExampleBot
+  end
+end
+
+class FactoryBot::DefinitionProxy
+  def example(name, options = {}, &block)
+    name = "#{name}#{BulletTrain::Api::ExampleBot::SUFFIX}"
+    @child_factories << [name, options, block]
   end
 end
