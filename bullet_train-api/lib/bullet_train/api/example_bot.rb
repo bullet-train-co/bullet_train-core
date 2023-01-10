@@ -58,6 +58,21 @@ module BulletTrain
         object
       end
 
+
+      # Replaces FactoryBot's `create_list` or `build_list` methods.
+      #
+      # Example:
+      #   BulletTrain::Api.example_list(:user, 10)
+      def example_list(model, quantity, **options)
+        objects = FactoryBot.build_list("#{model}#{SUFFIX}", quantity, **options)
+        objects.map.with_index do |object, index|
+          object.id ||= index + 1
+          object.created_at = Time.now if object.respond_to?(:created_at?)
+          object.updated_at = Time.now if object.respond_to?(:updated_at?)
+        end
+        objects
+      end
+
       class DSL
         # Replaces FactoryBot's `factory` method.
         #
