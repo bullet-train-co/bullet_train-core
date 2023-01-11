@@ -16,13 +16,9 @@ export default class extends Controller {
     // Else if we're tabbing backwards and go outside via the menu item header, we hide the group.
     if(event.key == 'Tab' && !event.shiftKey) {
       let lastIndex = this.menuItemLinkTargets.length - 1;
-      if(event.target == this.menuItemLinkTargets[lastIndex]) {
-        hideMenu = true;
-      }
+      hideMenu = event.target == this.menuItemLinkTargets[lastIndex]
     } else if (event.key == 'Tab' && event.shiftKey) {
-      if(event.target == this.menuItemHeaderTarget) {
-        hideMenu = true;
-      }
+      hideMenu = event.target == this.menuItemHeaderTarget
     }
 
     if(hideMenu) { this.menuItemGroupTarget.classList.add('invisible'); }
