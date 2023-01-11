@@ -11,7 +11,7 @@ module Colorizer
   end
 
   def colorize_similarly(object, saturation, lightness)
-    rnd = ((object.hash * 7) % 100) * 0.01
+    rnd = ((XXhash.xxh64(object) * 7) % 100) * 0.01
     hsl_to_rgb(rnd, saturation, lightness)
   end
 
