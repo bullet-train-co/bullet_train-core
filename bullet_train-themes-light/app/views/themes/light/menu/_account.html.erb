@@ -1,9 +1,13 @@
 <% expand ||= false %>
 <% hide_shadow ||= false %>
 
-<div class="relative <%= "group" unless expand %> <%= "shadow" unless hide_shadow %>" id="user">
+<div class="relative <%= "group" unless expand %> <%= "shadow" unless hide_shadow %>"
+     id="user" data-controller="desktop-menu"
+     data-action="keydown->desktop-menu#hideSubmenu focus->desktop-menu#showSubmenu"
+     data-desktop-menu-target="menuItemHeader"
+     tabIndex="0">
   <%= render "account/shared/menu/user" %>
-  <div class="invisible group-hover:visible">
+  <div class="invisible group-hover:visible" data-desktop-menu-target="menuItemGroup">
     <div class="absolute top-0 left-0 right-0 z-50">
       <%= render "account/shared/menu/user" %>
     </div>
