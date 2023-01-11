@@ -3,8 +3,6 @@ Bullet Train includes [Omniauth](https://github.com/omniauth/omniauth) by defaul
 
 For specific instructions on adding new OAuth providers, run the following on your shell:
 
-> TODO This scaffolder still needs to be updated to support the new way we distribute the Stripe Connect example via Ruby gem.
-
 ```
 bin/super-scaffold oauth-provider
 ```

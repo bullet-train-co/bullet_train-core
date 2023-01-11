@@ -1,0 +1,7 @@
+en:
+  account:
+    platform:
+      connections:
+        new:
+          header: "Connect %{application_name} to Team"
+          not_allowed: Not Allowed

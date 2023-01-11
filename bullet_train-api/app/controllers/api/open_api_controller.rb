@@ -25,6 +25,10 @@ module OpenApiHelper
     result
   end
 
+  def gem_paths
+    @gem_paths ||= `bundle show --paths`.lines.map { |gem_path| gem_path.chomp }
+  end
+
   def automatic_paths_for(model, parent, except: [])
     output = render("api/#{@version}/open_api/shared/paths", except: except)
     output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
@@ -33,7 +37,7 @@ module OpenApiHelper
 
   def automatic_components_for(model, locals: {})
     path = "app/views/api/#{@version}"
-    paths = ([path] + `bundle show --paths`.lines.map { |gem_path| "#{gem_path.chomp}/#{path}" })
+    paths = ([path] + gem_paths.map { |gem_path| "#{gem_path}/#{path}" })
     jbuilder = Jbuilder::Schema.renderer(paths, locals: {
       # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
       model.name.underscore.split("/").last.to_sym => model.new,
@@ -50,20 +54,26 @@ module OpenApiHelper
 
     attributes_output = JSON.parse(schema_json)
 
-    strong_params_module = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
-    strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module).report
-    if strong_parameter_keys.last.is_a?(Hash)
-      strong_parameter_keys += strong_parameter_keys.pop.keys
+    if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
+      strong_params_module = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
+      strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module).report
+      if strong_parameter_keys.last.is_a?(Hash)
+        strong_parameter_keys += strong_parameter_keys.pop.keys
+      end
+
+      parameters_output = JSON.parse(schema_json)
+      parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
+      parameters_output["properties"].select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
+
+      (
+        indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
+        indent("    " + parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Parameters:"), 3)
+      ).html_safe
+    else
+
+      indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
+        .html_safe
     end
-
-    parameters_output = JSON.parse(schema_json)
-    parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
-    parameters_output["properties"].select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
-
-    (
-      indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
-      indent("    " + parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Parameters:"), 3)
-    ).html_safe
   end
 
   def paths_for(model)
@@ -88,6 +98,13 @@ module OpenApiHelper
     indent(attribute_block.chomp, 2)
   end
   alias_method :parameter, :attribute
+
+  private
+
+  def has_strong_parameters?(controller)
+    methods = controller.action_methods
+    methods.include?("create") || methods.include?("update")
+  end
 end
 
 class Api::OpenApiController < ApplicationController

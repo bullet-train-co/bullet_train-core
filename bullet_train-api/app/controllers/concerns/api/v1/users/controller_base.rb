@@ -30,6 +30,8 @@ module Api::V1::Users::ControllerBase
       member_actions: (defined?(MEMBER_ACTIONS) ? MEMBER_ACTIONS : []),
       collection_actions: (defined?(COLLECTION_ACTIONS) ? COLLECTION_ACTIONS : [])
 
+    prepend_before_action :resolve_me
+
     private
 
     include StrongParameters
@@ -39,7 +41,19 @@ module Api::V1::Users::ControllerBase
   def index
   end
 
+  def resolve_me
+    if current_user && params[:id]&.downcase == "me"
+      params[:id] = current_user.id
+    end
+  end
+
   # GET /api/v1/users/:id
   def show
+  end
+
+  # PUT /api/v1/users/:id
+  # TODO: Implement this!
+  def update
+    raise "Not implemented"
   end
 end

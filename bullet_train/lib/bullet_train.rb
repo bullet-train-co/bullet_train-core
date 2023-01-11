@@ -1,6 +1,7 @@
 require "bullet_train/version"
 require "bullet_train/engine"
 require "bullet_train/resolver"
+require "bullet_train/configuration"
 
 require "bullet_train/fields"
 require "bullet_train/roles"
@@ -37,6 +38,14 @@ module BulletTrain
   mattr_accessor :linked_gems, default: ["bullet_train"]
   mattr_accessor :parent_class, default: "Team"
   mattr_accessor :base_class, default: "ApplicationRecord"
+
+  def self.configure
+    if block_given?
+      yield(BulletTrain::Configuration.default)
+    else
+      BulletTrain::Configuration.default
+    end
+  end
 end
 
 def default_url_options_from_base_url

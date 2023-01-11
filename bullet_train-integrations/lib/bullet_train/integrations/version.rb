@@ -1,5 +1,5 @@
 module BulletTrain
   module Integrations
-    VERSION = "1.2.3"
+    VERSION = "1.2.10"
   end
 end

@@ -4,10 +4,13 @@
   <% with_field_settings form: form do %>
     <%= render 'shared/fields/text_field', method: :name, options: {autofocus: true} %>
     <%= render 'shared/fields/text_field', method: :url %>
-    <%= render 'shared/fields/super_select', method: :scaffolding_absolutely_abstract_creative_concept_id,
-    choices: [['None', '']] + @endpoint.creative_concepts.map { |event_type| [event_type.name, event_type.id] }, other_options: {search: true} %>
+    <% unless I18n.t("webhooks/outgoing/endpoints.fields.api_version.options").keys.one? %>
+      <%= render 'shared/fields/super_select', method: :api_version %>
+    <% end %>
     <%= render 'shared/fields/super_select', method: :event_type_ids, html_options: {multiple: true},
-    choices: @endpoint.valid_event_types.map { |event_type| [event_type.label_string, event_type.id] } %>
+      choices: @endpoint.valid_event_types.map { |event_type| [event_type.label_string, event_type.id] } %>
+    <%= render 'shared/fields/super_select', method: :scaffolding_absolutely_abstract_creative_concept_id,
+      choices: [['None', '']] + @endpoint.creative_concepts.map { |event_type| [event_type.name, event_type.id] }, other_options: {search: true} %>
     <%# 🚅 super scaffolding will insert new fields above this line. %>
   <% end %>
 

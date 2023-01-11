@@ -1,10 +1,72 @@
 en:
-  webhooks/outgoing/events:
-    fields:
-      uuid: &uuid
-        heading: Event UUID
-      short_uuid: *uuid
-      event_type_name:
-        heading: Event Type
+  webhooks/outgoing/events: &events
+    label: &label Webhooks Events
+    fields: &fields
+      data:
+        _: &data Event Data
+        label: *data
+        heading: *data
+
+        id:
+          _: &id Event ID
+          label: *id
+          heading: *id
+
+        name:
+          _: &name Event Name
+          label: *name
+          heading: *name
+
+        description:
+          _: &description Event Description
+          label: *description
+          heading: *description
+
+        created_at:
+          _: &created_at DateTime Event was added
+          label: *created_at
+          heading: *created_at
+        updated_at:
+          _: &updated_at DateTime Event was updated
+          label: *updated_at
+          heading: *updated_at
+
+      event_id:
+        _: &event_id Event UUID
+        label: *event_id
+        heading: *event_id
+
+      event_type:
+        _: &event_type Event Type
+        label: *event_type
+        heading: *event_type
+
+      subject_id:
+        _: &subject_id Subject ID
+        label: *subject_id
+        heading: *subject_id
+
+      subject_type:
+        _: &subject_type Subject Type
+        label: *subject_type
+        heading: *subject_type
+
       payload:
-        heading: JSON Payload
+        _: &payload Payload
+        label: *payload
+        heading: *payload
+
+      uuid:
+        _: &uuid UUID
+        label: *uuid
+        heading: *uuid
+
+      short_uuid:
+        _: &short_uuid Short UUID
+        label: *short_uuid
+        heading: *short_uuid
+
+      event_type_name:
+        _: &event_type_name Event Type Name
+        label: *event_type_name
+        heading: *event_type_name
