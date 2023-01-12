@@ -29,51 +29,13 @@ require "active_support/inflector/methods"
 module BulletTrain
   module Api
     module ExampleBot
-      # This is the folder where OpenAPI examples are supposed to be stored
-      FactoryBot.definition_file_paths << "app/views/api/v1/open_api/examples"
-
-      # Suffix added to FactoryBot factory names to separate them from factories used in tests
-      # It should never be seen for the end user
-      SUFFIX = "-bullet_train-api-example"
-
-      # Replaces FactoryBot's `define` method.
-      #
-      # Example:
-      #   BulletTrain::Api.define do
-      #     ...
-      #   end
-      def define(&block)
-        DSL.run(block)
-      end
-
-      # Replaces FactoryBot's `create` or `build` methods.
-      #
-      # Example:
-      #   BulletTrain::Api.example(:user)
-      def example(model, **options)
-        object = FactoryBot.build("#{model}#{SUFFIX}", **options)
-        object.id ||= 1
-        object.created_at = Time.now if object.respond_to?(:created_at?)
-        object.updated_at = Time.now if object.respond_to?(:updated_at?)
-        object
-      end
-
-
-      # Replaces FactoryBot's `create_list` or `build_list` methods.
-      #
-      # Example:
-      #   BulletTrain::Api.example_list(:user, 10)
-      def example_list(model, quantity, **options)
-        objects = FactoryBot.build_list("#{model}#{SUFFIX}", quantity, **options)
-        objects.map.with_index do |object, index|
-          object.id ||= index + 1
-          object.created_at = Time.now if object.respond_to?(:created_at?)
-          object.updated_at = Time.now if object.respond_to?(:updated_at?)
-        end
-        objects
-      end
-
       class DSL
+        attr_accessor :version
+
+        def initialize(version)
+          @version = version
+        end
+
         # Replaces FactoryBot's `factory` method.
         #
         # Example:
@@ -82,14 +44,64 @@ module BulletTrain
         #   end
         def example(name, **options, &block)
           options[:class] ||= name.to_s.pluralize.classify
-          name = "#{name}#{BulletTrain::Api::ExampleBot::SUFFIX}"
+          name = "#{name}#{BulletTrain::Api::ExampleBot::SUFFIX}#{@version}"
 
           FactoryBot.define { factory(name, **options, &block) }
         end
 
-        def self.run(block)
-          new.instance_eval(&block)
+        def self.run(version, &block)
+          new(version).instance_eval(&block)
         end
+      end
+
+      # Suffix added to FactoryBot factory names to separate them from factories used in tests
+      # It should never be seen for the end user
+      SUFFIX = "-bullet_train-api-example-"
+
+      # This are the folders where OpenAPI examples are supposed to be stored
+      FactoryBot.definition_file_paths += Dir.glob("app/views/api/v*/open_api/examples")
+
+      # Extracts example file version from it's path
+      def example_version(path)
+        path.match(/app\/views\/api\/(..)\/open_api\/examples/).captures.first
+      end
+
+      # Replaces FactoryBot's `define` method.
+      #
+      # Example:
+      #   BulletTrain::Api.define do
+      #     ...
+      #   end
+      def define(&block)
+        DSL.run(example_version(caller.first), &block)
+      end
+
+      # Replaces FactoryBot's `create` or `build` methods.
+      #
+      # Example:
+      #   BulletTrain::Api.example(:user)
+      def example(model, **options)
+        version = options.delete(:version) || "v1"
+        object = FactoryBot.build("#{model}#{SUFFIX}#{version}", **options)
+        object.id ||= 1
+        object.created_at = Time.now if object.respond_to?(:created_at?)
+        object.updated_at = Time.now if object.respond_to?(:updated_at?)
+        object
+      end
+
+      # Replaces FactoryBot's `create_list` or `build_list` methods.
+      #
+      # Example:
+      #   BulletTrain::Api.example_list(:user, 10)
+      def example_list(model, quantity, **options)
+        version = options.delete(:version) || "v1"
+        objects = FactoryBot.build_list("#{model}#{SUFFIX}#{version}", quantity, **options)
+        objects.map.with_index do |object, index|
+          object.id ||= index + 1
+          object.created_at = Time.now if object.respond_to?(:created_at?)
+          object.updated_at = Time.now if object.respond_to?(:updated_at?)
+        end
+        objects
       end
     end
 
@@ -110,7 +122,7 @@ module FactoryBot
     #     end
     #   end
     def example(name, options = {}, &block)
-      name = "#{name}#{BulletTrain::Api::ExampleBot::SUFFIX}"
+      name = "#{name}#{BulletTrain::Api::ExampleBot::SUFFIX}#{BulletTrain::Api.example_version(caller.first)}"
       @child_factories << [name, options, block]
     end
   end
@@ -131,7 +143,7 @@ module FactoryBot
         super(name, false)
         @options = options.dup
         @overrides = options.extract_options!
-        @overrides[:example] = "#{@overrides[:example]}#{BulletTrain::Api::ExampleBot::SUFFIX}" if @overrides[:example]
+        @overrides[:example] = "#{@overrides[:example]}#{BulletTrain::Api::ExampleBot::SUFFIX}#{@overrides[:version] || "v1"}" if @overrides[:example]
         @factory_name = @overrides.delete(:example) || @overrides.delete(:factory) || name
         @traits = options
       end
