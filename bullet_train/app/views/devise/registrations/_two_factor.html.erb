@@ -1,8 +1,9 @@
 <%= render 'account/shared/box', divider: @backup_codes do |p| %>
   <% p.content_for :title, t("users.edit.two_factor.header") %>
   <% p.content_for :description, t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
-  <% p.content_for :body do %>
-    <% if current_user.otp_required_for_login? %>
+  <% if current_user.otp_required_for_login? %>
+    <% p.content_for :body do %>
+
       <% if @backup_codes %>
 
         <%= render 'account/shared/alert' do %>
@@ -40,3 +41,11 @@
     <% end %>
   <% end %>
 <% end %>
+
+<%= form_for current_user, url: account_two_factor_verify_path, method: :post, html: {class: 'form'} do |form| %>
+  <div class="sm:col-span-1">
+    <%= render 'shared/fields/text_field', form: form, method: :otp_attempt %>
+  </div>
+  <%= form.submit t('users.edit.two_factor.buttons.verify'), class: 'button' %>
+<% end %>
+

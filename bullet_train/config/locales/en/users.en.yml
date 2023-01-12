@@ -23,6 +23,7 @@ en:
         buttons:
           enable: Enable
           disable: Disable
+          verify: Verify
       buttons: *buttons
     notifications:
       updated: User was successfully updated.

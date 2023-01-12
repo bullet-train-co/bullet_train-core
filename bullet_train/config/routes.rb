@@ -15,6 +15,7 @@ Rails.application.routes.draw do
       root to: "dashboard#index", as: "dashboard"
 
       resource :two_factor, only: [:create, :destroy]
+      post "two_factor/verify", to: "two_factors#verify"
 
       # user-level onboarding tasks.
       namespace :onboarding do
