@@ -44,7 +44,7 @@ module BulletTrain
         #   end
         def example(name, **options, &block)
           options[:class] ||= name.to_s.pluralize.classify
-          name = "#{name}#{BulletTrain::Api::ExampleBot::SUFFIX}#{@version}"
+          name = BulletTrain::Api.example_name(name, @version)
 
           FactoryBot.define { factory(name, **options, &block) }
         end
@@ -66,6 +66,12 @@ module BulletTrain
         path.match(/app\/views\/api\/(..)\/open_api\/examples/).captures.first
       end
 
+      # Generates example name from model, suffix and version
+      def example_name(model, version = nil)
+        version ||= "v1"
+        "#{model}#{SUFFIX}#{version}"
+      end
+
       # Replaces FactoryBot's `define` method.
       #
       # Example:
@@ -81,8 +87,7 @@ module BulletTrain
       # Example:
       #   BulletTrain::Api.example(:user)
       def example(model, **options)
-        version = options.delete(:version) || "v1"
-        object = FactoryBot.build("#{model}#{SUFFIX}#{version}", **options)
+        object = FactoryBot.build(example_name(model, options.delete(:version)), **options)
         object.id ||= 1
         object.created_at = Time.now if object.respond_to?(:created_at?)
         object.updated_at = Time.now if object.respond_to?(:updated_at?)
@@ -94,8 +99,7 @@ module BulletTrain
       # Example:
       #   BulletTrain::Api.example_list(:user, 10)
       def example_list(model, quantity, **options)
-        version = options.delete(:version) || "v1"
-        objects = FactoryBot.build_list("#{model}#{SUFFIX}#{version}", quantity, **options)
+        objects = FactoryBot.build_list(example_name(model, options.delete(:version)), quantity, **options)
         objects.map.with_index do |object, index|
           object.id ||= index + 1
           object.created_at = Time.now if object.respond_to?(:created_at?)
@@ -121,8 +125,9 @@ module FactoryBot
     #       invited true
     #     end
     #   end
-    def example(name, options = {}, &block)
-      name = "#{name}#{BulletTrain::Api::ExampleBot::SUFFIX}#{BulletTrain::Api.example_version(caller.first)}"
+    def example(name, **options, &block)
+      version = options.delete(:version) || BulletTrain::Api.example_version(caller.first)
+      name = BulletTrain::Api.example_name(name, version)
       @child_factories << [name, options, block]
     end
   end
@@ -143,7 +148,7 @@ module FactoryBot
         super(name, false)
         @options = options.dup
         @overrides = options.extract_options!
-        @overrides[:example] = "#{@overrides[:example]}#{BulletTrain::Api::ExampleBot::SUFFIX}#{@overrides[:version] || "v1"}" if @overrides[:example]
+        @overrides[:example] = BulletTrain::Api.example_name(@overrides[:example], @overrides[:version]) if @overrides[:example]
         @factory_name = @overrides.delete(:example) || @overrides.delete(:factory) || name
         @traits = options
       end
