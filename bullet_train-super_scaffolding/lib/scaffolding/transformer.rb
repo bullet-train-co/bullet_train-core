@@ -23,6 +23,16 @@ class Scaffolding::Transformer
     "Team"
   end
 
+  def top_level_model?
+    parent == "Team" || no_parent?
+  end
+
+  # We write an explicit method here so we know we
+  # aren't handling `parent` in this situation as `nil`.
+  def no_parent?
+    parent == "None"
+  end
+
   def update_action_models_abstract_class(targets_n)
   end
 
@@ -290,6 +300,9 @@ class Scaffolding::Transformer
 
     Dir.foreach(resolve_template_path(directory)) do |file|
       file = "#{directory}/#{file}"
+
+      next if file.match?("/_menu_item.html.erb") && !top_level_model?
+
       unless File.directory?(resolve_template_path(file))
         scaffold_file(file)
       end
@@ -305,6 +318,9 @@ class Scaffolding::Transformer
     if override_path
       Dir.foreach(override_path) do |file|
         file = "#{directory}_overrides/#{file}"
+
+        next if file.match?("/_menu_item.html.erb") && !top_level_model?
+
         unless File.directory?(resolve_template_path(file))
           scaffold_file(file, overrides: true)
         end
@@ -1523,7 +1539,7 @@ class Scaffolding::Transformer
 
     unless cli_options["skip-parent"]
 
-      if parent == "Team" || parent == "None"
+      if top_level_model?
         icon_name = nil
         if cli_options["sidebar"].present?
           icon_name = cli_options["sidebar"]
