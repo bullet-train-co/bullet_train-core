@@ -1,5 +1,7 @@
 require "factory_bot"
 require "active_support/inflector/methods"
+require "action_controller/base"
+require_relative "../../../app/helpers/api/open_api_helper"
 
 # This file contains code allowing creating OpenAPI examples using FactoryBot,
 # with almost the same DSL, and avoiding declaring same factories as already
@@ -79,7 +81,7 @@ module BulletTrain
       #     ...
       #   end
       def define(&block)
-        DSL.run(example_version(caller.first), &block)
+        DSL.run(example_version(caller(1..1).first), &block)
       end
 
       # Replaces FactoryBot's `create` or `build` methods.
@@ -107,6 +109,51 @@ module BulletTrain
         end
         objects
       end
+
+      %i[get_examples get_example post_examples post_parameters put_example put_parameters patch_example patch_parameters].each do |method|
+        define_method(method) do |model, **options|
+          path_examples(method.to_s, model, **options)
+        end
+      end
+
+      private
+
+      include ::Api::OpenApiHelper
+      def path_examples(method, model, **options)
+        case method.split("_").first
+        when "get"
+          version = options.delete(:version) || "v1"
+          count = (options.delete(:count) || method == "get_examples") ? 2 : 1
+
+          if count > 1
+            var_name = model.to_s.pluralize
+            values = BulletTrain::Api.example_list(model, count, version: version)
+          else
+            var_name = model
+            values = BulletTrain::Api.example(model, version: version)
+          end
+
+          template = (method == "get_examples") ? "index" : "show"
+        else
+          case method.split("_").last
+          when "example", "examples"
+            return path_examples("get_example", model, **options)
+          else
+            return nil
+          end
+        end
+
+        indent(
+          JSON.parse(
+            ActionController::Base.render(
+              template: "api/#{version}/#{model.to_s.pluralize}/#{template}",
+              assigns: {"#{var_name}": values},
+              formats: :json
+            )
+          ).to_yaml
+           .delete_prefix("---\n"), 7
+        ).html_safe
+      end
     end
 
     extend ExampleBot
@@ -126,7 +173,7 @@ module FactoryBot
     #     end
     #   end
     def example(name, **options, &block)
-      version = options.delete(:version) || BulletTrain::Api.example_version(caller.first)
+      version = options.delete(:version) || BulletTrain::Api.example_version(caller(1..1).first)
       name = BulletTrain::Api.example_name(name, version)
       @child_factories << [name, options, block]
     end
