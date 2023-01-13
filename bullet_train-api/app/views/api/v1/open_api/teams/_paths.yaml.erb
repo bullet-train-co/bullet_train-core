@@ -22,6 +22,9 @@
               type: array
               items:
                 $ref: "#/components/schemas/TeamAttributes"
+            example:
+              <%= BulletTrain::Api.get_examples(:team, version: @version) %>
+
 /teams/{id}:
   get:
     tags:
@@ -39,6 +42,8 @@
           application/json:
             schema:
               $ref: "#/components/schemas/TeamAttributes"
+            example:
+              <%= BulletTrain::Api.get_example(:team, version: @version) %>
   put:
     tags:
       - Teams
@@ -66,3 +71,5 @@
           application/json:
             schema:
               $ref: "#/components/schemas/TeamAttributes"
+            example:
+              <%= BulletTrain::Api.put_example(:team, version: @version) %>

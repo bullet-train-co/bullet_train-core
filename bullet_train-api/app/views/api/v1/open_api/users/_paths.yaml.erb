@@ -22,6 +22,8 @@
               type: array
               items:
                 $ref: "#/components/schemas/UserAttributes"
+            example:
+              <%= BulletTrain::Api.get_examples(:user, version: @version) %>
 /users/{id}:
   get:
     tags:
@@ -39,6 +41,8 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UserAttributes"
+            example:
+              <%= BulletTrain::Api.get_example(:user, version: @version) %>
   put:
     tags:
       - Users
@@ -66,3 +70,5 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UserAttributes"
+            example:
+              <%= BulletTrain::Api.put_example(:user, version: @version) %>
