@@ -1,6 +1,6 @@
 # Color Schemes
 
-The following color schemes are available in Bullet Train.
+The following color schemes are available in Bullet Train.<br/>
 Change the value in `config/initializers/theme.rb` to set the theme you want to use:
 
 ```ruby
@@ -8,7 +8,6 @@ BulletTrain::Themes::Light.color = :blue
 ```
 
 ## :blue
-
 ![blue](https://user-images.githubusercontent.com/10546292/212326169-2d98a788-871d-4683-9e82-bc2ee67f16a7.png)
 
 ## :green
