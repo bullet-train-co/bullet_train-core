@@ -33,6 +33,7 @@
 ## UI
  - [Field Partials](/docs/field-partials.md)
  - [Theme Engine](/docs/themes.md)
+ - [Color Schemes](/docs/color-schemes.md)
  - [Partial Improvements](https://github.com/bullet-train-co/nice_partials) <i class="ti ti-new-window ml-2"></i>
 
 ## Billing

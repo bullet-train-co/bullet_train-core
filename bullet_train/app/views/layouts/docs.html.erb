@@ -199,6 +199,12 @@
                   <% end %>
                 <% end %>
 
+                <%= render 'account/shared/menu/item', url: '/docs/color-schemes', label: 'Color Schemes' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-paint-brush ti ti-brush"></i>
+                  <% end %>
+                <% end %>
+
                 <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/nice_partials', label: 'Nice Partials' do |p| %>
                   <% p.content_for :icon do %>
                     <i class="fal fa-swatchbook ti ti-widget"></i>
