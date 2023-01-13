@@ -35,16 +35,18 @@
             <%= render 'shared/fields/text_field', form: form, method: :otp_attempt %>
           </div>
           <%= form.submit t('users.edit.two_factor.buttons.verify'), class: 'button' %>
-        <% end %>
+        <% end %> 
       <% end %>
     <% end %>
   <% end %>
   <% p.content_for :actions do %>
-    <% if current_user.otp_required_for_login? %>
-      <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, method: :delete, remote: true, class: "button" %>
-    <% else %>
-      <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, method: :post, remote: true, class: "button" %>
-    <% end %>
+    <div class="<%= 'hidden' if @backup_codes %> space-y">
+      <% if current_user.otp_required_for_login? %>
+        <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, method: :delete, remote: true, class: "button" %>
+      <% else %>
+        <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, method: :post, remote: true, class: "button" %>
+      <% end %>
+    </div>
   <% end %>
 <% end %>
 

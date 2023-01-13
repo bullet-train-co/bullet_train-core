@@ -11,8 +11,6 @@ class Account::TwoFactorsController < Account::ApplicationController
     if otp_code
       current_user.update(otp_required_for_login: true)     
     end
-
-    render plain: "Hello"
   end
 
   def create
