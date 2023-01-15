@@ -29,12 +29,10 @@ packages=bullet_train*
 
 for package in $packages; do
   :
+  echo $package
   grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
   mv Gemfile.tmp Gemfile
   echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
 
-echo $packages
-echo "${packages[@]}"
-echo "${packages[*]}"
 bundle lock --update $packages
