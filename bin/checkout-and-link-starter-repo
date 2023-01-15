@@ -33,3 +33,8 @@ for package in $packages; do
   mv Gemfile.tmp Gemfile
   echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
+
+echo $packages
+echo "${packages[@]}"
+echo "${packages[*]}"
+bundle lock --update $packages

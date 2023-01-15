@@ -106,7 +106,6 @@ jobs:
       - run: ../../bin/checkout-and-link-starter-repo
 
       - restore_cache: *restore_bundler_cache
-      - run: bundle lock --update ../../bullet_train*
       - run: bundle install
       - run: bundle clean --force
       - run: bundle exec rake bt:link
