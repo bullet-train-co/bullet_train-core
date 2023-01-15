@@ -55,7 +55,6 @@ do
   echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
 
-printf -v updates "%s," "${packages[@]}"
-updates=${updates%?} # Remove the last , character
-
+updates="${packages[@]}"
+echo $updates
 bundle lock --update $updates
