@@ -33,13 +33,3 @@ for package in $packages; do
   mv Gemfile.tmp Gemfile
   echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
-
-export BUNDLE_PATH="vendor/bundle"
-
-bundle lock --update $packages
-bundle install
-bundle clean --force
-bundle exec rake bt:link
-yarn install
-yarn build
-yarn build:css
