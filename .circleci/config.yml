@@ -102,7 +102,7 @@ jobs:
           firefox-version: 108.0.1
 
       - restore_cache: *restore_bundler_cache
-      - run: "bin/checkout-and-link-starter-repo"
+      - run: "../../bin/checkout-and-link-starter-repo"
       - save_cache: *save_bundler_cache
 
       # TODO Figure out how to make these work for `tmp/starter`
@@ -147,7 +147,7 @@ jobs:
           firefox-version: 108.0.1
 
       - restore_cache: *restore_bundler_cache
-      - run: "bin/checkout-and-link-starter-repo"
+      - run: "../../bin/checkout-and-link-starter-repo"
       - save_cache: *save_bundler_cache
 
       # TODO Figure out how to make these work for `tmp/starter`
