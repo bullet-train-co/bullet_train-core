@@ -58,4 +58,4 @@ done
 printf -v updates "%s," "${packages[@]}"
 updates=${updates%?} # Remove the last , character
 
-bundle lock --update updates
+bundle lock --update $updates
