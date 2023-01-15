@@ -20,51 +20,39 @@ then
   done
 
   echo "Cloning from ${STARTER_REPO_BRANCH}..."
-  git clone -b $STARTER_REPO_BRANCH https://github.com/bullet-train-co/bullet_train.git tmp/starter
+  git clone -b $STARTER_REPO_BRANCH https://github.com/bullet-train-co/bullet_train.git .
 else
-  git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter
+  git clone https://github.com/bullet-train-co/bullet_train.git .
 fi
 
-# This one is a little different.
-grep -v 'gem "bullet_train"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
-mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
-echo 'gem "bullet_train", path: "../../bullet_train"' >> tmp/starter/Gemfile
-
-packages=( 
-  "api" 
-  "fields" 
-  "has_uuid"
-  "incoming_webhooks"
-  "integrations"
-  "integrations-stripe"
-  "obfuscates_id"
-  "outgoing_webhooks"
-  "roles"
-  "scope_questions"
-  "scope_validator"
-  "sortable"
-  "super_load_and_authorize_resource"
-  "super_scaffolding"
-  "themes"
-  "themes-light"
-  "themes-tailwind_css"
+packages=(
+  "bullet_train"
+  "bullet_train-api"
+  "bullet_train-fields"
+  "bullet_train-has_uuid"
+  "bullet_train-incoming_webhooks"
+  "bullet_train-integrations"
+  "bullet_train-integrations-stripe"
+  "bullet_train-obfuscates_id"
+  "bullet_train-outgoing_webhooks"
+  "bullet_train-roles"
+  "bullet_train-scope_questions"
+  "bullet_train-scope_validator"
+  "bullet_train-sortable"
+  "bullet_train-super_load_and_authorize_resource"
+  "bullet_train-super_scaffolding"
+  "bullet_train-themes"
+  "bullet_train-themes-light"
+  "bullet_train-themes-tailwind_css"
 )
 
 for package in "${packages[@]}"
 do
-  : 
-  grep -v "gem \"bullet_train-${package}\"" tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
-  mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
-  echo "gem \"bullet_train-${package}\", path: \"../../bullet_train-${package}\"" >> tmp/starter/Gemfile
+  :
+  grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
+  mv Gemfile.tmp Gemfile
+  echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
 
-cd tmp/starter
-
-bundle install
-bundle clean --force
-bundle exec rake bt:link
-yarn install
-yarn build
-yarn build:css
-
-cd ../..
+updates="${packages[@]}"
+bundle lock --update $updates
