@@ -36,7 +36,9 @@ done
 
 cd tmp/starter
 
-# bundle lock --update=
+export BUNDLE_PATH="vendor/bundle"
+
+bundle lock --update $packages
 bundle install
 bundle clean --force
 bundle exec rake bt:link
