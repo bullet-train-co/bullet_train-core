@@ -50,9 +50,9 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     steps:
+      - checkout
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
-      - checkout
 
       # Install dependencies
       - run: "bundle install"
@@ -96,10 +96,10 @@ jobs:
     working_directory: tmp/starter
     parallelism: 16
     steps:
-      - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
       - checkout:
           path: ~/project
+      - browser-tools/install-browser-tools:
+          firefox-version: 108.0.1
 
       - restore_cache: *restore_bundler_cache
       - run: "bin/checkout-and-link-starter-repo"
@@ -141,10 +141,10 @@ jobs:
     executor: ruby/default
     working_directory: tmp/starter
     steps:
-      - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
       - checkout:
           path: ~/project
+      - browser-tools/install-browser-tools:
+          firefox-version: 108.0.1
 
       - restore_cache: *restore_bundler_cache
       - run: "bin/checkout-and-link-starter-repo"
