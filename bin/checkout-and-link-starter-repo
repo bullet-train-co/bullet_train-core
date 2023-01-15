@@ -20,21 +20,19 @@ then
   done
 
   echo "Cloning from ${STARTER_REPO_BRANCH}..."
-  git clone -b $STARTER_REPO_BRANCH https://github.com/bullet-train-co/bullet_train.git tmp/starter
+  git clone -b $STARTER_REPO_BRANCH https://github.com/bullet-train-co/bullet_train.git .
 else
-  git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter
+  git clone https://github.com/bullet-train-co/bullet_train.git .
 fi
 
 packages=bullet_train*
 
 for package in $packages; do
   :
-  grep -v "gem \"$package\"" tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
-  mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
-  echo "gem \"$package\", path: \"../../$package\"" >> tmp/starter/Gemfile
+  grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
+  mv Gemfile.tmp Gemfile
+  echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
-
-cd tmp/starter
 
 export BUNDLE_PATH="vendor/bundle"
 
@@ -45,5 +43,3 @@ bundle exec rake bt:link
 yarn install
 yarn build
 yarn build:css
-
-cd ../..
