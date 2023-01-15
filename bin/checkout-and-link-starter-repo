@@ -30,36 +30,18 @@ grep -v 'gem "bullet_train"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
 mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
 echo 'gem "bullet_train", path: "../../bullet_train"' >> tmp/starter/Gemfile
 
-packages=( 
-  "api" 
-  "fields" 
-  "has_uuid"
-  "incoming_webhooks"
-  "integrations"
-  "integrations-stripe"
-  "obfuscates_id"
-  "outgoing_webhooks"
-  "roles"
-  "scope_questions"
-  "scope_validator"
-  "sortable"
-  "super_load_and_authorize_resource"
-  "super_scaffolding"
-  "themes"
-  "themes-light"
-  "themes-tailwind_css"
-)
+packages=bullet_train-*
 
-for package in "${packages[@]}"
-do
-  : 
-  grep -v "gem \"bullet_train-${package}\"" tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
+for package in $packages; do
+  :
+  grep -v "gem \"$package\"" tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
   mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
-  echo "gem \"bullet_train-${package}\", path: \"../../bullet_train-${package}\"" >> tmp/starter/Gemfile
+  echo "gem \"$package\", path: \"../../$package\"" >> tmp/starter/Gemfile
 done
 
 cd tmp/starter
 
+# bundle lock --update=
 bundle install
 bundle clean --force
 bundle exec rake bt:link
