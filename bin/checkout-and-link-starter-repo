@@ -25,12 +25,7 @@ else
   git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter
 fi
 
-# This one is a little different.
-grep -v 'gem "bullet_train"' tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
-mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
-echo 'gem "bullet_train", path: "../../bullet_train"' >> tmp/starter/Gemfile
-
-packages=bullet_train-*
+packages=bullet_train*
 
 for package in $packages; do
   :
