@@ -49,12 +49,10 @@ packages=(
 for package in "${packages[@]}"
 do
   :
-  echo $package
   grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
   mv Gemfile.tmp Gemfile
   echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
 
 updates="${packages[@]}"
-echo $updates
 bundle lock --update $updates

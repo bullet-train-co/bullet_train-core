@@ -150,14 +150,25 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
+    environment:
+      BUNDLE_PATH: vendor/bundle
+    parallelism: 16
     steps:
       - checkout:
           path: ~/project
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
 
+      - run: ../../bin/checkout-and-link-starter-repo
+
       - restore_cache: *restore_bundler_cache
-      - run: "../../bin/checkout-and-link-starter-repo"
+      - run: bundle install
+      - run: bundle clean --force
+      - run: bundle exec rake bt:link
+      - run: yarn install
+      - run: yarn build
+      - run: yarn build:css
+
       - save_cache: *save_bundler_cache
 
       # TODO Figure out how to make these work for `tmp/starter`
