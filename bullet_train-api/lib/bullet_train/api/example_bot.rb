@@ -31,6 +31,8 @@ require_relative "../../../app/helpers/api/open_api_helper"
 module BulletTrain
   module Api
     module ExampleBot
+      include ::Api::OpenApiHelper
+
       class DSL
         attr_accessor :version
 
@@ -46,7 +48,7 @@ module BulletTrain
         #   end
         def example(name, **options, &block)
           options[:class] ||= name.to_s.pluralize.classify
-          name = BulletTrain::Api.example_name(name, @version)
+          name = BulletTrain::Api.send(:example_name, name, @version)
 
           FactoryBot.define { factory(name, **options, &block) }
         end
@@ -61,17 +63,15 @@ module BulletTrain
       SUFFIX = "-bullet_train-api-example-"
 
       # This are the folders where OpenAPI examples are supposed to be stored
-      FactoryBot.definition_file_paths += Dir.glob("app/views/api/v*/open_api/examples")
+      path = "app/views/api/v*/open_api/examples"
+      paths = ([path] + ::Api::OpenApiHelper.gem_paths.map { |gem_path| "#{gem_path}/#{path}" }).map { |p| Dir.glob(p) }.flatten.compact
+
+      # Set examples paths
+      FactoryBot.definition_file_paths += paths
 
       # Extracts example file version from it's path
       def example_version(path)
         path.match(/app\/views\/api\/(..)\/open_api\/examples/).captures.first
-      end
-
-      # Generates example name from model, suffix and version
-      def example_name(model, version = nil)
-        version ||= "v1"
-        "#{model}#{SUFFIX}#{version}"
       end
 
       # Replaces FactoryBot's `define` method.
@@ -118,7 +118,12 @@ module BulletTrain
 
       private
 
-      include ::Api::OpenApiHelper
+      # Generates example name from model, suffix and version
+      def example_name(model, version = nil)
+        version ||= "v1"
+        "#{model}#{SUFFIX}#{version}"
+      end
+
       def path_examples(method, model, **options)
         case method.split("_").first
         when "get"
@@ -126,11 +131,13 @@ module BulletTrain
           count = (options.delete(:count) || method == "get_examples") ? 2 : 1
 
           if count > 1
-            var_name = model.to_s.pluralize
             values = BulletTrain::Api.example_list(model, count, version: version)
+            class_name = values.first.class.name
+            var_name = class_name.demodulize.underscore.pluralize
           else
-            var_name = model
             values = BulletTrain::Api.example(model, version: version)
+            class_name = values.class.name
+            var_name = class_name.demodulize.underscore
           end
 
           template = (method == "get_examples") ? "index" : "show"
@@ -146,7 +153,7 @@ module BulletTrain
         indent(
           JSON.parse(
             ActionController::Base.render(
-              template: "api/#{version}/#{model.to_s.pluralize}/#{template}",
+              template: "api/#{version}/#{class_name.underscore.pluralize}/#{template}",
               assigns: {"#{var_name}": values},
               formats: :json
             )
@@ -173,8 +180,8 @@ module FactoryBot
     #     end
     #   end
     def example(name, **options, &block)
-      version = options.delete(:version) || BulletTrain::Api.example_version(caller(1..1).first)
-      name = BulletTrain::Api.example_name(name, version)
+      version = options.delete(:version) || BulletTrain::Api.send(:example_version, caller(1..1).first)
+      name = BulletTrain::Api.send(:example_name, name, version)
       @child_factories << [name, options, block]
     end
   end
@@ -195,7 +202,7 @@ module FactoryBot
         super(name, false)
         @options = options.dup
         @overrides = options.extract_options!
-        @overrides[:example] = BulletTrain::Api.example_name(@overrides[:example], @overrides[:version]) if @overrides[:example]
+        @overrides[:example] = BulletTrain::Api.send(:example_name, @overrides[:example], @overrides[:version]) if @overrides[:example]
         @factory_name = @overrides.delete(:example) || @overrides.delete(:factory) || name
         @traits = options
       end

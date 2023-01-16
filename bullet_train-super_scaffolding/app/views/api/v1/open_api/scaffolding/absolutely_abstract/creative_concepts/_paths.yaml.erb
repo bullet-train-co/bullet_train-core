@@ -1,7 +1,4 @@
-<% except ||= [] %>
-<% unless except.include?(:index) && except.include?(:create) %>
 /scaffolding/absolutely_abstract/creative_concepts/{absolutely_abstract_creative_concept_id}/completely_concrete/tangible_things:
-  <% unless except.include?(:index) %>
   get:
     tags:
       - "Scaffolding/Completely Concrete/Tangible Things"
@@ -13,27 +10,22 @@
         required: true
         schema:
           type: string
-      - $ref: "#/components/parameters/after"
     responses:
       "404":
         description: "Not Found"
       "200":
         description: "OK"
-        headers:
-          Pagination-Next:
-            $ref: "#/components/headers/PaginationNext"
-          Link:
-            $ref: "#/components/headers/Link"
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
-            example:
-              <%= BulletTrain::Api.get_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
-  <% end %>
-  <% unless except.include?(:create) %>
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+                has_more:
+                  type: boolean
   post:
     tags:
       - "Scaffolding/Completely Concrete/Tangible Things"
@@ -45,17 +37,6 @@
         required: true
         schema:
           type: string
-    requestBody:
-      description: "Information about a new Tangible Thing"
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              scaffolding_completely_concrete_tangible_thing:
-                type: object
-                $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
     responses:
       "404":
         description: "Not Found"
@@ -64,12 +45,8 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
-  <% end %>
-<% end %>
-<% unless except.include?(:show) && except.include?(:update) && except.include?(:destroy) %>
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
 /scaffolding/completely_concrete/tangible_things/{id}:
-  <% unless except.include?(:show) %>
   get:
     tags:
       - "Scaffolding/Completely Concrete/Tangible Things"
@@ -86,10 +63,6 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
-            example:
-              <%= BulletTrain::Api.get_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
-  <% end %>
-  <% unless except.include?(:update) %>
   put:
     tags:
       - "Scaffolding/Completely Concrete/Tangible Things"
@@ -97,17 +70,6 @@
     operationId: updateScaffoldingCompletelyConcreteTangibleThings
     parameters:
       - $ref: "#/components/parameters/id"
-    requestBody:
-      description: "Information about updated fields in Tangible Thing"
-      required: true
-      content:
-        application/json:
-          schema:
-            type: object
-            properties:
-              scaffolding_completely_concrete_tangible_thing:
-                type: object
-                $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
     responses:
       "404":
         description: "Not Found"
@@ -116,11 +78,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
-            example:
-              <%= BulletTrain::Api.put_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
-  <% end %>
-  <% unless except.include?(:destroy) %>
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
   delete:
     tags:
       - "Scaffolding/Completely Concrete/Tangible Things"
@@ -131,7 +89,5 @@
     responses:
       "404":
         description: "Not Found"
-      "204":
-        description: "No Content"
-  <% end %>
-<% end %>
+      "200":
+        description: "OK"

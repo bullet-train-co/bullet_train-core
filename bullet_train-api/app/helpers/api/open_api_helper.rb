@@ -29,6 +29,7 @@ module Api
     def gem_paths
       @gem_paths ||= `bundle show --paths`.lines.map { |gem_path| gem_path.chomp }
     end
+    module_function :gem_paths
 
     def automatic_paths_for(model, parent, except: [])
       output = render("api/#{@version}/open_api/shared/paths", except: except)
