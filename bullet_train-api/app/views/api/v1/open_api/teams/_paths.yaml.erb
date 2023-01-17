@@ -62,6 +62,8 @@
               team:
                 type: object
                 $ref: "#/components/schemas/TeamParameters"
+          example:
+            <%= BulletTrain::Api.put_parameters(:team, version: @version) %>
     responses:
       "404":
         description: "Not Found"
