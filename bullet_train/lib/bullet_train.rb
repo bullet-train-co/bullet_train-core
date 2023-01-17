@@ -115,7 +115,7 @@ def cloudinary_enabled?
 end
 
 def two_factor_authentication_enabled?
-  ENV["TWO_FACTOR_ENCRYPTION_KEY"].present?
+  Rails.application.credentials.active_record_encryption.primary_key
 end
 
 # Don't redefine this if an application redefines it locally.
