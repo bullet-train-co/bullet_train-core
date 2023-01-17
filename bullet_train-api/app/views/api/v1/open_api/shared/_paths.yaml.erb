@@ -56,6 +56,8 @@
               scaffolding_completely_concrete_tangible_thing:
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
+          example:
+            <%= BulletTrain::Api.post_parameters(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -65,6 +67,8 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+            example:
+              <%= BulletTrain::Api.post_examples(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
   <% end %>
 <% end %>
 <% unless except.include?(:show) && except.include?(:update) && except.include?(:destroy) %>
@@ -108,6 +112,8 @@
               scaffolding_completely_concrete_tangible_thing:
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
+          example:
+            <%= BulletTrain::Api.put_parameters(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
     responses:
       "404":
         description: "Not Found"

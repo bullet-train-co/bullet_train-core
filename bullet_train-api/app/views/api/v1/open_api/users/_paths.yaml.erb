@@ -61,6 +61,8 @@
               user:
                 type: object
                 $ref: "#/components/schemas/UserParameters"
+          example:
+            <%= BulletTrain::Api.put_parameters(:onboarded_user, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -71,4 +73,4 @@
             schema:
               $ref: "#/components/schemas/UserAttributes"
             example:
-              <%= BulletTrain::Api.put_example(:user, version: @version) %>
+              <%= BulletTrain::Api.put_example(:onboarded_user, version: @version) %>
