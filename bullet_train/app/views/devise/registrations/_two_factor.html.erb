@@ -2,9 +2,8 @@
   <% p.content_for :title, t("users.edit.two_factor.header") %>
   <% p.content_for :description, t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
   <% if current_user.otp_secret %>
-    <% p.content_for :body do %>
-
-      <% if @backup_codes %>
+    <% if @backup_codes %>
+      <% p.content_for :body do %>
 
         <%= render 'account/shared/alert' do %>
           <%= t('users.edit.two_factor.warning').html_safe %>
