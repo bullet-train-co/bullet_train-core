@@ -13,9 +13,10 @@ class Account::TwoFactorsController < Account::ApplicationController
     puts "*********boolean = #{all_good}"
 
     if all_good
+      @verified = true
       current_user.update(otp_required_for_login: true)     
     else
-      # @backup_codes = nil
+      @verified = false
       current_user.update(
         otp_required_for_login: false,
         otp_secret: nil

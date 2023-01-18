@@ -40,6 +40,12 @@
   <% end %>
   <% p.content_for :actions do %>
     <div class="<%= 'hidden' if @backup_codes %> space-y">
+      <% if local_assigns.has_key? :verified %>
+        <div class="<%= 'hidden' if verified %>">
+          <p><%= t('users.edit.two_factor.description_failed_verification').html_safe %></p>
+        </div>
+      <% end %>
+
       <% if current_user.otp_required_for_login? %>
         <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, method: :delete, remote: true, class: "button" %>
       <% else %>
