@@ -2,14 +2,24 @@ class Account::TwoFactorsController < Account::ApplicationController
   before_action :authenticate_user!
 
   def verify
-    puts "****** #{params["user"]["otp_attempt"]} ******"
+    @user = current_user
+    
     otp_code = params["user"]["otp_attempt"]
-    # todo: verify user entered value. Need to access d2f gem internals:
-    # User.validate_and_consume_otp!(otp_code) from Devise::Models::TwoFactorAuthenticatable
+
+    # validate_and_consume_otp! from Devise::Models::TwoFactorAuthenticatable here:
     # https://github.com/tinfoil/devise-two-factor/blob/7e03c6fbef4c949352f43f0f2fcbac66185a0940/lib/devise_two_factor/models/two_factor_authenticatable.rb#L36
 
-    if otp_code
+    all_good = current_user.validate_and_consume_otp!(otp_code)
+    puts "*********boolean = #{all_good}"
+
+    if all_good
       current_user.update(otp_required_for_login: true)     
+    else
+      # @backup_codes = nil
+      current_user.update(
+        otp_required_for_login: false,
+        otp_secret: nil
+      )
     end
   end
 

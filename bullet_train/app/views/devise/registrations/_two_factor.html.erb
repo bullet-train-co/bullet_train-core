@@ -30,7 +30,7 @@
           <% end %>
         </center>
 
-        <%= form_for current_user, url: verify_account_two_factor_path, method: :post, html: {class: 'form'} do |form| %>
+        <%= form_for current_user, url: verify_account_two_factor_path, method: :post, remote:true, html: {class: 'form'} do |form| %>
           <div class="py-4">
             <%= render 'shared/fields/text_field', form: form, method: :otp_attempt %>
           </div>
