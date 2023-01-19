@@ -41,9 +41,11 @@
   <% p.content_for :actions do %>
     <div class="<%= 'hidden' if @backup_codes %> space-y">
       <% if local_assigns.has_key? :verified %>
-        <div class="<%= 'hidden' if verified %>">
-          <p><%= t('users.edit.two_factor.description_failed_verification').html_safe %></p>
-        </div>
+        <% unless verified %>
+          <%= render 'account/shared/alert' do %>
+            <%= t('users.edit.two_factor.description_failed_verification').html_safe %>
+          <% end %>
+        <% end %>
       <% end %>
 
       <% if current_user.otp_required_for_login? %>

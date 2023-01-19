@@ -3,20 +3,16 @@ class Account::TwoFactorsController < Account::ApplicationController
 
   def verify
     @user = current_user
-    
     otp_code = params["user"]["otp_attempt"]
 
     # validate_and_consume_otp! from Devise::Models::TwoFactorAuthenticatable here:
     # https://github.com/tinfoil/devise-two-factor/blob/7e03c6fbef4c949352f43f0f2fcbac66185a0940/lib/devise_two_factor/models/two_factor_authenticatable.rb#L36
 
-    all_good = current_user.validate_and_consume_otp!(otp_code)
-    puts "*********boolean = #{all_good}"
-
-    if all_good
-      @verified = true
+    @verified = current_user.validate_and_consume_otp!(otp_code)
+    
+    if @verified
       current_user.update(otp_required_for_login: true)     
     else
-      @verified = false
       current_user.update(
         otp_required_for_login: false,
         otp_secret: nil
