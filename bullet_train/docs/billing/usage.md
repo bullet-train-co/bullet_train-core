@@ -152,7 +152,7 @@ class Blogs::Post < ApplicationRecord
 end
 ```
 
-If you'd like to increment the usage count by more than one, you can pass a quantity like `count: 5` to this call.
+It is important that you use the past tense of the verb when tracking so it is tracked appropriately. If you'd like to increment the usage count by more than one, you can pass a quantity like `count: 5` to this call.
 
 ### Cycling Trackers Regularly
 We include a Rake task you'll need to run on a regular basis in order to cycle the usage trackers that are created at a `Team` level. By default, you should probably run this every five minutes:
