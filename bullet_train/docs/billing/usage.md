@@ -45,6 +45,30 @@ Note this is different than how many Rails engines ask you to install migrations
 rake db:migrate
 ```
 
+### 2.5. Add Model Support
+
+There are two concerns that need to be added to your application models.
+
+The first concern is `Billing::UsageSupport` and it allows tracking of usage of verbs on the models you want to support tracking usage on. It is recommended to add this capability to all models, so you can add this.
+
+```
+# app/models/application_record.rb
+
+class ApplicationRecord
+  include Billing::Usage
+end
+```
+
+The second concern is `Billing::HasTrackers` and it allows any model to hold the usage tracking. This is usually done on the `Team` model.
+
+```
+# app/models/team.rb
+
+class Team
+  include Billing::HasTrackers
+end
+```
+
 ## Configuration
 Usage limit configuration piggybacks on your [product definitions](/docs/billing/stripe.md) in `config/models/billing/products.yml`. It may help to make reference to the [default product definitions in the Bullet Train starter repository](https://github.com/bullet-train-co/bullet_train/blob/main/config/models/billing/products.yml).
 
