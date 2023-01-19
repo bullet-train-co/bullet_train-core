@@ -203,3 +203,24 @@ These partials have various local assigns that are used to configure the partial
 * `color` - the `color` value to use for the alert partial. Defaults to `red` for errors and `yellow` for warnings.
 * `count` - the number of objects intended to be acted upon. Defaults to 1.
 * `model` - the `class` relationship as the model to inspect usage on. Defaults to `form.object.class`.
+
+### Changing Products
+The default list of products that the limits are based off of are the products available from your Billing products, which is most likely a list of subscription plans from Stripe.
+
+You can change this default behavior by creating your own billing limiter and overriding the `current_products` method. This method should return a list of products that all respond to a `limits` message. The rest of the behavior is encapsulated in the `Billing::Limiter::Base` concern.
+
+```ruby
+# app/models/billing/email_limiter.rb
+
+class Billing::EmailLimiter
+  include Billing::Limiter::Base
+
+  def current_products
+    products = Billing::Product.data
+
+    EmailService.retrieve_product_tiers.map do |tier|
+      add_product_limit(tier, products)
+    end
+  end
+end
+```
