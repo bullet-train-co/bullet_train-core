@@ -63,6 +63,37 @@ class Scaffolding::Transformer
     string.gsub("~!@BT@!~", "")
   end
 
+  def check_if_has_been_scaffolded(options: {})
+    scaffolding_type = ARGV.first
+    transformed_string = transform_string("completely_concrete/tangible_things")
+
+    already_scaffolded = case scaffolding_type
+    when "crud"
+      views_path = "app/views/#{namespace}/#{transformed_string}"
+      child_controller = "app/controllers/#{namespace}/#{transformed_string}_controller.rb"
+      Dir.exist?(views_path) && File.exist?(child_controller)
+    when "crud-field"
+      child_model_form = "app/views/#{namespace}/#{transformed_string}/_form.html.erb"
+      form_contents = File.open(child_model_form).readlines
+      duplicate_fields = options[:attributes].select do |attribute|
+        name, field_partial_type = attribute.split(":")
+        form_contents.find {|line| line.match?("<%= render 'shared/fields/#{field_partial_type}', method: :#{name} %>")}
+      end
+      duplicate_fields.any?
+    when "join-model" # TODO
+    when "oauth-provider"
+      # `bin/super-scaffold oauth-provider` scaffolds a module like `Oauth::StripeAccounts::Base`, so we check for it here.
+      # We're not using `defined?` here because it doesn't return nil when `child.constantize` isn't defined.
+      Object.const_defined?(child)
+    end
+
+    if already_scaffolded
+      puts "It seems that you have already Super Scaffolded this content using the '#{scaffolding_type}' scaffolder.".red
+      puts "Please check your Super Scaffolding command one more time and try again.".red
+      exit
+    end
+  end
+
   def transform_string(string)
     [
 

@@ -29,6 +29,7 @@ module BulletTrain
           check_required_options_for_attributes("crud-field", attributes, child)
 
           transformer = Scaffolding::Transformer.new(child, parents, @options)
+          transformer.check_if_has_been_scaffolded(options: {attributes: attributes})
           transformer.add_attributes_to_various_views(attributes, type: :crud_field)
 
           transformer.additional_steps.uniq.each_with_index do |additional_step, index|

@@ -52,6 +52,11 @@ module BulletTrain
             return
           end
 
+          # Since bin/super-scaffold oauth-provider creates this base module,
+          # we instantiante a transformer with this string as a child to check if it exists already or not.
+          blank_transformer = Scaffolding::Transformer.new(oauth_transform_string("Oauth::StripeAccounts::Base", options), "")
+          blank_transformer.check_if_has_been_scaffolded
+
           icon_name = nil
           if @options["icon"].present?
             icon_name = @options["icon"]

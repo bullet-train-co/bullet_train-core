@@ -48,8 +48,9 @@ module BulletTrain
           check_required_options_for_attributes("crud", attributes, child, parent)
 
           transformer = Scaffolding::Transformer.new(child, parents, @options)
-          transformer.scaffold_crud(attributes)
+          transformer.check_if_has_been_scaffolded
 
+          transformer.scaffold_crud(attributes)
           transformer.additional_steps.each_with_index do |additional_step, index|
             color, message = additional_step
             puts ""
