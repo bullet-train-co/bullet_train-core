@@ -77,7 +77,7 @@ class Scaffolding::Transformer
       form_contents = File.open(child_model_form).readlines
       duplicate_fields = options[:attributes].select do |attribute|
         name, field_partial_type = attribute.split(":")
-        form_contents.find {|line| line.match?("<%= render 'shared/fields/#{field_partial_type}', method: :#{name} %>")}
+        form_contents.find { |line| line.match?("<%= render 'shared/fields/#{field_partial_type}', method: :#{name} %>") }
       end
       duplicate_fields.any?
     when "join-model" # TODO
