@@ -3,7 +3,7 @@ require "scaffolding/block_manipulator"
 # TODO: If we move this and the BlockManipulator into their own gems,
 # we can probably call these methods with something shorter without `Scaffolding::`.
 module Scaffolding::FileManipulator
-  def self.find(lines, needle, within = nil)
+  def self.find(lines, needle, within = 0)
     lines_within(lines, within).each_with_index do |line, line_number|
       return (within + (within ? 1 : 0) + line_number) if line.match?(needle)
     end
