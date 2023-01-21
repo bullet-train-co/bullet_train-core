@@ -1400,7 +1400,7 @@ class Scaffolding::Transformer
       test_lines = File.open(test_name).readlines
       hook_index = Scaffolding::FileManipulator.find(test_lines, RUBY_FACTORY_SETUP_HOOK)
       hook_indentation = Scaffolding::BlockManipulator.indentation_of(hook_index, test_lines)
-      indented_factory_lines = build_factory_setup.map {|line| "#{hook_indentation}#{line}\n"}
+      indented_factory_lines = build_factory_setup.map { |line| "#{hook_indentation}#{line}\n" }
       scaffold_replace_line_in_file(test_name, indented_factory_lines.join, test_lines[hook_index])
     end
 
