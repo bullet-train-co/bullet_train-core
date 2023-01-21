@@ -42,6 +42,7 @@ class Scaffolding::Transformer
   RUBY_ADDITIONAL_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will also insert new fields above this line."
   RUBY_EVEN_MORE_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will additionally insert new fields above this line."
   RUBY_FILES_HOOK = "# 🚅 super scaffolding will insert file-related logic above this line."
+  RUBY_FACTORY_SETUP_HOOK = "# 🚅 super scaffolding will insert factory setup in place of this line."
   ERB_NEW_FIELDS_HOOK = "<%#{RUBY_NEW_FIELDS_HOOK} %>"
   CONCERNS_HOOK = "# 🚅 add concerns above."
   ATTR_ACCESSORS_HOOK = "# 🚅 add attribute accessors above."
@@ -1393,8 +1394,14 @@ class Scaffolding::Transformer
       add_ability_line_to_roles_yml
     end
 
+    # Add factory setup in API controller test.
     unless cli_options["skip-api"]
-      scaffold_replace_line_in_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", build_factory_setup.join("\n"), "# 🚅 super scaffolding will insert factory setup in place of this line.")
+      test_name = transform_string("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb")
+      test_lines = File.open(test_name).readlines
+      hook_index = Scaffolding::FileManipulator.find(test_lines, RUBY_FACTORY_SETUP_HOOK)
+      hook_indentation = Scaffolding::BlockManipulator.indentation_of(hook_index, test_lines)
+      indented_factory_lines = build_factory_setup.map {|line| "#{hook_indentation}#{line}\n"}
+      scaffold_replace_line_in_file(test_name, indented_factory_lines.join, test_lines[hook_index])
     end
 
     # add children to the show page of their parent.
