@@ -15,6 +15,8 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
 
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things/new
   def new
+    @tangible_thing.address = Address.new
+    @tangible_thing.address.country_id = 233 # United States
   end
 
   # GET /account/scaffolding/completely_concrete/tangible_things/:id/edit
@@ -72,6 +74,16 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
     assign_checkboxes(strong_params, :multiple_button_values)
     assign_checkboxes(strong_params, :multiple_option_values)
     assign_select_options(strong_params, :multiple_super_select_values)
+    strong_params[:address_attributes] = [
+      :id,
+      :address_one,
+      :address_two,
+      :city,
+      :region_id,
+      :region_name,
+      :country_id,
+      :postal_code
+    ]
     # 🚅 stop any skipping we're doing now.
     # 🚅 super scaffolding will insert processing for new fields above this line.
   end
