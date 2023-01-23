@@ -68,6 +68,16 @@ if defined?(Api::V1::ApplicationController)
           # 🚅 skip this section when scaffolding.
           multiple_button_values: [],
           multiple_option_values: [],
+          address_attributes: [
+            :id,
+            :address_one,
+            :address_two,
+            :city,
+            :region_id,
+            :region_name,
+            :country_id,
+            :postal_code
+          ],
           multiple_super_select_values: []
           # 🚅 stop any skipping we're doing now.
           # 🚅 super scaffolding will insert new arrays above this line.
