@@ -1,0 +1,39 @@
+<% yield %>
+
+<%
+form ||= current_fields_form
+options ||= {}
+other_options ||= {}
+%>
+
+<%= form.fields_for(method) do |address_form| %>
+  <% with_field_settings form: address_form do %>
+    
+    <%= render 'shared/fields/super_select',
+      method: :country_id,
+      choices: populate_country_options,
+      options: {include_blank: true}, 
+      other_options: {search: true, wrapper_class: "col-span-2"},
+      html_options: {data: {}}
+    %>
+    
+    <%= render 'shared/fields/text_field', method: :address_one %>
+    <%= render 'shared/fields/text_field', method: :address_two %>
+    <%= render 'shared/fields/text_field', method: :city,
+      other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
+    %>
+    
+    <%= render 'shared/fields/super_select',
+      method: :region_id,
+      choices: populate_region_options(address_form),
+      options: {include_blank: true},
+      other_options: { search: true, wrapper_class: "col-span-2 lg:col-span-1"},
+      html_options: {data: {}}
+    %>
+    
+    <%= render 'shared/fields/text_field', method: :postal_code,
+      other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
+    %>
+    
+  <% end %>
+<% end %>
