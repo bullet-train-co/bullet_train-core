@@ -17,7 +17,9 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   def new
     # 🚅 skip this section when scaffolding.
     @tangible_thing.address = Address.new
-    @tangible_thing.address.country_id = 233 # United States
+    # @tangible_thing.address.country_id = 233 # United States
+    # @tangible_thing.address.country_id = 39 # Canada
+    @tangible_thing.address.country_id = 109 # Japan
     # 🚅 stop any skipping we're doing now.
   end
 
