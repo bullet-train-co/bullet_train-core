@@ -27,12 +27,19 @@ other_options ||= {}
       method: :region_id,
       choices: populate_region_options(address_form),
       options: {include_blank: true},
-      other_options: { search: true, wrapper_class: "col-span-2 lg:col-span-1"},
+      other_options: {
+        search: true,
+        wrapper_class: "col-span-2 lg:col-span-1",
+        label: admin_division_label_for(address_form)
+      },
       html_options: {data: {}}
     %>
     
     <%= render 'shared/fields/text_field', method: :postal_code,
-      other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
+      other_options: {
+        wrapper_class: "col-span-2 lg:col-span-1",
+        label: postal_code_label_for(address_form)
+      }
     %>
     
   <% end %>
