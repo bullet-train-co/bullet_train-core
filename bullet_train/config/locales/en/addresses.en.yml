@@ -104,6 +104,12 @@ en:
         _: &region_name Region name
         label: *region_name
         heading: *region_name
+      admin_divisions:
+        states: State
+        provinces_territories: Province or Territory
+        prefectures: Prefecture
+        regions: Region
+        default: State / Province / Region
       country_id: &country
         _: &country_id Country
         label: *country_id
@@ -116,4 +122,7 @@ en:
         _: &postal_code Postal code
         label: *postal_code
         heading: *postal_code
-  
+      zip_code:
+        _: &zip_code Zip code
+        label: *zip_code
+        heading: *zip_code
