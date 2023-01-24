@@ -223,7 +223,7 @@ namespace :bullet_train do
       original_path = "gem \"#{package}\""
       local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
       match_found = false
- 
+
       new_lines = gemfile_lines.map do |line|
         if line.match?(/"#{package}"/)
           match_found = true
@@ -242,7 +242,7 @@ namespace :bullet_train do
             line.gsub!(local_path, original_path)
             puts "Resetting '#{package}' package in the Gemfile...".blue
           end
-        end 
+        end
         line
       end
 
@@ -250,10 +250,10 @@ namespace :bullet_train do
       if flag == "--link"
         unless match_found
           puts "Could not find #{package}. Adding to the end of the Gemfile.".blue
-          new_lines << "#{local_path}\n" 
+          new_lines << "#{local_path}\n"
         end
       elsif flag == "--reset"
-        gem_regexp = /bullet_train-[a-z|A-Z|_|\-]+/
+        gem_regexp = /bullet_train-[a-z|A-Z_-]+/
         while new_lines.last.match?(gem_regexp)
           puts "Removing #{new_lines.last.scan(gem_regexp).first} from the Gemfile.".yellow
           new_lines.pop
