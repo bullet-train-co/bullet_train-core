@@ -7,8 +7,14 @@ module LoadsAndAuthorizesResource
     end
 
     def load_team
-      # Sometimes `@team` has already been populated by earlier `before_action` steps.
-      @team ||= @child_object&.team || @parent_object&.team
+      # Not all objects that need to be authorized belong to a team,
+      # so we give @team a nil value if no association is found.
+      begin
+        # Sometimes `@team` has already been populated by earlier `before_action` steps.
+        @team ||= @child_object&.team || @parent_object&.team
+      rescue NoMethodError
+        @team = nil
+      end
 
       # Update current attributes.
       Current.team = @team
