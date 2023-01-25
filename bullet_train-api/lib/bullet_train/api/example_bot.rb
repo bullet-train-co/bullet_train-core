@@ -1,71 +1,69 @@
-module BulletTrain
-  module Api
-    module ExampleBot
-      attr_accessor :tables_to_reset
+module FactoryBot
+  module ExampleBot
+    attr_accessor :tables_to_reset
 
-      def example(model, **options)
-        factory = "#{model}_example"
-        @tables_to_reset = [model.to_s.pluralize]
+    def example(model, **options)
+      factory = "#{model}_example"
+      @tables_to_reset = [model.to_s.pluralize]
 
-        object = nil
+      object = nil
 
-        ActiveRecord::Base.transaction do
-          instance = FactoryBot.create(factory, **options)
-          object = deep_clone(instance)
+      ActiveRecord::Base.transaction do
+        instance = FactoryBot.create(factory, **options)
+        object = deep_clone(instance)
 
-          raise ActiveRecord::Rollback
-        end
-
-        reset_tables!
-        object
+        raise ActiveRecord::Rollback
       end
 
-      def example_list(model, quantity, **options)
-        factory = "#{model}_example"
-        @tables_to_reset = [model.to_s.pluralize]
+      reset_tables!
+      object
+    end
 
-        objects = []
+    def example_list(model, quantity, **options)
+      factory = "#{model}_example"
+      @tables_to_reset = [model.to_s.pluralize]
 
-        ActiveRecord::Base.transaction do
-          instances = FactoryBot.create_list(factory, quantity, **options)
+      objects = []
 
-          instances.each do |instance|
-            objects << deep_clone(instance)
-          end
+      ActiveRecord::Base.transaction do
+        instances = FactoryBot.create_list(factory, quantity, **options)
 
-          raise ActiveRecord::Rollback
+        instances.each do |instance|
+          objects << deep_clone(instance)
         end
 
-        reset_tables!
-        objects
+        raise ActiveRecord::Rollback
       end
 
-      private
+      reset_tables!
+      objects
+    end
 
-      def reset_tables!
-        @tables_to_reset.each do |name|
-          ActiveRecord::Base.connection.reset_pk_sequence!(name)
-        end
-      end
+    private
 
-      def deep_clone(instance)
-        clone = instance.clone
-
-        instance.class.reflections.each do |name, reflection|
-          if reflection.macro == :has_many
-            associations = instance.send(name).map { |association| association.clone }
-            clone.send("#{name}=", associations)
-            @tables_to_reset << name
-          elsif reflection.macro == :belongs_to
-            clone.send("#{name}=", instance.send(name).clone)
-            @tables_to_reset << name.pluralize
-          end
-        end
-
-        clone
+    def reset_tables!
+      @tables_to_reset.each do |name|
+        ActiveRecord::Base.connection.reset_pk_sequence!(name)
       end
     end
 
-    extend ExampleBot
+    def deep_clone(instance)
+      clone = instance.clone
+
+      instance.class.reflections.each do |name, reflection|
+        if reflection.macro == :has_many
+          associations = instance.send(name).map { |association| association.clone }
+          clone.send("#{name}=", associations)
+          @tables_to_reset << name
+        elsif reflection.macro == :belongs_to
+          clone.send("#{name}=", instance.send(name).clone)
+          @tables_to_reset << name.pluralize
+        end
+      end
+
+      clone
+    end
   end
+
+  extend ExampleBot
 end
