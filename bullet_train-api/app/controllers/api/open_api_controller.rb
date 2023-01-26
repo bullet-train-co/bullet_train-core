@@ -61,7 +61,7 @@ module OpenApiHelper
         attribute_name = reflection.first
 
         attributes_output["properties"][attribute_name] = {
-          "type" => "attachment",
+          "type" => "object",
           "description" => attribute_name.titleize.to_s
         }
 
