@@ -4,17 +4,28 @@
 form ||= current_fields_form
 options ||= {}
 other_options ||= {}
+id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
 %>
 
 <%= form.fields_for(method) do |address_form| %>
   <% with_field_settings form: address_form do %>
+  
+    <% # For self-updating the fields in the turbo_frame further down %>
+    <% accept_query_string_override_for(address_form, :country_id) %>
     
     <%= render 'shared/fields/super_select',
       method: :country_id,
       choices: populate_country_options,
       options: {include_blank: true}, 
       other_options: {search: true, wrapper_class: "col-span-2"},
-      html_options: {data: {}}
+      html_options: {data: {}},
+      wrapper_options: {
+        data: {
+          'controller': "dependable",
+          'action': '$change->dependable#updateDependents',
+          'dependable-dependents-selector-value': "##{id_of_dependent_fields_frame}"
+        }
+      }
     %>
     
     <%= render 'shared/fields/text_field', method: :address_one %>
@@ -23,24 +34,34 @@ other_options ||= {}
       other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
     %>
     
-    <%= render 'shared/fields/super_select',
-      method: :region_id,
-      choices: populate_region_options(address_form),
-      options: {include_blank: true},
-      other_options: {
-        search: true,
-        wrapper_class: "col-span-2 lg:col-span-1",
-        label: admin_division_label_for(address_form)
-      },
-      html_options: {data: {}}
+    <%= turbo_frame_tag id_of_dependent_fields_frame,
+      class: "block space-y-5",
+      data: { 
+        'controller': "refresh-fields",
+        'action': "dependable:updated->refresh-fields#updateFrameFromDependentSuperSelectValue"
+      } do
     %>
     
-    <%= render 'shared/fields/text_field', method: :postal_code,
-      other_options: {
-        wrapper_class: "col-span-2 lg:col-span-1",
-        label: postal_code_label_for(address_form)
-      }
-    %>
+      <%= render 'shared/fields/super_select',
+        method: :region_id,
+        choices: populate_region_options(address_form),
+        options: {include_blank: true},
+        other_options: {
+          search: true,
+          wrapper_class: "col-span-2 lg:col-span-1",
+          label: admin_division_label_for(address_form)
+        },
+        html_options: {data: {}}
+      %>
+      
+      <%= render 'shared/fields/text_field', method: :postal_code,
+        other_options: {
+          wrapper_class: "col-span-2 lg:col-span-1",
+          label: postal_code_label_for(address_form)
+        }
+      %>
+    
+    <% end %>
     
   <% end %>
 <% end %>
