@@ -4,12 +4,17 @@ module Fields::AddressFieldHelper
   end
 
   def populate_region_options(address_form)
+    return [] if address_form.object.country_id.nil?
     Addresses::Region.where(country_id: address_form.object.country_id).map { |region| [region.name, region.id] }
   end
   
   def admin_division_label_for(address_form)
-    country = Addresses::Country.find(address_form.object.country_id)
-    admin_divisions_key = country.admin_divisions.presence || "default"
+    admin_divisions_key = if address_form.object.country_id.presence
+      country = Addresses::Country.find(address_form.object.country_id)
+      country.admin_divisions.presence || "default"
+    else
+      "default"
+    end
     path = [:addresses, :fields, :admin_divisions, admin_divisions_key]
     t(path.compact.join("."))
   end
