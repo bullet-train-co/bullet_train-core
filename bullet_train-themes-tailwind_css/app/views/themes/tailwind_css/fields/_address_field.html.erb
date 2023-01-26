@@ -38,7 +38,7 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
       class: "block space-y-5",
       data: { 
         'controller': "refresh-fields",
-        'action': "dependable:updated->refresh-fields#updateFrameFromDependentSuperSelectValue"
+        'action': "dependable:updated->refresh-fields#updateFrameFromDependentSuperSelectValue turbo:frame-render->refresh-fields#finishFrameUpdate"
       } do
     %>
     
@@ -52,11 +52,19 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
           label: admin_division_label_for(address_form)
         },
         html_options: {
-          disabled: address_form.object.country_id.nil?
+          disabled: address_form.object.country_id.nil?,
+          data: {
+            "refresh-fields-target": "field"
+          }
         }
       %>
       
       <%= render 'shared/fields/text_field', method: :postal_code,
+        options: {
+          data: {
+            "refresh-fields-target": "field"
+          }
+        },
         other_options: {
           wrapper_class: "col-span-2 lg:col-span-1",
           label: postal_code_label_for(address_form)
