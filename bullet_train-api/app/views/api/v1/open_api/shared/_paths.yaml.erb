@@ -31,7 +31,7 @@
               items:
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
             example:
-              <%= BulletTrain::Api.get_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
+              <%= FactoryBot.get_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
   <% end %>
   <% unless except.include?(:create) %>
   post:
@@ -57,7 +57,7 @@
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
           example:
-            <%= BulletTrain::Api.post_parameters(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
+            <%= FactoryBot.post_parameters(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -68,7 +68,7 @@
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
             example:
-              <%= BulletTrain::Api.post_examples(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
+              <%= FactoryBot.post_examples(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
   <% end %>
 <% end %>
 <% unless except.include?(:show) && except.include?(:update) && except.include?(:destroy) %>
@@ -91,7 +91,7 @@
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
             example:
-              <%= BulletTrain::Api.get_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
+              <%= FactoryBot.get_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
   <% end %>
   <% unless except.include?(:update) %>
   put:
@@ -113,7 +113,7 @@
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
           example:
-            <%= BulletTrain::Api.put_parameters(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
+            <%= FactoryBot.put_parameters(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -124,7 +124,7 @@
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
             example:
-              <%= BulletTrain::Api.put_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
+              <%= FactoryBot.put_example(:scaffolding_completely_concrete_tangible_thing, version: @version) %>
   <% end %>
   <% unless except.include?(:destroy) %>
   delete:

@@ -23,7 +23,7 @@
               items:
                 $ref: "#/components/schemas/UserAttributes"
             example:
-              <%= BulletTrain::Api.get_examples(:user, version: @version) %>
+              <%= FactoryBot.get_examples(:user, version: @version) %>
 /users/{id}:
   get:
     tags:
@@ -42,7 +42,7 @@
             schema:
               $ref: "#/components/schemas/UserAttributes"
             example:
-              <%= BulletTrain::Api.get_example(:user, version: @version) %>
+              <%= FactoryBot.get_example(:user, version: @version) %>
   put:
     tags:
       - Users
@@ -62,7 +62,7 @@
                 type: object
                 $ref: "#/components/schemas/UserParameters"
           example:
-            <%= BulletTrain::Api.put_parameters(:onboarded_user, version: @version) %>
+            <%= FactoryBot.put_parameters(:user, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -73,4 +73,4 @@
             schema:
               $ref: "#/components/schemas/UserAttributes"
             example:
-              <%= BulletTrain::Api.put_example(:onboarded_user, version: @version) %>
+              <%= FactoryBot.put_example(:user, version: @version) %>

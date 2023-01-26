@@ -23,7 +23,7 @@
               items:
                 $ref: "#/components/schemas/TeamAttributes"
             example:
-              <%= BulletTrain::Api.get_examples(:team, version: @version) %>
+              <%= FactoryBot.get_examples(:team, version: @version) %>
 
 /teams/{id}:
   get:
@@ -43,7 +43,7 @@
             schema:
               $ref: "#/components/schemas/TeamAttributes"
             example:
-              <%= BulletTrain::Api.get_example(:team, version: @version) %>
+              <%= FactoryBot.get_example(:team, version: @version) %>
   put:
     tags:
       - Teams
@@ -63,7 +63,7 @@
                 type: object
                 $ref: "#/components/schemas/TeamParameters"
           example:
-            <%= BulletTrain::Api.put_parameters(:team, version: @version) %>
+            <%= FactoryBot.put_parameters(:team, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -74,4 +74,4 @@
             schema:
               $ref: "#/components/schemas/TeamAttributes"
             example:
-              <%= BulletTrain::Api.put_example(:team, version: @version) %>
+              <%= FactoryBot.put_example(:team, version: @version) %>
