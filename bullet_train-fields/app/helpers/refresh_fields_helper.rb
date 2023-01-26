@@ -5,8 +5,9 @@ module RefreshFieldsHelper
     
     dig_path = []
     while !nested_keys.nil? && nested_keys.keys.size
-      dig_path << nested_keys.keys.first.to_sym
-      nested_keys = nested_keys[dig_path.last.to_s]
+      key = nested_keys.keys.first
+      dig_path << key.to_sym
+      nested_keys = nested_keys[key]
     end
     
     new_value = params.dig(*dig_path)
