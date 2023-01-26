@@ -54,6 +54,25 @@ module OpenApiHelper
 
     attributes_output = JSON.parse(schema_json)
 
+    # Rails attachments aren't technically attributes in a model,
+    # so we add the attributes manually to make them available in the API.
+    if model.attachment_reflections.any?
+      model.attachment_reflections.each do |reflection|
+        attribute_name = reflection.first
+
+        attributes_output["properties"].merge!(
+          {
+            "#{attribute_name}" => {
+              "type" => "attachment",
+              "description" => "#{attribute_name.titleize}"
+            }
+          }
+        )
+
+        attributes_output["example"].merge!({"#{attribute_name}" => nil})
+      end
+    end
+
     if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
       strong_params_module = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
       strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module).report
