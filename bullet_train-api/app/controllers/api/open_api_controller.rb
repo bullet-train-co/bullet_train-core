@@ -60,16 +60,12 @@ module OpenApiHelper
       model.attachment_reflections.each do |reflection|
         attribute_name = reflection.first
 
-        attributes_output["properties"].merge!(
-          {
-            "#{attribute_name}" => {
-              "type" => "attachment",
-              "description" => "#{attribute_name.titleize}"
-            }
-          }
-        )
+        attributes_output["properties"][attribute_name] = {
+          "type" => "attachment",
+          "description" => attribute_name.titleize.to_s
+        }
 
-        attributes_output["example"].merge!({"#{attribute_name}" => nil})
+        attributes_output["example"].merge!({attribute_name.to_s => nil})
       end
     end
 
