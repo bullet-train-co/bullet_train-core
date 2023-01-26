@@ -101,7 +101,6 @@ module OpenApiHelper
     heading = t("#{current_model.name.underscore.pluralize}.fields.#{attribute}.heading")
     attribute_data = current_model.columns_hash[attribute.to_s]
 
-    # TODO: File fields don't show up in the columns_hash. How should we handle these?
     # Default to `string` when the type returns nil.
     type = attribute_data.nil? ? "string" : attribute_data.type
 
