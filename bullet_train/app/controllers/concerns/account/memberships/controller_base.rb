@@ -24,7 +24,7 @@ module Account::Memberships::ControllerBase
     # This query could use impromement.  Currently if you search for "Ad Pal" you wouldn't find a user "Adam Pallozzi"
     query = "UPPER(first_name) LIKE :search_term OR UPPER(last_name) LIKE :search_term OR UPPER(user_first_name) LIKE :search_term OR UPPER(user_last_name) LIKE :search_term"
     # We're using left outer join here because we may get memberships that don't belong to a membership yet
-    memberships = @team.memberships.accessible_by(current_ability, :show).left_outer_joins(:user).where(query, search_term: search_term)
+    memberships = @team.memberships.current_and_invited.accessible_by(current_ability, :show).left_outer_joins(:user).where(query, search_term: search_term)
     total_results = memberships.size
     # the Areal.sql(LOWER(COALESCE...)) part means that if the user record doesn't exist or if there are records that start with a lower case letter, we will still sort everything correctly using the user.first_name instead.
     memberships_array = memberships.limit(limit).offset(offset).order(Arel.sql("LOWER(COALESCE(first_name, user_first_name) )")).map { |membership| {id: membership.id, text: membership.label_string.to_s} }

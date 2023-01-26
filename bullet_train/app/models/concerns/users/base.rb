@@ -36,6 +36,8 @@ module Users::Base
     validate :real_emails_only
     validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.all.map(&:name)}, allow_nil: true
 
+    scope :developers, -> { where(email: ENV["DEVELOPER_EMAILS"].split(",").map(&:strip)) }
+
     # callbacks
     after_update :set_teams_time_zone
   end
@@ -167,5 +169,9 @@ module Users::Base
     teams.where(time_zone: nil).each do |team|
       team.update(time_zone: time_zone) if team.users.count == 1
     end
+  end
+
+  def user
+    self
   end
 end
