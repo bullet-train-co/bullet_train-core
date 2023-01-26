@@ -56,6 +56,7 @@ export default class extends Controller {
       const storedValue = this.valuesStoreValue[field.name]
       if (storedValue === undefined) { return }
       field.value = storedValue
+      field.dispatchEvent(new Event('change')) // ensures cascading effects, including super-select validating against valid options
     })
     
     this.valuesStoreValue = {}
