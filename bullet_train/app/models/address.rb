@@ -1,4 +1,4 @@
-class Team < ApplicationRecord
+class Address < ApplicationRecord
   extend ActiveHash::Associations::ActiveRecordExtensions
 
   include Addresses::Base
