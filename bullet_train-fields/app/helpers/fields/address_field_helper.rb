@@ -9,12 +9,30 @@ module Fields::AddressFieldHelper
   end
   
   def admin_division_label_for(address_form)
-    admin_divisions_key = if address_form.object.country_id.presence
-      country = Addresses::Country.find(address_form.object.country_id)
-      country.admin_divisions.presence || "default"
-    else
-      "default"
-    end
+    admin_divisions_key = case address_form.object.country_id
+      when 233, 31, 142, 239, 101
+        :states
+      when 39
+        :provinces_territories
+      when 109
+        :prefectures
+      when 107, 45, 116, 182, 207, 219, 230, 156, 204
+        :provinces
+      when 14
+        :states_territories
+      when 59
+        :regions
+      when 82, 15
+        :federal_states
+      when 75
+        :departments
+      when 105
+        :counties
+      when 214
+        :cantons
+      else
+        :default
+      end
     path = [:addresses, :fields, :admin_divisions, admin_divisions_key]
     t(path.compact.join("."))
   end
