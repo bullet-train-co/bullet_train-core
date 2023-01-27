@@ -8,16 +8,20 @@ export default class extends Controller {
   }
   static classes = [ "loading" ]
   
-  updateFrameFromDependentSuperSelectValue(event) {
-    const dependentSuperSelect = event?.detail?.event?.detail?.event?.target // original super select jQuery event
+  updateFrameFromDependentField(event) {
+    const field = event?.detail?.event?.detail?.event?.target || // super select nests its original jQuery event, contains <select> target
+                  event?.detail?.event?.target || // dependable_controller will include the original event in detail
+                  event?.target // maybe it was fired straight from the field
+    
+    if (!field) { return }
     
     this.storeFieldValues()
     
     this.loadingValue = true
-    this.disableRefreshingFields()
+    this.disableFieldInputWhileRefreshing()
     
     const frame = this.element
-    frame.src = this.constructNewUrlUpdatingField(dependentSuperSelect.name, dependentSuperSelect.value)
+    frame.src = this.constructNewUrlUpdatingField(field.name, field.value)
   }
   
   finishFrameUpdate(event) {
@@ -34,7 +38,7 @@ export default class extends Controller {
     return url.href
   }
   
-  disableRefreshingFields() {
+  disableFieldInputWhileRefreshing() {
     this.fieldTargets.forEach(field => field.disabled = true )
   }
   

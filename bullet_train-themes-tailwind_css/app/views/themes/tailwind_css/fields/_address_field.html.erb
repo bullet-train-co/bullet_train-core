@@ -38,7 +38,7 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
       class: "block space-y-5",
       data: { 
         'controller': "refresh-fields",
-        'action': "dependable:updated->refresh-fields#updateFrameFromDependentSuperSelectValue turbo:frame-render->refresh-fields#finishFrameUpdate",
+        'action': "dependable:updated->refresh-fields#updateFrameFromDependentField turbo:frame-render->refresh-fields#finishFrameUpdate",
         'refresh-fields-loading-class': 'opacity-60'
       } do
     %>
