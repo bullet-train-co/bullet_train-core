@@ -30,7 +30,7 @@
       </div>
     <% end %>
 
-    <% if body %>
+    <% if body.present? %>
       <div class="<%= "pt-7 px-8 space-y-7 #{p.content_for?(:actions) ? 'pb-3' : 'pb-7'}" unless p.content_for?(:raw_body) %>">
         <div class="space-y-4 <%= '-mt-4' unless divider %>">
           <%= body %>
@@ -38,20 +38,22 @@
       </div>
     <% end %>
 
-    <% if p.content_for?(:actions) || pagy %>
-      <div class="pb-7 px-8 space-y-7">
-        <div class="sm:flex">
-          <div class="flex-1 space-x">
-            <%= p.content_for :actions %>
-          </div>
-          <% if pagy && pagy.pages > 1 %>
-            <div class="flex-0 mt-3 sm:mt-0">
-              <%== pagy_nav(pagy) %>
+    <div>
+      <% if p.content_for?(:actions) || (pagy && pagy.pages > 1) %>
+        <div class="pb-7 px-8 space-y-7">
+          <div class="sm:flex">
+            <div class="flex-1 space-x">
+              <%= p.content_for :actions %>
             </div>
-          <% end %>
+            <% if pagy && pagy.pages > 1 %>
+              <div class="flex-0 mt-3 sm:mt-0">
+                <%== pagy_nav(pagy) %>
+              </div>
+            <% end %>
+          </div>
         </div>
-      </div>
-    <% end %>
+      <% end %>
+    </div>
   </div>
 
   <% if p.content_for? :footer %>

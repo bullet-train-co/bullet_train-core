@@ -10,7 +10,7 @@ en:
     buttons: &buttons
       new: Add New Team
       create: Create Team
-      edit: Edit Team
+      edit: Edit Team Settings
       update: Update Team
       destroy: Remove Team
       shorthand:
@@ -43,7 +43,7 @@ en:
         _: &updated_at Updated At
         heading: *updated_at
     index:
-      section: "%{applications_possessive} Teams"
+      section: "Teams"
       header: Your Teams
       create: Create New Team
       buttons: *buttons

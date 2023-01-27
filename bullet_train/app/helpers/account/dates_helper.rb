@@ -14,6 +14,7 @@ module Account::DatesHelper
   # e.g. October 11, 2018 at 4:22 PM
   # e.g. Yesterday at 2:12 PM
   # e.g. April 24 at 7:39 AM
+  # TODO Convert `custom_date_format` and `custom_time_format` to named parameters.
   def display_date_and_time(timestamp, custom_date_format = nil, custom_time_format = nil)
     return nil unless timestamp
 

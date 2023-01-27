@@ -72,9 +72,13 @@ module Memberships::Base
     team.memberships.current.select(&:admin?) == [self]
   end
 
-  def nullify_user
+  def nullify_user(force: false)
+    return false unless user
+
     if last_admin?
-      raise RemovingLastTeamAdminException.new("You can't remove the last team admin.")
+      unless force
+        raise RemovingLastTeamAdminException.new("You can't remove the last team admin.")
+      end
     end
 
     if (user_was = user)
@@ -107,6 +111,8 @@ module Memberships::Base
 
     # we do this here just in case by some weird chance an active membership had an invitation attached.
     invitation&.destroy
+
+    true
   end
 
   def email
