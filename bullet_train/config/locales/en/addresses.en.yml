@@ -108,7 +108,13 @@ en:
         states: State
         provinces_territories: Province or Territory
         prefectures: Prefecture
+        provinces: Province
+        states_territories: State or Territory
         regions: Region
+        federal_states: Federal State
+        departments: Department
+        counties: County
+        cantons: Canton
         default: State / Province / Region
       country_id: &country
         _: &country_id Country

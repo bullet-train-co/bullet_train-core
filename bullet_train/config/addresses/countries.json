@@ -782,7 +782,6 @@
         "native": "Österreich",
         "region": "Europe",
         "subregion": "Western Europe",
-        "admin_divisions": "states",
         "timezones": [
             {
                 "zoneName": "Europe\/Vienna",
@@ -1859,7 +1858,6 @@
         "native": "Canada",
         "region": "Americas",
         "subregion": "Northern America",
-        "admin_divisions": "provinces_territories",
         "timezones": [
             {
                 "zoneName": "America\/Atikokan",
@@ -2900,7 +2898,6 @@
         "native": "Danmark",
         "region": "Europe",
         "subregion": "Northern Europe",
-        "admin_divisions": "regions",
         "timezones": [
             {
                 "zoneName": "Europe\/Copenhagen",
@@ -3532,7 +3529,6 @@
         "native": "France",
         "region": "Europe",
         "subregion": "Western Europe",
-        "admin_divisions": "regions",
         "timezones": [
             {
                 "zoneName": "Europe\/Paris",
@@ -4921,7 +4917,6 @@
         "native": "日本",
         "region": "Asia",
         "subregion": "Eastern Asia",
-        "admin_divisions": "prefectures",
         "timezones": [
             {
                 "zoneName": "Asia\/Tokyo",
@@ -10196,7 +10191,6 @@
         "native": "United States",
         "region": "Americas",
         "subregion": "Northern America",
-        "admin_divisions": "states",
         "timezones": [
             {
                 "zoneName": "America\/Adak",
