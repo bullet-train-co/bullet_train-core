@@ -215,15 +215,21 @@
               <% end %>
 
               <%= render 'shared/menu/section', title: 'Integration' do %>
-                <%= render 'shared/menu/item', url: '/docs/oauth', label: 'OAuth Providers' do |p| %>
-                  <% p.content_for :icon do %>
-                    <i class="fal fa-at ti ti-reload"></i>
-                  <% end %>
-                <% end %>
-
                 <%= render 'shared/menu/item', url: '/docs/api', label: 'REST API' do |p| %>
                   <% p.content_for :icon do %>
                     <i class="fal fa-brackets-curly ti ti-settings"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'shared/menu/item', url: '/docs/zapier', label: 'Zapier' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-bolt ti ti-bolt"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'shared/menu/item', url: '/docs/oauth', label: 'OAuth Providers' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-at ti ti-reload"></i>
                   <% end %>
                 <% end %>
 

@@ -1,6 +1,6 @@
 module FieldsHelper
   def current_fields_form
-    @_fields_helper_forms ? @_fields_helper_forms.last : nil
+    @_fields_helper_forms&.last
   end
 
   def with_field_settings(options)

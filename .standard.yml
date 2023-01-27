@@ -30,3 +30,5 @@ ignore:
     - Lint/UselessAssignment
   - '*/app/helpers/theme_helper.rb':
     - Style/GlobalVars
+  - '*/app/models/concerns/webhooks/outgoing/uri_filtering.rb':
+    - Lint/ShadowedException

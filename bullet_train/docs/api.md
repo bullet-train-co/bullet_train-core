@@ -1,5 +1,5 @@
 # REST API
-We believe every SaaS application should have an API and [webhooks](https://github.com/bullet-train-co/bullet_train-base/blob/main/docs/webhooks/outgoing.md) available to users, so Bullet Train aims to help automate the creation of a production-grade REST API using Rails-native tooling and provides a forward-thinking strategy for its long-term maintenance.
+We believe every SaaS application should have an API and [webhooks](/docs/webhooks/outgoing.md) available to users, so Bullet Train aims to help automate the creation of a production-grade REST API using Rails-native tooling and provides a forward-thinking strategy for its long-term maintenance.
 
 ## Background
 Vanilla Rails scaffolding actually provides simple API functionality out-of-the-box: You can append `.json` to the URL of any scaffold and it will render a JSON representation instead of an HTML view. This functionality continues to work in Bullet Train, but our API implementation also builds on this simple baseline using the same tools with additional organization and some new patterns. 

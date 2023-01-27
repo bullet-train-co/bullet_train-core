@@ -40,6 +40,12 @@ module Teams::Base
     validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.all.map(&:name)}, allow_nil: true
   end
 
+  def platform_agent_access_tokens
+    # TODO This could be written better.
+    platform_agent_user_ids = memberships.platform_agents.map(&:user_id).compact
+    Platform::AccessToken.joins(:application).where(resource_owner_id: platform_agent_user_ids, application: {team: nil})
+  end
+
   def admins
     memberships.current_and_invited.admins
   end

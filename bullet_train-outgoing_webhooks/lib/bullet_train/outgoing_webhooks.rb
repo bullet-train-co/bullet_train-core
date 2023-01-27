@@ -9,6 +9,7 @@ module BulletTrain
 
     mattr_accessor :parent_class, default: default_for(BulletTrain, :parent_class, "Team")
     mattr_accessor :base_class, default: default_for(BulletTrain, :base_class, "ApplicationRecord")
+    mattr_accessor :advanced_hostname_security, default: false
 
     def self.parent_association
       parent_class.underscore.to_sym

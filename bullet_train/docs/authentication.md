@@ -12,11 +12,20 @@ bin/resolve SessionsController --eject --open
 ## Customizing Views
 You can customize Devise views using the same workflow you would use to customize any other Bullet Train views.
 
-## Disabling Registration
+## Invite-Only Mode and Disabling Registration
+If you would like to stop users from signing up for your application without an invitation code or without an invitation to an existing team, set `INVITATION_KEYS` to one or more comma-delimited values in `config/application.yml` (or however you configure your environment values in production.) Once invitation keys are configured, you can invite people to sign up with one of your keys at the following URL:
 
-Registration is enabled by default. You can disable registration, allowing signups via an invite code only, by using [Invitation Only Mode](/docs/invitation_only.md)
+```
+https://example.com/invitation?key=ONE_OF_YOUR_KEYS
+```
 
-## Two factor authentication
+If you want to disable new registrations completely, put an unguessable value into `INVITATION_KEYS` and keep it secret.
 
-This feature allows users to add two factor authentication.
-It requires some setup - [Two Factor Authentication](/docs/two-factor-authentication.md)
+Note that in both of these scenarios that existing users will still be able to invite new collaborators to their teams and those collaborators will have the option of creating a new account, but no users in the application will be allowed to create a new team without an invitation code and following the above URL.
+
+## Enabling Two-Factor Authentication (2FA)
+Two-factor authentication is enabled by default in Bullet Train, but you must have Rails built-in encrypted secrets and Active Record Encryption configured. To do this, just run:
+
+```
+bin/secrets
+```
