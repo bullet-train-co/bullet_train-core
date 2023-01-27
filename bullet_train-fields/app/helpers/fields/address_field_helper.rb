@@ -46,4 +46,21 @@ module Fields::AddressFieldHelper
     path = [:addresses, :fields, key, :label]
     t(path.compact.join("."))
   end
+  
+  def address_formatted(address, one_line: false)
+    formatted = Snail.new(
+      :line_1 => address.address_one,
+      :line_2 => address.address_two,
+      :city => address.city,
+      :region => address.region.state_code,
+      :postal_code => address.postal_code,
+      :country => address.country.iso3
+    ).to_s(with_country: true)
+    
+    if one_line
+      formatted.gsub("\n", ", ")
+    else
+      simple_format formatted
+    end
+  end
 end
