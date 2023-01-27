@@ -68,7 +68,7 @@ if defined?(Api::V1::ApplicationController)
           # 🚅 skip this section when scaffolding.
           multiple_button_values: [],
           multiple_option_values: [],
-          address_attributes: [
+          address_value_attributes: [
             :id,
             :address_one,
             :address_two,
