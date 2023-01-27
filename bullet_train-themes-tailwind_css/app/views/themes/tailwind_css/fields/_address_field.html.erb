@@ -30,49 +30,60 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
     
     <%= render 'shared/fields/text_field', method: :address_one %>
     <%= render 'shared/fields/text_field', method: :address_two %>
-    <%= render 'shared/fields/text_field', method: :city,
-      other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
-    %>
     
-    <%= turbo_frame_tag id_of_dependent_fields_frame,
-      class: "block space-y-5",
-      data: { 
-        'controller': "refresh-fields",
-        'action': "dependable:updated->refresh-fields#updateFrameFromDependentField turbo:frame-render->refresh-fields#finishFrameUpdate",
-        'refresh-fields-loading-class': 'opacity-60'
-      } do
-    %>
-    
-      <%= render 'shared/fields/super_select',
-        method: :region_id,
-        choices: populate_region_options(address_form),
-        options: {include_blank: true },
-        other_options: {
-          search: true,
-          wrapper_class: "col-span-2 lg:col-span-1",
-          label: admin_division_label_for(address_form)
-        },
-        html_options: {
-          disabled: address_form.object.country_id.nil?,
-          data: {
-            "refresh-fields-target": "field"
-          }
-        }
-      %>
-      
-      <%= render 'shared/fields/text_field', method: :postal_code,
-        options: {
-          data: {
-            "refresh-fields-target": "field"
-          }
-        },
-        other_options: {
-          wrapper_class: "col-span-2 lg:col-span-1",
-          label: postal_code_label_for(address_form)
-        }
-      %>
-    
-    <% end %>
-    
+    <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-3">
+      <div class="sm:col-span-1">
+        <%= render 'shared/fields/text_field', method: :city,
+          other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
+        %>
+      </div>
+      <div class="sm:col-span-2">
+        <%= turbo_frame_tag id_of_dependent_fields_frame,
+          class: "block space-y-5",
+          data: { 
+            'controller': "refresh-fields",
+            'action': "dependable:updated->refresh-fields#updateFrameFromDependentField turbo:frame-render->refresh-fields#finishFrameUpdate",
+            'refresh-fields-loading-class': 'opacity-60'
+          } do
+        %>
+        
+          <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
+            <div class="sm:col-span-1">
+              <%= render 'shared/fields/super_select',
+                method: :region_id,
+                choices: populate_region_options(address_form),
+                options: {include_blank: true },
+                other_options: {
+                  search: true,
+                  wrapper_class: "col-span-2 lg:col-span-1",
+                  label: admin_division_label_for(address_form)
+                },
+                html_options: {
+                  disabled: address_form.object.country_id.nil?,
+                  data: {
+                    "refresh-fields-target": "field"
+                  }
+                }
+              %>
+            </div>
+            
+            <div class="sm:col-span-1">
+              <%= render 'shared/fields/text_field', method: :postal_code,
+                options: {
+                  data: {
+                    "refresh-fields-target": "field"
+                  }
+                },
+                other_options: {
+                  wrapper_class: "col-span-2 lg:col-span-1",
+                  label: postal_code_label_for(address_form)
+                }
+              %>
+            </div>
+          </div>
+        
+        <% end %>
+      </div>
+    </div>
   <% end %>
 <% end %>
