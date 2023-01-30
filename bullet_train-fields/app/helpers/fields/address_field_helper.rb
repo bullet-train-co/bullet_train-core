@@ -9,6 +9,7 @@ module Fields::AddressFieldHelper
   end
   
   def admin_division_label_for(address_form)
+    # using country_id because it's fastest, even if this case statement is hard to read
     admin_divisions_key = case address_form.object.country_id
       when 233, 31, 142, 239, 101
         :states
@@ -71,6 +72,7 @@ module Fields::AddressFieldHelper
     postal_code = address.postal_code
     
     # adapted from https://github.com/cainlevy/snail/blob/master/lib/snail.rb
+    # using iso2 property here because it's a port of what's used in snail gem
     # will be cleaned up below if parts missing
     formatted = case country_iso2
       when 'CN', 'IN'
