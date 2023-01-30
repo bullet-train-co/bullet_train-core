@@ -6,13 +6,6 @@ module OpenApiHelper
     lines.unshift(first_line).join.html_safe
   end
 
-  # TODO: Remove this method? It's not being used anywhere
-  def components_for(model)
-    for_model model do
-      indent(render("api/#{@version}/open_api/#{model.name.underscore.pluralize}/components"), 2)
-    end
-  end
-
   def current_model
     @model_stack.last
   end
@@ -81,23 +74,6 @@ module OpenApiHelper
       indent(render("api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"), 1)
     end
   end
-
-  def attribute(attribute)
-    heading = t("#{current_model.name.underscore.pluralize}.fields.#{attribute}.heading")
-    attribute_data = current_model.columns_hash[attribute.to_s]
-
-    # TODO: File fields don't show up in the columns_hash. How should we handle these?
-    # Default to `string` when the type returns nil.
-    type = attribute_data.nil? ? "string" : attribute_data.type
-
-    attribute_block = <<~YAML
-      #{attribute}:
-        description: "#{heading}"
-        type: #{type}
-    YAML
-    indent(attribute_block.chomp, 2)
-  end
-  alias_method :parameter, :attribute
 
   private
 
