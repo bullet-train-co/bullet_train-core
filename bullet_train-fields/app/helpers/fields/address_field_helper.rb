@@ -121,7 +121,7 @@ module Fields::AddressFieldHelper
     
     # clean up separators when missing pieces
     formatted.strip      # remove extra spaces and newlines before and after
-      .gsub(/^,\s*/, '') # starts with comma
-      .gsub(/\s*,$/, '') # ends with comma
+      .gsub(/^,\s*/, '') # remove extra comma from start
+      .gsub(/\s*,$/, '') # remove extra comma from end
   end
 end
