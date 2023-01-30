@@ -692,6 +692,8 @@ class Scaffolding::Transformer
         "email"
       when "emoji_field"
         "text"
+      when "address"
+        "address"
       when "color_picker"
         "code"
       when "text_field"
