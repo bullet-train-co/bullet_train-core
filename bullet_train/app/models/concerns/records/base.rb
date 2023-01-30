@@ -79,6 +79,15 @@ module Records::Base
     db_seed_task = rake_tasks.find { |task| task.name.match?(/^db:seed$/) }
     db_seed_task.already_invoked
   end
+  
+  def all_blank?(attributes = {})
+    attributes = self.attributes if attributes.empty?
+    attributes.all? do |key, value|
+      key == "_destroy" || value.blank? ||
+        value.is_a?(Hash) && all_blank?(value) ||
+        value.is_a?(Array) && value.all? { |val| all_blank?(val) }
+    end
+  end
 
   # TODO This should really be in the API package and included from there.
   if defined?(BulletTrain::Api)
