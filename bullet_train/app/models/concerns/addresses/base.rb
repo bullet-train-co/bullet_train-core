@@ -12,7 +12,7 @@ module Addresses::Base
     
     def all_blank?(attributes = {})
       return super(attributes) unless attributes.empty?
-      !(address_one? && address_two? && city? && region_id? && country_id? && postal_code?)
+      !(address_one? || address_two? || city? || region_id? || country_id? || postal_code?)
     end
   end
 end
