@@ -55,12 +55,12 @@ module Fields::AddressFieldHelper
       address.address_two,
       address_city_line_formatted(address),
       address.country&.name&.upcase
-    ].reject(&:blank?).join("\n")
+    ].reject(&:blank?)
     
     if one_line
-      formatted.gsub("\n", ", ") # simplistic
+      formatted.join(", ") # simplistic
     else
-      simple_format formatted
+      simple_format(formatted.join("\n"))
     end
   end
   
