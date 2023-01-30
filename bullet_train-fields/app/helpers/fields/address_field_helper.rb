@@ -48,19 +48,78 @@ module Fields::AddressFieldHelper
   end
   
   def address_formatted(address, one_line: false)
-    formatted = Snail.new(
-      :line_1 => address.address_one,
-      :line_2 => address.address_two,
-      :city => address.city,
-      :region => address.region.state_code,
-      :postal_code => address.postal_code,
-      :country => address.country.iso3
-    ).to_s(with_country: true)
+    return "" if address.all_blank?
+    
+    formatted = [
+      address.address_one,
+      address.address_two,
+      address_city_line_formatted(address),
+      address.country&.name&.upcase
+    ].reject(&:blank?).join("\n")
     
     if one_line
-      formatted.gsub("\n", ", ")
+      formatted.gsub("\n", ", ") # simplistic
     else
       simple_format formatted
     end
+  end
+  
+  def address_city_line_formatted(address)
+    country_iso2 = address.country&.iso2 # can be nil or empty
+    city = address.city
+    region = address.region&.name
+    postal_code = address.postal_code
+    
+    # adapted from https://github.com/cainlevy/snail/blob/master/lib/snail.rb
+    # will be cleaned up below if parts missing
+    formatted = case country_iso2
+      when 'CN', 'IN'
+        "#{city}, #{region}  #{postal_code}"
+      when 'BR'
+        "#{postal_code} #{city}#{"-" unless city.nil? || city.empty? || region.nil? || region.empty?}#{region}"
+      when 'MX', 'SK'
+        "#{postal_code} #{city}, #{region}"
+      when 'IT'
+        "#{postal_code} #{city} #{region}"
+      when 'BY'
+        "#{postal_code} #{city}#{"-" unless city.nil? || city.empty? || region.nil? || region.empty?}#{region}"
+      when 'US', 'CA', 'AU', nil, ''
+        "#{city} #{region}  #{postal_code}"
+      when 'IL', 'DK', 'FI', 'FR', 'DE', 'GR', 'NO', 'ES', 'SE', 'TR', 'CY', 'PT', 'MK', 'BA'
+        "#{postal_code} #{city}"
+      when 'KW', 'SY', 'OM', 'EE', 'LU', 'BE', 'IS', 'CH', 'AT', 'MD', 'ME', 'RS', 'BG', 'GE', 'PL', 'AM', 'HR', 'RO', 'AZ'
+        "#{postal_code} #{city}"
+      when 'NL'
+        "#{postal_code}  #{city}"
+      when 'IE'
+        "#{city}, #{region}\n#{postal_code}"
+      when 'GB', 'RU', 'UA', 'JO', 'LB', 'IR', 'SA', 'NZ'
+        "#{city}  #{postal_code}" # Locally these may be on separate lines. The USPS prefers the city line above the country line, though.
+      when 'EC'
+        "#{postal_code} #{city}"
+      when 'HK', 'IQ', 'YE', 'QA', 'AL'
+        "#{city}"
+      when 'AE'
+        "#{postal_code}\n#{city}"
+      when 'JP'
+        "#{city}, #{region}\n#{postal_code}"
+      when 'EG', 'ZA', 'IM', 'KZ', 'HU'
+        "#{city}\n#{postal_code}"
+      when 'LV'
+        "#{city}, LV-#{postal_code}".gsub(/LV-\s*$/, '') # undo if no postal code
+      when 'LT'
+        "LT-#{postal_code} #{city}".gsub(/^LT-\s*/, '') # undo if no postal code
+      when 'SI'
+        "SI-#{postal_code} #{city}".gsub(/^SI-\s*/, '') # undo if no postal code
+      when 'CZ'
+        "#{postal_code} #{region}\n#{city}"
+      else
+        "#{city} #{region}  #{postal_code}"
+      end
+    
+    # clean up separators when missing pieces
+    formatted.strip      # remove extra spaces and newlines before and after
+      .gsub(/^,\s*/, '') # starts with comma
+      .gsub(/\s*,$/, '') # ends with comma
   end
 end
