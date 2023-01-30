@@ -27,6 +27,8 @@ module BulletTrain
             puts ""
             puts "Give it a shot! Let us know if you have any trouble with it! ✌️"
             puts ""
+            puts "Testing the Bullet Train contribution process"
+            puts ""
             exit
           end
 
