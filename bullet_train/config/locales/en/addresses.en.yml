@@ -19,86 +19,6 @@ en:
         _: &region_id State / Province / Region
         label: *region_id
         heading: *region_id
-        options:
-          1456: Alabama
-          1400: Alaska
-          1424: American Samoa
-          1434: Arizona
-          1444: Arkansas
-          1402: Baker Island
-          1416: California
-          1450: Colorado
-          1435: Connecticut
-          1399: Delaware
-          1437: District of Columbia
-          1436: Florida
-          1455: Georgia
-          1412: Guam
-          1411: Hawaii
-          1398: Howland Island
-          1460: Idaho
-          1425: Illinois
-          1440: Indiana
-          1459: Iowa
-          1410: Jarvis Island
-          1428: Johnston Atoll
-          1406: Kansas
-          1419: Kentucky
-          1403: Kingman Reef
-          1457: Louisiana
-          1453: Maine
-          1401: Maryland
-          1433: Massachusetts
-          1426: Michigan
-          1438: Midway Atoll
-          1420: Minnesota
-          1430: Mississippi
-          1451: Missouri
-          1446: Montana
-          1439: Navassa Island
-          1408: Nebraska
-          1458: Nevada
-          1404: New Hampshire
-          1417: New Jersey
-          1423: New Mexico
-          1452: New York
-          1447: North Carolina
-          1418: North Dakota
-          1431: Northern Mariana Islands
-          4851: Ohio
-          1421: Oklahoma
-          1415: Oregon
-          1448: Palmyra Atoll
-          1422: Pennsylvania
-          1449: Puerto Rico
-          1461: Rhode Island
-          1443: South Carolina
-          1445: South Dakota
-          1454: Tennessee
-          1407: Texas
-          1432: United States Minor Outlying Islands
-          1413: United States Virgin Islands
-          1414: Utah
-          1409: Vermont
-          1427: Virginia
-          1405: Wake Island
-          1462: Washington
-          1429: West Virginia
-          1441: Wisconsin
-          1442: Wyoming
-          872: Alberta
-          875: British Columbia
-          867: Manitoba
-          868: New Brunswick
-          877: Newfoundland and Labrador
-          878: Northwest Territories
-          874: Nova Scotia
-          876: Nunavut
-          866: Ontario
-          871: Prince Edward Island
-          873: Quebec
-          870: Saskatchewan
-          869: Yukon
       region: *region
       region_name:
         _: &region_name Region name
@@ -120,9 +40,6 @@ en:
         _: &country_id Country
         label: *country_id
         heading: *country_id
-        options:
-          233: United States
-          39: Canada
       country: *country
       postal_code:
         _: &postal_code Postal code
