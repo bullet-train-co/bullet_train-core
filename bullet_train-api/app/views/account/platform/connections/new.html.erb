@@ -3,7 +3,7 @@
   <% p.content_for :body do %>
     <ul class="space-y" data-turbo="false">
       <% @teams.each do |team| %>
-        <li class="bg-white border overflow-hidden sm:rounded-md dark:bg-sealBlue-400">
+        <li class="bg-white border overflow-hidden sm:rounded-md dark:bg-darkPrimary-800">
           <% body = capture do %>
             <div class="px-4 py-4 flex items-center sm:pl-8 sm:pr-6">
               <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
@@ -27,11 +27,11 @@
           <% end %>
 
           <% if can? :connect, team %>
-            <%= link_to request.url + "&team_id=#{team.id}", class: "group block hover:bg-gray-50 dark:hover:bg-sealBlue-400 dark:text-sealBlue-800" do %>
+            <%= link_to request.url + "&team_id=#{team.id}", class: "group block hover:bg-gray-50 dark:text-darkPrimary-800 dark:hover:bg-black dark:hover:bg-opacity-10" do %>
               <%= body %>
             <% end %>
           <% else %>
-            <div class="block dark:text-sealBlue-800">
+            <div class="block dark:text-darkPrimary-800">
               <%= body %>
             </div>
           <% end %>
