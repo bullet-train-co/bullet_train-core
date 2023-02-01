@@ -1,5 +1,6 @@
 # TODO Is there a better way to implement this?
 # This monkey patch is required to ensure the OAuth2 token includes which team was connected to.
+# It gets required by BulletTrain::Api.set_configuration.
 
 class Doorkeeper::TokensController
   def create
