@@ -27,7 +27,7 @@
           <% end %>
 
           <% if can? :connect, team %>
-            <%= link_to request.url + "&team_id=#{team.id}", class: "group block hover:bg-gray-50 dark:hover:bg-sealBlue-400 dark:text-sealBlue-800" do %>
+            <%= link_to request.url + "&team_id=#{team.id}", class: "group block hover:bg-gray-50 dark:hover:bg-sealBlue-400 dark:text-sealBlue-800", data: {controller: "connection-workflow", action: "connection-workflow#disableTeamButton"} do %>
               <%= body %>
             <% end %>
           <% else %>
