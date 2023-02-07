@@ -931,6 +931,20 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content, "<%# 🚅 super scaffolding will insert new field headers above this line. %>", prepend: true)
         end
 
+        # If these strings are the same, we get duplicate variable names in the _index.html.erb partial,
+        # so we account for that here. Run the Super Scaffolding test setup script and check the index partial
+        # of models with namespaced parents for reference (i.e. - Objective, Projects::Step).
+        transformed_abstract_str = transform_string("absolutely_abstract_creative_concept")
+        transformed_concept_str = transform_string("creative_concept")
+        transformed_file_name = transform_string("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb")
+        if (transformed_abstract_str == transformed_concept_str) && File.exist?(transformed_file_name)
+          replace_in_file(
+            transformed_file_name,
+            "#{transformed_abstract_str} = @#{transformed_abstract_str} || @#{transformed_concept_str}",
+            "#{transformed_abstract_str} = @#{transformed_concept_str}"
+          )
+        end
+
         table_cell_options = []
 
         if first_table_cell
