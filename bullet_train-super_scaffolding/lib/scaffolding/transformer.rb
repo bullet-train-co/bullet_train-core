@@ -251,11 +251,6 @@ class Scaffolding::Transformer
     transformed_file_content.join
   end
 
-  # TODO I was running into an error in a downstream application where it couldn't find silence_logs? We should implement it in this package.
-  def silence_logs?
-    ENV["SILENCE_LOGS"].present?
-  end
-
   def scaffold_file(file, overrides: false)
     transformed_file_content = get_transformed_file_content(file)
     transformed_file_name = transform_string(file)
