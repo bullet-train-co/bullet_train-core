@@ -1,0 +1,14 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/breadcrumb", url: root_url, label: "Breadcrumb Link" %>
+  <%= render "shared/breadcrumb", label: "Unlinked label" %>
+<% end %>
+
+<%# TODO: Find a suitable url_for GET route here that every BulletTrain app would have. %>
+<%# showcase.sample "With model url_for" do %>
+  <%#= render "shared/breadcrumb", url: [:account, Scaffolding::CompletelyConcrete::TangibleThing.new(id: 1)], label: "Concept" %>
+<%# end %>
+
+<% showcase.options do |o| %>
+  <% o.required :label, "The breadcrumb text, either shown in the link or the plain label" %>
+  <% o.optional :url, "A URL string, e.g. root_url, or something that's passed to url_for.", type: [String, "Valid url_for argument", "nil"].join("\n") %>
+<% end %>
