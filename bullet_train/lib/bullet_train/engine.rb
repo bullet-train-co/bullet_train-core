@@ -19,7 +19,7 @@ module BulletTrain
       Showcase.sample_renderer = ->(lines) do
         formatter = Rouge::Formatters::HTMLInline.new(Rouge::Theme.find("github"))
         lexed = Rouge::Lexer.find("erb").lex(lines.join.strip_heredoc)
-        tag.pre tag.code formatter.format(lexed).html_safe
+        tag.pre formatter.format(lexed).html_safe
       end if defined?(Showcase)
     end
   end
