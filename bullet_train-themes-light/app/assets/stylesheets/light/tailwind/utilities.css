@@ -32,19 +32,6 @@
     background-image: linear-gradient(to bottom right, darken(#D7BBEA, 45%) 10%, #0e369a 100%);
   }
 
-  .bg-light-gradient {
-    &:before {
-      content: "";
-      position: fixed;
-      z-index: -1;
-      background: linear-gradient(to bottom right, var(--light-gradient-from), var(--light-gradient-to));
-      top: 0px;
-      left: 0px;
-      bottom: 0px;
-      right: 0px;
-    }
-  }
-
   [hidden] {
     display: none !important;
   }
