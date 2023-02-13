@@ -33,6 +33,7 @@ PATH
       possessive
       premailer-rails
       rails (>= 6.0.0)
+      rouge (~> 4.1)
       showcase-rails
       sidekiq
       unicode-emoji
@@ -291,6 +292,7 @@ GEM
       mime-types (>= 1.16, < 4.0)
       netrc (~> 0.8)
     rexml (3.2.5)
+    rouge (4.1.0)
     rubocop (1.39.0)
       json (~> 2.3)
       parallel (~> 1.10)
