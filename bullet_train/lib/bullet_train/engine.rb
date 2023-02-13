@@ -16,11 +16,13 @@ end
 module BulletTrain
   class Engine < ::Rails::Engine
     initializer "showcase.sample_renderer" do
-      Showcase.sample_renderer = ->(lines) do
-        formatter = Rouge::Formatters::HTMLInline.new(Rouge::Theme.find("github"))
-        lexed = Rouge::Lexer.find("erb").lex(lines.join.strip_heredoc)
-        tag.pre formatter.format(lexed).html_safe
-      end if defined?(Showcase)
+      if defined?(Showcase)
+        Showcase.sample_renderer = ->(lines) do
+          formatter = Rouge::Formatters::HTMLInline.new(Rouge::Theme.find("github"))
+          lexed = Rouge::Lexer.find("erb").lex(lines.join.strip_heredoc)
+          tag.pre formatter.format(lexed).html_safe
+        end
+      end
     end
   end
 end
