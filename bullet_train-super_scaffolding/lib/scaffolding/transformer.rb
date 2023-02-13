@@ -578,8 +578,8 @@ class Scaffolding::Transformer
 
     has_many_line << "dependent: :destroy"
 
-    # TODO I _think_ this is the right way to check for whether we need `foreign_key` to specify the name of the model.
-    unless transform_string("absolutely_abstract_creative_concept_id") == "#{parent.underscore}_id"
+    # Specify the foreign key if the parent is namespaced.
+    if parent.match?("::")
       has_many_line << "foreign_key: :absolutely_abstract_creative_concept_id"
 
       # And if we need `foreign_key`, we should also specify `inverse_of`.
