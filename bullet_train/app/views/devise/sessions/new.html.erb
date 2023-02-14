@@ -45,7 +45,7 @@
           <% if devise_mapping.rememberable? %>
             <% # TODO This needs to be its own component. Can't have this kind of styling here. %>
             <div class="flex items-center">
-              <%= form.check_box :remember_me, class: "h-4 w-4 text-blue focus:ring-blue-dark border-gray-300 rounded dark:bg-gray-800 dark:border-gray-900" %>
+              <%= form.check_box :remember_me, class: "h-4 w-4 text-blue focus:ring-blue-800 border-slate-300 rounded dark:bg-slate-800 dark:border-slate-900" %>
               <%= form.label :remember_me, class: "ml-2 block" %>
             </div>
           <% end %>

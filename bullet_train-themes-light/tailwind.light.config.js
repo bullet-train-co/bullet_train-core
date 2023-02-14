@@ -3,6 +3,7 @@ const colors = require('tailwindcss/colors')
 
 module.exports = {
   content: [
+    './config/initializers/theme.rb',
     './app/views/**/*.html.erb',
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
@@ -28,6 +29,7 @@ module.exports = {
           500: 'var(--primary-500)',
           600: 'var(--primary-600)',
           700: 'var(--primary-700)',
+          "700/50": 'red',
           800: 'var(--primary-800)',
           900: 'var(--primary-900)',
         },
