@@ -1,0 +1,11 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/title" do |partial| %>
+    <% partial.content_for :title, "Title" %>
+    <% partial.content_for :actions, "Actions" %>
+  <% end %>
+<% end %>
+
+<% showcase.options do |o| %>
+  <% o.optional :title, type: "Content Block" %>
+  <% o.optional :actions, type: "Content Block" %>
+<% end %>
