@@ -29,7 +29,6 @@ require "premailer/rails"
 require "figaro"
 require "valid_email"
 require "commonmarker"
-require "showcase" if Rails.env.development?
 require "rouge" if Rails.env.development?
 require "extended_email_reply_parser"
 require "pagy"
