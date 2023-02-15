@@ -75,7 +75,7 @@ module Records::Base
   def seeding?
     Rake::Task.task_defined?("db:seed") && Rake::Task["db:seed"].already_invoked
   end
-  
+
   def all_blank?(attributes = {})
     attributes = self.attributes if attributes.empty?
     attributes.all? do |key, value|
