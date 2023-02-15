@@ -1,0 +1,12 @@
+.theme-secondary-yellow {
+  --secondary-50: theme('colors.yellow.50');
+  --secondary-100: theme('colors.yellow.100');
+  --secondary-200: theme('colors.yellow.200');
+  --secondary-300: theme('colors.yellow.300');
+  --secondary-400: theme('colors.yellow.400');
+  --secondary-500: theme('colors.yellow.500');
+  --secondary-600: theme('colors.yellow.600');
+  --secondary-700: theme('colors.yellow.700');
+  --secondary-800: theme('colors.yellow.800');
+  --secondary-900: theme('colors.yellow.900');
+}
