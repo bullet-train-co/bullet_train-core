@@ -23,7 +23,7 @@ The helper methods below can also be directly invoked in your application if you
 | STRIPE_CLIENT_ID | See [Bullet Train Billing for Stripe](/docs/billing/stripe.md) for more information and related environment variables. |
 | CLOUDINARY_URL | Enables use of Cloudinary for handling images. |
 | TWO_FACTOR_ENCRYPTION_KEY | Enables two-factor authentication through Devise. |
-| INVITATION_KEYS | See more [Invitation Only](/docs/authentication.md) for more information. |
+| INVITATION_KEYS | See [Invitation Only](/docs/authentication.md) for more information. |
 | FONTAWESOME_NPM_AUTH_TOKEN | Enables use of Font Awesome. |
 | SILENCE_LOGS | Silences Super Scaffolding logs. |
 | TESTING_PROVISION_KEY | Creates a test `Platform::Application` by accessing `/testing/provision?key=your_provision_key` |

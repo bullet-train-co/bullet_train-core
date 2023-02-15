@@ -1,0 +1,12 @@
+.theme-secondary-orange {
+  --secondary-50: theme('colors.orange.50');
+  --secondary-100: theme('colors.orange.100');
+  --secondary-200: theme('colors.orange.200');
+  --secondary-300: theme('colors.orange.300');
+  --secondary-400: theme('colors.orange.400');
+  --secondary-500: theme('colors.orange.500');
+  --secondary-600: theme('colors.orange.600');
+  --secondary-700: theme('colors.orange.700');
+  --secondary-800: theme('colors.orange.800');
+  --secondary-900: theme('colors.orange.900');
+}

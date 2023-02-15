@@ -4,6 +4,8 @@ en:
     singular: Team
     breadcrumbs:
       label: *label
+      team_settings: Team Settings
+      dashboard: Dashboard
     navigation:
       label: Team
     buttons: &buttons

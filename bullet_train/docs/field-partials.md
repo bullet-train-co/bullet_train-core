@@ -40,7 +40,7 @@ Breaking down the invocation:
  - `text_field` matches the name of the native Rails form field helper we want to invoke.
  - The `form` option passes a reference to the form object the field will exist within.
  - The `method` option specifies which attribute of the model the field represents, in the same way as the first parameter of the basic Rails `text_field` helper.
- - The `options` option is basically a passthrough, allowing you to specify options which will passed directly to the underlying Rails form field helper.
+ - The `options` option is basically a passthrough, allowing you to specify options which will be passed directly to the underlying Rails form field helper.
 
 The 1:1 relationship between these field partials and their underlying Rails form helpers is an important design decision. For example, the way `options` is passed through to native Rails form field helpers means that experienced Rails developers will still be able to leverage what they remember about using Rails, while those of us who don't readily remember all the various options of those helpers can make use of [the standard Rails documentation](https://guides.rubyonrails.org/form_helpers.html) and the great wealth of Rails code examples available online and still take advantage of these field partials. That means the amount of documentation we need to maintain for these field partials is strictly for those features that are in addition to what Rails provides by default.
 
@@ -76,7 +76,7 @@ When you're including multiple fields, you can DRY up redundant settings (e.g. `
 ```
 
 ## Field partials that integrate with third-party service providers
- - `cloudinary` makes it trivial to upload photos and images to [Cloudinary](https://cloudinary.com) and store their resulting Cloudinary ID as an attribute of the model backing the form. To enable this field partial, sign up for Cloudinary and copy the "Cloudinary URL" they provide you with into your `config/application.yml` as `CLOUDINARY_URL`. If you use our [Heroku app.json] to provision your production environment, this will happen in that environment automatically.
+ - `cloudinary` makes it trivial to upload photos and images to [Cloudinary](https://cloudinary.com) and store their resulting Cloudinary ID as an attribute of the model backing the form. To enable this field partial, sign up for Cloudinary and copy the "Cloudinary URL" they provide you with into your `config/application.yml` as `CLOUDINARY_URL`. If you use our [Heroku app.json](https://github.com/bullet-train-co/bullet_train/blob/main/app.json) to provision your production environment, this will happen in that environment automatically.
 
 ## Yaml Configuration
 The localization Yaml file (where you configure label and option values for a field) is automatically generated when you run Super Scaffolding for a model. If you haven't done this yet, the localization Yaml file for `Scaffolding::CompletelyConcrete::TangibleThing` serves as a good example. Under `en.scaffolding/completely_concrete/tangible_things.fields` you'll see definitions like this:
