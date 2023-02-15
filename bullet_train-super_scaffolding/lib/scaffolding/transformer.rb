@@ -1530,7 +1530,7 @@ class Scaffolding::Transformer
           collection_actions = [:index, :new, :create]
 
           # 🚅 Don't remove this block, it will break Super Scaffolding.
-          begin do
+          begin
             namespace :#{routes_namespace} do
               shallow do
                 resources :teams do
@@ -1545,9 +1545,33 @@ class Scaffolding::Transformer
 
       begin
         routes_manipulator.apply([routes_namespace])
-        Scaffolding::FileManipulator.write("config/routes.rb", routes_manipulator.lines)
+        Scaffolding::FileManipulator.write(routes_path, routes_manipulator.lines)
       rescue => _
         add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
+      end
+
+      # If we're using a custom namespace, we have to make sure the newly
+      # scaffolded routes are drawn in the `config/routes.rb` and API routes files.
+      if cli_options["namespace"]
+        draw_line = "draw \"#{routes_namespace}\""
+
+        [
+          "config/routes.rb",
+          "config/routes/api/#{BulletTrain::Api.current_version}.rb"
+        ].each do |routes_file|
+          original_lines = File.readlines(routes_file)
+
+          # Define which line we want to place the draw line under in the original routes files.
+          insert_line = if routes_file.match?("api")
+            draw_line = "  #{draw_line}" # Add necessary indentation.
+            "namespace :v1 do"
+          else
+            "draw \"sidekiq\""
+          end
+
+          new_lines = Scaffolding::BlockManipulator.insert(draw_line, lines: original_lines, within: insert_line)
+          Scaffolding::FileManipulator.write(routes_file, new_lines)
+        end
       end
 
       unless cli_options["skip-api"]
