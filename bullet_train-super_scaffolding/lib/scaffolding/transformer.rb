@@ -571,15 +571,15 @@ class Scaffolding::Transformer
   def add_has_many_association
     has_many_line = ["has_many :completely_concrete_tangible_things"]
 
-    # TODO I _think_ this is the right way to check for whether we need `class_name` to specify the name of the model.
-    unless transform_string("completely_concrete_tangible_things").classify == child
+    # Specify the class name if the model is namespaced.
+    if child.match?("::")
       has_many_line << "class_name: \"Scaffolding::CompletelyConcrete::TangibleThing\""
     end
 
     has_many_line << "dependent: :destroy"
 
-    # TODO I _think_ this is the right way to check for whether we need `foreign_key` to specify the name of the model.
-    unless transform_string("absolutely_abstract_creative_concept_id") == "#{parent.underscore}_id"
+    # Specify the foreign key if the parent is namespaced.
+    if parent.match?("::")
       has_many_line << "foreign_key: :absolutely_abstract_creative_concept_id"
 
       # And if we need `foreign_key`, we should also specify `inverse_of`.
