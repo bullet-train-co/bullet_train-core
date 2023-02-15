@@ -4,7 +4,7 @@
 @import './super_select';
 @import './trix_editor';
 
-.required > label::before {
+.required > label::after {
+  @apply text-red-500 pl-1 text-base leading-none inline-block;
   content: "*";
-  padding-right: 3px;
 }
