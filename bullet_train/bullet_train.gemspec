@@ -43,7 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "devise"
   spec.add_dependency "xxhash"
 
-
   # This has been broken since Rails 7.
   # spec.add_dependency "devise-two-factor"
   # spec.add_dependency "rqrcode"

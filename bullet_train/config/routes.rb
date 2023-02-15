@@ -17,7 +17,7 @@ Rails.application.routes.draw do
       resource :two_factor, only: [:create, :destroy] do
         post :verify
       end
-      
+
       # user-level onboarding tasks.
       namespace :onboarding do
         resources :user_details
