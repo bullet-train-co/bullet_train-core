@@ -1,51 +1,6 @@
 @layer utilities {
   @media (prefers-color-scheme: dark) {
     /**
-     * General
-     **/
-    .button {
-      @apply ring-offset-slate-700;
-    }
-
-    .table {
-      th {
-        @apply text-slate-400;
-      }
-
-      tbody {
-        @apply border-slate-500;
-
-        tr {
-          border-top: 1px solid theme('colors.slate.500');
-        }
-
-        td {
-          @apply text-slate-400;
-
-          a,
-          input[type="submit"] {
-            @apply text-slate-200;
-          }
-        }
-      }
-    }
-
-    /**
-     * Form components
-     **/
-    .button-secondary {
-      @apply text-slate-200;
-    }
-
-    .button-alternative {
-      @apply bg-slate-400 border-slate-400 text-white;
-
-      &:hover {
-        @apply bg-slate-300 border-slate-200 text-white;
-      }
-    }
-
-    /**
      * Custom components
      **/
     /* Color picker */
