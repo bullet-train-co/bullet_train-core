@@ -218,15 +218,18 @@ namespace :bullet_train do
   def set_core_gems(flag, framework_packages)
     packages = framework_packages.keys
     gemfile_lines = File.readlines("./Gemfile")
-    new_lines = gemfile_lines.map do |line|
-      packages.each do |package|
-        if line.match?(/"#{package}"/)
-          original_path = "gem \"#{package}\""
-          local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
 
-          case flag
-          when "--link"
-            if `cat Gemfile | grep "gem \\\"#{package}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
+    packages.each do |package|
+      original_path = "gem \"#{package}\""
+      local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
+      match_found = false
+
+      new_lines = gemfile_lines.map do |line|
+        if line.match?(/"#{package}"/)
+          match_found = true
+
+          if flag == "--link"
+            if `cat Gemfile | grep "gem \\\"#{package}\\\", path: \\\"local/bullet_train-core/#{package}\\\""`.chomp.present?
               puts "#{package} is already linked to a checked out copy in `local` in the `Gemfile`.".green
             elsif `cat Gemfile | grep "gem \\\"#{package}\\\","`.chomp.present?
               puts "#{package} already has some sort of alternative source configured in the `Gemfile`.".yellow
@@ -235,18 +238,32 @@ namespace :bullet_train do
               puts "#{package} is directly present in the `Gemfile`, so we'll update that line.".green
               line.gsub!(original_path, local_path)
             end
-            break
-          when "--reset"
+          elsif flag == "--reset"
             line.gsub!(local_path, original_path)
             puts "Resetting '#{package}' package in the Gemfile...".blue
-            break
           end
         end
+        line
       end
-      line
+
+      # Add/Remove any packages that aren't primarily in the Gemfile.
+      if flag == "--link"
+        unless match_found
+          puts "Could not find #{package}. Adding to the end of the Gemfile.".blue
+          new_lines << "#{local_path}\n"
+        end
+      elsif flag == "--reset"
+        gem_regexp = /bullet_train-[a-z|A-Z_-]+/
+        while new_lines.last.match?(gem_regexp)
+          puts "Removing #{new_lines.last.scan(gem_regexp).first} from the Gemfile.".yellow
+          new_lines.pop
+        end
+      end
+
+      gemfile_lines = new_lines
     end
 
-    File.write("./Gemfile", new_lines.join)
+    File.write("./Gemfile", gemfile_lines.join)
   end
 
   def set_npm_package(flag, package)
