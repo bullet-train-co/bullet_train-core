@@ -1,9 +1,10 @@
 # Automated Test Suite
 All of Bullet Train’s core functionality is verifiable using the provided test suite. This foundation of headless browser integration tests took a ton of time to write, but they can give you the confidence and peace of mind that you haven't broken any key functionality in your application before a deploy.
 
-You can run the test suite with the following command in your shell:
+You can run the test suite with the following commands in your shell:
 
 ```
+rails test
 rails test:system
 ```
 

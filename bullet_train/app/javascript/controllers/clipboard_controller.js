@@ -9,7 +9,7 @@ export default class extends Controller {
     document.execCommand('copy')
     this.buttonTarget.innerHTML = '<i id="copied" class="fas fa-check w-4 h-4 block text-green-600"></i>'
     setTimeout(function () {
-      document.getElementById('copied').innerHTML = '<i class="far fa-copy w-4 h-4 block text-gray-600"></i>'
+      document.getElementById('copied').innerHTML = '<i class="far fa-copy w-4 h-4 block text-slate-600"></i>'
     }, 1500)
   }
 }
