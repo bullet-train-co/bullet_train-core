@@ -14,8 +14,10 @@ Rails.application.routes.draw do
       # TODO we need to either implement a dashboard or deprecate this.
       root to: "dashboard#index", as: "dashboard"
 
-      resource :two_factor, only: [:create, :destroy]
-
+      resource :two_factor, only: [:create, :destroy] do
+        post :verify
+      end
+      
       # user-level onboarding tasks.
       namespace :onboarding do
         resources :user_details
