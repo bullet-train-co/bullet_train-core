@@ -79,7 +79,7 @@ module Records::Base
     db_seed_task = rake_tasks.find { |task| task.name.match?(/^db:seed$/) }
     db_seed_task.already_invoked
   end
-  
+
   def all_blank?(attributes = {})
     attributes = self.attributes if attributes.empty?
     attributes.all? do |key, value|

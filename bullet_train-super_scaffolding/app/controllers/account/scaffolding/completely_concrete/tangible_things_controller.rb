@@ -70,7 +70,7 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   if defined?(Api::V1::ApplicationController)
     include strong_parameters_from_api
   end
-  
+
   def process_params(strong_params)
     # 🚅 skip this section when scaffolding.
     assign_boolean(strong_params, :boolean_button_value)

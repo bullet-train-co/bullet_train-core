@@ -13,7 +13,7 @@ class Scaffolding::CompletelyConcrete::TangibleThing < ApplicationRecord
   # 🚅 add oauth providers above.
 
   has_one_attached :file_field_value
-  
+
   has_one :team, through: :absolutely_abstract_creative_concept
   has_one :address_value, class_name: "Address", as: :addressable
   accepts_nested_attributes_for :address_value
