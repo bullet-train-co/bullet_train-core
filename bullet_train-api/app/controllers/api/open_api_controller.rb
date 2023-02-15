@@ -54,6 +54,21 @@ module OpenApiHelper
 
     attributes_output = JSON.parse(schema_json)
 
+    # Rails attachments aren't technically attributes in a model,
+    # so we add the attributes manually to make them available in the API.
+    if model.attachment_reflections.any?
+      model.attachment_reflections.each do |reflection|
+        attribute_name = reflection.first
+
+        attributes_output["properties"][attribute_name] = {
+          "type" => "object",
+          "description" => attribute_name.titleize.to_s
+        }
+
+        attributes_output["example"].merge!({attribute_name.to_s => nil})
+      end
+    end
+
     if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
       strong_params_module = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
       strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module).report
@@ -86,7 +101,6 @@ module OpenApiHelper
     heading = t("#{current_model.name.underscore.pluralize}.fields.#{attribute}.heading")
     attribute_data = current_model.columns_hash[attribute.to_s]
 
-    # TODO: File fields don't show up in the columns_hash. How should we handle these?
     # Default to `string` when the type returns nil.
     type = attribute_data.nil? ? "string" : attribute_data.type
 

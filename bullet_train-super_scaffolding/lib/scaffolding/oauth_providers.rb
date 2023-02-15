@@ -10,11 +10,6 @@ def legacy_resolve_template_path(file)
   end.compact.first || raise("Couldn't find the Super Scaffolding template for `#{file}` in any of the following locations:\n\n#{BulletTrain::SuperScaffolding.template_paths.join("\n")}")
 end
 
-# TODO I was running into an error in a downstream application where it couldn't find silence_logs? We should implement it in this package.
-def silence_logs?
-  ENV["SILENCE_LOGS"].present?
-end
-
 def legacy_replace_in_file(file, before, after)
   puts "Replacing in '#{file}'." unless silence_logs?
   target_file_content = File.read(file)

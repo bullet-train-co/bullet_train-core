@@ -214,7 +214,7 @@ module Scaffolding
             # If we're shifting a block to the left, we want to safeguard
             # the String so it doesn't delete any excess characters.
             if direction == :left
-              amount.times { line = line.gsub(/^\s/, "") }
+              amount.times { line = line.gsub(/^ /, "") }
             elsif direction == :right
               line = "\s" * amount + line
             end

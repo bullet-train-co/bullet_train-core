@@ -3,7 +3,7 @@
 Action Models make it easy to scaffold and implement user-facing custom actions in your Bullet Train application and API in a RESTful way. Action Models are perfect for situations where you want one or more of the following:
 
  - Bulk actions for a model where users can select one or more objects as targets.
- - Long-running background tasks where you want to keep users updated on their progress in the UI or notify then after completion.
+ - Long-running background tasks where you want to keep users updated on their progress in the UI or notify them after completion.
  - Actions that have one or more configuration options available.
  - Tasks that can be configured now but scheduled to take place later.
  - Actions where you want to keep an in-app record of when it happened and who initiated the action.
@@ -44,11 +44,11 @@ end
 
 ### 1. Purchase Bullet Train Pro
 
-First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to way a little to receive your keys.
+First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to wait a little to receive your keys.
 
 ### 2. Install the Package
 
-You'll need to specify both Ruby gems in your `Gemfile`, since we have to specify a private source for both:
+Then you can specify the Ruby gem in your `Gemfile`:
 
 ```ruby
 source "https://YOUR_TOKEN_HERE@gem.fury.io/bullettrain" do
@@ -104,7 +104,7 @@ Because Action Models are just regular models, you can add new fields to them wi
 For example:
 
 ```
-rails g migration add notify_users_to_projects_archive_actions notify_users:boolean
+rails g migration add_notify_users_to_projects_archive_actions notify_users:boolean
 # side quest: update the generated migration with `default: false` on the new boolean field.
 bin/super-scaffold crud-field Projects::ArchiveAction notify_users:boolean
 ```

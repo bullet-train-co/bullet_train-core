@@ -1,0 +1,12 @@
+.theme-secondary-purple {
+  --secondary-50: theme('colors.purple.50');
+  --secondary-100: theme('colors.purple.100');
+  --secondary-200: theme('colors.purple.200');
+  --secondary-300: theme('colors.purple.300');
+  --secondary-400: theme('colors.purple.400');
+  --secondary-500: theme('colors.purple.500');
+  --secondary-600: theme('colors.purple.600');
+  --secondary-700: theme('colors.purple.700');
+  --secondary-800: theme('colors.purple.800');
+  --secondary-900: theme('colors.purple.900');
+}
