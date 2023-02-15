@@ -722,7 +722,7 @@ class Scaffolding::Transformer
       when "number_field"
         "number"
       when "file_field"
-        "file"
+        "file#{"s" if is_multiple}"
       when "password_field"
         "text"
       else
@@ -1065,6 +1065,9 @@ class Scaffolding::Transformer
         ].each do |file|
           if is_ids || is_multiple
             scaffold_add_line_to_file(file, "#{name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            if type == "file_field"
+              scaffold_add_line_to_file(file, "#{name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            end
           else
             scaffold_add_line_to_file(file, ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
             if type == "file_field"
@@ -1113,7 +1116,11 @@ class Scaffolding::Transformer
           when "date_and_time_field"
             "assert_equal_or_nil DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
           when "file_field"
-            "assert_equal tangible_thing_data['#{name}'], rails_blob_path(@tangible_thing.#{name}) unless controller.action_name == 'create'"
+            if is_multiple
+              "assert_equal tangible_thing_data['#{name}'], @tangible_thing.#{name}.map{|file| rails_blob_path(file)} unless controller.action_name == 'create'"
+            else
+              "assert_equal tangible_thing_data['#{name}'], rails_blob_path(@tangible_thing.#{name}) unless controller.action_name == 'create'"
+            end
           else
             "assert_equal_or_nil tangible_thing_data['#{name}'], tangible_thing.#{name}"
           end
@@ -1122,13 +1129,30 @@ class Scaffolding::Transformer
 
         # File fields are handled in a specific way when using the jsonapi-serializer.
         if type == "file_field"
-          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", "json.#{name} url_for(tangible_thing.#{name}) if tangible_thing.#{name}.attached?", RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
+          jbuilder_content = if is_multiple
+            <<~RUBY
+              json.#{name} do 
+                json.array! tangible_thing.#{name}.map { |file| url_for(file)  }
+              end if tangible_thing.#{name}.attached?
+            RUBY
+          else
+            "json.#{name} url_for(tangible_thing.#{name}) if tangible_thing.#{name}.attached?"
+          end
+
+          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", jbuilder_content, RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
           # We also want to make sure we attach the dummy file in the API test on setup
           file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb"
-          content = <<~RUBY
-            @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
-            @another_#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
-          RUBY
+          content = if is_multiple
+            <<~RUBY
+              @#{child.underscore}.#{name} = [Rack::Test::UploadedFile.new("test/support/foo.txt")]
+              @another_#{child.underscore}.#{name} = [Rack::Test::UploadedFile.new("test/support/foo.txt")]
+            RUBY
+          else
+            <<~RUBY
+              @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
+              @another_#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
+            RUBY
+          end
           scaffold_add_line_to_file(file_name, content, RUBY_FILES_HOOK, prepend: true)
         end
 
@@ -1297,7 +1321,27 @@ class Scaffolding::Transformer
 
         case type
         when "file_field"
-          remove_file_methods =
+          remove_file_methods = if is_multiple
+            <<~RUBY
+              def #{name}_removal?
+                #{name}_removal&.any?
+              end
+
+              def remove_#{name}
+                #{name}_attachments.where(id: #{name}_removal).map(&:purge)
+              end
+
+              def #{name}=(attachables)
+                attachables = Array(attachables).compact_blank
+            
+                if attachables.any?
+                  attachment_changes["#{name}"] =
+                    ActiveStorage::Attached::Changes::CreateMany.new("#{name}", self, #{name}.blobs + attachables)
+                end
+              end
+
+            RUBY
+          else
             <<~RUBY
               def #{name}_removal?
                 #{name}_removal.present?
@@ -1307,6 +1351,7 @@ class Scaffolding::Transformer
                 #{name}.purge
               end
             RUBY
+          end
 
           # Generating a model with an `attachment(s)` data type (i.e. - `rails g ModelName file:attachment`)
           # adds `has_one_attached` or `has_many_attached` to our model, just not directly above the
