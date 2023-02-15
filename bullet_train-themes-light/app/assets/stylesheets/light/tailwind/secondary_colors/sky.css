@@ -1,0 +1,12 @@
+.theme-secondary-sky {
+  --secondary-50: theme('colors.sky.50');
+  --secondary-100: theme('colors.sky.100');
+  --secondary-200: theme('colors.sky.200');
+  --secondary-300: theme('colors.sky.300');
+  --secondary-400: theme('colors.sky.400');
+  --secondary-500: theme('colors.sky.500');
+  --secondary-600: theme('colors.sky.600');
+  --secondary-700: theme('colors.sky.700');
+  --secondary-800: theme('colors.sky.800');
+  --secondary-900: theme('colors.sky.900');
+}

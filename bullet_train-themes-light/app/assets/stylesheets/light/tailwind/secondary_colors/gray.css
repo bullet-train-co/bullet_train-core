@@ -1,0 +1,12 @@
+.theme-secondary-gray {
+  --secondary-50: theme('colors.slate.50');
+  --secondary-100: theme('colors.slate.100');
+  --secondary-200: theme('colors.slate.200');
+  --secondary-300: theme('colors.slate.300');
+  --secondary-400: theme('colors.slate.400');
+  --secondary-500: theme('colors.slate.500');
+  --secondary-600: theme('colors.slate.600');
+  --secondary-700: theme('colors.slate.700');
+  --secondary-800: theme('colors.slate.800');
+  --secondary-900: theme('colors.slate.900');
+}
