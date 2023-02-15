@@ -1,9 +1,9 @@
 <%= render 'account/shared/box', divider: @backup_codes do |p| %>
   <% p.content_for :title, t("users.edit.two_factor.header") %>
   <% p.content_for :description, t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
-  <% p.content_for :body do %>
-    <% if current_user.otp_required_for_login? %>
-      <% if @backup_codes %>
+  <% if current_user.otp_secret %>
+    <% if @backup_codes %>
+      <% p.content_for :body do %>
 
         <%= render 'account/shared/alert' do %>
           <%= t('users.edit.two_factor.warning').html_safe %>
@@ -29,14 +29,35 @@
           <% end %>
         </center>
 
+        <%= form_for current_user, url: verify_account_two_factor_path, method: :post, remote:true, html: {class: 'form'} do |form| %>
+          <div class="py-4">
+            <%= render 'shared/fields/text_field', form: form, method: :otp_attempt %>
+          </div>
+          <%= form.submit t('users.edit.two_factor.buttons.verify'), class: 'button' %>
+        <% end %> 
       <% end %>
     <% end %>
   <% end %>
   <% p.content_for :actions do %>
-    <% if current_user.otp_required_for_login? %>
-      <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, method: :delete, remote: true, class: "button" %>
-    <% else %>
-      <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, method: :post, remote: true, class: "button" %>
-    <% end %>
+    <div class="<%= 'hidden' if @backup_codes %> space-y">
+      <% if local_assigns.has_key? :verified %>
+        <% if verified %>
+          <%= render 'account/shared/alert', color: 'blue' do %>
+            <%= t('users.edit.two_factor.verification_success').html_safe %>
+          <% end %>
+        <% else %>
+          <%= render 'account/shared/alert' do %>
+            <%= t('users.edit.two_factor.verification_fail').html_safe %>
+          <% end %>
+        <% end %>
+      <% end %>
+
+      <% if current_user.otp_required_for_login? %>
+        <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, method: :delete, remote: true, class: "button" %>
+      <% else %>
+        <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, method: :post, remote: true, class: "button" %>
+      <% end %>
+    </div>
   <% end %>
 <% end %>
+

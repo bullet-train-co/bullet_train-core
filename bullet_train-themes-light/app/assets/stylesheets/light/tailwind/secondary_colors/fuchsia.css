@@ -1,0 +1,12 @@
+.theme-secondary-fuchsia {
+  --secondary-50: theme('colors.fuchsia.50');
+  --secondary-100: theme('colors.fuchsia.100');
+  --secondary-200: theme('colors.fuchsia.200');
+  --secondary-300: theme('colors.fuchsia.300');
+  --secondary-400: theme('colors.fuchsia.400');
+  --secondary-500: theme('colors.fuchsia.500');
+  --secondary-600: theme('colors.fuchsia.600');
+  --secondary-700: theme('colors.fuchsia.700');
+  --secondary-800: theme('colors.fuchsia.800');
+  --secondary-900: theme('colors.fuchsia.900');
+}

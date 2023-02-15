@@ -26,6 +26,12 @@ wrapper_options = { data: { controller: stimulus_controller }}
 wrapper_options[:data]["#{stimulus_controller}-enable-search-value"] = true if other_options[:search]
 wrapper_options[:data]["#{stimulus_controller}-accepts-new-value"] = true if other_options[:accepts_new]
 wrapper_options[:data]["#{stimulus_controller}-search-url-value"] = choices_url if choices_url.present?
+
+unless options[:multiple]
+  wrapper_options[:data]["action"] ||= ""
+  wrapper_options[:data]["action"] += " keydown->#{stimulus_controller}#injectKeystrokeIntoTextField $select2:open->#{stimulus_controller}#focusOnTextField"
+end
+
 html_options[:data] ||= {}
 html_options[:data].merge!("#{stimulus_controller}-target": 'select')
 
