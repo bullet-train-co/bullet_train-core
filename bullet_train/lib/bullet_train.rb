@@ -13,6 +13,7 @@ require "colorizer"
 require "bullet_train/core_ext/string_emoji_helper"
 
 require "devise"
+require "xxhash"
 # require "devise-two-factor"
 # require "rqrcode"
 require "cancancan"
