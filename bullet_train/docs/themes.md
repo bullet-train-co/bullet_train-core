@@ -19,7 +19,7 @@ This will copy all of the standard views from `bullet_train-themes-light` to `ap
 
 After running this command, you will see that a few other files are edited to use this new theme. Whenever switching a theme, you will need to make the same changes to make sure your application is running with the theme of your choice.
 
-You can also pass an annotated path to a view after running `bin/resolve` to eject individual views to your application.
+You can also pass an annotated path to a view after running `bin/resolve --interactive` to eject individual views to your application.
 
 ## Theme Component Usage
 
@@ -70,7 +70,7 @@ On the other hand, if you decide to try to build a theme from the ground up, you
 <% end %>
 ```
 
-This allows the theme engine to resolve which theme in the inheritance chain to include the `box` partial from. For example:
+This allows the theme engine to resolve which theme in the inheritance chain will include the `box` partial. For example:
 
  - It might come from the “Light” theme today, but if you switch to the “Bold” theme later, it’ll start pulling it from there.
  - If you start extending “Light”, you can override its `box` implementation and your application will pick up the new customized version from your theme automatically.
