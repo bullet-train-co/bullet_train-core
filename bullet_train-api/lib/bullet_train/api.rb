@@ -30,5 +30,15 @@ module BulletTrain
     def self.all_versions
       (initial_version_numeric..current_version_numeric).map { |version| "v#{version}".to_sym }
     end
+
+    def self.set_configuration(application_class)
+      application_class.config.to_prepare do
+        Doorkeeper::ApplicationController.layout "devise"
+
+        if Doorkeeper::TokensController
+          require_relative "../tokens_controller"
+        end
+      end
+    end
   end
 end

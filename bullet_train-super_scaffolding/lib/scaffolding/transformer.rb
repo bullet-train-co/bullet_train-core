@@ -251,11 +251,6 @@ class Scaffolding::Transformer
     transformed_file_content.join
   end
 
-  # TODO I was running into an error in a downstream application where it couldn't find silence_logs? We should implement it in this package.
-  def silence_logs?
-    ENV["SILENCE_LOGS"].present?
-  end
-
   def scaffold_file(file, overrides: false)
     transformed_file_content = get_transformed_file_content(file)
     transformed_file_name = transform_string(file)
@@ -571,15 +566,15 @@ class Scaffolding::Transformer
   def add_has_many_association
     has_many_line = ["has_many :completely_concrete_tangible_things"]
 
-    # TODO I _think_ this is the right way to check for whether we need `class_name` to specify the name of the model.
-    unless transform_string("completely_concrete_tangible_things").classify == child
+    # Specify the class name if the model is namespaced.
+    if child.match?("::")
       has_many_line << "class_name: \"Scaffolding::CompletelyConcrete::TangibleThing\""
     end
 
     has_many_line << "dependent: :destroy"
 
-    # TODO I _think_ this is the right way to check for whether we need `foreign_key` to specify the name of the model.
-    unless transform_string("absolutely_abstract_creative_concept_id") == "#{parent.underscore}_id"
+    # Specify the foreign key if the parent is namespaced.
+    if parent.match?("::")
       has_many_line << "foreign_key: :absolutely_abstract_creative_concept_id"
 
       # And if we need `foreign_key`, we should also specify `inverse_of`.
@@ -929,6 +924,20 @@ class Scaffolding::Transformer
 
         unless ["Team", "User"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content, "<%# 🚅 super scaffolding will insert new field headers above this line. %>", prepend: true)
+        end
+
+        # If these strings are the same, we get duplicate variable names in the _index.html.erb partial,
+        # so we account for that here. Run the Super Scaffolding test setup script and check the index partial
+        # of models with namespaced parents for reference (i.e. - Objective, Projects::Step).
+        transformed_abstract_str = transform_string("absolutely_abstract_creative_concept")
+        transformed_concept_str = transform_string("creative_concept")
+        transformed_file_name = transform_string("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb")
+        if (transformed_abstract_str == transformed_concept_str) && File.exist?(transformed_file_name)
+          replace_in_file(
+            transformed_file_name,
+            "#{transformed_abstract_str} = @#{transformed_abstract_str} || @#{transformed_concept_str}",
+            "#{transformed_abstract_str} = @#{transformed_concept_str}"
+          )
         end
 
         table_cell_options = []

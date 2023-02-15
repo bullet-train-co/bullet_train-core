@@ -169,5 +169,39 @@ describe Scaffolding::RoutesFileManipulator do
       manipulator.apply(["account"])
       assert_equal File.readlines("test/lib/scaffolding/examples/result_7._rb"), manipulator.lines
     end
+    it "adds the activity concern to a new resource" do
+      manipulator = subject.new(example_file, "Book", "Team")
+      manipulator.add_concern(:activity)
+      manipulator.apply(["account"])
+      test_line = manipulator.lines.find { |line| line.include?("books") }
+      assert test_line.include?("concerns: [:activity]")
+    end
+    it "adds a concern to an existing resource" do
+      manipulator = subject.new(example_file, "Book", "Team")
+      manipulator.apply(["account"])
+      line_number = manipulator.apply(["account"])
+      manipulator.add_concern_at_line(:activity, line_number)
+      assert_equal manipulator.lines[line_number].squish, "resources :books, concerns: [:activity]"
+    end
+    it "adds a new concern to an existing resource with concerns" do
+      manipulator = subject.new(example_file, "Book", "Team")
+      line_number = manipulator.apply(["account"])
+      # fake an existing concern already added to this resource
+      line = manipulator.lines[line_number]
+      line = line.squish + ", concerns: [:sortable]\n"
+      manipulator.lines[line_number] = line
+      manipulator.add_concern_at_line(:activity, line_number)
+      assert_equal "resources :books, concerns: [:sortable, :activity]", manipulator.lines[line_number].squish
+    end
+    it "adds a concern to an existing route with existing concerns and a block" do
+      manipulator = subject.new(example_file, "Book", "Team")
+      line_number = manipulator.apply(["account"])
+      # fake an existing concern already added to this resource
+      line = manipulator.lines[line_number]
+      line = line.squish + ", concerns: [:sortable] do\n"
+      manipulator.lines[line_number] = line
+      manipulator.add_concern_at_line(:activity, line_number)
+      assert_equal "resources :books, concerns: [:sortable, :activity] do", manipulator.lines[line_number].squish
+    end
   end
 end
