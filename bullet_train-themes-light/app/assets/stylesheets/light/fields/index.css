@@ -3,3 +3,8 @@
 @import './phone_field';
 @import './super_select';
 @import './trix_editor';
+
+.required > label::before {
+  content: "*";
+  padding-right: 3px;
+}
