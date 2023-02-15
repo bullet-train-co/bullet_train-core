@@ -23,10 +23,10 @@
           <% Membership.assignable_roles.each do |role| %>
             <% if current_membership.can_manage_role?(role) %>
               <div class="flex items-top">
-                <%= fields.check_box :role_ids, {multiple: true, class: "h-4 w-4 text-blue focus:ring-blue-dark border-gray-300 rounded mt-0.5"}, role.id, nil %>
+                <%= fields.check_box :role_ids, {multiple: true, class: "h-4 w-4 text-blue focus:ring-blue-dark border-slate-300 rounded mt-0.5"}, role.id, nil %>
                 <label for="invitation_membership_attributes_role_ids_<%= role.id %>" class="ml-2 block select-none">
                   <span><%= t('invitations.form.invite_as', role_key: t("memberships.fields.role_ids.options.#{role.key}.label")) %></span>
-                  <div class="mt-0.5 text-gray-400 font-light leading-normal">
+                  <div class="mt-0.5 text-slate-400 font-light leading-normal">
                     <%= t("memberships.fields.role_ids.options.#{role.key}.description") %>
                   </div>
                 </label>
