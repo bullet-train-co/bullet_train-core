@@ -31,8 +31,6 @@ If you're in a situation where you know you need to bump your API version to hel
 rake bullet_train:api:bump_version
 ```
 
-> TODO This Rake task doesn't exist yet.
-
 ## What happens when you bump an API version?
 When you bump your API version, all of the files and directories that are namespaced with the API version number will be duplicated into a new namespace for the new API version number.
 
