@@ -8,7 +8,7 @@ Whether you want to build a new application with Bullet Train or contribute to B
 
 If you're using Bullet Train for the first time, begin by learning these five important techniques:
 
-1. Use `rails g model` to create and `bin/super-scaffold` to scaffold a new model:
+1. Use `rails g model` to create and `bin/super-scaffold crud` to scaffold a new model:
 
     ```
     rails g model Project team:references name:string
@@ -17,7 +17,7 @@ If you're using Bullet Train for the first time, begin by learning these five im
 
     In this example, `Team` refers to the immediate parent of the `Project` resource. For more details, just run `bin/super-scaffold` or [read the documentation](/docs/super-scaffolding.md).
 
-2. Use `rails g migration` and `bin/super-scaffold` to add a new field to a model you've already scaffolded:
+2. Use `rails g migration` and `bin/super-scaffold crud-field` to add a new field to a model you've already scaffolded:
 
     ```
     rails g migration add_description_to_projects description:text
@@ -32,7 +32,7 @@ If you're using Bullet Train for the first time, begin by learning these five im
     - Selecting "Inspect Element".
     - Looking for the `<!-- BEGIN ... -->` comment above the element you've selected.
 
-4. Figure out the full I18N translation key of any string on the page by adding `?show_locales=true` to the URL.
+4. Figure out the full I18n translation key of any string on the page by adding `?show_locales=true` to the URL.
 
 5. Use `bin/resolve` to figure out where framework or theme things are coming from and eject them if you need to customize something locally:
 

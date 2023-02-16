@@ -18,7 +18,7 @@ other_options ||= {}
 
 <%
 cloudinary_id = if_present(form.object.send(method))
-preview_image_options = {width: options[:width]&.*(2), height: options[:height]&.*(2), crop: :fill}
+preview_image_options = {width: options[:width], height: options[:height], crop: :fill}
 cloudinary_url = cl_image_path(cloudinary_id, preview_image_options) if cloudinary_id
 cloudinary_url_format = cl_image_path('CLOUDINARY_ID', preview_image_options)
 %>

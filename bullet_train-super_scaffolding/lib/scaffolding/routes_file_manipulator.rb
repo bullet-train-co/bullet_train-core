@@ -1,9 +1,10 @@
 require "scaffolding/block_manipulator"
 
 class Scaffolding::RoutesFileManipulator
-  attr_accessor :child, :parent, :lines, :transformer_options
+  attr_accessor :child, :parent, :lines, :transformer_options, :concerns
 
   def initialize(filename, child, parent, transformer_options = {})
+    @concerns = []
     self.child = child
     self.parent = parent
     @filename = filename
@@ -375,17 +376,34 @@ class Scaffolding::RoutesFileManipulator
         within = find_or_convert_resource_block(parent_resource, options: "except: collection_actions", within: within)
       end
 
-      find_or_create_resource(child_namespaces + [child_resource], options: define_concerns, within: within)
+      add_concern(:sortable) if transformer_options["sortable"]
+      find_or_create_resource(child_namespaces + [child_resource], options: formatted_concerns, within: within)
 
     end
   end
 
-  # Pushing custom concerns here will add them to the routes file when Super Scaffolding.
-  def define_concerns
-    concerns = []
-    concerns.push(:sortable) if transformer_options["sortable"]
+  def add_concern(concern)
+    @concerns.push(concern)
+  end
 
-    return if concerns.empty?
-    "concerns: #{concerns}"
+  def formatted_concerns
+    return if @concerns.empty?
+    "concerns: #{@concerns}"
+  end
+
+  # Adds a concern to an existing resource at the given line number. (used by the audit logs gem)
+  def add_concern_at_line(concern, line_number)
+    line = lines[line_number]
+    existing_concerns = line.match(/concerns: \[(.*)\]/).to_a[1].to_s.split(",")
+    existing_concerns.map! { |e| e.tr(":", "").tr("\"", "").squish&.to_sym }
+    existing_concerns.filter! { |e| e.present? }
+    existing_concerns << concern
+    if line.include?("concerns:")
+      lines[line_number].gsub!(/concerns: \[(.*)\]/, "concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]")
+    elsif line.ends_with?(" do")
+      lines[line_number].gsub!(/ do$/, " concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}] do")
+    else
+      lines[line_number].gsub!(/resources :(.*)$/, "resources :\\1, concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]")
+    end
   end
 end

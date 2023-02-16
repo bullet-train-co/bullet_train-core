@@ -2,7 +2,8 @@
   <% p.content_for :title, t('devise.headers.sign_in') %>
   <% p.content_for :body do %>
     <% within_fields_namespace(:self) do %>
-      <%= form_for resource, as: resource_name, url: two_factor_authentication_enabled? ? users_pre_otp_path : session_path(resource_name), remote: two_factor_authentication_enabled?, html: {class: 'form'}, authenticity_token: true, data: {turbo: !user_return_to_is_oauth} do |form| %>
+      <%# TODO: Turbo is set to `false` for now, but we may want to only bypass Turbo for JavaScript-based requests in the future. %>
+      <%= form_for resource, as: resource_name, url: two_factor_authentication_enabled? ? users_pre_otp_path : session_path(resource_name), remote: two_factor_authentication_enabled?, html: {class: 'form'}, authenticity_token: true, data: {turbo: false} do |form| %>
         <% with_field_settings form: form do %>
           <%= render 'account/shared/notices', form: form %>
           <%= render 'account/shared/forms/errors', form: form %>
@@ -43,8 +44,9 @@
           </div>
 
           <% if devise_mapping.rememberable? %>
+            <% # TODO This needs to be its own component. Can't have this kind of styling here. %>
             <div class="flex items-center">
-              <%= form.check_box :remember_me, class: "h-4 w-4 text-blue focus:ring-blue-dark border-gray-300 rounded" %>
+              <%= form.check_box :remember_me, class: "h-4 w-4 text-blue focus:ring-blue-800 border-slate-300 rounded dark:bg-slate-800 dark:border-slate-900" %>
               <%= form.label :remember_me, class: "ml-2 block" %>
             </div>
           <% end %>

@@ -17,12 +17,15 @@ en:
         header: Two-Factor Authentication
         description_enabled: 2FA is currently enabled for your account.
         description_disabled: You can increase the security of your account by enabling two-factor authentication.
-        warning: "In order to complete set up, you <strong>must</strong> complete the steps below. <strong>The information below will not be shown again.</strong> If you don't complete setting up now, you must disable two-factor authentication to avoid being locked out of your account."
+        verification_fail: Verification failed. You can try enabling again. Please make sure you scan the new QR code with your Authenticator app.
+        verification_success: Success! Thanks for verifying. 2FA is now enabled. 
+        warning: "In order to enable two-factor authentication, you <strong>must</strong> install an Authenticator app and <strong>enter your Verification Code from the app below</strong>. 2FA will not be enabled until you do so. This is to avoid you getting locked out of your account."
         instructions: "Install <a href='https://authy.com/download/' target='_blank'>Authy</a> or <a href='https://support.google.com/accounts/answer/1066447'>Google Authentication</a> on your phone and scan the barcode displayed below."
         recovery_codes: "You can also make a copy of the following recovery codes. Each one can help you get back into your account once should you lose access to the device you're using for two-factor authentication."
         buttons:
           enable: Enable
           disable: Disable
+          verify: Verify
       buttons: *buttons
     notifications:
       updated: User was successfully updated.
@@ -61,6 +64,10 @@ en:
       password_confirmation:
         _: &password_confirmation Password Confirmation
         label: Confirm Password
+      otp_attempt:
+        _: &otp_attempt Your Verification Code
+        label: *otp_attempt
+        heading: *otp_attempt
       locale:
         _: &locale Language
         label: *locale

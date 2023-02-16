@@ -43,7 +43,7 @@ git checkout -b updating-starter-repo
 git merge starter-repo/main
 ```
 
-It's quite possible you'll get some merge conflicts at this point. No big deal! Just go through and resolve them like you would if you were integrating code from another developer on your team. We tend to comment our code heavily, but if you have any questions about the code you're trying to understand, let us know on Slack!
+It's quite possible you'll get some merge conflicts at this point. No big deal! Just go through and resolve them like you would if you were integrating code from another developer on your team. We tend to comment our code heavily, but if you have any questions about the code you're trying to understand, let us know on Discord!
 
 ```
 git diff
@@ -55,6 +55,7 @@ git commit -m "Upgrading Bullet Train."
 
 ```
 rails test
+rails test:system
 ```
 
 ### 6. Merge into `main` and delete the branch.
