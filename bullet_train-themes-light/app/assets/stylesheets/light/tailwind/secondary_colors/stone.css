@@ -1,0 +1,12 @@
+.theme-secondary-stone {
+  --secondary-50: theme('colors.stone.50');
+  --secondary-100: theme('colors.stone.100');
+  --secondary-200: theme('colors.stone.200');
+  --secondary-300: theme('colors.stone.300');
+  --secondary-400: theme('colors.stone.400');
+  --secondary-500: theme('colors.stone.500');
+  --secondary-600: theme('colors.stone.600');
+  --secondary-700: theme('colors.stone.700');
+  --secondary-800: theme('colors.stone.800');
+  --secondary-900: theme('colors.stone.900');
+}
