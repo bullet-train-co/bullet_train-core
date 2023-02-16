@@ -3,7 +3,7 @@ module Users::Base
 
   included do
     if two_factor_authentication_enabled?
-      devise :two_factor_authenticatable, :two_factor_backupable, otp_secret_encryption_key: ENV["TWO_FACTOR_ENCRYPTION_KEY"]
+      devise :two_factor_authenticatable, :two_factor_backupable
     else
       devise :database_authenticatable
     end

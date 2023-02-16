@@ -29,7 +29,7 @@ end
 We do this so Bullet Train applications can re-use the logic in `db/seeds.rb` for three purposes:
 
 1. Set up new local development environments.
-2. Ensure the test suite has the same configuration for features whose configuration is backed by Active Record (e.g. [subscriptions](/docs/subscriptions.md) and [outgoing webhooks](/docs/webhooks/outgoing.md)).
+2. Ensure the test suite has the same configuration for features whose configuration is backed by Active Record (e.g. [outgoing webhooks](/docs/webhooks/outgoing.md)).
 3. Ensure any updates to the baseline configuration that have been tested both locally and in CI are the exact same updates being executed in production upon deploy.
 
 This makes `db/seeds.rb` a single source of truth for this sort of baseline data, instead of having this concern spread and sometimes duplicated across `db/seeds.rb`, `db/migrations/*`, and `test/fixtures`.

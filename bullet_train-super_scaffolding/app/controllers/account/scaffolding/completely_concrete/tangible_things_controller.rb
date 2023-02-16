@@ -26,7 +26,7 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   def create
     respond_to do |format|
       if @tangible_thing.save
-        format.html { redirect_to [:account, @absolutely_abstract_creative_concept, :completely_concrete_tangible_things], notice: I18n.t("scaffolding/completely_concrete/tangible_things.notifications.created") }
+        format.html { redirect_to [:account, @tangible_thing], notice: I18n.t("scaffolding/completely_concrete/tangible_things.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @tangible_thing] }
       else
         format.html { render :new, status: :unprocessable_entity }
