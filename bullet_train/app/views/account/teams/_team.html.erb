@@ -1,4 +1,11 @@
-<li class="bg-white shadow overflow-hidden sm:rounded-md dark:bg-slate-400">
+<%= render 'account/shared/team', link_url: [:account, team] do |p| %>
+  <% p.content_for :name, team.name %>
+<% end %>
+
+
+
+
+<!-- <li class="bg-white shadow overflow-hidden sm:rounded-md dark:bg-slate-700">
   <%= link_to [:account, team], class: "group block hover:bg-slate-50 dark:hover:bg-slate-400 dark:text-slate-800" do %>
     <div class="px-4 py-4 flex items-center sm:pl-8 sm:pr-6">
       <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
@@ -20,4 +27,4 @@
       </div>
     </div>
   <% end %>
-</li>
+</li> -->
