@@ -508,7 +508,8 @@ class Scaffolding::Transformer
       default_role_placements.each do |role_placement|
         stringified_role_placement = role_placement.map { |placement| placement.to_s }
         if roles_hash.dig(*stringified_role_placement)[model_name].nil?
-          Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: read", role_placement)
+          role_type = role_placement.first == :admin ? "manage" : "read"
+          Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: #{role_type}", role_placement)
         end
       end
     end
