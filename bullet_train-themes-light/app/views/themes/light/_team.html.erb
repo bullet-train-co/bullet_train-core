@@ -1,6 +1,7 @@
 <% yield p = np %>
 
 <% link_url ||= "#" %>
+<% memberships ||= [] %>
 
 <li class="bg-white shadow overflow-hidden sm:rounded-md dark:bg-slate-700">
   <%= link_to link_url, class: "group block hover:bg-slate-50 dark:hover:bg-slate-400 dark:text-slate-800" do %>
@@ -12,6 +13,11 @@
               <%= p.content_for :name %>
             </div>
           <% end %>
+        </div>
+        <div class="mt-4 flex-shrink-0 sm:mt-0">
+          <div class="flex overflow-hidden">
+            <%= render 'account/shared/memberships/photos', memberships: memberships %>
+          </div>
         </div>
       </div>
       <div class="ml-5 flex-shrink-0">
