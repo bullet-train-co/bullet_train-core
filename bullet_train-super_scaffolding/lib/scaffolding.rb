@@ -16,7 +16,7 @@ module Scaffolding
       "email_field",
       "emoji_field",
       "file_field",
-      "number_field",
+      "number_field", # TODO: Add this field to the Super Scaffolding system test.
       "options",
       "password_field",
       "phone_field",
