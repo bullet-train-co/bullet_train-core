@@ -2,6 +2,7 @@ require "indefinite_article"
 require "yaml"
 require "scaffolding/file_manipulator"
 require "scaffolding/class_names_transformer"
+require "scaffolding/attribute"
 
 class Scaffolding::Transformer
   attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find
@@ -632,68 +633,37 @@ class Scaffolding::Transformer
     }
 
     # add attributes to various views.
-    attributes.each_with_index do |attribute, index|
+    attributes.each_with_index do |attribute_definition, index|
+      attribute = Scaffolding::Attribute.new(attribute_definition)
       first_table_cell = index == 0 && scaffolding_options[:type] == :crud
 
-      parts = attribute.split(":")
-      name = parts.shift
-      type = parts.join(":")
-      boolean_buttons = type == "boolean"
-
-      # extract any options they passed in with the field.
-      # will extract options declared with either [] or {}.
-      type, attribute_options = type.scan(/^(.*){(.*)}/).first || type
-
-      # create a hash of the options.
-      attribute_options = if attribute_options
-        attribute_options.split(",").map { |s|
-          option_name, option_value = s.split("=")
-          [option_name.to_sym, option_value || true]
-        }.to_h
-      else
-        {}
+      if sql_type_to_field_type_mapping[attribute.type]
+        type = sql_type_to_field_type_mapping[attribute.type]
       end
 
-      attribute_options[:label] ||= "label_string"
-
-      if sql_type_to_field_type_mapping[type]
-        type = sql_type_to_field_type_mapping[type]
-      end
-
-      is_id = name.match?(/_id$/)
-      is_ids = name.match?(/_ids$/)
       # if this is the first attribute of a newly scaffolded model, that field is required.
-      unless type == "file_field"
-        is_required = attribute_options[:required] || (scaffolding_options[:type] == :crud && index == 0)
+      unless attribute.type == "file_field"
+        is_required = attribute.options[:required] || (scaffolding_options[:type] == :crud && index == 0)
       end
-      is_vanilla = attribute_options&.key?(:vanilla)
-      is_belongs_to = is_id && !is_vanilla
-      is_has_many = is_ids && !is_vanilla
-      is_multiple = attribute_options&.key?(:multiple) || is_has_many
-      is_association = is_belongs_to || is_has_many
 
       # Sometimes we need all the magic of a `*_id` field, but without the scoping stuff.
       # Possibly only ever used internally by `join-model`.
-      is_unscoped = attribute_options[:unscoped]
-
-      name_without_id = name.gsub(/_id$/, "")
-      name_without_ids = name.gsub(/_ids$/, "").pluralize
-      collection_name = is_ids ? name_without_ids : name_without_id.pluralize
+      is_unscoped = attribute.options[:unscoped]
 
       # field on the show view.
-      attribute_partial ||= attribute_options[:attribute] || case type
+      attribute_partial ||= attribute.options[:attribute] || case attribute.type
       when "trix_editor", "ckeditor"
         "html"
       when "buttons", "super_select", "options", "boolean"
-        if is_ids
+        if attribute.is_ids?
           "has_many"
-        elsif is_id
+        elsif attribute.is_id?
           "belongs_to"
         else
-          "option#{"s" if is_multiple}"
+          "option#{"s" if attribute.is_multiple?}"
         end
       when "cloudinary_image"
-        attribute_options[:height] = 200
+        attribute.options[:height] = 200
         "image"
       when "phone_field"
         "phone_number"
@@ -716,32 +686,33 @@ class Scaffolding::Transformer
       when "password_field"
         "text"
       else
-        raise "Invalid field type: #{type}."
+        raise "Invalid field type: #{attribute.type}."
       end
 
-      cell_attributes = if boolean_buttons
+      cell_attributes = if attribute.boolean_buttons?
         ' class="text-center"'
       end
 
+      # TODO: `attribute_name` should be a part of Scaffolding::Attribute.
       # e.g. from `person_id` to `person` or `person_ids` to `people`.
-      attribute_name = if is_ids
-        name_without_ids
-      elsif is_id
-        name_without_id
+      attribute_name = if attribute.is_ids?
+        attribute.name_without_ids
+      elsif attribute.is_id?
+        attribute.name_without_id
       else
-        name
+        attribute.name
       end
 
-      title_case = if is_ids
+      title_case = if attribute.is_ids?
         # user_ids should be 'Users'
-        name_without_ids.humanize.titlecase
-      elsif is_id
-        name_without_id.humanize.titlecase
+        attribute.name_without_ids.humanize.titlecase
+      elsif attribute.is_id?
+        attribute.name_without_id.humanize.titlecase
       else
-        name.humanize.titlecase
+        attribute.name.humanize.titlecase
       end
 
-      attribute_assignment = case type
+      attribute_assignment = case attribute.type
       when "text_field", "password_field", "text_area"
         "'Alternative String Value'"
       when "email_field"
@@ -753,11 +724,11 @@ class Scaffolding::Transformer
       end
 
       # don't do table columns for certain types of fields and attribute partials
-      if ["trix_editor", "ckeditor", "text_area"].include?(type) || ["html", "has_many"].include?(attribute_partial)
+      if ["trix_editor", "ckeditor", "text_area"].include?(attribute.type) || ["html", "has_many"].include?(attribute_partial)
         cli_options["skip-table"] = true
       end
 
-      if type == "none"
+      if attribute.type == "none"
         cli_options["skip-form"] = true
       end
 
@@ -774,22 +745,22 @@ class Scaffolding::Transformer
 
         file_name = "./app/models/scaffolding/completely_concrete/tangible_thing.rb"
 
-        if is_association
-          field_content = if attribute_options[:source]
+        if attribute.is_association?
+          field_content = if attribute.options[:source]
             <<~RUBY
-              def valid_#{collection_name}
-                #{attribute_options[:source]}
+              def valid_#{attribute.collection_name}
+                #{attribute.options[:source]}
               end
 
             RUBY
           else
-            add_additional_step :yellow, transform_string("You'll need to implement the `valid_#{collection_name}` method of `Scaffolding::CompletelyConcrete::TangibleThing` in `./app/models/scaffolding/completely_concrete/tangible_thing.rb`. This is the method that will be used to populate the `#{type}` field and also validate that users aren't trying to exploit multitenancy.")
+            add_additional_step :yellow, transform_string("You'll need to implement the `valid_#{attribute.collection_name}` method of `Scaffolding::CompletelyConcrete::TangibleThing` in `./app/models/scaffolding/completely_concrete/tangible_thing.rb`. This is the method that will be used to populate the `#{attribute.type}` field and also validate that users aren't trying to exploit multitenancy.")
 
             <<~RUBY
-              def valid_#{collection_name}
-                raise "please review and implement `valid_#{collection_name}` in `app/models/scaffolding/completely_concrete/tangible_thing.rb`."
-                # please specify what objects should be considered valid for assigning to `#{name_without_id}`.
-                # the resulting code should probably look something like `team.#{collection_name}`.
+              def valid_#{attribute.collection_name}
+                raise "please review and implement `valid_#{attribute.collection_name}` in `app/models/scaffolding/completely_concrete/tangible_thing.rb`."
+                # please specify what objects should be considered valid for assigning to `#{attribute.name_without_id}`.
+                # the resulting code should probably look something like `team.#{attribute.collection_name}`.
               end
 
             RUBY
@@ -797,8 +768,8 @@ class Scaffolding::Transformer
 
           scaffold_add_line_to_file(file_name, field_content, METHODS_HOOK, prepend: true)
 
-          if is_belongs_to
-            scaffold_add_line_to_file(file_name, "validates :#{name_without_id}, scope: true", VALIDATIONS_HOOK, prepend: true)
+          if attribute.is_belongs_to?
+            scaffold_add_line_to_file(file_name, "validates :#{attribute.name_without_id}, scope: true", VALIDATIONS_HOOK, prepend: true)
           end
 
           # TODO we need to add a multitenancy check for has many associations.
@@ -810,16 +781,16 @@ class Scaffolding::Transformer
       # FORM FIELD
       #
 
-      unless cli_options["skip-form"] || attribute_options[:readonly]
+      unless cli_options["skip-form"] || attribute.options[:readonly]
 
         # add `has_rich_text` for trix editor fields.
-        if type == "trix_editor"
+        if attribute.type == "trix_editor"
           file_name = "./app/models/scaffolding/completely_concrete/tangible_thing.rb"
-          scaffold_add_line_to_file(file_name, "has_rich_text :#{name}", HAS_ONE_HOOK, prepend: true)
+          scaffold_add_line_to_file(file_name, "has_rich_text :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
         end
 
         # field on the form.
-        field_attributes = {method: ":#{name}"}
+        field_attributes = {method: ":#{attribute.name}"}
         field_options = {}
         options = {}
 
@@ -827,34 +798,34 @@ class Scaffolding::Transformer
           field_options[:autofocus] = "true"
         end
 
-        if is_id && type == "super_select"
-          options[:include_blank] = "t('.fields.#{name}.placeholder')"
+        if attribute.is_id? && attribute.type == "super_select"
+          options[:include_blank] = "t('.fields.#{attribute.name}.placeholder')"
           # add_additional_step :yellow, transform_string("We've added a reference to a `placeholder` to the form for the select or super_select field, but unfortunately earlier versions of the scaffolded locales Yaml don't include a reference to `fields: *fields` under `form`. Please add it, otherwise your form won't be able to locate the appropriate placeholder label.")
         end
 
-        if type == "color_picker"
-          field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
+        if attribute.type == "color_picker"
+          field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{attribute.name}.options')"
         end
 
         # TODO: This feels incorrect.
         # Should we adjust the partials to only use `{multiple: true}` or `html_options: {multiple_true}`?
-        if is_multiple
-          if type == "super_select"
+        if attribute.is_multiple?
+          if attribute.type == "super_select"
             field_options[:multiple] = "true"
           else
             field_attributes[:multiple] = "true"
           end
         end
 
-        valid_values = if is_id
-          "valid_#{name_without_id.pluralize}"
-        elsif is_ids
-          "valid_#{collection_name}"
+        valid_values = if attribute.is_id?
+          "valid_#{attribute.name_without_id.pluralize}"
+        elsif attribute.is_ids?
+          "valid_#{attribute.collection_name}"
         end
 
         # https://stackoverflow.com/questions/21582464/is-there-a-ruby-hashto-s-equivalent-for-the-new-hash-syntax
         if field_options.any? || options.any?
-          field_options_key = if ["buttons", "super_select", "options"].include?(type)
+          field_options_key = if ["buttons", "super_select", "options"].include?(attribute.type)
             if options.any?
               field_attributes[:options] = "{" + field_options.map { |key, value| "#{key}: #{value}" }.join(", ") + "}"
             end
@@ -869,17 +840,17 @@ class Scaffolding::Transformer
           field_attributes[field_options_key] = "{" + field_options.map { |key, value| "#{key}: #{value}" }.join(", ") + "}"
         end
 
-        if is_association
-          short = attribute_options[:class_name].underscore.split("/").last
-          case type
+        if attribute.is_association?
+          short = attribute.options[:class_name].underscore.split("/").last
+          case attribute.type
           when "buttons", "options"
-            field_attributes["\n  options"] = "@tangible_thing.#{valid_values}.map { |#{short}| [#{short}.id, #{short}.#{attribute_options[:label]}] }"
+            field_attributes["\n  options"] = "@tangible_thing.#{valid_values}.map { |#{short}| [#{short}.id, #{short}.#{attribute.options[:label]}] }"
           when "super_select"
-            field_attributes["\n  choices"] = "@tangible_thing.#{valid_values}.map { |#{short}| [#{short}.#{attribute_options[:label]}, #{short}.id] }"
+            field_attributes["\n  choices"] = "@tangible_thing.#{valid_values}.map { |#{short}| [#{short}.#{attribute.options[:label]}, #{short}.id] }"
           end
         end
 
-        field_content = "<%= render 'shared/fields/#{type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"
+        field_content = "<%= render 'shared/fields/#{attribute.type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"
 
         # TODO Add more of these from other packages?
         is_core_model = ["Team", "User", "Membership"].include?(child)
@@ -894,24 +865,24 @@ class Scaffolding::Transformer
 
       unless cli_options["skip-show"]
 
-        if is_id
+        if attribute.is_id?
           <<~ERB
-            <% if @tangible_thing.#{name_without_id} %>
+            <% if @tangible_thing.#{attribute.name_without_id} %>
               <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{name}.heading') %></label>
+                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
                 <div>
-                  <%= link_to @tangible_thing.#{name_without_id}.#{attribute_options[:label]}, [:account, @tangible_thing.#{name_without_id}] %>
+                  <%= link_to @tangible_thing.#{attribute.name_without_id}.#{attribute.options[:label]}, [:account, @tangible_thing.#{attribute.name_without_id}] %>
                 </div>
               </div>
             <% end %>
           ERB
-        elsif is_ids
+        elsif attribute.is_ids?
           <<~ERB
-            <% if @tangible_thing.#{collection_name}.any? %>
+            <% if @tangible_thing.#{attribute.collection_name}.any? %>
               <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{name}.heading') %></label>
+                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
                 <div>
-                  <%= @tangible_thing.#{collection_name}.map { |#{name_without_ids}| link_to #{name_without_ids}.#{attribute_options[:label]}, [:account, #{name_without_ids}] }.to_sentence.html_safe %>
+                  <%= @tangible_thing.#{attribute.collection_name}.map { |#{attribute.name_without_ids}| link_to #{attribute.name_without_ids}.#{attribute.options[:label]}, [:account, #{attribute.name_without_ids}] }.to_sentence.html_safe %>
                 </div>
               </div>
             <% end %>
@@ -970,7 +941,7 @@ class Scaffolding::Transformer
           <td#{cell_attributes}><%= render 'shared/attributes/#{attribute_partial}', attribute: :#{attribute_name}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
         ERB
 
-        if type == "password_field"
+        if attribute.type == "password_field"
           field_content.gsub!(/\s%>/, ", options: { password: true } %>")
         end
 
@@ -988,12 +959,12 @@ class Scaffolding::Transformer
 
         yaml_template = <<~YAML
 
-          <%= name %>: <% if is_association %>&<%= attribute_name %><% end %>
-            _: &#{name} #{title_case}
-            label: *#{name}
-            heading: *#{name}
+          <%= attribute.name %>: <% if attribute.is_association? %>&<%= attribute_name %><% end %>
+            _: &#{attribute.name} #{title_case}
+            label: *#{attribute.name}
+            heading: *#{attribute.name}
 
-            <% if type == "super_select" %>
+            <% if attribute.type == "super_select" %>
             <% if is_required %>
             placeholder: Select <% title_case.with_indefinite_article %>
             <% else %>
@@ -1001,13 +972,13 @@ class Scaffolding::Transformer
             <% end %>
             <% end %>
 
-            <% if boolean_buttons %>
+            <% if attribute.boolean_buttons? %>
 
             options:
               yes: "Yes"
               no: "No"
 
-            <% elsif ["buttons", "super_select", "options"].include?(type) && !is_association %>
+            <% elsif ["buttons", "super_select", "options"].include?(type) && !attribute.is_association? %>
 
             options:
               one: One
@@ -1016,7 +987,7 @@ class Scaffolding::Transformer
 
             <% end %>
 
-            <% if type == "color_picker" %>
+            <% if attribute.type == "color_picker" %>
             options:
               - '#9C73D2'
               - '#48CDFE'
@@ -1028,7 +999,7 @@ class Scaffolding::Transformer
               - '#929292'
             <% end %>
 
-          <% if is_association %>
+          <% if attribute.is_association? %>
           <%= attribute_name %>: *<%= attribute_name %>
           <% end %>
         YAML
@@ -1038,7 +1009,7 @@ class Scaffolding::Transformer
         scaffold_add_line_to_file("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml", field_content, RUBY_NEW_FIELDS_HOOK, prepend: true)
 
         # active record's field label.
-        scaffold_add_line_to_file("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml", "#{name}: *#{name}", "# 🚅 super scaffolding will insert new activerecord attributes above this line.", prepend: true)
+        scaffold_add_line_to_file("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml", "#{attribute.name}: *#{attribute.name}", "# 🚅 super scaffolding will insert new activerecord attributes above this line.", prepend: true)
 
       end
 
@@ -1046,43 +1017,43 @@ class Scaffolding::Transformer
       # STRONG PARAMETERS
       #
 
-      unless cli_options["skip-form"] || attribute_options[:readonly]
+      unless cli_options["skip-form"] || attribute.options[:readonly]
 
         # add attributes to strong params.
         [
           "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
           "./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb"
         ].each do |file|
-          if is_ids || is_multiple
-            scaffold_add_line_to_file(file, "#{name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+          if attribute.is_ids? || attribute.is_multiple?
+            scaffold_add_line_to_file(file, "#{attribute.name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
           else
-            scaffold_add_line_to_file(file, ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
+            scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
             if type == "file_field"
-              scaffold_add_line_to_file(file, ":#{name}_removal,", RUBY_NEW_FIELDS_HOOK, prepend: true)
+              scaffold_add_line_to_file(file, ":#{attribute.name}_removal,", RUBY_NEW_FIELDS_HOOK, prepend: true)
             end
           end
         end
 
-        special_processing = case type
+        special_processing = case attribute.type
         when "date_field"
-          "assign_date(strong_params, :#{name})"
+          "assign_date(strong_params, :#{attribute.name})"
         when "date_and_time_field"
-          "assign_date_and_time(strong_params, :#{name})"
+          "assign_date_and_time(strong_params, :#{attribute.name})"
         when "buttons"
-          if boolean_buttons
-            "assign_boolean(strong_params, :#{name})"
-          elsif is_multiple
-            "assign_checkboxes(strong_params, :#{name})"
+          if attribute.boolean_buttons?
+            "assign_boolean(strong_params, :#{attribute.name})"
+          elsif attribute.is_multiple?
+            "assign_checkboxes(strong_params, :#{attribute.name})"
           end
         when "options"
-          if is_multiple
-            "assign_checkboxes(strong_params, :#{name})"
+          if attribute.is_multiple?
+            "assign_checkboxes(strong_params, :#{attribute.name})"
           end
         when "super_select"
-          if boolean_buttons
-            "assign_boolean(strong_params, :#{name})"
-          elsif is_multiple
-            "assign_select_options(strong_params, :#{name})"
+          if attribute.boolean_buttons?
+            "assign_boolean(strong_params, :#{attribute.name})"
+          elsif attribute.is_multiple?
+            "assign_select_options(strong_params, :#{attribute.name})"
           end
         end
 
@@ -1096,40 +1067,40 @@ class Scaffolding::Transformer
       unless cli_options["skip-api"]
 
         # TODO The serializers can't handle these `has_rich_text` attributes.
-        unless type == "trix_editor"
-          unless type == "file_field"
-            scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
+        unless attribute.type == "trix_editor"
+          unless attribute.type == "file_field"
+            scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: true)
           end
 
-          assertion = case type
+          assertion = case attribute.type
           when "date_field"
-            "assert_equal_or_nil Date.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
+            "assert_equal_or_nil Date.parse(tangible_thing_data['#{attribute.name}']), tangible_thing.#{attribute.name}"
           when "date_and_time_field"
-            "assert_equal_or_nil DateTime.parse(tangible_thing_data['#{name}']), tangible_thing.#{name}"
+            "assert_equal_or_nil DateTime.parse(tangible_thing_data['#{attribute.name}']), tangible_thing.#{attribute.name}"
           when "file_field"
-            "assert_equal tangible_thing_data['#{name}'], rails_blob_path(@tangible_thing.#{name}) unless controller.action_name == 'create'"
+            "assert_equal tangible_thing_data['#{attribute.name}'], rails_blob_path(@tangible_thing.#{attribute.name}) unless controller.action_name == 'create'"
           else
-            "assert_equal_or_nil tangible_thing_data['#{name}'], tangible_thing.#{name}"
+            "assert_equal_or_nil tangible_thing_data['#{attribute.name}'], tangible_thing.#{attribute.name}"
           end
           scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", assertion, RUBY_NEW_FIELDS_HOOK, prepend: true)
         end
 
         # File fields are handled in a specific way when using the jsonapi-serializer.
-        if type == "file_field"
-          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", "json.#{name} url_for(tangible_thing.#{name}) if tangible_thing.#{name}.attached?", RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
+        if attribute.type == "file_field"
+          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", "json.#{attribute.name} url_for(tangible_thing.#{attribute.name}) if tangible_thing.#{attribute.name}.attached?", RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
           # We also want to make sure we attach the dummy file in the API test on setup
           file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb"
           content = <<~RUBY
-            @#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
-            @another_#{child.underscore}.#{name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
+            @#{child.underscore}.#{attribute.name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
+            @another_#{child.underscore}.#{attribute.name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
           RUBY
           scaffold_add_line_to_file(file_name, content, RUBY_FILES_HOOK, prepend: true)
         end
 
         if attribute_assignment
-          unless attribute_options[:readonly]
-            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "#{name}: #{attribute_assignment},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
-            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal @tangible_thing.#{name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
+          unless attribute.options[:readonly]
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "#{attribute.name}: #{attribute_assignment},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal @tangible_thing.#{attribute.name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
           end
         end
       end
@@ -1146,7 +1117,7 @@ class Scaffolding::Transformer
         # It's OK that this won't be found most of the time.
         scaffold_add_line_to_file(
           "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things/_components.yaml.erb",
-          "<%= attribute :#{name} %>",
+          "<%= attribute :#{attribute.name} %>",
           "<%# 🚅 super scaffolding will insert new attributes above this line. %>",
           prepend: true
         )
@@ -1154,7 +1125,7 @@ class Scaffolding::Transformer
         # It's OK that this won't be found most of the time.
         scaffold_add_line_to_file(
           "./app/views/api/v1/open_api/scaffolding/completely_concrete/tangible_things/_components.yaml.erb",
-          "<%= parameter :#{name} %>",
+          "<%= parameter :#{attribute.name} %>",
           "<%# 🚅 super scaffolding will insert new parameter above this line. %>",
           prepend: true
         )
@@ -1168,20 +1139,20 @@ class Scaffolding::Transformer
 
       unless cli_options["skip-model"]
 
-        if is_belongs_to
-          unless attribute_options[:class_name]
-            attribute_options[:class_name] = name_without_id.classify
+        if attribute.is_belongs_to?
+          unless attribute.options[:class_name]
+            attribute.options[:class_name] = attribute.name_without_id.classify
           end
 
-          file_name = "app/models/#{attribute_options[:class_name].underscore}.rb"
+          file_name = "app/models/#{attribute.options[:class_name].underscore}.rb"
           unless File.exist?(file_name)
-            raise "You'll need to specify a `class_name` option for `#{name}` because there is no `#{attribute_options[:class_name].classify}` model defined in `#{file_name}`. Try again with `#{name}:#{type}[class_name=SomeClassName]`."
+            raise "You'll need to specify a `class_name` option for `#{attribute.name}` because there is no `#{attribute.options[:class_name].classify}` model defined in `#{file_name}`. Try again with `#{attribute.name}:#{attribute.type}[class_name=SomeClassName]`."
           end
 
           modified_migration = false
 
           # find the database migration that defines this relationship.
-          expected_reference = "add_reference :#{class_names_transformer.table_name}, :#{name_without_id}"
+          expected_reference = "add_reference :#{class_names_transformer.table_name}, :#{attribute.name_without_id}"
           migration_file_name = `grep "#{expected_reference}" db/migrate/*`.split(":").first
 
           # if that didn't work, see if we can find a creation of the reference when the table was created.
@@ -1189,7 +1160,7 @@ class Scaffolding::Transformer
             confirmation_reference = "create_table :#{class_names_transformer.table_name}"
             confirmation_migration_file_name = `grep "#{confirmation_reference}" db/migrate/*`.split(":").first
 
-            fallback_reference = "t.references :#{name_without_id}"
+            fallback_reference = "t.references :#{attribute.name_without_id}"
             fallback_migration_file_name = `grep "#{fallback_reference}" db/migrate/* | grep #{confirmation_migration_file_name}`.split(":").first
 
             if fallback_migration_file_name == confirmation_migration_file_name
@@ -1200,7 +1171,7 @@ class Scaffolding::Transformer
           unless is_required
 
             if migration_file_name
-              replace_in_file(migration_file_name, ":#{name_without_id}, null: false", ":#{name_without_id}, null: true")
+              replace_in_file(migration_file_name, ":#{attribute.name_without_id}, null: false", ":#{attribute.name_without_id}, null: true")
               modified_migration = true
             else
               add_additional_step :yellow, "We would have expected there to be a migration that defined `#{expected_reference}`, but we didn't find one. Where was the reference added to this model? It's _probably_ the original creation of the table, but we couldn't find that either. Either way, you need to rollback, change 'null: false' to 'null: true' for this column, and re-run the migration (unless, of course, that attribute _is_ required, then you need to add a validation on the model)."
@@ -1208,10 +1179,10 @@ class Scaffolding::Transformer
 
           end
 
-          class_name_matches = name_without_id.tableize == attribute_options[:class_name].tableize.tr("/", "_")
+          class_name_matches = attribute.name_without_id.tableize == attribute.options[:class_name].tableize.tr("/", "_")
 
           # but also, if namespaces are involved, just don't...
-          if attribute_options[:class_name].include?("::")
+          if attribute.options[:class_name].include?("::")
             class_name_matches = false
           end
 
@@ -1219,13 +1190,13 @@ class Scaffolding::Transformer
           unless class_name_matches
             if migration_file_name
               # There are two forms this association creation can take.
-              replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{name_without_id}/)
-              replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /add_reference :#{child.underscore.pluralize.tr("/", "_")}, :#{name_without_id}/)
+              replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute.options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{attribute.name_without_id}/)
+              replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute.options[:class_name].tableize.tr("/", "_")}\"}", /add_reference :#{child.underscore.pluralize.tr("/", "_")}, :#{attribute.name_without_id}/)
 
               # TODO also solve the 60 character long index limitation.
               modified_migration = true
             else
-              add_additional_step :yellow, "We would have expected there to be a migration that defined `#{expected_reference}`, but we didn't find one. Where was the reference added to this model? It's _probably_ the original creation of the table. Either way, you need to rollback, change \"foreign_key: true\" to \"foreign_key: {to_table: '#{attribute_options[:class_name].tableize.tr("/", "_")}'}\" for this column, and re-run the migration."
+              add_additional_step :yellow, "We would have expected there to be a migration that defined `#{expected_reference}`, but we didn't find one. Where was the reference added to this model? It's _probably_ the original creation of the table. Either way, you need to rollback, change \"foreign_key: true\" to \"foreign_key: {to_table: '#{attribute.options[:class_name].tableize.tr("/", "_")}'}\" for this column, and re-run the migration."
             end
           end
 
@@ -1235,9 +1206,9 @@ class Scaffolding::Transformer
           scaffold_replace_line_in_file(
             "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
             class_name_matches ?
-              "belongs_to :#{name_without_id}#{optional_line}" :
-              "belongs_to :#{name_without_id}, class_name: \"#{attribute_options[:class_name]}\"#{optional_line}",
-            "belongs_to :#{name_without_id}"
+              "belongs_to :#{attribute.name_without_id}#{optional_line}" :
+              "belongs_to :#{attribute.name_without_id}, class_name: \"#{attribute.options[:class_name]}\"#{optional_line}",
+            "belongs_to :#{attribute.name_without_id}"
           )
 
           # if it wasn't there, the replace will not have done anything, so we insert it entirely.
@@ -1245,8 +1216,8 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file(
             "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
             class_name_matches ?
-              "belongs_to :#{name_without_id}#{optional_line}" :
-              "belongs_to :#{name_without_id}, class_name: \"#{attribute_options[:class_name]}\"#{optional_line}",
+              "belongs_to :#{attribute.name_without_id}#{optional_line}" :
+              "belongs_to :#{attribute.name_without_id}, class_name: \"#{attribute.options[:class_name]}\"#{optional_line}",
             BELONGS_TO_HOOK,
             prepend: true
           )
@@ -1257,7 +1228,7 @@ class Scaffolding::Transformer
         end
 
         # Add `default: false` to boolean migrations.
-        if boolean_buttons
+        if attribute.boolean_buttons?
           confirmation_reference = "create_table :#{class_names_transformer.table_name}"
           confirmation_migration_file_name = `grep "#{confirmation_reference}" db/migrate/*`.split(":").first
 
@@ -1265,7 +1236,7 @@ class Scaffolding::Transformer
           File.open(confirmation_migration_file_name) do |migration_file|
             old_lines = migration_file.readlines
             old_lines.each do |line|
-              target_attribute = line.match?(/\s*t\.boolean :#{name}/)
+              target_attribute = line.match?(/\s*t\.boolean :#{attribute.name}/)
               if target_attribute
                 old_line = line
                 new_line = "#{old_line.chomp}, default: false\n"
@@ -1283,20 +1254,20 @@ class Scaffolding::Transformer
 
       unless cli_options["skip-model"]
 
-        if is_required && !is_belongs_to
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{name}, presence: true", VALIDATIONS_HOOK, prepend: true)
+        if is_required && !attribute.is_belongs_to?
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, presence: true", VALIDATIONS_HOOK, prepend: true)
         end
 
-        case type
+        case attribute.type
         when "file_field"
           remove_file_methods =
             <<~RUBY
-              def #{name}_removal?
-                #{name}_removal.present?
+              def #{attribute.name}_removal?
+                #{attribute.name}_removal.present?
               end
 
-              def remove_#{name}
-                #{name}.purge
+              def remove_#{attribute.name}
+                #{attribute.name}.purge
               end
             RUBY
 
@@ -1305,7 +1276,7 @@ class Scaffolding::Transformer
           # HAS_ONE_HOOK or the HAS_MANY_HOOK. We move the string here so it's scaffolded above the proper hook.
           model_file_path = transform_string("./app/models/scaffolding/completely_concrete/tangible_thing.rb")
           model_contents = File.readlines(model_file_path)
-          reflection_declaration = is_multiple ? "has_many_attached :#{name}" : "has_one_attached :#{name}"
+          reflection_declaration = attribute.is_multiple? ? "has_many_attached :#{attribute.name}" : "has_one_attached :#{attribute.name}"
 
           # Save the file without the hook so we can write it via the `scaffold_add_line_to_file` method below.
           model_without_attached_hook = model_contents.reject.each { |line| line.include?(reflection_declaration) }
@@ -1313,18 +1284,18 @@ class Scaffolding::Transformer
             model_without_attached_hook.each { |line| f.write(line) }
           end
 
-          hook_type = is_multiple ? HAS_MANY_HOOK : HAS_ONE_HOOK
+          hook_type = attribute.is_multiple? ? HAS_MANY_HOOK : HAS_ONE_HOOK
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", reflection_declaration, hook_type, prepend: true)
 
           # TODO: We may need to edit these depending on how we save multiple files.
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "attr_accessor :#{name}_removal", ATTR_ACCESSORS_HOOK, prepend: true)
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "attr_accessor :#{attribute.name}_removal", ATTR_ACCESSORS_HOOK, prepend: true)
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", remove_file_methods, METHODS_HOOK, prepend: true)
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "after_validation :remove_#{name}, if: :#{name}_removal?", CALLBACKS_HOOK, prepend: true)
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "after_validation :remove_#{attribute.name}, if: :#{attribute.name}_removal?", CALLBACKS_HOOK, prepend: true)
         when "trix_editor"
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{name}", HAS_ONE_HOOK, prepend: true)
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
         when "buttons"
-          if boolean_buttons
-            scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
+          if attribute.boolean_buttons?
+            scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
           end
         end
 
