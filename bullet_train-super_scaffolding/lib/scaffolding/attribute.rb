@@ -9,6 +9,9 @@
 # but this is only useful after we've declared the associations.
 # Since we haven't declared the associations in the models yet,
 # we determine the association for the attribute based on its suffix.
+#
+# i.e. - bin/super-scaffold crud Project tag_ids:super_select{class_name=Projects::Tag}
+# Here, we determine the association for the `tag_ids` attribute by its suffix, `_ids`.
 
 class Scaffolding::Attribute
   attr_accessor :name, :type, :options
