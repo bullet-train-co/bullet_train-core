@@ -634,97 +634,18 @@ class Scaffolding::Transformer
 
     # add attributes to various views.
     attributes.each_with_index do |attribute_definition, index|
-      attribute = Scaffolding::Attribute.new(attribute_definition)
-      first_table_cell = index == 0 && scaffolding_options[:type] == :crud
+      attribute = Scaffolding::Attribute.new(attribute_definition, scaffolding_options[:type], index)
 
       if sql_type_to_field_type_mapping[attribute.type]
         type = sql_type_to_field_type_mapping[attribute.type]
       end
 
-      # if this is the first attribute of a newly scaffolded model, that field is required.
-      unless attribute.type == "file_field"
-        is_required = attribute.options[:required] || (scaffolding_options[:type] == :crud && index == 0)
-      end
-
-      # Sometimes we need all the magic of a `*_id` field, but without the scoping stuff.
-      # Possibly only ever used internally by `join-model`.
-      is_unscoped = attribute.options[:unscoped]
-
-      # field on the show view.
-      attribute_partial ||= attribute.options[:attribute] || case attribute.type
-      when "trix_editor", "ckeditor"
-        "html"
-      when "buttons", "super_select", "options", "boolean"
-        if attribute.is_ids?
-          "has_many"
-        elsif attribute.is_id?
-          "belongs_to"
-        else
-          "option#{"s" if attribute.is_multiple?}"
-        end
-      when "cloudinary_image"
-        attribute.options[:height] = 200
-        "image"
-      when "phone_field"
-        "phone_number"
-      when "date_field"
-        "date"
-      when "date_and_time_field"
-        "date_and_time"
-      when "email_field"
-        "email"
-      when "emoji_field"
-        "text"
-      when "color_picker"
-        "code"
-      when "text_field"
-        "text"
-      when "text_area"
-        "text"
-      when "file_field"
-        "file"
-      when "password_field"
-        "text"
-      else
-        raise "Invalid field type: #{attribute.type}."
-      end
-
-      cell_attributes = if attribute.boolean_buttons?
+      cell_attributes = if attribute.type == "boolean"
         ' class="text-center"'
       end
 
-      # TODO: `attribute_name` should be a part of Scaffolding::Attribute.
-      # e.g. from `person_id` to `person` or `person_ids` to `people`.
-      attribute_name = if attribute.is_ids?
-        attribute.name_without_ids
-      elsif attribute.is_id?
-        attribute.name_without_id
-      else
-        attribute.name
-      end
-
-      title_case = if attribute.is_ids?
-        # user_ids should be 'Users'
-        attribute.name_without_ids.humanize.titlecase
-      elsif attribute.is_id?
-        attribute.name_without_id.humanize.titlecase
-      else
-        attribute.name.humanize.titlecase
-      end
-
-      attribute_assignment = case attribute.type
-      when "text_field", "password_field", "text_area"
-        "'Alternative String Value'"
-      when "email_field"
-        "'another.email@test.com'"
-      when "phone_field"
-        "'+19053871234'"
-      when "color_picker"
-        "'#47E37F'"
-      end
-
       # don't do table columns for certain types of fields and attribute partials
-      if ["trix_editor", "ckeditor", "text_area"].include?(attribute.type) || ["html", "has_many"].include?(attribute_partial)
+      if ["trix_editor", "ckeditor", "text_area"].include?(attribute.type) || ["html", "has_many"].include?(attribute.partial_name)
         cli_options["skip-table"] = true
       end
 
@@ -732,7 +653,7 @@ class Scaffolding::Transformer
         cli_options["skip-form"] = true
       end
 
-      if attribute_partial == "none"
+      if attribute.partial_name == "none"
         cli_options["skip-show"] = true
         cli_options["skip-table"] = true
       end
@@ -741,7 +662,7 @@ class Scaffolding::Transformer
       # MODEL VALIDATIONS
       #
 
-      unless cli_options["skip-form"] || is_unscoped
+      unless cli_options["skip-form"] || attribute.is_unscoped?
 
         file_name = "./app/models/scaffolding/completely_concrete/tangible_thing.rb"
 
@@ -794,7 +715,7 @@ class Scaffolding::Transformer
         field_options = {}
         options = {}
 
-        if scaffolding_options[:type] == :crud && index == 0
+        if attribute.is_first_attribute?
           field_options[:autofocus] = "true"
         end
 
@@ -891,10 +812,10 @@ class Scaffolding::Transformer
 
         # this gets stripped and is one line, so indentation isn't a problem.
         field_content = <<-ERB
-          <%= render 'shared/attributes/#{attribute_partial}', attribute: :#{attribute_name} %>
+          <%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.name_without_id_suffix} %>
         ERB
 
-        if type == "password_field"
+        if attribute.type == "password_field"
           field_content.gsub!(/\s%>/, ", options: { password: true } %>")
         end
 
@@ -910,7 +831,7 @@ class Scaffolding::Transformer
       unless cli_options["skip-table"]
 
         # table header.
-        field_content = "<th#{cell_attributes.present? ? " " + cell_attributes : ""}><%= t('.fields.#{attribute_name}.heading') %></th>"
+        field_content = "<th#{cell_attributes.present? ? " " + cell_attributes : ""}><%= t('.fields.#{attribute.name_without_id_suffix}.heading') %></th>"
 
         unless ["Team", "User"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content, "<%# 🚅 super scaffolding will insert new field headers above this line. %>", prepend: true)
@@ -932,13 +853,13 @@ class Scaffolding::Transformer
 
         table_cell_options = []
 
-        if first_table_cell
+        if attribute.is_first_attribute?
           table_cell_options << "url: [:account, tangible_thing]"
         end
 
         # this gets stripped and is one line, so indentation isn't a problem.
         field_content = <<-ERB
-          <td#{cell_attributes}><%= render 'shared/attributes/#{attribute_partial}', attribute: :#{attribute_name}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
+          <td#{cell_attributes}><%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.name_without_id_suffix}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
         ERB
 
         if attribute.type == "password_field"
@@ -959,20 +880,20 @@ class Scaffolding::Transformer
 
         yaml_template = <<~YAML
 
-          <%= attribute.name %>: <% if attribute.is_association? %>&<%= attribute_name %><% end %>
-            _: &#{attribute.name} #{title_case}
+          <%= attribute.name %>: <% if attribute.is_association? %>&<%= attribute.name_without_id_suffix %><% end %>
+            _: &#{attribute.name} #{attribute.title_case}
             label: *#{attribute.name}
             heading: *#{attribute.name}
 
             <% if attribute.type == "super_select" %>
-            <% if is_required %>
-            placeholder: Select <% title_case.with_indefinite_article %>
+            <% if attribute.is_required? %>
+            placeholder: Select <% attribute.title_case.with_indefinite_article %>
             <% else %>
             placeholder: None
             <% end %>
             <% end %>
 
-            <% if attribute.boolean_buttons? %>
+            <% if attribute.type == "boolean" %>
 
             options:
               yes: "Yes"
@@ -1000,7 +921,7 @@ class Scaffolding::Transformer
             <% end %>
 
           <% if attribute.is_association? %>
-          <%= attribute_name %>: *<%= attribute_name %>
+          <%= attribute.name_without_id_suffix %>: *<%= attribute.name_without_id_suffix %>
           <% end %>
         YAML
 
@@ -1028,36 +949,13 @@ class Scaffolding::Transformer
             scaffold_add_line_to_file(file, "#{attribute.name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
           else
             scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
-            if type == "file_field"
+            if attribute.type == "file_field"
               scaffold_add_line_to_file(file, ":#{attribute.name}_removal,", RUBY_NEW_FIELDS_HOOK, prepend: true)
             end
           end
         end
 
-        special_processing = case attribute.type
-        when "date_field"
-          "assign_date(strong_params, :#{attribute.name})"
-        when "date_and_time_field"
-          "assign_date_and_time(strong_params, :#{attribute.name})"
-        when "buttons"
-          if attribute.boolean_buttons?
-            "assign_boolean(strong_params, :#{attribute.name})"
-          elsif attribute.is_multiple?
-            "assign_checkboxes(strong_params, :#{attribute.name})"
-          end
-        when "options"
-          if attribute.is_multiple?
-            "assign_checkboxes(strong_params, :#{attribute.name})"
-          end
-        when "super_select"
-          if attribute.boolean_buttons?
-            "assign_boolean(strong_params, :#{attribute.name})"
-          elsif attribute.is_multiple?
-            "assign_select_options(strong_params, :#{attribute.name})"
-          end
-        end
-
-        scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", special_processing, RUBY_NEW_FIELDS_PROCESSING_HOOK, prepend: true) if special_processing
+        scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", attribute.special_processing, RUBY_NEW_FIELDS_PROCESSING_HOOK, prepend: true) if attribute.special_processing
       end
 
       #
@@ -1097,10 +995,10 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file(file_name, content, RUBY_FILES_HOOK, prepend: true)
         end
 
-        if attribute_assignment
+        if attribute.default_value
           unless attribute.options[:readonly]
-            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "#{attribute.name}: #{attribute_assignment},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
-            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal @tangible_thing.#{attribute.name}, #{attribute_assignment}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "#{attribute.name}: #{attribute.default_value},", RUBY_ADDITIONAL_NEW_FIELDS_HOOK, prepend: true)
+            scaffold_add_line_to_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", "assert_equal @tangible_thing.#{attribute.name}, #{attribute.default_value}", RUBY_EVEN_MORE_NEW_FIELDS_HOOK, prepend: true)
           end
         end
       end
@@ -1168,7 +1066,7 @@ class Scaffolding::Transformer
             end
           end
 
-          unless is_required
+          unless attribute.is_required?
 
             if migration_file_name
               replace_in_file(migration_file_name, ":#{attribute.name_without_id}, null: false", ":#{attribute.name_without_id}, null: true")
@@ -1200,7 +1098,7 @@ class Scaffolding::Transformer
             end
           end
 
-          optional_line = ", optional: true" unless is_required
+          optional_line = ", optional: true" unless attribute.is_required?
 
           # if the `belongs_to` is already there from `rails g model`..
           scaffold_replace_line_in_file(
@@ -1228,7 +1126,7 @@ class Scaffolding::Transformer
         end
 
         # Add `default: false` to boolean migrations.
-        if attribute.boolean_buttons?
+        if attribute.type == "boolean"
           confirmation_reference = "create_table :#{class_names_transformer.table_name}"
           confirmation_migration_file_name = `grep "#{confirmation_reference}" db/migrate/*`.split(":").first
 
@@ -1254,7 +1152,7 @@ class Scaffolding::Transformer
 
       unless cli_options["skip-model"]
 
-        if is_required && !attribute.is_belongs_to?
+        if attribute.is_required? && !attribute.is_belongs_to?
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, presence: true", VALIDATIONS_HOOK, prepend: true)
         end
 
@@ -1294,7 +1192,7 @@ class Scaffolding::Transformer
         when "trix_editor"
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
         when "buttons"
-          if attribute.boolean_buttons?
+          if attribute.type == "boolean"
             scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
           end
         end
