@@ -722,6 +722,8 @@ class Scaffolding::Transformer
         "text"
       when "text_area"
         "text"
+      when "number_field"
+        "number"
       when "file_field"
         "file"
       when "password_field"
