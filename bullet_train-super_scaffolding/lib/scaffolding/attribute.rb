@@ -24,8 +24,8 @@ class Scaffolding::Attribute
     self.attribute_index = attribute_index
 
     # Ensure `options` is a hash.
-    self.options = if self.options
-      self.options.split(",").map { |s|
+    self.options = if options
+      options.split(",").map { |s|
         option_name, option_value = s.split("=")
         [option_name.to_sym, option_value || true]
       }.to_h
@@ -33,7 +33,7 @@ class Scaffolding::Attribute
       {}
     end
 
-    self.options[:label] ||= "label_string"
+    options[:label] ||= "label_string"
   end
 
   def is_first_attribute?
@@ -166,8 +166,6 @@ class Scaffolding::Attribute
       "'+19053871234'"
     when "color_picker"
       "'#47E37F'"
-    else
-      nil
     end
   end
 
@@ -193,8 +191,6 @@ class Scaffolding::Attribute
       elsif is_multiple?
         "assign_select_options(strong_params, :#{name})"
       end
-    else
-      nil
     end
   end
 
