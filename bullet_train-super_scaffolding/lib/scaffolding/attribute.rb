@@ -115,7 +115,9 @@ class Scaffolding::Attribute
 
   # Field on the show view.
   def partial_name
-    options[:attribute] || case type
+    return options[:attribute] if options[:attribute]
+
+    case type
     when "trix_editor", "ckeditor"
       "html"
     when "buttons", "super_select", "options", "boolean"
