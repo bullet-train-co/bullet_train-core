@@ -1,6 +1,7 @@
 require "bullet_train/version"
 require "bullet_train/engine"
 require "bullet_train/resolver"
+require "bullet_train/translations_backfiller"
 require "bullet_train/configuration"
 
 require "bullet_train/fields"
