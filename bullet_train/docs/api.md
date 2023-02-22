@@ -19,7 +19,7 @@ APIs are built using standard Rails tools like `ActiveController::API`, [Strong 
 In the same way we've adopted [Devise](https://github.com/heartcombo/devise) for best-of-breed and battle-tested authentication on the browser side, we've adopted [Doorkeeper](https://github.com/doorkeeper-gem/doorkeeper) for best-of-breed and battle-tested authentication on the API side.
 
 ### DRY Authorization Logic
-Because our API endpoints are standard Rails controllers, they're able to leverage the exact same [permissions definitions and authorization logic](https://github.com/bullet-train-co/bullet_train-base/blob/main/docs/permissions.md) as our account controllers.
+Because our API endpoints are standard Rails controllers, they're able to leverage the exact same [permissions definitions and authorization logic](/docs/permissions) as our account controllers.
 
 ## Structure
 Where vanilla Rails uses a single controller in `app/controllers` for both in-browser and API requests, Bullet Train splits these into two separate controllers, one in `app/controllers/account` and another in `app/controllers/api/v1`, although a lot of logic is shared between the two.
@@ -40,7 +40,7 @@ The primary definition of Strong Parameters for a given resource is defined in t
 include strong_parameters_from_api
 ```
 
-> This may feel counter-intuitive to some developers and you might wonder why we don't flip this around and have the primary definition in the account controller and have the API controller delegate to it. The answer is a pragmatic one: creating and maintaining the defintion of Strong Paramters in the API controller means it gets automatically frozen in time should you ever need to [bump your API version number](/api/docs/versioning.md). We probably _could_ accomplish this if things were the other way around, but it wouldn't happen automatically.
+> This may feel counter-intuitive to some developers and you might wonder why we don't flip this around and have the primary definition in the account controller and have the API controller delegate to it. The answer is a pragmatic one: creating and maintaining the defintion of Strong Paramters in the API controller means it gets automatically frozen in time should you ever need to [bump your API version number](/docs/api/versioning.md). We probably _could_ accomplish this if things were the other way around, but it wouldn't happen automatically.
 
 If by chance there are additional attributes that should be permitted or specific logic that needs to be run as part of the account controller (or inversely, only in the API controller), you can specify that in the controller like so:
 
@@ -71,7 +71,7 @@ end
 ```
 
 ## Usage Example
-First, provision a platform application in section titled "Your Applications" in the "Developers" menu of the application. When you create a new platform application, an access token that doesn't automatically expire will be automatically provisioned along with it. You can then use the access token to hit the API, as seen in the following Ruby-based example:
+First, provision a platform application in the section titled "Your Applications" in the "Developers" menu of the application. When you create a new platform application, an access token that doesn't automatically expire will be automatically provisioned along with it. You can then use the access token to hit the API, as seen in the following Ruby-based example:
 
 ```ruby
 require 'net/http'
@@ -103,4 +103,4 @@ response = client.patch("/api/v1/teams/1", {team: team}.to_json, headers)
  - [API Versioning](/docs/api/versioning.md)
 
 ## A Note About Other Serializers and API Frameworks
-In early versions of Bullet Train we made the decision to adopt a specific serialization library, [ActiveModelSerializers](https://github.com/rails-api/active_model_serializers) and in subsequent versions we went as far as to adopt an entire third-party framework ([Grape](https://github.com/ruby-grape/grape)) and a third-party API specification ([JSON:API](https://jsonapi.org)). We now consider it out-of-scope to try and make such decisions on behalf of developers. Support for them in Bullet Train applications and in Super Scaffolding could be created by third-parties.
+In early versions of Bullet Train we made the decision to adopt a specific serialization library, [ActiveModelSerializers](https://github.com/rails-api/active_model_serializers), and in subsequent versions we went as far as to adopt an entire third-party framework ([Grape](https://github.com/ruby-grape/grape)) and a third-party API specification ([JSON:API](https://jsonapi.org)). We now consider it out-of-scope to try and make such decisions on behalf of developers. Support for them in Bullet Train applications and in Super Scaffolding could be created by third-parties.

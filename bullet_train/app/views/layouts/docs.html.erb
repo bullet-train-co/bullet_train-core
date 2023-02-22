@@ -32,7 +32,7 @@
     <meta property="og:url" content="<%= request.base_url + request.path %>" />
     <meta property="og:description" content="<%= description.truncate(200) %>" />
   </head>
-  <body class="bg-light-gradient text-gray-700 text-sm font-normal dark:bg-dark-gradient dark:text-darkPrimary-300">
+  <body class="bg-light-gradient text-slate-700 text-sm font-normal dark:bg-800-gradient dark:text-slate-300">
     <div class="md:p-5">
       <div class="h-screen md:h-auto overflow-hidden md:rounded-lg flex shadow"
         data-controller="mobile-menu"
@@ -40,7 +40,7 @@
       >
 
         <% menu = capture do %>
-          <div class="flex items-center flex-shrink-0 p-4 bg-blue-darker md:rounded-tl-lg">
+          <div class="flex items-center flex-shrink-0 p-4 bg-blue-700 md:rounded-tl-lg">
             <%= image_tag image_path("logo/logo.png"), class: 'h-5 w-auto mx-auto' %>
 
             <div class="lg:hidden absolute right-0">
@@ -147,7 +147,7 @@
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: 'docs/application-options.md', label: 'Application Options' do |p| %>
+                <%= render 'account/shared/menu/item', url: '/docs/application-options', label: 'Application Options' do |p| %>
                   <% p.content_for :icon do %>
                     <i class="fal fa-gear ti ti-settings"></i>
                   <% end %>
@@ -308,7 +308,7 @@
               data-transition-leave-start="translate-x-0"
               data-transition-leave-end="-translate-x-full"
 
-              class="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-dark-gradient shadow-xl"
+              class="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-800-gradient shadow-xl"
             >
               <%= menu %>
             </div>
@@ -316,16 +316,16 @@
           </div>
         </div>
 
-        <div class="hidden lg:flex lg:flex-shrink-0 overflow-y-auto bg-gradient-to-b from-primary-700 to-primary-800 dark:from-darkPrimary-800 dark:to-darkPrimary-800">
+        <div class="hidden lg:flex lg:flex-shrink-0 overflow-y-auto bg-gradient-to-b from-primary-700 to-primary-800 dark:from-slate-800 dark:to-slate-800">
           <div class="w-64">
             <%= menu %>
           </div>
         </div>
 
-        <div class="flex flex-col w-0 flex-1 overflow-y-auto bg-gray-100 dark:bg-darkPrimary-800 lg:border-l dark:border-gray-500">
+        <div class="flex flex-col w-0 flex-1 overflow-y-auto bg-slate-100 dark:bg-slate-800 lg:border-l dark:border-slate-500">
           <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none" tabindex="0">
 
-            <button class="lg:hidden h-12 w-12 ml-1 flex-none inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue"
+            <button class="lg:hidden h-12 w-12 ml-1 flex-none inline-flex items-center justify-center rounded-md text-slate-500 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue"
               data-action="mobile-menu#open"
             >
               <span class="sr-only">Open Application Menu</span>

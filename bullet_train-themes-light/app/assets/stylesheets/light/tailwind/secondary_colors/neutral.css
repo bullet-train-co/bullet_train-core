@@ -1,0 +1,12 @@
+.theme-secondary-neutral {
+  --secondary-50: theme('colors.neutral.50');
+  --secondary-100: theme('colors.neutral.100');
+  --secondary-200: theme('colors.neutral.200');
+  --secondary-300: theme('colors.neutral.300');
+  --secondary-400: theme('colors.neutral.400');
+  --secondary-500: theme('colors.neutral.500');
+  --secondary-600: theme('colors.neutral.600');
+  --secondary-700: theme('colors.neutral.700');
+  --secondary-800: theme('colors.neutral.800');
+  --secondary-900: theme('colors.neutral.900');
+}

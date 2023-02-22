@@ -24,10 +24,10 @@
   <% Membership.assignable_roles.each do |role| %>
     <% if role.manageable_by?(current_membership.roles) %>
       <div class="flex items-top">
-        <%= form.check_box :role_ids, {multiple: true, class: "h-4 w-4 text-blue focus:ring-blue-dark border-gray-300 rounded mt-0.5"}, role.id, nil %>
+        <%= form.check_box :role_ids, {multiple: true, class: "h-4 w-4 text-blue focus:ring-blue-800 border-slate-300 rounded mt-0.5"}, role.id, nil %>
         <label for="membership_role_ids_<%= role.id %>" class="ml-2 block select-none">
           <%= t('.grant_privileges_of', role_key: t(".fields.role_ids.options.#{role.key}.label")) %>
-          <div class="mt-0.5 text-gray-400 font-light leading-normal">
+          <div class="mt-0.5 text-slate-400 font-light leading-normal">
             <%= t(".fields.role_ids.options.#{role.key}.description") %>
           </div>
         </label>
