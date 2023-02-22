@@ -498,9 +498,20 @@ class Scaffolding::Transformer
   def add_ability_line_to_roles_yml(class_names = nil)
     model_names = class_names || [child]
     role_file = "./config/models/roles.yml"
+    roles_hash = YAML.load_file(role_file)
+    default_role_placements = [
+      [:default, :models],
+      [:admin, :models]
+    ]
+
     model_names.each do |model_name|
-      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: read", [:default, :models])
-      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: manage", [:admin, :models])
+      default_role_placements.each do |role_placement|
+        stringified_role_placement = role_placement.map { |placement| placement.to_s }
+        if roles_hash.dig(*stringified_role_placement)[model_name].nil?
+          role_type = (role_placement.first == :admin) ? "manage" : "read"
+          Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: #{role_type}", role_placement)
+        end
+      end
     end
   end
 
