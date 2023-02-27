@@ -72,7 +72,10 @@ module BulletTrain
         if open
           path = source_file[:package_name] ? source_file[:absolute_path] : (source_file[:project_path]).to_s
           puts "Opening `#{path}`.\n".green
-          exec "open #{path}"
+
+          # TODO: Use TerminalCommands to open this file
+          open_command = `which open`.present? ? "open" : "xdg-open"
+          exec "#{open_command} #{path}"
         end
       else
         puts "Couldn't resolve `#{@needle}`.".red
