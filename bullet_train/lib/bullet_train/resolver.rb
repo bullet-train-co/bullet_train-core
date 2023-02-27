@@ -101,7 +101,8 @@ module BulletTrain
 
       if result[:absolute_path]
         if result[:absolute_path].include?("/bullet_train")
-          base_path = "bullet_train" + result[:absolute_path].partition("/bullet_train").last
+          regex = /#{"bullet_train-core" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train[\.\-_a-z|0-9]*.*/
+          base_path = result[:absolute_path].scan(regex).pop
 
           # Try to calculate which package the file is from, and what it's path is within that project.
           ["app", "config", "lib"].each do |directory|
