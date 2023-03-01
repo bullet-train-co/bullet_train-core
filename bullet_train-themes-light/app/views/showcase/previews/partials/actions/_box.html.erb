@@ -5,7 +5,7 @@
   <% end %>
 <% end %>
 
-<% showcase.options do |o| %>
-  <% o.optional :title, type: "Content Block" %>
-  <% o.optional :table, type: "Content Block" %>
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.optional.content_block :title %>
+  <% o.optional.content_block :table %>
 <% end %>
