@@ -998,19 +998,13 @@ class Scaffolding::Transformer
       #
 
       unless cli_options["skip-locales"]
-        # If these translation files were scaffolded before we supported DRY translations, we need to use aliases.
-        using_aliases = File.read(transform_string("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml")).lines[1].include?("&")
 
         yaml_template = <<~YAML
 
           <%= name %>: <% if is_association %>&<%= attribute_name %><% end %>
-            <% if using_aliases %>
             _: &#{name} #{title_case}
             label: *#{name}
             heading: *#{name}
-            <% else %>
-            heading: #{title_case}
-            <% end %>
 
             <% if type == "super_select" %>
             <% if is_required %>
