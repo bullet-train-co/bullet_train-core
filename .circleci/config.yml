@@ -44,21 +44,21 @@ aliases:
       run: dockerize -wait tcp://localhost:5432 -timeout 1m
 jobs:
   'Local Minitest':
-    docker:
-      - <<: *ruby_node_browsers_docker_image
-      - <<: *postgres_docker_image
-      - image: circleci/redis
+    # docker:
+    #   - <<: *ruby_node_browsers_docker_image
+    #   - <<: *postgres_docker_image
+    #   - image: circleci/redis
     executor: ruby/default
     steps:
       - checkout
-      - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
+      # - browser-tools/install-browser-tools:
+      #     firefox-version: 108.0.1
 
       # Install dependencies
       - run: "bundle install"
       - run: "bundle clean --force"
-      - run: "yarn install"
-      - *wait_for_docker
+      # - run: "yarn install"
+      # - *wait_for_docker
       - run:
           name: Run unit tests
           command: bundle exec rails test
@@ -188,7 +188,7 @@ workflows:
   version: 2
   build:
     jobs:
-      # - 'Local Minitest'
+      - 'Local Minitest'
       - 'Local Standard Ruby'
       - 'Starter Repo Minitest'
       - 'Starter Repo Minitest for Super Scaffolding'
