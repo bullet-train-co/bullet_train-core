@@ -5,7 +5,7 @@ namespace :bt do
   task :link do
     if Dir.exist?("tmp/gems")
       puts "Removing previously linked gems."
-      rm_f "tmp/gems/*"
+      rm_f Dir.glob("tmp/gems/*")
     else
       if File.exist?("tmp/gems")
         raise "A file named `tmp/gems` already exists? It has to be removed before we can create the required directory."
