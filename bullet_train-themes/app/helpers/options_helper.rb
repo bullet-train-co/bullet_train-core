@@ -11,7 +11,7 @@ module OptionsHelper
 
     if multiple
       options[:multiple] = multiple
-      options[:checked] = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s)
+      options[:checked] = form.object.send(method)&.map(&:to_s)&.include?(value.to_s)
       unchecked_value = options.delete(:unchecked_value) || ""
 
       if form
