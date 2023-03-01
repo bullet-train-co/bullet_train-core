@@ -63,9 +63,9 @@ jobs:
     docker:
       - <<: *ruby_node_browsers_docker_image
     executor: ruby/default
-    working_directory: bullet_train-themes-light
     steps:
       - checkout
+      - working_directory: bullet_train-themes-light
       - ruby/install-deps:
           clean-bundle: true
       - run: bin/rails test
