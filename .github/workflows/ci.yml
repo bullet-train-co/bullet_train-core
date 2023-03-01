@@ -35,6 +35,11 @@ jobs:
 
     steps:
       - uses: "actions/checkout@v3"
+
+      - name: "Use latest gems"
+        working-directory: ${{ matrix.gem }}
+        run: rm Gemfile.lock
+
       - uses: "ruby/setup-ruby@v1"
         with:
           rubygems: latest
