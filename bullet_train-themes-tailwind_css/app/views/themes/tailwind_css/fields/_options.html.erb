@@ -76,18 +76,8 @@ end
 
           <label class="relative flex items-start mb-3">
             <div class="flex items-center h-5">
-
-              <% if multiple %>
-                <% checked_value = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
-                <%= form.check_box method, {
-                  multiple: multiple, checked: checked_value,
-                  data: option_field_options[:data],
-                  class: "focus:ring-blue h-4 w-4 text-blue border-slate-300 rounded"
-                }, value, "" %>
-              <% else %>
-                <%= form.radio_button method, value, {class: "focus:ring-blue h-4 w-4 text-blue border-slate-300", data: option_field_options[:data]} %>
-              <% end %>
-
+              <% option_tag_options = {value: value, data: option_field_options[:data]} %>
+              <%= options_tag(method, form: form, options: option_tag_options, multiple: multiple) %>
             </div>
             <div class="ml-2.5 text-sm">
               <div class="select-none"><%= label %></div>
