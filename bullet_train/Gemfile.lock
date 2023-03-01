@@ -33,6 +33,7 @@ PATH
       possessive
       premailer-rails
       rails (>= 6.0.0)
+      showcase-rails
       sidekiq
       unicode-emoji
       valid_email
@@ -307,6 +308,8 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
+    showcase-rails (0.2.4)
+      rails (>= 6.1.0)
     sidekiq (7.0.4)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
