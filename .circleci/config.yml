@@ -44,8 +44,8 @@ aliases:
       run: dockerize -wait tcp://localhost:5432 -timeout 1m
 jobs:
   'Local Minitest':
-    # docker:
-    #   - <<: *ruby_node_browsers_docker_image
+    docker:
+      - <<: *ruby_node_browsers_docker_image
     #   - <<: *postgres_docker_image
     #   - image: circleci/redis
     executor: ruby/default
@@ -58,7 +58,7 @@ jobs:
       - run: "bundle install"
       - run: "bundle clean --force"
       # - run: "yarn install"
-      # - *wait_for_docker
+      - *wait_for_docker
       - run:
           name: Run unit tests
           command: bundle exec rails test
