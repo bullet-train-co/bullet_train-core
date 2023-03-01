@@ -55,8 +55,8 @@ jobs:
       #     firefox-version: 108.0.1
 
       # Install dependencies
-      - ruby/install-deps
-      - run: "bundle clean --force"
+      - ruby/install-deps:
+          clean-bundle: true
       # - run: "yarn install"
       - *wait_for_docker
       - run:
@@ -75,8 +75,8 @@ jobs:
       # - restore_cache: *restore_yarn_cache
 
       # Install dependencies
-      - ruby/install-deps
-      - run: bundle clean --force
+      - ruby/install-deps:
+          clean-bundle: true
 
       # # Save dependency caches
       # # We only do this as part of this job, because it's time consuming and we don't want it to slow down test runners.
