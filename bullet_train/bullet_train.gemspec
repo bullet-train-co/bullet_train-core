@@ -102,7 +102,4 @@ Gem::Specification.new do |spec|
 
   # Password strength.
   spec.add_dependency "devise-pwned_password"
-
-  # Component library.
-  spec.add_dependency "showcase-rails"
 end
