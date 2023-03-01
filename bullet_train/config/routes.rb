@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount Showcase::Engine, at: "/docs/showcase" if defined?(Showcase::Engine)
+
   scope module: "public" do
     root to: "home#index"
     get "invitation" => "home#invitation", :as => "invitation"
