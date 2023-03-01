@@ -5,17 +5,17 @@ namespace :bt do
   task link: :environment do
     if Dir.exist?("tmp/gems")
       puts "Removing previously linked gems."
-      `rm -f tmp/gems/*`
+      rm_f "tmp/gems/*"
     else
       if File.exist?("tmp/gems")
         raise "A file named `tmp/gems` already exists? It has to be removed before we can create the required directory."
       end
 
       puts "Creating 'tmp/gems' directory."
-      `mkdir tmp/gems`
+      mkdir_p "tmp/gems"
     end
 
-    `touch tmp/gems/.keep`
+    touch "tmp/gems/.keep"
 
     BulletTrain.linked_gems.each do |linked_gem|
       target = `bundle show #{linked_gem}`.chomp
