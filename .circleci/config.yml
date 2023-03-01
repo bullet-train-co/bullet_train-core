@@ -103,8 +103,6 @@ jobs:
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
 
-      - run: ../../bin/checkout-and-link-starter-repo
-
       - restore_cache: *restore_bundler_cache
       - run: bundle install
       - run: bundle clean --force
@@ -112,6 +110,8 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: yarn build:css
+
+      - run: ../../bin/checkout-and-link-starter-repo
 
       - save_cache: *save_bundler_cache
 
@@ -159,8 +159,6 @@ jobs:
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
 
-      - run: ../../bin/checkout-and-link-starter-repo
-
       - restore_cache: *restore_bundler_cache
       - run: bundle install
       - run: bundle clean --force
@@ -168,6 +166,8 @@ jobs:
       - run: yarn install
       - run: yarn build
       - run: yarn build:css
+
+      - run: ../../bin/checkout-and-link-starter-repo
 
       - save_cache: *save_bundler_cache
 
