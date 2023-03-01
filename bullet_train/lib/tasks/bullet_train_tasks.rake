@@ -18,8 +18,8 @@ namespace :bt do
     touch "tmp/gems/.keep"
 
     # Look up or .bt-link file relative to our gem's lib directory.
-    Gem.find_files("../.bt-link").each do |file|
-      ln_s File.dirname(file), "tmp/gems/"
+    Gem.find_files(".bt-link").each do |file|
+      ln_s File.dirname(File.dirname(file)), "tmp/gems/"
     end
   end
 end
