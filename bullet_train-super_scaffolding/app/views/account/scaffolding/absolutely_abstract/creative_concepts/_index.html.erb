@@ -10,7 +10,7 @@
   <%= render 'account/shared/box' do |p| %>
     <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
     <% p.content_for :description do %>
-      <%= t(".contexts.#{context.class.name.underscore}.#{creative_concepts.any? ? 'description' : 'description_empty'}") %>
+      <%= t(".contexts.#{context.class.name.underscore}.description").html_safe %>
       <%= render "shared/limits/index", model: creative_concepts.model %>
     <% end %>
 
