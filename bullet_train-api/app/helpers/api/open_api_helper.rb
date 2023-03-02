@@ -41,15 +41,6 @@ module Api
       path = "app/views/api/#{@version}"
       paths = ([path] + gem_paths.map { |gem_path| "#{gem_path}/#{path}" })
 
-      puts ">>>"
-      puts ">>>"
-      puts ">>>MODEL #{model}"
-      puts ">>>LOCALS: #{locals}"
-      puts ">>>"
-      puts ">>>"
-      puts ">>>"
-      puts ">>>"
-
       main_object = locals.delete(model.to_s.demodulize.underscore.to_sym)
 
       jbuilder = Jbuilder::Schema.renderer(paths, locals: {

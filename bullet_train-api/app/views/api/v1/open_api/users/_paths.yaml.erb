@@ -1,7 +1,7 @@
 /users:
   get:
     tags:
-      - Users
+      - User
     summary: "List Users"
     operationId: listUsers
     parameters:
@@ -27,7 +27,7 @@
 /users/{id}:
   get:
     tags:
-      - Users
+      - User
     summary: "Fetch User"
     operationId: fetchUser
     parameters:
@@ -45,7 +45,7 @@
               <%= FactoryBot.get_example(:user, version: @version) %>
   put:
     tags:
-      - Users
+      - User
     summary: "Update User"
     operationId: updateUser
     parameters:

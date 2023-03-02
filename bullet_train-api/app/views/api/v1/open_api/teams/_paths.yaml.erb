@@ -1,7 +1,7 @@
 /teams:
   get:
     tags:
-      - Teams
+      - Team
     summary: "List Teams"
     operationId: listTeams
     parameters:
@@ -28,7 +28,7 @@
 /teams/{id}:
   get:
     tags:
-      - Teams
+      - Team
     summary: "Fetch Team"
     operationId: fetchTeam
     parameters:
@@ -46,7 +46,7 @@
               <%= FactoryBot.get_example(:team, version: @version) %>
   put:
     tags:
-      - Teams
+      - Team
     summary: "Update Team"
     operationId: updateTeam
     parameters:
