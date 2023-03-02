@@ -71,35 +71,7 @@ end
       <% end %>
       
       <%= tag.div class: ["max-w-lg": !use_columns, "max-w-3xl": use_columns, "columns-[var(--column-width,_15ch)_3]": use_columns] do %>
-
-        <% options.each do |value, label| %>
-
-          <label class="relative flex items-start mb-3">
-            <div class="flex items-center h-5">
-
-              <% if multiple %>
-                <% checked_value = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
-                <%= form.check_box method, {
-                  multiple: multiple, checked: checked_value,
-                  data: option_field_options[:data],
-                  class: "focus:ring-blue h-4 w-4 text-blue border-slate-300 rounded"
-                }, value, "" %>
-              <% else %>
-                <%= form.radio_button method, value, {class: "focus:ring-blue h-4 w-4 text-blue border-slate-300", data: option_field_options[:data]} %>
-              <% end %>
-
-            </div>
-            <div class="ml-2.5 text-sm">
-              <div class="select-none"><%= label %></div>
-              <% if labels.options_help&.dig(value)&.present? %>
-                <p class="mt-0.5 text-xs text-slate-500">
-                  <%= labels.options_help.dig(value) %>
-                </p>
-              <% end %>
-            </div>
-          </label>
-
-        <% end %>
+        <%= render 'shared/fields/option', form: form, method: method, options: options, option_field_options: option_field_options, multiple: multiple %>
       <% end %>
 
       <% if multiple && !show_select_all_top && show_select_all_bottom %>
