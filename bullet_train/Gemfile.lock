@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.2.12)
+    bullet_train (1.2.14)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -116,23 +116,23 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.2.11)
+    bullet_train-fields (1.2.13)
       chronic
       cloudinary
       phonelib
       rails (>= 6.0.0)
-    bullet_train-has_uuid (1.2.11)
+    bullet_train-has_uuid (1.2.13)
       rails (>= 7.0.0)
-    bullet_train-roles (1.2.11)
+    bullet_train-roles (1.2.13)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.2.11)
-    bullet_train-super_load_and_authorize_resource (1.2.11)
+    bullet_train-scope_validator (1.2.13)
+    bullet_train-super_load_and_authorize_resource (1.2.13)
       rails (>= 7.0.0)
-    bullet_train-themes (1.2.11)
+    bullet_train-themes (1.2.13)
       rails (>= 6.0.0)
     cable_ready (5.0.0.pre9)
       actioncable (>= 5.2)
