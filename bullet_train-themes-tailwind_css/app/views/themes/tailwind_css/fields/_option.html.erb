@@ -2,32 +2,41 @@
 
 <%
 form ||= current_fields_form
-options ||= options_for(form, method)
+single_check_box ||= false
+multiple ||= false
+options ||= options_for(form, method) unless single_check_box
 labels = labels_for(form, method)
-single_check_box ||= nil
+option_field_options ||= {}
 
-option_field_options[:class] ||= "focus:ring-blue h-4 w-4 text-blue border-slate-300 #{"rounded" if multiple || single_check_box}"  
+option_field_options[:class] ||= "focus:ring-blue h-4 w-4 text-blue border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if multiple || single_check_box}"
 %>
 
-<% options.each do |value, label| %>
-  <label class="relative flex items-start mb-3">
-    <div class="flex items-center h-5">
-      <% if multiple %>
-        <% checked_value = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
-        <%= form.check_box method, {
-          multiple: multiple, checked: checked_value, data: option_field_options[:data], class: option_field_options[:class]
-        }, value, "" %>
-      <% else %>
-        <%= form.radio_button method, value, {class: option_field_options[:class]} %>
-      <% end %>
-    </div>
-    <div class="ml-2.5 text-sm">
-      <div class="select-none"><%= label %></div>
-      <% if labels.options_help&.dig(value)&.present? %>
-        <p class="mt-0.5 text-xs text-slate-500">
-          <%= labels.options_help.dig(value) %>
-        </p>
-      <% end %>
-    </div>
-  </label>
+<% if single_check_box %>
+  <div class="flex items-center">
+    <%= form.check_box method, class: option_field_options[:class] %>
+    <%= form.label method, class: "ml-2 block" %>
+  </div>
+<% else %>
+  <% options.each do |value, label| %>
+    <label class="relative flex items-start mb-3">
+      <div class="flex items-center h-5">
+        <% if multiple %>
+          <% checked_value = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
+          <%= form.check_box method, {
+            multiple: multiple, checked: checked_value, data: option_field_options[:data], class: option_field_options[:class]
+          }, value, "" %>
+        <% else %>
+          <%= form.radio_button method, value, {class: option_field_options[:class]} %>
+        <% end %>
+      </div>
+      <div class="ml-2.5 text-sm">
+        <div class="select-none"><%= label %></div>
+        <% if labels.options_help&.dig(value)&.present? %>
+          <p class="mt-0.5 text-xs text-slate-500">
+            <%= labels.options_help.dig(value) %>
+          </p>
+        <% end %>
+      </div>
+    </label>
+  <% end %>
 <% end %>
