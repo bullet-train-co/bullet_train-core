@@ -51,7 +51,7 @@ module FactoryBot
 
     def reset_tables!
       @tables_to_reset.each do |name|
-        ActiveRecord::Base.connection.reset_pk_sequence!(name)
+        ActiveRecord::Base.connection.reset_pk_sequence!(name) if ActiveRecord::Base.connection.table_exists?(name)
       end
     end
 

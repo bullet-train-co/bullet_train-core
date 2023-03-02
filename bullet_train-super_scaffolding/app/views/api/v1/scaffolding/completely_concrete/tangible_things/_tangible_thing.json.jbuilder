@@ -15,11 +15,10 @@ json.extract! tangible_thing,
   :multiple_option_values,
   :super_select_value,
   :text_area_value,
+  :action_text_value,
   # 🚅 stop any skipping we're doing now.
   # 🚅 super scaffolding will insert new fields above this line.
   :created_at,
   :updated_at
-
-json.action_text_value tangible_thing.action_text_value.body
 
 # 🚅 super scaffolding will insert file-related logic above this line.
