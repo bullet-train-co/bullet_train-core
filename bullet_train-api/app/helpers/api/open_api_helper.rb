@@ -41,14 +41,14 @@ module Api
       path = "app/views/api/#{@version}"
       paths = ([path] + gem_paths.map { |gem_path| "#{gem_path}/#{path}" })
 
-      main_object = locals.delete(model.to_s.demodulize.underscore.to_sym)
-
       jbuilder = Jbuilder::Schema.renderer(paths, locals: {
         # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
         model.name.underscore.split("/").last.to_sym => model.new,
         # Same here, if we ever need this to be a real object, this should be `test@example.com` with an `SecureRandom.hex` password.
         :current_user => User.new
       }.merge(locals))
+
+      main_object = FactoryBot.example(model.model_name.singular)
 
       schema_json = jbuilder.json(
         main_object || model.new,
