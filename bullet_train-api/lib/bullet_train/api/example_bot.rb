@@ -48,7 +48,7 @@ module FactoryBot
     private
 
     def factory(model)
-      factories = FactoryBot.factories.instance_variable_get("@items").keys
+      factories = FactoryBot.factories.instance_variable_get(:@items).keys
       factories.include?("#{model}_example") ? "#{model}_example" : model
     end
 

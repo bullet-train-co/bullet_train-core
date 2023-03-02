@@ -29,7 +29,6 @@ module Api
     def gem_paths
       @gem_paths ||= `bundle show --paths`.lines.map { |gem_path| gem_path.chomp }
     end
-    module_function :gem_paths
 
     def automatic_paths_for(model, parent, except: [])
       output = render("api/#{@version}/open_api/shared/paths", except: except)
@@ -40,7 +39,6 @@ module Api
     def automatic_components_for(model, locals: {})
       path = "app/views/api/#{@version}"
       paths = ([path] + gem_paths.map { |gem_path| "#{gem_path}/#{path}" })
-
       jbuilder = Jbuilder::Schema.renderer(paths, locals: {
         # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
         model.name.underscore.split("/").last.to_sym => model.new,
@@ -48,16 +46,29 @@ module Api
         :current_user => User.new
       }.merge(locals))
 
-      main_object = FactoryBot.example(model.model_name.singular)
-
       schema_json = jbuilder.json(
-        main_object || model.new,
+        model.new,
         title: I18n.t("#{model.name.underscore.pluralize}.label"),
         # TODO Improve this. We don't have a generic description for models we can use here.
-        description: I18n.t("#{model.name.underscore.pluralize}.label")
-      )
+        description: I18n.t("#{model.name.underscore.pluralize}.label"),
+        )
 
       attributes_output = JSON.parse(schema_json)
+
+      # Rails attachments aren't technically attributes in a model,
+      # so we add the attributes manually to make them available in the API.
+      if model.attachment_reflections.any?
+        model.attachment_reflections.each do |reflection|
+          attribute_name = reflection.first
+
+          attributes_output["properties"][attribute_name] = {
+            "type" => "object",
+            "description" => attribute_name.titleize.to_s
+          }
+
+          attributes_output["example"].merge!({attribute_name.to_s => nil})
+        end
+      end
 
       if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
         strong_params_module = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
@@ -67,15 +78,15 @@ module Api
         end
 
         parameters_output = JSON.parse(schema_json)
-        parameters_output["required"]&.select! { |key| strong_parameter_keys.include?(key.to_sym) }
-        parameters_output["properties"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
-        parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
+        parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
+        parameters_output["properties"].select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
 
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
             indent("    " + parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Parameters:"), 3)
         ).html_safe
       else
+
         indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
           .html_safe
       end
@@ -91,14 +102,13 @@ module Api
       heading = t("#{current_model.name.underscore.pluralize}.fields.#{attribute}.heading")
       attribute_data = current_model.columns_hash[attribute.to_s]
 
-      # TODO: File fields don't show up in the columns_hash. How should we handle these?
       # Default to `string` when the type returns nil.
       type = attribute_data.nil? ? "string" : attribute_data.type
 
       attribute_block = <<~YAML
-        #{attribute}:
-          description: "#{heading}"
-          type: #{type}
+      #{attribute}:
+        description: "#{heading}"
+        type: #{type}
       YAML
       indent(attribute_block.chomp, 2)
     end
