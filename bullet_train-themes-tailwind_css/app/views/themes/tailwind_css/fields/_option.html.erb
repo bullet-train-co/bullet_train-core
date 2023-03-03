@@ -4,18 +4,23 @@
 form ||= current_fields_form
 single_check_box ||= false
 multiple ||= false
-options ||= options_for(form, method) unless single_check_box
-labels = labels_for(form, method)
 option_field_options ||= {}
+labels = labels_for(form, method) if form
 
 option_field_options[:class] ||= "focus:ring-blue h-4 w-4 text-blue border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if multiple || single_check_box}"
 %>
 
 <% if single_check_box %>
-  <div class="flex items-center">
-    <%= form.check_box method, class: option_field_options[:class] %>
-    <%= form.label method, class: "ml-2 block" %>
-  </div>
+  <% if form %>
+    <div class="flex items-center">
+      <%= form.check_box method, option_field_options %>
+      <%= form.label method, class: "ml-2 block" %>
+    </div>
+  <% else %>
+    <% value = option_field_options.delete(:value) %>
+    <% checked = option_field_options.delete(:checked) %>
+    <%= check_box_tag method, value, checked, option_field_options %>
+  <% end %>
 <% else %>
   <% options.each do |value, label| %>
     <label class="relative flex items-start mb-3">

@@ -71,7 +71,7 @@ end
       <% end %>
       
       <%= tag.div class: ["max-w-lg": !use_columns, "max-w-3xl": use_columns, "columns-[var(--column-width,_15ch)_3]": use_columns] do %>
-        <%= render 'shared/fields/option', method: method, form: form, option_field_options: option_field_options, multiple: multiple %>
+        <%= render 'shared/fields/option', method: method, form: form, option_field_options: option_field_options, multiple: multiple, options: options %>
       <% end %>
 
       <% if multiple && !show_select_all_top && show_select_all_bottom %>
