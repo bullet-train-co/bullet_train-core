@@ -1,3 +1,1 @@
-<%= render "account/shared/box", no_background: true, title_size: "text-2xs", title_padding: "pt-3 pb-3.5", border_top: true do |box| %>
-  <% box.content_from partial, :title, :table %>
-<% end %>
+<%= render "account/shared/box", **partial.slice(:title, :table), no_background: true, title_size: "text-2xs", title_padding: "pt-3 pb-3.5", border_top: true %>
