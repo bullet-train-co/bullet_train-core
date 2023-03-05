@@ -3,14 +3,15 @@ require "io/wait"
 namespace :bt do
   desc "Symlink registered gems in `./tmp/gems` so their views, etc. can be inspected by Tailwind CSS."
   task :link do
+    if File.file?("tmp/gems")
+      puts "A file named `tmp/gems` already exists? It has to be removed before we can create the required directory."
+      exit 1
+    end
+
     if Dir.exist?("tmp/gems")
       puts "Removing previously linked gems."
       rm_f Dir.glob("tmp/gems/*")
     else
-      if File.exist?("tmp/gems")
-        raise "A file named `tmp/gems` already exists? It has to be removed before we can create the required directory."
-      end
-
       puts "Creating 'tmp/gems' directory."
       mkdir_p "tmp/gems"
     end
