@@ -232,12 +232,14 @@ Honestly, it's crazy that we got to the point where we can handle this particula
 
 ### `TangibleThing` and `CreativeConcept`
 
-In order to properly facilitate this type of code generation, Bullet Train includes two models in the `Scaffolding` namespace:
+In order to properly facilitate this type of code generation, Bullet Train includes two models in the `Scaffolding` namespace as a parent and child model:
 
 1. `Scaffolding::AbsolutelyAbstract::CreativeConcept`
 2. `Scaffolding::CompletelyConcrete::TangibleThing`
 
-Their peculiar naming is what's required to ensure that their corresponding view and controller templates can serve as the basis for any combination of different model naming or [namespacing](https://blog.bullettrain.co/rails-model-namespacing/) that you may need to employ in your own application.
+Their peculiar naming is what's required to ensure that their corresponding view and controller templates can serve as the basis for any combination of different model naming or [namespacing](https://blog.bullettrain.co/rails-model-namespacing/) that you may need to employ in your own application. There are [a ton of different potential combinations of parent and child namespaces](https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/), and these two class names provide us with the fidelity we need when transforming the templates to represent any of these scenarios.
+
+Only the files associated with `Scaffolding::CompletelyConcrete::TangibleThing` actually serve as scaffolding templates, so we also take advantage of `Scaffolding::AbsolutelyAbstract::CreativeConcept` to demonstrate other available Bullet Train features. For example, we use it to demonstrate how to implement resource-level collaborators.
 
 ### Hiding Scaffolding Templates
 

@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  mount Showcase::Engine, at: "/docs/showcase" if defined?(Showcase::Engine)
+  unless Rails.env.production?
+    mount Showcase::Engine, at: "/docs/showcase" if defined?(Showcase::Engine)
+  end
 
   scope module: "public" do
     root to: "home#index"

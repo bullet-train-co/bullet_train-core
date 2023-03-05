@@ -10,7 +10,7 @@
   <%= render 'account/shared/box' do |p| %>
     <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
     <% p.content_for :description do %>
-      <%= t(".contexts.#{context.class.name.underscore}.#{creative_concepts.any? ? 'description' : 'description_empty'}") %>
+      <%= t(".contexts.#{context.class.name.underscore}.description").html_safe %>
       <%= render "shared/limits/index", model: creative_concepts.model %>
     <% end %>
 
@@ -40,6 +40,10 @@
         <% if can? :create, Scaffolding::AbsolutelyAbstract::CreativeConcept.new(team: @team) %>
           <%= link_to t('.buttons.new'), [:new, :account, @team, :scaffolding_absolutely_abstract_creative_concept], class: "#{first_button_primary(:absolutely_abstract_creative_concept)} new" %>
         <% end %>
+
+        <%# 🚅 super scaffolding will insert new targets one parent action model buttons above this line. %>
+        <%# 🚅 super scaffolding will insert new bulk action model buttons above this line. %>
+        <%= render "shared/bulk_action_select" %>
 
         <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary(:absolutely_abstract_creative_concept)} back" unless hide_back %>
       <% end %>
