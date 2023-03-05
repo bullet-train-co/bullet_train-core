@@ -38,6 +38,7 @@ html_options[:data].merge!("#{stimulus_controller}-target": 'select')
 %>
 
 <%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <%= tag.div data: wrapper_options[:data] do %>
       <%= form.select method, choices, options, html_options %>

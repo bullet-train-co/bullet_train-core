@@ -7,6 +7,7 @@ other_options ||= {}
 %>
 
 <%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <div class="file-field" data-controller="fields--file-field">
       <%= form.hidden_field "#{method}_removal".to_sym, value: nil, data: {'fields--file-field-target': 'removeFileFlag'} %>

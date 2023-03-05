@@ -11,6 +11,7 @@ options ||= options_for(form, method)
 %>
 
 <% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <div>
       <% options.each do |value, label| %>

@@ -26,6 +26,7 @@ other_options ||= {}
 %>
 
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <div
       class="date-input relative"

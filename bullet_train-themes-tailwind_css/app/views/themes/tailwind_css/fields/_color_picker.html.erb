@@ -15,6 +15,7 @@ color_selected_classes = "ring-2 ring-offset-2"
 %>
 
 <% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <div class="space-x-1" 
       data-controller="<%= stimulus_controller %>"

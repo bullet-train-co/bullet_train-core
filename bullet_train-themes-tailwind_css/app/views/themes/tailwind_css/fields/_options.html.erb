@@ -60,6 +60,7 @@ end
 <% end %>
 
 <%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <%= tag.div class: "pt-1.5 pb-1 sm:col-span-2", data: {
       controller: "select-all",

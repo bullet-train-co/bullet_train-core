@@ -19,6 +19,7 @@ other_options ||= {}
 
 <div class="<%= 'trix-hide-toolbar' if other_options[:hide_toolbar] %>">
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <%= form.rich_text_area method, options %>
     <%= partial.submit_button.presence %>

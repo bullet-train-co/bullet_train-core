@@ -10,6 +10,7 @@ value = form.object.send(method)
 %>
 
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do |field| %>
+  <% field.content_from partial, :label, :error, :help, :after_help %>
   <% field.field do %>
     <div data-controller="<%= stimulus_controller %>">
       <%= tag.button data: {action: "#{stimulus_controller}#toggle", target: "#{stimulus_controller}.button"}, class: "button-alternative" do %>
