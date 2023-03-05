@@ -9,7 +9,7 @@ namespace :bt do
     end
 
     mkdir_p "tmp/gems"
-    rm_f Dir.glob("tmp/gems/*")
+    Dir.glob("tmp/gems/*").then { rm_f _1 if _1.any? }
     touch "tmp/gems/.keep"
 
     # Look up our .bt-link file relative to our gem's lib directory.
