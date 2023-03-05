@@ -23,6 +23,16 @@
   <% end %>
 <% end %>
 
+<% showcase.sample "With box" do %>
+  <%= render "shared/page", title: "Page Title" do |page| %>
+    <% page.body.render "shared/box" do |box| %>
+      <% box.title "Box Title" %>
+      <% box.description "Description" %>
+      <% box.body "Lorem ipsum dolor sit amet…" %>
+    <% end %>
+  <% end %>
+<% end %>
+
 <% showcase.options.context :nice_partials do |o| %>
   <% o.optional.content_block :title %>
   <% o.optional.content_block :actions %>
