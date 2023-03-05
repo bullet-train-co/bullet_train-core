@@ -10,8 +10,8 @@ other_options ||= {}
 options ||= options_for(form, method)
 %>
 
-<% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
-  <% content_for :field do %>
+<% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do |field| %>
+  <% field.field do %>
     <div>
       <% options.each do |value, label| %>
         <% checked = form.object.send(method).is_a?(Array) ? form.object.send(method).map(&:to_s).include?(value.to_s) : form.object.send(method).to_s == value.to_s  %>

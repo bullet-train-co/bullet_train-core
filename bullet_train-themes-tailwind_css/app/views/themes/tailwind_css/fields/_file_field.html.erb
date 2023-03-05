@@ -6,8 +6,8 @@ options ||= {}
 other_options ||= {}
 %>
 
-<%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do %>
-  <% content_for :field do %>
+<%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do |field| %>
+  <% field.field do %>
     <div class="file-field" data-controller="fields--file-field">
       <%= form.hidden_field "#{method}_removal".to_sym, value: nil, data: {'fields--file-field-target': 'removeFileFlag'} %>
       <%= form.file_field method, class: 'file-upload hidden', direct_upload: true, data: {'fields--file-field-target': 'fileField', action: 'change->fields--file-field#handleFileSelected'} %>

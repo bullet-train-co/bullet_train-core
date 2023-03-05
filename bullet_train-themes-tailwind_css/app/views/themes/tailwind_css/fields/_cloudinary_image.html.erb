@@ -1,5 +1,3 @@
-<% yield %>
-
 <% if cloudinary_enabled? %>
 
 <%
@@ -40,9 +38,9 @@ wrapper_options[:data]["#{stimulus_controller}-google-api-key-value"] = options[
 %>
 
 
-<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
-  <% content_for :field do %>
-    <%= content_tag :div, class: 'cloudinary-field', data: wrapper_options[:data] do %>
+<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do |field| %>
+  <% field.field do %>
+    <%= tag.div class: 'cloudinary-field', data: wrapper_options[:data] do %>
       <%= form.hidden_field method, data: { "#{stimulus_controller}-target": 'hiddenField' } %>
       <button type="button" class="upload <%= thumbnail_shown_class if cloudinary_url %>"
         data-<%= stimulus_controller %>-target="uploadButton"

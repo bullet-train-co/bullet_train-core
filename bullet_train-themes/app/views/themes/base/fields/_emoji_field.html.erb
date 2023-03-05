@@ -9,8 +9,8 @@ other_options ||= {}
 value = form.object.send(method)
 %>
 
-<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
-  <% content_for :field do %>
+<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do |field| %>
+  <% field.field do %>
     <div data-controller="<%= stimulus_controller %>">
       <%= tag.button data: {action: "#{stimulus_controller}#toggle", target: "#{stimulus_controller}.button"}, class: "button-alternative" do %>
         <span data-target="<%= stimulus_controller %>.display">

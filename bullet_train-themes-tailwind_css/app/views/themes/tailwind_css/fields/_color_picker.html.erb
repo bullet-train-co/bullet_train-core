@@ -14,8 +14,8 @@ value = form.object.send(method)
 color_selected_classes = "ring-2 ring-offset-2"
 %>
 
-<% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
-  <% content_for :field do %>
+<% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do |field| %>
+  <% field.field do %>
     <div class="space-x-1" 
       data-controller="<%= stimulus_controller %>"
       data-<%= stimulus_controller %>-initial-color-value="<%= value %>"
