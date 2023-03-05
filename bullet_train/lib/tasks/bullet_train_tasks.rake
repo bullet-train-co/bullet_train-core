@@ -8,14 +8,8 @@ namespace :bt do
       exit 1
     end
 
-    if Dir.exist?("tmp/gems")
-      puts "Removing previously linked gems."
-      rm_f Dir.glob("tmp/gems/*")
-    else
-      puts "Creating 'tmp/gems' directory."
-      mkdir_p "tmp/gems"
-    end
-
+    mkdir_p "tmp/gems"
+    rm_f Dir.glob("tmp/gems/*")
     touch "tmp/gems/.keep"
 
     # Look up our .bt-link file relative to our gem's lib directory.
