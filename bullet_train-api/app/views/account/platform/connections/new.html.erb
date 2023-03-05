@@ -1,6 +1,6 @@
-<%= render 'account/shared/workflow/box' do |p| %>
-  <% p.content_for :title, t('.header', application_name: @application.name) %>
-  <% p.content_for :body do %>
+<%= render 'account/shared/workflow/box' do |box| %>
+  <% box.title t('.header', application_name: @application.name) %>
+  <% box.body do %>
     <ul class="space-y" data-turbo="false">
       <% @teams.each do |team| %>
         <li class="bg-white border overflow-hidden sm:rounded-md dark:bg-slate-400">
