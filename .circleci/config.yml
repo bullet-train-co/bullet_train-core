@@ -4,24 +4,12 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.1
   jq: circleci/jq@2.2.0
 aliases:
-  - &restore_bundler_cache
-      name: Restore Bundler cache
-      keys:
-        - gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-        - gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-{{ .Branch }}-
-        - gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-
-        - gem-cache-v1-
   - &restore_yarn_cache
       name: Restore Yarn cache
       keys:
         - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
         - yarn-packages-v1-{{ .Branch }}-
         - yarn-packages-
-  - &save_bundler_cache
-      name: Save Bundler cache
-      key: gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-      paths:
-        - vendor/bundle
   - &save_yarn_cache
       name: Save Yarn cache
       key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
@@ -101,13 +89,10 @@ jobs:
 
       - run: ../../bin/checkout-and-link-starter-repo
 
-      - restore_cache: *restore_bundler_cache
       - ruby/install-deps:
           clean-bundle: true
       - run: yarn install
       - run: yarn build:css
-
-      - save_cache: *save_bundler_cache
 
       # TODO Figure out how to make these work for `tmp/starter`
       # - restore_cache: *restore_yarn_cache
@@ -155,13 +140,10 @@ jobs:
 
       - run: ../../bin/checkout-and-link-starter-repo
 
-      # - restore_cache: *restore_bundler_cache
       - ruby/install-deps:
           clean-bundle: true
       - run: yarn install
       - run: yarn build:css
-
-      # - save_cache: *save_bundler_cache
 
       # TODO Figure out how to make these work for `tmp/starter`
       # - restore_cache: *restore_yarn_cache
