@@ -9,7 +9,7 @@ if [[ -v CI_BRANCH ]]; then
   BRANCH_RESPONSE=$(curl --head -H "Accept: application.vnd.github+json" https://api.github.com/repos/bullet-train-co/bullet_train/branches/$CI_BRANCH)
   MATCH=$(echo $BRANCH_RESPONSE | grep "200")
 
-  if [[ -v MATCH ]; then
+  if [[ -v MATCH ]]; then
     STARTER_REPO_BRANCH=$CI_BRANCH
   fi
 fi
