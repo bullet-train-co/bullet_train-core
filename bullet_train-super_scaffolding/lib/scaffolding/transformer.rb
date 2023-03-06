@@ -185,6 +185,21 @@ class Scaffolding::Transformer
     end.compact.first || raise("Couldn't find the Super Scaffolding template for `#{file}` in any of the following locations:\n\n#{BulletTrain::SuperScaffolding.template_paths.join("\n")}")
   end
 
+  def resolve_target_path(file)
+    # Only do something here if they are trying to specify a target directory.
+    return file unless ENV["TARGET"]
+
+    # If the file exists in the application repository, we want to target it there.
+    return file if File.exist?(file)
+
+    ENV["OTHER_TARGETS"].split(",").each do |possible_target|
+      candidate_path = "#{possible_target}/#{file}".gsub("//", "/")
+      return candidate_path if File.exist?(candidate_path)
+    end
+
+    "#{ENV["TARGET"]}/#{file}".gsub("//", "/")
+  end
+
   def get_transformed_file_content(file)
     transformed_file_content = []
 
@@ -265,7 +280,7 @@ class Scaffolding::Transformer
 
   def scaffold_file(file, overrides: false)
     transformed_file_content = get_transformed_file_content(file)
-    transformed_file_name = transform_string(file)
+    transformed_file_name = resolve_target_path(transform_string(file))
 
     # Remove `_overrides` from the file name if we're sourcing from a local override folder.
     transformed_file_name.gsub!("_overrides", "") if overrides
@@ -400,14 +415,14 @@ class Scaffolding::Transformer
   end
 
   def scaffold_add_line_to_file(file, content, hook, options = {})
-    file = transform_string(file)
+    file = resolve_target_path(transform_string(file))
     content = transform_string(content)
     hook = transform_string(hook)
     add_line_to_file(file, content, hook, options)
   end
 
   def scaffold_replace_line_in_file(file, content, in_place_of)
-    file = transform_string(file)
+    file = resolve_target_path(transform_string(file))
     # we specifically don't transform the content, we assume a builder function created this content.
     in_place_of = transform_string(in_place_of)
     Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of, suppress_could_not_find: suppress_could_not_find)
@@ -998,19 +1013,13 @@ class Scaffolding::Transformer
       #
 
       unless cli_options["skip-locales"]
-        # If these translation files were scaffolded before we supported DRY translations, we need to use aliases.
-        using_aliases = File.read(transform_string("./config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml")).lines[1].include?("&")
 
         yaml_template = <<~YAML
 
           <%= name %>: <% if is_association %>&<%= attribute_name %><% end %>
-            <% if using_aliases %>
             _: &#{name} #{title_case}
             label: *#{name}
             heading: *#{name}
-            <% else %>
-            heading: #{title_case}
-            <% end %>
 
             <% if type == "super_select" %>
             <% if is_required %>

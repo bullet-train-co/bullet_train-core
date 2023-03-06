@@ -1,0 +1,43 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/box" do |partial| %>
+    <% partial.content_for :title, "Title" %>
+    <% partial.content_for :description, "Description" %>
+    <% partial.content_for :body, "Lorem ipsum dolor sit amet…" %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "With Divider" do %>
+  <%= render "shared/box", divider: true do |partial| %>
+    <% partial.content_for :title, "Title" %>
+    <% partial.content_for :description, "Description" %>
+    <% partial.content_for :body, "Lorem ipsum dolor sit amet…" %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "With top border" do %>
+  <%= render "shared/box", border_top: true do |partial| %>
+    <% partial.content_for :title, "Title" %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "Without background" do %>
+  <%= render "shared/box", no_background: true do |partial| %>
+    <% partial.content_for :title, "Title" %>
+  <% end %>
+<% end %>
+
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.optional.content_block :title %>
+  <% o.optional :title_size, "A CSS string to control title size" %>
+  <% o.optional :title_padding, "A CSS string to control title padding" %>
+  <% o.optional.content_block :description, "Content text to render beneath the title" %>
+  <% o.optional.content_block :table %>
+  <% o.optional.content_block :body, "The main content body of the element" %>
+  <% o.optional.content_block :footer, "Add a footer at the bottom within the container, with a top border and some padding" %>
+  <% o.optional.content_block :raw_footer, "Add a footer without a top border and padding" %>
+  <% o.optional.content_block :actions, "Content designated to contain actions, like buttons, beneath the body" %>
+  <% o.optional :pagy, "Pass in a pagy to render a pagy_nav below the body", type: "Pagy object" %>
+  <% o.optional :divider, "Whether to add dividers between sections", default: false %>
+  <% o.optional :border_top, "Whether to add a top border to the container element", default: false %>
+  <% o.optional :no_background, "Pass true to remove the surrounding background on the container", default: false %>
+<% end %>

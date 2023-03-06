@@ -1,0 +1,14 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/title" do |partial| %>
+    <% partial.content_for :title, "Title" %>
+    <% partial.content_for :actions do %>
+      <%= link_to "Home", root_url, class: "border-2 p-2 rounded-full border-indigo-300" %>
+      <%= link_to "Another link", root_url, class: "border-2 p-2 rounded-full border-indigo-300" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.optional.content_block :title %>
+  <% o.optional.content_block :actions %>
+<% end %>

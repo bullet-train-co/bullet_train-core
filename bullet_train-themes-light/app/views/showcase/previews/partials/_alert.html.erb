@@ -1,0 +1,16 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/alert" do |p| %>
+    Example message.
+  <% end %>
+<% end %>
+
+<% showcase.sample "Error" do %>
+  <%= render "shared/alert", color: :red do |p| %>
+    Example error.
+  <% end %>
+<% end %>
+
+<% showcase.options do |o| %>
+  <% o.required :block, "Message" %>
+  <% o.optional :color, "Color", default: :yellow, options: %i[ yellow red ] %>
+<% end %>
