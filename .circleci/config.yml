@@ -57,8 +57,6 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    environment:
-      BUNDLE_JOBS: 3
     parallelism: 16
     steps:
       - checkout:
@@ -108,8 +106,6 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    environment:
-      BUNDLE_JOBS: 3
     parallelism: 16
     steps:
       - checkout:
