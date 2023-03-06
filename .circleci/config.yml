@@ -59,7 +59,7 @@ jobs:
     executor: ruby/default
     working_directory: tmp/starter
     environment:
-      BUNDLE_PATH: vendor/bundle
+      BUNDLE_JOBS: 3
     parallelism: 16
     steps:
       - checkout:
@@ -110,7 +110,7 @@ jobs:
     executor: ruby/default
     working_directory: tmp/starter
     environment:
-      BUNDLE_PATH: vendor/bundle
+      BUNDLE_JOBS: 3
     parallelism: 16
     steps:
       - checkout:
