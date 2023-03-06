@@ -1,20 +1,10 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@2.0.0
+  node: circleci/node@5.1.0
   browser-tools: circleci/browser-tools@1.4.1
   jq: circleci/jq@2.2.0
 aliases:
-  - &restore_yarn_cache
-      name: Restore Yarn cache
-      keys:
-        - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-        - yarn-packages-v1-{{ .Branch }}-
-        - yarn-packages-
-  - &save_yarn_cache
-      name: Save Yarn cache
-      key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      paths:
-        - node_modules
   - &ruby_node_browsers_docker_image
       - image: cimg/ruby:3.2.0-browsers
         environment:
@@ -55,18 +45,8 @@ jobs:
       - <<: *ruby_node_browsers_docker_image
     steps:
       - checkout
-
-      # TODO Figure out how to make these work for `tmp/starter`
-      # # Restore dependency caches
-      # - restore_cache: *restore_yarn_cache
-
       - ruby/install-deps:
           clean-bundle: true
-
-      # # Save dependency caches
-      # # We only do this as part of this job, because it's time consuming and we don't want it to slow down test runners.
-      # - save_cache: *save_yarn_cache
-
       - run:
           name: Check Standard Ruby
           command: bundle exec standardrb
@@ -93,7 +73,9 @@ jobs:
           bundler-version: 2.4.7
           key: gems-v2
           clean-bundle: true
-      - run: yarn install
+      - node/install-packages:
+          cache-key: yarn.lock
+          pkg-manager: yarn
       - run: yarn build:css
 
       # TODO Figure out how to make these work for `tmp/starter`
@@ -144,11 +126,10 @@ jobs:
 
       - ruby/install-deps:
           clean-bundle: true
-      - run: yarn install
+      - node/install-packages:
+          cache-key: yarn.lock
+          pkg-manager: yarn
       - run: yarn build:css
-
-      # TODO Figure out how to make these work for `tmp/starter`
-      # - restore_cache: *restore_yarn_cache
 
       - *wait_for_docker
 
