@@ -70,6 +70,18 @@ module Roles
         Role::Collection.new(self, (self.class.default_roles + roles_without_defaults).compact.uniq)
       end
 
+      def can_perform_role?(role_or_key)
+        role_key = role_or_key.is_a?(Role) ? role_or_key.key : role_or_key
+        role = Role.find_by_key(role_key)
+        return true if roles.include?(role)
+        # Check all the roles that this role is included into
+        Role.includes(role_key).each do |included_in_role|
+          return true if roles.include?(included_in_role)
+          return true if can_perform_role?(included_in_role)
+        end
+        false
+      end
+
       def roles=(roles)
         update(role_ids: roles.map(&:key))
       end
