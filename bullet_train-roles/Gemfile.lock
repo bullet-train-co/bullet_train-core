@@ -102,15 +102,11 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
-    mini_portile2 (2.6.1)
     minitest (5.18.0)
     nio4r (2.5.8)
-    nokogiri (1.12.5)
-      mini_portile2 (~> 2.6.1)
+    nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.12.5-arm64-darwin)
-      racc (~> 1.4)
-    nokogiri (1.12.5-x86_64-darwin)
+    nokogiri (1.14.2-x86_64-darwin)
       racc (~> 1.4)
     parallel (1.21.0)
     parser (3.0.3.2)
@@ -180,7 +176,6 @@ GEM
 PLATFORMS
   arm64-darwin-20
   arm64-darwin-21
-  ruby
   x86_64-darwin-21
 
 DEPENDENCIES
