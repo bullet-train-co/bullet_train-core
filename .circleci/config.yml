@@ -74,7 +74,6 @@ jobs:
           key: gems-v2
           clean-bundle: true
       - node/install-packages:
-          cache-key: yarn.lock
           pkg-manager: yarn
       - run: yarn build:css
 
@@ -127,7 +126,6 @@ jobs:
       - ruby/install-deps:
           clean-bundle: true
       - node/install-packages:
-          cache-key: yarn.lock
           pkg-manager: yarn
       - run: yarn build:css
 
