@@ -80,7 +80,7 @@ jobs:
     working_directory: tmp/starter
     environment:
       BUNDLE_PATH: vendor/bundle
-    parallelism: 12
+    parallelism: 16
     steps:
       - checkout:
           path: ~/project
