@@ -150,6 +150,8 @@ jobs:
 
       - *wait_for_docker
 
+      - run: "bundle config unset deployment" # Remove the lock from ruby/install-deps
+      - run: "bundle add spring"
       - run:
           name: 'Setup Super Scaffolding System Test'
           command: "bundle exec test/bin/setup-super-scaffolding-system-test"
