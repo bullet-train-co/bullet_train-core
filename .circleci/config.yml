@@ -77,9 +77,6 @@ jobs:
           pkg-manager: yarn
       - run: yarn build:css
 
-      # TODO Figure out how to make these work for `tmp/starter`
-      # - restore_cache: *restore_yarn_cache
-
       - *wait_for_docker
 
       - run:
