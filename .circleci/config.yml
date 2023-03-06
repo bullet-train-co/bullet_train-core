@@ -90,6 +90,8 @@ jobs:
       - run: ../../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
+          bundler-version: 2.4.7
+          key: gems-v2
           clean-bundle: true
       - run: yarn install
       - run: yarn build:css
