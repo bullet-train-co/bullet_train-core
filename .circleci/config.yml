@@ -71,7 +71,7 @@ jobs:
 
       - ruby/install-deps:
           bundler-version: 2.4.7
-          key: gems-v2
+          key: gems-v99
           clean-bundle: true
       - node/install-packages:
           pkg-manager: yarn
