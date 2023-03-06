@@ -56,6 +56,10 @@ jobs:
     steps:
       - uses: "actions/checkout@v3"
 
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get -yqq install libpq-dev
+
       # - name: "Use latest gems"
       #   working-directory: ${{ matrix.gem }}
       #   run: rm Gemfile.lock
@@ -67,10 +71,6 @@ jobs:
           bundler-cache: true
           ruby-version: ${{ matrix.ruby-version }}
           working-directory: ${{ matrix.gem }}
-
-      - name: Install PostgreSQL client
-        run: |
-          sudo apt-get -yqq install libpq-dev
 
       - name: Run Tests
         working-directory: ${{ matrix.gem }}
