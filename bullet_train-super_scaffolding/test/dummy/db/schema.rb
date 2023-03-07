@@ -51,9 +51,4 @@ ActiveRecord::Schema[7.0].define(version: 2021_06_02_230736) do
     t.json "multiple_option_values", default: []
     t.index ["absolutely_abstract_creative_concept_id"], name: "index_tangible_things_on_creative_concept_id"
   end
-
-  add_foreign_key "scaffolding_absolutely_abstract_creative_concepts", "teams"
-  add_foreign_key "scaffolding_absolutely_abstract_creative_concepts_collaborators", "memberships"
-  add_foreign_key "scaffolding_absolutely_abstract_creative_concepts_collaborators", "scaffolding_absolutely_abstract_creative_concepts", column: "creative_concept_id"
-  add_foreign_key "scaffolding_completely_concrete_tangible_things", "scaffolding_absolutely_abstract_creative_concepts", column: "absolutely_abstract_creative_concept_id"
 end
