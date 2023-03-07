@@ -8,6 +8,10 @@ gem "pg", "~> 1.1"
 
 gem "sprockets-rails"
 
+gem "bullet_train"
+gem "bullet_train-api"
+gem "bullet_train-super_scaffolding"
+
 gem "jbuilder"
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
