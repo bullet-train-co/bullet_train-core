@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_11_30_063357) do
+ActiveRecord::Schema[7.0].define(version: 2023_03_07_031729) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -48,6 +48,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_11_30_063357) do
     t.string "name"
     t.jsonb "event_type_ids", default: []
     t.bigint "scaffolding_absolutely_abstract_creative_concept_id"
+    t.string "api_version", null: false
     t.index ["scaffolding_absolutely_abstract_creative_concept_id"], name: "index_endpoints_on_abstract_creative_concept_id"
     t.index ["team_id"], name: "index_webhooks_outgoing_endpoints_on_team_id"
   end
