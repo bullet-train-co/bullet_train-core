@@ -19,7 +19,7 @@ jobs:
           # - "bullet_train-integrations"
           # - "bullet_train-integrations-stripe"
           # - "bullet_train-obfuscates_id"
-          # - "bullet_train-outgoing_webhooks"
+          - "bullet_train-outgoing_webhooks"
           - "bullet_train-roles"
           # - "bullet_train-scope_questions"
           # - "bullet_train-scope_validator"
