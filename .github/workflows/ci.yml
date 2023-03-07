@@ -79,4 +79,4 @@ jobs:
 
       - name: Run Tests
         working-directory: ${{ matrix.gem }}
-        run: bin/rails test test/**/*_test.rb
+        run: bin/rails test $(find test -type f -name "*_test.rb")
