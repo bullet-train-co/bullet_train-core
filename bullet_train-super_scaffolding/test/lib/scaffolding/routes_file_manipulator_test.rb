@@ -1,5 +1,4 @@
 require "test_helper"
-require "minitest/spec"
 
 require "scaffolding/routes_file_manipulator"
 
