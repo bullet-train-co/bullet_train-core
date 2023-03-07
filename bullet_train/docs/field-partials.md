@@ -136,6 +136,13 @@ Set the data type to `jsonb` whenever passing the `multiple` option to a new att
 > bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
 ```
 
+## Formating `date` and `date_time` objects
+After Super Scaffolding a `date` or `date_time` object, you can write your own format in a locale file and use the `date_format:` or `time_format:` locals to format the object to your liking:
+
+```
+<%= render 'shared/attributes/date', attribute: :date_object, date_format: t('path.to.locale') %>
+```
+
 ## Additional Field Partials Documentation
  - [`buttons`](/docs/field-partials/buttons.md)
  - [`super_select`](/docs/field-partials/super-select.md)
