@@ -1,10 +1,6 @@
 require "test_helper"
 
 class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::IntegrationTest
-  setup do
-    @controller = Api::V1::Webhooks::Outgoing::EndpointsController
-  end
-
   test "it returns list of endpoints" do
     get api_v1_team_webhooks_outgoing_endpoints_path(team_id: 1), as: :json
 
