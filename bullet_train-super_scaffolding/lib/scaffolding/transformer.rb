@@ -192,9 +192,11 @@ class Scaffolding::Transformer
     # If the file exists in the application repository, we want to target it there.
     return file if File.exist?(file)
 
-    ENV["OTHER_TARGETS"].split(",").each do |possible_target|
-      candidate_path = "#{possible_target}/#{file}".gsub("//", "/")
-      return candidate_path if File.exist?(candidate_path)
+    if !ENV["OTHER_TARGETS"].nil?
+      ENV["OTHER_TARGETS"].split(",").each do |possible_target|
+        candidate_path = "#{possible_target}/#{file}".gsub("//", "/")
+        return candidate_path if File.exist?(candidate_path)
+      end
     end
 
     "#{ENV["TARGET"]}/#{file}".gsub("//", "/")
