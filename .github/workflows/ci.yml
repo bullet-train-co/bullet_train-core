@@ -41,8 +41,8 @@ jobs:
           POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
-          --health-interval 3s
-          --health-timeout 5s
+          --health-interval 2s
+          --health-timeout 3s
           --health-retries 5
         ports:
           - 5432:5432
