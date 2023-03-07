@@ -75,6 +75,9 @@ jobs:
       - run: bin/rails db:setup
         working-directory: ${{ matrix.gem }}
 
+      - run: ls test/**/*_test.rb
+        working-directory: ${{ matrix.gem }}
+
       - name: Run Tests
         working-directory: ${{ matrix.gem }}
         run: bin/rails test test/**/*_test.rb
