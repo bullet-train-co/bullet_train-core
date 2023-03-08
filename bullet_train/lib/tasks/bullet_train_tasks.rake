@@ -244,7 +244,7 @@ namespace :bullet_train do
           elsif flag == "--reset"
             if line.match?(/bullet_train/)
               line.gsub!(local_path, original_path) # Reset local path
-              line.gsub!(/, \"[0-9|\.]*\"$/, "")    # Reset specific version
+              line.gsub!(/, "[0-9|.]*"$/, "")    # Reset specific version
             end
             puts "Resetting '#{package}' package in the Gemfile...".blue
           end
@@ -256,10 +256,10 @@ namespace :bullet_train do
       if flag == "--link"
         unless match_found
           puts "Could not find #{package}. Adding to the end of the Gemfile.".blue
-          if version
-            new_lines << "#{original_path.chomp}, \"#{version}\"\n"
+          new_lines << if version
+            "#{original_path.chomp}, \"#{version}\"\n"
           else
-            new_lines << "#{local_path}\n"
+            "#{local_path}\n"
           end
         end
       elsif flag == "--reset"
