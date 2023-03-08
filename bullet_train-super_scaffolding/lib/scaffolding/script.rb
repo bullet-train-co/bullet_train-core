@@ -145,7 +145,7 @@ elsif ARGV.first.present?
     end
 
     printf "\t%#{max_name_length}s:Data Type\n".bold, "Field Partial Name"
-    field_partials.each {|key, value| printf "\t%#{max_name_length}s:#{value}\n", key}
+    field_partials.each { |key, value| printf "\t%#{max_name_length}s:#{value}\n", key }
 
     puts ""
     puts "For more details, check out the documentation:"
