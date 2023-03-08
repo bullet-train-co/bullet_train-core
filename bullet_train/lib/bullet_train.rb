@@ -50,12 +50,14 @@ module BulletTrain
 end
 
 def default_url_options_from_base_url
-  unless ENV["BASE_URL"].present?
-    if Rails.env.development?
-      ENV["BASE_URL"] ||= "http://localhost:3000"
-    else
-      raise "you need to define the value of ENV['BASE_URL'] in your environment. if you're on heroku, you can do this with `heroku config:add BASE_URL=https://your-app-name.herokuapp.com` (or whatever your configured domain is)."
-    end
+  ENV["BASE_URL"] ||= if ENV["HEROKU_APP_NAME"]
+    "https://#{ENV["HEROKU_APP_NAME"]}.herokuapp.com"
+  elsif ENV["RENDER_EXTERNAL_URL"]
+    ENV["RENDER_EXTERNAL_URL"]
+  elsif Rails.env.development?
+    "http://localhost:3000"
+  else
+    raise "you need to define the value of ENV['BASE_URL'] in your environment. if you're on heroku, you can do this with `heroku config:add BASE_URL=https://your-app-name.herokuapp.com` (or whatever your configured domain is)."
   end
 
   parsed_base_url = URI.parse(ENV["BASE_URL"])
