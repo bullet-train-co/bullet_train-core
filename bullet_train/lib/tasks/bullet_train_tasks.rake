@@ -109,11 +109,13 @@ namespace :bullet_train do
         flags_with_values.each do |process|
           case process[:flag]
           when "--help"
-            puts "bin/hack: Clone bullet_train-core and link up gems (will only link up gems if already cloned).".blue
-            puts "bin/hack --link: Link all of your Bullet Train gems to `local/bullet_train-core`".blue
-            puts "bin/hack --reset: Resets all of your gems to their original definition.".blue
-            puts "bin/hack --watch-js: Watches for any changes in JavaScript files gems that have an npm package.".blue
-            puts "bin/hack --clean-js: Resets all of your npm packages from `local/bullet_train-core` to their original definition".blue
+            puts ""
+            puts "bin/hack: " + "Clone bullet_train-core and link up gems (will only link up gems if already cloned).".blue
+            puts "bin/hack --link: " + "Link all of your Bullet Train gems to `local/bullet_train-core`.".blue
+            puts "bin/hack --link (version-number): " + "Link all of your Bullet Train gems to the version number passed.".blue
+            puts "bin/hack --reset: " + "Resets all of your gems to their original definition.".blue
+            puts "bin/hack --watch-js: " + "Watches for any changes in JavaScript files gems that have an npm package.".blue
+            puts "bin/hack --clean-js: " + "Resets all of your npm packages from `local/bullet_train-core` to their original definition.".blue
             exit
           when "--link", "--reset"
             version = process[:values].pop
