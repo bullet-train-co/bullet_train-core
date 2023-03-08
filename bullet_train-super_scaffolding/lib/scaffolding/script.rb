@@ -112,53 +112,51 @@ elsif argv.count > 1
   puts "To use the original Super Scaffolding that you know and love, use the `crud` option.".yellow
 
   show_usage
-else
-  if ARGV.first.present?
-    case ARGV.first
-    when "--field-partials"
-      puts "Bullet Train uses the following field partials for Super Scaffolding".blue
-      puts ""
-      field_partials = {
-        boolean: "boolean",
-        buttons: "string",
-        cloudinary_image: "string",
-        color_picker: "",
-        date_and_time_field: "datetime",
-        date_field: "date_field",
-        email_field: "string",
-        emoji_field: "string",
-        file_field: "attachment",
-        options: "string",
-        password_field: "string",
-        phone_field: "string",
-        super_select: "string",
-        text_area: "text",
-        text_field: "string",
-        number_field: "integer",
-        trix_editor: "text"
-      }
+elsif ARGV.first.present?
+  case ARGV.first
+  when "--field-partials"
+    puts "Bullet Train uses the following field partials for Super Scaffolding".blue
+    puts ""
+    field_partials = {
+      boolean: "boolean",
+      buttons: "string",
+      cloudinary_image: "string",
+      color_picker: "",
+      date_and_time_field: "datetime",
+      date_field: "date_field",
+      email_field: "string",
+      emoji_field: "string",
+      file_field: "attachment",
+      options: "string",
+      password_field: "string",
+      phone_field: "string",
+      super_select: "string",
+      text_area: "text",
+      text_field: "string",
+      number_field: "integer",
+      trix_editor: "text"
+    }
 
-      max_name_length = 0
-      field_partials.each do |key, value|
-        if key.to_s.length > max_name_length
-          max_name_length = key.to_s.length
-        end
+    max_name_length = 0
+    field_partials.each do |key, value|
+      if key.to_s.length > max_name_length
+        max_name_length = key.to_s.length
       end
-
-      printf "\t%#{max_name_length}s: Data Type\n".bold, "Field Partial Name"
-
-      field_partials.each do |key, value|
-        printf "\t%#{max_name_length}s:#{value}\n", key
-      end
-
-      puts ""
-      puts "For more details, check out the documentation:"
-      puts "https://bullettrain.co/docs/field-partials"
-    when "--help"
-      show_usage
-    else
-      puts "Invalid scaffolding type \"#{ARGV.first}\".".red
-      show_usage
     end
+
+    printf "\t%#{max_name_length}s: Data Type\n".bold, "Field Partial Name"
+
+    field_partials.each do |key, value|
+      printf "\t%#{max_name_length}s:#{value}\n", key
+    end
+
+    puts ""
+    puts "For more details, check out the documentation:"
+    puts "https://bullettrain.co/docs/field-partials"
+  when "--help"
+    show_usage
+  else
+    puts "Invalid scaffolding type \"#{ARGV.first}\".".red
+    show_usage
   end
 end
