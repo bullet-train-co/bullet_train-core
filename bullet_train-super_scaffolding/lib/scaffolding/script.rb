@@ -121,7 +121,7 @@ elsif ARGV.first.present?
       boolean: "boolean",
       buttons: "string",
       cloudinary_image: "string",
-      color_picker: "",
+      color_picker: "string",
       date_and_time_field: "datetime",
       date_field: "date_field",
       email_field: "string",
