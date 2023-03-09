@@ -27,6 +27,10 @@ end
 
 %>
 
+<%#
+  # TODO: We should either remove this, or move the Action Models `bulk_action_select`
+  # partial here to bullet_train-core because this cannot work with the setup we currently have.
+%>
 <% if multiple && (show_select_all_top || show_select_all_bottom) %>
   <% select_all = capture do %>
     <div class="flex">
