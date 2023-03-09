@@ -44,7 +44,7 @@
           </div>
 
           <% if devise_mapping.rememberable? %>
-            <%= render 'shared/fields/option', method: :remember_me, form: form, single_check_box: true %>
+            <%= render 'shared/fields/option', method: :remember_me, form: form, single_check_box: true, append_class: 'ml-2' %>
           <% end %>
         <% end %>
       <% end %>
