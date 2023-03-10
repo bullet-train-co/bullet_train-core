@@ -46,6 +46,5 @@ do
   echo "gem \"$package\", path: \"../../../$package\"" >> bt/Gemfile
 done
 
-cd bt
 updates="${packages[@]}"
-bundle lock --update $updates
+( cd bt && bundle lock --update $updates )
