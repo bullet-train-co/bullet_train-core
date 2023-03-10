@@ -14,7 +14,7 @@ if [[ -v CI_BRANCH ]]; then
 fi
 
 echo "Cloning from ${STARTER_REPO_BRANCH}..."
-git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git
+git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git tmp/starter
 
 packages=(
   "bullet_train"
@@ -40,9 +40,9 @@ packages=(
 for package in "${packages[@]}"
 do
   :
-  grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
-  mv Gemfile.tmp Gemfile
-  echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
+  grep -v "gem \"$package\"" tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
+  mv temp/starter/Gemfile.tmp tmp/starter/Gemfile
+  echo "gem \"$package\", path: \"../../$package\"" >> tmp/starter/Gemfile
 done
 
 updates="${packages[@]}"
