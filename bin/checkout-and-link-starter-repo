@@ -40,9 +40,10 @@ packages=(
 for package in "${packages[@]}"
 do
   :
-  grep -v "gem \"$package\"" tmp/starter/bt/Gemfile > tmp/starter/bt/Gemfile.tmp
-  mv tmp/stater/bt/Gemfile.tmp tmp/starter/bt/Gemfile
-  echo "gem \"$package\", path: \"../../../$package\"" >> tmp/starter/bt/Gemfile
+  echo "$PWD"
+  grep -v "gem \"$package\"" bt/Gemfile > bt/Gemfile.tmp
+  mv bt/Gemfile.tmp bt/Gemfile
+  echo "gem \"$package\", path: \"../../../$package\"" >> bt/Gemfile
 done
 
 updates="${packages[@]}"
