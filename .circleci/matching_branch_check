@@ -1,13 +1,13 @@
 # Default to the main branch if we don't find a matching branch on the starter repository.
-# STARTER_REPO_BRANCH="main"
-# BRANCH_NAMES=$(curl -H "Accept: application.vnd.github+json" https://api.github.com/repos/$CIRCLE_USERNAME/bullet_train/branches | jq -r '.[].name')
-#
-# for BRANCH in $BRANCH_NAMES; do
-#   if [ ${BRANCH} == $CIRCLE_BRANCH ]; then
-#     STARTER_REPO_BRANCH=$BRANCH
-#     break
-#   fi
-# done
-#
-# echo "Cloning from ${STARTER_REPO_BRANCH}..."
-# git clone -b $STARTER_REPO_BRANCH https://github.com/$CIRCLE_USERNAME/bullet_train.git tmp/starter
+STARTER_REPO_BRANCH="main"
+BRANCH_NAMES=$(curl -H "Accept: application.vnd.github+json" https://api.github.com/repos/$CIRCLE_USERNAME/bullet_train/branches | jq -r '.[].name')
+
+for BRANCH in $BRANCH_NAMES; do
+  if [ ${BRANCH} == $CIRCLE_BRANCH ]; then
+    STARTER_REPO_BRANCH=$BRANCH
+    break
+  fi
+done
+
+echo "Cloning from ${STARTER_REPO_BRANCH}..."
+git clone -b $STARTER_REPO_BRANCH https://github.com/$CIRCLE_USERNAME/bullet_train.git tmp/starter
