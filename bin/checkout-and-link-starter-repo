@@ -41,9 +41,9 @@ for package in "${packages[@]}"
 do
   :
   echo "$PWD"
-  grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
-  mv Gemfile.tmp Gemfile
-  echo "gem \"$package\", path: \"../../../$package\"" >> Gemfile
+  grep -v "gem \"$package\"" ./bt/Gemfile > ./bt/Gemfile.tmp
+  mv ./bt/Gemfile.tmp ./bt/Gemfile
+  echo "gem \"$package\", path: \"../../../$package\"" >> bt/Gemfile
 done
 
 updates="${packages[@]}"
