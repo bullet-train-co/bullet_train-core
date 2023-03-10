@@ -64,6 +64,10 @@ jobs:
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
 
+      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
+      - run:
+          command: rm LICENSE.chromedriver
+
       - run: ../../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
