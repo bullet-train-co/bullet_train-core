@@ -41,7 +41,7 @@ for package in "${packages[@]}"
 do
   :
   grep -v "gem \"$package\"" tmp/starter/Gemfile > tmp/starter/Gemfile.tmp
-  mv temp/starter/Gemfile.tmp tmp/starter/Gemfile
+  mv tmp/starter/Gemfile.tmp tmp/starter/Gemfile
   echo "gem \"$package\", path: \"../../$package\"" >> tmp/starter/Gemfile
 done
 
