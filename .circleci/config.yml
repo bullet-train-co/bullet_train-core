@@ -5,7 +5,7 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.1
 aliases:
   - &ruby_node_browsers_docker_image
-      - image: cimg/ruby:3.2.0-browsers
+      - image: cimg/ruby:3.2.1-browsers
         environment:
           PGHOST: localhost
           PGUSER: untitled_application
