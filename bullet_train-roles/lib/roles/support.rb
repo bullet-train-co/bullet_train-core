@@ -70,6 +70,8 @@ module Roles
         Role::Collection.new(self, (self.class.default_roles + roles_without_defaults).compact.uniq)
       end
 
+      # Tests if the user can perform a given role
+      # They can have the role assigned directly, or the role can be included in another role they have
       def can_perform_role?(role_or_key)
         role_key = role_or_key.is_a?(Role) ? role_or_key.key : role_or_key
         role = Role.find_by_key(role_key)
