@@ -192,7 +192,7 @@ class Scaffolding::Transformer
     # If the file exists in the application repository, we want to target it there.
     return file if File.exist?(file)
 
-    ENV["OTHER_TARGETS"].split(",").each do |possible_target|
+    ENV["OTHER_TARGETS"]&.split(",")&.each do |possible_target|
       candidate_path = "#{possible_target}/#{file}".gsub("//", "/")
       return candidate_path if File.exist?(candidate_path)
     end
@@ -421,11 +421,13 @@ class Scaffolding::Transformer
     add_line_to_file(file, content, hook, options)
   end
 
-  def scaffold_replace_line_in_file(file, content, in_place_of)
+  def scaffold_replace_line_in_file(file, content, content_to_replace)
     file = resolve_target_path(transform_string(file))
     # we specifically don't transform the content, we assume a builder function created this content.
-    in_place_of = transform_string(in_place_of)
-    Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of, suppress_could_not_find: suppress_could_not_find)
+    transformed_content_to_replace = transform_string(content_to_replace)
+    content_replacement_transformed = content_to_replace != transformed_content_to_replace
+    options = {suppress_could_not_find: suppress_could_not_find, content_replacement_transformed: content_replacement_transformed}
+    Scaffolding::FileManipulator.replace_line_in_file(file, content, transformed_content_to_replace, **options)
   end
 
   # if class_name isn't specified, we use `child`.

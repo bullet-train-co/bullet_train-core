@@ -36,29 +36,21 @@ After this, you'll be able to deploy updates to your app like so:
 git push heroku main
 ````
 
-### 2. Running Database Migrations and Seeds
-We've decided not to configure the application to automatically run database migrations after a deploy for the time being. For that reason, you'll need to run the migrations and seeds manually, like so:
-
-```
-heroku run rake db:migrate
-heroku run rake db:seed
-```
-
-### 3. Enabling Runtime Dyno Metadata
+### 2. Enabling Runtime Dyno Metadata
 We include [Honeybadger](http://honeybadger.io) and Sentry (both at a free tier) for redundant error tracking by default. Sentry requires the following Heroku labs feature to be enabled:
 
 ```
 heroku labs:enable runtime-dyno-metadata
 ```
 
-### 4. Improve Boot Time
+### 3. Improve Boot Time
 You can cut your application boot time in half by enabling the following Heroku Labs feature. See [this blog post](https://dev.to/dbackeus/cut-your-rails-boot-times-on-heroku-in-half-with-a-single-command-514d) for more details.
 
 ```
 heroku labs:enable build-in-app-dir
 ```
 
-### 5. Adding Your Actual Domain
+### 4. Adding Your Actual Domain
 
 The most common use case for Bullet Train applications is to be hosted at some appropriate subdomain (e.g. `app.YOURDOMAIN.COM`) while a marketing site is hosted with a completely different service at the apex domain (e.g. just `YOURDOMAIN.COM`) or `www.YOURDOMAIN.COM`. To accomplish this, do the following in your shell:
 
