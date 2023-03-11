@@ -7,7 +7,7 @@ form ||= current_fields_form
 options ||= {}
 options[:id] ||= form.field_id(method)
 options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{options[:class]}".strip
-options[:value] = l(form.object.send(method), format: local_assigns[:format])
+options[:value] = l(form.object.send(method), format: local_assigns[:format]) if form.object.send(method)
 options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 other_options ||= {}
 
