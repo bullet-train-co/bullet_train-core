@@ -126,7 +126,7 @@ jobs:
       - run: bin/link
         working-directory: tmp/starter
 
-      - run: bin/rails db:setup
+      - run: bin/rails db:create
         working-directory: tmp/starter
 
       - name: Run Tests
