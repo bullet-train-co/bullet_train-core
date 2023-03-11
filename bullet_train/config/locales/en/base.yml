@@ -78,8 +78,6 @@ en:
         other: Last %{count} Days
     formats:
       timestamp_unavailable: Never
-      date: '%m/%d/%Y'
-      date_and_time: '%m/%d/%Y %l:%M %p'
 
   menus:
     main:
