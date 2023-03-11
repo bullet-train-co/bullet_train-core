@@ -113,6 +113,9 @@ jobs:
       - name: Install PostgreSQL client
         run: sudo apt-get -yqq install libpq-dev
 
+      - run: rm Gemfile.lock # Hotfix
+        working-directory: tmp/starter
+
       - uses: "ruby/setup-ruby@v1"
         with:
           rubygems: latest
