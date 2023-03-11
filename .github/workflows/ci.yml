@@ -78,3 +78,54 @@ jobs:
 
       - name: Run Tests
         run: bin/rails test test/
+
+  starter_repo_test:
+    runs-on: "ubuntu-latest"
+
+    services:
+      postgres:
+        image: postgres
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 2s
+          --health-timeout 2s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+    env:
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+      RAILS_ENV: test
+
+    steps:
+      - uses: "actions/checkout@v3"
+
+      - uses: "actions/checkout@v3"
+        with:
+          repository: bullet-train-co/bullet_train
+          path: tmp/starter
+
+      - run: ../../bin/checkout-and-link-starter-repo
+        working-directory: tmp/starter
+
+      - name: Install PostgreSQL client
+        run: sudo apt-get -yqq install libpq-dev
+
+      - uses: "ruby/setup-ruby@v1"
+        with:
+          rubygems: latest
+          bundler: latest
+          bundler-cache: true
+          working-directory: tmp/starter
+
+      - run: bin/rails db:setup
+        working-directory: tmp/starter
+
+      - name: Run Tests
+        run: bin/rails test test/
+        working-directory: tmp/starter
