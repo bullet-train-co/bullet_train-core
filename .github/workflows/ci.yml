@@ -60,7 +60,7 @@ jobs:
     steps:
       - uses: "actions/checkout@v3"
         with:
-          path: ${{ github.workspace }}
+          working-directory: ${{ github.workspace }}
 
       - name: Install PostgreSQL client
         run: sudo apt-get -yqq install libpq-dev
