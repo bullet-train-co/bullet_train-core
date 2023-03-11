@@ -35,7 +35,7 @@ jobs:
           # - "bullet_train-themes-light"
           # - "bullet_train-themes-tailwind_css"
 
-    name: ${{ format('{0} {1} {2}', "Tests", matrix.ruby-version, matrix.gem) }}
+    name: Tests ${{ format('{0} {1}', matrix.ruby-version, matrix.gem) }}
     runs-on: "ubuntu-latest"
 
     services:
