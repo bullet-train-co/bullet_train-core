@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.2.19)
+    bullet_train-themes (1.2.20)
       rails (>= 6.0.0)
 
 GEM
@@ -188,6 +188,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-21
   arm64-darwin-22
 
 DEPENDENCIES
