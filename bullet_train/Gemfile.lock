@@ -28,7 +28,7 @@ PATH
       hiredis
       http_accept_language
       microscope
-      nice_partials (~> 0.1)
+      nice_partials (~> 0.9.3)
       pagy
       possessive
       premailer-rails
