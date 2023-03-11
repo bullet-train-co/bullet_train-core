@@ -5,7 +5,7 @@ orbs:
   browser-tools: circleci/browser-tools@1.4.1
 aliases:
   - &ruby_node_browsers_docker_image
-      - image: cimg/ruby:3.2.0-browsers
+      - image: cimg/ruby:3.2.1-browsers
         environment:
           PGHOST: localhost
           PGUSER: untitled_application
@@ -64,6 +64,11 @@ jobs:
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
 
+      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
+      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
+      - run:
+          command: rm LICENSE.chromedriver
+
       - run: ../../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
@@ -110,6 +115,11 @@ jobs:
           path: ~/project
       - browser-tools/install-browser-tools:
           firefox-version: 108.0.1
+
+      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
+      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
+      - run:
+          command: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 

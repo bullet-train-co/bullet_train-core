@@ -1,5 +1,3 @@
-<% yield p = np %>
-
 <% width ||= "max-w-md" %>
 
 <div class="min-h-screen flex flex-col justify-center sm:py-12">
@@ -11,14 +9,14 @@
         </a>
 
         <h1 class="mt-6 text-center text-3xl font-semibold tracking-tight dark:text-white">
-          <%= p.yield :title %>
+          <%= partial.title %>
         </h1>
 
         <%= render "shared/line" %>
       </div>
 
       <div class="electron-undraggable pt-5 space-y-5">
-        <%= p.content_for :body %>
+        <%= partial.body %>
       </div>
     </div>
   </div>

@@ -1,5 +1,3 @@
-<% yield p = np %>
-
 <% link_url ||= "#" %>
 <% memberships ||= [] %>
 
@@ -8,9 +6,9 @@
     <div class="px-4 py-4 flex items-center sm:pl-8 sm:pr-6">
       <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
         <div>
-          <% if p.content_for? :name %>
+          <% if partial.name? %>
             <div class="flex text-xl font-semibold text-blue uppercase group-hover:text-blue-800 tracking-widest dark:text-white">
-              <%= p.content_for :name %>
+              <%= partial.name %>
             </div>
           <% end %>
         </div>

@@ -1,6 +1,6 @@
-<%= render 'account/shared/workflow/box' do |p| %>
-  <% p.content_for :title, t('devise.headers.sign_in') %>
-  <% p.content_for :body do %>
+<%= render 'account/shared/workflow/box' do |box| %>
+  <% box.title t('devise.headers.sign_in') %>
+  <% box.body do %>
     <% within_fields_namespace(:self) do %>
       <%# TODO: Turbo is set to `false` for now, but we may want to only bypass Turbo for JavaScript-based requests in the future. %>
       <%= form_for resource, as: resource_name, url: two_factor_authentication_enabled? ? users_pre_otp_path : session_path(resource_name), remote: two_factor_authentication_enabled?, html: {class: 'form'}, authenticity_token: true, data: {turbo: false} do |form| %>

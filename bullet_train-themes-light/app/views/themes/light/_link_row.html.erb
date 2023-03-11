@@ -1,12 +1,10 @@
-<% yield p = np %>
-
 <%= link_to path, class: "block group hover:no-underline" do %>
   <div class="bg-white hover:bg-slate-50 rounded-md shadow dark:bg-slate-700 dark:group-hover:bg-slate-700 dark:bg-opacity-50 dark:group-hover:bg-opacity-25 overflow-hidden">
     <div class="py-4 px-8 pr-5">
       <div class="flex items-center">
-        <% if p.content_for? :body %>
+        <% if partial.body? %>
           <div class="flex-1 text-xl font-semibold text-slate-700 dark:text-white dark:group-hover:text-slate-100">
-            <%= p.content_for :body %>
+            <%= partial.body %>
           </div>
         <% end %>
         <div class="ml-5 flex-shink-0">
