@@ -6,7 +6,7 @@ STARTER_REPO_BRANCH="main"
 # Look for a matching branch on the starter repository when running tests on CircleCI.
 CI_BRANCH=$CIRCLE_BRANCH
 if [[ -v CI_BRANCH ]]; then
-  BRANCH_RESPONSE=$(curl --head -H "Accept: application.vnd.github+json" https://api.github.com/repos/bullet-train-co/bullet_train/branches/$CI_BRANCH)
+  BRANCH_RESPONSE=$(curl --head -H "Accept: application.vnd.github+json" https://api.github.com/repos/$CIRCLE_USERNAME/bullet_train/branches/$CI_BRANCH)
 
   if echo $BRANCH_RESPONSE | grep "200"; then
     STARTER_REPO_BRANCH=$CI_BRANCH
@@ -14,7 +14,7 @@ if [[ -v CI_BRANCH ]]; then
 fi
 
 echo "Cloning from ${STARTER_REPO_BRANCH}..."
-git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
+git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/$CIRCLE_USERNAME/bullet_train.git .
 
 packages=(
   "bullet_train"
