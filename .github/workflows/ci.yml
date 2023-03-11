@@ -110,9 +110,6 @@ jobs:
           repository: bullet-train-co/bullet_train
           path: tmp/starter
 
-      - run: ../../bin/checkout-and-link-starter-repo
-        working-directory: tmp/starter
-
       - name: Install PostgreSQL client
         run: sudo apt-get -yqq install libpq-dev
 
@@ -122,6 +119,9 @@ jobs:
           bundler: latest
           bundler-cache: true
           working-directory: tmp/starter
+
+      - run: bin/link
+        working-directory: tmp/starter
 
       - run: bin/rails db:setup
         working-directory: tmp/starter
