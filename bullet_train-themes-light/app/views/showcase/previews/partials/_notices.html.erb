@@ -1,0 +1,10 @@
+<% showcase.sample "Basic" do %>
+  <% flash[:notice] = "Success Message" %>
+  <% flash[:error] = "Error message" %>
+  <%= render "shared/notices" %>
+<% end %>
+
+
+<% showcase.options do |o| %>
+  <% o.optional :attributes, default: [] %>
+<% end %>
