@@ -1,0 +1,24 @@
+<% showcase.sample "Basic" do %>
+  <% form_with(model:  Scaffolding::CompletelyConcrete::TangibleThing.new, url: '/dummy', local: true, method: :post) do |form| %>
+    <%= render 'shared/fields/file_field', form: form, method: :file_field_value %>
+  <% end %>
+<% end %>
+
+<% showcase.options do |o| %>
+  <% o.required :method, "Attribute of the model" %>
+  <% o.required :form, "Reference to the form object", type: 'ActionView::Helpers::FormBuilder' %>
+  <% o.optional :options, "Options passed directly to the underlying Rails form field helper.", default: {}%>
+  <% o.optional(
+       :other_options,
+       "Additional options for things like hiding labels, displaying specific error messages, etc.",
+       default: {},
+       options: {
+         icon: { type: :string, desc: 'Display a icon'},
+         help: { type: :string, desc: 'Display a specific help string.}'},
+         label:{ type: :string, desc: 'Display a specific field label.' },
+         error: { type: :string, desc: 'Display a specific error string.' },
+         hide_label: { type: :boolean, desc: 'Hide the field label.'}
+       }
+     )
+  %>
+<% end %>
