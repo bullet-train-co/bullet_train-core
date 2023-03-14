@@ -1,15 +1,13 @@
 <% showcase.description do %>
   <p>Partial to wrap an app page, like a #show view.</p>
 
-  <p>It's composed of three content sections:</p>
+  <p class="py-4">It's composed of three content sections:</p>
 
-  <p>
-    <ol>
-      <li>render "shared/title", with the title and actions provided.</li>
-      <li>render "shared/notices", for any account level notices.</li>
-      <li>Outputs the passed body.</li>
-    </ol>
-  </p>
+  <ol class="list-decimal list-inside">
+    <li>render "shared/title", with the title and actions provided.</li>
+    <li>render "shared/notices", for any account level notices.</li>
+    <li>Outputs the passed body.</li>
+  </ol>
 <% end %>
 
 <% showcase.sample "Basic" do %>
@@ -31,6 +29,12 @@
       <% box.body "Lorem ipsum dolor sit amet…" %>
     <% end %>
   <% end %>
+<% end %>
+
+<% showcase.sample "With notices" do %>
+  <% flash.now[:notice] = "Success Notice" %>
+  <% flash.now[:error] = "Error Notice" %>
+  <%= render "shared/page", title: "Title" %>
 <% end %>
 
 <% showcase.options.context :nice_partials do |o| %>
