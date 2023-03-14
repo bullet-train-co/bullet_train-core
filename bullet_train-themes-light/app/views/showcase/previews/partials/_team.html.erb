@@ -6,12 +6,14 @@
   </ul>
 <% end %>
 
-<% showcase.sample "With Memberships" do %>
-  <ol>
-    <%= render "shared/team", memberships: Membership.all do |cell| %>
-      <% cell.name "Title" %>
-    <% end %>
-  </ol>
+<% if defined?(Membership.all) %>
+  <% showcase.sample "With Memberships" do %>
+    <ol>
+      <%= render "shared/team", memberships: Membership.all do |cell| %>
+        <% cell.name "Title" %>
+      <% end %>
+    </ol>
+  <% end %>
 <% end %>
 
 

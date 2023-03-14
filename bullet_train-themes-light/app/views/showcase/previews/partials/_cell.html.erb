@@ -11,7 +11,7 @@
   <%= render "shared/cell", completion_percent: 10 do |cell| %>
     <% cell.memberships "Membership" %>
     <% cell.title "Title" %>
-    <% cell.actions '<a class="button-alternative">Action</a>'.html_safe %>
+    <% cell.actions tag.a("Actions", class: "button-alternative") %>
     <% cell.status "Status" %>
   <% end %>
 <% end %>
