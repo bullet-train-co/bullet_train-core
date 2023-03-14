@@ -1,0 +1,24 @@
+<% showcase.sample "Basic" do %>
+  <ul>
+    <%= render "shared/team" do |cell| %>
+      <% cell.name "Name" %>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if defined?(Membership.all) %>
+  <% showcase.sample "With Memberships" do %>
+    <ol>
+      <%= render "shared/team", memberships: Membership.all do |cell| %>
+        <% cell.name "Title" %>
+      <% end %>
+    </ol>
+  <% end %>
+<% end %>
+
+
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.optional :link_url %>
+  <% o.optional :memberships %>
+  <% o.optional.content_block :name %>
+<% end %>

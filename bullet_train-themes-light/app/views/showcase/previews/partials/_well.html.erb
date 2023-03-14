@@ -1,0 +1,15 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/well" do |well| %>
+    <% well.title "Title" %>
+    <% well.description "I am description" %>
+    <% well.body "I am body" %>
+    <% well.raw_body tag.h2("I am raw_body") %>
+  <% end %>
+<% end %>
+
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.optional.content_block :title %>
+  <% o.optional.content_block :description %>
+  <% o.optional.content_block :body %>
+  <% o.optional.content_block :raw_body %>
+<% end %>
