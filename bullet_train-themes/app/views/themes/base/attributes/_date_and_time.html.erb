@@ -1,6 +1,7 @@
 <% object ||= current_attributes_object %>
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
+<% local_assigns[:format] ||= :default %>
 <% default_message = local_assigns[:default_message] || t('global.formats.timestamp_unavailable') %>
 
 <% if object.send(attribute).present? %>
