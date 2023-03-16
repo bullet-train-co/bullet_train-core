@@ -866,15 +866,6 @@ class Scaffolding::Transformer
           field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
         end
 
-        # By default, we use the I18n for formatting Date and DateTime objects.
-        # However, daterangepicker requires us to use a specific format,
-        # so we specify that here for use within `_form.html.erb` only.
-        if type == "date_field"
-          field_attributes[:format] = '"%m/%d/%Y"'
-        elsif type == "date_and_time_field"
-          field_attributes[:format] = '"%m/%d/%Y %l:%M %p"'
-        end
-
         # TODO: This feels incorrect.
         # Should we adjust the partials to only use `{multiple: true}` or `html_options: {multiple_true}`?
         if is_multiple
@@ -918,15 +909,12 @@ class Scaffolding::Transformer
           end
         end
 
-        form_field_content = "<%= render 'shared/fields/#{type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"
-        field_attributes.delete(:format) # Deleting for Date and DateTime objects.
-
         field_content = "<%= render 'shared/fields/#{type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"
 
         # TODO Add more of these from other packages?
         is_core_model = ["Team", "User", "Membership"].include?(child)
 
-        scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_form.html.erb", form_field_content, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: is_core_model)
+        scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_form.html.erb", field_content, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: is_core_model)
         scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_fields.html.erb", field_content, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: !is_core_model)
       end
 
