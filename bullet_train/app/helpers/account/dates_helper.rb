@@ -1,5 +1,5 @@
 module Account::DatesHelper
-  def display_date(timestamp, format: :defaul)
+  def display_date(timestamp, format: :default)
     localize(local_time(timestamp).to_date, format: format) if timestamp
   end
 
