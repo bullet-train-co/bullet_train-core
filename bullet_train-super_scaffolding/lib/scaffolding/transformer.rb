@@ -870,9 +870,9 @@ class Scaffolding::Transformer
         # However, daterangepicker requires us to use a specific format,
         # so we specify that here for use within `_form.html.erb` only.
         field_attributes[:format] = if type == "date_field"
-          field_attributes[:format] = '"%m/%d/%Y"'
-        else type == "date_and_time_field"
-          field_attributes[:format] = '"%m/%d/%Y %l:%M %p"'
+          '"%m/%d/%Y"'
+        elsif type == "date_and_time_field"
+          '"%m/%d/%Y %l:%M %p"'
         end
 
         # TODO: This feels incorrect.
