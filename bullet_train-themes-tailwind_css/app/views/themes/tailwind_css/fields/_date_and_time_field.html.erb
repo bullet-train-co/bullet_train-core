@@ -6,7 +6,7 @@ options ||= {}
 options[:id] ||= form.field_id(method)
 options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{options[:class]}".strip
 options[:value] = form.object.send(method)&.in_time_zone(current_team.time_zone)
-options[:value] = l(options[:value], format: local_assigns[:format]) if options[:value]
+options[:value] = options[:value]&.strftime("%m/%d/%Y %l:%M %p") # Parse for daterangepicker.
 options = options.merge({ data: {'fields--date-target': 'field' }})
 other_options ||= {}
 %>
