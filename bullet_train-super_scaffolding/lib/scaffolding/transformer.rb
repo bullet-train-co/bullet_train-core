@@ -1535,6 +1535,12 @@ class Scaffolding::Transformer
       unless cli_options["skip-model"]
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "def collection\n  absolutely_abstract_creative_concept.completely_concrete_tangible_things\nend\n\n", METHODS_HOOK, prepend: true)
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "include Sortable\n", CONCERNS_HOOK, prepend: true)
+
+        migration = Dir.glob("db/migrate/*").last
+        migration_lines = File.open(migration).readlines
+        parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
+        new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
+        Scaffolding::FileManipulator.write(migration, new_lines)
       end
 
       unless cli_options["skip-table"]
