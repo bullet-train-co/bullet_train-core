@@ -112,15 +112,23 @@ namespace :bullet_train do
             puts ""
             puts "bin/hack: " + "Clone bullet_train-core and link up gems (will only link up gems if already cloned).".blue
             puts "bin/hack --link: " + "Link all of your Bullet Train gems to `local/bullet_train-core`.".blue
+            puts "bin/hack --link github: " + "Link all of your Bullet Train gems to the public repositories on GitHub".blue
             puts "bin/hack --link (version-number): " + "Link all of your Bullet Train gems to the version number passed.".blue
             puts "bin/hack --reset: " + "Resets all of your gems to their original definition.".blue
             puts "bin/hack --watch-js: " + "Watches for any changes in JavaScript files gems that have an npm package.".blue
             puts "bin/hack --clean-js: " + "Resets all of your npm packages from `local/bullet_train-core` to their original definition.".blue
             exit
           when "--link", "--reset"
-            version = process[:values].pop
-            set_core_gems(process[:flag], version, framework_packages)
-            stream "bundle install"
+            link_flag_value = process[:values].pop
+            set_core_gems(process[:flag], link_flag_value, framework_packages)
+
+            # Bundler will throw an error if we try to `bundle install` right after adding the GitHub link to the Gemfile.
+            if link_flag_value == "github"
+              puts ""
+              puts "Now you can run `bundle install` to check out the public repositories on GitHub."
+            else
+              stream "bundle install"
+            end
           when "--watch-js", "--clean-js"
             package_name = process[:values].pop
             framework_package = framework_packages.select { |k, v| k.to_s == package_name }
@@ -218,9 +226,10 @@ namespace :bullet_train do
   end
 
   # Pass "--link" or "--reset" as a flag to set the gems.
-  def set_core_gems(flag, version, framework_packages)
+  def set_core_gems(flag, link_flag_value, framework_packages)
     packages = framework_packages.keys
     gemfile_lines = File.readlines("./Gemfile")
+    version_regexp = /[\d|.]/
 
     packages.each do |package|
       original_path = "gem \"#{package}\""
@@ -241,7 +250,14 @@ namespace :bullet_train do
               puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
             elsif `cat Gemfile | grep "gem \\\"#{package}\\\""`.chomp.present?
               puts "#{package} is directly present in the `Gemfile`, so we'll update that line.".green
-              line = version.present? ? "#{line.chomp}, \"#{version}\"\n" : line.gsub(original_path, local_path)
+
+              line = if link_flag_value == "github"
+                "#{line.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
+              elsif link_flag_value&.match?(version_regexp)
+                "#{line.chomp}, \"#{link_flag_value}\"\n"
+              else
+                line.gsub(original_path, local_path)
+              end
             end
           elsif flag == "--reset"
             if line.match?(/bullet_train/)
@@ -258,8 +274,10 @@ namespace :bullet_train do
       if flag == "--link"
         unless match_found
           puts "Could not find #{package}. Adding to the end of the Gemfile.".blue
-          new_lines << if version
-            "#{original_path.chomp}, \"#{version}\"\n"
+          new_lines << if link_flag_value == "github"
+            "#{original_path.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
+          elsif link_flag_value&.match?(version_regexp)
+            "#{original_path.chomp}, \"#{link_flag_value}\"\n"
           else
             "#{local_path}\n"
           end
