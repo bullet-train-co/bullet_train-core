@@ -229,7 +229,7 @@ namespace :bullet_train do
   def set_core_gems(flag, link_flag_value, framework_packages)
     packages = framework_packages.keys
     gemfile_lines = File.readlines("./Gemfile")
-    version_regexp = /[\d|\.]/
+    version_regexp = /[\d|.]/
 
     packages.each do |package|
       original_path = "gem \"#{package}\""
