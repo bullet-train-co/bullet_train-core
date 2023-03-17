@@ -252,7 +252,7 @@ namespace :bullet_train do
               puts "#{package} is directly present in the `Gemfile`, so we'll update that line.".green
 
               line = if link_flag_value == "github"
-                "#{line.chomp}, github: 'bullet-train-co/bullet_train-core'\n"
+                "#{line.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
               elsif link_flag_value&.match?(version_regexp)
                 "#{line.chomp}, \"#{link_flag_value}\"\n"
               else
@@ -275,7 +275,7 @@ namespace :bullet_train do
         unless match_found
           puts "Could not find #{package}. Adding to the end of the Gemfile.".blue
           new_lines << if link_flag_value == "github"
-            "#{original_path.chomp}, github: 'bullet-train-co/bullet_train-core'\n"
+            "#{original_path.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
           elsif link_flag_value&.match?(version_regexp)
             "#{original_path.chomp}, \"#{link_flag_value}\"\n"
           else
