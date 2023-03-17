@@ -122,7 +122,7 @@ namespace :bullet_train do
             link_flag_value = process[:values].pop
             set_core_gems(process[:flag], link_flag_value, framework_packages)
 
-            # Bundler will throw an error if we try to `bundle install` right after adding the gems to the Gemfile.
+            # Bundler will throw an error if we try to `bundle install` right after adding the GitHub link to the Gemfile.
             if link_flag_value == "github"
               puts ""
               puts "Now you can run `bundle install` to check out the public repositories on GitHub."
