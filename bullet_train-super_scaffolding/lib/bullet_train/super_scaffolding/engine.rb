@@ -9,6 +9,13 @@ module BulletTrain
         # Register the base path of this package with the Super Scaffolding engine.
         BulletTrain::SuperScaffolding.template_paths << File.expand_path("../../../..", __FILE__)
       end
+
+      initializer "bullet_train.super_scaffolding.register" do |app|
+        # Older versions of Bullet Train have a `BulletTrain` module, but it doesn't have `linked_gems`.
+        if BulletTrain.respond_to?(:linked_gems)
+          BulletTrain.linked_gems << "bullet_train-super_scaffolding"
+        end
+      end
     end
   end
 end
