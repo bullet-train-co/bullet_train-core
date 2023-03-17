@@ -668,6 +668,18 @@ class Scaffolding::Transformer
       type = parts.join(":")
       boolean_buttons = type == "boolean"
 
+      if first_table_cell && ["trix_editor", "ckeditor", "text_area"].include?(type)
+        puts ""
+        puts "The first attribute of your model cannot be any of the following types:".red
+        puts "1. trix_editor"
+        puts "2. ckeditor"
+        puts "3. text_area"
+        puts ""
+        puts "Please ensure you have another attribute type as the first attribute for your model and try again."
+
+        exit
+      end
+
       # extract any options they passed in with the field.
       # will extract options declared with either [] or {}.
       type, attribute_options = type.scan(/^(.*){(.*)}/).first || type
