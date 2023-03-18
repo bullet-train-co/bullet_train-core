@@ -128,7 +128,7 @@ module Memberships::Base
 
   def last_initial
     return nil unless last_name.present?
-    "#{last_name}."
+    "#{last_name[0]}."
   end
 
   def first_name_last_initial

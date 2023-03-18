@@ -1,0 +1,44 @@
+<% showcase.description do %>
+  <p>Partial to wrap an app page, like a #show view.</p>
+
+  <p class="py-4">It's composed of three content sections:</p>
+
+  <ol class="list-decimal list-inside">
+    <li>render "shared/title", with the title and actions provided.</li>
+    <li>render "shared/notices", for any account level notices.</li>
+    <li>Outputs the passed body.</li>
+  </ol>
+<% end %>
+
+<% showcase.sample "Basic" do %>
+  <%= render "shared/page" do |page| %>
+    <% page.title "Title" %>
+    <% page.actions do %>
+      <%= link_to "Home", root_url, class: "border-2 p-2 rounded-full border-indigo-300" %>
+      <%= link_to "Another link", root_url, class: "border-2 p-2 rounded-full border-indigo-300" %>
+    <% end %>
+    <% page.body "Lorem ipsum dolor sit amet…" %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "With box" do %>
+  <%= render "shared/page", title: "Page Title" do |page| %>
+    <% page.body.render "shared/box" do |box| %>
+      <% box.title "Box Title" %>
+      <% box.description "Description" %>
+      <% box.body "Lorem ipsum dolor sit amet…" %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "With notices" do %>
+  <% flash.now[:notice] = "Success Notice" %>
+  <% flash.now[:error] = "Error Notice" %>
+  <%= render "shared/page", title: "Title" %>
+<% end %>
+
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.optional.content_block :title %>
+  <% o.optional.content_block :actions %>
+  <% o.optional.content_block :body %>
+<% end %>

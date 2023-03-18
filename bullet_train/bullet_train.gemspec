@@ -73,7 +73,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hiredis"
 
   # Add named slots to regular Rails partials.
-  spec.add_dependency "nice_partials", "~> 0.1"
+  spec.add_dependency "nice_partials", "~> 0.9"
+
+  # Allow users to document and showcase their partials, components, view helpers, etc.
+  spec.add_dependency "showcase-rails"
 
   # Inline all CSS for emails.
   spec.add_dependency "premailer-rails"

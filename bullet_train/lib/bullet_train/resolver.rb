@@ -72,7 +72,10 @@ module BulletTrain
         if open
           path = source_file[:package_name] ? source_file[:absolute_path] : (source_file[:project_path]).to_s
           puts "Opening `#{path}`.\n".green
-          exec "open #{path}"
+
+          # TODO: Use TerminalCommands to open this file
+          open_command = `which open`.present? ? "open" : "xdg-open"
+          exec "#{open_command} #{path}"
         end
       else
         puts "Couldn't resolve `#{@needle}`.".red
@@ -101,7 +104,8 @@ module BulletTrain
 
       if result[:absolute_path]
         if result[:absolute_path].include?("/bullet_train")
-          base_path = "bullet_train" + result[:absolute_path].partition("/bullet_train").last
+          regex = /#{"bullet_train-core" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train[.\-_a-z|0-9]*.*/
+          base_path = result[:absolute_path].scan(regex).pop
 
           # Try to calculate which package the file is from, and what it's path is within that project.
           ["app", "config", "lib"].each do |directory|
@@ -146,14 +150,13 @@ module BulletTrain
           # all we need to do is change it to "shared/attributes/code"
           partial_parts.last.gsub!(/(_)|(\.html\.erb)/, "")
           @needle = partial_parts.join("/")
-        elsif @needle.match?(/bullet_train-/)
+        elsif @needle.match?(/bullet_train/)
           # If it's a full path, we need to make sure we're getting it from the right package.
-          _, partial_view_package, partial_path_without_package = @needle.partition(/bullet_train-[a-z|\-_0-9.]*/)
+          _, partial_view_package, partial_path_without_package = @needle.partition(/bullet_train-core\/bullet_train[a-z|\-_0-9.]*/)
 
-          # Pop off the version so we can call `bundle show` correctly.
-          # Also change `bullet_train-base` to `bullet_train`.
+          # Pop off `bullet_train-core` and the gem's version so we can call `bundle show` correctly.
+          partial_view_package.gsub!(/bullet_train-core\//, "")
           partial_view_package.gsub!(/[-|.0-9]*$/, "") if partial_view_package.match?(/[-|.0-9]*$/)
-          partial_view_package.gsub!("-base", "") if /base/.match?(@needle)
 
           local_package_path = `bundle show #{partial_view_package}`.chomp
           return local_package_path + partial_path_without_package

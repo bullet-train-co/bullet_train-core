@@ -4,7 +4,7 @@ const colors = require('tailwindcss/colors')
 module.exports = {
   content: [
     './config/initializers/theme.rb',
-    './app/views/**/*.html.erb',
+    './app/views/**/*.html.{erb,slim,haml}',
     './app/helpers/**/*.rb',
     './app/assets/stylesheets/**/*.css',
     './app/javascript/**/*.js',
