@@ -67,7 +67,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
 
         attribute_options[:class_name] ||= name_without_id.classify
 
-        file_name = Dir.glob("app/models/**/*.rb").find {|model| model.match?(/#{attribute_options[:class_name].underscore}\.rb/)}
+        file_name = Dir.glob("app/models/**/*.rb").find { |model| model.match?(/#{attribute_options[:class_name].underscore}\.rb/) }
 
         # If a model is namespaced, the parent's model file might exist under
         # `app/models/`, but sometimes these files are modules that resolve
