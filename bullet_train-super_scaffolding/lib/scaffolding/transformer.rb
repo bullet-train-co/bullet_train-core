@@ -680,7 +680,7 @@ class Scaffolding::Transformer
         type = sql_type_to_field_type_mapping[attribute.type]
       end
 
-      cell_attributes = if attribute.type == "boolean" 
+      cell_attributes = if attribute.type == "boolean"
         ' class="text-center"'
       end
 
