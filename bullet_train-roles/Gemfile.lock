@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train-roles (1.2.9)
+    bullet_train-roles (1.2.14)
       active_hash
       activesupport
       cancancan
@@ -79,7 +79,7 @@ GEM
     ast (2.4.2)
     builder (3.2.4)
     byebug (11.1.3)
-    cancancan (3.4.0)
+    cancancan (3.5.0)
     concurrent-ruby (1.1.9)
     crass (1.0.6)
     erubi (1.10.0)
@@ -192,4 +192,4 @@ DEPENDENCIES
   standard (~> 1.5.0)
 
 BUNDLED WITH
-   2.3.13
+   2.3.26
