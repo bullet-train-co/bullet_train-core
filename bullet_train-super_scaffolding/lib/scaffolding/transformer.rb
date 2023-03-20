@@ -192,7 +192,7 @@ class Scaffolding::Transformer
     # If the file exists in the application repository, we want to target it there.
     return file if File.exist?(file)
 
-    ENV["OTHER_TARGETS"].split(",").each do |possible_target|
+    ENV["OTHER_TARGETS"]&.split(",")&.each do |possible_target|
       candidate_path = "#{possible_target}/#{file}".gsub("//", "/")
       return candidate_path if File.exist?(candidate_path)
     end
@@ -421,11 +421,13 @@ class Scaffolding::Transformer
     add_line_to_file(file, content, hook, options)
   end
 
-  def scaffold_replace_line_in_file(file, content, in_place_of)
+  def scaffold_replace_line_in_file(file, content, content_to_replace)
     file = resolve_target_path(transform_string(file))
     # we specifically don't transform the content, we assume a builder function created this content.
-    in_place_of = transform_string(in_place_of)
-    Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of, suppress_could_not_find: suppress_could_not_find)
+    transformed_content_to_replace = transform_string(content_to_replace)
+    content_replacement_transformed = content_to_replace != transformed_content_to_replace
+    options = {suppress_could_not_find: suppress_could_not_find, content_replacement_transformed: content_replacement_transformed}
+    Scaffolding::FileManipulator.replace_line_in_file(file, content, transformed_content_to_replace, **options)
   end
 
   # if class_name isn't specified, we use `child`.
@@ -665,6 +667,18 @@ class Scaffolding::Transformer
       name = parts.shift
       type = parts.join(":")
       boolean_buttons = type == "boolean"
+
+      if first_table_cell && ["trix_editor", "ckeditor", "text_area"].include?(type)
+        puts ""
+        puts "The first attribute of your model cannot be any of the following types:".red
+        puts "1. trix_editor"
+        puts "2. ckeditor"
+        puts "3. text_area"
+        puts ""
+        puts "Please ensure you have another attribute type as the first attribute for your model and try again."
+
+        exit
+      end
 
       # extract any options they passed in with the field.
       # will extract options declared with either [] or {}.
@@ -1521,6 +1535,12 @@ class Scaffolding::Transformer
       unless cli_options["skip-model"]
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "def collection\n  absolutely_abstract_creative_concept.completely_concrete_tangible_things\nend\n\n", METHODS_HOOK, prepend: true)
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "include Sortable\n", CONCERNS_HOOK, prepend: true)
+
+        migration = Dir.glob("db/migrate/*").last
+        migration_lines = File.open(migration).readlines
+        parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
+        new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
+        Scaffolding::FileManipulator.write(migration, new_lines)
       end
 
       unless cli_options["skip-table"]

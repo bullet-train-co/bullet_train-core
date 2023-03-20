@@ -1,0 +1,26 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/cell" do |cell| %>
+    <% cell.memberships "Membership" %>
+    <% cell.title "Title" %>
+    <% cell.actions "Action" %>
+    <% cell.status "Status" %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "With completion percentage" do %>
+  <%= render "shared/cell", completion_percent: 10 do |cell| %>
+    <% cell.memberships "Membership" %>
+    <% cell.title "Title" %>
+    <% cell.actions tag.a("Actions", class: "button-alternative") %>
+    <% cell.status "Status" %>
+  <% end %>
+<% end %>
+
+
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.optional :completion_percent %>
+  <% o.optional.content_block :memberships %>
+  <% o.optional.content_block :title %>
+  <% o.optional.content_block :actions %>
+  <% o.optional.content_block :status %>
+<% end %>

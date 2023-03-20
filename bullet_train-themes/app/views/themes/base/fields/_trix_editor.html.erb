@@ -1,5 +1,3 @@
-<% yield p = np %>
-
 <%
 form ||= current_fields_form
 labels = labels_for(form, method)
@@ -23,9 +21,7 @@ other_options ||= {}
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <%= form.rich_text_area method, options %>
-    <% if p.content_for? :submit_button %>
-      <%= p.content_for :submit_button %>
-    <% end %>
+    <%= partial.submit_button.presence %>
   <% end %>
 <% end %>
 </div>

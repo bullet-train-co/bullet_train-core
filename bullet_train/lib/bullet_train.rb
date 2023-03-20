@@ -52,9 +52,9 @@ end
 def default_url_options_from_base_url
   unless ENV["BASE_URL"].present?
     if Rails.env.development?
-      ENV["BASE_URL"] ||= "http://localhost:3000"
+      ENV["BASE_URL"] = "http://localhost:3000"
     else
-      raise "you need to define the value of ENV['BASE_URL'] in your environment. if you're on heroku, you can do this with `heroku config:add BASE_URL=https://your-app-name.herokuapp.com` (or whatever your configured domain is)."
+      return {}
     end
   end
 
@@ -70,6 +70,10 @@ def default_url_options_from_base_url
   end
 
   default_url_options
+end
+
+def heroku?
+  ENV["PATH"]&.include?("/app/.heroku/")
 end
 
 def inbound_email_enabled?
