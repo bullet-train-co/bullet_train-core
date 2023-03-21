@@ -80,6 +80,11 @@ en:
       timestamp_unavailable: Never
       date: '%m/%d/%Y'
       date_and_time: '%m/%d/%Y %l:%M %p'
+    file_fields:
+      download: Download File
+      download_current: Download Current Document
+      remove: Remove Current Document
+      upload: Upload New Document Man
 
   menus:
     main:
