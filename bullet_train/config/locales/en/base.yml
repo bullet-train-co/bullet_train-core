@@ -85,6 +85,8 @@ en:
       download_current: Download Current Document
       remove: Remove Current Document
       upload: Upload New Document
+    bulk_select:
+      all: All
 
   menus:
     main:
