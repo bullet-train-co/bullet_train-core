@@ -25,6 +25,11 @@ trix-editor ol {
   @apply dark:bg-slate-300 !important;
 }
 
+/* Prevent red ring on Trix Editor */
+:-moz-focusring {
+  outline-style: none;
+}
+
 a[href^="bullettrain://"], span.tribute-reference {
   border-radius: 4px;
   display: inline-block;
