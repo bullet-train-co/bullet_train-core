@@ -40,7 +40,9 @@ module Account::FormsHelper
   def options_for(form, method)
     # e.g. "scaffolding/completely_concrete/tangible_things.fields.text_area_value.options"
     path = [model_key(form), (current_fields_namespace || :fields), method, :options]
-    t(path.compact.join("."))
+    options = t(path.compact.join("."))
+    return options unless options.is_a?(Hash)
+    options.stringify_keys
   end
 
   def legacy_label_for(form, method)

@@ -3,13 +3,13 @@ module Users::Base
 
   included do
     if two_factor_authentication_enabled?
-      devise :two_factor_authenticatable, :two_factor_backupable, otp_secret_encryption_key: ENV["TWO_FACTOR_ENCRYPTION_KEY"]
+      devise :two_factor_authenticatable, :two_factor_backupable
     else
       devise :database_authenticatable
     end
 
     devise :omniauthable
-    devise :pwned_password
+    devise :pwned_password if BulletTrain::Configuration.default.strong_passwords
     devise :registerable
     devise :recoverable
     devise :rememberable

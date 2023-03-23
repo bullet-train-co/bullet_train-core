@@ -10,7 +10,7 @@ GEM
     rainbow (3.1.1)
     regexp_parser (2.6.1)
     rexml (3.2.5)
-    rubocop (1.39.0)
+    rubocop (1.40.0)
       json (~> 2.3)
       parallel (~> 1.10)
       parser (>= 3.1.2.1)
@@ -26,20 +26,22 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
-    standard (1.19.1)
+    standard (1.20.0)
       language_server-protocol (~> 3.17.0.2)
-      rubocop (= 1.39.0)
+      rubocop (= 1.40.0)
       rubocop-performance (= 1.15.1)
     unicode-display_width (2.3.0)
 
 PLATFORMS
   arm64-darwin-20
+  arm64-darwin-21
+  x86_64-linux
 
 DEPENDENCIES
   standard
 
 RUBY VERSION
-   ruby 3.1.2p20
+   ruby 3.2.1p31
 
 BUNDLED WITH
    2.3.8

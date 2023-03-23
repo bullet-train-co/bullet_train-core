@@ -1,6 +1,6 @@
-<%= render 'account/shared/workflow/box' do |p| %>
-  <% p.content_for :title, t(".join_team") %>
-  <% p.content_for :body do %>
+<%= render 'account/shared/workflow/box' do |box| %>
+  <% box.title t(".join_team") %>
+  <% box.body do %>
     <div class="space-y">
       <% if !@invitation.is_for?(current_user) %>
         <p><%= raw t('.has_invited', user_name: @invitation.from_membership.name) %></p>

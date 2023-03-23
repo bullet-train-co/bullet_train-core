@@ -18,4 +18,4 @@ class User < ApplicationRecord
 end
 ```
 
-In this case, for most customizations or extensions you would want to make, you don't need to eject `Users::Core` into your local repository. Instead, you can simply re-define methods from that concern in your local `User` model after the inclusion of the concern.
+In this case, for most customizations or extensions you would want to make, you don't need to eject `Users::Base` into your local repository. Instead, you can simply re-define methods from that concern in your local `User` model after the inclusion of the concern.

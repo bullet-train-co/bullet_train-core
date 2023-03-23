@@ -23,6 +23,16 @@ class Scaffolding::Transformer
     "Team"
   end
 
+  def top_level_model?
+    parent == "Team" || no_parent?
+  end
+
+  # We write an explicit method here so we know we
+  # aren't handling `parent` in this situation as `nil`.
+  def no_parent?
+    parent == "None"
+  end
+
   def update_action_models_abstract_class(targets_n)
   end
 
@@ -41,7 +51,9 @@ class Scaffolding::Transformer
   RUBY_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will insert new fields above this line."
   RUBY_ADDITIONAL_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will also insert new fields above this line."
   RUBY_EVEN_MORE_NEW_FIELDS_HOOK = "# 🚅 super scaffolding will additionally insert new fields above this line."
+  RUBY_NEW_API_VERSION_HOOK = "# 🚅 super scaffolding will insert new api versions above this line."
   RUBY_FILES_HOOK = "# 🚅 super scaffolding will insert file-related logic above this line."
+  RUBY_FACTORY_SETUP_HOOK = "# 🚅 super scaffolding will insert factory setup in place of this line."
   ERB_NEW_FIELDS_HOOK = "<%#{RUBY_NEW_FIELDS_HOOK} %>"
   CONCERNS_HOOK = "# 🚅 add concerns above."
   ATTR_ACCESSORS_HOOK = "# 🚅 add attribute accessors above."
@@ -173,6 +185,21 @@ class Scaffolding::Transformer
     end.compact.first || raise("Couldn't find the Super Scaffolding template for `#{file}` in any of the following locations:\n\n#{BulletTrain::SuperScaffolding.template_paths.join("\n")}")
   end
 
+  def resolve_target_path(file)
+    # Only do something here if they are trying to specify a target directory.
+    return file unless ENV["TARGET"]
+
+    # If the file exists in the application repository, we want to target it there.
+    return file if File.exist?(file)
+
+    ENV["OTHER_TARGETS"]&.split(",")&.each do |possible_target|
+      candidate_path = "#{possible_target}/#{file}".gsub("//", "/")
+      return candidate_path if File.exist?(candidate_path)
+    end
+
+    "#{ENV["TARGET"]}/#{file}".gsub("//", "/")
+  end
+
   def get_transformed_file_content(file)
     transformed_file_content = []
 
@@ -251,14 +278,9 @@ class Scaffolding::Transformer
     transformed_file_content.join
   end
 
-  # TODO I was running into an error in a downstream application where it couldn't find silence_logs? We should implement it in this package.
-  def silence_logs?
-    ENV["SILENCE_LOGS"].present?
-  end
-
   def scaffold_file(file, overrides: false)
     transformed_file_content = get_transformed_file_content(file)
-    transformed_file_name = transform_string(file)
+    transformed_file_name = resolve_target_path(transform_string(file))
 
     # Remove `_overrides` from the file name if we're sourcing from a local override folder.
     transformed_file_name.gsub!("_overrides", "") if overrides
@@ -290,6 +312,9 @@ class Scaffolding::Transformer
 
     Dir.foreach(resolve_template_path(directory)) do |file|
       file = "#{directory}/#{file}"
+
+      next if file.match?("/_menu_item.html.erb") && !top_level_model?
+
       unless File.directory?(resolve_template_path(file))
         scaffold_file(file)
       end
@@ -305,6 +330,9 @@ class Scaffolding::Transformer
     if override_path
       Dir.foreach(override_path) do |file|
         file = "#{directory}_overrides/#{file}"
+
+        next if file.match?("/_menu_item.html.erb") && !top_level_model?
+
         unless File.directory?(resolve_template_path(file))
           scaffold_file(file, overrides: true)
         end
@@ -387,17 +415,19 @@ class Scaffolding::Transformer
   end
 
   def scaffold_add_line_to_file(file, content, hook, options = {})
-    file = transform_string(file)
+    file = resolve_target_path(transform_string(file))
     content = transform_string(content)
     hook = transform_string(hook)
     add_line_to_file(file, content, hook, options)
   end
 
-  def scaffold_replace_line_in_file(file, content, in_place_of)
-    file = transform_string(file)
+  def scaffold_replace_line_in_file(file, content, content_to_replace)
+    file = resolve_target_path(transform_string(file))
     # we specifically don't transform the content, we assume a builder function created this content.
-    in_place_of = transform_string(in_place_of)
-    Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of, suppress_could_not_find: suppress_could_not_find)
+    transformed_content_to_replace = transform_string(content_to_replace)
+    content_replacement_transformed = content_to_replace != transformed_content_to_replace
+    options = {suppress_could_not_find: suppress_could_not_find, content_replacement_transformed: content_replacement_transformed}
+    Scaffolding::FileManipulator.replace_line_in_file(file, content, transformed_content_to_replace, **options)
   end
 
   # if class_name isn't specified, we use `child`.
@@ -485,9 +515,20 @@ class Scaffolding::Transformer
   def add_ability_line_to_roles_yml(class_names = nil)
     model_names = class_names || [child]
     role_file = "./config/models/roles.yml"
+    roles_hash = YAML.load_file(role_file)
+    default_role_placements = [
+      [:default, :models],
+      [:admin, :models]
+    ]
+
     model_names.each do |model_name|
-      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: read", [:default, :models])
-      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: manage", [:admin, :models])
+      default_role_placements.each do |role_placement|
+        stringified_role_placement = role_placement.map { |placement| placement.to_s }
+        if roles_hash.dig(*stringified_role_placement)[model_name].nil?
+          role_type = (role_placement.first == :admin) ? "manage" : "read"
+          Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: #{role_type}", role_placement)
+        end
+      end
     end
   end
 
@@ -571,15 +612,15 @@ class Scaffolding::Transformer
   def add_has_many_association
     has_many_line = ["has_many :completely_concrete_tangible_things"]
 
-    # TODO I _think_ this is the right way to check for whether we need `class_name` to specify the name of the model.
-    unless transform_string("completely_concrete_tangible_things").classify == child
+    # Specify the class name if the model is namespaced.
+    if child.match?("::")
       has_many_line << "class_name: \"Scaffolding::CompletelyConcrete::TangibleThing\""
     end
 
     has_many_line << "dependent: :destroy"
 
-    # TODO I _think_ this is the right way to check for whether we need `foreign_key` to specify the name of the model.
-    unless transform_string("absolutely_abstract_creative_concept_id") == "#{parent.underscore}_id"
+    # Specify the foreign key if the parent is namespaced.
+    if parent.match?("::")
       has_many_line << "foreign_key: :absolutely_abstract_creative_concept_id"
 
       # And if we need `foreign_key`, we should also specify `inverse_of`.
@@ -626,6 +667,18 @@ class Scaffolding::Transformer
       name = parts.shift
       type = parts.join(":")
       boolean_buttons = type == "boolean"
+
+      if first_table_cell && ["trix_editor", "ckeditor", "text_area"].include?(type)
+        puts ""
+        puts "The first attribute of your model cannot be any of the following types:".red
+        puts "1. trix_editor"
+        puts "2. ckeditor"
+        puts "3. text_area"
+        puts ""
+        puts "Please ensure you have another attribute type as the first attribute for your model and try again."
+
+        exit
+      end
 
       # extract any options they passed in with the field.
       # will extract options declared with either [] or {}.
@@ -698,6 +751,8 @@ class Scaffolding::Transformer
         "text"
       when "text_area"
         "text"
+      when "number_field"
+        "number"
       when "file_field"
         "file"
       when "password_field"
@@ -914,7 +969,8 @@ class Scaffolding::Transformer
           field_content.gsub!(/\s%>/, ", options: { password: true } %>")
         end
 
-        scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/show.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true)
+        show_page_doesnt_exist = child == "User"
+        scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/show.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: show_page_doesnt_exist)
 
       end
 
@@ -929,6 +985,20 @@ class Scaffolding::Transformer
 
         unless ["Team", "User"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content, "<%# 🚅 super scaffolding will insert new field headers above this line. %>", prepend: true)
+        end
+
+        # If these strings are the same, we get duplicate variable names in the _index.html.erb partial,
+        # so we account for that here. Run the Super Scaffolding test setup script and check the index partial
+        # of models with namespaced parents for reference (i.e. - Objective, Projects::Step).
+        transformed_abstract_str = transform_string("absolutely_abstract_creative_concept")
+        transformed_concept_str = transform_string("creative_concept")
+        transformed_file_name = transform_string("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb")
+        if (transformed_abstract_str == transformed_concept_str) && File.exist?(transformed_file_name)
+          replace_in_file(
+            transformed_file_name,
+            "#{transformed_abstract_str} = @#{transformed_abstract_str} || @#{transformed_concept_str}",
+            "#{transformed_abstract_str} = @#{transformed_concept_str}"
+          )
         end
 
         table_cell_options = []
@@ -1393,8 +1463,21 @@ class Scaffolding::Transformer
       add_ability_line_to_roles_yml
     end
 
+    # Add factory setup in API controller test.
     unless cli_options["skip-api"]
-      scaffold_replace_line_in_file("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb", build_factory_setup.join("\n"), "# 🚅 super scaffolding will insert factory setup in place of this line.")
+      test_name = transform_string("./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb")
+      test_lines = File.open(test_name).readlines
+
+      # Shift contents of controller test after skipping `unless scaffolding_things_disabled?` block.
+      class_block_index = Scaffolding::FileManipulator.find(test_lines, "class #{transform_string("Api::V1::Scaffolding::CompletelyConcrete::TangibleThingsControllerTest")}")
+      new_lines = Scaffolding::BlockManipulator.shift_block(lines: test_lines, block_start: test_lines[class_block_index], shift_contents_only: true)
+      Scaffolding::FileManipulator.write(test_name, new_lines)
+
+      # Ensure variables built with factories are indented properly.
+      factory_hook_index = Scaffolding::FileManipulator.find(new_lines, RUBY_FACTORY_SETUP_HOOK)
+      factory_hook_indentation = Scaffolding::BlockManipulator.indentation_of(factory_hook_index, new_lines)
+      indented_factory_lines = build_factory_setup.map { |line| "#{factory_hook_indentation}#{line}\n" }
+      scaffold_replace_line_in_file(test_name, indented_factory_lines.join, new_lines[factory_hook_index])
     end
 
     # add children to the show page of their parent.
@@ -1452,6 +1535,12 @@ class Scaffolding::Transformer
       unless cli_options["skip-model"]
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "def collection\n  absolutely_abstract_creative_concept.completely_concrete_tangible_things\nend\n\n", METHODS_HOOK, prepend: true)
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "include Sortable\n", CONCERNS_HOOK, prepend: true)
+
+        migration = Dir.glob("db/migrate/*").last
+        migration_lines = File.open(migration).readlines
+        parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
+        new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
+        Scaffolding::FileManipulator.write(migration, new_lines)
       end
 
       unless cli_options["skip-table"]
@@ -1490,7 +1579,7 @@ class Scaffolding::Transformer
           collection_actions = [:index, :new, :create]
 
           # 🚅 Don't remove this block, it will break Super Scaffolding.
-          begin do
+          begin
             namespace :#{routes_namespace} do
               shallow do
                 resources :teams do
@@ -1505,9 +1594,33 @@ class Scaffolding::Transformer
 
       begin
         routes_manipulator.apply([routes_namespace])
-        Scaffolding::FileManipulator.write("config/routes.rb", routes_manipulator.lines)
+        Scaffolding::FileManipulator.write(routes_path, routes_manipulator.lines)
       rescue => _
         add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
+      end
+
+      # If we're using a custom namespace, we have to make sure the newly
+      # scaffolded routes are drawn in the `config/routes.rb` and API routes files.
+      if cli_options["namespace"]
+        draw_line = "draw \"#{routes_namespace}\""
+
+        [
+          "config/routes.rb",
+          "config/routes/api/#{BulletTrain::Api.current_version}.rb"
+        ].each do |routes_file|
+          original_lines = File.readlines(routes_file)
+
+          # Define which line we want to place the draw line under in the original routes files.
+          insert_line = if routes_file.match?("api")
+            draw_line = "  #{draw_line}" # Add necessary indentation.
+            "namespace :v1 do"
+          else
+            "draw \"sidekiq\""
+          end
+
+          new_lines = Scaffolding::BlockManipulator.insert(draw_line, lines: original_lines, within: insert_line)
+          Scaffolding::FileManipulator.write(routes_file, new_lines)
+        end
       end
 
       unless cli_options["skip-api"]
@@ -1523,7 +1636,7 @@ class Scaffolding::Transformer
 
     unless cli_options["skip-parent"]
 
-      if parent == "Team" || parent == "None"
+      if top_level_model?
         icon_name = nil
         if cli_options["sidebar"].present?
           icon_name = cli_options["sidebar"]

@@ -31,13 +31,26 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
   def attempt
     uri = URI.parse(delivery.endpoint_url)
 
-    unless allowed_uri?(uri)
-      self.response_code = 0
-      self.error_message = "URI is not allowed: " + uri
-      return false
+    if BulletTrain::OutgoingWebhooks.advanced_hostname_security
+      unless allowed_uri?(uri)
+        self.response_code = 0
+        self.error_message = "URI is not allowed: " + uri
+        return false
+      end
     end
 
-    http = Net::HTTP.new(resolve_ip_from_authoritative(uri.hostname.downcase), uri.port)
+    hostname = if BulletTrain::OutgoingWebhooks.advanced_hostname_security
+      resolve_ip_from_authoritative(uri.hostname.downcase)
+    else
+      uri.hostname.downcase
+    end
+
+    # Net::HTTP will consider the url invalid (and not deliver the webhook) unless it ends with a '/'
+    unless uri.path.end_with?("/")
+      uri.path = uri.path + "/"
+    end
+
+    http = Net::HTTP.new(hostname, uri.port)
     http.use_ssl = true if uri.scheme == "https"
     request = Net::HTTP::Post.new(uri.path)
     request.add_field("Host", uri.host)

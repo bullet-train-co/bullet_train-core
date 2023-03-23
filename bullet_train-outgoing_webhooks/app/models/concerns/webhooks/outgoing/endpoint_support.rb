@@ -15,10 +15,11 @@ module Webhooks::Outgoing::EndpointSupport
 
     before_validation { url&.strip! }
 
-    validates :url, presence: true, allowed_uri: true
+    validates :url, presence: true, allowed_uri: BulletTrain::OutgoingWebhooks.advanced_hostname_security
 
     after_initialize do
       self.event_type_ids ||= []
+      self.api_version ||= I18n.t("webhooks/outgoing/endpoints.fields.api_version.options").keys.last
     end
 
     after_save :touch_parent

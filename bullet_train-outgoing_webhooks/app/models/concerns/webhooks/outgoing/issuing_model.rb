@@ -32,24 +32,31 @@ module Webhooks::Outgoing::IssuingModel
     # and this object has a parent where an associated outgoing webhooks endpoint could be registered.
     if event_type
       # Only generate an event record if an endpoint is actually listening for this event type.
-      if parent.endpoints_listening_for_event_type?(event_type)
+      # If there are endpoints listening, make sure we know which API versions they're looking for.
+      if (api_versions = parent.endpoint_api_versions_listening_for_event_type(event_type)).any?
         if async
           # serialization can be heavy so run it as a job
-          Webhooks::Outgoing::GenerateJob.perform_later(self, action)
+          Webhooks::Outgoing::GenerateJob.perform_later(self, action, api_versions)
         else
-          generate_webhook_perform(action)
+          generate_webhook_perform(action, api_versions)
         end
       end
     end
   end
 
-  def generate_webhook_perform(action)
+  def generate_webhook_perform(action, api_versions)
     event_type = Webhooks::Outgoing::EventType.find_by(id: "#{self.class.name.underscore}.#{action}")
-    # TODO This is crazy that we generate JSON just to parse it. Can't be good for performance.
-    # Does Jbuilder support generating a hash instead of a JSON string?
-    data = JSON.parse(to_api_json)
-    webhook = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_events.create(event_type_id: event_type.id, subject: self, data: data)
-    webhook.deliver
+
+    api_versions.each do |api_version|
+      webhook = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_events.create(
+        event_type_id: event_type.id,
+        subject: self,
+        data: to_api_json(api_version),
+        api_version: api_version
+      )
+
+      webhook.deliver
+    end
   end
 
   def generate_created_webhook

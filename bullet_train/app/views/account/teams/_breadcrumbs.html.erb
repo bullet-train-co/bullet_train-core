@@ -1,11 +1,18 @@
 <% team ||= @team %>
-<% unless current_user.one_team? %>
+
+<% if (action_name == 'show' && controller_name == 'teams') || current_user.one_team? %>
+  <%= render 'account/shared/breadcrumb', label: t('.dashboard'), url: [:account, team], first: true  %>
+<% end %>
+
+<% unless current_user.one_team?  %>
   <%= render 'account/shared/breadcrumb', label: t('.label'), url: [:account, :teams], first: true %>
   <% if team&.persisted? %>
     <%= render 'account/shared/breadcrumb', label: team.name, url: [:account, team] %>
   <% end %>
 <% end %>
-<%= render 'account/shared/breadcrumbs/actions', only_for: 'teams' %>
-<% if (action_name == 'show' && controller_name == 'teams') || current_user.one_team? %>
-  <%= render 'account/shared/breadcrumb', label: 'Dashboard', url: [:account, team] %>
+
+<%if action_name == 'edit' %>
+  <%= render 'account/shared/breadcrumb', label: t('.team_settings') %>
+<%else %>
+  <%= render 'account/shared/breadcrumbs/actions', only_for: 'teams' %>
 <% end %>

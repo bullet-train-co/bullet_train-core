@@ -100,6 +100,8 @@ module Webhooks::Outgoing::UriFiltering
   end
 
   def _allowed_uri?(uri)
+    return true unless uri.present?
+
     config = Rails.configuration.outgoing_webhooks
     hostname = uri.hostname.downcase
 

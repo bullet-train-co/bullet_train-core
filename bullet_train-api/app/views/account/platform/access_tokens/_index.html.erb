@@ -9,13 +9,11 @@
 
 <%= action_model_select_controller do %>
   <%= updates_for context, collection do %>
-    <%= render 'account/shared/box', pagy: pagy do |p| %>
-      <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
-      <% p.content_for :description do %>
-        <%= t(".contexts.#{context.class.name.underscore}.description") %>
-      <% end %>
+    <%= render 'account/shared/box', pagy: pagy do |box| %>
+      <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
+      <% box.description t(".contexts.#{context.class.name.underscore}.description") %>
 
-      <% p.content_for :table do %>
+      <% box.table do %>
         <% if access_tokens.any? %>
           <table class="table">
             <thead>
@@ -36,14 +34,7 @@
                     <%= render "shared/tables/checkbox", object: access_token %>
                     <td><%= render 'shared/attributes/code', attribute: :token, secret: true %></td>
                     <td><%= render 'shared/attributes/text', attribute: :description %></td>
-                    <td>
-                      <% if access_token.last_used_at %>
-                        <%= render 'shared/attributes/date_and_time', attribute: :last_used_at %>
-                      <% else %>
-                        <% # TODO Make it so we can just define a `default` key for `last_used_at` in the locale file and it will us that when present. %>
-                        Never
-                      <% end %>
-                    </td>
+                    <td><%= render 'shared/attributes/date_and_time', attribute: :last_used_at %></td>
                     <%# 🚅 super scaffolding will insert new fields above this line. %>
                     <td><%= render 'shared/attributes/date_and_time', attribute: :created_at %></td>
                     <td class="buttons">
@@ -65,7 +56,7 @@
         <% end %>
       <% end %>
 
-      <% p.content_for :actions do %>
+      <% box.actions do %>
         <% unless hide_actions %>
           <% if context == application %>
             <% if can? :create, Platform::AccessToken.new(application: application, provisioned: true) %>
@@ -83,7 +74,7 @@
         <% end %>
       <% end %>
 
-      <% p.content_for :raw_footer do %>
+      <% box.raw_footer do %>
         <%# 🚅 super scaffolding will insert new action model index views above this line. %>
       <% end %>
     <% end %>

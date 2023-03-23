@@ -1,0 +1,12 @@
+.theme-secondary-teal {
+  --secondary-50: theme('colors.teal.50');
+  --secondary-100: theme('colors.teal.100');
+  --secondary-200: theme('colors.teal.200');
+  --secondary-300: theme('colors.teal.300');
+  --secondary-400: theme('colors.teal.400');
+  --secondary-500: theme('colors.teal.500');
+  --secondary-600: theme('colors.teal.600');
+  --secondary-700: theme('colors.teal.700');
+  --secondary-800: theme('colors.teal.800');
+  --secondary-900: theme('colors.teal.900');
+}

@@ -6,7 +6,11 @@ class Billing::MockLimiter
     []
   end
 
-  def can?(action, model)
+  def can?(action, model, count: 1)
     true
+  end
+
+  def exhausted?(model)
+    false
   end
 end

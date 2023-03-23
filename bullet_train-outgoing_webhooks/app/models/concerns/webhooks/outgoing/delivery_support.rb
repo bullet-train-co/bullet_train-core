@@ -35,6 +35,8 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def deliver
+    # TODO If we ever do away with the `async: true` default for webhook generation, then I believe this needs to
+    # change otherwise we'd be attempting the first delivery of webhooks inline.
     unless disabled?
       if delivery_attempts.create.attempt
         touch(:delivered_at)

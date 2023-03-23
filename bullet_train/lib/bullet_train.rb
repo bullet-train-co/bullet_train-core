@@ -1,6 +1,7 @@
 require "bullet_train/version"
 require "bullet_train/engine"
 require "bullet_train/resolver"
+require "bullet_train/configuration"
 
 require "bullet_train/fields"
 require "bullet_train/roles"
@@ -12,6 +13,7 @@ require "colorizer"
 require "bullet_train/core_ext/string_emoji_helper"
 
 require "devise"
+require "xxhash"
 # require "devise-two-factor"
 # require "rqrcode"
 require "cancancan"
@@ -37,14 +39,22 @@ module BulletTrain
   mattr_accessor :linked_gems, default: ["bullet_train"]
   mattr_accessor :parent_class, default: "Team"
   mattr_accessor :base_class, default: "ApplicationRecord"
+
+  def self.configure
+    if block_given?
+      yield(BulletTrain::Configuration.default)
+    else
+      BulletTrain::Configuration.default
+    end
+  end
 end
 
 def default_url_options_from_base_url
   unless ENV["BASE_URL"].present?
     if Rails.env.development?
-      ENV["BASE_URL"] ||= "http://localhost:3000"
+      ENV["BASE_URL"] = "http://localhost:3000"
     else
-      raise "you need to define the value of ENV['BASE_URL'] in your environment. if you're on heroku, you can do this with `heroku config:add BASE_URL=https://your-app-name.herokuapp.com` (or whatever your configured domain is)."
+      return {}
     end
   end
 
@@ -60,6 +70,10 @@ def default_url_options_from_base_url
   end
 
   default_url_options
+end
+
+def heroku?
+  ENV["PATH"]&.include?("/app/.heroku/")
 end
 
 def inbound_email_enabled?
@@ -106,7 +120,7 @@ def cloudinary_enabled?
 end
 
 def two_factor_authentication_enabled?
-  ENV["TWO_FACTOR_ENCRYPTION_KEY"].present?
+  Rails.application.credentials.active_record_encryption&.primary_key.present?
 end
 
 # Don't redefine this if an application redefines it locally.

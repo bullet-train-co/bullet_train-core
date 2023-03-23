@@ -1,10 +1,10 @@
 module AttributesHelper
   def current_attributes_object
-    @_attributes_helper_objects ? @_attributes_helper_objects.last : nil
+    @_attributes_helper_objects&.last
   end
 
   def current_attributes_strategy
-    @_attributes_helper_strategies ? @_attributes_helper_strategies.last : nil
+    @_attributes_helper_strategies&.last
   end
 
   def with_attribute_settings(options)
