@@ -15,6 +15,7 @@ The helper methods below can also be directly invoked in your application if you
 | FONTAWESOME_NPM_AUTH_TOKEN | String | `"your_font_awesome_token"` | `font_awesome?` |
 | SILENCE_LOGS | Boolean | `"true"` | `silence_logs?` |
 | TESTING_PROVISION_KEY | String | `"asdf123"` | N/A |
+| OPENAI_ACCESS_TOKEN | String |`your_openai_token`| `openai_enabled?` |
 
 | Option | Description |
 | --- | --- |
@@ -27,3 +28,4 @@ The helper methods below can also be directly invoked in your application if you
 | FONTAWESOME_NPM_AUTH_TOKEN | Enables use of Font Awesome. |
 | SILENCE_LOGS | Silences Super Scaffolding logs. |
 | TESTING_PROVISION_KEY | Creates a test `Platform::Application` by accessing `/testing/provision?key=your_provision_key` |
+| OPENAI_ACCESS_TOKEN | Enables use [OpenAI](https://openai.com/) with the [ruby-openai](https://github.com/alexrudall/ruby-openai) gem. |
