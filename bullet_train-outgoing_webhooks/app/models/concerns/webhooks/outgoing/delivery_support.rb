@@ -29,8 +29,12 @@ module Webhooks::Outgoing::DeliverySupport
     if still_attempting?
       Webhooks::Outgoing::DeliveryJob.set(wait: next_reattempt_delay).perform_later(self)
     else
-      endpoint.disabled_from_failure = true
-      endpoint.save
+      # All delivery attempts have now failed. If no successful deliveries in the last 24 hours then disable
+      last_successful_delivery = endpoint.deliveries.where.not(delivered_at: nil).maximum(:delivered_at)
+      if last_successful_delivery.blank? || last_successful_delivery < 24.hours.ago
+        endpoint.disabled_from_failure = true
+        endpoint.save
+      end
     end
   end
 
