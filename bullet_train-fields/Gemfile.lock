@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.2.21)
+    bullet_train-fields (1.2.22)
       chronic
       cloudinary
       phonelib
@@ -126,6 +126,12 @@ GEM
     nokogiri (1.13.7)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
+    nokogiri (1.13.7-arm64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.7-x86_64-darwin)
+      racc (~> 1.4)
+    nokogiri (1.13.7-x86_64-linux)
+      racc (~> 1.4)
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
@@ -213,6 +219,7 @@ PLATFORMS
   arm64-darwin-20
   arm64-darwin-21
   arm64-darwin-22
+  ruby
   x86_64-darwin-21
   x86_64-linux
 
