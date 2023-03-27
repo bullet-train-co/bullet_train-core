@@ -51,7 +51,7 @@ module Api
         title: I18n.t("#{model.name.underscore.pluralize}.label"),
         # TODO Improve this. We don't have a generic description for models we can use here.
         description: I18n.t("#{model.name.underscore.pluralize}.label"),
-        )
+      )
 
       attributes_output = JSON.parse(schema_json)
 
@@ -106,9 +106,9 @@ module Api
       type = attribute_data.nil? ? "string" : attribute_data.type
 
       attribute_block = <<~YAML
-      #{attribute}:
-        description: "#{heading}"
-        type: #{type}
+        #{attribute}:
+          description: "#{heading}"
+          type: #{type}
       YAML
       indent(attribute_block.chomp, 2)
     end
