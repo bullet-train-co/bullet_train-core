@@ -186,7 +186,7 @@ module BulletTrain
 
         directory_content = `find . | grep 'app/.*#{args[:theme]}'`.lines.map(&:chomp)
         directory_content = directory_content.reject { |content| content.match?("app/assets/builds/") }
-        files, directories = directory_content.partition{ |file| file.match?(/(\.erb)|(\.rb)|(\.css)|(\.js)$/) }
+        files = directory_content.select { |file| file.match?(/(\.erb)|(\.rb)|(\.css)|(\.js)$/) }
 
         # Files that exist outside of "./app/" that we need to check.
         files += [
@@ -240,8 +240,8 @@ module BulletTrain
         ].each do |remaining_directory|
           puts "Cleaning out directory: #{remaining_directory}"
           remaining_directory_content = Dir.glob(remaining_directory + "**/*")
-          remaining_files, remaining_directories = remaining_directory_content.partition { |content| File.file?(content) }
-          remaining_directories.reverse_each { |dir| Dir.rmdir dir if Dir.entries(dir).size == 2 } # Only remove a directory if it's empty.
+          remaining_directories = remaining_directory_content.select { |content| File.directory?(content) }
+          remaining_directories.reverse_each { |dir| Dir.rmdir dir if Dir.empty?(dir) }
           FileUtils.rmdir(remaining_directory) if Dir.empty?(remaining_directory)
         end
 
