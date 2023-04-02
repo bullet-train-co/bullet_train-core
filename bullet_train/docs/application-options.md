@@ -1,31 +1,17 @@
 # Application Options
 
-Bullet Train features a list of options available at your disposal to enable/disable functionalities that would otherwise take a significant amount of time to implement. Simply add any of the following environment variables to `config/application.yml` in your main Bullet Train application and restart your server for the options to apply.
+The following configuration options are available for your Bullet Train application. For local development, you can set these values in `config/application.yml`. For hosting providers that we provide first-party support for, you can consult [Render's documentation](https://render.com/docs/environment-variables) and [Heroku's documentation](https://devcenter.heroku.com/articles/config-vars) for how to set these values.
 
-The helper methods below can also be directly invoked in your application if you wish to have parts of your code depend on the functionality in question.
-
-| Option | Type | Example | Helper Methods |
+| Option | Purpose | Example Value <sup><a href="#footnote-1">1</a></sup> | Helper Methods |
 | --- | --- | --- | --- |
-| HIDE_THINGS | Boolean | `"true"` | `scaffolding_things_disabled?` |
-| HIDE_EXAMPLES | Boolean | `"true"` | `scaffolding_things_disabled?` |
-| STRIPE_CLIENT_ID | String | `"your_stripe_client_id"` | `stripe_enabled?` |
-| CLOUDINARY_URL | String | `"cloudinary://your_cloudinary_token_here"` | `cloudinary_enabled?` |
-| TWO_FACTOR_ENCRYPTION_KEY | String | `"your_encryption_key"` | `two_factor_enabled_authentication?` |
-| INVITATION_KEYS | String | `"ofr9h5h9ghzeodh, ofr9h5h9ghzeodi"` | `invitation_keys` `invitation_only?` |
-| FONTAWESOME_NPM_AUTH_TOKEN | String | `"your_font_awesome_token"` | `font_awesome?` |
-| SILENCE_LOGS | Boolean | `"true"` | `silence_logs?` |
-| TESTING_PROVISION_KEY | String | `"asdf123"` | N/A |
-| OPENAI_ACCESS_TOKEN | String |`your_openai_token`| `openai_enabled?` |
+| `BASE_URL` | Specify the full URL where the application is hosted | `https://app.yourproduct.com` | |
+| `HIDE_THINGS` | [Hide the "Creative Concept" demo model and "Tangible Thing" template model](/docs/super-scaffolding.md) | `true` | `scaffolding_things_disabled?` |
+| `STRIPE_CLIENT_ID` | [Enable the example OAuth2 integration with Stripe Connect](/docs/oauth.md) | `ca_DBOenflO97IalW31IEvpvSKGHjOWhGzJ` | `stripe_enabled?` |
+| `CLOUDINARY_URL` | Enable Cloudinary-powered image uploads, including profile photos | `cloudinary://9149...:3HSd...@hfytqhfzj` | `cloudinary_enabled?` |
+| `INVITATION_KEYS` | [Restrict new sign-ups](/docs/authentication.md) | `89dshwxja, a9y29ihs1` | `invitation_keys` `invitation_only?` |
+| `FONTAWESOME_NPM_AUTH_TOKEN` | [Enable Font Awesome Pro](/docs/font-awesome-pro.md) | `5DC62AA7-5741-4C45-874B-EA9CAA4EE085` | `font_awesome?` |
+| `OPENAI_ACCESS_TOKEN` | Enable OpenAI-powered UX improvements | `sk-Tnko8PI15i6du03KkxVExTz3lbkFJV...` | `openai_enabled?` |
+| `REDOCLY_ORGANIZATION_ID` | Enable Redocly-powered API documentation | `your-organization-name` | |
+| `REDOCLY_API_KEY` | Enable Redocly-powered API documentation |`orgsk_lfyrXAAym8nbSrar9b8wvTN+...`| |
 
-| Option | Description |
-| --- | --- |
-| HIDE_THINGS | Hides Bullet Train demo models such as `CreativeConcept` and `TangibleThing`. |
-| HIDE_EXAMPLES | Hides base models such as `CreativeConcept` and `TangibleThing`.
-| STRIPE_CLIENT_ID | See [Bullet Train Billing for Stripe](/docs/billing/stripe.md) for more information and related environment variables. |
-| CLOUDINARY_URL | Enables use of Cloudinary for handling images. |
-| TWO_FACTOR_ENCRYPTION_KEY | Enables two-factor authentication through Devise. |
-| INVITATION_KEYS | See [Invitation Only](/docs/authentication.md) for more information. |
-| FONTAWESOME_NPM_AUTH_TOKEN | Enables use of Font Awesome. |
-| SILENCE_LOGS | Silences Super Scaffolding logs. |
-| TESTING_PROVISION_KEY | Creates a test `Platform::Application` by accessing `/testing/provision?key=your_provision_key` |
-| OPENAI_ACCESS_TOKEN | Enables use [OpenAI](https://openai.com/) with the [ruby-openai](https://github.com/alexrudall/ruby-openai) gem. |
+<sup><a name="footnote-1"></a>1</sup> Any credentials listed here aren't real, but we wanted you to know what each looks like so you can recognize the correct value from each provider.
