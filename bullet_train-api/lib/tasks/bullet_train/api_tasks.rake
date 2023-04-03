@@ -121,7 +121,7 @@ namespace :bullet_train do
 
         puts `echo "#{ENV["REDOCLY_API_KEY"]}" | redocly login`
 
-        puts `redocly push #{temp_file.path} "@#{ENV["REDOCLY_ORGANIZATION_ID"]}/#{I18n.t("application.name")}@#{BulletTrain::Api.current_version}" --public`
+        puts `redocly push #{temp_file.path} "@#{ENV["REDOCLY_ORGANIZATION_ID"]}/#{I18n.t("application.name")}@#{BulletTrain::Api.current_version}" --public --upsert`
 
         temp_file.unlink
       else
