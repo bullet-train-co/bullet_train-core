@@ -2,6 +2,7 @@ class Webhooks::Outgoing::PurgeJob < ApplicationJob
   queue_as :default
 
   def perform(days_old = 90)
+    # Delete children first, then parents.
     purge(Webhooks::Outgoing::DeliveryAttempt, days_old)
     purge(Webhooks::Outgoing::Delivery, days_old)
     purge(Webhooks::Outgoing::Event, days_old)
