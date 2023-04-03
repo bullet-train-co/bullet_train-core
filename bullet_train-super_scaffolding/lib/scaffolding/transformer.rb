@@ -1264,7 +1264,6 @@ class Scaffolding::Transformer
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{name_without_id}/)
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /add_reference :#{child.underscore.pluralize.tr("/", "_")}, :#{name_without_id}/)
 
-              # TODO also solve the 60 character long index limitation.
               modified_migration = true
             else
               add_additional_step :yellow, "We would have expected there to be a migration that defined `#{expected_reference}`, but we didn't find one. Where was the reference added to this model? It's _probably_ the original creation of the table. Either way, you need to rollback, change \"foreign_key: true\" to \"foreign_key: {to_table: '#{attribute_options[:class_name].tableize.tr("/", "_")}'}\" for this column, and re-run the migration."
