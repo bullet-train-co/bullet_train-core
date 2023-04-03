@@ -43,7 +43,7 @@
 
         <%# 🚅 super scaffolding will insert new targets one parent action model buttons above this line. %>
         <%# 🚅 super scaffolding will insert new bulk action model buttons above this line. %>
-        <%= render "shared/bulk_action_select" %>
+        <%= render "shared/bulk_action_select" if creative_concepts.many? %>
 
         <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary(:absolutely_abstract_creative_concept)} back" unless hide_back %>
       <% end %>
