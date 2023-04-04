@@ -79,9 +79,14 @@ module BulletTrain
       end
 
       def self.release_theme(original_theme_name, args)
+        # We only want developers publishing gems off of `bullet_train-themes-light`, so if the task looks
+        # something like `rake bullet_train:themes:foo:release[bar]`, we prevent them from moving any further here.
         if original_theme_name != "light"
           puts "You can only release new themes based off of Bullet Train's Light theme. Please eject a new theme from there, and publish your gem once you've finished making changes.".red
           exit 1
+        elsif original_theme_name.nil?
+          puts "Please run the command with the name of the theme you want to release.".red
+          puts "For example: > rake bullet_train:themes:light:release[foo]"
         end
 
         puts "Preparing to release your custom theme: ".blue + args[:theme_name]
@@ -106,7 +111,14 @@ module BulletTrain
           raise "You already have a repository named `bullet_train-themes-#{args[:theme_name]}` in `./local`.\n" \
             "Make sure you delete it first to create an entirely new gem."
         end
-        `git clone git@github.com:bullet-train-co/bullet_train-themes-light.git ./local/bullet_train-themes-#{args[:theme_name]}`
+
+        # Pull `bullet_train-themes-light` only from `bullet_train-core` into the new theme directory.
+        # https://www.git-scm.com/docs/git-sparse-checkout
+        `mkdir ./local/bullet_train-themes-#{args[:theme_name]}`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git init && git remote add bullet-train-core git@github.com:bullet-train-co/bullet_train-core.git`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git config core.sparseCheckout true && echo "bullet_train-themes-light/**/*" >> .git/info/sparse-checkout`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git pull bullet-train-core main`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && mv bullet_train-themes-light/* . && mv bullet_train-themes-light/.* . && rmdir bullet_train-themes-light/`
 
         custom_file_replacer = BulletTrain::Themes::Light::CustomThemeFileReplacer.new(args[:theme_name])
         custom_file_replacer.replace_theme("light", args[:theme_name])
@@ -128,6 +140,8 @@ module BulletTrain
         # Commit the deleted files on the main application.
         `git add .`
         `git commit -m "Remove #{args[:theme_name]} files from application"`
+
+        binding.pry # Stop while working on this before anything is pushed.
 
         # Push the gem's source code, but not the last commit in the main application.
         `git #{work_tree_flag} #{git_dir_flag} push -u origin main`
