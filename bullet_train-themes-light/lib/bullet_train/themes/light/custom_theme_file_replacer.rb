@@ -40,14 +40,14 @@ module BulletTrain
             starter_repository_file.gsub!("app/", "") if cloned_file.match?("lib/bullet_train/themes/#{@custom_theme}.rb")
 
             # Some files we have here like the gemspec don't exist in the starter repository, so we skip those.
-            unless File.exist?(starter_repository_file)
-              puts "Skipping check for #{cloned_file}"
-            else
+            if File.exist?(starter_repository_file)
               begin
                 BulletTrain::Themes::Light::FileReplacer.replace_content(old: cloned_file, new: starter_repository_file)
               rescue Errno::ENOENT => _
                 puts "Couldn't replace contents for #{cloned_file}".red
               end
+            else
+              puts "Skipping check for #{cloned_file}"
             end
           end
 
@@ -68,7 +68,7 @@ module BulletTrain
           files_to_change.each do |file|
             File.open(file, "r") do |f|
               new_lines = f.readlines
-              next unless new_lines.join.match?("#{@original_theme}")
+              next unless new_lines.join.match?(@original_theme)
 
               new_lines = new_lines.map do |line|
                 # Avoid replacing strings like `font-light` from Tailwind.
@@ -144,7 +144,7 @@ module BulletTrain
 
         # TODO: Use this method.
         def directories_matching(theme_name)
-          Dir.glob("#{@repo_path}/**/*").select { |repo_content| File.directory?(repo_content) && repo_content.match?(/\/#{theme_name}$/) } 
+          Dir.glob("#{@repo_path}/**/*").select { |repo_content| File.directory?(repo_content) && repo_content.match?(/\/#{theme_name}$/) }
         end
 
         # TODO: Use this method.

@@ -127,10 +127,6 @@ module BulletTrain
         git_dir_flag = "--git-dir=local/bullet_train-themes-#{args[:theme_name]}/.git"
         path = "./local/bullet_train-themes-#{args[:theme_name]}"
 
-        # TODO
-        puts "Stopping here for now"
-        exit
-
         # Set up the proper remote.
         `git #{work_tree_flag} #{git_dir_flag} remote set-url origin #{ssh_path}`
         `git #{work_tree_flag} #{git_dir_flag} add .`
