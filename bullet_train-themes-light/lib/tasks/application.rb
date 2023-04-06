@@ -117,15 +117,19 @@ module BulletTrain
         `mkdir ./local/bullet_train-themes-#{args[:theme_name]}`
         `cd ./local/bullet_train-themes-#{args[:theme_name]} && git init && git remote add bullet-train-core git@github.com:bullet-train-co/bullet_train-core.git`
         `cd ./local/bullet_train-themes-#{args[:theme_name]} && git config core.sparseCheckout true && echo "bullet_train-themes-light/**/*" >> .git/info/sparse-checkout`
-        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git pull bullet-train-core main`
-        `cd ./local/bullet_train-themes-#{args[:theme_name]} && mv bullet_train-themes-light/* . && mv bullet_train-themes-light/.* . && rmdir bullet_train-themes-light/`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git pull bullet-train-core main && git remote rm bullet-train-core`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && mv bullet_train-themes-light/* . && mv bullet_train-themes-light/.* .`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && rmdir bullet_train-themes-light/`
 
-        custom_file_replacer = BulletTrain::Themes::Light::CustomThemeFileReplacer.new(args[:theme_name])
-        custom_file_replacer.replace_theme("light", args[:theme_name])
+        BulletTrain::Themes::Light::CustomThemeFileReplacer.new(original_theme_name, args[:theme_name]).replace_theme
 
         work_tree_flag = "--work-tree=local/bullet_train-themes-#{args[:theme_name]}"
         git_dir_flag = "--git-dir=local/bullet_train-themes-#{args[:theme_name]}/.git"
         path = "./local/bullet_train-themes-#{args[:theme_name]}"
+
+        # TODO
+        puts "Stopping here for now"
+        exit
 
         # Set up the proper remote.
         `git #{work_tree_flag} #{git_dir_flag} remote set-url origin #{ssh_path}`
@@ -140,8 +144,6 @@ module BulletTrain
         # Commit the deleted files on the main application.
         `git add .`
         `git commit -m "Remove #{args[:theme_name]} files from application"`
-
-        binding.pry # Stop while working on this before anything is pushed.
 
         # Push the gem's source code, but not the last commit in the main application.
         `git #{work_tree_flag} #{git_dir_flag} push -u origin main`
@@ -158,6 +160,9 @@ module BulletTrain
         puts "rake bullet_train:themes:#{args[:theme_name]}:install"
         puts ""
         puts "Then you'll be ready to use your custom gem in your Bullet Train application.".blue
+        puts ""
+        puts "Please note that we have deleted your new theme from your main application.".blue
+        puts "Look over the changes and commit them once after trying out the gem and making sure everything works properly.".blue
       end
 
       def self.install_theme(theme_name)
