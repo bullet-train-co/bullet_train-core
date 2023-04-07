@@ -71,7 +71,7 @@ module BulletTrain
 
               new_lines = new_lines.map do |line|
                 # Avoid replacing Tailwind styles like `font-light` and `font-extralight`.
-                line.gsub!(@original_theme, @custom_theme) unless (line.match?(/font-.*light/))
+                line.gsub!(@original_theme, @custom_theme) unless line.match?(/font-.*light/)
                 line.gsub!(original_theme_class_name, custom_theme_class_name)
                 line
               end
