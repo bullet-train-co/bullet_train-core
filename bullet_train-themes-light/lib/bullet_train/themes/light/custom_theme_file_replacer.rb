@@ -31,7 +31,10 @@ module BulletTrain
 
         def replace_cloned_file_contents_with_custom_theme_contents
           repo_contents = Dir.glob("#{@repo_path}/**/*")
-          cloned_files = repo_contents.select { |repo_content| File.file?(repo_content) && repo_content.split("/").last.match?(@custom_theme) }
+          cloned_files = repo_contents.select { |repo_content| File.file?(repo_content) && repo_content.match?(@custom_theme) }
+
+          # Most files in the root of the starter repository should not replace what we cloned from the original theme gem.
+          (Dir.glob("#{@repo_path}/*") << "#{@repo_path}/config/routes.rb").each { |file_to_skip| cloned_files.delete(file_to_skip) }
 
           cloned_files.each do |cloned_file|
             starter_repository_file = cloned_file.gsub(@repo_path, ".")
@@ -46,8 +49,6 @@ module BulletTrain
               rescue Errno::ENOENT => _
                 puts "Couldn't replace contents for #{cloned_file}".red
               end
-            else
-              puts "Skipping check for #{cloned_file}"
             end
           end
 
@@ -56,8 +57,6 @@ module BulletTrain
           `mv ./tailwind.#{@custom_theme}.config.js #{@repo_path}/tailwind.#{@custom_theme}.config.js`
         end
 
-        # TODO: It might not be best to have a blanket gsub over each file just to transform "light"
-        # to the new custom theme. However, I don't want to write out specific files as String literals.
         def transform_file_contents_with_custom_theme_name
           repo_contents = Dir.glob("#{@repo_path}/**/*")
           files_to_change = repo_contents.select { |repo_content| File.file?(repo_content) }
@@ -71,10 +70,8 @@ module BulletTrain
               next unless new_lines.join.match?(/#{@original_theme}|#{original_theme_class_name}/)
 
               new_lines = new_lines.map do |line|
-                # Avoid replacing strings like `font-light` from Tailwind.
-                unless line.match?("-#{@original_theme}") && !line.match?("bullet_train-themes-#{@original_theme}")
-                  line.gsub!(@original_theme, @custom_theme)
-                end
+                # Avoid replacing Tailwind styles like `font-light` and `font-extralight`.
+                line.gsub!(@original_theme, @custom_theme) unless (line.match?(/font-.*light/))
                 line.gsub!(original_theme_class_name, custom_theme_class_name)
                 line
               end
@@ -103,10 +100,9 @@ module BulletTrain
             "./app/views/themes/#{@custom_theme}/",
             "./app/lib/"
           ].map { |directory| directory unless directory == "./app/lib/" && Dir.empty?(directory) }
-          directories.each { |directory| FileUtils.rm_rf(directory) unless directory.nil? }
+          directories.compact.each { |directory| FileUtils.rm_rf(directory) }
         end
 
-        # Since we're generating a new gem, it should be version 1.0.
         def set_gem_to_v1
           new_lines = []
           File.open("#{@repo_path}/lib/bullet_train/themes/#{@custom_theme}/version.rb", "r") do |file|
@@ -140,16 +136,6 @@ module BulletTrain
           File.open("#{@repo_path}/bullet_train-themes-#{@custom_theme}.gemspec", "w") do |file|
             file.puts new_lines.join
           end
-        end
-
-        # TODO: Use this method.
-        def directories_matching(theme_name)
-          Dir.glob("#{@repo_path}/**/*").select { |repo_content| File.directory?(repo_content) && repo_content.match?(/\/#{theme_name}$/) }
-        end
-
-        # TODO: Use this method.
-        def files_matching(theme_name)
-          Dir.glob("#{@repo_path}/**/*").select { |repo_content| File.file?(repo_content) && repo_content.split("/").last.match?(theme_name) }
         end
       end
     end
