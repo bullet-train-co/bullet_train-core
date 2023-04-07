@@ -153,12 +153,14 @@ module BulletTrain
         puts "You may have to wait for some time until the gem can be downloaded via the Gemfile.".blue
         puts "After a few minutes, run the following command in your main application:".blue
         puts "bundle add bullet_train-themes-#{args[:theme_name]}"
-        puts "rake bullet_train:themes:#{args[:theme_name]}:install"
         puts ""
         puts "Then you'll be ready to use your custom gem in your Bullet Train application.".blue
         puts ""
-        puts "Please note that we have deleted your new theme from your main application.".blue
-        puts "Look over the changes and commit them once after trying out the gem and making sure everything works properly.".blue
+        puts "Please note that we have deleted the new theme from your main application.".blue
+        puts "Look over the changes and commit them after trying out the gem and making sure everything works properly.".blue
+        puts ""
+        puts "Use `rake bullet_train:themes:light:install` to revert to the original theme,".blue
+        puts "or run `rake bullet_train:themes:#{args[:theme_name]}:install` whenever you want to use your new theme.".blue
       end
 
       def self.install_theme(theme_name)
@@ -188,9 +190,12 @@ module BulletTrain
           end
 
           File.open(file, "w") do |f|
+            puts "Updating #{file}."
             f.puts new_lines.join
           end
         end
+
+        puts "Finished installing `#{theme_name}`.".blue
       end
 
       def self.clean_theme(theme_name, args)
