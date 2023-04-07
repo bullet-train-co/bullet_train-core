@@ -68,7 +68,7 @@ module BulletTrain
           files_to_change.each do |file|
             File.open(file, "r") do |f|
               new_lines = f.readlines
-              next unless new_lines.join.match?(@original_theme)
+              next unless new_lines.join.match?(/#{@original_theme}|#{original_theme_class_name}/)
 
               new_lines = new_lines.map do |line|
                 # Avoid replacing strings like `font-light` from Tailwind.
