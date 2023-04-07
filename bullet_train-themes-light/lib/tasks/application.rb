@@ -120,6 +120,7 @@ module BulletTrain
         `cd ./local/bullet_train-themes-#{args[:theme_name]} && git pull bullet-train-core main && git remote rm bullet-train-core`
         `cd ./local/bullet_train-themes-#{args[:theme_name]} && mv bullet_train-themes-light/* . && mv bullet_train-themes-light/.* .`
         `cd ./local/bullet_train-themes-#{args[:theme_name]} && rmdir bullet_train-themes-light/`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git config core.sparseCheckout false`
 
         BulletTrain::Themes::Light::CustomThemeFileReplacer.new(original_theme_name, args[:theme_name]).replace_theme
 
@@ -128,9 +129,10 @@ module BulletTrain
         path = "./local/bullet_train-themes-#{args[:theme_name]}"
 
         # Set up the proper remote.
-        `git #{work_tree_flag} #{git_dir_flag} remote set-url origin #{ssh_path}`
+        `git #{work_tree_flag} #{git_dir_flag} remote add origin #{ssh_path}`
         `git #{work_tree_flag} #{git_dir_flag} add .`
         `git #{work_tree_flag} #{git_dir_flag} commit -m "Add initial files"`
+        `git #{work_tree_flag} #{git_dir_flag} branch -m main`
 
         # Build the gem.
         `(cd #{path} && gem build bullet_train-themes-#{args[:theme_name]}.gemspec)`
@@ -157,7 +159,7 @@ module BulletTrain
         puts "Then you'll be ready to use your custom gem in your Bullet Train application.".blue
         puts ""
         puts "Please note that we have deleted the new theme from your main application.".blue
-        puts "Look over the changes and commit them after trying out the gem and making sure everything works properly.".blue
+        puts "run `git log -1` for details."
         puts ""
         puts "Use `rake bullet_train:themes:light:install` to revert to the original theme,".blue
         puts "or run `rake bullet_train:themes:#{args[:theme_name]}:install` whenever you want to use your new theme.".blue
