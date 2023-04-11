@@ -1634,7 +1634,6 @@ class Scaffolding::Transformer
 
           # Define which line we want to place the draw line under in the original routes files.
           insert_line = if routes_file.match?("api")
-            draw_line = "#{draw_line}"
             "namespace :v1 do"
           else
             "draw \"sidekiq\""
