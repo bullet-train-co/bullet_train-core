@@ -67,4 +67,4 @@ git push origin main
 git branch -d updating-bullet-train
 ```
 
-Alternatively, if you're using GitHub, you can push the `updating-bullet-train` branch up and create a PR from it and let your CI integration do it's thing and then merge in the PR and delete the branch there. (That's what we typically do.)
+Alternatively, if you're using GitHub, you can push the `updating-bullet-train` branch up and create a PR from it and let your CI integration do its thing and then merge in the PR and delete the branch there. (That's what we typically do.)
