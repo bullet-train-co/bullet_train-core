@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::IncomingWebhooks::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train-incoming_webhooks"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-incoming_webhooks"
   spec.summary = "Bullet Train Incoming Webhooks"
   spec.description = spec.summary
   spec.license = "MIT"
