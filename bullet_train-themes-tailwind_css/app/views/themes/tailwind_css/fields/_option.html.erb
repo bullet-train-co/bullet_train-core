@@ -1,0 +1,56 @@
+<% yield %>
+
+<%
+form ||= current_fields_form
+single_check_box ||= false
+multiple ||= false
+option_field_options ||= {}
+append_class ||= ''
+labels = labels_for(form, method) if form
+
+# Since we don't know at this point which tag we'll be using, we specify
+# the class only once here for simplicity and apply it to one of the following tags:
+# 1. form.check_box
+# 2. check_box
+# 4. form.radio_button
+#
+# the `append_class` local can be used to append any other styles desired for the element.
+option_field_options[:class] ||= "focus:ring-blue h-4 w-4 text-blue border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if multiple || single_check_box}"
+option_field_options[:class] += " #{append_class}"
+%>
+
+<% if single_check_box %>
+  <% if form %>
+    <div class="flex items-center">
+      <%= form.check_box method, option_field_options %>
+      <%= form.label method, class: 'ml-2' %>
+    </div>
+  <% else %>
+    <% value = option_field_options.delete(:value) %>
+    <% checked = option_field_options.delete(:checked) %>
+    <%= check_box_tag method, value, checked, option_field_options %>
+  <% end %>
+<% else %>
+  <% options.each do |value, label| %>
+    <label class="relative flex items-start mb-3">
+      <div class="flex items-center h-5">
+        <% if multiple %>
+          <% checked_value = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
+          <%= form.check_box method, {
+            multiple: multiple, checked: checked_value, data: option_field_options[:data], class: option_field_options[:class]
+          }, value, "" %>
+        <% else %>
+          <%= form.radio_button method, value, {class: option_field_options[:class]} %>
+        <% end %>
+      </div>
+      <div class="ml-2.5 text-sm">
+        <div class="select-none"><%= label %></div>
+        <% if labels.options_help&.dig(value)&.present? %>
+          <p class="mt-0.5 text-xs text-slate-500">
+            <%= labels.options_help.dig(value) %>
+          </p>
+        <% end %>
+      </div>
+    </label>
+  <% end %>
+<% end %>

@@ -31,7 +31,6 @@ class BulletTrain::Platform::ConnectionWorkflow
               first_name: @application.name
             )
 
-            # TODO I think we can get rid of `platform_agent` because we have `platform_agent_of_id`.
             faux_membership = team.memberships.create(
               user: faux_user,
               platform_agent: true,

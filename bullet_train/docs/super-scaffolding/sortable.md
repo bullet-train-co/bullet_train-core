@@ -12,7 +12,7 @@ The `--sortable` option:
 
 1. Wraps the table's body in a `sortable` Stimulus controller, providing drag-and-drop re-ordering;
 2. Adds a `reorder` action to your resource via `include SortableActions`, triggered automatically on re-order;
-3. Adds a migration to add the `sort_order` column to your model to store the ordering;
+3. Adds a `sort_order` attribute to your model to store the ordering;
 4. Adds a `default_scope` which orders by `sort_order` and auto increments `sort_order` on create via `include Sortable` on the model.
 
 ## Disabling Saving on Re-order

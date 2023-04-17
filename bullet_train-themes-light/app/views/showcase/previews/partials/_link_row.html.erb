@@ -1,0 +1,14 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/link_row", path: new_user_session_path do |link_row| %>
+    <% link_row.body "Login Page" %>
+  <% end %>
+<% end %>
+
+<% showcase.sample "Without body" do %>
+  <%= render "shared/link_row", path: new_user_session_path %>
+<% end %>
+
+<% showcase.options.context :nice_partials do |o| %>
+  <% o.required :path, "Valid url path" %>
+  <% o.optional.content_block :body %>
+<% end %>

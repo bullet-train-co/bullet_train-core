@@ -3,7 +3,7 @@
     url: main_app.polymorphic_path([:account, send(BulletTrain::OutgoingWebhooks.current_parent_method), :webhooks_outgoing_delivery_attempts]),
     label: t('webhooks/outgoing/delivery_attempts.navigation.label'),
   } do |p| %>
-    <% p.content_for :icon do %>
+    <% p.icon do %>
       <i class="<%= t('webhooks/outgoing/delivery_attempts.navigation.icon') %>"></i>
     <% end %>
   <% end %>

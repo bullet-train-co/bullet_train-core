@@ -1,0 +1,93 @@
+/teams/{team_id}/scaffolding/absolutely_abstract/creative_concepts:
+  get:
+    tags:
+      - "Scaffolding/Absolutely Abstract/Creative Concept"
+    summary: "List Creative Concept"
+    operationId: listScaffoldingAbsolutelyAbstractCreativeConcepts
+    parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    $ref: "#/components/schemas/ScaffoldingAbsolutelyAbstractCreativeConceptAttributes"
+                has_more:
+                  type: boolean
+  post:
+    tags:
+      - "Scaffolding/Absolutely Abstract/Creative Concept"
+    summary: "Create Creative Concept"
+    operationId: createScaffoldingAbsolutelyAbstractCreativeConcepts
+    parameters:
+      - name: team_id
+        in: path
+        required: true
+        schema:
+          type: string
+    responses:
+      "404":
+        description: "Not Found"
+      "201":
+        description: "Created"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScaffoldingAbsolutelyAbstractCreativeConceptParameters"
+/scaffolding/absolutely_abstract/creative_concepts/{id}:
+  get:
+    tags:
+      - "Scaffolding/Absolutely Abstract/Creative Concept"
+    summary: "Fetch Creative Concept"
+    operationId: getScaffoldingAbsolutelyAbstractCreativeConcepts
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScaffoldingAbsolutelyAbstractCreativeConceptAttributes"
+  put:
+    tags:
+      - "Scaffolding/Absolutely Abstract/Creative Concept"
+    summary: "Update Creative Concept"
+    operationId: updateScaffoldingAbsolutelyAbstractCreativeConcepts
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScaffoldingAbsolutelyAbstractCreativeConceptParameters"
+  delete:
+    tags:
+      - "Scaffolding/Absolutely Abstract/Creative Concept"
+    summary: "Remove Creative Concept"
+    operationId: removeScaffoldingAbsolutelyAbstractCreativeConcepts
+    parameters:
+      - $ref: "#/components/parameters/id"
+    responses:
+      "404":
+        description: "Not Found"
+      "200":
+        description: "OK"

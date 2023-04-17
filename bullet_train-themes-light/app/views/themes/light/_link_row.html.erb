@@ -1,0 +1,18 @@
+<%= link_to path, class: "block group hover:no-underline" do %>
+  <div class="bg-white hover:bg-slate-50 rounded-md shadow dark:bg-slate-700 dark:group-hover:bg-slate-700 dark:bg-opacity-50 dark:group-hover:bg-opacity-25 overflow-hidden">
+    <div class="py-4 px-8 pr-5">
+      <div class="flex items-center">
+        <% if partial.body? %>
+          <div class="flex-1 text-xl font-semibold text-slate-700 dark:text-white dark:group-hover:text-slate-100">
+            <%= partial.body %>
+          </div>
+        <% end %>
+        <div class="ml-5 flex-shink-0">
+          <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+            <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+<% end %>
