@@ -9,7 +9,7 @@
 <% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) unless pagy %>
 
 <%= action_model_select_controller do %>
-  <% updates_for context, collection do %>
+  <% cable_ready_updates_for context, collection do %>
     <%= render 'account/shared/box', pagy: pagy do |box| %>
       <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
       <% box.description do %>
