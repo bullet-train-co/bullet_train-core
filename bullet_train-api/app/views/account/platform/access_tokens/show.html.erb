@@ -1,7 +1,7 @@
 <%= render 'account/shared/page' do |page| %>
   <% page.title t('.section') %>
   <% page.body do %>
-    <%= updates_for @access_token do %>
+    <%= cable_ready_updates_for @access_token do %>
       <%= render 'account/shared/box', divider: true do |box| %>
         <% box.title t('.header') %>
         <% box.description do %>
