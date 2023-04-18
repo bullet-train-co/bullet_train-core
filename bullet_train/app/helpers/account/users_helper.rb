@@ -95,6 +95,6 @@ module Account::UsersHelper
   end
 
   def current_membership
-    current_user.memberships.where(team: current_team).first
+    current_user.memberships.where(team: current_user.current_team).first
   end
 end
