@@ -40,4 +40,12 @@ module Webhooks::Outgoing::EndpointSupport
   def touch_parent
     send(BulletTrain::OutgoingWebhooks.parent_association).touch
   end
+
+  def error_rate_percentage
+    total = deliveries.where(created_at: 30.days.ago..Time.now).count
+    failed = deliveries.where(created_at: 30.days.ago..Time.now).where(delivered_at: nil).count
+
+    return 0 if total == 0 || failed == 0
+    error_percentage = (failed.to_f / total.to_f) * 100
+  end
 end
