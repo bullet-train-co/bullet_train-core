@@ -58,6 +58,8 @@ module FactoryBot
     end
 
     def reset_tables!
+      # This is only availble for postgres
+      return unless ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
       @tables_to_reset.each do |name|
         ActiveRecord::Base.connection.reset_pk_sequence!(name) if ActiveRecord::Base.connection.table_exists?(name)
       end
