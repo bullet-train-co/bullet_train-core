@@ -165,7 +165,7 @@ module BulletTrain
           puts "`#{@needle}`".red
           puts ""
           puts "Check the string one more time to see if the package name is there."
-          puts "i.e.: bullet_train-base/app/views/layouts/devise.html.erb".blue
+          puts "i.e.: bullet_train-1.2.24/app/views/layouts/devise.html.erb".blue
           puts ""
           puts "If you're not sure what the package name is, run `bin/resolve --interactive`, follow the prompt, and pass the annotated path."
           puts "i.e.: <!-- BEGIN /your/local/path/bullet_train-base/app/views/layouts/devise.html.erb -->".blue
