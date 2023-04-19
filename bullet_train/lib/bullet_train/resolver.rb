@@ -104,7 +104,7 @@ module BulletTrain
 
       if result[:absolute_path]
         if result[:absolute_path].include?("/bullet_train")
-          regex = /#{"bullet_train-core" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train[.\-_a-z|0-9]*.*/
+          regex = /#{"bullet_train-core" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train[\-|\.|_|a-z|0-9]*.*/
           base_path = result[:absolute_path].scan(regex).pop
 
           # Try to calculate which package the file is from, and what it's path is within that project.
@@ -152,7 +152,7 @@ module BulletTrain
           @needle = partial_parts.join("/")
         elsif @needle.match?(/bullet_train/)
           # If it's a full path, we need to make sure we're getting it from the right package.
-          _, partial_view_package, partial_path_without_package = @needle.partition(/bullet_train-core\/bullet_train[a-z|\-_0-9.]*/)
+          _, partial_view_package, partial_path_without_package = @needle.partition(/(bullet_train-core\/)?bullet_train[a-z|\-|\.|_|0-9]*/)
 
           # Pop off `bullet_train-core` and the gem's version so we can call `bundle show` correctly.
           partial_view_package.gsub!(/bullet_train-core\//, "")
