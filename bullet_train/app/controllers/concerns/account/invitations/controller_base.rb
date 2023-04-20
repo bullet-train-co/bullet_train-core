@@ -73,6 +73,13 @@ module Account::Invitations::ControllerBase
     end
   end
 
+  # POST /invitations/1/resend
+  # POST /invitations/1/resend.json
+  def resend
+    # get the uuid from params[:id]?
+    UserMailer.invited(params[:id]).deliver_later
+  end
+
   # GET /invitations/new
   def new
     @invitation.build_membership
