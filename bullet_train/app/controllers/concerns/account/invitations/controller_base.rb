@@ -77,7 +77,13 @@ module Account::Invitations::ControllerBase
   # POST /invitations/1/resend.json
   def resend
     # get the uuid from params[:id]?
-    UserMailer.invited(params[:id]).deliver_later
+    @invitation = Invitation.find_by(uuid: params[:id])
+    if @invitation
+      UserMailer.invited(params[:id]).deliver_later
+      redirect_to account_team_invitations_path(@invitation.membership.team), notice: "invitation resent"
+    else
+      
+    end
   end
 
   # GET /invitations/new

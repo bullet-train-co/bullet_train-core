@@ -97,6 +97,12 @@ module Account::Memberships::ControllerBase
     end
   end
 
+  def resend
+    if @membership.invitation
+      UserMailer.invited(@membership.invitation.uuid).deliver_later
+    end
+  end
+
   private
 
   def manageable_role_keys
