@@ -1,7 +1,7 @@
 /users:
   get:
     tags:
-      - Users
+      - User
     summary: "List Users"
     operationId: listUsers
     parameters:
@@ -22,10 +22,12 @@
               type: array
               items:
                 $ref: "#/components/schemas/UserAttributes"
+            example:
+              <%= FactoryBot.get_examples(:user, version: @version) %>
 /users/{id}:
   get:
     tags:
-      - Users
+      - User
     summary: "Fetch User"
     operationId: fetchUser
     parameters:
@@ -39,9 +41,11 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UserAttributes"
+            example:
+              <%= FactoryBot.get_example(:user, version: @version) %>
   put:
     tags:
-      - Users
+      - User
     summary: "Update User"
     operationId: updateUser
     parameters:
@@ -57,6 +61,8 @@
               user:
                 type: object
                 $ref: "#/components/schemas/UserParameters"
+          example:
+            <%= FactoryBot.put_parameters(:user, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -66,3 +72,5 @@
           application/json:
             schema:
               $ref: "#/components/schemas/UserAttributes"
+            example:
+              <%= FactoryBot.put_example(:user, version: @version) %>

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.2.11)
+    bullet_train-scope_validator (1.2.24)
 
 GEM
   remote: https://rubygems.org/
@@ -38,6 +38,7 @@ GEM
 PLATFORMS
   arm64-darwin-20
   arm64-darwin-21
+  arm64-darwin-22
 
 DEPENDENCIES
   bullet_train-scope_validator!

@@ -1,7 +1,7 @@
 /teams:
   get:
     tags:
-      - Teams
+      - Team
     summary: "List Teams"
     operationId: listTeams
     parameters:
@@ -22,10 +22,13 @@
               type: array
               items:
                 $ref: "#/components/schemas/TeamAttributes"
+            example:
+              <%= FactoryBot.get_examples(:team, version: @version) %>
+
 /teams/{id}:
   get:
     tags:
-      - Teams
+      - Team
     summary: "Fetch Team"
     operationId: fetchTeam
     parameters:
@@ -39,9 +42,11 @@
           application/json:
             schema:
               $ref: "#/components/schemas/TeamAttributes"
+            example:
+              <%= FactoryBot.get_example(:team, version: @version) %>
   put:
     tags:
-      - Teams
+      - Team
     summary: "Update Team"
     operationId: updateTeam
     parameters:
@@ -57,6 +62,8 @@
               team:
                 type: object
                 $ref: "#/components/schemas/TeamParameters"
+          example:
+            <%= FactoryBot.put_parameters(:team, version: @version) %>
     responses:
       "404":
         description: "Not Found"
@@ -66,3 +73,5 @@
           application/json:
             schema:
               $ref: "#/components/schemas/TeamAttributes"
+            example:
+              <%= FactoryBot.put_example(:team, version: @version) %>

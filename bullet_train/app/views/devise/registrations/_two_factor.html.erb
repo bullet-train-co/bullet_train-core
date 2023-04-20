@@ -1,10 +1,9 @@
-<%= render 'account/shared/box', divider: @backup_codes do |p| %>
-  <% p.content_for :title, t("users.edit.two_factor.header") %>
-  <% p.content_for :description, t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
+<%= render 'account/shared/box', divider: @backup_codes do |box| %>
+  <% box.title t("users.edit.two_factor.header") %>
+  <% box.description t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
   <% if current_user.otp_secret %>
     <% if @backup_codes %>
-      <% p.content_for :body do %>
-
+      <% box.body do %>
         <%= render 'account/shared/alert' do %>
           <%= t('users.edit.two_factor.warning').html_safe %>
         <% end %>
@@ -38,7 +37,7 @@
       <% end %>
     <% end %>
   <% end %>
-  <% p.content_for :actions do %>
+  <% box.actions do %>
     <div class="<%= 'hidden' if @backup_codes %> space-y">
       <% if local_assigns.has_key? :verified %>
         <% if verified %>
