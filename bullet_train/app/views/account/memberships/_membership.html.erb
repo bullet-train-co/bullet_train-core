@@ -27,8 +27,6 @@
     <% if membership.unclaimed? %>
       <%= link_to t('.buttons.resend'), resend_account_invitation_url(membership.invitation.uuid), class: 'button-secondary button-smaller' %>
     <% end %>
-  </td>
-  <td class="text-right">
     <%= link_to t('.buttons.show'), [:account, membership], class: 'button-secondary button-smaller' %>
   </td>
 </tr>
