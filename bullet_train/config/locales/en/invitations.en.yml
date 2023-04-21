@@ -57,6 +57,7 @@ en:
       updated: 'Invitation was successfully updated.'
       destroyed: 'Invitation was successfully destroyed.'
       resent: 'Invitation was successfully resent.'
+      resent_error: Sorry, we couldn't find an invitation to resend.
       doesnt_exist: Sorry, but we couldn't find your invitation. Please contact an administrator on the team to have them send you another one.
     values:
       name: 'Invitation to Join %{team_name}'
