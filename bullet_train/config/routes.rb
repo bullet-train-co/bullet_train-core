@@ -37,7 +37,6 @@ Rails.application.routes.draw do
           member do
             get :accept
             post :accept
-            get :resend
             post :resend
           end
         end
