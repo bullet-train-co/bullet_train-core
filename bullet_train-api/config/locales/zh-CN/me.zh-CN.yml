@@ -1,0 +1,5 @@
+zh-CN:
+  me:
+    api:
+      actions: 当前用户的操作
+      show: 检索当前用户的信息

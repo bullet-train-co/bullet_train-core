@@ -1,0 +1,70 @@
+zh-CN:
+  invitations: &invitations
+    label: &label 邀请
+    breadcrumbs:
+      label: *label
+    buttons: &buttons
+      new: 邀请新团队成员
+      create: 创建邀请
+      update: 更新邀请
+      destroy: 取消
+      join_team: 加入%{team_name}
+      logout: 登出
+      confirmations:
+        destroy: 确定要取消邀请%{invitation_name}吗？他们已收到的邀请将失效。无法撤消此操作。
+    fields: &fields
+      email:
+        name: &email 邮箱地址
+        label: *email
+        heading: *email
+      roles: &role_ids
+        name: &roles 特殊权限
+        label: *roles
+        heading: *roles
+      role_ids: *role_ids
+      # 🚅 超级脚手架将在这一行之上插入新字段。
+      created_at:
+        name: &created_at 已发送
+        heading: *created_at
+    index:
+      section: "%{team_name}的邀请"
+      header: 团队成员邀请
+      description: 我们已发送以下邀请。
+      fields: *fields
+      buttons: *buttons
+    show:
+      join_team: 加入%{team_name}
+      header: 团队邀请
+      has_invited: <b>%{user_name}</b>已邀请您加入%{team_name}。
+      alert: 已通过电子邮件发送此邀请到<b>%{invitation_email}</b>，但您当前以<b>%{user_email}</b>身份登录。
+      you_can: 您可以：
+      accept_the_invitation: 接受下面的邀请，您将作为<b>%{user_email}</b>加入团队。
+      sign_out: 在下面退出，重新点击电子邮件中的链接，然后登录到另一个账户或创建新账户。
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      invite_as: 以%{role_key}身份邀请
+      buttons: *buttons
+    new:
+      section: "%{team_name}的新邀请"
+      header: 新邀请详细信息
+      description: 我们会通过电子邮件向他们发送注册链接，他们可以在那里加入你的团队。
+      form: *form
+    notifications:
+      edit_message: 我们不支持编辑邀请，因为它会带来安全性风险。请删除并重新创建它们。
+      welcome: 欢迎来到%{team_name}！
+      created: 成功创建邀请。
+      updated: 成功更新邀请。
+      destroyed: 成功删除邀请。
+      doesnt_exist: 很抱歉，我们找不到您的邀请。请联系团队管理员，让他们发送一个新的邀请给您。
+    values:
+      name: 加入%{team_name}的邀请
+  account:
+    invitations: *invitations
+  activerecord:
+    attributes:
+      invitation:
+        email: *email
+        role_ids: *roles
+        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        created_at: *created_at

@@ -1,0 +1,131 @@
+# config/locales 目录中的文件用于国际化，由 Rails 自动加载。如果要使用英语以外的语言环境，
+# 请在此目录中添加必要的文件。
+#
+# 要使用语言环境，请使用`I18n.t`：
+#
+#     I18n.t "hello"
+#
+# 在视图中，请使用别名`t`：
+#
+#     <%= t("hello") %>
+#
+# 要使用其他语言环境，请使用`I18n.locale`设置：
+#
+#     I18n.locale = :"zh-CN"
+#
+# 这将使用`config/locales/zh-CN.yml`中的信息。
+#
+# 以下键必须转义，否则默认的I18n后端将无法检索它们：
+#
+# true, false, on, off, yes, no
+#
+# 而是用引号将它们括起来。
+#
+# en:
+#   "true": "foo"
+#
+# 要了解更多信息，请阅读Rails国际化指南（可以在https://guides.rubyonrails.org/i18n.html找到）。
+
+zh-CN:
+  bullet_train:
+    name: Bullet Train
+    tagline: Ruby on Rails SaaS模板
+    description: Bullet Train是一个Ruby on Rails的SaaS解决方案，可以为开发者节省几周的时间。
+    keywords: bullet train ruby on rails saas模板入门工具包
+    support_email: ask@bullettrain.co
+  global:
+    or: 或者
+    more: 更多
+    is_admin: 管理员？
+    person: 人
+    admin: 管理员
+    confirm_message: 您确定吗？
+    typing_search: 开始输入搜索...
+    sidebar: 侧边栏
+    creator: Bullet Train, Inc.
+    buttons:
+      other: 其他
+      debug: 调试
+      details: 详细信息
+      revoke: 撤消
+      cancel: 取消
+      next: 下一步
+      back: 回退
+      new: 新建
+      edit: 编辑
+      settings: 设置
+      configure: 配置
+      remove: 移除
+      delete: 删除
+      update: 更新
+      sign_up: 注册
+      sign_in: 登录
+    notifications:
+      not_found: 未找到
+      all_fields_required: 所有这些字段都是必填的。
+    dates:
+      today: 今天
+      day:
+        one: 1天
+        other: "%{count}天"
+      last_month: 上个月
+      last_week: 上周
+      last_day:
+        one: 最后一天
+        other: 最后%{count}天
+    formats:
+      timestamp_unavailable: 没有
+      date: "%Y-%m-%d"
+      date_and_time: "%Y-%m-%d %H:%M"
+
+  menus:
+    main:
+      labels:
+        account: 帐户
+        new: 新建
+        profile_details: 个人资料详情
+        logout: 登出
+        skip: 现在跳过
+        dashboard: 仪表盘
+        team_members: 团队成员
+        webhooks: Webhooks
+        invitations: 邀请
+        billing: 计费
+        upgrade: 升级
+        switch_teams: 切换团队
+        add_new_team: 添加新团队
+        edit_account_details: 帐户详细信息
+        resources: 资源
+        collaborate: 协作
+        integrations: 集成
+        developers: 开发者
+        your_account: 您的帐户
+        team: 团队
+        team_settings: 团队设置
+
+  breadcrumbs:
+    your_dashboard: 您的仪表盘
+    actions:
+      edit: 编辑
+      new: 新建
+
+  fields:
+    date_field:
+      apply: 应用
+      cancel: 清除
+
+  layouts:
+    application:
+      raise: 我们永远不应该使用应用程序布局。
+
+    mailer:
+      trouble: 如果您上面的按钮有问题，请将下面的URL复制并粘贴到您的网页浏览器中。
+      all_rights_reserved: "%{year} %{product_name}。保留所有权利。"
+
+    public:
+      launch_help: 我们正在帮助人们推出高质量的SaaS产品！
+      developed_by: 开发于
+      made_with_love: 用爱制造
+      location: 洛杉矶
+      follow_us: 关注我们
+      all_rights_reserved: "%{year} Bullet Train, Inc.，版权所有"

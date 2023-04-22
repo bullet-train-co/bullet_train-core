@@ -1,0 +1,125 @@
+zh-CN:
+  users: &users
+    label: &label 用户
+    breadcrumbs:
+      label: *label
+    buttons: &buttons
+      update_profile: 更新个人资料
+      update_password: 更新密码
+    edit:
+      section: "%{users_possessive} 的个人资料"
+      profile:
+        header: 更新您的个人资料
+        description: 您可以更新接收通知的电子邮件地址，也可以更新您名称的显示方式。
+      password:
+        header: 更新你的密码
+      two_factor:
+        header: 双因素身份验证
+        description_enabled: 您的帐户目前已启用双重验证（2FA）。
+        description_disabled: 您可以通过启用双重认证来增加帐户的安全性。
+        verification_fail: 验证失败。您可以再次尝试启用。请确保您使用认证器应用程序扫描新的二维码。
+        verification_success: 成功！谢谢您的验证。双重认证现已启用。
+        warning: 为了启用双重认证，您<strong>必须</strong>安装认证器应用程序，并<strong>从下面的应用程序中输入您的验证码</strong>。在您这样做之前，双重认证不会被启用。这是为了避免您被锁定帐户。
+        instructions: 在您的手机上安装<a href='https://authy.com/download/' target='_blank'>Authy</a>或<a href='https://support.google.com/accounts/answer/1066447'>谷歌身份验证器</a>，并扫描下面显示的条形码。
+        recovery_codes: 如果您丢失用于双重认证的设备访问权限，您也可以复制以下任意恢复代码，每个恢复代码都可以帮助您重新访问您的帐户。
+        buttons:
+          enable: 启用
+          disable: 禁用
+          verify: 校验
+      buttons: *buttons
+    notifications:
+      updated: 用户已经成功更新。
+    fields: &fields
+      id:
+        _: &id 团队ID
+        label: *id
+        heading: *id
+      name:
+        heading: 名称
+      first_name:
+        _: &first_name 名字
+        label: *first_name
+        heading: *first_name
+      last_name:
+        _: &last_name 姓氏
+        label: *last_name
+        heading: *last_name
+      email:
+        _: &email 邮箱地址
+        label: *email
+        heading: *email
+      time_zone:
+        _: &time_zone 您的时区
+        label: *time_zone
+        heading: *time_zone
+      profile_photo_id:
+        _: &profile_photo_id 个人照片
+        label: *profile_photo_id
+        heading: *profile_photo_id
+      current_password:
+        label: 当前的密码
+      password:
+        _: &password 密码
+        label: *password
+      password_confirmation:
+        _: &password_confirmation 确认密码
+        label: 确认密码
+      otp_attempt:
+        _: &otp_attempt 您的验证码
+        label: *otp_attempt
+        heading: *otp_attempt
+      locale:
+        _: &locale 语言
+        label: *locale
+        heading: *locale
+        help: 默认情况下，页面语言将根据每个团队的语言设置进行调整，但你可以在这里为你的账户设置一个全局的个人偏好。
+      # 🚅 超级脚手架将在这一行之上插入新字段。
+      created_at:
+        _: &created_at 注册于
+        heading: *created_at
+      updated_at:
+        _: &updated_at 更新于
+        heading: *updated_at
+    # 这是我们如何为特定命名空间定义自定义字段
+    _: &self
+      email:
+        label: 您的邮箱
+      password:
+        label: 您的密码
+      first_name:
+        label: 您的名字
+      last_name:
+        label: 您的姓氏
+      otp_attempt:
+        label: 双因素验证码
+        help: 你可以在你为你的账户添加双因素验证（2FA）时配置的认证器应用程序中找到它。
+    self:
+      <<: [*self, *fields]
+    _1: &sign_up
+      password:
+        label: 设置密码
+    sign_up:
+      <<: [*sign_up, *self, *fields]
+    _2: &update_self
+      password:
+        label: 新密码
+    update_self:
+      <<: [*update_self, *self, *fields]
+    form:
+      buttons: *buttons
+  account:
+    users: *users
+  activerecord:
+    attributes:
+      user:
+        first_name: *first_name
+        last_name: *last_name
+        email: *email
+        profile_photo_id: *profile_photo_id
+        time_zone: *time_zone
+        locale: *locale
+        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        password: *password
+        password_confirmation: *password_confirmation
+        created_at: *created_at
+        updated_at: *updated_at

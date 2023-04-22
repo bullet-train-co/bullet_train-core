@@ -1,4 +1,4 @@
-# if you're looking for form fields, they're namespaced within `user.yml` and `team.yml`.
+# if you're looking for form fields, they're namespaced within `user.en.yml` and `team.en.yml`.
 en:
   onboarding: &onboarding
     user_details:

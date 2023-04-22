@@ -1,0 +1,7 @@
+zh-CN:
+  account:
+    platform:
+      connections:
+        new:
+          header: 将%{application_name}连接到团队
+          not_allowed: 不允许

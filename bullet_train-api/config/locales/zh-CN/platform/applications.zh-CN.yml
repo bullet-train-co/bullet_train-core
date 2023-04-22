@@ -1,0 +1,97 @@
+zh-CN:
+  platform/applications: &applications
+    label: &label 平台应用
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: API
+      icon: fal fa-browser ti ti-plug
+    buttons: &buttons
+      new: 分配新平台应用
+      create: 分配平台应用
+      edit: 编辑平台应用
+      update: 更新平台应用
+      destroy: 删除平台应用
+      shorthand:
+        edit: 编辑
+        destroy: 删除
+        disconnect: 断开连接
+      confirmations:
+        # TODO 根据您的用例进行自定义。
+        destroy: 确定要删除%{application_name}吗？这将破坏使用了此客户端UID、密钥及关联的任何API访问令牌的任何集成。无法撤消此操作。
+        disconnect: Are you sure you want to disconnect %{application_name}? This might affect an ongoing service provided by %{application_name} and can not be undone.
+        disconnect: 确定要断开与%{application_name}的连接吗？这可能会影响%{application_name}提供的正在进行的服务。无法撤消此操作。
+    fields: &fields
+      name:
+        _: &name 名称
+        label: *name
+        heading: 应用名称
+
+      redirect_uri:
+        _: &redirect_uri 重定向URI
+        label: *redirect_uri
+        heading: *redirect_uri
+        help: 这仅在您为其他用户构建OAuth2的集成时才需要。
+
+      uid:
+        heading: 客户端UID
+
+      secret:
+        heading: 客户端密钥
+
+      label_string:
+        heading: 应用名称
+
+      # 🚅 超级脚手架将在这一行之上插入新字段。
+      created_at:
+        _: &created_at 已添加
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at 已更新
+        label: *updated_at
+        heading: *updated_at
+    index:
+      section: "%{teams_possessive}平台应用"
+      contexts:
+        team:
+          header: 平台应用
+          description: 平台应用允许您为%{team_name}构建API集成或构建OAuth2集成，供%{team_name}与他人共享。
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{application_name}"
+      header: 平台应用详细信息
+      description: 以下是%{application_name}的配置和OAuth2凭据。
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "%{team_name}的新平台应用"
+      header: 新平台应用详细信息
+      description: 请提供您要为%{team_name}设置的新平台应用的详细信息。
+      form: *form
+    edit:
+      section: "%{application_name}"
+      header: 编辑平台应用详细信息
+      description: 您可以在下面更新有关%{application_name}的详细信息或设置。
+      form: *form
+    notifications:
+      created: 平台应用已成功创建。
+      updated: 平台应用已成功更新。
+      destroyed: 平台应用已成功删除。
+      test_application_created: 测试平台应用已成功创建。
+      test_application_failure: 您必须提供适当的测试设置密钥才能创建测试应用。
+  account:
+    platform:
+      applications: *applications
+  activerecord:
+    attributes:
+      platform/application:
+        name: *name
+        redirect_uri: *redirect_uri
+        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        created_at: *created_at
+        updated_at: *updated_at

@@ -1,0 +1,129 @@
+zh-CN:
+  webhooks/outgoing/endpoints: &endpoints
+    label: &label  Webhooks
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-satellite-dish ti ti-bolt
+    buttons: &buttons
+      new: 添加新端点
+      create: 创建端点
+      edit: 编辑设置
+      update: 更新端点
+      destroy: 移除端点
+      shorthand:
+        edit: 设置
+        destroy: 删除
+      confirmations:
+        # TODO 根据您的用例自定义。
+        destroy: 确定要删除%{endpoint_name}吗？这也将删除与其关联的数据。此操作不能撤销。
+    fields: &fields
+      id:
+        _: &id 端点ID
+        label: *id
+        heading: *id
+
+      team_id:
+        _: &team_id 团队ID
+        label: *team_id
+        heading: *team_id
+
+      name:
+        _: &name 名称
+        label: *name
+        heading: *name
+
+      url:
+        _: &url URL
+        label: *url
+        heading: *url
+
+      api_version:
+        _: &api_version 接口版本
+        label: *api_version
+        heading: *api_version
+        options:
+          1: V1
+
+      event_type_ids: &event_types
+        _: &event_type_ids 事件类型
+        label: *event_type_ids
+        heading: *event_type_ids
+        all: 所有事件
+      event_types: *event_types
+
+      scaffolding_absolutely_abstract_creative_concept_id: &scaffolding_absolutely_abstract_creative_concept
+        _: &scaffolding_absolutely_abstract_creative_concept_id 创意概念内
+        label: *scaffolding_absolutely_abstract_creative_concept_id
+        heading: *scaffolding_absolutely_abstract_creative_concept_id
+
+      scaffolding_absolutely_abstract_creative_concept: *scaffolding_absolutely_abstract_creative_concept
+
+      # 🚅 超级脚手架将在这一行之上插入新字段。
+      created_at:
+        _: &created_at 已添加
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at 已更新
+        label: *updated_at
+        heading: *updated_at
+    api:
+      team_id: 绝对抽象团队ID
+      collection_actions: 端点的集合操作
+      index: 端点列表
+      create: 添加新端点
+      member_actions: 单个端点的操作
+      show: 检索端点
+      update: 更新端点
+      destroy: 删除端点
+      fields: *fields
+    index:
+      section: "%{teams_possessive} Webhooks端点"
+      contexts:
+        team:
+          header: Webhooks端点
+          description: 下面是我们将根据%{teams_possessive}帐户活动尝试向其提供webhooks的外部端点列表。
+          description_empty: 尚未为%{team_name}添加任何端点。
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{endpoint_name}"
+      header: Webhooks端点详细信息
+      description: 以下是%{endpoint_name}端点的设置。
+      manage_description: 您可以更新这些设置或删除端点。
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "%{team_name}的新Webhooks端点"
+      header: 新Webhooks端点详细信息
+      description: 请提供您要添加到%{team_name}的新端点的详细信息。
+      form: *form
+    edit:
+      section: "%{endpoint_name}"
+      header: 编辑Webhooks端点设置
+      description: 您可以在下面更新%{endpoint_name}的设置。
+      form: *form
+    notifications:
+      created: 端点已成功创建。
+      updated: 端点已成功更新。
+      destroyed: 端点已成功删除。
+  account:
+    webhooks:
+      outgoing:
+        endpoints: *endpoints
+  activerecord:
+    attributes:
+      webhooks/outgoing/endpoint:
+        name: *name
+        url: *url
+        api_version: *api_version
+        event_type_ids: *event_type_ids
+        scaffolding_absolutely_abstract_creative_concept_id: *scaffolding_absolutely_abstract_creative_concept_id
+        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        created_at: *created_at
+        updated_at: *updated_at

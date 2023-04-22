@@ -1,0 +1,112 @@
+zh-CN:
+  platform/access_tokens: &access_tokens
+    label: &label API访问令牌
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-puzzle-piece
+    buttons: &buttons
+      new: 分配新访问令牌
+      create: 创建访问令牌
+      edit: 编辑访问令牌
+      update: 更新访问令牌
+      destroy: 删除访问令牌
+      shorthand:
+        edit: 编辑
+        destroy: 删除
+      confirmations:
+        # TODO 根据您的用例自定义。
+        destroy: 确定要删除%{access_token_name}吗？这将破坏任何使用此令牌的活动集成，并且此操作无法撤消。
+    fields: &fields
+      id:
+        heading: 访问令牌ID
+      application_id:
+        heading: 应用ID
+      token:
+        _: &token 令牌
+        label: *token
+        heading: *token
+      expires_in:
+        _: &expires_in 过期时间
+        label: *expires_in
+        heading: *expires_in
+      scopes:
+        _: &scopes 范围
+        label: *scopes
+        heading: *scopes
+      last_used_at:
+        _: &last_used_at 最后使用于
+        label: *last_used_at
+        heading: *last_used_at
+      description:
+        _: &description 描述
+        label: *description
+        heading: *description
+      # 🚅 超级脚手架将在这一行之上插入新字段。
+      created_at:
+        _: &created_at 创建于
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        _: &updated_at 更新于
+        label: *updated_at
+        heading: *updated_at
+    api:
+      collection_actions: 访问令牌的批量操作
+      index: 访问令牌列表
+      create: 添加新访问令牌
+      member_actions: 单个访问令牌的操作
+      show: 取回访问令牌
+      update: 更新访问令牌
+      destroy: 删除访问令牌
+      fields: *fields
+    index:
+      section: "%{applications_possessive} API访问令牌"
+      contexts:
+        platform/application:
+          header: API访问令牌
+          description: 您可以使用访问令牌允许%{application_name}向API发送请求。
+        team:
+          header: 平台集成
+          description: 以下平台应用已集成到您的帐户。您可以在下面找到为这些平台应用颁发的访问令牌，以便您在需要时可以和它们调试。
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{access_token_name}"
+      header: 访问令牌详细信息
+      description: 以下是我们对%{access_token_name}的详细信息。
+      manage_description: 您还会找到更新这些详细信息或从%{application_name}完全删除%{access_token_name}的选项。
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+      fields: *fields
+    new:
+      section: "%{application_name}的新访问令牌"
+      header: 新访问令牌详细信息
+      description: 请提供您要添加到%{application_name}的新访问令牌的详细信息。
+      form: *form
+    edit:
+      section: "%{access_token_name}"
+      header: 编辑访问令牌详细信息
+      description: 您可以在下面更新%{access_token_name}的设置。
+      form: *form
+    notifications:
+      created: 访问令牌已成功创建。
+      updated: 访问令牌已成功更新。
+      destroyed: 访问令牌已成功删除。
+  account:
+    platform:
+      access_tokens: *access_tokens
+  activerecord:
+    attributes:
+      platform/access_token:
+        token: *token
+        expires_in: *expires_in
+        scopes: *scopes
+        last_used_at: *last_used_at
+        description: *description
+        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        created_at: *created_at
+        updated_at: *updated_at

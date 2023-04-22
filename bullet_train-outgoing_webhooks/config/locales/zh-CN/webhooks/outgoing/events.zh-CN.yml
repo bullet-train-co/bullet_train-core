@@ -1,0 +1,60 @@
+zh-CN:
+  webhooks/outgoing/events: &events
+    label: &label Webhooks事件
+    fields: &fields
+      id:
+        _: &id 事件ID
+        label: *id
+        heading: *id
+
+      team_id:
+        _: &team_id 团队ID
+        label: *team_id
+        heading: *team_id
+
+      event_type_id: &event_type_id
+        _: &event_type 事件类型
+        label: *event_type
+        heading: *event_type
+
+      event_type: *event_type_id
+
+      subject_id:
+        _: &subject_id 主题ID
+        label: *subject_id
+        heading: *subject_id
+
+      subject_type:
+        _: &subject_type 主题类型
+        label: *subject_type
+        heading: *subject_type
+
+      payload:
+        _: &payload 有效载荷
+        label: *payload
+        heading: *payload
+
+      uuid:
+        _: &uuid UUID
+        label: *uuid
+        heading: *uuid
+
+      short_uuid:
+        _: &short_uuid 短UUID
+        label: *short_uuid
+        heading: *short_uuid
+
+      event_type_name:
+        _: &event_type_name 事件类型名称
+        label: *event_type_name
+        heading: *event_type_name
+
+      data:
+        _: &data 对象数据
+        label: *data
+        heading: *data
+
+      created_at:
+        _: &created_at 发生于
+        label: *created_at
+        heading: *created_at

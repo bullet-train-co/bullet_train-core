@@ -1,0 +1,15 @@
+zh-CN:
+  stripe_connect: Stripe
+  # 🚅 超级脚手架将在此行上方插入新的OAuth提供商。
+  omniauth:
+    team:
+      connected: 我们已成功将该%{provider}帐户添加到您的团队!
+      denied: 未获得连接到%{provider}的权限。没关系!如果您想的话，您可以再试一次。
+      already_present: 该%{provider}帐户已近在此团队中!
+      not_allowed: 您不能向您无法访问的团队添加%{provider}帐户。
+    user:
+      connected: 我们已成功将该%{provider}帐户连接到您的用户帐户。
+      reconnected: 该%{provider}帐户已连接到您的用户帐户。
+      already_registered: 该%{provider}帐户已连接到另一用户。在将该%{provider}帐户与您的用户帐户连接之前，您需要退出登录并使用该帐户再次登录，然后从该用户帐户配置文件中删除它。
+      email_already_registered: 对不起，此电子邮件（%{email}）已注册为其他用户，但此%{provider}帐户未配置为使用该帐户登录。请使用您的密码登录，然后添加此帐户。
+      account_not_found: 对不起，未找到该%{provider}帐户的现有帐户。要创建新帐户，请点击发送到您电子邮件中的邀请链接。

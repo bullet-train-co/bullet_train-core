@@ -1,0 +1,102 @@
+zh-CN:
+  scaffolding/absolutely_abstract/creative_concepts: &creative_concepts
+    label: &label 创意概念
+    breadcrumbs:
+      label: *label
+    navigation:
+      label: *label
+      icon: fal fa-dice-d6 ti ti-thought
+    buttons: &buttons
+      new: 添加新创意概念
+      create: 创建创意概念
+      edit: 编辑创意概念
+      update: 更新创意概念
+      destroy: 删除创意概念
+      shorthand:
+        edit: 编辑
+        destroy: 删除
+      confirmations:
+        # TODO 根据您的用例自定义。
+        destroy: 确定要删除%{creative_concept_name}吗？这也将删除其关联数据。这无法撤消。
+    fields: &fields
+      id:
+        heading: 创意概念ID
+      team_id:
+        heading: 团队ID
+      name:
+        name: &name 名称
+        label: *name
+        heading: *name
+      description:
+        name: &description 描述
+        label: *description
+        heading: *description
+      all_collaborators:
+        heading: 协作者
+      admins:
+        heading: 管理员
+      editors:
+        heading: 编辑者
+      viewers:
+        heading: 查看者
+      # 🚅 超级脚手架将在这一行之上插入新字段。
+      created_at:
+        name: &created_at 已创建
+        label: *created_at
+        heading: *created_at
+      updated_at:
+        name: &updated_at 已更新
+        label: *updated_at
+        heading: *updated_at
+    api:
+      team_id: 团队ID
+      collection_actions: 创意概念的批量操作
+      index: 创意概念列表
+      create: 添加新创意概念
+      member_actions: 单个创意概念的操作
+      show: 检索创意概念
+      update: 更新创意概念
+      destroy: 删除创意概念
+      fields: *fields
+    index:
+      section: "%{teams_possessive} 创意概念"
+      contexts:
+        team:
+          header: 创意概念
+          description: 如果您想知道这是什么以及如何隐藏它，请阅读Bullet Train文档中的"<a href="/docs/super-scaffolding" target="_blank">使用超级脚手架进行代码生成</a>"的部分。
+      fields: *fields
+      buttons: *buttons
+    show:
+      section: "%{creative_concept_name}"
+      header: 创意概念详情
+      description: 以下是%{creative_concept_name}的详细信息。
+      fields: *fields
+      buttons: *buttons
+    form: &form
+      buttons: *buttons
+    new:
+      section: "%{team_name}的新创意概念"
+      header: 新创意概念详细信息
+      description: 请提供要添加到%{team_name}的新创意概念的详细信息。
+      form: *form
+    edit:
+      section: "%{creative_concept_name}"
+      header: 编辑创意概念详细信息
+      description: 您可以在下面更新%{creative_concept_name}的详细信息或设置。
+      form: *form
+    notifications:
+      created: 创意概念已成功创建。
+      updated: 创意概念已成功更新。
+      destroyed: 创意概念已成功删除。
+  account:
+    scaffolding:
+      absolutely_abstract:
+        creative_concepts: *creative_concepts
+  activerecord:
+    attributes:
+      scaffolding/absolutely_abstract/creative_concept:
+        name: *name
+        description: *description
+        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        created_at: *created_at
+        updated_at: *updated_at
