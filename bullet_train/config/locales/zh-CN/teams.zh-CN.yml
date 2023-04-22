@@ -1,6 +1,6 @@
 zh-CN:
   teams: &teams_zhcn
-    label: &label_zhcn 团队
+    label: &label_zhcn 团队列表
     singular: 团队
     breadcrumbs:
       label: *label_zhcn
@@ -14,7 +14,7 @@ zh-CN:
       edit: 编辑团队
       update: 更新团队
     index:
-      section: 团队
+      section: 团队列表
       header: 您的团队
       create: 创建新团队
       buttons: *buttons_zhcn

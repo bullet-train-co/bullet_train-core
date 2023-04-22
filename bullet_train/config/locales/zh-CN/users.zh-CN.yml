@@ -93,6 +93,8 @@ zh-CN:
       otp_attempt:
         label: 双因素验证码
         help: 你可以在你为你的账户添加双因素验证（2FA）时配置的认证器应用程序中找到它。
+      remember_me:
+        label: 记住我？
     self:
       <<: [*self_zhcn, *fields_zhcn]
     _1: &sign_up_zhcn

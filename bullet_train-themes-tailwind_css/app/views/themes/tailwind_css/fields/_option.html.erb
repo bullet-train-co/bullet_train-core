@@ -23,7 +23,7 @@ option_field_options[:class] += " #{append_class}"
   <% if form %>
     <div class="flex items-center">
       <%= form.check_box method, option_field_options %>
-      <%= form.label method, class: 'ml-2' %>
+      <%= form.label labels.label || method, class: 'ml-2' %>
     </div>
   <% else %>
     <% value = option_field_options.delete(:value) %>

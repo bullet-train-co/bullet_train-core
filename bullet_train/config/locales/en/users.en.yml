@@ -93,6 +93,8 @@ en:
       otp_attempt:
         label: Two-Factor Authentication Code
         help: You can find this in the authenticator application you configured when adding 2FA to your account.
+      remember_me:
+        label: Remember me?
     self:
       <<: [*self, *fields]
     _1: &sign_up
