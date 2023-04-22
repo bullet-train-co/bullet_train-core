@@ -1,6 +1,6 @@
 zh-CN:
   roles:
-    label: &label 特殊权限
+    label: &label_zhcn 特殊权限
     breadcrumbs:
-      label: *label
+      label: *label_zhcn
     header: 特殊权限

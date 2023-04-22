@@ -1,60 +1,60 @@
 zh-CN:
-  webhooks/outgoing/events: &events
-    label: &label Webhooks事件
-    fields: &fields
+  webhooks/outgoing/events: &events_zhcn
+    label: &label_zhcn Webhooks事件
+    fields: &fields_zhcn
       id:
-        _: &id 事件ID
-        label: *id
-        heading: *id
+        _: &id_zhcn 事件ID
+        label: *id_zhcn
+        heading: *id_zhcn
 
       team_id:
-        _: &team_id 团队ID
-        label: *team_id
-        heading: *team_id
+        _: &team_id_zhcn 团队ID
+        label: *team_id_zhcn
+        heading: *team_id_zhcn
 
-      event_type_id: &event_type_id
-        _: &event_type 事件类型
-        label: *event_type
-        heading: *event_type
+      event_type_id: &event_type_id_zhcn
+        _: &event_type_zhcn 事件类型
+        label: *event_type_zhcn
+        heading: *event_type_zhcn
 
-      event_type: *event_type_id
+      event_type: *event_type_id_zhcn
 
       subject_id:
-        _: &subject_id 主题ID
-        label: *subject_id
-        heading: *subject_id
+        _: &subject_id_zhcn 主题ID
+        label: *subject_id_zhcn
+        heading: *subject_id_zhcn
 
       subject_type:
-        _: &subject_type 主题类型
-        label: *subject_type
-        heading: *subject_type
+        _: &subject_type_zhcn 主题类型
+        label: *subject_type_zhcn
+        heading: *subject_type_zhcn
 
       payload:
-        _: &payload 有效载荷
-        label: *payload
-        heading: *payload
+        _: &payload_zhcn 有效载荷
+        label: *payload_zhcn
+        heading: *payload_zhcn
 
       uuid:
-        _: &uuid UUID
-        label: *uuid
-        heading: *uuid
+        _: &uuid_zhcn UUID
+        label: *uuid_zhcn
+        heading: *uuid_zhcn
 
       short_uuid:
-        _: &short_uuid 短UUID
-        label: *short_uuid
-        heading: *short_uuid
+        _: &short_uuid_zhcn 短UUID
+        label: *short_uuid_zhcn
+        heading: *short_uuid_zhcn
 
       event_type_name:
-        _: &event_type_name 事件类型名称
-        label: *event_type_name
-        heading: *event_type_name
+        _: &event_type_name_zhcn 事件类型名称
+        label: *event_type_name_zhcn
+        heading: *event_type_name_zhcn
 
       data:
-        _: &data 对象数据
-        label: *data
-        heading: *data
+        _: &data_zhcn 对象数据
+        label: *data_zhcn
+        heading: *data_zhcn
 
       created_at:
-        _: &created_at 发生于
-        label: *created_at
-        heading: *created_at
+        _: &created_at_zhcn 发生于
+        label: *created_at_zhcn
+        heading: *created_at_zhcn

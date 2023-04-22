@@ -1,12 +1,12 @@
 zh-CN:
-  oauth/stripe_accounts: &stripe_accounts
-    label: &label Stripe帐户
+  oauth/stripe_accounts: &stripe_accounts_zhcn
+    label: &label_zhcn Stripe帐户
     breadcrumbs:
-      label: *label
+      label: *label_zhcn
     navigation:
-      label: *label
+      label: *label_zhcn
       icon: fab fa-stripe-s ti ti-money
-    buttons: &buttons
+    buttons: &buttons_zhcn
       new: 连接Stripe帐户
       another: 连接另一个Stripe帐户
       edit: 设置
@@ -18,15 +18,15 @@ zh-CN:
       confirmations:
         # TODO 根据您的用例自定义。
         destroy: 确定要从您的帐户断开%{stripe_account_name} Stripe帐户的连接吗？这只会断开它作为单点登录选项的使用。它可能仍然在其他地方连接为集成。
-    fields: &fields
+    fields: &fields_zhcn
       name:
-        name: &name 名称
-        label: *name
-        heading: *name
+        name: &name_zhcn 名称
+        label: *name_zhcn
+        heading: *name_zhcn
       # 🚅 超级脚手架将在这一行之上插入新字段。
       created_at:
-        name: &created_at 已连接
-        heading: *created_at
+        name: &created_at_zhcn 已连接
+        heading: *created_at_zhcn
     index:
       section: "%{users_possessive} Stripe帐户"
       contexts:
@@ -35,32 +35,32 @@ zh-CN:
           description: 您可以使用以下任何Stripe帐户登录您的帐户。您也可以管理这些帐户在哪里集成。
           description_empty: 您可以在下面将Stripe帐户连接到您的帐户以进行单点登录。
           integration_note: 您还可以<a href=\"%{integration_url}\">安装Stripe作为集成</a>。
-      fields: *fields
-      buttons: *buttons
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
     show:
       section: "%{stripe_account_name}"
       header: 连接的Stripe帐户
       description: 您的%{stripe_account_name} Stripe帐户当前连接用于单点登录身份验证。
-      fields: *fields
-      buttons: *buttons
-    form: &form
-      buttons: *buttons
-      fields: *fields
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
+    form: &form_zhcn
+      buttons: *buttons_zhcn
+      fields: *fields_zhcn
     edit:
       section: "%{stripe_account_name}"
       header: Stripe帐户设置
       description: 如果您的Stripe集成没有任何可配置的设置，则可能不需要此页面，但我们默认在这里保留该页面，以防您需要它。
-      form: *form
+      form: *form_zhcn
     notifications:
       created: 太棒了！我们已将该Stripe帐户添加到您的帐户！
       updated: Stripe帐户设置已成功更新。
       destroyed: 我们已从您的帐户断开该Stripe帐户的连接。
   account:
     oauth:
-      stripe_accounts: *stripe_accounts
+      stripe_accounts: *stripe_accounts_zhcn
   activerecord:
     attributes:
       oauth/stripe_account:
-        name: *name
+        name: *name_zhcn
         # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
-        created_at: *created_at
+        created_at: *created_at_zhcn

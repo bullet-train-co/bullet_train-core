@@ -1,12 +1,12 @@
 zh-CN:
-  integrations/stripe_installations: &stripe_installations
-    label: &label Stripe安装
+  integrations/stripe_installations: &stripe_installations_zhcn
+    label: &label_zhcn Stripe安装
     breadcrumbs:
-      label: *label
+      label: *label_zhcn
     navigation:
-      label: *label
+      label: *label_zhcn
       icon: fab fa-stripe-s ti ti-money
-    buttons: &buttons
+    buttons: &buttons_zhcn
       new: 添加新Stripe安装
       create: 创建Stripe安装
       edit: 编辑Stripe设置
@@ -19,20 +19,20 @@ zh-CN:
         # TODO 根据您的用例自定义。
         destroy: 确定要从%{team_name}断开%{stripe_installation_name}的连接吗？这不会从Stripe帐户断开它与任何用户帐户的单点登录连接。这将删除与%{team_name}关联的此安装的任何数据。此操作无法撤消。
         destroy_from_user: 确定要从%{team_name}断开此Stripe帐户的连接吗？这将删除与%{team_name}关联的此安装的任何数据。此操作无法撤消。
-    fields: &fields
+    fields: &fields_zhcn
       name:
-        _: &name 名称
-        label: *name
-        heading: *name
+        _: &name_zhcn 名称
+        label: *name_zhcn
+        heading: *name_zhcn
       # 🚅 超级脚手架将在这一行之上插入新字段。
       created_at:
-        _: &created_at 已创建
-        label: *created_at
-        heading: *created_at
+        _: &created_at_zhcn 已创建
+        label: *created_at_zhcn
+        heading: *created_at_zhcn
       updated_at:
-        _: &updated_at 已更新
-        label: *updated_at
-        heading: *updated_at
+        _: &updated_at_zhcn 已更新
+        label: *updated_at_zhcn
+        heading: *updated_at_zhcn
     list:
       section: Stripe安装
       contexts:
@@ -41,8 +41,8 @@ zh-CN:
           description: 由于您是此Stripe帐户的注册所有者，因此您可以从当前将其作为集成安装的任何团队中断开连接。
           description_empty: 此Stripe帐户未在任何团队上安装为集成。
           authentication_note: 您还可以<a href=\"%{authentication_url}\">连接和管理Stripe帐户以进行单点登录身份验证</a>。
-      fields: *fields
-      buttons: *buttons
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
     index:
       section: "%{teams_possessive} Stripe安装"
       contexts:
@@ -51,39 +51,39 @@ zh-CN:
           description: 以下是已添加用于%{team_name}的Stripe安装列表。
           description_empty: 未为%{team_name}添加任何Stripe安装。
           authentication_note: 您还可以<a href=\"%{authentication_url}\">连接和管理Stripe帐户以进行单点登录身份验证</a>。
-      fields: *fields
-      buttons: *buttons
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
     show:
       section: "%{stripe_installation_name}"
       header: Stripe安装详情
       description: 以下是我们对%{stripe_installation_name}的详细信息。
       manage_description: 您还会找到更新这些详细信息或从%{team_name}中完全删除%{stripe_installation_name}的选项。
-      fields: *fields
-      buttons: *buttons
-    form: &form
-      buttons: *buttons
-      fields: *fields
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
+    form: &form_zhcn
+      buttons: *buttons_zhcn
+      fields: *fields_zhcn
     new:
       section: "%{team_name}的新Stripe安装"
       header: 新Stripe安装详细信息
       description: 请提供您要添加到%{team_name}的新Stripe安装的详细信息。
-      form: *form
+      form: *form_zhcn
     edit:
       section: "%{stripe_installation_name}"
       header: 编辑Stripe安装详细信息
       description: 您可以在下面更新%{stripe_installation_name}的详细信息或设置。
-      form: *form
+      form: *form_zhcn
     notifications:
       created: Stripe安装已成功创建。
       updated: Stripe安装已成功更新。
       destroyed: Stripe安装已成功删除。
   account:
     integrations:
-      stripe_installations: *stripe_installations
+      stripe_installations: *stripe_installations_zhcn
   activerecord:
     attributes:
       integrations/stripe_installation:
-        name: *name
+        name: *name_zhcn
         # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
-        created_at: *created_at
-        updated_at: *updated_at
+        created_at: *created_at_zhcn
+        updated_at: *updated_at_zhcn

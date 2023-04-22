@@ -1,12 +1,12 @@
 zh-CN:
-  scaffolding/completely_concrete/tangible_things: &tangible_things
-    label: &label 有形物品
+  scaffolding/completely_concrete/tangible_things: &tangible_things_zhcn
+    label: &label_zhcn 有形物品
     breadcrumbs:
-      label: *label
+      label: *label_zhcn
     navigation:
-      label: *label
+      label: *label_zhcn
       icon: fal fa-puzzle-piece
-    buttons: &buttons
+    buttons: &buttons_zhcn
       new: 添加新有形物品
       create: 创建有形物品
       edit: 编辑有形物品
@@ -18,43 +18,43 @@ zh-CN:
       confirmations:
         # TODO 根据您的用例自定义。
         destroy: 确定要删除%{tangible_thing_name}吗？这也将删除所有子资源，此操作无法撤消。
-    fields: &fields
+    fields: &fields_zhcn
       id:
         heading: Tangible Thing ID
       absolutely_abstract_creative_concept_id:
         heading: Creative Concept ID
       # 🚅 skip this section when scaffolding.
       text_field_value:
-        _: &text_field_value 文本字段值
-        label: *text_field_value
-        heading: *text_field_value
+        _: &text_field_value_zhcn 文本字段值
+        label: *text_field_value_zhcn
+        heading: *text_field_value_zhcn
       button_value:
-        _: &button_value 按钮值
-        label: *button_value
-        heading: *button_value
+        _: &button_value_zhcn 按钮值
+        label: *button_value_zhcn
+        heading: *button_value_zhcn
         options:
           one: 一
           two: 二
           three: 三
       multiple_button_values:
-        _: &multiple_button_values 多个按钮值
-        label: *multiple_button_values
-        heading: *multiple_button_values
+        _: &multiple_button_values_zhcn 多个按钮值
+        label: *multiple_button_values_zhcn
+        heading: *multiple_button_values_zhcn
         options:
           four: 四
           five: 五
           six: 六
       boolean_button_value:
-        _: &boolean_button_value 布尔按钮值
-        label: *boolean_button_value
-        heading: *boolean_button_value
+        _: &boolean_button_value_zhcn 布尔按钮值
+        label: *boolean_button_value_zhcn
+        heading: *boolean_button_value_zhcn
         options:
           true: 是
           false: 否
       color_picker_value:
-        _: &color_picker_value 拾色器值
-        label: *color_picker_value
-        heading: *color_picker_value
+        _: &color_picker_value_zhcn 拾色器值
+        label: *color_picker_value_zhcn
+        heading: *color_picker_value_zhcn
         options:
          - "#9C73D2"
          - "#48CDFE"
@@ -65,38 +65,38 @@ zh-CN:
          - "#F9DE00"
          - "#929292"
       cloudinary_image_value:
-        _: &cloudinary_image_value 云计算图像值
-        label: *cloudinary_image_value
-        heading: *cloudinary_image_value
+        _: &cloudinary_image_value_zhcn 云计算图像值
+        label: *cloudinary_image_value_zhcn
+        heading: *cloudinary_image_value_zhcn
       date_field_value:
-        _: &date_field_value 日期字段值
-        label: *date_field_value
-        heading: *date_field_value
+        _: &date_field_value_zhcn 日期字段值
+        label: *date_field_value_zhcn
+        heading: *date_field_value_zhcn
       date_and_time_field_value:
-        _: &date_and_time_field_value 日期和时间字段值
-        label: *date_and_time_field_value
-        heading: *date_and_time_field_value
+        _: &date_and_time_field_value_zhcn 日期和时间字段值
+        label: *date_and_time_field_value_zhcn
+        heading: *date_and_time_field_value_zhcn
         other_time_zone: 其他
       email_field_value:
-        _: &email_field_value 电子邮件字段值
-        label: *email_field_value
-        heading: *email_field_value
+        _: &email_field_value_zhcn 电子邮件字段值
+        label: *email_field_value_zhcn
+        heading: *email_field_value_zhcn
       file_field_value:
-        _: &file_field_value 文件邮件字段值
-        label: *file_field_value
-        heading: *file_field_value
+        _: &file_field_value_zhcn 文件邮件字段值
+        label: *file_field_value_zhcn
+        heading: *file_field_value_zhcn
       password_field_value:
-        _: &password_field_value 密码字段值
-        label: *password_field_value
-        heading: *password_field_value
+        _: &password_field_value_zhcn 密码字段值
+        label: *password_field_value_zhcn
+        heading: *password_field_value_zhcn
       phone_field_value:
-        _: &phone_field_value 电话字段值
-        label: *phone_field_value
-        heading: *phone_field_value
+        _: &phone_field_value_zhcn 电话字段值
+        label: *phone_field_value_zhcn
+        heading: *phone_field_value_zhcn
       option_value:
-        _: &option_value 选项值
-        label: *option_value
-        heading: *option_value
+        _: &option_value_zhcn 选项值
+        label: *option_value_zhcn
+        heading: *option_value_zhcn
         options:
           one: 一
           two: 二
@@ -106,9 +106,9 @@ zh-CN:
           two: Ut enim ad minim veniam, quis nostrud exercitation. ullamco laboris nisi ut aliquip ex ea commodo consequat.
           three: Duis aute irure dolor in reprehenderit in voluptate. velit esse cillum dolore eu fugiat nulla pariatur.
       multiple_option_values:
-        _: &multiple_option_values 多个选项值
-        label: *multiple_option_values
-        heading: *multiple_option_values
+        _: &multiple_option_values_zhcn 多个选项值
+        label: *multiple_option_values_zhcn
+        heading: *multiple_option_values_zhcn
         options:
           four: 四
           five: 五
@@ -118,39 +118,39 @@ zh-CN:
           five: Quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo ex ea commodo consequat.
           six: Ut enim ad minima veniam, quis nostrum exercitationem ullam corporis suscipit laboriosam, fugiat nulla pariatur.
       super_select_value:
-        _: &super_select_value 超级选择器值
-        label: *super_select_value
-        heading: *super_select_value
+        _: &super_select_value_zhcn 超级选择器值
+        label: *super_select_value_zhcn
+        heading: *super_select_value_zhcn
         options:
           one: 一
           two: 二
           three: 三
       multiple_super_select_values:
-        _: &multiple_super_select_values 多个超级选择器值
-        label: *multiple_super_select_values
-        heading: *multiple_super_select_values
+        _: &multiple_super_select_values_zhcn 多个超级选择器值
+        label: *multiple_super_select_values_zhcn
+        heading: *multiple_super_select_values_zhcn
         options:
           four: 四
           five: 五
           six: 六
       text_area_value:
-        _: &text_area_value 文本区域值
-        label: *text_area_value
-        heading: *text_area_value
+        _: &text_area_value_zhcn 文本区域值
+        label: *text_area_value_zhcn
+        heading: *text_area_value_zhcn
       action_text_value:
-        _: &action_text_value Trix编辑器值
-        label: *action_text_value
-        heading: *action_text_value
+        _: &action_text_value_zhcn Trix编辑器值
+        label: *action_text_value_zhcn
+        heading: *action_text_value_zhcn
       # 🚅 停止我们现在正在进行的任何跳转。
       # 🚅 超级脚手架将在这一行之上插入新字段。
       created_at:
-        _: &created_at 已添加
-        label: *created_at
-        heading: *created_at
+        _: &created_at_zhcn 已添加
+        label: *created_at_zhcn
+        heading: *created_at_zhcn
       updated_at:
-        _: &updated_at 已更新
-        label: *updated_at
-        heading: *updated_at
+        _: &updated_at_zhcn 已更新
+        label: *updated_at_zhcn
+        heading: *updated_at_zhcn
     api:
       collection_actions: 有形物品的集合操作
       index: 有形物品列表
@@ -159,7 +159,7 @@ zh-CN:
       show: 检索有形物品
       update: 更新有形物品
       destroy: 删除有形物品
-      fields: *fields
+      fields: *fields_zhcn
     index:
       section: "%{creative_concepts_possessive} 的有形物品"
       contexts:
@@ -167,28 +167,28 @@ zh-CN:
           header: 有形物品
           description: 下面是为%{creative_concept_name}添加的有形物品列表。
           description_empty: 尚未为%{creative_concept_name}添加任何有形物品。
-      fields: *fields
-      buttons: *buttons
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
     show:
       section: "%{tangible_thing_name}"
       header: 有形物品详细信息
       description: 以下是我们拥有的%{tangible_thing_name}的详细信息。
       manage_description: 您还可以找到更新这些详细信息或从%{creative_concept_name}完全移除%{tangible_thing_name}的选项。
-      fields: *fields
-      buttons: *buttons
-    form: &form
-      buttons: *buttons
-      fields: *fields
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
+    form: &form_zhcn
+      buttons: *buttons_zhcn
+      fields: *fields_zhcn
     new:
       section: "%{creative_concept_name}的新有形物品"
       header: 新有形物品详细信息
       description: 请提供您要添加到%{creative_concept_name}的新有形物品的详细信息。
-      form: *form
+      form: *form_zhcn
     edit:
       section: "%{tangible_thing_name}"
       header: 编辑有形物品详细信息
       description: 您可以在下面更新%{tangible_thing_name}的详细信息或设置。
-      form: *form
+      form: *form_zhcn
     notifications:
       created: 有形物品已成功创建。
       updated: 有形物品已成功更新。
@@ -197,28 +197,28 @@ zh-CN:
     # 🚅 在搭建脚手架时跳过本节。
     scaffolding:
       completely_concrete:
-        tangible_things: *tangible_things
+        tangible_things: *tangible_things_zhcn
     # 🚅 停止我们现在正在做的任何 skipping。
     # 🚅 super scaffolding will insert the export for the locale view helper here.
   activerecord:
     attributes:
       scaffolding/completely_concrete/tangible_thing:
         # 🚅 在搭建脚手架时跳过本节。
-        text_field_value: *text_field_value
-        button_value: *button_value
-        boolean_button_value: *boolean_button_value
-        cloudinary_image_value: *cloudinary_image_value
-        date_field_value: *date_field_value
-        email_field_value: *email_field_value
-        file_field_value: *file_field_value
-        password_field_value: *password_field_value
-        phone_field_value: *phone_field_value
-        option_value: *option_value
-        multiple_option_values: *multiple_option_values
-        super_select_value: *super_select_value
-        text_area_value: *text_area_value
-        action_text_value: *action_text_value
+        text_field_value: *text_field_value_zhcn
+        button_value: *button_value_zhcn
+        boolean_button_value: *boolean_button_value_zhcn
+        cloudinary_image_value: *cloudinary_image_value_zhcn
+        date_field_value: *date_field_value_zhcn
+        email_field_value: *email_field_value_zhcn
+        file_field_value: *file_field_value_zhcn
+        password_field_value: *password_field_value_zhcn
+        phone_field_value: *phone_field_value_zhcn
+        option_value: *option_value_zhcn
+        multiple_option_values: *multiple_option_values_zhcn
+        super_select_value: *super_select_value_zhcn
+        text_area_value: *text_area_value_zhcn
+        action_text_value: *action_text_value_zhcn
         # 🚅 停止我们现在正在做的任何 skipping。
         # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
-        created_at: *created_at
-        updated_at: *updated_at
+        created_at: *created_at_zhcn
+        updated_at: *updated_at_zhcn

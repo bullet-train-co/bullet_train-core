@@ -1,13 +1,13 @@
 zh-CN:
-  memberships: &memberships
-    label: &label 团队成员
+  memberships: &memberships_zhcn
+    label: &label_zhcn 团队成员
     singular: 团队成员
     navigation:
-      label: *label
+      label: *label_zhcn
       icon: fal fa-users ti ti-flag-alt
     breadcrumbs:
-      label: *label
-    buttons: &buttons
+      label: *label_zhcn
+    buttons: &buttons_zhcn
       edit: 设置
       show: 详细信息
       update: 更新成员资格
@@ -20,23 +20,23 @@ zh-CN:
         destroy: 确定要从%{team_name}中删除%{membership_name}吗？
         destroy_own: 确定要把自己从%{team_name}中删除吗？您将无法撤消此操作。
         reinvite: 确定要重新邀请%{membership_name}加入%{team_name}吗?
-    fields: &fields
+    fields: &fields_zhcn
       name:
-        _: &name 全称
-        heading: *name
+        _: &name_zhcn 全称
+        heading: *name_zhcn
       user_first_name:
-        name: &user_first_name 名字
-        label: *user_first_name
+        name: &user_first_name_zhcn 名字
+        label: *user_first_name_zhcn
       user_last_name:
-        name: &user_last_name 姓氏
-        label: *user_last_name
+        name: &user_last_name_zhcn 姓氏
+        label: *user_last_name_zhcn
       user_profile_photo_id:
-        name: &user_profile_photo_id 头像
-        label: *user_profile_photo_id
+        name: &user_profile_photo_id_zhcn 头像
+        label: *user_profile_photo_id_zhcn
       role_ids:
-        name: &roles 特殊权限
-        label: *roles
-        heading: *roles
+        name: &roles_zhcn 特殊权限
+        label: *roles_zhcn
+        heading: *roles_zhcn
         options:
           default:
             label: 查看者
@@ -54,18 +54,18 @@ zh-CN:
         team:
           header: 团队成员
           description: 以下是您团队的成员。您也可以邀请新团队成员。
-          fields: *fields
-      buttons: *buttons
+          fields: *fields_zhcn
+      buttons: *buttons_zhcn
     tombstones:
       contexts:
         team:
           header: 前团队成员
           description: 以下人员已从%{team_name}中删除，但您仍可以管理他们的个人资料并将他们的任务重新分配给其他团队成员。
-      buttons: *buttons
-    form: &form
+      buttons: *buttons_zhcn
+    form: &form_zhcn
       grant_privileges_of: 授予%{role_key}的权限
-      buttons: *buttons
-      fields: *fields
+      buttons: *buttons_zhcn
+      fields: *fields_zhcn
     edit:
       section: "%{team_name}上的%{membership_name}"
       header: 更新成员资格设置
@@ -73,15 +73,15 @@ zh-CN:
       grant_privileges_of: 授予%{role_key}的权限
       remove_header: 删除团队成员
       remove_description: 删除%{membership_name}不会删除任何资源分配。相反，您可以选择将资源重新分配给另一名团队成员。您以后还可以重新邀请%{membership_name}加入团队。
-      buttons: *buttons
+      buttons: *buttons_zhcn
     show:
       section: "%{team_name}上的%{memberships_possessive}成员资格"
       header: 成员资格详细信息
       invitation_header: 邀请详细信息
       tombstone_header: 前团队成员
       description: 以下是%{team_name}上的%{memberships_possessive}成员资格的详细信息。
-      buttons: *buttons
-      fields: *fields
+      buttons: *buttons_zhcn
+      fields: *fields_zhcn
     notifications:
       updated: 成功更新成员资格。
       destroyed: 已成功从团队中删除该用户。
@@ -91,9 +91,9 @@ zh-CN:
       you_removed_yourself: 您已成功将自己从%{team_name}中删除。
       reinvited: 已重新邀请该用户。他们将收到重新加入团队电子邮件。
   account:
-    memberships: *memberships
+    memberships: *memberships_zhcn
   activerecord:
     attributes:
       memberships:
-        user_first_name: *user_first_name
-        user_last_name: *user_last_name
+        user_first_name: *user_first_name_zhcn
+        user_last_name: *user_last_name_zhcn

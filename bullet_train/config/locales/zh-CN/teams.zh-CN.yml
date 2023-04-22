@@ -1,14 +1,14 @@
 zh-CN:
-  teams: &teams
-    label: &label 团队
+  teams: &teams_zhcn
+    label: &label_zhcn 团队
     singular: 团队
     breadcrumbs:
-      label: *label
+      label: *label_zhcn
       team_settings: 团队设置
       dashboard: 仪表盘
     navigation:
       label: 团队
-    buttons: &buttons
+    buttons: &buttons_zhcn
       new: 添加新团队
       create: 创建团队
       edit: 编辑团队
@@ -17,21 +17,21 @@ zh-CN:
       section: 团队
       header: 您的团队
       create: 创建新团队
-      buttons: *buttons
+      buttons: *buttons_zhcn
     show:
       header: "%{teams_possessive}的仪表盘"
     new:
       header: 创建新团队
       former_user_header: 加入一个团队
       default_team_name: 您的团队
-      buttons: *buttons
+      buttons: *buttons_zhcn
       you_can: 您可以：
       invitation_header: 接受邀请
       logout_header: 退出此账户
       new_team_header: 创建一个新团队
       alert: 账户<b>%{user_email}</b>目前不是任何团队的成员。
       invitation: 如果您收到了邀请您加入新团队的电子邮件，请点击该邮件中的链接接受邀请。
-      log_out: 您可以登出此帐户并使用属于某个团队的其他帐户登录。
+      log_out: 您可以退出此帐户并使用属于某个团队的其他帐户登录。
       new_team: 您可以使用下面的表单创建属于自己的新团队。
     edit:
       section: "%{team_name}"
@@ -42,51 +42,51 @@ zh-CN:
       updated: 团队已更新成功。
       invitation_only: 目前只有受邀请参加早期访问的用户才能创建新团队。如果您已经收到了早期访问网址，请访问它之后再尝试。
     form:
-      buttons: *buttons
-    fields: &fields
+      buttons: *buttons_zhcn
+    fields: &fields_zhcn
       id:
-        _: &id 团队ID
-        label: *id
-        heading: *id
+        _: &id_zhcn 团队ID
+        label: *id_zhcn
+        heading: *id_zhcn
       name:
-        _: &name 团队名称
-        label: *name
+        _: &name_zhcn 团队名称
+        label: *name_zhcn
         heading: 团队
       time_zone:
-        _: &time_zone 主要时区
+        _: &time_zone_zhcn 主要时区
         label: 主要时区
-        heading: *time_zone
+        heading: *time_zone_zhcn
       locale:
-        _: &locale 语言
+        _: &locale_zhcn 语言
         label: 主要语言
-        heading: *locale
+        heading: *locale_zhcn
       # 🚅 超级脚手架将在这一行之上插入新字段。
       created_at:
-        _: &created_at 注册于
-        heading: *created_at
+        _: &created_at_zhcn 注册于
+        heading: *created_at_zhcn
       updated_at:
-        _: &updated_at 更新于
-        heading: *updated_at
-    _: &self
+        _: &updated_at_zhcn 更新于
+        heading: *updated_at_zhcn
+    _: &self_zhcn
       name:
         label: 您团队的名称
     self:
-      <<: [*self, *fields]
+      <<: [*self_zhcn, *fields_zhcn]
     api:
       actions: 团队的操作
       index: 团队列表
       create: 添加一个新团队
       show: 检索团队
       update: 更新团队
-      fields: *fields
+      fields: *fields_zhcn
   account:
-    teams: *teams
+    teams: *teams_zhcn
   activerecord:
     attributes:
       team:
-        name: *name
-        time_zone: *time_zone
-        locale: *locale
+        name: *name_zhcn
+        time_zone: *time_zone_zhcn
+        locale: *locale_zhcn
         # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
-        created_at: *created_at
-        updated_at: *updated_at
+        created_at: *created_at_zhcn
+        updated_at: *updated_at_zhcn

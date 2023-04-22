@@ -1,9 +1,9 @@
 zh-CN:
-  users: &users
-    label: &label 用户
+  users: &users_zhcn
+    label: &label_zhcn 用户
     breadcrumbs:
-      label: *label
-    buttons: &buttons
+      label: *label_zhcn
+    buttons: &buttons_zhcn
       update_profile: 更新个人资料
       update_password: 更新密码
     edit:
@@ -26,62 +26,62 @@ zh-CN:
           enable: 启用
           disable: 禁用
           verify: 校验
-      buttons: *buttons
+      buttons: *buttons_zhcn
     notifications:
       updated: 用户已经成功更新。
-    fields: &fields
+    fields: &fields_zhcn
       id:
-        _: &id 团队ID
-        label: *id
-        heading: *id
+        _: &team_id_zhcn 团队ID
+        label: *team_id_zhcn
+        heading: *team_id_zhcn
       name:
         heading: 名称
       first_name:
-        _: &first_name 名字
-        label: *first_name
-        heading: *first_name
+        _: &first_name_zhcn 名字
+        label: *first_name_zhcn
+        heading: *first_name_zhcn
       last_name:
-        _: &last_name 姓氏
-        label: *last_name
-        heading: *last_name
+        _: &last_name_zhcn 姓氏
+        label: *last_name_zhcn
+        heading: *last_name_zhcn
       email:
-        _: &email 邮箱地址
-        label: *email
-        heading: *email
+        _: &email_zhcn 邮箱地址
+        label: *email_zhcn
+        heading: *email_zhcn
       time_zone:
-        _: &time_zone 您的时区
-        label: *time_zone
-        heading: *time_zone
+        _: &time_zone_zhcn 您的时区
+        label: *time_zone_zhcn
+        heading: *time_zone_zhcn
       profile_photo_id:
-        _: &profile_photo_id 个人照片
-        label: *profile_photo_id
-        heading: *profile_photo_id
+        _: &profile_photo_id_zhcn 个人照片
+        label: *profile_photo_id_zhcn
+        heading: *profile_photo_id_zhcn
       current_password:
         label: 当前的密码
       password:
-        _: &password 密码
-        label: *password
+        _: &password_zhcn 密码
+        label: *password_zhcn
       password_confirmation:
-        _: &password_confirmation 确认密码
+        _: &password_confirmation_zhcn 确认密码
         label: 确认密码
       otp_attempt:
-        _: &otp_attempt 您的验证码
-        label: *otp_attempt
-        heading: *otp_attempt
+        _: &otp_attempt_zhcn 您的验证码
+        label: *otp_attempt_zhcn
+        heading: *otp_attempt_zhcn
       locale:
-        _: &locale 语言
-        label: *locale
-        heading: *locale
+        _: &locale_zhch_zhcn 语言
+        label: *locale_zhch_zhcn
+        heading: *locale_zhch_zhcn
         help: 默认情况下，页面语言将根据每个团队的语言设置进行调整，但你可以在这里为你的账户设置一个全局的个人偏好。
       # 🚅 超级脚手架将在这一行之上插入新字段。
       created_at:
-        _: &created_at 注册于
-        heading: *created_at
+        _: &created_at_zhcn 注册于
+        heading: *created_at_zhcn
       updated_at:
-        _: &updated_at 更新于
-        heading: *updated_at
+        _: &updated_at_zhcn 更新于
+        heading: *updated_at_zhcn
     # 这是我们如何为特定命名空间定义自定义字段
-    _: &self
+    _: &self_zhcn
       email:
         label: 您的邮箱
       password:
@@ -94,32 +94,32 @@ zh-CN:
         label: 双因素验证码
         help: 你可以在你为你的账户添加双因素验证（2FA）时配置的认证器应用程序中找到它。
     self:
-      <<: [*self, *fields]
-    _1: &sign_up
+      <<: [*self_zhcn, *fields_zhcn]
+    _1: &sign_up_zhcn
       password:
         label: 设置密码
     sign_up:
-      <<: [*sign_up, *self, *fields]
-    _2: &update_self
+      <<: [*sign_up_zhcn, *self_zhcn, *fields_zhcn]
+    _2: &update_self_zhcn
       password:
         label: 新密码
     update_self:
-      <<: [*update_self, *self, *fields]
+      <<: [*update_self_zhcn, *self_zhcn, *fields_zhcn]
     form:
-      buttons: *buttons
+      buttons: *buttons_zhcn
   account:
-    users: *users
+    users: *users_zhcn
   activerecord:
     attributes:
       user:
-        first_name: *first_name
-        last_name: *last_name
-        email: *email
-        profile_photo_id: *profile_photo_id
-        time_zone: *time_zone
-        locale: *locale
+        first_name: *first_name_zhcn
+        last_name: *last_name_zhcn
+        email: *email_zhcn
+        profile_photo_id: *profile_photo_id_zhcn
+        time_zone: *time_zone_zhcn
+        locale: *locale_zhch_zhcn
         # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
-        password: *password
-        password_confirmation: *password_confirmation
-        created_at: *created_at
-        updated_at: *updated_at
+        password: *password_zhcn
+        password_confirmation: *password_confirmation_zhcn
+        created_at: *created_at_zhcn
+        updated_at: *updated_at_zhcn

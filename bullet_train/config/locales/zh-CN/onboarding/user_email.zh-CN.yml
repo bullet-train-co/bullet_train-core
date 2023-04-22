@@ -1,13 +1,13 @@
 # 如果您正在寻找表单字段，它们位于`user.zh-CN.yml`内。
 zh-CN:
-  onboarding: &onboarding
+  onboarding: &onboarding_zhcn
     user_email:
-      buttons: &buttons
+      buttons: &buttons_zhcn
         next: 下一步
       edit:
         header: 您的电子邮件地址是什么?
         description: 我们无法从您用于登录的帐户获取您的电子邮件地址。
         email_taken: 对不起，您尝试使用的电子邮件已经与另一个帐户相关联。您应该使用此电子邮件和密码登录，然后在帐户设置中添加此帐户。
-        buttons: *buttons
+        buttons: *buttons_zhcn
   account:
-    onboarding: *onboarding
+    onboarding: *onboarding_zhcn
