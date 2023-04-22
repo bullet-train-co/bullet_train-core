@@ -43,7 +43,7 @@ zh-CN:
         _: &description_zhcn 描述
         label: *description_zhcn
         heading: *description_zhcn
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at_zhcn 创建于
         label: *created_at_zhcn
@@ -107,6 +107,6 @@ zh-CN:
         scopes: *scopes_zhcn
         last_used_at: *last_used_at_zhcn
         description: *description_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn
         updated_at: *updated_at_zhcn

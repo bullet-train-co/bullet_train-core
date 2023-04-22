@@ -24,7 +24,7 @@ zh-CN:
         _: &name_zhcn 名称
         label: *name_zhcn
         heading: *name_zhcn
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at_zhcn 已创建
         label: *created_at_zhcn
@@ -84,6 +84,6 @@ zh-CN:
     attributes:
       integrations/stripe_installation:
         name: *name_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn
         updated_at: *updated_at_zhcn

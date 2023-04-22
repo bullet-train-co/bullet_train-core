@@ -39,7 +39,7 @@ zh-CN:
         heading: 编辑者
       viewers:
         heading: 查看者
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         name: &created_at_zhcn 已创建
         label: *created_at_zhcn
@@ -97,6 +97,6 @@ zh-CN:
       scaffolding/absolutely_abstract/creative_concept:
         name: *name_zhcn
         description: *description_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn
         updated_at: *updated_at_zhcn

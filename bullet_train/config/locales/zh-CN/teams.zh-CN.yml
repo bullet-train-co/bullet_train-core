@@ -60,7 +60,7 @@ zh-CN:
         _: &locale_zhcn 语言
         label: 主要语言
         heading: *locale_zhcn
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at_zhcn 注册于
         heading: *created_at_zhcn
@@ -87,6 +87,6 @@ zh-CN:
         name: *name_zhcn
         time_zone: *time_zone_zhcn
         locale: *locale_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn
         updated_at: *updated_at_zhcn

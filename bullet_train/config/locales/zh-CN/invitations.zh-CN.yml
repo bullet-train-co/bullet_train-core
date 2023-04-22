@@ -22,7 +22,7 @@ zh-CN:
         label: *roles_zhcn
         heading: *roles_zhcn
       role_ids: *role_ids_zhcn
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         name: &created_at_zhcn 已发送
         heading: *created_at_zhcn
@@ -66,5 +66,5 @@ zh-CN:
       invitation:
         email: *email_zhcn
         role_ids: *roles_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn

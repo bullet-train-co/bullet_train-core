@@ -46,7 +46,7 @@ zh-CN:
       status:
         heading: 状态
 
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at_zhcn 发出于
         label: *created_at_zhcn
@@ -108,6 +108,6 @@ zh-CN:
         event_id: *event_id_zhcn
         endpoint_url: *endpoint_url_zhcn
         delivered_at: *delivered_at_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn
         updated_at: *updated_at_zhcn

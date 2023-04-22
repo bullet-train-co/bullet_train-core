@@ -23,7 +23,7 @@ zh-CN:
         name: &name_zhcn 名称
         label: *name_zhcn
         heading: *name_zhcn
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         name: &created_at_zhcn 已连接
         heading: *created_at_zhcn
@@ -62,5 +62,5 @@ zh-CN:
     attributes:
       oauth/stripe_account:
         name: *name_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn

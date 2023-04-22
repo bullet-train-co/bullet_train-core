@@ -1,6 +1,6 @@
 zh-CN:
   stripe_connect: Stripe
-  # 🚅 超级脚手架将在此行上方插入新的OAuth提供商。
+  # 🚅 super scaffolding will insert new oauth providers above this line.
   omniauth:
     team:
       connected: 我们已成功将该%{provider}帐户添加到您的团队!

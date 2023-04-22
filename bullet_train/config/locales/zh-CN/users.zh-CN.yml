@@ -73,7 +73,7 @@ zh-CN:
         label: *locale_zhch_zhcn
         heading: *locale_zhch_zhcn
         help: 默认情况下，页面语言将根据每个团队的语言设置进行调整，但你可以在这里为你的账户设置一个全局的个人偏好。
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at_zhcn 注册于
         heading: *created_at_zhcn
@@ -118,7 +118,7 @@ zh-CN:
         profile_photo_id: *profile_photo_id_zhcn
         time_zone: *time_zone_zhcn
         locale: *locale_zhch_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         password: *password_zhcn
         password_confirmation: *password_confirmation_zhcn
         created_at: *created_at_zhcn

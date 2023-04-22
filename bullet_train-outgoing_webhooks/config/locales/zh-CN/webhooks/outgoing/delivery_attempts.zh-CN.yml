@@ -53,7 +53,7 @@ zh-CN:
       status:
         heading: Status
 
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at_zhcn Attempted At
         label: *created_at_zhcn
@@ -117,6 +117,6 @@ zh-CN:
         response_message: *response_message_zhcn
         error_message: *error_message_zhcn
         attempt_number: *attempt_number_zhcn
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn
         updated_at: *updated_at_zhcn

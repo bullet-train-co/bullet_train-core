@@ -141,8 +141,8 @@ zh-CN:
         _: &action_text_value_zhcn Trix编辑器值
         label: *action_text_value_zhcn
         heading: *action_text_value_zhcn
-      # 🚅 停止我们现在正在进行的任何跳转。
-      # 🚅 超级脚手架将在这一行之上插入新字段。
+      # 🚅 stop any skipping we're doing now.
+      # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at_zhcn 已添加
         label: *created_at_zhcn
@@ -194,16 +194,16 @@ zh-CN:
       updated: 有形物品已成功更新。
       destroyed: 有形物品已成功销毁。
   account:
-    # 🚅 在搭建脚手架时跳过本节。
+    # 🚅 skip this section when scaffolding.
     scaffolding:
       completely_concrete:
         tangible_things: *tangible_things_zhcn
-    # 🚅 停止我们现在正在做的任何 skipping。
+    # 🚅 stop any skipping we're doing now.
     # 🚅 super scaffolding will insert the export for the locale view helper here.
   activerecord:
     attributes:
       scaffolding/completely_concrete/tangible_thing:
-        # 🚅 在搭建脚手架时跳过本节。
+        # 🚅 skip this section when scaffolding.
         text_field_value: *text_field_value_zhcn
         button_value: *button_value_zhcn
         boolean_button_value: *boolean_button_value_zhcn
@@ -218,7 +218,7 @@ zh-CN:
         super_select_value: *super_select_value_zhcn
         text_area_value: *text_area_value_zhcn
         action_text_value: *action_text_value_zhcn
-        # 🚅 停止我们现在正在做的任何 skipping。
-        # 🚅 超级脚手架将在这一行之上插入新的activerecord属性。
+        # 🚅 stop any skipping we're doing now.
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at_zhcn
         updated_at: *updated_at_zhcn
