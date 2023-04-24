@@ -1,41 +1,14 @@
 module BulletTrain::LoadsAndAuthorizesResource
   extend ActiveSupport::Concern
 
-  included do
-    def regex_to_remove_controller_namespace
-      raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
-    end
-
-    def load_team
-      # Not all objects that need to be authorized belong to a team,
-      # so we give @team a nil value if no association is found.
-      begin
-        # Sometimes `@team` has already been populated by earlier `before_action` steps.
-        @team ||= @child_object&.team || @parent_object&.team
-      rescue NoMethodError
-        @team = nil
-      end
-
-      # Update current attributes.
-      Current.team = @team
-
-      # If the currently loaded team is saved to the database, make that the user's new current team.
-      if @team.try(:persisted?)
-        if can? :show, @team
-          current_user.update_column(:current_team_id, @team.id)
-        end
-      end
-    end
-
-    def self.model_namespace_from_controller_namespace
+  class_methods do
+    def model_namespace_from_controller_namespace
       controller_class_name =
-        (
-          if regex_to_remove_controller_namespace
-            name.gsub(regex_to_remove_controller_namespace, "")
-          else
-            name
-          end
-        )
+        if regex_to_remove_controller_namespace
+          name.gsub(regex_to_remove_controller_namespace, "")
+        else
+          name
+        end
       namespace = controller_class_name.split("::")
       # Remove "::ThingsController"
       namespace.pop
@@ -55,11 +28,7 @@ module BulletTrain::LoadsAndAuthorizesResource
     #
     # to help you understand the code below, usually `through` is `team`
     # and `model` is something like `project`.
-    def self.account_load_and_authorize_resource(
-      model,
-      options,
-      old_options = {}
-    )
+    def account_load_and_authorize_resource(model, options, old_options = {})
       # options are now required, because you have to have at least a 'through' setting.
 
       # we used to support calling this method with a signature like this:
@@ -229,6 +198,31 @@ module BulletTrain::LoadsAndAuthorizesResource
                                       prepend: true,
                                       shallow: true
                                     )
+      end
+    end
+  end
+
+  def regex_to_remove_controller_namespace
+    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+  end
+
+  def load_team
+    # Not all objects that need to be authorized belong to a team,
+    # so we give @team a nil value if no association is found.
+    begin
+      # Sometimes `@team` has already been populated by earlier `before_action` steps.
+      @team ||= @child_object&.team || @parent_object&.team
+    rescue NoMethodError
+      @team = nil
+    end
+
+    # Update current attributes.
+    Current.team = @team
+
+    # If the currently loaded team is saved to the database, make that the user's new current team.
+    if @team.try(:persisted?)
+      if can? :show, @team
+        current_user.update_column(:current_team_id, @team.id)
       end
     end
   end
