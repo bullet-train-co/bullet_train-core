@@ -63,7 +63,7 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
       uri.path = uri.path + "/"
     end
 
-    signature = compute_signature(delivery.event.payload, "secret", Time.now)
+    signature = compute_signature(delivery.event.payload.to_s, "secret", Time.now)
 
     http = Net::HTTP.new(hostname, uri.port)
     http.use_ssl = true if uri.scheme == "https"
