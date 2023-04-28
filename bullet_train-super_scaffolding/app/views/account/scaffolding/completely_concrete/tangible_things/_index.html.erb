@@ -35,9 +35,7 @@
               </tr>
             </thead>
             <tbody>
-              <% tangible_things.each do |tangible_thing| %>
-                <%= render 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', tangible_thing: tangible_thing %>
-              <% end %>
+              <%= render partial: 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', collection: tangible_things %>
             </tbody>
           </table>
         <% end %>
