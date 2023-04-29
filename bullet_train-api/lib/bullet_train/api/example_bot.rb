@@ -104,7 +104,7 @@ module FactoryBot
             parameters_output&.select! { |key| strong_parameter_keys.include?(key.to_sym) }
 
             # Wrapping the example as parameters should be wrapped with the model name:
-            parameters_output = { model.to_s => parameters_output }
+            parameters_output = {model.to_s => parameters_output}
 
             return indent(parameters_output.to_yaml.delete_prefix("---\n"), 6).html_safe
           end
