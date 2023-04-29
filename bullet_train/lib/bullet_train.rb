@@ -82,7 +82,7 @@ def inbound_email_enabled?
 end
 
 def billing_enabled?
-  defined?(BulletTrain::Billing)
+  ENV["STRIPE_SECRET_KEY"].present? && defined?(BulletTrain::Billing)
 end
 
 # TODO This should be in an initializer or something.
