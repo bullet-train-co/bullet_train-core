@@ -12,7 +12,7 @@
         in: path
         required: true
         schema:
-          type: string
+          type: integer
       - $ref: "#/components/parameters/after"
     responses:
       "404":
@@ -44,7 +44,7 @@
         in: path
         required: true
         schema:
-          type: string
+          type: integer
     requestBody:
       description: "Information about a new Tangible Thing"
       required: true
