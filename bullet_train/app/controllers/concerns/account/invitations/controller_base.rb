@@ -76,7 +76,7 @@ module Account::Invitations::ControllerBase
   # POST /invitations/1/resend
   def resend
     @invitation = Invitation.find_by(uuid: params[:id])
-    if @invitation
+    if @invitation.touch
       UserMailer.invited(params[:id]).deliver_later
       redirect_to account_team_invitations_path(@invitation.membership.team), notice: I18n.t("invitations.notifications.resent")
     else

@@ -49,14 +49,16 @@ module Api::V1::Invitations::ControllerBase
     end
   end
 
-  # # PUT /api/v1/invitations/:id
-  # def update
-  #   if @invitation.update(invitation_params)
-  #     render :show
-  #   else
-  #     render json: @invitation.errors, status: :unprocessable_entity
-  #   end
-  # end
+  # POST /api/v1/invitations/1/resend
+  def resend
+    if @invitation.touch
+      UserMailer.invited(params[:id]).deliver_later
+      @invitation
+      render :show, status: :ok, location: [:api, :v1, @invitation]
+    else
+      render json: @invitation.errors, status: :unprocessable_entity
+    end
+  end
 
   # DELETE /api/v1/invitations/:id
   def destroy
