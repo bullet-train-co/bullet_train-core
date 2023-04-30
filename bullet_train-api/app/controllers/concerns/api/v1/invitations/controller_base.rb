@@ -53,7 +53,6 @@ module Api::V1::Invitations::ControllerBase
   def resend
     if @invitation.touch
       UserMailer.invited(params[:id]).deliver_later
-      @invitation
       render :show, status: :ok, location: [:api, :v1, @invitation]
     else
       render json: @invitation.errors, status: :unprocessable_entity
