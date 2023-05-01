@@ -212,6 +212,12 @@
                     <i class="fab fa-stripe-s ti ti-money"></i>
                   <% end %>
                 <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/billing/usage', label: 'Usage' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-gauge ti ti-ruler"></i>
+                  <% end %>
+                <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Integration' do %>
