@@ -6,7 +6,7 @@ module BulletTrain
   module Internationalization
     class << self
       def locales
-        root = (File.dirname __dir__).gsub("/lib", "")
+        root = File.dirname(__FILE__).gsub("lib/bullet_train", "")
         Dir.glob("#{root}/config/locales/**/*.yml")
       end
     end
