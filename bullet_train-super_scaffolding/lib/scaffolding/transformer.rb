@@ -1429,7 +1429,7 @@ class Scaffolding::Transformer
 
     unless cli_options["skip-model"]
       # find the database migration that defines this relationship.
-      migration_file_name = `grep "create_table :#{class_names_transformer.table_name} do |t|" db/migrate/*`.split(":").first
+      migration_file_name = `grep "create_table :#{class_names_transformer.table_name}.*do |t|$" db/migrate/*`.split(":").first
       unless migration_file_name.present?
         raise "No migration file seems to exist for creating the table `#{class_names_transformer.table_name}`.\n" \
           "Please run the following command first and try Super Scaffolding again:\n" \
