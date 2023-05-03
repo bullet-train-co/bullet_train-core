@@ -89,3 +89,5 @@ Before you can upload to your freshly provisioned S3 bucket, you need to run (on
 ```
 heroku run rake aws:set_cors
 ```
+
+Note: If you change `ENV["BASE_URL"]`, you need to re-run this task.
