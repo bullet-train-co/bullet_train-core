@@ -2,6 +2,10 @@ module Account::UsersHelper
   def profile_photo_for(url: nil, email: nil, first_name: nil, last_name: nil)
     if cloudinary_enabled? && !url.blank?
       cl_image_path(url, width: 100, height: 100, crop: :fill)
+    elsif !url.blank?
+      url + {
+        size: 200
+      }.to_param
     else
       background_color = Colorizer.colorize_similarly(email.to_s, 0.5, 0.6).delete("#")
       "https://ui-avatars.com/api/?" + {
@@ -17,7 +21,7 @@ module Account::UsersHelper
 
   def user_profile_photo_url(user)
     profile_photo_for(
-      url: user.profile_photo_id,
+      url: get_photo_url_from(user),
       email: user.email,
       first_name: user.first_name,
       last_name: user.last_name
@@ -29,7 +33,7 @@ module Account::UsersHelper
       user_profile_photo_url(membership.user)
     else
       profile_photo_for(
-        url: membership.user_profile_photo_id,
+        url: get_photo_url_from(membership), # membership.user_profile_photo_id,
         email: membership.invitation&.email || membership.user_email,
         first_name: membership.user_first_name,
         last_name: membership.user_last_name
@@ -40,6 +44,10 @@ module Account::UsersHelper
   def profile_header_photo_for(url: nil, email: nil, first_name: nil, last_name: nil)
     if cloudinary_enabled? && !url.blank?
       cl_image_path(url, width: 700, height: 200, crop: :fill)
+    elsif !url.blank?
+      url + {
+        size: 200
+      }.to_param
     else
       background_color = Colorizer.colorize_similarly(email.to_s, 0.5, 0.6).delete("#")
       "https://ui-avatars.com/api/?" + {
@@ -55,7 +63,7 @@ module Account::UsersHelper
 
   def user_profile_header_photo_url(user)
     profile_header_photo_for(
-      url: user.profile_photo_id,
+      url: get_photo_url_from(user), # user.profile_photo_id,
       email: user.email,
       first_name: user.first_name,
       last_name: user.last_name
@@ -67,11 +75,25 @@ module Account::UsersHelper
       user_profile_header_photo_url(membership.user)
     else
       profile_header_photo_for(
-        url: membership.user_profile_photo_id,
+        url: get_photo_url_from(membership), # membership.user_profile_photo_id,
         email: membership.invitation&.email || membership.user_email,
         first_name: membership.user_first_name,
         last_name: membership.user&.last_name || membership.user_last_name
       )
+    end
+  end
+
+  def get_photo_url_from(resource)
+    photo_method = if resource.is_a?(User)
+      :profile_photo
+    elsif resource.is_a?(Membership)
+      :user_profile_photo
+    end
+
+    if cloudinary_enabled?
+      resource.send("#{photo_method}_id".to_sym)
+    elsif resource.send(photo_method).attached?
+      url_for(resource.send(photo_method))
     end
   end
 
