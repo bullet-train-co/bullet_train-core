@@ -3,7 +3,8 @@ module Account::UsersHelper
     if cloudinary_enabled? && !url.blank?
       cl_image_path(url, width: 100, height: 100, crop: :fill)
     elsif !url.blank?
-      url + {size: 200}.to_param
+      binding.pry
+      url + "?" + {size: 200}.to_param
     else
       ui_avatar_params(email, first_name, last_name)
     end
@@ -35,7 +36,7 @@ module Account::UsersHelper
     if cloudinary_enabled? && !url.blank?
       cl_image_path(url, width: 700, height: 200, crop: :fill)
     elsif !url.blank?
-      url + {size: 200}.to_param
+      url + "?" + {size: 200}.to_param
     else
       ui_avatar_params(email, first_name, last_name)
     end
