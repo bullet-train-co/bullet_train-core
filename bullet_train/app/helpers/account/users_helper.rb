@@ -1,9 +1,12 @@
 module Account::UsersHelper
-  def profile_photo_for(url: nil, email: nil, first_name: nil, last_name: nil)
+  def profile_photo_for(url: nil, email: nil, first_name: nil, last_name: nil, profile_header: false)
+    size_details = profile_header ? {width: 700, height: 200} : {width: 100, height: 100}
+    size_details[:crop] = :fill
+
     if cloudinary_enabled? && !url.blank?
-      cl_image_path(url, width: 100, height: 100, crop: :fill)
+      cl_image_path(url, size_details[:width], size_details[:height], size_details[:crop])
     elsif !url.blank?
-      url + "?" + {size: 200}.to_param
+      url + "?" + size_details.to_param
     else
       ui_avatar_params(email, first_name, last_name)
     end
@@ -31,6 +34,8 @@ module Account::UsersHelper
     end
   end
 
+  # TODO: We can do away with these three `profile_header` methods, I'm just
+  # leaving them in case we have other developers depending on these methods.
   def profile_header_photo_for(url: nil, email: nil, first_name: nil, last_name: nil)
     if cloudinary_enabled? && !url.blank?
       cl_image_path(url, width: 700, height: 200, crop: :fill)
