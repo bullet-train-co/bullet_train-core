@@ -2,7 +2,7 @@
 
 require "jbuilder"
 
-module Hacks
+module ValuesTransformer
   def _set_value(key, value)
     value = value.body if value.is_a?(ActionText::RichText)
 
@@ -10,4 +10,4 @@ module Hacks
   end
 end
 
-::Jbuilder.prepend Hacks
+::Jbuilder.prepend ValuesTransformer

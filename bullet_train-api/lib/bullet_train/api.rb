@@ -14,7 +14,7 @@ require "scaffolding"
 require "scaffolding/block_manipulator"
 require "scaffolding/transformer"
 require "jbuilder/schema"
-require "jbuilder/hacks"
+require "jbuilder/values_transformer"
 
 module BulletTrain
   module Api
