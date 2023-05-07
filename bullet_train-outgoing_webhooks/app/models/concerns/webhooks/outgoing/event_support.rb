@@ -8,6 +8,11 @@ module Webhooks::Outgoing::EventSupport
     belongs_to :subject, polymorphic: true
     has_many :deliveries, dependent: :destroy
 
+    # This is an undocumented feature implemented for one project and subject to change. Don't use it.
+    belongs_to :issuer, polymorphic: true, optional: true
+
+    validates :data, presence: true
+
     before_create do
       self.payload = generate_payload
     end
@@ -27,7 +32,17 @@ module Webhooks::Outgoing::EventSupport
     payload.dig("event_type")
   end
 
+  # This is an undocumented feature implemented for one project and subject to change. Don't use it.
+  def self.issuer_enabled?
+    column_names.include?("issuer_id")
+  end
+
   def endpoints
+    # This is an undocumented feature implemented for one project and subject to change. Don't use it.
+    if self.class.issuer_enabled? && issuer
+      return [issuer.webhooks_outgoing_endpoint]
+    end
+
     endpoints = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_endpoints.where(api_version: api_version).listening_for_event_type_id(event_type_id)
 
     case subject_type
