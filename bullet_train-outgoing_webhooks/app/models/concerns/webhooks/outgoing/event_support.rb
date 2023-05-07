@@ -11,8 +11,6 @@ module Webhooks::Outgoing::EventSupport
     # This is an undocumented feature implemented for one project and subject to change. Don't use it.
     belongs_to :issuer, polymorphic: true, optional: true
 
-    validates :data, presence: true
-
     before_create do
       self.payload = generate_payload
     end
