@@ -31,13 +31,13 @@ module Webhooks::Outgoing::EventSupport
   end
 
   # This is an undocumented feature implemented for one project and subject to change. Don't use it.
-  def self.issuer_enabled?
-    column_names.include?("issuer_id")
+  def issuer_enabled?
+    self.class.column_names.include?("issuer_id")
   end
 
   def endpoints
     # This is an undocumented feature implemented for one project and subject to change. Don't use it.
-    if self.class.issuer_enabled? && issuer
+    if issuer_enabled? && issuer
       return [issuer.webhooks_outgoing_endpoint]
     end
 
