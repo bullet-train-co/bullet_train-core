@@ -39,6 +39,10 @@
   }
 }
 
+.select2-results__option--highlighted {
+  @apply bg-primary-400 !important;
+}
+
 @layer components {
   .select2-container {
     @apply w-full;
