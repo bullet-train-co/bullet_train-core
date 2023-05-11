@@ -28,13 +28,14 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
     !(successful? || still_attempting?)
   end
 
-  def compute_signature(payload, secret, timestamp)
-    raise ArgumentError, "timestamp should be an instance of Time" \
-      unless timestamp.is_a?(Time)
-    raise ArgumentError, "payload should be a string" \
-      unless payload.is_a?(String)
-    raise ArgumentError, "secret should be a string" \
-      unless secret.is_a?(String)
+  def compute_signature(payload)
+    raise ArgumentError, "payload should be a string" unless payload.is_a?(String)
+
+    unless delivery.team.webhooks_signing_secret.present?
+      delivery.team.update(webhooks_signing_secret: SecureRandom.hex(32))
+    end
+    secret = delivery.team.webhooks_signing_secret
+    timestamp = Time.now
 
     timestamped_payload = "#{timestamp.to_i}.#{payload}"
     OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha256"), secret,
@@ -63,7 +64,7 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
       uri.path = uri.path + "/"
     end
 
-    signature = compute_signature(delivery.event.payload.to_s, "secret", Time.now)
+    signature = compute_signature(delivery.event.payload.to_s)
 
     http = Net::HTTP.new(hostname, uri.port)
     http.use_ssl = true if uri.scheme == "https"

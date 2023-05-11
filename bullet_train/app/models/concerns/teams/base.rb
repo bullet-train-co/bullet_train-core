@@ -33,6 +33,8 @@ module Teams::Base
       end
     end
 
+    attribute :webhooks_signing_secret, default: -> { SecureRandom.hex(32) }
+
     # validations
     validates :name, presence: true
     validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.all.map(&:name)}, allow_nil: true
