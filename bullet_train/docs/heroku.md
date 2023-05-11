@@ -14,7 +14,7 @@ We've included the "entry-level but production-grade" service tier across the bo
  - [Heroku Postgres](https://elements.heroku.com/addons/heroku-postgresql)
  - [Heroku Redis](https://elements.heroku.com/addons/heroku-redis) to support Sidekiq and Action Cable.
  - [Memcachier](https://elements.heroku.com/addons/memcachier) to support Rails Cache.
- - [HDrive](https://elements.heroku.com/addons/hdrive) to support off-server file uploads backed by AWS S3.
+ - [Bucketeer](https://elements.heroku.com/addons/bucketeer) to support off-server file uploads backed by AWS S3.
  - [Cloudinary](https://cloudinary.com) to support off-server image uploads and ImageMagick processing.
  - [Heroku Scheduler](https://elements.heroku.com/addons/scheduler) for cron jobs.
  - [Rails Autoscale](https://railsautoscale.com) for best-of-breed reactive performance monitoring.
@@ -81,3 +81,13 @@ heroku certs:auto
 ```
 
 You should be done now and your app should be available at `https://app.YOURDOMAIN.COM/account` and any hits to `https://app.YOURDOMAIN.COM` (e.g. when users sign out, etc.) will be redirected to your marketing site.
+
+### 5. Configure CORS on Your Bucketeer S3 Bucket
+
+Before you can upload to your freshly provisioned S3 bucket, you need to run (on Heroku) a rake task we've created for you to set the appropriate CORS settings.
+
+```
+heroku run rake aws:set_cors
+```
+
+Note: If you change `ENV["BASE_URL"]`, you need to re-run this task.

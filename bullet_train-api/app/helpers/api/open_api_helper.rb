@@ -34,6 +34,9 @@ module Api
       output = render("api/#{@version}/open_api/shared/paths", except: except)
       output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
 
+      custom_actions_file_path = "api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"
+      output += render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
+
       # There are some placeholders specific to this method that we still need to transform.
       model_symbol = model.name.underscore.tr("/", "_")
 
