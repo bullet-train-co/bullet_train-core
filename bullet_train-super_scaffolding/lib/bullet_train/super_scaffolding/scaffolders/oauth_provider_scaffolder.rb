@@ -37,7 +37,8 @@ module BulletTrain
             api_secret: api_secret
           }
 
-          unless File.exist?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
+          unless omniauth_gem == "omniauth-stripe-connect" ||
+              File.exist?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/integrations/stripe_installation.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb", options))
             puts ""
