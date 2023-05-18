@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.2.25)
+    bullet_train (1.2.26)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -117,23 +117,23 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.2.24)
+    bullet_train-fields (1.2.25)
       chronic
       cloudinary
       phonelib
       rails (>= 6.0.0)
-    bullet_train-has_uuid (1.2.24)
+    bullet_train-has_uuid (1.2.25)
       rails (>= 6.0.0)
-    bullet_train-roles (1.2.24)
+    bullet_train-roles (1.2.25)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.2.24)
-    bullet_train-super_load_and_authorize_resource (1.2.24)
+    bullet_train-scope_validator (1.2.25)
+    bullet_train-super_load_and_authorize_resource (1.2.25)
       rails (>= 6.0.0)
-    bullet_train-themes (1.2.24)
+    bullet_train-themes (1.2.25)
       rails (>= 6.0.0)
     cable_ready (5.0.0)
       actionpack (>= 5.2)
@@ -167,7 +167,7 @@ GEM
       pwned (~> 2.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
-    email_reply_parser (0.5.10)
+    email_reply_parser (0.5.11)
     erubi (1.12.0)
     extended_email_reply_parser (0.5.1)
       activesupport
@@ -313,7 +313,7 @@ GEM
     rubocop-performance (1.15.1)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    ruby-openai (4.0.0)
+    ruby-openai (4.1.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.11.0)
@@ -339,7 +339,7 @@ GEM
       language_server-protocol (~> 3.17.0.2)
       rubocop (= 1.39.0)
       rubocop-performance (= 1.15.1)
-    thor (1.2.1)
+    thor (1.2.2)
     thread-local (1.1.0)
     timeout (0.3.2)
     tzinfo (2.0.6)
