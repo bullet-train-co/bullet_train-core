@@ -7,9 +7,6 @@ module BulletTrain
             puts ""
             puts "🚅  usage: bin/super-scaffold oauth-provider <omniauth_gem> <gems_provider_name> <our_provider_name> <PROVIDER_API_KEY_IN_ENV> <PROVIDER_API_SECRET_IN_ENV> [options]"
             puts ""
-            puts "E.g. what we'd do to start Stripe off (if we didn't already do it):"
-            puts "  bin/super-scaffold oauth-provider omniauth-stripe-connect stripe_connect Oauth::StripeAccount STRIPE_CLIENT_ID STRIPE_SECRET_KEY --icon=ti-money"
-            puts ""
             puts "E.g. what we actually did to start Shopify off:"
             puts "  bin/super-scaffold oauth-provider omniauth-shopify-oauth2 shopify Oauth::ShopifyAccount SHOPIFY_API_KEY SHOPIFY_API_SECRET_KEY --icon=ti-shopping-cart"
             puts ""
@@ -24,6 +21,13 @@ module BulletTrain
 
           _, omniauth_gem, gems_provider_name, our_provider_name, api_key, api_secret = *ARGV
 
+          if omniauth_gem == "omniauth-stripe-connect"
+            puts "Stripe is already available for use and does not need any scaffolding to be done.".green
+            puts "Just add your `STRIPE_CLIENT_ID` and `STRIPE_SECRET_KEY` values to application.yml"
+            puts "and you should be able to use Stripe as an OAuth provider out of the box."
+            exit
+          end
+
           unless match = our_provider_name.match(/Oauth::(.*)Account/)
             puts "\n🚨 Your provider name must match the pattern of `Oauth::{Name}Account`, e.g. `Oauth::StripeAccount`\n".red
             return
@@ -37,8 +41,7 @@ module BulletTrain
             api_secret: api_secret
           }
 
-          unless omniauth_gem == "omniauth-stripe-connect" ||
-              File.exist?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
+          unless File.exist?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/integrations/stripe_installation.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb", options))
             puts ""
