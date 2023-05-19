@@ -2,7 +2,6 @@ import { Controller } from "@hotwired/stimulus"
 
 export default class extends Controller {
   connect() {
-    console.log("****************************** from header anchor link controller")
     const headers = this.element.querySelectorAll('h2, h3, h4, h5, h6')
 
     headers.forEach((header) => {
