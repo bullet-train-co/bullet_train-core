@@ -89,7 +89,7 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = file_path || class_path || partial_path || locale_path
+      result[:absolute_path] = file_path || class_path || locale_path || partial_path
 
       # If we get the partial resolver template itself, that means we couldn't find the file.
       if result[:absolute_path].match?("app/views/bullet_train/partial_resolver.html.erb")
