@@ -47,6 +47,14 @@ module Account::LocaleHelper
             super(key + "💣", options.except(:default))
           rescue I18n::MissingTranslationData => exception
             full_key = exception.message.rpartition(" ").last.delete("💣")
+
+            # Ensure the string for the key we're returning actually exists.
+            begin
+              translate(full_key.gsub(/^en\./, ""))
+              full_key
+            rescue I18n::MissingTranslationData
+              return nil
+            end
           end
         end
       end
