@@ -63,7 +63,7 @@ en:
       contexts:
         team:
           header: Creative Concepts
-          description: 
+          description:
             If you're wondering what this is and how to hide it, read the "<a href="/docs/super-scaffolding" target="_blank">Code Generation with Super Scaffolding</a>" section of the Bullet Train documentation.
       fields: *fields
       buttons: *buttons

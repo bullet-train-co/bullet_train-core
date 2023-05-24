@@ -1,0 +1,39 @@
+zh-CN:
+  framework_packages:
+    bullet_train:
+      git: bullet-train-co/bullet_train-core
+      npm: "@bullet-train/bullet-train"
+    bullet_train-api:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-fields:
+      git: bullet-train-co/bullet_train-core
+      npm: "@bullet-train/fields"
+    bullet_train-has_uuid:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-incoming_webhooks:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-integrations:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-integrations-stripe:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-obfuscates_id:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-outgoing_webhooks:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-scope_questions:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-scope_validator:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-sortable:
+      git: bullet-train-co/bullet_train-core
+      npm: "@bullet-train/bullet-train-sortable"
+    bullet_train-super_scaffolding:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-super_load_and_authorize_resource:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-themes:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-themes-light:
+      git: bullet-train-co/bullet_train-core
+    bullet_train-themes-tailwind_css:
+      git: bullet-train-co/bullet_train-core

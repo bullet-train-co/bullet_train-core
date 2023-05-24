@@ -1,0 +1,11 @@
+# 如果您正在寻找表单字段，它们位于`user.zh-CN.yml`和`team.zh-CN.yml`命名空间内。
+zh-CN:
+  onboarding: &onboarding_zhcn
+    user_details:
+      buttons: &buttons_zhcn
+        next: 下一步
+      edit:
+        header: 请告诉我们您的信息
+        buttons: *buttons_zhcn
+  account:
+    onboarding: *onboarding_zhcn

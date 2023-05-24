@@ -90,7 +90,7 @@ en:
       cant_demote: Sorry, you can't demote the last admin on a team. Please make someone else an admin first.
       cant_remove: Sorry, you can't remove the last admin on a team. Please make someone else an admin first.
       you_removed_yourself: You've successfully removed yourself from %{team_name}.
-      reinvited: The user has been successfully re-invited.  They will receive an email to rejoin the team.
+      reinvited: The user has been successfully re-invited. They will receive an email to rejoin the team.
   account:
     memberships: *memberships
   activerecord:

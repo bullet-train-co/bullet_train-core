@@ -1,0 +1,122 @@
+zh-CN:
+  webhooks/outgoing/delivery_attempts: &delivery_attempts_zhcn
+    label: &label_zhcn Delivery Attempts
+    breadcrumbs:
+      label: *label_zhcn
+    navigation:
+      label: *label_zhcn
+      icon: fal fa-puzzle-piece
+    buttons: &buttons_zhcn
+      new: Add New Delivery Attempt
+      create: Create Delivery Attempt
+      edit: Edit Delivery Attempt
+      update: Update Delivery Attempt
+      destroy: Remove Delivery Attempt
+      shorthand:
+        show: Details
+        edit: Edit
+        destroy: Delete
+      confirmations:
+        # TODO customize for your use-case.
+        destroy: Are you sure you want to remove %{delivery_attempt_name}? This will also remove it's associated data. This can't be undone.
+    fields: &fields_zhcn
+      id:
+        _: &id_zhcn Delivery Attempt ID
+        label: *id_zhcn
+        heading: *id_zhcn
+
+      response_code:
+        _: &response_code_zhcn Response Code
+        label: *response_code_zhcn
+        heading: *response_code_zhcn
+
+      response_body:
+        _: &response_body_zhcn Response Body
+        label: *response_body_zhcn
+        heading: *response_body_zhcn
+
+      response_message:
+        _: &response_message_zhcn Response Message
+        label: *response_message_zhcn
+        heading: *response_message_zhcn
+
+      error_message:
+        _: &error_message_zhcn Error Message
+        label: *error_message_zhcn
+        heading: *error_message_zhcn
+
+      attempt_number:
+        _: &attempt_number_zhcn Attempt Number
+        label: *attempt_number_zhcn
+        heading: *attempt_number_zhcn
+
+      status:
+        heading: Status
+
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        _: &created_at_zhcn Attempted At
+        label: *created_at_zhcn
+        heading: *created_at_zhcn
+      updated_at:
+        _: &updated_at_zhcn Updated
+        label: *updated_at_zhcn
+        heading: *updated_at_zhcn
+    api:
+      delivery_id: Absolutely Abstract Delivery ID
+      collection_actions: "Collection Actions for Delivery Attempts"
+      index: "List Delivery Attempts"
+      create: "Add a New Delivery Attempt"
+      member_actions: "Actions for an Individual Delivery Attempt"
+      show: "Retrieve a Delivery Attempt"
+      update: "Update a Delivery Attempt"
+      destroy: "Delete a Delivery Attempt"
+      fields: *fields_zhcn
+    index:
+      section: "%{deliveries_possessive} Delivery Attempts"
+      contexts:
+        webhooks/outgoing/delivery:
+          header: Delivery Attempts
+          description: Below is an overview of individual attempts to deliver this event.
+          description_empty: We haven't attempted to deliver this event.
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
+    show:
+      section: "%{delivery_attempt_name} to Deliver <code>%{delivery_name}</code>"
+      header: Delivery Attempt Details
+      description: Below are the details we have for %{delivery_attempt_name}.
+      manage_description: You'll also find options for updating these details or removing %{delivery_attempt_name} from %{delivery_name} entirely.
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
+    form: &form_zhcn
+      buttons: *buttons_zhcn
+      fields: *fields_zhcn
+    new:
+      section: "New Delivery Attempt for %{delivery_name}"
+      header: New Delivery Attempt Details
+      description: Please provide the details of the new Delivery Attempt you'd like to add to %{delivery_name}.
+      form: *form_zhcn
+    edit:
+      section: "%{delivery_attempt_name}"
+      header: Edit Delivery Attempt Details
+      description: You can update the details or settings for %{delivery_attempt_name} below.
+      form: *form_zhcn
+    notifications:
+      created: Delivery Attempt was successfully created.
+      updated: Delivery Attempt was successfully updated.
+      destroyed: Delivery Attempt was successfully destroyed.
+  account:
+    webhooks:
+      outgoing:
+        delivery_attempts: *delivery_attempts_zhcn
+  activerecord:
+    attributes:
+      webhooks/outgoing/delivery_attempt:
+        response_code: *response_code_zhcn
+        response_body: *response_body_zhcn
+        response_message: *response_message_zhcn
+        error_message: *error_message_zhcn
+        attempt_number: *attempt_number_zhcn
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at_zhcn
+        updated_at: *updated_at_zhcn

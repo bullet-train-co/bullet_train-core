@@ -1,0 +1,98 @@
+zh-CN:
+  scaffolding/absolutely_abstract/creative_concepts/collaborators: &collaborators_zhcn
+    label: &label_zhcn 协作者
+    breadcrumbs:
+      label: *label_zhcn
+    navigation:
+      label: *label_zhcn
+      icon: fal fa-puzzle-piece
+    buttons: &buttons_zhcn
+      new: 添加新协作者
+      create: 创建协作者
+      edit: 编辑协作者
+      update: 更新协作者
+      destroy: 删除协作者
+      shorthand:
+        edit: 编辑
+        destroy: 删除
+      confirmations:
+        # TODO 根据您的用例自定义。
+        destroy: 确定要删除%{collaborator_name}吗？这也将删除其关联数据。这无法撤消。
+    fields: &fields_zhcn
+      membership_id: &membership_zhcn
+        name: &membership_id_zhcn 会员资格
+        label: *membership_id_zhcn
+        heading: *membership_id_zhcn
+        placeholder: 选择会员资格
+
+      membership: *membership_zhcn
+
+      role_ids:
+        name: &roles_zhcn 权限
+        label: *roles_zhcn
+        heading: *roles_zhcn
+        options:
+          default:
+            label: 观察者
+            description: 可以查看所有数据
+          editor:
+            label: 编辑者
+            description: 可以编辑但不能删除此对象
+          admin:
+            label: 管理员
+            description: 可以管理所有数据
+        none: 观察者
+
+      # 🚅 super scaffolding will insert new fields above this line.
+      created_at:
+        name: &created_at_zhcn 已添加
+        label: *created_at_zhcn
+        heading: *created_at_zhcn
+      updated_at:
+        name: &updated_at_zhcn 已更新
+        label: *updated_at_zhcn
+        heading: *updated_at_zhcn
+    index:
+      section: "%{creative_concepts_possessive} 协作者"
+      contexts:
+        scaffolding/absolutely_abstract/creative_concept:
+          header: 其他协作者
+          description: 默认情况下，所有%{team_name}管理员都可以与%{creative_concept_name}协作。以下是为%{creative_concept_name}添加的其他协作者列表。只有%{team_name}和%{creative_concept_name}的管理员可以管理下面的协作者。
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
+    show:
+      section: "%{collaborator_name}"
+      header: 协作者详细信息
+      description: 以下是%{collaborator_name}的详细信息。您还会找到更新这些详细信息或从%{creative_concept_name}完全删除%{collaborator_name}的选项。
+      fields: *fields_zhcn
+      buttons: *buttons_zhcn
+    form: &form_zhcn
+      buttons: *buttons_zhcn
+      fields: *fields_zhcn
+    new:
+      section: "%{creative_concept_name}的新协作者"
+      header: 新协作者详细信息
+      description: 请提供要添加到%{creative_concept_name}的新协作者的详细信息。
+      form: *form_zhcn
+    edit:
+      section: "%{collaborator_name}"
+      header: 编辑协作者详细信息
+      description: 您可以在下面更新%{collaborator_name}的详细信息或设置。
+      form: *form_zhcn
+    notifications:
+      created: 协作者已成功创建。
+      updated: 协作者已成功更新。
+      destroyed: 协作者已成功删除。
+  account:
+    scaffolding:
+      absolutely_abstract:
+        creative_concepts:
+          collaborators: *collaborators_zhcn
+  activerecord:
+    attributes:
+      scaffolding/absolutely_abstract/creative_concepts/collaborator:
+        membership_id: *membership_id_zhcn
+        roles: *roles_zhcn
+        # 🚅 super scaffolding will insert new activerecord attributes above this line.
+        created_at: *created_at_zhcn
+        updated_at: *updated_at_zhcn

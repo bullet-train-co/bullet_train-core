@@ -1,0 +1,111 @@
+# 更多的翻译请查看 https://github.com/plataformatec/devise/wiki/I18n
+
+zh-CN:
+  devise:
+    titles:
+      reset_password: 重置您的密码
+      sign_in: 登录
+    headers:
+      resend_confirm: 重新发送确认说明
+      change_password: 修改您的密码
+      reset_password: 重置密码
+      edit_registration: 编辑%{resource_name}
+      cancel_account: 取消我的帐户
+      create_account: 创建您的帐户
+      sign_in: 登录
+      resend_unlock: 重新发送解锁说明
+    labels:
+      wait_confirm: 当前正在等待确认：%{unconfirmed_email}
+    hints:
+      leave_blank: （如果您不想更改，请留空）
+      length: 最少%{password_length}个字符
+      need_password: （我们需要您的当前密码来确认您的更改）
+    buttons:
+      resend_confirm: 重新发送确认说明
+      change_password: 修改我的密码
+      reset_password: 通过电子邮件重置密码
+      cancel_account: 取消我的帐户
+      resend_unlock: 重新发送解锁说明
+    links:
+      account: 还没有帐户？
+      have_account: 已经有一个账户？
+      forgot_password: 忘记密码？
+      log_in: 登录
+      sign_up: 注册
+      new_confirm: 没收到确认说明？
+      new_unlock: 没收到解锁说明？
+      sign_in_with: 使用%{provider}登录
+
+    confirmations:
+      confirmed: 成功验证您的邮箱。
+      send_instructions: 几分钟后，您将收到确认帐户的电子邮件。
+      send_paranoid_instructions: 如果您的邮箱存在于我们的数据库中，您将在几分钟内收到一封确认帐户的邮件。
+    failure:
+      already_authenticated: 您已经登录。
+      inactive: 您的帐户还未激活。
+      invalid: "%{authentication_keys}或密码错误。"
+      last_attempt: 您还有最后一次尝试机会，再次失败您的帐户将被锁定。
+      locked: 您的帐户正被锁定。
+      not_found_in_database: "%{authentication_keys}或密码错误。"
+      timeout: 登录超时，请重新登录。
+      unauthenticated: 继续操作前请注册或者登录。
+      unconfirmed: 继续操作前请先确认您的帐户。
+    mailer:
+      confirmation_instructions:
+        subject: 帐户确认信息
+        welcome: 欢迎%{email}！
+        description: 您可以通过下面的链接确认您的帐户的电子邮件：
+        confirm_account: 确认我的账户
+      reset_password_instructions:
+        subject: 重置密码信息
+        hello: 你好%{email}！
+        requested_change: 有人请求了更改您密码的链接。您可以通过下面的链接进行更改。
+        ignore: 如果您没有要求请求更改密码，请忽略此电子邮件。
+        access_change: 除非您访问上述链接并创建新密码，否则您的密码不会更改。
+        change_password: 更改我的密码
+      unlock_instructions:
+        subject: 帐户解锁
+        hello: 你好%{email}！
+        account_blocked: 由于多次登录失败，您的帐户已被锁定。
+        click_link: 点击下面的链接以解锁您的帐户：
+        unlock: 解锁我的账户
+      password_change:
+        subject: 密码已更改
+        hello: 你好%{email}！
+        description: 我们正在联系您，通知您已更改密码。
+    omniauth_callbacks:
+      failure: "无法从%{kind}认证您，因为\"%{reason}\"。"
+      success: 已成功从%{kind}帐户认证。
+    passwords:
+      no_token: 无重置邮件不可访问密码重置页面。如果您是从重置邮件来到了这个页面，请确保您输入的URL完整。
+      send_instructions: 几分钟后，您将收到重置密码的电子邮件。
+      send_paranoid_instructions: 如果您的邮箱存在于我们的数据库中，您将收到一封找回密码的邮件。
+      updated: 您的密码修改成功，并已经登录。
+      updated_not_active: 密码修改成功。
+    registrations:
+      destroyed: 再见！您的帐户已成功注销。我们希望很快可以再见到您。
+      signed_up: 欢迎您！您已注册成功。
+      signed_up_but_inactive: 您的帐户注册成功但是还未被激活，激活前您将无法登录。
+      signed_up_but_locked: 您已成功注册，但帐号被锁定了，因此无法登录。
+      signed_up_but_unconfirmed: 谢谢您！一封确认邮件已经发至您的邮箱，请点击其中的链接激活您的帐户。
+      update_needs_confirmation: 新的帐户信息已成功提交，确认邮件已经发至您的邮箱，请点击其中的链接以使您的新电子邮箱地址生效。
+      updated: 帐户资料更新成功。
+    sessions:
+      signed_in: 登录成功。
+      signed_out: 退出成功。
+      already_signed_out: 您已退出。
+    unlocks:
+      send_instructions: 几分钟后，您将收到一封解锁帐户的邮件。
+      send_paranoid_instructions: 如果您的账户存在，您将收到一封解锁帐户的邮件。
+      unlocked: 您的帐户已成功解锁，请继续登录。
+  errors:
+    messages:
+      already_confirmed: 已经确认，请尝试登录。
+      confirmation_period_expired: 注册帐号后须在%{period}以内确认。请重新注册。
+      expired: 已过期，请重新注册。
+      not_found: 找不到
+      not_locked: 未被锁定
+      not_saved:
+        one: 发生 1 个错误，导致%{resource}保存失败：
+        other: 发生 %{count} 个错误，导致%{resource}保存失败：
+      pwned_password: 之前出现过数据泄露，永远不要使用
