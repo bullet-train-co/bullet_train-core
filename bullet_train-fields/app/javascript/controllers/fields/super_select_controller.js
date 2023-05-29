@@ -6,7 +6,7 @@ const select2SelectedPreviewSelector = ".select2-selection--single"
 const select2SearchInputFieldSelector = ".select2-search__field"
 
 export default class extends Controller {
-  static targets = [ "select" ]
+  static targets = [ "select", "superSelectConfig" ]
   static values = {
     acceptsNew: Boolean,
     enableSearch: Boolean,
@@ -46,6 +46,7 @@ export default class extends Controller {
     let options = {
       dropdownParent: $(this.element)
     };
+    const options = {...options, ...this.superSelectConfigTarget.dataset["superSelectConfig"]}
 
     if (!this.enableSearchValue) {
       options.minimumResultsForSearch = -1;
