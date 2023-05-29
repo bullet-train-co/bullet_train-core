@@ -80,6 +80,8 @@ module BulletTrain
 
           options[:icon] = icon_name
 
+          empty_transformer = Scaffolding::Transformer.new("", "")
+
           [
 
             # User OAuth.
@@ -110,7 +112,7 @@ module BulletTrain
             "./app/controllers/webhooks/incoming/oauth/stripe_account_webhooks_controller.rb"
 
           ].each do |name|
-            if File.directory?(legacy_resolve_template_path(name))
+            if File.directory?(empty_transformer.resolve_template_path(name))
               oauth_scaffold_directory(name, options)
             else
               oauth_scaffold_file(name, options)
@@ -135,16 +137,16 @@ module BulletTrain
 
           # find the database migration that defines this relationship.
           migration_file_name = `grep "create_table #{oauth_transform_string(":oauth_stripe_accounts", options)}" db/migrate/*`.split(":").first
-          legacy_replace_in_file(migration_file_name, "null: false", "null: true")
+          empty_transformer.replace_in_file(migration_file_name, "null: false", "null: true")
 
           migration_file_name = `grep "create_table #{oauth_transform_string(":integrations_stripe_installations", options)}" db/migrate/*`.split(":").first
-          legacy_replace_in_file(migration_file_name,
+          empty_transformer.replace_in_file(migration_file_name,
             oauth_transform_string("t.references :oauth_stripe_account, null: false, foreign_key: true", options),
             oauth_transform_string('t.references :oauth_stripe_account, null: false, foreign_key: true, index: {name: "index_stripe_installations_on_oauth_stripe_account_id"}', options))
 
           migration_file_name = `grep "create_table #{oauth_transform_string(":webhooks_incoming_oauth_stripe_account_webhooks", options)}" db/migrate/*`.split(":").first
-          legacy_replace_in_file(migration_file_name, "null: false", "null: true")
-          legacy_replace_in_file(migration_file_name, "foreign_key: true", 'foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}')
+          empty_transformer.replace_in_file(migration_file_name, "null: false", "null: true")
+          empty_transformer.replace_in_file(migration_file_name, "foreign_key: true", 'foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}')
 
           puts ""
           puts "🎉"
