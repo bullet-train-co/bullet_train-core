@@ -6,11 +6,12 @@ const select2SelectedPreviewSelector = ".select2-selection--single"
 const select2SearchInputFieldSelector = ".select2-search__field"
 
 export default class extends Controller {
-  static targets = [ "select", "superSelectConfig" ]
+  static targets = [ "select" ]
   static values = {
     acceptsNew: Boolean,
     enableSearch: Boolean,
     searchUrl: String,
+    select2Options: String,
   }
   
   // will be reissued as native dom events name prepended with '$' e.g. '$change', '$select2:closing', etc
@@ -26,6 +27,11 @@ export default class extends Controller {
 
   get isSelect2LoadedOnWindowJquery() {
     return window?.$?.fn?.select2 !== undefined
+  }
+
+  get optionsOverride() {
+    if (!this.hasSelect2OptionsValue) { return {} }
+    return this.select2OptionsValue
   }
 
   connect() {
@@ -46,7 +52,6 @@ export default class extends Controller {
     let options = {
       dropdownParent: $(this.element)
     };
-    const options = {...options, ...this.superSelectConfigTarget.dataset["superSelectConfig"]}
 
     if (!this.enableSearchValue) {
       options.minimumResultsForSearch = -1;
@@ -66,13 +71,15 @@ export default class extends Controller {
           }
           return query
         }
-        // Any additional params go here...
       }
     }
 
     options.templateResult = this.formatState;
     options.templateSelection = this.formatState;
     options.width = 'style';
+
+    // Merge in custom options.
+    options = {...options, ...JSON.parse(this.optionsOverride)}
 
     this.cleanupBeforeInit() // in case improperly torn down
     this.pluginMainEl = this.selectTarget // required because this.selectTarget is unavailable on disconnect()
