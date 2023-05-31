@@ -79,7 +79,8 @@ export default class extends Controller {
     options.width = 'style';
 
     // Merge in custom options.
-    options = {...options, ...JSON.parse(this.optionsOverride)}
+    const custom_options = Object.keys(this.optionsOverride).length > 0 ? JSON.parse(this.optionsOverride) : {}
+    options = {...options, ...custom_options}
 
     this.cleanupBeforeInit() // in case improperly torn down
     this.pluginMainEl = this.selectTarget // required because this.selectTarget is unavailable on disconnect()
