@@ -8,8 +8,8 @@ module DocumentationSupport
     # all_paths = ([Rails.root.to_s] + `bundle show --paths`.lines.map(&:chomp))
     # @path = all_paths.map { |path| path + "/docs/#{target}.md" }.detect { |path| File.exist?(path) }
 
-    # TODO Trying to just brute force this for now.
-    @path = `bundle show bullet_train`.chomp + "/docs/#{target}.md"
+    @path = Rails.cache.fetch('bullet_train_path') { `bundle show bullet_train`.chomp }
+    @path += "/docs/#{target}.md"
 
     render :docs, layout: "docs"
   end
