@@ -23,7 +23,5 @@ ignore:
   - '*/lib/scaffolding/transformer.rb':
     - Layout/EndAlignment
   # TODO Fix these files up for Standard Ruby.
-  - '*/app/helpers/theme_helper.rb':
-    - Style/GlobalVars
   - '*/app/models/concerns/webhooks/outgoing/uri_filtering.rb':
     - Lint/ShadowedException
