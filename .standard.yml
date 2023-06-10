@@ -23,8 +23,6 @@ ignore:
   - '*/lib/scaffolding/transformer.rb':
     - Layout/EndAlignment
   # TODO Fix these files up for Standard Ruby.
-  - '*/lib/tasks/bullet_train/themes/light_tasks.rake':
-    - Style/CommandLiteral
   - '*/config/routes.rb':
     - Lint/UselessAssignment
   - '*/app/helpers/theme_helper.rb':
