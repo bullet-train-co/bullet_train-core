@@ -155,7 +155,7 @@ module BulletTrain
         File.open("./app/helpers/application_helper.rb", "r") do |f|
           msmn = Masamune::AbstractSyntaxTree.new(f.readlines.join)
           current_theme = msmn.symbols.first[:token]
-          new_content = msmn.replace(type: :symbols, old_token: current_theme, new_token: theme_name)
+          new_content = msmn.replace(type: :symbol, old_token: current_theme, new_token: theme_name)
         end
 
         File.open("./app/helpers/application_helper.rb", "w") do |f|
