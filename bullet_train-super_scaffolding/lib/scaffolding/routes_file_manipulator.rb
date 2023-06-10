@@ -1,4 +1,5 @@
 require "scaffolding/block_manipulator"
+require "masamune"
 
 class Scaffolding::RoutesFileManipulator
   attr_accessor :child, :parent, :lines, :transformer_options, :concerns
@@ -225,15 +226,20 @@ class Scaffolding::RoutesFileManipulator
   # Finds namespace blocks no matter how many levels deep they are nested in resource blocks, etc.
   # However, will not find namespace blocks inside namespace blocks.
   def top_level_namespace_block_lines(within)
+    msmn = Masamune::AbstractSyntaxTree.new(lines.join)
+    namespaces = msmn.lex_nodes.select {|node| node.token == "namespace"}
+    namespace_line_numbers = namespaces.map {|namespace| namespace.position.first}
+
     local_namespace_blocks = []
     Scaffolding::FileManipulator.lines_within(lines, within).each do |line|
-      # i.e. - Retrieve "foo" from "namespace :foo do"
-      match_data = line.match(/(\s*namespace\s:)(.*)(\sdo$)/)
+      # Masamune gets the actual line number, whereas File.readlines etc. start at 0.
+      line_index = lines.index(line) + 1
 
       # Since we only want top-level namespace blocks, we ensure that
       # all other namespace blocks INSIDE the top-level namespace blocks are skipped
-      if match_data.present?
-        namespace_name = match_data[2]
+      if namespace_line_numbers.include?(line_index)
+        # Grab the first symbol token on the same line as the namespace.
+        namespace_name = msmn.symbols.find{|sym| sym[:position].first == line_index}[:token]
         local_namespace = find_namespaces([namespace_name], within)
         starting_line_number = local_namespace[namespace_name]
         local_namespace_block = ((starting_line_number + 1)..(Scaffolding::BlockManipulator.find_block_end(starting_from: starting_line_number, lines: lines) + 1))
