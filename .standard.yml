@@ -23,7 +23,6 @@ ignore:
   - '*/lib/scaffolding/transformer.rb':
     - Layout/EndAlignment
   # TODO Fix these files up for Standard Ruby.
-  - '*/lib/bullet_train/super_scaffolding/scaffolders/oauth_provider_scaffolder.rb'
   - '*/lib/tasks/bullet_train/themes/light_tasks.rake':
     - Style/CommandLiteral
   - '*/config/routes.rb':
