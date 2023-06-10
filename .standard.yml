@@ -22,3 +22,5 @@ ignore:
     - Lint/RescueException # TODO would it be okay to rescue `StandardError`?
   - '*/lib/scaffolding/transformer.rb':
     - Layout/EndAlignment
+  - '*/config/routes.rb':
+    - Lint/UselessAssignment
