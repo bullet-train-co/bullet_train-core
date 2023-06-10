@@ -26,7 +26,7 @@ module BulletTrain
 
           _, omniauth_gem, gems_provider_name, our_provider_name, api_key, api_secret = *ARGV
 
-          unless match = (our_provider_name.match(/Oauth::(.*)Account/))
+          unless (match = our_provider_name.match(/Oauth::(.*)Account/))
             puts "\n🚨 Your provider name must match the pattern of `Oauth::{Name}Account`, e.g. `Oauth::StripeAccount`\n".red
             return
           end
