@@ -227,8 +227,8 @@ class Scaffolding::RoutesFileManipulator
   # However, will not find namespace blocks inside namespace blocks.
   def top_level_namespace_block_lines(within)
     msmn = Masamune::AbstractSyntaxTree.new(lines.join)
-    namespaces = msmn.lex_nodes.select { |node| node.token == "namespace" }
-    namespace_line_numbers = namespaces.map { |namespace| namespace.position.first }
+    namespaces = msmn.method_calls.select { |method| method[:token] == "namespace" }
+    namespace_line_numbers = namespaces.map { |namespace| namespace[:position].first }
 
     local_namespace_blocks = []
     Scaffolding::FileManipulator.lines_within(lines, within).each do |line|
