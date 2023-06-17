@@ -105,4 +105,7 @@ Gem::Specification.new do |spec|
 
   # Password strength.
   spec.add_dependency "devise-pwned_password"
+
+  # Captcha
+  spec.add_dependency "invisible_captcha"
 end
