@@ -34,7 +34,6 @@ PATH
       premailer-rails
       rails (>= 6.0.0)
       ruby-openai
-      showcase-rails
       sidekiq
       unicode-emoji
       valid_email
@@ -318,8 +317,6 @@ GEM
       faraday-multipart (>= 1)
     ruby-progressbar (1.11.0)
     ruby2_keywords (0.0.5)
-    showcase-rails (0.4.2)
-      rails (>= 6.1.0)
     sidekiq (7.1.0)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
