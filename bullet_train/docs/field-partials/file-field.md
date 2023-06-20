@@ -8,8 +8,6 @@ In addition, Bullet Train has integrated the direct-uploads feature of Active St
 
 ## Example
 
-Add a 'document' file as an attachment to a `Post` model:
-
 Add the following to `app/models/post.rb`:
 
 ```ruby
