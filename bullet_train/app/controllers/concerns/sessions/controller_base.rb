@@ -8,7 +8,10 @@ module Sessions::ControllerBase
   def user_return_to_is_oauth
     session["user_return_to"]&.match(/^\/oauth/)
   end
-  helper_method :user_return_to_is_oauth
+
+  included do
+    helper_method :user_return_to_is_oauth
+  end
 
   def new
     # We allow people to pass in a URL to redirect to after sign in is complete. We have to do this because Safari
