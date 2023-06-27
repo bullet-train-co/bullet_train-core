@@ -228,7 +228,7 @@ class Scaffolding::RoutesFileManipulator
   # However, will not find namespace blocks inside namespace blocks.
   def top_level_namespace_block_lines(within)
     namespaces = @msmn.method_calls.select { |method| method[:token] == "namespace" }
-    namespace_line_numbers = namespaces.map { |namespace| namespace[:position].first }
+    namespace_line_numbers = namespaces.map { |namespace| namespace[:line_number] }
 
     local_namespace_blocks = []
     Scaffolding::FileManipulator.lines_within(lines, within).each do |line|
@@ -239,7 +239,7 @@ class Scaffolding::RoutesFileManipulator
       # all other namespace blocks INSIDE the top-level namespace blocks are skipped
       if namespace_line_numbers.include?(line_index)
         # Grab the first symbol token on the same line as the namespace.
-        namespace_name = @msmn.symbols.find { |sym| sym[:position].first == line_index }[:token]
+        namespace_name = @msmn.symbols.find { |sym| sym[:line_number] == line_index }[:token]
         local_namespace = find_namespaces([namespace_name], within)
         starting_line_number = local_namespace[namespace_name]
         local_namespace_block = ((starting_line_number + 1)..(Scaffolding::BlockManipulator.find_block_end(starting_from: starting_line_number, lines: lines) + 1))

@@ -42,7 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-routes"
   spec.add_dependency "devise"
   spec.add_dependency "xxhash"
-  spec.add_dependency "masamune-ast", ">=1.1.5"
+  spec.add_dependency "masamune-ast", ">=1.2.0"
 
   # This has been broken since Rails 7.
   # spec.add_dependency "devise-two-factor"
