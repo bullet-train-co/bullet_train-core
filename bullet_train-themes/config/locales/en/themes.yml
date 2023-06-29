@@ -1,0 +1,20 @@
+en:
+  themes:
+    time_ago: "%{time} ago"
+    never: Never
+    choose_emoji: Choose an Emoji
+    reply: reply
+    close_app_menu: Close Application Menu
+    open_app_menu: Open Application Menu
+    back: Back
+    apply: Apply
+    download_document: Download Current Document
+    upload_document: Upload New Document
+    remove_document: Remove Current Document
+    processed: Processed %{at}
+    processed_of: Processed %{performed_count} of %{target_count} %{at}
+    awaiting: Awaiting approval
+    scheduled_for: Scheduled for %{for}
+    processing_of: Processing %{performed_count} of %{target_count}
+    preparing_to_process: Preparing to process
+    preparing_to_process_of: Preparing to process %{performed_count} of %{target_count}
