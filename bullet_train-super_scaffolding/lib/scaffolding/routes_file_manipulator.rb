@@ -227,7 +227,7 @@ class Scaffolding::RoutesFileManipulator
   # Finds namespace blocks no matter how many levels deep they are nested in resource blocks, etc.
   # However, will not find namespace blocks inside namespace blocks.
   def top_level_namespace_block_lines(within)
-    namespaces = @msmn.method_calls.select { |method| method[:token] == "namespace" }
+    namespaces = @msmn.method_calls(name: "namespace")
     namespace_line_numbers = namespaces.map { |namespace| namespace[:line_number] }
 
     local_namespace_blocks = []
