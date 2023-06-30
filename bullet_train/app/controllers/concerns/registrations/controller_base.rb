@@ -1,9 +1,9 @@
 module Registrations::ControllerBase
   extend ActiveSupport::Concern
 
-  invisible_captcha only: :create
-
   included do
+    invisible_captcha only: :create
+
     def new
       # We have to set the session here because Safari wouldn't save it on a redirect to this URL.
       if params[:invitation_uuid]
