@@ -1,0 +1,7 @@
+en:
+  themes:
+    base:
+      attributes:
+        days_ago:
+          never: Never
+  

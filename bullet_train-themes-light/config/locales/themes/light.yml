@@ -1,0 +1,6 @@
+en:
+  themes:
+    light:
+      conversations:
+        message:
+          reply: "reply:"

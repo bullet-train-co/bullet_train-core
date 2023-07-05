@@ -6,6 +6,6 @@
   <% if object.send(attribute) %>
     <%= t("themes.time_ago", time: time_ago_in_words(object.send(attribute))) %>
   <% else %>
-    <%= t("themes.never") %>
+    <%= t("themes.base.attributes.days_ago.never") %>
   <% end %>
 <% end %>
