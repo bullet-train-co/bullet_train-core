@@ -63,17 +63,13 @@ class Account::Webhooks::Outgoing::DeliveriesController < Account::ApplicationCo
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def delivery_params
-    strong_params = params.require(:webhooks_outgoing_delivery).permit(
+    params.require(:webhooks_outgoing_delivery).permit(
       :event_id,
       :endpoint_url,
       :delivered_at,
       # 🚅 super scaffolding will insert new fields above this line.
       # 🚅 super scaffolding will insert new arrays above this line.
     )
-
-    assign_date_and_time(strong_params, :delivered_at)
     # 🚅 super scaffolding will insert processing for new fields above this line.
-
-    strong_params
   end
 end
