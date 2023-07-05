@@ -1,0 +1,6 @@
+en:
+  themes:
+    fields:
+      download_document: Download Current Document
+      upload_document: Upload New Document
+      remove_document: Remove Current Document
