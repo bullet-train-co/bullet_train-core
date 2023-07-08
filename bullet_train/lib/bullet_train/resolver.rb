@@ -75,7 +75,7 @@ module BulletTrain
 
           # TODO: Use TerminalCommands to open this file
           open_command = `which open`.present? ? "open" : "xdg-open"
-          exec "#{open_command} #{path}"
+          exec "#{open_command} #{source_file[:absolute_path]}"
         end
       else
         puts "Couldn't resolve `#{@needle}`.".red
