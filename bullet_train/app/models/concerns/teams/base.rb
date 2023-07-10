@@ -83,4 +83,6 @@ module Teams::Base
       billing_subscriptions.active.empty?
     end
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_teams_base, self
 end
