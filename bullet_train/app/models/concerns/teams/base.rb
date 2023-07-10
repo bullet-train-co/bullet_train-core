@@ -28,6 +28,11 @@ module Teams::Base
         has_many :billing_stripe_subscriptions, class_name: "Billing::Stripe::Subscription", dependent: :destroy, foreign_key: :team_id
       end
 
+      # TODO We need a way for `bullet_train-billing-paddle` to define these.
+      if defined?(Billing::Paddle::Subscription)
+        has_many :billing_paddle_subscriptions, class_name: "Billing::Paddle::Subscription", dependent: :destroy, foreign_key: :team_id
+      end
+
       if defined?(Billing::Usage::TeamSupport)
         include Billing::Usage::TeamSupport
       end
