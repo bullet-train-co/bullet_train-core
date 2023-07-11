@@ -27,7 +27,7 @@ other_options ||= {}
   <% content_for :field do %>
     <div 
       class="date-input relative" 
-      data-controller="<%=stimulus_controller%>%" 
+      data-controller="<%=stimulus_controller%>" 
       data-<%= stimulus_controller %>-include-time-value="true" 
       data-<%= stimulus_controller %>-date-format-value="<%= I18n.t('date.formats.date_controller') %>"
       data-<%= stimulus_controller %>-time-format-value="<%= I18n.t('time.formats.date_controller') %>"
