@@ -9,7 +9,7 @@ options ||= {}
 # data options
 data_options ||= {}
 data_options[:id] ||= form.field_id(method)
-data_options[:class] = "hidden form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{options[:class]}".strip
+data_options[:class] = "hidden"
 data_options[:value] = form.object.send(method)&.strftime("%Y-%m-%d")
 data_options = data_options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 
@@ -22,7 +22,6 @@ options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField'
 other_options ||= {}
 
 %>
-
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <div 
