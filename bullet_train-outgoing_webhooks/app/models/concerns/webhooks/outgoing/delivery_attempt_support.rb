@@ -55,7 +55,18 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
     request = Net::HTTP::Post.new(uri.path)
     request.add_field("Host", uri.host)
     request.add_field("Content-Type", "application/json")
-    request.body = delivery.event.payload.to_json
+    body = delivery.event.payload.to_json
+
+    now = Time.now.utc
+    timestamp = now.to_i.to_s
+    signature_header_parts = ["t=#{timestamp}"]
+    delivery.endpoint.shared_secrets.active_for_timestamp(now).each do |secret|
+      signature_header_parts << secret.generate_signature(timestamp, body)
+    end
+
+    request.add_field("Security-Signature", signature_header_parts.join(",")) if signature_header_parts.length > 1
+
+    request.body = body
 
     begin
       response = http.request(request)

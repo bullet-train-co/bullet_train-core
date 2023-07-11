@@ -18,6 +18,7 @@ ActiveRecord::Schema.define do
     t.string :url, null: false
     t.string :name, null: false
     t.integer :event_type_ids, array: true, default: []
+    t.integer :api_version, null: false, default: 1
     t.timestamps null: false
   end
 
