@@ -75,18 +75,17 @@ namespace :bullet_train do
   desc "Eject files from the Bullet Train's core logic to your application."
   task :eject, [:type] => :environment do |task, args|
     if args[:type] == "locales"
-      gem_names = I18n.t("framework_packages").map {|key, value| key.to_s}
+      gem_names = I18n.t("framework_packages").map { |key, value| key.to_s }
       gem_names.each do |gem|
         puts "Searching for locales in #{gem}...".blue
         gem_path = `bundle show #{gem}`.chomp
-        locales = Dir.glob("#{gem_path}/**/config/locales/**/*.yml").reject {|path| path.match?("dummy")}
+        locales = Dir.glob("#{gem_path}/**/config/locales/**/*.yml").reject { |path| path.match?("dummy") }
         next if locales.empty?
 
         puts "Found locales. Ejecting to your application...".green
         locales.each do |locale|
           relative_path = locale.split("/config/locales").pop
           path_parts = relative_path.split("/")
-          file_name = path_parts.pop
           base_path = path_parts.join("/")
           FileUtils.mkdir_p("./config/locales#{base_path}") unless Dir.exist?("./config/locales#{base_path}")
 
