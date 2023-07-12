@@ -38,14 +38,19 @@ export default class extends Controller {
 
   applyDateToField(event, picker) {
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const pickerMomentVal = picker.startDate
-    const momentVal = moment(pickerMomentVal.toISOString()).tz(rubyTzNameToUnixTz[this.currentTimeZoneValue], true)
+    const momentVal = (
+      picker ?
+      moment(picker.startDate.toISOString()).tz(this.timeZoneFieldTarget.value, true) :
+      moment(this.fieldTarget.value).tz(this.timeZoneFieldTarget.value, false)
+    )
     const displayVal = momentVal.format(format)
     const dataVal = this.includeTimeValue ? momentVal.toISOString() : momentVal.format('YYYY-MM-DD')
     $(this.displayFieldTarget).val(displayVal)
     $(this.fieldTarget).val(dataVal)
     // bubble up a change event when the input is updated for other listeners
-    this.displayFieldTarget.dispatchEvent(new CustomEvent('change', { detail: { picker: picker }}))
+    if(picker){
+      this.displayFieldTarget.dispatchEvent(new CustomEvent('change', { detail: { picker: picker }}))
+    }
   }
 
   showTimeZoneButtons(event) {
@@ -83,15 +88,16 @@ export default class extends Controller {
     event.preventDefault()
 
     const currentTimeZoneEl = this.currentTimeZoneWrapperTarget.querySelector('a')
-    const {value} = event.target.dataset
-
+    const {value: tzName} = event.target.dataset
+    const value = rubyTzNameToUnixTz[tzName]
+    
     $(this.timeZoneFieldTarget).val(value)
-    $(currentTimeZoneEl).text(value)
-
+    $(this.timeZoneFieldTarget).val(value)
+    $(currentTimeZoneEl).text(tzName)
     $('.time-zone-button').removeClass('button').addClass('button-alternative')
     $(event.target).removeClass('button-alternative').addClass('button')
-
     this.resetTimeZoneUI()
+    this.applyDateToField(null, null)
   }
 
   initPluginInstance() {
@@ -130,7 +136,6 @@ export default class extends Controller {
       $(this.timeZoneSelect).on('change.select2', function(event) {
         const currentTimeZoneEl = self.currentTimeZoneWrapperTarget.querySelector('a')
         const {value} = event.target
-
         $(self.timeZoneFieldTarget).val(value)
         $(currentTimeZoneEl).text(value)
 
@@ -143,7 +148,6 @@ export default class extends Controller {
         } else {
           // deselect any selected button
           $('.time-zone-button').removeClass('button').addClass('button-alternative')
-
           selectedOptionTimeZoneButton.text(value)
           selectedOptionTimeZoneButton.attr('data-value', value).removeAttr('hidden')
           selectedOptionTimeZoneButton.removeClass(['hidden', 'button-alternative']).addClass('button')
@@ -156,10 +160,8 @@ export default class extends Controller {
 
   teardownPluginInstance() {
     if (this.plugin === undefined) { return }
-
     $(this.pluginMainEl).off('apply.daterangepicker')
     $(this.pluginMainEl).off('cancel.daterangepicker')
-
     // revert to original markup, remove any event listeners
     this.plugin.remove()
 
