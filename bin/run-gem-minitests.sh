@@ -36,4 +36,3 @@ do
 done
 
 echo "Finished running Minitest Suite"
-exit 0
