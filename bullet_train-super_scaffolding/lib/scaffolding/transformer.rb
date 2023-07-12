@@ -1,3 +1,5 @@
+# Test comment
+
 require "indefinite_article"
 require "yaml"
 require "scaffolding/file_manipulator"

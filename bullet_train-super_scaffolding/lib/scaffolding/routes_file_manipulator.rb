@@ -1,3 +1,5 @@
+# Test comment
+
 require "scaffolding/block_manipulator"
 
 class Scaffolding::RoutesFileManipulator

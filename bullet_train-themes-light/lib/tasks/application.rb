@@ -1,3 +1,5 @@
+# Test comment
+
 module BulletTrain
   module Themes
     module Application
