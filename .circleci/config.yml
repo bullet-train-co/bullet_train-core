@@ -37,7 +37,7 @@ jobs:
       - *wait_for_docker
       - run:
           name: Run unit tests
-          command: bundle exec rails test
+          command: ../bin/run-gem-minitests
 
   'Local Standard Ruby':
     docker:
@@ -144,7 +144,7 @@ workflows:
   version: 2
   build:
     jobs:
-      # - 'Local Minitest'
+      - 'Local Minitest'
       - 'Local Standard Ruby'
       - 'Starter Repo Minitest'
       - 'Starter Repo Minitest for Super Scaffolding'
