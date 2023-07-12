@@ -29,9 +29,8 @@ done
 for gem in ${MODIFIED_GEMS[@]}
 do
   echo "Running minitest suite for $gem"
-  cd $gem && bundle install
+  cd $gem && bundle install && bundle exec rails test
   cd ..
-  bundle exec rails test $gem
   echo ""
 done
 
