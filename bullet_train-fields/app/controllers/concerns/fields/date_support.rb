@@ -1,8 +1,13 @@
 module Fields::DateSupport
   extend ActiveSupport::Concern
 
-  # deprecated - keep for backward compatibility
   def assign_date(strong_params, attribute)
+    deprecator = ActiveSupport::Deprecation.new("2.0", "BulletTrain::Fields")
+    deprecator.deprecation_warning(
+      "assign_date",
+      "Please assign an ISO8601 date string as field value instead and remove all assign_date assignments,
+      see https://ruby-doc.org/3.2.2/exts/date/Date.html"
+    )
     attribute = attribute.to_s
     if strong_params.dig(attribute).present?
       parsed_value = Chronic.parse(strong_params[attribute])
