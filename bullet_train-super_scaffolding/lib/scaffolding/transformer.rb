@@ -92,6 +92,7 @@ class Scaffolding::Transformer
       "scaffolding_completely_concrete_tangible_things",
       "scaffolding-absolutely-abstract-creative-concepts",
       "scaffolding-completely-concrete-tangible-things",
+      "scaffolding.completely_concrete.tangible_things"
     ]
 
     class_name_with_context = [
