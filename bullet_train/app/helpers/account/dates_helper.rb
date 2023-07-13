@@ -41,4 +41,8 @@ module Account::DatesHelper
   def am_pm?
     !"#{I18n.t("time.am", fallback: false, default: "")}#{I18n.t("time.pm", fallback: false, default: "")}".empty?
   end
+
+  def tz_name_to_tz_id
+    ActiveSupport::TimeZone.all.map{|tz| {"#{tz.name}" => tz.tzinfo.name}}.reduce({}, :merge)
+  end
 end
