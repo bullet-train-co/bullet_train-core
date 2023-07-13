@@ -117,7 +117,7 @@ class Scaffolding::Transformer
     ]
 
     full_class_exceptions = [
-      "scaffolding.completely_concrete.tangible_things",
+      "scaffolding/completely_concrete/_tangible_things",
       "scaffolding.completely_concrete.tangible_things",
     ]
 
