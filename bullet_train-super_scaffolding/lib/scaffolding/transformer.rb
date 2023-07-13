@@ -92,6 +92,7 @@ class Scaffolding::Transformer
       "scaffolding_completely_concrete_tangible_things",
       "scaffolding-absolutely-abstract-creative-concepts",
       "scaffolding-completely-concrete-tangible-things",
+      "scaffolding.completely_concrete.tangible_things"
     ]
 
     class_name_with_context = [
@@ -117,17 +118,10 @@ class Scaffolding::Transformer
     ]
 
     (
-      full_class_name +
-
-      # Address special cases here
-      full_class_name.map(&:singularize).reject {|str| str == "scaffolding/completely_concrete/_tangible_thing"} +
-      ["scaffolding.completely_concrete.tangible_things"] +
-
+      full_class_name + full_class_name.map(&:singularize) +
       class_name_with_context + class_name_with_context.map(&:singularize) +
       class_name + class_name.map(&:singularize) +
-
-      # Account namespace vs. others.
-      [":account", "/account/"]
+      [":account", "/account/"] # Account namespace vs. others.
     ).each do |needle|
       string = string.gsub(needle, encode_double_replacement_fix(class_names_transformer.replacement_for(needle)))
     end
