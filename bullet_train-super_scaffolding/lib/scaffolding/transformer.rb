@@ -122,10 +122,10 @@ class Scaffolding::Transformer
     ]
 
     (
-      full_class_name + full_class_name.map(&:singularize) +
+      full_class_name + full_class_exceptions + full_class_name.map(&:singularize) +
       class_name_with_context + class_name_with_context.map(&:singularize) +
       class_name + class_name.map(&:singularize) +
-      full_class_exceptions + [":account", "/account"] # Account namespace vs. others.
+      [":account", "/account"] # Account namespace vs. others.
     ).each do |needle|
       string = string.gsub(needle, encode_double_replacement_fix(class_names_transformer.replacement_for(needle)))
     end
