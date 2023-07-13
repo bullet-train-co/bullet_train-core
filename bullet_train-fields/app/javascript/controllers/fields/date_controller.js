@@ -7,7 +7,7 @@ import moment from 'moment-timezone'
 import { rubyTzNameToUnixTz } from '../../utils'
 
 export default class extends Controller {
-  static targets = [ "field", "displayField", "clearButton", "currentTimeZoneWrapper", "timeZoneButtons", "timeZoneSelectWrapper", "timeZoneField" ]
+  static targets = [ "field", "displayField", "clearButton", "currentTimeZoneWrapper", "timeZoneButtons", "timeZoneSelectWrapper", "timeZoneField", "timeZoneSelect" ]
   static values = {
     includeTime: Boolean,
     defaultTimeZones: Array,
@@ -70,6 +70,11 @@ export default class extends Controller {
     if (this.hasTimeZoneSelectWrapperTarget) {
       $(this.timeZoneSelectWrapperTarget).toggleClass('hidden')
     }
+    const tz = this.timeZoneSelectTarget.value
+    const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
+    const momentVal = moment(this.fieldTarget.value).tz(tz, false)
+    const displayVal = momentVal.format(format)
+    $(this.displayFieldTarget).val(displayVal)
   }
 
   resetTimeZoneUI(e) {
@@ -92,12 +97,26 @@ export default class extends Controller {
     const value = rubyTzNameToUnixTz[tzName]
     
     $(this.timeZoneFieldTarget).val(value)
-    $(this.timeZoneFieldTarget).val(value)
     $(currentTimeZoneEl).text(tzName)
     $('.time-zone-button').removeClass('button').addClass('button-alternative')
     $(event.target).removeClass('button-alternative').addClass('button')
     this.resetTimeZoneUI()
     this.applyDateToField(null, null)
+  }
+
+  selectTzChange(event) {
+    $(this.timeZoneFieldTarget).val(this.timeZoneSelectTarget.value)
+    this.applyDateToField(null, null)
+  }
+
+  cancelSelect(event) {
+    event.preventDefault()
+    const tz = rubyTzNameToUnixTz[this.currentTimeZoneValue]
+    const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
+    const momentVal = moment(this.fieldTarget.value).tz(tz, false)
+    const displayVal = momentVal.format(format)
+    $(this.displayFieldTarget).val(displayVal)
+    this.resetTimeZoneUI()
   }
 
   initPluginInstance() {

@@ -51,10 +51,7 @@ other_options ||= {}
       <% end %>
       <% if current_user.time_zone != current_user.current_team.time_zone %>
         <div class="mt-1.5 text-xs text-slate-500">
-          <%= method %>
-          <%= current_tz_name %>
-          <%= current_tz %>
-          <input class="hidden" data-<%=stimulus_controller%>-target='timeZoneField' value="<%= current_tz_name %>"></span>
+          <input class="hidden" data-<%=stimulus_controller%>-target='timeZoneField' value="<%= current_tz %>"></span>
           <div data-<%= stimulus_controller %>-target="currentTimeZoneWrapper">
             <%= link_to (current_user.time_zone || current_user.current_team.time_zone || "UTC"), '#', class: 'button-secondary p-0', data: {action: "#{stimulus_controller}#showTimeZoneButtons"} %>
           </div>
@@ -67,9 +64,13 @@ other_options ||= {}
           </div>
           <div class="hidden flex flex-row items-center mt-3 text-sm" data-<%= stimulus_controller %>-target="timeZoneSelectWrapper">
             <div class="flex-grow">
-              <%= select_tag :time_zone, options_from_collection_for_select(ActiveSupport::TimeZone.all, "name", "to_s", current_user.time_zone || current_user.current_team.time_zone), {class: 'form-control select2'} %>
+              <%= select_tag :time_zone, 
+                  options_for_select(ActiveSupport::TimeZone.all.map{|tz| [tz.name.to_s, tz.tzinfo.name.to_s]}, [  ActiveSupport::TimeZone.find_tzinfo(current_user.time_zone).name ||  ActiveSupport::TimeZone.find_tzinfo(current_user.current_team.time_zone).name ]), 
+                  class: 'form-control select2',
+                  data: { "#{stimulus_controller}-target": "timeZoneSelect", action: "#{stimulus_controller}#selectTzChange"}
+              %>
             </div>
-            <%= link_to t('global.buttons.cancel'), '#', class: 'button-secondary ml-1.5', data: {action: "#{stimulus_controller}#resetTimeZoneUI"} %>
+            <%= link_to t('global.buttons.cancel'), '#', class: 'button-secondary ml-1.5', data: {action: "#{stimulus_controller}#cancelSelect"} %>
           </div>
         </div>
       <% end %>
