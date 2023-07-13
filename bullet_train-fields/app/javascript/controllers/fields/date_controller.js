@@ -38,9 +38,12 @@ export default class extends Controller {
 
   applyDateToField(event, picker) {
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
+    const tz = (
+      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || rubyTzNameToUnixTz[this.currentTimeZoneValue]
+    )
     const momentVal = (
       picker ?
-      moment(picker.startDate.toISOString()).tz(this.timeZoneFieldTarget.value, true) :
+      moment(picker.startDate.toISOString()).tz(tz, true) :
       moment(this.fieldTarget.value).tz(this.timeZoneFieldTarget.value, false)
     )
     const displayVal = momentVal.format(format)
