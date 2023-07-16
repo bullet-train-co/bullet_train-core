@@ -26,9 +26,8 @@ module BulletTrain
         puts ""
 
         if interactive && !eject
-          puts "\nWould you like to eject the file into the local project? (y/n)\n"
+          print "\nWould you like to eject the file into the local project? (y/n): "
           input = $stdin.gets
-          $stdin.getc while $stdin.ready?
           if input.first.downcase == "y"
             eject = true
           end
@@ -61,9 +60,8 @@ module BulletTrain
         end
 
         if interactive && !open
-          puts "\nWould you like to open `#{source_file[:absolute_path]}`? (y/n)\n"
+          print "\nWould you like to open `#{source_file[:absolute_path]}`? (y/n): "
           input = $stdin.gets
-          $stdin.getc while $stdin.ready?
           if input.first.downcase == "y"
             open = true
           end
