@@ -14,8 +14,7 @@ export default class extends Controller {
     timeFormat: String,
     currentTimeZone: String,
     isAmPm: Boolean,
-    pickerLocale: { type: Object, default: {} },
-    tzNameToTzId: { type: Object, default: {} },
+    pickerLocale: { type: Object, default: {} }
   }
 
   connect() {
@@ -37,7 +36,7 @@ export default class extends Controller {
   applyDateToField(event, picker) {
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
     const tz = (
-      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || this.tzNameToTzIdValue[this.currentTimeZoneValue]
+      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || this.currentTimeZoneValue
     )
     const momentVal = (
       picker ?
@@ -89,22 +88,20 @@ export default class extends Controller {
     }
   }
 
+  // used by the timezone buttons
   setTimeZone(event) {
     // don't follow the anchor
     event.preventDefault()
-
     const currentTimeZoneEl = this.currentTimeZoneWrapperTarget.querySelector('a')
-    const {value: tzName} = event.target.dataset
-    const value = this.tzNameToTzIdValue[tzName]
-    
-    $(this.timeZoneFieldTarget).val(value)
-    $(currentTimeZoneEl).text(tzName)
+    $(this.timeZoneFieldTarget).val(event.target.dataset.value)
+    $(currentTimeZoneEl).text(event.target.dataset.label)
     $('.time-zone-button').removeClass('button').addClass('button-alternative')
     $(event.target).removeClass('button-alternative').addClass('button')
     this.resetTimeZoneUI()
     this.applyDateToField(null, null)
   }
 
+  // used by the timezone picker
   selectTzChange(event) {
     $(this.timeZoneFieldTarget).val(this.timeZoneSelectTarget.value)
     this.applyDateToField(null, null)
@@ -112,9 +109,8 @@ export default class extends Controller {
 
   cancelSelect(event) {
     event.preventDefault()
-    const tz = this.tzNameToTzIdValue[this.currentTimeZoneValue]
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const momentVal = moment(this.fieldTarget.value).tz(tz, false)
+    const momentVal = moment(this.fieldTarget.value).tz(this.currentTimeZoneValue, false)
     const displayVal = momentVal.format(format)
     $(this.displayFieldTarget).val(displayVal)
     this.resetTimeZoneUI()
