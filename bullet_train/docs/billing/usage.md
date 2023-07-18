@@ -59,13 +59,13 @@ class ApplicationRecord
 end
 ```
 
-The second concern is `Billing::HasTrackers` and it allows any model to hold the usage tracking. This is usually done on the `Team` model.
+The second concern is `Billing::Usage::HasTrackers` and it allows any model to hold the usage tracking. This is usually done on the `Team` model.
 
 ```
 # app/models/team.rb
 
 class Team
-  include Billing::HasTrackers
+  include Billing::Usage::HasTrackers
 end
 ```
 
