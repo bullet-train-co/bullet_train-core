@@ -33,7 +33,7 @@ export default class extends Controller {
     $(this.displayFieldTarget).val('')
   }
 
-  applyDateToField(event, picker) {
+  applyDateToField(event, picker, tzChanged=false) {
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
     const tz = (
       ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || this.currentTimeZoneValue
@@ -41,10 +41,14 @@ export default class extends Controller {
     const momentVal = (
       picker ?
       moment(picker.startDate.toISOString()).tz(tz, true) :
-      moment(this.fieldTarget.value).tz(this.timeZoneFieldTarget.value, false)
+      (
+        tzChanged ?
+        moment.tz(moment(this.fieldTarget.value, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm"), this.timeZoneFieldTarget.value) :
+        moment(this.fieldTarget.value).tz(this.timeZoneFieldTarget.value, false)
+      )
     )
     const displayVal = momentVal.format(format)
-    const dataVal = this.includeTimeValue ? momentVal.toISOString() : momentVal.format('YYYY-MM-DD')
+    const dataVal = this.includeTimeValue ? momentVal.toISOString(true) : momentVal.format('YYYY-MM-DD')
     $(this.displayFieldTarget).val(displayVal)
     $(this.fieldTarget).val(dataVal)
     // bubble up a change event when the input is updated for other listeners
@@ -66,14 +70,13 @@ export default class extends Controller {
     event.preventDefault()
 
     $(this.timeZoneButtonsTarget).toggleClass('hidden')
-
     if (this.hasTimeZoneSelectWrapperTarget) {
       $(this.timeZoneSelectWrapperTarget).toggleClass('hidden')
     }
-    const tz = this.timeZoneSelectTarget.value
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const momentVal = moment(this.fieldTarget.value).tz(tz, false)
+    const momentVal = moment.tz(moment(this.fieldTarget.value, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm"),this.timeZoneSelectTarget.value)
     const displayVal = momentVal.format(format)
+
     $(this.displayFieldTarget).val(displayVal)
   }
 
@@ -98,19 +101,20 @@ export default class extends Controller {
     $('.time-zone-button').removeClass('button').addClass('button-alternative')
     $(event.target).removeClass('button-alternative').addClass('button')
     this.resetTimeZoneUI()
-    this.applyDateToField(null, null)
+    this.applyDateToField(null, null, true)
   }
 
   // used by the timezone picker
   selectTzChange(event) {
     $(this.timeZoneFieldTarget).val(this.timeZoneSelectTarget.value)
-    this.applyDateToField(null, null)
+    this.applyDateToField(null, null, true)
   }
 
   cancelSelect(event) {
     event.preventDefault()
+
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const momentVal = moment(this.fieldTarget.value).tz(this.currentTimeZoneValue, false)
+    const momentVal = moment.tz(moment(this.fieldTarget.value, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm"),this.currentTimeZoneValue) 
     const displayVal = momentVal.format(format)
     $(this.displayFieldTarget).val(displayVal)
     this.resetTimeZoneUI()
