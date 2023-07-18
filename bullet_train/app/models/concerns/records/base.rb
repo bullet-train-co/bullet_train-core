@@ -91,4 +91,6 @@ module Records::Base
       end.attributes!
     end
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_records_base, self
 end

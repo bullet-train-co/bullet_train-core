@@ -104,7 +104,10 @@ module BulletTrain
 
       if result[:absolute_path]
         if result[:absolute_path].include?("/bullet_train")
-          regex = /#{"bullet_train-core" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train[a-z|\-._0-9]*.*/
+          # This Regular Expression covers gem versions like bullet_train-1.2.26,
+          # and hashed versions of branches on GitHub like bullet_train-core-b00a02bd513c.
+          gem_version_regex = /[a-z|\-._0-9]*/
+          regex = /#{"bullet_train-core#{gem_version_regex}" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train#{gem_version_regex}.*/
           base_path = result[:absolute_path].scan(regex).pop
 
           # Try to calculate which package the file is from, and what it's path is within that project.
