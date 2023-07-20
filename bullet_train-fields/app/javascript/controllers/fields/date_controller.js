@@ -33,19 +33,17 @@ export default class extends Controller {
     $(this.displayFieldTarget).val('')
   }
 
-  applyDateToField(event, picker, tzChanged=false) {
+  applyDateToField(event, picker) {
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const tz = (
-      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || this.currentTimeZoneValue
+    const newTimeZone = (
+      ( this.hasTimeZoneSelectWrapperTarget && $(this.timeZoneSelectWrapperTarget).is(":visible") && this.timeZoneSelectTarget.value ) ||
+      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || 
+        this.currentTimeZoneValue
     )
     const momentVal = (
       picker ?
-      moment(picker.startDate.toISOString()).tz(tz, true) :
-      (
-        tzChanged ?
-        moment.tz(moment(this.fieldTarget.value, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm"), this.timeZoneFieldTarget.value) :
-        moment(this.fieldTarget.value).tz(this.timeZoneFieldTarget.value, false)
-      )
+      moment(picker.startDate.toISOString()).tz(newTimeZone, true) :
+      moment.tz(moment(this.fieldTarget.value, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm"), newTimeZone) 
     )
     const displayVal = momentVal.format(format)
     const dataVal = this.includeTimeValue ? momentVal.toISOString(true) : momentVal.format('YYYY-MM-DD')
@@ -65,6 +63,7 @@ export default class extends Controller {
     $(this.timeZoneButtonsTarget).toggleClass('hidden')
   }
 
+  // triggered on other click from the timezone buttons
   showTimeZoneSelectWrapper(event) {
     // don't follow the anchor
     event.preventDefault()
@@ -73,11 +72,9 @@ export default class extends Controller {
     if (this.hasTimeZoneSelectWrapperTarget) {
       $(this.timeZoneSelectWrapperTarget).toggleClass('hidden')
     }
-    const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const momentVal = moment.tz(moment(this.fieldTarget.value, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm"),this.timeZoneSelectTarget.value)
-    const displayVal = momentVal.format(format)
-
-    $(this.displayFieldTarget).val(displayVal)
+    if(!["", null].includes(this.fieldTarget.value)){
+      $(this.displayFieldTarget).trigger("apply.daterangepicker");
+    }
   }
 
   resetTimeZoneUI(e) {
@@ -91,39 +88,41 @@ export default class extends Controller {
     }
   }
 
-  // used by the timezone buttons
+  // triggered on selecting a new timezone using the buttons
   setTimeZone(event) {
     // don't follow the anchor
     event.preventDefault()
     const currentTimeZoneEl = this.currentTimeZoneWrapperTarget.querySelector('a')
+    
     $(this.timeZoneFieldTarget).val(event.target.dataset.value)
     $(currentTimeZoneEl).text(event.target.dataset.label)
     $('.time-zone-button').removeClass('button').addClass('button-alternative')
     $(event.target).removeClass('button-alternative').addClass('button')
     this.resetTimeZoneUI()
-    this.applyDateToField(null, null, true)
+    if(!["", null].includes(this.fieldTarget.value)){
+      $(this.displayFieldTarget).trigger("apply.daterangepicker");
+    }
   }
 
-  // used by the timezone picker
-  selectTzChange(event) {
-    $(this.timeZoneFieldTarget).val(this.timeZoneSelectTarget.value)
-    this.applyDateToField(null, null, true)
+  // triggered on selecting a new timezone from the timezone picker
+  selectTimeZoneChange(event) {
+    if(!["", null].includes(this.fieldTarget.value)){
+      $(this.displayFieldTarget).trigger("apply.daterangepicker");
+    }
   }
 
+  // triggered on cancel click from the timezone picker
   cancelSelect(event) {
     event.preventDefault()
-
-    const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const momentVal = moment.tz(moment(this.fieldTarget.value, "YYYY-MM-DDTHH:mm").format("YYYY-MM-DDTHH:mm"),this.currentTimeZoneValue) 
-    const displayVal = momentVal.format(format)
-    $(this.displayFieldTarget).val(displayVal)
     this.resetTimeZoneUI()
+    if(!["", null].includes(this.fieldTarget.value)){
+      $(this.displayFieldTarget).trigger("apply.daterangepicker")
+    }
   }
 
   initPluginInstance() {
-    const t = this.pickerLocaleValue
+    const localeValues = this.pickerLocaleValue
     const isAmPm = this.isAmPmValue
-    var localeValues = JSON.parse(JSON.stringify(t))
     localeValues['format'] = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
 
     $(this.displayFieldTarget).daterangepicker({
