@@ -40,6 +40,8 @@ namespace :bullet_train do
       puts "\nOK, paste what you've got for us and hit <Return>!\n".blue
 
       input = $stdin.gets.strip
+      # we only resolve the first line of user input and ignore the rest
+      $stdin.getc while $stdin.ready?
 
       # Extract absolute paths from annotated views.
       if input =~ /<!-- BEGIN (.*) -->/
