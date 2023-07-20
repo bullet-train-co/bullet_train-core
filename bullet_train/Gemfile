@@ -13,3 +13,6 @@ gem "active_hash", github: "bullet-train-co/active_hash"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
+
+# Allow users to supply content with markdown formatting. Powers our markdown() view helper.
+gem "commonmarker", ">= 1.0.0.pre"

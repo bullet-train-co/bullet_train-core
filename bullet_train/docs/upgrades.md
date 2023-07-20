@@ -28,7 +28,7 @@ git clean -d -f
 
 ```
 git fetch starter-repo
-````
+```
 
 ### 3. Create a new "upgrade" branch off of your main branch.
 
