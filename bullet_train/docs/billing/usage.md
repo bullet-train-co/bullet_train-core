@@ -6,7 +6,7 @@ Bullet Train provides a holistic method for defining model-based usage limits in
 
 ### 1. Purchase Bullet Train Pro
 
-First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to way a little to receive your keys.
+First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to wait a little to receive your keys.
 
 ### 2. Install the Package
 
@@ -55,7 +55,7 @@ The first concern is `Billing::UsageSupport` and it allows tracking of usage of 
 # app/models/application_record.rb
 
 class ApplicationRecord
-  include Billing::Usage
+  include Billing::UsageSupport
 end
 ```
 
