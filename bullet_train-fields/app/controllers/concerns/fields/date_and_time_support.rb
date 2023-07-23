@@ -11,9 +11,13 @@ module Fields::DateAndTimeSupport
     attribute = attribute.to_s
     time_zone_attribute = "#{attribute}_time_zone"
     if strong_params.dig(attribute).present?
-      time_zone = ActiveSupport::TimeZone.new(strong_params[time_zone_attribute] || current_team.time_zone)
-      strong_params.delete(time_zone_attribute)
-      strong_params[attribute] = time_zone.strptime(strong_params[attribute], t("global.formats.date_and_time"))
+      begin
+        strong_params[attribute] = DateTime.iso8601(strong_params[attribute])
+      rescue ArgumentError => e
+        time_zone = ActiveSupport::TimeZone.new(strong_params[time_zone_attribute] || current_team.time_zone)
+        strong_params.delete(time_zone_attribute)
+        strong_params[attribute] = time_zone.strptime(strong_params[attribute], t("global.formats.date_and_time"))
+      end
     end
   end
 end
