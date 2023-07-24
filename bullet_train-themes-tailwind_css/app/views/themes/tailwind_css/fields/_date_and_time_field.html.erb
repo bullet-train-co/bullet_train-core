@@ -50,7 +50,7 @@ other_options ||= {}
       <% end %>
       <% if current_user.time_zone != current_user.current_team.time_zone %>
         <div class="mt-1.5 text-xs text-slate-500">
-          <input class="hidden" data-<%=stimulus_controller%>-target='timeZoneField' value="<%= current_time_zone %>"></span>
+          <input class="hidden" data-<%=stimulus_controller%>-target="timeZoneField" value="<%= current_time_zone %>"></span>
           <div data-<%= stimulus_controller %>-target="currentTimeZoneWrapper">
             <%= link_to (current_user.time_zone || current_user.current_team.time_zone || "UTC"), '#', class: 'button-secondary p-0', data: {action: "#{stimulus_controller}#showTimeZoneButtons"} %>
           </div>
