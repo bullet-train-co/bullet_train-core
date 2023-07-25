@@ -8,5 +8,3 @@ gems.each do |gem|
   puts "Running minitest suite for #{gem}"
   `cd #{gem} && bundle install && bin/rails test test/`
 end
-
-puts "Finished running Minitest Suite"
