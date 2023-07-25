@@ -37,7 +37,7 @@ jobs:
       - *wait_for_docker
       - run:
           name: Run unit tests
-          command: bash bin/run-gem-minitests.sh
+          command: bin/run-gem-minitests
 
   'Local Standard Ruby':
     docker:
