@@ -1,0 +1,12 @@
+#!/usr/bin/env ruby
+
+# Get names of modified files compared to the main branch.
+modified_files = `git diff --name-status main`.split("\t").each.grep(/^bullet_train/)
+gems = modified_files.map {|file_name| file_name.split("/").shift }.uniq
+
+gems.each do |gem|
+  puts "Running minitest suite for #{gem}"
+  `cd #{gem} && bundle install && bin/rails test test/`
+end
+
+puts "Finished running Minitest Suite"
