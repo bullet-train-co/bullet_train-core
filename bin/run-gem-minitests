@@ -6,5 +6,5 @@ gems = modified_files.map {|file_name| file_name.split("/").shift }.uniq
 
 gems.each do |gem|
   puts "Running minitest suite for #{gem}"
-  `cd #{gem} && bundle install && CI=false bin/rails test test/`
+  `cd #{gem} && bundle install && bin/rails test test/`
 end
