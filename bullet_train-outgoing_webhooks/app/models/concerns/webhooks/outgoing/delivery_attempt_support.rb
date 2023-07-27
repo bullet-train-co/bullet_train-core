@@ -52,7 +52,7 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
 
     http = Net::HTTP.new(hostname, uri.port)
     http.use_ssl = true if uri.scheme == "https"
-    request = Net::HTTP::Post.new(uri.path)
+    request = Net::HTTP::Post.new(uri.request_uri)
     request.add_field("Host", uri.host)
     request.add_field("Content-Type", "application/json")
     request.body = delivery.event.payload.to_json
