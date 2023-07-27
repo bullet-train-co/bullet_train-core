@@ -72,7 +72,11 @@ module FactoryBot
           clone.send("#{name}=", associations)
           @tables_to_reset << name
         elsif %i[belongs_to has_one].include?(reflection.macro)
-          clone.send("#{name}=", instance.send(name).clone) rescue ActiveRecord::HasOneThroughNestedAssociationsAreReadonly
+          begin
+            clone.send("#{name}=", instance.send(name).clone)
+          rescue
+            ActiveRecord::HasOneThroughNestedAssociationsAreReadonly
+          end
           @tables_to_reset << name.pluralize
         end
       end
