@@ -51,7 +51,13 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
     end
 
     http = Net::HTTP.new(hostname, uri.port)
-    http.use_ssl = true if uri.scheme == "https"
+    if uri.scheme == "https"
+      http.use_ssl = true
+      if BulletTrain::OutgoingWebhooks.http_verify_mode
+        # Developers might need to set this to `OpenSSL::SSL::VERIFY_NONE` in some cases.
+        http.verify_mode = BulletTrain::OutgoingWebhooks.http_verify_mode
+      end
+    end
     request = Net::HTTP::Post.new(uri.request_uri)
     request.add_field("Host", uri.host)
     request.add_field("Content-Type", "application/json")
