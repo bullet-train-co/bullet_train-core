@@ -58,7 +58,7 @@ The provided `Role` model is backed by a Yaml configuration in `config/models/ro
 
 To help explain this configuration and its options, we'll provide the following hypothetical example:
 
-```
+```yaml
 default:
   models:
     Project: read
@@ -111,7 +111,7 @@ The following things are true given the example configuration above:
 
 You can also grant more granular permissions by supplying a list of the specific actions per resource, like so:
 
-```
+```yaml
 editor:
   models:
     project:
@@ -123,7 +123,7 @@ editor:
 
 All of these definitions are interpreted and translated into CanCanCan directives when we invoke the following Bullet Train helper in `app/models/ability.rb`:
 
-```
+```ruby
 permit user, through: :memberships, parent: :team
 ```
 
@@ -136,7 +136,7 @@ In the example above:
 
 To illustrate the flexibility of this approach, consider that you may want to grant non-administrative team members different permissions for different `Project` objects on a `Team`. In that case, `permit` actually allows us to re-use the same role definitions to assign permissions that are scoped by a specific resource, like this:
 
-```
+```ruby
 permit user, through: :projects_collaborators, parent: :project
 ```
 
@@ -149,7 +149,7 @@ In some situations, you don't want all roles to be available to all Grant Models
 
 By default all Grant Models will show all roles as options.  If you want to limit the roles available to a model, use the `roles_only` class method:
 
-```
+```ruby
 class Membership < ApplicationRecord
   include Roles::Support
   roles_only :admin, :editor, :reader # Add this line to restrict the Membership model to only these roles
@@ -158,7 +158,7 @@ end
 
 To access the array of all roles available for a particular model, use the `assignable_roles` class method.  For example, in your Membership form, you probably _only_ want to show the assignable_roles as options.  Your view could look like this:
 
-```
+```erb
 <% Membership.assignable_roles.each do |role| %>
   <% if role.manageable_by?(current_membership.roles) %>
     <!-- View component for showing a role option. Probably a checkbox -->
@@ -172,7 +172,7 @@ If you want to see what CanCanCan directives are being created by your permit ca
 
 Likewise, to see what abilities are being added for a certain user, you can run the following on the Rails console:
 
-```
+```ruby
 user = User.first
 Ability.new(user).permit user, through: :projects_collaborators, parent: :project, debug: true
 ```

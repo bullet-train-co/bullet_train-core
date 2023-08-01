@@ -138,7 +138,7 @@ completed: Completed
 
 If you want new `Project` models to be set to `planned` by default, you can add that to the migration file that was generated before running it, like so:
 
-```
+```ruby
 add_column :projects, :status, :string, default: "planned"
 ```
 
