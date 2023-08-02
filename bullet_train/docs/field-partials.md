@@ -76,7 +76,7 @@ When you're including multiple fields, you can DRY up redundant settings (e.g. `
 ```
 
 ## Field partials that integrate with third-party service providers
- - `cloudinary` makes it trivial to upload photos and images to [Cloudinary](https://cloudinary.com) and store their resulting Cloudinary ID as an attribute of the model backing the form. To enable this field partial, sign up for Cloudinary and copy the "Cloudinary URL" they provide you with into your `config/application.yml` as `CLOUDINARY_URL`. If you use our [Heroku app.json](https://github.com/bullet-train-co/bullet_train/blob/main/app.json) to provision your production environment, this will happen in that environment automatically.
+ - `cloudinary_image` makes it trivial to upload photos and videos to [Cloudinary](https://cloudinary.com) and store their resulting Cloudinary ID as an attribute of the model backing the form. To enable this field partial, sign up for Cloudinary and copy the "Cloudinary URL" they provide you with into your `config/application.yml` as `CLOUDINARY_URL`. If you use our [Heroku app.json](https://github.com/bullet-train-co/bullet_train/blob/main/app.json) to provision your production environment, this will happen in that environment automatically.
 
 ## Yaml Configuration
 The localization Yaml file (where you configure label and option values for a field) is automatically generated when you run Super Scaffolding for a model. If you haven't done this yet, the localization Yaml file for `Scaffolding::CompletelyConcrete::TangibleThing` serves as a good example. Under `en.scaffolding/completely_concrete/tangible_things.fields` you'll see definitions like this:

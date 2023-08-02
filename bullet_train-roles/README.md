@@ -92,6 +92,8 @@ Here's a breakdown of the structure of the configuration file:
  - `manageable_roles` provides a list of roles that can be assigned to other users by members that have the role being defined.
  - `includes` provides a list of other roles whose permissions should also be made available to members with the role being defined.
  - `manage`, `read`, etc. are all CanCanCan-defined actions that can be granted.
+  - `crud` is a special value that we substitute for the 4 CRUD actions - create, read, update and destroy.
+  This is instead of `manage` which covers all actions - 4 CRUD actions _and_ any extra actions the controller may respond to
 
 The following things are true given the example configuration above:
 
@@ -168,6 +170,7 @@ To access the array of all roles available for a particular model, use the `assi
 
 
 ## Debugging
+
 If you want to see what CanCanCan directives are being created by your permit calls, you can add the `debug: true` option to your `permit` statement in `app/models/ability.rb`.
 
 Likewise, to see what abilities are being added for a certain user, you can run the following on the Rails console:
