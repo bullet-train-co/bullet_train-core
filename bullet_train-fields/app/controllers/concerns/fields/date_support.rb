@@ -12,7 +12,7 @@ module Fields::DateSupport
     if strong_params.dig(attribute).present?
       begin
         strong_params[attribute] = Date.iso8601(strong_params[attribute])
-      rescue ArgumentError => e
+      rescue ArgumentError
         parsed_value = Chronic.parse(strong_params[attribute])
         return nil unless parsed_value
         strong_params[attribute] = parsed_value.to_date
