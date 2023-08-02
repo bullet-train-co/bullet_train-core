@@ -13,7 +13,7 @@ module Fields::DateAndTimeSupport
     if strong_params.dig(attribute).present?
       begin
         strong_params[attribute] = DateTime.iso8601(strong_params[attribute])
-      rescue ArgumentError => e
+      rescue ArgumentError
         time_zone = ActiveSupport::TimeZone.new(strong_params[time_zone_attribute] || current_team.time_zone)
         strong_params.delete(time_zone_attribute)
         strong_params[attribute] = time_zone.strptime(strong_params[attribute], t("global.formats.date_and_time"))
