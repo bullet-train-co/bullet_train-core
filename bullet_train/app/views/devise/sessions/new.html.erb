@@ -26,10 +26,8 @@
           <% end %>
 
           <div id="step-2" class="<%= 'hidden' if two_factor_authentication_enabled? %> space-y">
-            <%= render 'shared/fields/password_field', method: :password do %>
-              <% content_for :help do %>
-                <%= link_to t('devise.links.forgot_password'), new_user_password_path %>
-              <% end %>
+            <%= render 'shared/fields/password_field', method: :password do |field| %>
+              <% field.help.link_to t('devise.links.forgot_password'), new_user_password_path %>
             <% end %>
 
             <% if two_factor_authentication_enabled? %>
