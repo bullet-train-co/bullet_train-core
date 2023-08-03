@@ -31,15 +31,12 @@
   <% end %>
 <% end %>
 
-<<<<<<< HEAD
 <% showcase.sample "With notices" do %>
   <% flash.now[:notice] = "Success Notice" %>
   <% flash.now[:error] = "Error Notice" %>
   <%= render "shared/page", title: "Title" %>
 <% end %>
 
-=======
->>>>>>> a892ad4a (Add a box in a page sample since that's really common)
 <% showcase.options.context :nice_partials do |o| %>
   <% o.optional.content_block :title %>
   <% o.optional.content_block :actions %>
