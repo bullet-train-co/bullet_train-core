@@ -27,10 +27,6 @@ module Teams::Base
       if defined?(Billing::Stripe::Subscription)
         has_many :billing_stripe_subscriptions, class_name: "Billing::Stripe::Subscription", dependent: :destroy, foreign_key: :team_id
       end
-
-      if defined?(Billing::Usage::TeamSupport)
-        include Billing::Usage::TeamSupport
-      end
     end
 
     # validations
@@ -83,4 +79,6 @@ module Teams::Base
       billing_subscriptions.active.empty?
     end
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_teams_base, self
 end

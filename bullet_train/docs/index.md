@@ -37,6 +37,7 @@
 
 ## Billing
  - [Stripe](/docs/billing/stripe.md)
+ - [Usage Limits](/docs/billing/usage.md)
 
 ## Integration
  - [REST API](/docs/api.md)

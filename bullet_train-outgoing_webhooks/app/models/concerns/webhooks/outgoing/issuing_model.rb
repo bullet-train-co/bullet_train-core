@@ -13,6 +13,7 @@ module Webhooks::Outgoing::IssuingModel
     false
   end
 
+  # TODO This should probably be called `outgoing_webhooks_parent` to avoid colliding with downstream `parent` methods.
   def parent
     return unless respond_to? BulletTrain::OutgoingWebhooks.parent_association
     send(BulletTrain::OutgoingWebhooks.parent_association)

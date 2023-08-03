@@ -152,6 +152,12 @@
                     <i class="fal fa-gear ti ti-settings"></i>
                   <% end %>
                 <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/application-hash.md', label: 'Application Hash' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-brackets-curly ti ti-view-list-alt"></i>
+                  <% end %>
+                <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Accounts & Teams' do %>
@@ -210,6 +216,12 @@
                 <%= render 'account/shared/menu/item', url: '/docs/billing/stripe', label: 'Stripe' do |p| %>
                   <% p.icon do %>
                     <i class="fab fa-stripe-s ti ti-money"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/billing/usage', label: 'Usage' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-gauge ti ti-ruler"></i>
                   <% end %>
                 <% end %>
               <% end %>

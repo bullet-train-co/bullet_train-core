@@ -1,0 +1,38 @@
+en:
+  daterangepicker:
+    firstDay: 1
+    separator: " - "
+    applyLabel: "Apply"
+    cancelLabel: "Cancel"
+    fromLabel: "From"
+    toLabel: "To"
+    customRangeLabel: "Custom"
+    weekLabel: "W"
+    daysOfWeek:
+    - "Su"
+    - "Mo"
+    - "Tu"
+    - "We"
+    - "Th"
+    - "Fr"
+    - "Sa"
+    monthNames:
+    - "January"
+    - "February"
+    - "March"
+    - "April"
+    - "May"
+    - "June"
+    - "July"
+    - "August"
+    - "September"
+    - "October"
+    - "November"
+    - "December"
+  date_range_controller:
+    today: Today
+    yesterday: yesterday
+    last7Days: Last 7 Days
+    last30Days: Last 30 Days
+    thisMonth: This Month
+    lastMonth: Last Month

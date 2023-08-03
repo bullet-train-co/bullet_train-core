@@ -16,6 +16,14 @@ editor:
       - read
       - update
 
+manager:
+  includes:
+    - editor
+
+supervisor:
+  includes:
+    - manager
+
 admin:
   includes:
     - editor

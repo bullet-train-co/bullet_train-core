@@ -27,9 +27,7 @@
             </tr>
           </thead>
           <tbody>
-            <% creative_concepts.each do |creative_concept| %>
-              <%= render 'account/scaffolding/absolutely_abstract/creative_concepts/creative_concept', creative_concept: creative_concept %>
-            <% end %>
+            <%= render partial: 'account/scaffolding/absolutely_abstract/creative_concepts/creative_concept', collection: creative_concepts %>
           </tbody>
         </table>
       <% end %>
