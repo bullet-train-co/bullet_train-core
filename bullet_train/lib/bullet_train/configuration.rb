@@ -3,6 +3,8 @@ module BulletTrain
     include Singleton
     attr_accessor :strong_passwords
 
+    @@config = nil
+
     def initialize
       @@config = self
 
@@ -12,7 +14,7 @@ module BulletTrain
 
     class << self
       def strong_passwords
-        @@config.strong_passwords
+        @@config&.strong_passwords
       end
     end
   end
