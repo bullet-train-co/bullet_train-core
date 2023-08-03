@@ -9,11 +9,9 @@
           <%= render 'account/shared/forms/errors', form: form %>
 
           <% email_field = capture do %>
-            <%= render 'shared/fields/email_field', method: :email, options: {autofocus: true} do %>
+            <%= render 'shared/fields/email_field', method: :email, options: {autofocus: true} do |field| %>
               <% if show_sign_up_options? %>
-                <% content_for :help do %>
-                  <%= link_to t('devise.links.account'), new_user_registration_path %>
-                <% end %>
+                <% field.help.link_to t('devise.links.account'), new_user_registration_path %>
               <% end %>
             <% end %>
           <% end %>
@@ -28,10 +26,8 @@
           <% end %>
 
           <div id="step-2" class="<%= 'hidden' if two_factor_authentication_enabled? %> space-y">
-            <%= render 'shared/fields/password_field', method: :password do %>
-              <% content_for :help do %>
-                <%= link_to t('devise.links.forgot_password'), new_user_password_path %>
-              <% end %>
+            <%= render 'shared/fields/password_field', method: :password do |field| %>
+              <% field.help.link_to t('devise.links.forgot_password'), new_user_password_path %>
             <% end %>
 
             <% if two_factor_authentication_enabled? %>
