@@ -4,4 +4,5 @@ options ||= {}
 other_options ||= {}
 %>
 
-<%= render 'shared/fields/field', form: form, method: method, helper: :email_field, options: options, other_options: other_options %>
+<%= render 'shared/fields/field', form: form, method: method, helper: :email_field, options: options, other_options: other_options,
+  **partial.slice(:label, :field, :error, :help, :after_help) %>
