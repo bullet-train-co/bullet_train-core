@@ -75,12 +75,7 @@ module Api::Controllers::Base
     # TODO Make this logic configurable so that downstream developers can write different methods for this column getting updated.
     if doorkeeper_token
       begin
-        current_time = if @current_user.time_zone.nil?
-          Time.zone.now
-        else
-          ActiveSupport::TimeZone.all.find { |time_zone| time_zone.name == @current_user.time_zone }.now
-        end
-        doorkeeper_token.update(last_used_at: current_time)
+        doorkeeper_token.update(last_used_at: Time.zone.now)
       rescue ActiveRecord::StatementInvalid => _
       end
     end
