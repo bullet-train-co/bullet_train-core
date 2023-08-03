@@ -9,11 +9,9 @@
           <%= render 'account/shared/forms/errors', form: form %>
 
           <% email_field = capture do %>
-            <%= render 'shared/fields/email_field', method: :email, options: {autofocus: true} do %>
+            <%= render 'shared/fields/email_field', method: :email, options: {autofocus: true} do |field| %>
               <% if show_sign_up_options? %>
-                <% content_for :help do %>
-                  <%= link_to t('devise.links.account'), new_user_registration_path %>
-                <% end %>
+                <% field.help.link_to t('devise.links.account'), new_user_registration_path %>
               <% end %>
             <% end %>
           <% end %>
