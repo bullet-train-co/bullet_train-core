@@ -1,4 +1,13 @@
 <%
+%i[label field error help after_help].each do |key|
+  if (content = content_for(key).presence)
+    flush_content_for key
+    partial.section key, content
+  end
+end
+%>
+
+<%
 form ||= current_fields_form
 # returns a struct with `label`, `placeholder`, and `help` methods.
 labels = labels_for(form, method)
@@ -10,7 +19,7 @@ other_options ||= {}
 other_options[:help] = [other_options[:help], labels.help].compact.join(" ")
 
 errors = [method, method.to_s.gsub(/_id$/, '').to_sym].uniq.map { |attribute| form.object.errors.full_messages_for(attribute) }.flatten
-has_errors = errors.any? || content_for(:error).present? || other_options[:error].present?
+has_errors = errors.any? || partial.error? || other_options[:error].present?
 
 options[:class] = "#{options[:class]} block w-full rounded-md shadow-sm font-light text-sm dark:bg-slate-800 dark:text-slate-300"
 
@@ -26,9 +35,8 @@ end
 
   <% # the label. %>
   <% unless other_options[:hide_label] == true %>
-    <% if content_for? :label %>
-      <%= yield :label %>
-      <% flush_content_for :label %>
+    <% if partial.label? %>
+      <%= partial.label %>
     <% else %>
       <% # allow the label to be defined via an inline option or else one of the locale yaml definitions. %>
       <% label = (other_options[:label].presence || labels.label || legacy_label_for(form, method)) %>
@@ -37,24 +45,20 @@ end
   <% end %>
 
   <div class="mt-1.5">
-
     <% # the actual field. %>
-    <% if content_for? :field %>
-      <%= yield :field %>
-      <% flush_content_for :field %>
+    <% if partial.field? %>
+      <%= partial.field %>
     <% else %>
       <% # e.g. form.text_field(method, options) %>
       <%= form.send(helper, method, options) %>
     <% end %>
-
   </div>
 
   <% # any error messages. %>
   <% if has_errors %>
     <p class="mt-1.5 text-xs text-red-500">
       <%= errors.map { |error| error + ". " }.join %>
-      <%= yield :error %>
-      <% flush_content_for :error %>
+      <%= partial.error %>
       <% if other_options[:hide_custom_error].blank? %>
         <%= other_options[:error]&.html_safe %>
       <% end %>
@@ -62,13 +66,11 @@ end
   <% end %>
 
   <% # any help text. %>
-  <% if content_for?(:help) || other_options[:help].present? || content_for?(:after_help) %>
+  <% if partial.help? || other_options[:help].present? || partial.after_help? %>
     <p class="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
-      <%= yield :help %>
-      <% flush_content_for :help %>
+      <%= partial.help %>
       <%= other_options[:help]&.html_safe %>
-      <%= yield :after_help %>
-      <% flush_content_for :after_help %>
+      <%= partial.after_help %>
     </p>
   <% end %>
 
