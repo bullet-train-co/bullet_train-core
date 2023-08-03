@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.2.21)
+    bullet_train-themes (1.2.26)
       rails (>= 6.0.0)
 
 GEM
@@ -106,7 +106,7 @@ GEM
       timeout
     net-smtp (0.3.3)
       net-protocol
-    nio4r (2.5.8)
+    nio4r (2.5.9)
     nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -176,7 +176,7 @@ GEM
       language_server-protocol (~> 3.17.0.2)
       rubocop (= 1.40.0)
       rubocop-performance (= 1.15.1)
-    thor (1.2.1)
+    thor (1.2.2)
     timeout (0.3.2)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
@@ -184,12 +184,13 @@ GEM
     websocket-driver (0.7.5)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.8)
 
 PLATFORMS
   arm64-darwin-20
   arm64-darwin-21
   arm64-darwin-22
+  ruby
 
 DEPENDENCIES
   bullet_train-themes!

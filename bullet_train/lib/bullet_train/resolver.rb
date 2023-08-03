@@ -104,7 +104,10 @@ module BulletTrain
 
       if result[:absolute_path]
         if result[:absolute_path].include?("/bullet_train")
-          regex = /#{"bullet_train-core" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train[.\-_a-z|0-9]*.*/
+          # This Regular Expression covers gem versions like bullet_train-1.2.26,
+          # and hashed versions of branches on GitHub like bullet_train-core-b00a02bd513c.
+          gem_version_regex = /[a-z|\-._0-9]*/
+          regex = /#{"bullet_train-core#{gem_version_regex}" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train#{gem_version_regex}.*/
           base_path = result[:absolute_path].scan(regex).pop
 
           # Try to calculate which package the file is from, and what it's path is within that project.
@@ -152,7 +155,7 @@ module BulletTrain
           @needle = partial_parts.join("/")
         elsif @needle.match?(/bullet_train/)
           # If it's a full path, we need to make sure we're getting it from the right package.
-          _, partial_view_package, partial_path_without_package = @needle.partition(/bullet_train-core\/bullet_train[a-z|\-_0-9.]*/)
+          _, partial_view_package, partial_path_without_package = @needle.partition(/(bullet_train-core\/)?bullet_train[a-z|\-._0-9]*/)
 
           # Pop off `bullet_train-core` and the gem's version so we can call `bundle show` correctly.
           partial_view_package.gsub!(/bullet_train-core\//, "")
@@ -165,7 +168,7 @@ module BulletTrain
           puts "`#{@needle}`".red
           puts ""
           puts "Check the string one more time to see if the package name is there."
-          puts "i.e.: bullet_train-base/app/views/layouts/devise.html.erb".blue
+          puts "i.e.: bullet_train-1.2.24/app/views/layouts/devise.html.erb".blue
           puts ""
           puts "If you're not sure what the package name is, run `bin/resolve --interactive`, follow the prompt, and pass the annotated path."
           puts "i.e.: <!-- BEGIN /your/local/path/bullet_train-base/app/views/layouts/devise.html.erb -->".blue

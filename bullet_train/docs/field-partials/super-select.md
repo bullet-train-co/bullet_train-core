@@ -1,6 +1,8 @@
+Note: before you attempt to manually wire up a `super_select` field, note that Super Scaffolding will automatically do that for your models. See [Super Scoffolding](/docs/super-scaffolding.md) docs, section 4, for an example. And make sure Super Scoffolding doesn't automatically do what you're trying to do.
+
 # Examples for the `super_select` Field Partial
 
-The `super_select` partial provides a wonderful default UI (in contrast to the vanilla browser experience for this, which is horrible) with optional search and multi-select functionality out-of-the-box. It invokes the [Select2][select2] library to provide you these features.
+The `super_select` partial provides a wonderful default UI (in contrast to the vanilla browser experience for select boxes, which is horrible) with optional search and multi-select functionality out-of-the-box. It invokes the [Select2][select2] library to provide you these features.
 
 ## Define Available Buttons via Localization Yaml
 
@@ -28,7 +30,9 @@ You can define the available options in `config/locales/en/some_class_name.en.ym
 Although it's recommended to define any static list of choices in the localization Yaml file (so your application remains easy to translate into other languages), you can also specify these choices using the `choices` option from the underlying select form field helper:
 
 <pre><code><%= render 'shared/fields/super_select', form: form, method: :response_behavior,
-  choices: [['Immediately', 'immediate'], ['After a 10 minute delay', 'after_10_minutes'] ["Doesn't respond", 'disabled']] %></code></pre>
+  choices: [['Immediately', 'immediate'],
+  ['After a 10 minute delay', 'after_10_minutes'],
+  ["Doesn't respond", 'disabled']] %></code></pre>
 
 ## Generate Choices Programmatically
 
@@ -88,7 +92,7 @@ All events dispatched from the `super_select` partial are [Select2's jQuery even
 | select2:clearing    | $select2:clearing    |
 | select2:clear       | $select2:clear       |
 
-For example, catching the `$change` events in a parent `dependent-form-fields` Stimulus controller with a single `updateDependentFields` method would look like this:
+For example, the view template for catching the `$change` events in a parent `dependent-form-fields` using a Stimulus controller with a single `updateDependentFields` method would look like this:
 
 <pre><code>&lt;div data-controller="dependent-form-fields"&gt;
   &lt;div data-action="$change->dependent-form-fields#updateDependentFields"&gt;

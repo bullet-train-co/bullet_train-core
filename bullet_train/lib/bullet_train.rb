@@ -33,6 +33,7 @@ require "commonmarker"
 require "extended_email_reply_parser"
 require "pagy"
 require "devise/pwned_password"
+require "openai"
 
 module BulletTrain
   mattr_accessor :routing_concerns, default: []
@@ -148,4 +149,12 @@ end
 
 def silence_logs?
   ENV["SILENCE_LOGS"].present?
+end
+
+def openai_enabled?
+  ENV["OPENAI_ACCESS_TOKEN"].present?
+end
+
+def openai_organization_exists?
+  ENV["OPENAI_ORGANIZATION_ID"]
 end

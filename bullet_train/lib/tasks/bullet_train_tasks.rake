@@ -72,7 +72,7 @@ namespace :bullet_train do
     end
   end
 
-  task :develop, [:all_options] => :environment do |t, arguments|
+  task :hack, [:all_options] => :environment do |t, arguments|
     def stream(command, prefix = "  ")
       puts ""
 
