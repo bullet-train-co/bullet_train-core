@@ -109,7 +109,7 @@
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalzation' do |p| %>
+                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalization' do |p| %>
                   <% p.icon do %>
                   <i class="fa-brands fa-js ti ti-world"></i>
                   <% end %>
@@ -210,6 +210,12 @@
                     <i class="fal fa-swatchbook ti ti-widget"></i>
                   <% end %>
                 <% end %>
+
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/showcase', label: 'Showcase' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-swatchbook ti ti-panel"></i>
+                  <% end %>
+                <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Billing' do %>
@@ -298,7 +304,7 @@
             <button
               data-mobile-menu-target="revealable"
               data-action="mobile-menu#close"
-              
+
               data-transition-enter="transition-opacity ease-linear duration-200"
               data-transition-enter-start="opacity-0"
               data-transition-enter-end="opacity-100"
@@ -312,7 +318,7 @@
             </button>
             <div
               data-mobile-menu-target="revealable"
-              
+
               data-transition-enter="transition ease-in-out duration-200 transform"
               data-transition-enter-start="-translate-x-full"
               data-transition-enter-end="translate-x-0"
