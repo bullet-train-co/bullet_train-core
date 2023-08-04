@@ -24,7 +24,7 @@ If you need to modify behavior in these framework-provided classes or modules, s
 
 Even in vanilla Rails development, when you're looking at a view file, the path you see passed to a `render` call isn't the actual file name of the partial that will be rendered. This is even more true in Bullet Train where certain partial paths are [magically served from theme gems](/docs/themes.md).
 
-`bin/resolve` makes it easy to figure out where where a partial is being served from:
+`bin/resolve` makes it easy to figure out where a partial is being served from:
 
 ```
 bin/resolve shared/box
