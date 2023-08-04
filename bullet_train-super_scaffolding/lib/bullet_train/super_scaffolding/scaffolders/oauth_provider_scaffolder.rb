@@ -26,7 +26,7 @@ module BulletTrain
 
           _, omniauth_gem, gems_provider_name, our_provider_name, api_key, api_secret = *ARGV
 
-          unless match = our_provider_name.match(/Oauth::(.*)Account/)
+          unless (match = our_provider_name.match(/Oauth::(.*)Account/))
             puts "\n🚨 Your provider name must match the pattern of `Oauth::{Name}Account`, e.g. `Oauth::StripeAccount`\n".red
             return
           end
@@ -62,7 +62,6 @@ module BulletTrain
             puts "but after you hit enter I'll open a page where you can view other icon options."
             puts "When you find one you like, hover your mouse over it and then come back here and"
             puts "and enter the name of the icon you want to use."
-            response = $stdin.gets.chomp
             if TerminalCommands.can_open?
               TerminalCommands.open_file_or_link("http://light.pinsupreme.com/icon_fonts_themefy.html")
             else
