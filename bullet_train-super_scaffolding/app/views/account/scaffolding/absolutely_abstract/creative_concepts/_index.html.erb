@@ -6,7 +6,7 @@
 <% pagy ||= nil %>
 <% pagy, creative_concepts = pagy(creative_concepts, page_param: :creative_concepts_page) unless pagy %>
 
-<%= updates_for context, :scaffolding_absolutely_abstract_creative_concepts do %>
+<%= cable_ready_updates_for context, :scaffolding_absolutely_abstract_creative_concepts do %>
   <%= render 'account/shared/box' do |box| %>
     <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
     <% box.description do %>
@@ -27,9 +27,7 @@
             </tr>
           </thead>
           <tbody>
-            <% creative_concepts.each do |creative_concept| %>
-              <%= render 'account/scaffolding/absolutely_abstract/creative_concepts/creative_concept', creative_concept: creative_concept %>
-            <% end %>
+            <%= render partial: 'account/scaffolding/absolutely_abstract/creative_concepts/creative_concept', collection: creative_concepts %>
           </tbody>
         </table>
       <% end %>
@@ -43,7 +41,7 @@
 
         <%# 🚅 super scaffolding will insert new targets one parent action model buttons above this line. %>
         <%# 🚅 super scaffolding will insert new bulk action model buttons above this line. %>
-        <%= render "shared/bulk_action_select" %>
+        <%= render "shared/bulk_action_select" if creative_concepts.many? %>
 
         <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary(:absolutely_abstract_creative_concept)} back" unless hide_back %>
       <% end %>

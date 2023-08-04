@@ -878,21 +878,13 @@ class Scaffolding::Transformer
           field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
         end
 
-        # TODO: This feels incorrect.
-        # Should we adjust the partials to only use `{multiple: true}` or `html_options: {multiple_true}`?
-        if is_multiple
-          if type == "super_select"
-            field_options[:multiple] = "true"
-          else
-            field_attributes[:multiple] = "true"
-          end
-        end
-
         valid_values = if is_id
           "valid_#{name_without_id.pluralize}"
         elsif is_ids
           "valid_#{collection_name}"
         end
+
+        field_options[:multiple] = "true" if is_multiple
 
         # https://stackoverflow.com/questions/21582464/is-there-a-ruby-hashto-s-equivalent-for-the-new-hash-syntax
         if field_options.any? || options.any?
@@ -1106,10 +1098,6 @@ class Scaffolding::Transformer
         end
 
         special_processing = case type
-        when "date_field"
-          "assign_date(strong_params, :#{name})"
-        when "date_and_time_field"
-          "assign_date_and_time(strong_params, :#{name})"
         when "buttons"
           if boolean_buttons
             "assign_boolean(strong_params, :#{name})"
@@ -1264,7 +1252,6 @@ class Scaffolding::Transformer
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{name_without_id}/)
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /add_reference :#{child.underscore.pluralize.tr("/", "_")}, :#{name_without_id}/)
 
-              # TODO also solve the 60 character long index limitation.
               modified_migration = true
             else
               add_additional_step :yellow, "We would have expected there to be a migration that defined `#{expected_reference}`, but we didn't find one. Where was the reference added to this model? It's _probably_ the original creation of the table. Either way, you need to rollback, change \"foreign_key: true\" to \"foreign_key: {to_table: '#{attribute_options[:class_name].tableize.tr("/", "_")}'}\" for this column, and re-run the migration."
@@ -1300,14 +1287,17 @@ class Scaffolding::Transformer
 
         # Add `default: false` to boolean migrations.
         if boolean_buttons
-          confirmation_reference = "create_table :#{class_names_transformer.table_name}"
-          confirmation_migration_file_name = `grep "#{confirmation_reference}" db/migrate/*`.split(":").first
+          # Give priority to crud-field migrations if they exist.
+          add_column_reference = "add_column :#{class_names_transformer.table_name}, :#{name}"
+          create_table_reference = "create_table :#{class_names_transformer.table_name}"
+          confirmation_migration_file_name = `grep "#{add_column_reference}" db/migrate/*`.split(":").first
+          confirmation_migration_file_name ||= `grep "#{create_table_reference}" db/migrate/*`.split(":").first
 
           old_line, new_line = nil
           File.open(confirmation_migration_file_name) do |migration_file|
             old_lines = migration_file.readlines
             old_lines.each do |line|
-              target_attribute = line.match?(/\s*t\.boolean :#{name}/)
+              target_attribute = line.match?(/:#{class_names_transformer.table_name}, :#{name}, :boolean/) || line.match?(/\s*t\.boolean :#{name}/)
               if target_attribute
                 old_line = line
                 new_line = "#{old_line.chomp}, default: false\n"
@@ -1532,6 +1522,8 @@ class Scaffolding::Transformer
 
     # add sortability.
     if cli_options["sortable"]
+      scaffold_replace_line_in_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", transform_string("<tbody data-controller=\"sortable\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"), "<tbody>")
+
       unless cli_options["skip-model"]
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "def collection\n  absolutely_abstract_creative_concept.completely_concrete_tangible_things\nend\n\n", METHODS_HOOK, prepend: true)
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "include Sortable\n", CONCERNS_HOOK, prepend: true)
@@ -1541,10 +1533,6 @@ class Scaffolding::Transformer
         parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
         new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
         Scaffolding::FileManipulator.write(migration, new_lines)
-      end
-
-      unless cli_options["skip-table"]
-        scaffold_replace_line_in_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", transform_string("<tbody data-controller=\"sortable\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"), "<tbody>")
       end
 
       unless cli_options["skip-controller"]
@@ -1642,7 +1630,9 @@ class Scaffolding::Transformer
           icon_name = cli_options["sidebar"]
         else
           puts ""
-          puts "Hey, models that are scoped directly off of a Team (or nothing) are eligible to be added to the sidebar."
+          # TODO: Update this help text letting developers know they can Super Scaffold
+          # models without a parent after the `--skip-parent` logic is implemented.
+          puts "Hey, models that are scoped directly off of a Team are eligible to be added to the navbar."
           puts "Do you want to add this resource to the sidebar menu? (y/N)"
           response = $stdin.gets.chomp
           if response.downcase[0] == "y"
@@ -1693,7 +1683,7 @@ class Scaffolding::Transformer
       end
     end
 
-    add_additional_step :yellow, transform_string("If you would like the table view you've just generated to reactively update when a Tangible Thing is updated on the server, please edit `app/models/scaffolding/absolutely_abstract/creative_concept.rb`, locate the `has_many :completely_concrete_tangible_things`, and add `enable_updates: true` to it.")
+    add_additional_step :yellow, transform_string("If you would like the table view you've just generated to reactively update when a Tangible Thing is updated on the server, please edit `app/models/scaffolding/absolutely_abstract/creative_concept.rb`, locate the `has_many :completely_concrete_tangible_things`, and add `enable_cable_ready_updates: true` to it.")
 
     restart_server unless ENV["CI"].present?
   end

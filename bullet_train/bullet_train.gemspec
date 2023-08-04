@@ -68,7 +68,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "http_accept_language"
 
   # Reactive view magic.
-  # The `updates_for` feature replaces Bullet Train's earlier "Cable Collections" feature.
+  # The `cable_ready_updates_for` feature replaces Bullet Train's earlier "Cable Collections" feature.
   spec.add_dependency "cable_ready", "~> 5.0.0"
   spec.add_dependency "hiredis"
 

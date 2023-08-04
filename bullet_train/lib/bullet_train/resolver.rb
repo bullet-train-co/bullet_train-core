@@ -75,7 +75,7 @@ module BulletTrain
 
           # TODO: Use TerminalCommands to open this file
           open_command = `which open`.present? ? "open" : "xdg-open"
-          exec "#{open_command} #{path}"
+          exec "#{open_command} #{source_file[:absolute_path]}"
         end
       else
         puts "Couldn't resolve `#{@needle}`.".red
@@ -89,22 +89,27 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = file_path || class_path || partial_path || locale_path
+      result[:absolute_path] = file_path || class_path || locale_path || partial_path
 
       # If we get the partial resolver template itself, that means we couldn't find the file.
-      if result[:absolute_path].match?("app/views/bullet_train/partial_resolver.html.erb")
-        puts "We could not find the partial you're looking for: #{@needle}".red
+      if result[:absolute_path].match?("app/views/bullet_train/partial_resolver.html.erb") || result[:absolute_path].nil?
+        puts "We could not resolve the value you're looking for: #{@needle}".red
         puts ""
-        puts "Please try passing the partial string using either of the following two ways:"
+        puts "If you're looking for a partial, please try passing the partial string in either of the following two ways:"
         puts "1. Without underscore and extention: ".blue + "bin/resolve shared/attributes/code"
         puts "2. Literal path with package name: ".blue + "bin/resolve bullet_train-themes/app/views/themes/base/attributes/_code.html.erb"
         puts ""
+        puts "If you're looking for a locale, the key might not be implemented yet."
+        puts "Try adding your own custom text for the key to your locale file and try again."
         exit
       end
 
       if result[:absolute_path]
         if result[:absolute_path].include?("/bullet_train")
-          regex = /#{"bullet_train-core" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train[a-z|\-._0-9]*.*/
+          # This Regular Expression covers gem versions like bullet_train-1.2.26,
+          # and hashed versions of branches on GitHub like bullet_train-core-b00a02bd513c.
+          gem_version_regex = /[a-z|\-._0-9]*/
+          regex = /#{"bullet_train-core#{gem_version_regex}" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train#{gem_version_regex}.*/
           base_path = result[:absolute_path].scan(regex).pop
 
           # Try to calculate which package the file is from, and what it's path is within that project.
