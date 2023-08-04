@@ -33,3 +33,9 @@ form.button_to {
 
 /* hide the first breadcrumb chevron */
 ol.breadcrumb li:first-child svg { display: none; }
+
+/* Override Turbo's progress bar color with the application's theme. */
+.turbo-progress-bar {
+  height: 5px;
+  @apply bg-primary-500;
+}
