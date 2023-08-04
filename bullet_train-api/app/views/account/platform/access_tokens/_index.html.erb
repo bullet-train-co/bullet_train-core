@@ -8,7 +8,7 @@
 <% pagy, access_tokens = pagy(access_tokens, page_param: :access_tokens_page) %>
 
 <%= action_model_select_controller do %>
-  <%= updates_for context, collection do %>
+  <%= cable_ready_updates_for context, collection do %>
     <%= render 'account/shared/box', pagy: pagy do |box| %>
       <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
       <% box.description t(".contexts.#{context.class.name.underscore}.description") %>
