@@ -9,7 +9,7 @@
 <% pagy, tangible_things = pagy(tangible_things, page_param: :tangible_things_page) unless pagy %>
 
 <%= action_model_select_controller do %>
-  <% updates_for context, collection do %>
+  <% cable_ready_updates_for context, collection do %>
     <%= render 'account/shared/box', pagy: pagy do |box| %>
       <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
       <% box.description do %>
@@ -35,9 +35,7 @@
               </tr>
             </thead>
             <tbody>
-              <% tangible_things.each do |tangible_thing| %>
-                <%= render 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', tangible_thing: tangible_thing %>
-              <% end %>
+              <%= render partial: 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', collection: tangible_things %>
             </tbody>
           </table>
         <% end %>
@@ -53,7 +51,7 @@
 
           <%# 🚅 super scaffolding will insert new targets one parent action model buttons above this line. %>
           <%# 🚅 super scaffolding will insert new bulk action model buttons above this line. %>
-          <%= render "shared/bulk_action_select" %>
+          <%= render "shared/bulk_action_select" if tangible_things.many? %>
 
           <% unless hide_back %>
             <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary(:completely_concrete_tangible_thing)} back" %>

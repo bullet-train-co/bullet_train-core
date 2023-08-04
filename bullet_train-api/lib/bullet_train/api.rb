@@ -16,6 +16,7 @@ require "jbuilder/schema"
 
 module BulletTrain
   module Api
+    mattr_accessor :base_class, default: "ApplicationRecord"
     mattr_accessor :endpoints, default: []
     mattr_accessor :current_version, default: "v1"
     mattr_accessor :initial_version, default: "v1"

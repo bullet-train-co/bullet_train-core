@@ -92,6 +92,8 @@ Here's a breakdown of the structure of the configuration file:
  - `manageable_roles` provides a list of roles that can be assigned to other users by members that have the role being defined.
  - `includes` provides a list of other roles whose permissions should also be made available to members with the role being defined.
  - `manage`, `read`, etc. are all CanCanCan-defined actions that can be granted.
+  - `crud` is a special value that we substitute for the 4 CRUD actions - create, read, update and destroy.
+  This is instead of `manage` which covers all actions - 4 CRUD actions _and_ any extra actions the controller may respond to
 
 The following things are true given the example configuration above:
 
@@ -166,8 +168,67 @@ To access the array of all roles available for a particular model, use the `assi
 <% end %>
 ```
 
+## Checking user permissions
+
+Generally the CanCanCan helper method (`account_load_and_authorize_resource`) at the top of each controller will handle checking user permissions and will only load resources appropriate for the current user.
+
+However, you may also want to check if a user can perform a specific action.  For example, in a view you may want to only show the edit button if the current user has permissions to edit the object.  For this, you can use regular CanCanCan helpers.  For example:
+
+```
+<%= link_to "Edit", [:account, @document] if can? :edit, @document %>
+```
+
+Sometimes, you might want to check for the presence of a specific role. We provide a helper to check for the admin role:
+```
+@membership.admin?
+```
+
+For all other roles, you can check for their presence like this:
+
+```
+@membership.roles.include?(Role.find("developer"))
+```
+
+However, when you do that, you're only checking the roles that have been directly assigned to that membership.
+
+Imagine a scenario like this:
+```
+# roles.yml
+admin:
+  includes:
+    - editor
+    - billing
+
+# somewhere else in your app:
+@membership.roles << Role.admin
+@membership.roles.include?(Role.find("editor"))
+=> false
+```
+
+While that's technically correct that the user doesn't have the editor role, we probably want that to return true if we're checking what the user can and can't do.  For this situation, we really want to check if the user can perform a role rather than if they've had that role assigned to them.
+
+```
+# roles.yml
+
+admin:
+  includes:
+    - editor
+    - billing
+
+# somewhere else in your app:
+
+@membership.roles << Role.admin
+@membership.roles.can_perform_role?(Role.find("editor"))
+=> true
+
+# You can also pass the role key as a symbol for a more concise syntax
+@membership.roles.can_perform_role?(:editor)
+=> true
+```
+
 
 ## Debugging
+
 If you want to see what CanCanCan directives are being created by your permit calls, you can add the `debug: true` option to your `permit` statement in `app/models/ability.rb`.
 
 Likewise, to see what abilities are being added for a certain user, you can run the following on the Rails console:

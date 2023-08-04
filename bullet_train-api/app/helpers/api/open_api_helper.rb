@@ -38,7 +38,7 @@ module Api
       output += render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
 
       # There are some placeholders specific to this method that we still need to transform.
-      model_symbol = model.name.underscore.tr("/", "_")
+      model_symbol = model.name.underscore.tr("/", "_").to_sym
 
       if (get_example = FactoryBot.get_example(model_symbol, version: @version))
         output.gsub!("🚅 get_example", get_example)

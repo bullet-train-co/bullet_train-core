@@ -21,7 +21,7 @@ module Records::Base
     end
 
     include CableReady::Updatable
-    enable_updates
+    enable_cable_ready_updates
 
     extend ActiveHash::Associations::ActiveRecordExtensions
 
@@ -91,4 +91,6 @@ module Records::Base
       end.attributes!
     end
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_records_base, self
 end

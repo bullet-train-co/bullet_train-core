@@ -123,4 +123,6 @@ module Account::Controllers::Base
   def set_last_seen_at
     current_user.update_attribute(:last_seen_at, Time.current)
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_account_controllers_base, self
 end

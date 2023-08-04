@@ -1,4 +1,4 @@
-class Platform::Application < ApplicationRecord
+class Platform::Application < BulletTrain::Api.base_class.constantize
   self.table_name = "oauth_applications"
 
   include Doorkeeper::Orm::ActiveRecord::Mixins::Application

@@ -48,11 +48,6 @@ module FactoryBot
     private
 
     def factory(model)
-      # TODO Why do we sometimes get a real object here and sometimes just a model name as a symbol?
-      unless model.is_a?(String)
-        model = model.name.underscore.tr("/", "_").to_sym
-      end
-
       factories = FactoryBot.factories.instance_variable_get(:@items).keys
       factories.include?("#{model}_example") ? "#{model}_example".to_sym : model
     end
