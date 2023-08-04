@@ -1,0 +1,59 @@
+<script>
+  const BulletTrain = {}
+
+  class ___theme {
+    start() {
+      this.color = "<%= BulletTrain::Themes::Light.color %>"
+      this.secondaryColor = "<%= BulletTrain::Themes::Light.secondary_color %>"
+    }
+
+    set color(value) {
+      this.removeMatching(/theme-\w+$/)
+      if (value) this.classList.add(`theme-${value}`)
+    }
+
+    set secondaryColor(value) {
+      this.removeMatching(/theme-secondary-\w+$/)
+      if (value) this.classList.add(`theme-secondary-${value}`)
+    }
+
+    removeMatching(matching) {
+      const values = Array.from(this.classList.values()).filter((key) => matching.test(key))
+      if (values.length) this.classList.remove(...values)
+    }
+
+    get classList() {
+      return document.documentElement.classList
+    }
+  }
+
+  BulletTrain.theme = new ___theme()
+  BulletTrain.theme.start()
+
+  document.addEventListener("DOMContentLoaded", () => {
+    const node = document.getElementById("bullet_train_theme_selects").content.cloneNode(true)
+    document.querySelector("main").appendChild(node)
+  })
+</script>
+
+<template id="bullet_train_theme_selects">
+  <section class="border-t w-full p-4 flex justify-between">
+    <h3 class="flex-none mb-4 inline-block">Bullet Train Light theme options</h3>
+
+    <div>
+      <label>Color
+        <select class="rounded text-xs" onchange="BulletTrain.theme.color = this.value">
+          <option value=""></option>
+          <%= options_for_select BulletTrain::Themes::Light.colors.index_by(&:humanize), BulletTrain::Themes::Light.color %>
+        </select>
+      </label>
+
+      <label>Secondary Color
+        <select class="rounded text-xs" onchange="BulletTrain.theme.secondaryColor = this.value">
+          <option value=""></option>
+          <%= options_for_select BulletTrain::Themes::Light.colors.index_by(&:humanize), BulletTrain::Themes::Light.secondary_color %>
+        </select>
+      </label>
+    </div>
+  </section>
+</template>
