@@ -99,6 +99,8 @@ module BulletTrain
         puts "1. Without underscore and extention: ".blue + "bin/resolve shared/attributes/code"
         puts "2. Literal path with package name: ".blue + "bin/resolve bullet_train-themes/app/views/themes/base/attributes/_code.html.erb"
         puts ""
+        puts "If you're looking for a locale, the key might not be implemented yet."
+        puts "Try adding your own custom text for the key to your locale file and try again."
         exit
       end
 
