@@ -210,6 +210,12 @@
                     <i class="fal fa-swatchbook ti ti-widget"></i>
                   <% end %>
                 <% end %>
+
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/showcase', label: 'Showcase' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-swatchbook ti ti-panel"></i>
+                  <% end %>
+                <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Billing' do %>
