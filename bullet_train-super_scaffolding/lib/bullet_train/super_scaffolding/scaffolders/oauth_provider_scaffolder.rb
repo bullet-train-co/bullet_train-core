@@ -144,7 +144,7 @@ module BulletTrain
 
           migration_file_name = `grep "create_table #{oauth_transform_string(":webhooks_incoming_oauth_stripe_account_webhooks", options)}" db/migrate/*`.split(":").first
           legacy_replace_in_file(migration_file_name, "null: false", "null: true")
-          legacy_replace_in_file(migration_file_name, "foreign_key: true", 'foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}')
+          legacy_replace_in_file(migration_file_name, "foreign_key: true", oauth_transform_string('foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}'))
 
           puts ""
           puts "🎉"
