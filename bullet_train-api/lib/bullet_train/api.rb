@@ -1,6 +1,7 @@
 require "bullet_train/api/version"
 require "bullet_train/api/engine"
 require "bullet_train/api/strong_parameters_reporter"
+require "bullet_train/api/example_bot"
 require "bullet_train/platform/connection_workflow"
 
 # require "wine_bouncer"
@@ -15,6 +16,7 @@ require "jbuilder/schema"
 
 module BulletTrain
   module Api
+    mattr_accessor :base_class, default: "ApplicationRecord"
     mattr_accessor :endpoints, default: []
     mattr_accessor :current_version, default: "v1"
     mattr_accessor :initial_version, default: "v1"

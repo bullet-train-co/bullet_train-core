@@ -41,8 +41,8 @@ jobs:
           POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
+          --health-interval 2s
+          --health-timeout 2s
           --health-retries 5
         ports:
           - 5432:5432
@@ -52,29 +52,29 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: postgres
       RAILS_ENV: test
+    
+    defaults:
+      run:
+        working-directory: ${{ matrix.gem }}
 
     steps:
       - uses: "actions/checkout@v3"
 
       - name: Install PostgreSQL client
-        run: |
-          sudo apt-get -yqq install libpq-dev
+        run: sudo apt-get -yqq install libpq-dev
 
       # - name: "Use latest gems"
-      #   working-directory: ${{ matrix.gem }}
       #   run: rm Gemfile.lock
 
       - uses: "ruby/setup-ruby@v1"
         with:
           rubygems: latest
-          bundler: default
+          bundler: latest
           bundler-cache: true
           ruby-version: ${{ matrix.ruby-version }}
-          working-directory: ${{ matrix.gem }}
+          working-directory: ${{ matrix.gem }} # setup-ruby doesn't pick up the job default.
 
       - run: bin/rails db:setup
-        working-directory: ${{ matrix.gem }}/test/dummy
 
       - name: Run Tests
-        working-directory: ${{ matrix.gem }}
-        run: bin/rails test test/**/*_test.rb
+        run: bin/rails test test/

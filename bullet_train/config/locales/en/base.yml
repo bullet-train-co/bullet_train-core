@@ -78,6 +78,13 @@ en:
         other: Last %{count} Days
     formats:
       timestamp_unavailable: Never
+    file_fields:
+      download: Download File
+      download_current: Download Current Document
+      remove: Remove Current Document
+      upload: Upload New Document
+    bulk_select:
+      all: All
 
   menus:
     main:

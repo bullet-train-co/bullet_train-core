@@ -668,6 +668,18 @@ class Scaffolding::Transformer
       type = parts.join(":")
       boolean_buttons = type == "boolean"
 
+      if first_table_cell && ["trix_editor", "ckeditor", "text_area"].include?(type)
+        puts ""
+        puts "The first attribute of your model cannot be any of the following types:".red
+        puts "1. trix_editor"
+        puts "2. ckeditor"
+        puts "3. text_area"
+        puts ""
+        puts "Please ensure you have another attribute type as the first attribute for your model and try again."
+
+        exit
+      end
+
       # extract any options they passed in with the field.
       # will extract options declared with either [] or {}.
       type, attribute_options = type.scan(/^(.*){(.*)}/).first || type
@@ -1094,10 +1106,6 @@ class Scaffolding::Transformer
         end
 
         special_processing = case type
-        when "date_field"
-          "assign_date(strong_params, :#{name})"
-        when "date_and_time_field"
-          "assign_date_and_time(strong_params, :#{name})"
         when "buttons"
           if boolean_buttons
             "assign_boolean(strong_params, :#{name})"
@@ -1252,7 +1260,6 @@ class Scaffolding::Transformer
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{name_without_id}/)
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /add_reference :#{child.underscore.pluralize.tr("/", "_")}, :#{name_without_id}/)
 
-              # TODO also solve the 60 character long index limitation.
               modified_migration = true
             else
               add_additional_step :yellow, "We would have expected there to be a migration that defined `#{expected_reference}`, but we didn't find one. Where was the reference added to this model? It's _probably_ the original creation of the table. Either way, you need to rollback, change \"foreign_key: true\" to \"foreign_key: {to_table: '#{attribute_options[:class_name].tableize.tr("/", "_")}'}\" for this column, and re-run the migration."
@@ -1417,7 +1424,7 @@ class Scaffolding::Transformer
 
     unless cli_options["skip-model"]
       # find the database migration that defines this relationship.
-      migration_file_name = `grep "create_table :#{class_names_transformer.table_name} do |t|" db/migrate/*`.split(":").first
+      migration_file_name = `grep "create_table :#{class_names_transformer.table_name}.*do |t|$" db/migrate/*`.split(":").first
       unless migration_file_name.present?
         raise "No migration file seems to exist for creating the table `#{class_names_transformer.table_name}`.\n" \
           "Please run the following command first and try Super Scaffolding again:\n" \
@@ -1523,6 +1530,12 @@ class Scaffolding::Transformer
       unless cli_options["skip-model"]
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "def collection\n  absolutely_abstract_creative_concept.completely_concrete_tangible_things\nend\n\n", METHODS_HOOK, prepend: true)
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "include Sortable\n", CONCERNS_HOOK, prepend: true)
+
+        migration = Dir.glob("db/migrate/*").last
+        migration_lines = File.open(migration).readlines
+        parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
+        new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
+        Scaffolding::FileManipulator.write(migration, new_lines)
       end
 
       unless cli_options["skip-table"]
@@ -1624,7 +1637,9 @@ class Scaffolding::Transformer
           icon_name = cli_options["sidebar"]
         else
           puts ""
-          puts "Hey, models that are scoped directly off of a Team (or nothing) are eligible to be added to the sidebar."
+          # TODO: Update this help text letting developers know they can Super Scaffold
+          # models without a parent after the `--skip-parent` logic is implemented.
+          puts "Hey, models that are scoped directly off of a Team are eligible to be added to the navbar."
           puts "Do you want to add this resource to the sidebar menu? (y/N)"
           response = $stdin.gets.chomp
           if response.downcase[0] == "y"

@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train-roles (1.2.21)
+    bullet_train-roles (1.2.27)
       active_hash
       activesupport
       cancancan
@@ -112,6 +112,7 @@ GEM
     marcel (1.0.2)
     method_source (1.0.0)
     mini_mime (1.1.2)
+    mini_portile2 (2.8.1)
     minitest (5.18.0)
     net-imap (0.3.4)
       date
@@ -123,6 +124,9 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     nio4r (2.5.8)
+    nokogiri (1.14.2)
+      mini_portile2 (~> 2.8.0)
+      racc (~> 1.4)
     nokogiri (1.14.2-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.14.2-x86_64-darwin)
@@ -130,7 +134,7 @@ GEM
     nokogiri (1.14.2-x86_64-linux)
       racc (~> 1.4)
     parallel (1.22.1)
-    parser (3.2.1.0)
+    parser (3.2.1.1)
       ast (~> 2.4.1)
     pg (1.4.6)
     racc (1.6.2)
@@ -199,6 +203,7 @@ PLATFORMS
   arm64-darwin-20
   arm64-darwin-21
   arm64-darwin-22
+  ruby
   x86_64-darwin-21
   x86_64-linux
 
@@ -215,4 +220,4 @@ DEPENDENCIES
   standard (~> 1.5.0)
 
 BUNDLED WITH
-   2.4.7
+   2.4.8

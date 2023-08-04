@@ -69,7 +69,7 @@ Gem::Specification.new do |spec|
 
   # Reactive view magic.
   # The `updates_for` feature replaces Bullet Train's earlier "Cable Collections" feature.
-  spec.add_dependency "cable_ready", "5.0.0.pre9"
+  spec.add_dependency "cable_ready", "~> 5.0.0"
   spec.add_dependency "hiredis"
 
   # Add named slots to regular Rails partials.
@@ -92,6 +92,9 @@ Gem::Specification.new do |spec|
 
   # Extract the body from emails received using action inbox.
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
+
+  # OpenAI
+  spec.add_dependency "ruby-openai"
 
   # Conversations.
   spec.add_runtime_dependency "unicode-emoji"

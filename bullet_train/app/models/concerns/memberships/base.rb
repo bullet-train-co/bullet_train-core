@@ -128,7 +128,7 @@ module Memberships::Base
 
   def last_initial
     return nil unless last_name.present?
-    "#{last_name}."
+    "#{last_name[0]}."
   end
 
   def first_name_last_initial
@@ -140,4 +140,6 @@ module Memberships::Base
   def should_receive_notifications?
     invitation.present? || user.present?
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_memberships_base, self
 end

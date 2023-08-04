@@ -72,7 +72,10 @@ module BulletTrain
         if open
           path = source_file[:package_name] ? source_file[:absolute_path] : (source_file[:project_path]).to_s
           puts "Opening `#{path}`.\n".green
-          exec "open #{path}"
+
+          # TODO: Use TerminalCommands to open this file
+          open_command = `which open`.present? ? "open" : "xdg-open"
+          exec "#{open_command} #{path}"
         end
       else
         puts "Couldn't resolve `#{@needle}`.".red
@@ -101,7 +104,11 @@ module BulletTrain
 
       if result[:absolute_path]
         if result[:absolute_path].include?("/bullet_train")
-          base_path = "bullet_train" + result[:absolute_path].partition("/bullet_train").last
+          # This Regular Expression covers gem versions like bullet_train-1.2.26,
+          # and hashed versions of branches on GitHub like bullet_train-core-b00a02bd513c.
+          gem_version_regex = /[a-z|\-._0-9]*/
+          regex = /#{"bullet_train-core#{gem_version_regex}" if result[:absolute_path].include?("bullet_train-core")}\/bullet_train#{gem_version_regex}.*/
+          base_path = result[:absolute_path].scan(regex).pop
 
           # Try to calculate which package the file is from, and what it's path is within that project.
           ["app", "config", "lib"].each do |directory|
@@ -146,14 +153,13 @@ module BulletTrain
           # all we need to do is change it to "shared/attributes/code"
           partial_parts.last.gsub!(/(_)|(\.html\.erb)/, "")
           @needle = partial_parts.join("/")
-        elsif @needle.match?(/bullet_train-/)
+        elsif @needle.match?(/bullet_train/)
           # If it's a full path, we need to make sure we're getting it from the right package.
-          _, partial_view_package, partial_path_without_package = @needle.partition(/bullet_train-[a-z|\-_0-9.]*/)
+          _, partial_view_package, partial_path_without_package = @needle.partition(/(bullet_train-core\/)?bullet_train[a-z|\-._0-9]*/)
 
-          # Pop off the version so we can call `bundle show` correctly.
-          # Also change `bullet_train-base` to `bullet_train`.
+          # Pop off `bullet_train-core` and the gem's version so we can call `bundle show` correctly.
+          partial_view_package.gsub!(/bullet_train-core\//, "")
           partial_view_package.gsub!(/[-|.0-9]*$/, "") if partial_view_package.match?(/[-|.0-9]*$/)
-          partial_view_package.gsub!("-base", "") if /base/.match?(@needle)
 
           local_package_path = `bundle show #{partial_view_package}`.chomp
           return local_package_path + partial_path_without_package
@@ -162,7 +168,7 @@ module BulletTrain
           puts "`#{@needle}`".red
           puts ""
           puts "Check the string one more time to see if the package name is there."
-          puts "i.e.: bullet_train-base/app/views/layouts/devise.html.erb".blue
+          puts "i.e.: bullet_train-1.2.24/app/views/layouts/devise.html.erb".blue
           puts ""
           puts "If you're not sure what the package name is, run `bin/resolve --interactive`, follow the prompt, and pass the annotated path."
           puts "i.e.: <!-- BEGIN /your/local/path/bullet_train-base/app/views/layouts/devise.html.erb -->".blue

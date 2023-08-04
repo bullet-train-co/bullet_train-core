@@ -5,14 +5,14 @@ When issuing a `bin/super-scaffold crud` command, you can pass the `--sortable` 
 ```
 # E.g. Pages belong to a Site and are sortable via drag-and-drop:
 rails g model Page site:references name:string path:text
-bin/super-scaffold crud Page Site,Team name:text path:text --sortable
+bin/super-scaffold crud Page Site,Team name:text_field path:text_area --sortable
 ```
 
 The `--sortable` option:
 
 1. Wraps the table's body in a `sortable` Stimulus controller, providing drag-and-drop re-ordering;
 2. Adds a `reorder` action to your resource via `include SortableActions`, triggered automatically on re-order;
-3. Adds a migration to add the `sort_order` column to your model to store the ordering;
+3. Adds a `sort_order` attribute to your model to store the ordering;
 4. Adds a `default_scope` which orders by `sort_order` and auto increments `sort_order` on create via `include Sortable` on the model.
 
 ## Disabling Saving on Re-order

@@ -10,6 +10,7 @@ en:
     buttons: &buttons
       edit: Settings
       show: Details
+      resend: Resend
       update: Update Membership
       demote: Demote from Admin
       promote: Promote to Admin
