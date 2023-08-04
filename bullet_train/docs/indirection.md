@@ -79,6 +79,10 @@ You can see the full translation key of any string on the page by adding `?show_
 
 You can also log all the translation keys for anything being rendered to the console by adding `?log_locales=true` to the request URL. This can make it easier to copy and paste translation keys for strings that are rendered in non-selectable UI elements.
 
+#### Eject all Translations to your Application
+
+Run `rake bullet_train:themes[eject]` to put all of Bullet Train's core locales into your repository. Then you can sift through the files to keep the ones you want to customize, and remove the ones you don't need.
+
 #### Resolving Translation Keys with `bin/resolve`
 
 Once you have the full I18n translation key, you can use `bin/resolve` to figure out which package and file it's coming from. At that point, if you need to customize it, you can also use the `--eject` option to copy the framework for customization in your local application:
