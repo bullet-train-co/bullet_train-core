@@ -61,8 +61,8 @@ other_options ||= {}
           </div>
           <div class="hidden flex flex-row items-center mt-3 text-sm" data-<%= stimulus_controller %>-target="timeZoneSelectWrapper">
             <div class="flex-grow">
-              <%= select_tag :time_zone, 
-                  options_for_select(ActiveSupport::TimeZone.all.map{|tz| [tz.name.to_s, tz.tzinfo.name.to_s]}, [  user_tz || team_tz ]), 
+              <%= select_tag :time_zone,
+                  options_for_select(ActiveSupport::TimeZone.all.map{|tz| [tz.name, tz.tzinfo.name]}, [user_tz || team_tz]),
                   class: 'form-control select2',
                   data: { "#{stimulus_controller}-target": "timeZoneSelect", action: "#{stimulus_controller}#selectTimeZoneChange"}
               %>
