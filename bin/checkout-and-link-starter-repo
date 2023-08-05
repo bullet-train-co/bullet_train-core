@@ -7,9 +7,10 @@ STARTER_REPO_BRANCH="main"
 CI_BRANCH=$CIRCLE_BRANCH
 if [[ -v CI_BRANCH ]]; then
   BRANCH_RESPONSE=$(curl --head -H "Accept: application.vnd.github+json" https://api.github.com/repos/bullet-train-co/bullet_train/branches/$CI_BRANCH)
-  echo $BRANCH_RESPONSE | grep "200"
+  STATUS_CODE=(echo $BRANCH_RESPONSE | grep "^HTTP" | grep -oP "\d+$")
+  echo $STATUS_CODE
 
-  if echo $BRANCH_RESPONSE | grep "^HTTP.*200"; then
+  if [[ $STATUS_CODE =~ "200" ]]; then
     STARTER_REPO_BRANCH=$CI_BRANCH
   fi
 fi
