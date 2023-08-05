@@ -1,4 +1,11 @@
-<% yield %>
+<%
+%i[actions_on_multiple].each do |key|
+  if (content = content_for(key).presence)
+    flush_content_for key
+    partial.section key, content
+  end
+end
+%>
 
 <%
 form ||= current_fields_form
@@ -44,21 +51,17 @@ end
       } do %>
         <label class="relative flex items-start">
           <div class="flex items-center h-5">
-            <%= check_box_tag "#{html_options[:id]}-select_all", 'select-all', false, data: { 
+            <%= check_box_tag "#{html_options[:id]}-select_all", 'select-all', false, data: {
               "select-all-target": 'toggleCheckbox',
               'action': "select-all#selectAllOrNone"
             }, class: "focus:ring-blue h-4 w-4 text-blue border-slate-300 rounded" %>
           </div>
           <div class="ml-2.5 text-sm pr-4">
-            <%# TODO: should be localized %>
-            All
+            <%= t("global.bulk_select.all") %>
           </div>
         </label>
       <% end %>
-      <% if content_for? :actions_on_multiple %>
-        <%= yield :actions_on_multiple %>
-        <% flush_content_for :actions_on_multiple %>
-      <% end %>
+      <%= partial.actions_on_multiple %>
     </div>
   <% end %>
 <% end %>
@@ -69,11 +72,11 @@ end
       controller: "select-all",
       "select-all-unavailable-class": "hidden"
     } do %>
-    
+
       <% if multiple && show_select_all_top && !show_select_all_bottom %>
         <%= select_all %>
       <% end %>
-      
+
       <%= tag.div class: ["max-w-lg": !use_columns, "max-w-3xl": use_columns, "columns-[var(--column-width,_15ch)_3]": use_columns] do %>
         <%= render 'shared/fields/option', method: method, form: form, option_field_options: option_field_options, multiple: multiple, options: options %>
       <% end %>

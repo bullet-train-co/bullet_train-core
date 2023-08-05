@@ -5,10 +5,9 @@
   </ul>
 <% end %>
 
-<%# TODO: Find a suitable url_for GET route here that every BulletTrain app would have. %>
-<%# showcase.sample "With model url_for" do %>
-<%#= render "shared/breadcrumb", url: [:account, Scaffolding::CompletelyConcrete::TangibleThing.new(id: 1)], label: "Concept" %>
-<%# end %>
+<% showcase.sample "With model url_for" do %>
+  <%= render 'account/shared/breadcrumb', label: t('memberships.label'), url: [:account, current_team, :memberships] %>
+<% end %>
 
 <% showcase.options do |o| %>
   <% o.required :label, "The breadcrumb text, either shown in the link or the plain label" %>

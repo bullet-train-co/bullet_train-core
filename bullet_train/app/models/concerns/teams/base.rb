@@ -4,7 +4,7 @@ module Teams::Base
   included do
     # super scaffolding
     unless scaffolding_things_disabled?
-      has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_updates: true
+      has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_cable_ready_updates: true
     end
 
     # memberships and invitations
@@ -26,10 +26,6 @@ module Teams::Base
       # TODO We need a way for `bullet_train-billing-stripe` to define these.
       if defined?(Billing::Stripe::Subscription)
         has_many :billing_stripe_subscriptions, class_name: "Billing::Stripe::Subscription", dependent: :destroy, foreign_key: :team_id
-      end
-
-      if defined?(Billing::Usage::TeamSupport)
-        include Billing::Usage::TeamSupport
       end
     end
 
@@ -83,4 +79,6 @@ module Teams::Base
       billing_subscriptions.active.empty?
     end
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_teams_base, self
 end

@@ -25,11 +25,11 @@ class RoleTest < ActiveSupport::TestCase
     end
 
     test "Role.includes works when given a string" do
-      assert_equal Role.includes("editor"), [Role.admin]
+      assert Role.includes("editor").include?(Role.admin)
     end
 
     test "Role.include works when given a role" do
-      assert_equal Role.includes(Role.find_by_key("editor")), [Role.admin]
+      assert Role.includes(Role.find_by_key("editor")).include? Role.admin
     end
 
     test "Role.assignable should not return the default role" do
@@ -45,6 +45,8 @@ class RoleTest < ActiveSupport::TestCase
     def setup
       @admin_user = FactoryBot.create :onboarded_user
       @membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: [Role.admin.id]
+      @non_admin_user = FactoryBot.create :onboarded_user
+      @non_admin_membership = FactoryBot.create :membership, user: @non_admin_user, team: @non_admin_user.current_team, role_ids: [Role.find(:editor).id]
     end
 
     test "default_role#included_by returns the admin role" do
@@ -130,6 +132,32 @@ class RoleTest < ActiveSupport::TestCase
     test "Calling #roles when role_ids is nil returns the default role only" do
       @membership.update_column(:role_ids, nil)
       assert_equal @membership.roles, [Role.find_by_key("default")]
+    end
+
+    test "#can_perform_role? returns true if the user has been assigned the role" do
+      assert @membership.can_perform_role?(Role.admin)
+    end
+
+    test "#can_perform_role? returns true if the user has not been assigned the role, but it is included in another role they have" do
+      assert @membership.roles.include? Role.admin
+      refute @membership.roles.include?(Role.find(:editor))
+      assert Role.admin.includes.include?("editor")
+      assert @membership.can_perform_role?(:editor)
+    end
+
+    test "#can_perform_role? returns false if the user has not been assigned the role, and it is not included in another role they have" do
+      assert @non_admin_membership.roles.include?(Role.find(:editor))
+      refute Role.find(:editor).includes.include?("crud_role")
+      assert Role.find :crud_role
+      refute @non_admin_membership.can_perform_role?(:crud_role)
+    end
+
+    test "#can_perform_role? returns true if the role being tested is 2 layers deep" do
+      # supervisor includes manager, which includes editor
+      @supervisor_membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: []
+      refute @supervisor_membership.can_perform_role?(:editor)
+      @supervisor_membership.roles << Role.find(:supervisor)
+      assert @supervisor_membership.can_perform_role?(:editor)
     end
   end
 

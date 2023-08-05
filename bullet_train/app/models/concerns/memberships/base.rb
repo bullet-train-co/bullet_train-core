@@ -155,4 +155,6 @@ module Memberships::Base
   def remove_user_profile_photo
     user_profile_photo.purge
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_memberships_base, self
 end
