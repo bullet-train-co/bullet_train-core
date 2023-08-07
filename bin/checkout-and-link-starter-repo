@@ -8,7 +8,7 @@ CI_BRANCH=$CIRCLE_BRANCH
 if [[ -v CI_BRANCH ]]
 then
   # Default to the main branch if we don't find a matching branch on the starter repository.
-  BRANCH_NAMES_JSON=$(curl -H "Accept: application.vnd.github+json" https://api.github.com/repos/bullet-train-co/bullet_train/branches)
+  BRANCH_NAMES_JSON=$(curl -H "Accept: application.vnd.github+json" "https://api.github.com/repos/bullet-train-co/bullet_train/branches?per_page=100")
   #echo "This is what we're getting from the GitHub API:"
   #echo "${BRANCH_NAMES_JSON}"
   BRANCH_NAMES=$(echo $BRANCH_NAMES_JSON | jq -r '.[].name')
