@@ -14,7 +14,7 @@ then
 
   # If the branch is missing in the repo the response will not contain the branch name
   if echo $BRANCH_RESPONSE | grep "$CIRCLE_BRANCH"; then
-    CORE_REPO_BRANCH=$CI_BRANCH
+    STARTER_REPO_BRANCH=$CI_BRANCH
   fi
 fi
 
