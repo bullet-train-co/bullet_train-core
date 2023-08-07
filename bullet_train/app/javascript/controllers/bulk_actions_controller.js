@@ -76,6 +76,7 @@ export default class extends Controller {
   }
 
   updateToggleLabel() {
+    if (!this.hasSelectableToggleTarget) { return }
     this.selectableToggleTarget.dispatchEvent(new CustomEvent('toggle', { detail: { useAlternate: this.selectableValue }} ))
   }
 

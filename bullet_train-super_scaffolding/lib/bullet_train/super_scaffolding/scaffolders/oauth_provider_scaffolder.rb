@@ -5,13 +5,15 @@ module BulletTrain
         def run
           unless argv.count >= 5
             puts ""
-            puts "🚅  usage: bin/super-scaffold oauth-provider <omniauth_gem> <gems_provider_name> <our_provider_name> <PROVIDER_API_KEY_IN_ENV> <PROVIDER_API_SECRET_IN_ENV> [options]"
+            puts "🚅  usage: bin/super-scaffold oauth-provider <omniauth_gem> <gems_provider_name> <our_provider_name> <PROVIDER_API_KEY_ENV_VAR_NAME> <PROVIDER_API_SECRET_ENV_VAR_NAME> [options]"
             puts ""
             puts "E.g. what we'd do to start Stripe off (if we didn't already do it):"
             puts "  bin/super-scaffold oauth-provider omniauth-stripe-connect stripe_connect Oauth::StripeAccount STRIPE_CLIENT_ID STRIPE_SECRET_KEY --icon=ti-money"
+            puts "  (Please note here that the STRIPE_CLIENT_ID and STRIPE_SECRET_KEY strings are not the actual values, just the names we give to the environment variables.)"
             puts ""
             puts "E.g. what we actually did to start Shopify off:"
             puts "  bin/super-scaffold oauth-provider omniauth-shopify-oauth2 shopify Oauth::ShopifyAccount SHOPIFY_API_KEY SHOPIFY_API_SECRET_KEY --icon=ti-shopping-cart"
+            puts "  (Please note here that the SHOPIFY_API_KEY and SHOPIFY_API_SECRET_KEY strings are not the actual values, just the names we give to the environment variables.)"
             puts ""
             puts "Options:"
             puts ""
@@ -24,7 +26,7 @@ module BulletTrain
 
           _, omniauth_gem, gems_provider_name, our_provider_name, api_key, api_secret = *ARGV
 
-          unless match = our_provider_name.match(/Oauth::(.*)Account/)
+          unless (match = our_provider_name.match(/Oauth::(.*)Account/))
             puts "\n🚨 Your provider name must match the pattern of `Oauth::{Name}Account`, e.g. `Oauth::StripeAccount`\n".red
             return
           end
@@ -60,7 +62,6 @@ module BulletTrain
             puts "but after you hit enter I'll open a page where you can view other icon options."
             puts "When you find one you like, hover your mouse over it and then come back here and"
             puts "and enter the name of the icon you want to use."
-            response = $stdin.gets.chomp
             if TerminalCommands.can_open?
               TerminalCommands.open_file_or_link("http://light.pinsupreme.com/icon_fonts_themefy.html")
             else
@@ -144,7 +145,7 @@ module BulletTrain
 
           migration_file_name = `grep "create_table #{oauth_transform_string(":webhooks_incoming_oauth_stripe_account_webhooks", options)}" db/migrate/*`.split(":").first
           legacy_replace_in_file(migration_file_name, "null: false", "null: true")
-          legacy_replace_in_file(migration_file_name, "foreign_key: true", 'foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}')
+          legacy_replace_in_file(migration_file_name, "foreign_key: true", oauth_transform_string('foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}'))
 
           puts ""
           puts "🎉"

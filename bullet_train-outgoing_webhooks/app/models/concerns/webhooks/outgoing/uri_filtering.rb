@@ -81,7 +81,7 @@ module Webhooks::Outgoing::UriFiltering
       resource = authoritative_resolver.getresource(hostname, Resolv::DNS::Resource::IN::A)
       Rails.cache.write(cache_key, resource.address.to_s, expires_in: resource.ttl, race_condition_ttl: 5)
       resource.address.to_s
-    rescue IPAddr::InvalidAddressError, ArgumentError # standard:disable Lint/ShadowedException
+    rescue ArgumentError
       Rails.cache.write(cache_key, "invalid", expires_in: 10.minutes, race_condition_ttl: 5)
       nil
     end
