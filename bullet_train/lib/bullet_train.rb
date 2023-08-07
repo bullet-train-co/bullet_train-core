@@ -42,11 +42,8 @@ module BulletTrain
   mattr_accessor :base_class, default: "ApplicationRecord"
 
   def self.configure
-    if block_given?
-      yield(BulletTrain::Configuration.default)
-    else
-      BulletTrain::Configuration.default
-    end
+    config = BulletTrain::Configuration.instance
+    yield(config) if block_given?
   end
 end
 
