@@ -34,22 +34,22 @@
       <% if action.completed? %>
         <% if action.is_a?(Actions::HasProgress) %>
           <div class="uppercase text-xs text-slate-400">
-            Processed <%= action.performed_count %> of <%= action.target_count %> <%= display_date_and_time(action.completed_at) %>
+            <%= t('action_models.processed_of', performed_count: action.performed_count, target_count: action.target_count, at: display_date_and_time(action.completed_at)) %>
           </div>
         <% else %>
           <div class="uppercase text-xs text-slate-400">
-            Processed <%= display_date_and_time(action.completed_at) %>
+            <%= t('action_models.processed', at: display_date_and_time(action.completed_at)) %>
           </div>
         <% end %>
 
       <% elsif action.is_a?(Actions::RequiresApproval) && !action.approved? %>
         <div class="uppercase text-xs text-slate-400">
-          Awaiting approval
+          <%= t('action_models.awaiting') %>
         </div>
 
       <% elsif action.is_a?(Actions::SupportsScheduling) && action.scheduled_for && !action.started? %>
         <div class="uppercase text-xs text-slate-400">
-          Scheduled for <%= display_date_and_time(action.scheduled_for) %>
+          <%= t('action_models.scheduled_for', at: display_date_and_time(action.scheduled_for)) %>
         </div>
 
       <% elsif action.is_a?(Actions::HasProgress) && action.started? %>
@@ -58,17 +58,17 @@
         </div>
 
         <div class="mt-2 uppercase text-xs text-slate-400">
-          Processing <%= action.performed_count %> of <%= action.target_count %>
+          <%= t('action_models.processing_of', performed_count: action.performed_count, target_count: action.target_count) %>
         </div>
 
       <% elsif action.is_a?(Actions::HasProgress) %>
         <div class="uppercase text-xs text-slate-400">
-          Preparing to process <%= action.performed_count %> of <%= action.target_count %>
+          <%= t('action_models.preparing_to_process_of', performed_count: action.performed_count, target_count: action.target_count) %>
         </div>
 
       <% else %>
         <div class="uppercase text-xs text-slate-400">
-          Preparing to process
+          <%= t('action_models.preparing_to_process') %>
         </div>
 
       <% end %>
