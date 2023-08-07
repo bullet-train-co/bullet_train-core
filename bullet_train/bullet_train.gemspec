@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train"
   spec.summary = "Bullet Train"
   spec.description = spec.summary
   spec.license = "MIT"
@@ -42,10 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-routes"
   spec.add_dependency "devise"
   spec.add_dependency "xxhash"
-
-  # This has been broken since Rails 7.
-  # spec.add_dependency "devise-two-factor"
-  # spec.add_dependency "rqrcode"
 
   spec.add_dependency "cancancan"
 
