@@ -841,13 +841,21 @@ class Scaffolding::Transformer
           field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
         end
 
+        # When rendering a super_select element we simply use `multiple: true` as an option,
+        # but all other fields require `html_options {multiple: true}` to work.
+        if is_multiple
+          if type == "super_select"
+            field_options[:multiple] = "true"
+          else
+            field_attributes[:multiple] = "true"
+          end
+        end
+
         valid_values = if is_id
           "valid_#{name_without_id.pluralize}"
         elsif is_ids
           "valid_#{collection_name}"
         end
-
-        field_options[:multiple] = "true" if is_multiple
 
         # https://stackoverflow.com/questions/21582464/is-there-a-ruby-hashto-s-equivalent-for-the-new-hash-syntax
         if field_options.any? || options.any?
