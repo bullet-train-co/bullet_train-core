@@ -841,8 +841,8 @@ class Scaffolding::Transformer
           field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
         end
 
-        # When rendering a super_select element we simply use `multiple: true` as an option,
-        # but all other fields require `html_options {multiple: true}` to work.
+        # When rendering a super_select element we need to use `html_options: {multiple: true}`,
+        # but all other fields simply use `multiple: true` to work.
         if is_multiple
           if type == "super_select"
             field_options[:multiple] = "true"
