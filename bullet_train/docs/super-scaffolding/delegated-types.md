@@ -48,7 +48,7 @@ We use `entryable_type:buttons` because we're going to allow people to choose wh
 
 Super Scaffolding will have generated some initial button options for us already in `config/locales/en/entries.en.yml`. We'll want to update the attribute `name`, field `label` (which is shown on the form) and the available options to reflect the available Concrete Children like so:
 
-```
+```yaml
 fields: &fields
   entryable_type:
     name: &entryable_type Entry Type
@@ -61,7 +61,7 @@ fields: &fields
 
 We will add this block below in the next step on our `new.html.erb` page so you don't have to worry about it now, but with the options above in place, our buttons partial will now allow your users to select either a `Message` or a `Comment` before creating the `Entry` itself:
 
-```
+```erb
 <% with_field_settings form: form do %>
   <%= render 'shared/fields/buttons', method: :entryable_type, html_options: {autofocus: true} %>
   <%# 🚅 super scaffolding will insert new fields above this line. %>
@@ -69,7 +69,8 @@ We will add this block below in the next step on our `new.html.erb` page so you 
 ```
 
 This will produce the following HTML:
-```
+
+```html
 <div>
   <label class="btn-toggle" data-controller="fields--button-toggle">
     <input data-fields--button-toggle-target="shadowField" type="radio" value="Message" name="entry[entryable_type]" id="entry_entryable_type_message">
@@ -91,7 +92,7 @@ This will produce the following HTML:
 
 By default, `app/views/account/entries/new.html.erb` has this reference to the shared `_form.html.erb`:
 
-```
+```erb
 <%= render 'form', entry: @entry %>
 ```
 
@@ -102,7 +103,7 @@ However, in this workflow we actually need two steps:
 
 The first of these two forms is actually not shared between `new.html.erb` and `edit.html.erb`, so we'll copy the contents of `_form.html.erb` into `new.html.erb` as a starting point, like so:
 
-```
+```erb
 <% if @entry.entryable_type %>
   <%= render 'form', entry: @entry %>
 <% else %>
@@ -131,14 +132,14 @@ Here's a summary of the updates required when copying `_form.html.erb` into `new
 
 We need to add a locale entry for the "Next Step" button in `config/locales/en/entries.en.yml`. This goes under the `buttons: &buttons` entry that is already present, like so:
 
-```
+```yaml
 buttons: &buttons
   next: Next Step
 ```
 
 Also, sadly, the original locale file wasn't expecting any buttons in `new.html.erb` directly, so we need to include buttons on the `new` page in the same file, below `form: *form`, like so:
 
-```
+```yaml
 new:
   # ...
   form: *form
@@ -149,7 +150,7 @@ new:
 
 In `app/models/entry.rb`, we want to replace the default validation of `entryable_type` like so:
 
-```
+```ruby
 ENTRYABLE_TYPES = I18n.t('entries.fields.entryable_type.options').keys.map(&:to_s)
 
 validates :entryable_type, inclusion: {
@@ -163,7 +164,7 @@ This makes the locale file, where we define the options to present to the user, 
 
 Also, to make it easy to check the state of this validation, we'll add `entryable_type_valid?` as well:
 
-```
+```ruby
 def entryable_type_valid?
   ENTRYABLE_TYPES.include?(entryable_type)
 end
@@ -177,13 +178,13 @@ In preparation for the second step, we need to configure `Entry` to accept [nest
 
 In `app/models/entry.rb`, like so:
 
-```
+```ruby
 accepts_nested_attributes_for :entryable
 ```
 
 Also in `app/models/entry.rb`, [Rails will be expecting us](https://stackoverflow.com/questions/45295202/cannot-build-nested-polymorphic-associations-are-you-trying-to-build-a-polymor) to define the following method on the model:
 
-```
+```ruby
 def build_entryable(params = {})
   raise 'invalid entryable type' unless entryable_type_valid?
   self.entryable = entryable_type.constantize.new(params)
@@ -192,13 +193,13 @@ end
 
 Finally, in the [strong parameters](https://edgeguides.rubyonrails.org/action_controller_overview.html#strong-parameters) of `app/controllers/account/entries_controller.rb`, _directly below_ this line:
 
-```
+```ruby
 # 🚅 super scaffolding will insert new arrays above this line.
 ```
 
 And still within the `permit` parameters, add:
 
-```
+```ruby
 entryable_attributes: [
   :id,
 
@@ -216,7 +217,7 @@ entryable_attributes: [
 
 Before we can present the second step to users, we need to react to the user's input from the first step and initialize either a `Message` or `Comment` object and associate `@entry` with it. We do this in the `new` action of `app/controllers/account/entries_controller.rb` and we can also use the `build_entryable` method we created earlier for this purpose, like so:
 
-```
+```ruby
 def new
   if @entry.entryable_type_valid?
     @entry.build_entryable
@@ -230,19 +231,19 @@ end
 
 Since we're now prompting for the entry type on the first step, we can remove the following from the second step in `app/views/account/entries/_form.html.erb`:
 
-```
+```erb
 <%= render 'shared/fields/buttons', method: :entryable_type, html_options: {autofocus: true} %>
 ```
 
 But we need to keep track of which entry type they selected, so we replace it with:
 
-```
+```erb
 <%= form.hidden_field :entryable_type %>
 ```
 
 Also, below that (and below the Super Scaffolding hook), we want to add the `Message` and `Comment` fields as [nested forms](https://guides.rubyonrails.org/form_helpers.html#nested-forms) like so:
 
-```
+```erb
 <%= form.fields_for :entryable, entry.entryable do |entryable_form| %>
   <%= entryable_form.hidden_field :id %>
   <% with_field_settings form: entryable_form do %>
@@ -262,7 +263,7 @@ We add this _below_ the Super Scaffolding hook because we want any additional fi
 
 Add the following in `app/views/account/entries/show.html.erb` under the Super Scaffolding hook shown in the example code below:
 
-```
+```erb
 <%# 🚅 super scaffolding will insert new fields above this line. %>
 
 <% with_attribute_settings object: @entry.entryable, strategy: :label do %>
@@ -278,7 +279,8 @@ Add the following in `app/views/account/entries/show.html.erb` under the Super S
 This will ensure the various different attributes of the Concrete Children are properly presented. However, the `label` strategy for these attribute partials depend on the locales for the individual Concrete Children being defined, so we need to create those files now, as well:
 
 `config/locales/en/messages.en.yml`:
-```
+
+```yaml
 en:
   messages: &messages
     fields:
@@ -295,7 +297,8 @@ en:
 ```
 
 `config/locales/en/comments.en.yml`:
-```
+
+```yaml
 en:
   comments: &comments
     fields:
@@ -323,19 +326,19 @@ So everything should now be working as expected, and here's the crazy thing: **W
 
 To now incorporate delegated types as put forward in the original documentation, we want to remove this line in `app/models/entry.rb`:
 
-```
+```ruby
 belongs_to :entryable, polymorphic: true
 ```
 
 And replace it with:
 
-```
+```ruby
 delegated_type :entryable, types: %w[ Message Comment ]
 ```
 
 We also want to follow the other steps seen there, such as defining an `Entryable` concern in `app/models/concerns/entryable.rb`, like so:
 
-```
+```ruby
 module Entryable
   extend ActiveSupport::Concern
 
@@ -347,7 +350,7 @@ end
 
 And including the `Entryable` concern in both `app/models/message.rb` and `app/models/comment.rb` like so:
 
-```
+```ruby
 include Entryable
 ```
 

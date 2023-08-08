@@ -2,9 +2,9 @@
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
 
-<% if object.send(attribute).attached? %>
+<% if object.public_send(attribute).attached? %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-    <%= link_to url_for(object.send(attribute)), class: 'button download-file' do %>
+    <%= link_to url_for(object.public_send(attribute)), class: 'button download-file' do %>
       <i class="leading-none mr-2 text-base ti ti-download"></i>
       <span><%= t("global.file_fields.download") %></span>
     <% end %>
