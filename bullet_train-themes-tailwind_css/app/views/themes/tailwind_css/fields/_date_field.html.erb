@@ -3,18 +3,36 @@ stimulus_controller = 'fields--date'
 
 form ||= current_fields_form
 options ||= {}
-options[:id] ||= form.field_id(method)
+
+# data options
+data_options ||= {}
+data_options[:id] ||= form.field_id(method)
+data_options[:class] = "hidden"
+data_options[:value] = form.object.send(method)&.strftime("%Y-%m-%d")
+data_options = data_options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
+
+# localized display options
+options[:id] ||= "#{form.field_id(method)}_display"
 options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{options[:class]}".strip
-options[:value] = form.object.send(method)&.strftime(t('global.formats.date'))
-options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
+options[:value] = form.object.send(method) && I18n.l(form.object.send(method), format: :date_field)
+options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
+
 other_options ||= {}
 
 %>
-
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
-    <div class="date-input relative" data-controller="<%= stimulus_controller %>">
+    <div 
+      class="date-input relative" 
+      data-controller="<%= stimulus_controller %>"
+      data-<%= stimulus_controller %>-date-format-value="<%= I18n.t('date.formats.date_controller') %>"
+      data-<%= stimulus_controller %>-time-format-value="<%= I18n.t('time.formats.date_controller') %>"
+      data-<%= stimulus_controller %>-is-am-pm-value="<%= am_pm? %>"
+      data-<%= stimulus_controller %>-picker-locale-value="<%= I18n.t("daterangepicker").deep_transform_keys { |k| k.to_s.camelize(:lower) }.to_json %>"
+      data-<%= stimulus_controller %>-current-time-zone-value="<%= current_time_zone %>"
+    >
       <%= form.text_field method, options %>
+      <%= form.text_field method, data_options %>
       <% unless options[:disabled] %>
       <button type="button" class="clear py-2 px-3 border border-transparent inline-flex items-center whitespace-nowrap absolute rounded-md top-1 md:top-0.5 right-0.5"
         data-<%= stimulus_controller %>-target="clearButton"
