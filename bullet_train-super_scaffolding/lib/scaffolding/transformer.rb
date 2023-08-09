@@ -1618,7 +1618,7 @@ class Scaffolding::Transformer
           # TODO: Update this help text letting developers know they can Super Scaffold
           # models without a parent after the `--skip-parent` logic is implemented.
           puts "Hey, models that are scoped directly off of a Team are eligible to be added to the navbar."
-          puts "Do you want to add this resource to the sidebar menu? (y/N)"
+          puts "Do you want to add this resource to the navbar menu? (y/N)"
           response = $stdin.gets.chomp
           if response.downcase[0] == "y"
             puts ""
