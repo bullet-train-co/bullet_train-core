@@ -1,7 +1,6 @@
 module Fields::DateAndTimeSupport
   extend ActiveSupport::Concern
 
-  # deprecated - keep for backward compability
   def assign_date_and_time(strong_params, attribute)
     attribute = attribute.to_s
     time_zone_attribute = "#{attribute}_time_zone"

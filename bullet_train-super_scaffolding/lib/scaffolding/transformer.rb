@@ -1069,6 +1069,10 @@ class Scaffolding::Transformer
         end
 
         special_processing = case type
+        when "date_field"
+          "assign_date(strong_params, :#{name})"
+        when "date_and_time_field"
+          "assign_date_and_time(strong_params, :#{name})"
         when "buttons"
           if boolean_buttons
             "assign_boolean(strong_params, :#{name})"

@@ -1,7 +1,6 @@
 module Fields::DateSupport
   extend ActiveSupport::Concern
 
-  # deprecated - keep for backward compatibility
   def assign_date(strong_params, attribute)
     attribute = attribute.to_s
     if strong_params.dig(attribute).present?
