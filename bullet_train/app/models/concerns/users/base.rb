@@ -11,7 +11,7 @@ module Users::Base
     end
 
     devise :omniauthable
-    devise :pwned_password if BulletTrain::Configuration.default.strong_passwords
+    devise :pwned_password if BulletTrain::Configuration.strong_passwords
     devise :registerable
     devise :recoverable
     devise :rememberable

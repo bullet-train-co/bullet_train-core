@@ -1,6 +1,3 @@
-# TODO these methods were removed from the global scope in super scaffolding and moved to `Scaffolding::Transformer`,
-# but oauth provider scaffolding hasn't been updated yet.
-
 require "scaffolding"
 require "scaffolding/transformer"
 require "scaffolding/block_manipulator"

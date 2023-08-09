@@ -3,9 +3,9 @@
 <% url ||= nil %>
 
 <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-  <% if object.public_send(attribute) %>
-    <%= time_ago_in_words(object.public_send(attribute)) %> ago
+  <% if object.send(attribute) %>
+    <%= t("global.time_ago", time: time_ago_in_words(object.send(attribute))) %>
   <% else %>
-    Never
+    <%= t("global.never") %>
   <% end %>
 <% end %>

@@ -76,9 +76,7 @@ class Scaffolding::Transformer
   end
 
   def transform_string(string)
-    [
-
-      # full class name plural.
+    full_class_name = [
       "Scaffolding::AbsolutelyAbstract::CreativeConcepts",
       "Scaffolding::CompletelyConcrete::TangibleThings",
       "ScaffoldingAbsolutelyAbstractCreativeConcepts",
@@ -94,41 +92,19 @@ class Scaffolding::Transformer
       "scaffolding_completely_concrete_tangible_things",
       "scaffolding-absolutely-abstract-creative-concepts",
       "scaffolding-completely-concrete-tangible-things",
+      "scaffolding.completely_concrete.tangible_things"
+    ]
 
-      # full class name singular.
-      "Scaffolding::AbsolutelyAbstract::CreativeConcept",
-      "Scaffolding::CompletelyConcrete::TangibleThing",
-      "ScaffoldingAbsolutelyAbstractCreativeConcept",
-      "ScaffoldingCompletelyConcreteTangibleThing",
-      "Scaffolding Absolutely Abstract Creative Concept",
-      "Scaffolding Completely Concrete Tangible Thing",
-      "Scaffolding/Absolutely Abstract/Creative Concept",
-      "Scaffolding/Completely Concrete/Tangible Thing",
-      "scaffolding/absolutely_abstract/creative_concept",
-      "scaffolding/completely_concrete/tangible_thing",
-      "scaffolding_absolutely_abstract_creative_concept",
-      "scaffolding_completely_concrete_tangible_thing",
-      "scaffolding-absolutely-abstract-creative-concept",
-      "scaffolding-completely-concrete-tangible-thing",
-      "scaffolding.completely_concrete.tangible_things",
-
-      # class name in context plural.
+    class_name_with_context = [
       "absolutely_abstract_creative_concepts",
       "completely_concrete_tangible_things",
       "absolutely_abstract/creative_concepts",
       "completely_concrete/tangible_things",
       "absolutely-abstract-creative-concepts",
       "completely-concrete-tangible-things",
+    ]
 
-      # class name in context singular.
-      "absolutely_abstract_creative_concept",
-      "completely_concrete_tangible_thing",
-      "absolutely_abstract/creative_concept",
-      "completely_concrete/tangible_thing",
-      "absolutely-abstract-creative-concept",
-      "completely-concrete-tangible-thing",
-
-      # just class name singular.
+    class_name = [
       "creative_concepts",
       "tangible_things",
       "creative-concepts",
@@ -139,24 +115,14 @@ class Scaffolding::Transformer
       "Tangible things",
       "creative concepts",
       "tangible things",
+    ]
 
-      # just class name plural.
-      "creative_concept",
-      "tangible_thing",
-      "creative-concept",
-      "tangible-thing",
-      "Creative Concept",
-      "Tangible Thing",
-      "Creative concept",
-      "Tangible thing",
-      "creative concept",
-      "tangible thing",
-
-      # Account namespace vs. others.
-      ":account",
-      "/account/"
-
-    ].each do |needle|
+    (
+      full_class_name + full_class_name.map(&:singularize) +
+      class_name_with_context + class_name_with_context.map(&:singularize) +
+      class_name + class_name.map(&:singularize) +
+      [":account", "/account/"] # Account namespace vs. others.
+    ).each do |needle|
       string = string.gsub(needle, encode_double_replacement_fix(class_names_transformer.replacement_for(needle)))
     end
 

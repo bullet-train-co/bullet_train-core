@@ -42,11 +42,8 @@ module BulletTrain
   mattr_accessor :base_class, default: "ApplicationRecord"
 
   def self.configure
-    if block_given?
-      yield(BulletTrain::Configuration.default)
-    else
-      BulletTrain::Configuration.default
-    end
+    config = BulletTrain::Configuration.instance
+    yield(config) if block_given?
   end
 end
 
@@ -104,12 +101,20 @@ def webhooks_enabled?
   true
 end
 
+def hide_things?
+  ActiveModel::Type::Boolean.new.cast(ENV["HIDE_THINGS"])
+end
+
+def hide_examples?
+  ActiveModel::Type::Boolean.new.cast(ENV["HIDE_EXAMPLES"])
+end
+
 def scaffolding_things_disabled?
-  ENV["HIDE_THINGS"].present? || ENV["HIDE_EXAMPLES"].present?
+  hide_things? || hide_examples?
 end
 
 def sample_role_disabled?
-  ENV["HIDE_EXAMPLES"].present?
+  hide_examples?
 end
 
 def demo?

@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train"
   spec.summary = "Bullet Train"
   spec.description = spec.summary
   spec.license = "MIT"
@@ -43,10 +43,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "devise"
   spec.add_dependency "xxhash"
   spec.add_dependency "image_processing"
-
-  # This has been broken since Rails 7.
-  # spec.add_dependency "devise-two-factor"
-  # spec.add_dependency "rqrcode"
 
   spec.add_dependency "cancancan"
 
@@ -89,7 +85,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "valid_email"
 
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
-  spec.add_dependency "commonmarker" # TODO ➡️ `bullet_train-docs`?
+  spec.add_dependency "commonmarker", ">= 1.0.0.pre10"
 
   # Extract the body from emails received using action inbox.
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
