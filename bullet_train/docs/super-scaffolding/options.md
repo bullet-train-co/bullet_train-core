@@ -11,7 +11,7 @@ Most of these include skipping particular functionalities, so take a look at wha
 |--------|-------------|
 | `--sortable` | [Details here](/docs/super-scaffolding/sortable.md) |
 | `--namespace=customers` | [Details here](/docs/namespacing.md) |
-| `--navbar="ti-world"` | Pass the Themify icon or Font Awesome icon of your choice to automatically add it to the navbar* |
+| `--sidebar="ti-world"` | Pass the Themify icon or Font Awesome icon of your choice to automatically add it to the navbar* |
 | `--only-index` | Only scaffold the index view for a model"` |
 | `--skip-views` | |
 | `--skip-form` | |
