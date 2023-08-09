@@ -33,17 +33,13 @@ export default class extends Controller {
     $(this.displayFieldTarget).val('')
   }
 
-  currentTimeZone(){
-    return (
-      ( this.hasTimeZoneSelectWrapperTarget && $(this.timeZoneSelectWrapperTarget).is(":visible") && this.timeZoneSelectTarget.value ) ||
-      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) ||
-        this.currentTimeZoneValue
-    )
-  }
-
   applyDateToField(event, picker) {
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const newTimeZone = this.currentTimeZone()
+    const newTimeZone = (
+      ( this.hasTimeZoneSelectWrapperTarget && $(this.timeZoneSelectWrapperTarget).is(":visible") && this.timeZoneSelectTarget.value ) ||
+      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || 
+        this.currentTimeZoneValue
+    )
     const momentVal = (
       picker ?
       moment(picker.startDate.toISOString()).tz(newTimeZone, true) :
@@ -97,6 +93,7 @@ export default class extends Controller {
     // don't follow the anchor
     event.preventDefault()
     const currentTimeZoneEl = this.currentTimeZoneWrapperTarget.querySelector('a')
+    
     $(this.timeZoneFieldTarget).val(event.target.dataset.value)
     $(currentTimeZoneEl).text(event.target.dataset.label)
     $('.time-zone-button').removeClass('button').addClass('button-alternative')
@@ -123,20 +120,6 @@ export default class extends Controller {
     }
   }
 
-  displayFieldChange(event) {
-    const newTimeZone = this.currentTimeZone()
-    const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const momentParsed = moment(this.displayFieldTarget.value, format, false)
-    if(momentParsed.isValid()){
-      const momentVal = moment.tz(momentParsed.format("YYYY-MM-DDTHH:mm"), newTimeZone)
-      const dataVal = this.includeTimeValue ? momentVal.toISOString(true) : momentVal.format('YYYY-MM-DD')
-      $(this.fieldTarget).val(dataVal)
-    } else {
-      // nullify field value when the display format is wrong
-      $(this.fieldTarget).val("")
-    }
-  }
-
   initPluginInstance() {
     const localeValues = this.pickerLocaleValue
     const isAmPm = this.isAmPmValue
@@ -153,7 +136,6 @@ export default class extends Controller {
 
     $(this.displayFieldTarget).on('apply.daterangepicker', this.applyDateToField.bind(this))
     $(this.displayFieldTarget).on('cancel.daterangepicker', this.clearDate.bind(this))
-    $(this.displayFieldTarget).on('input', this,this.displayFieldChange.bind(this));
 
     this.pluginMainEl = this.displayFieldTarget
     this.plugin = $(this.pluginMainEl).data('daterangepicker') // weird
