@@ -37,8 +37,4 @@ module Account::DatesHelper
     return time if current_user.time_zone.nil?
     time.in_time_zone(current_user.time_zone)
   end
-
-  def am_pm?
-    !"#{I18n.t("time.am", fallback: false, default: "")}#{I18n.t("time.pm", fallback: false, default: "")}".empty?
-  end
 end
