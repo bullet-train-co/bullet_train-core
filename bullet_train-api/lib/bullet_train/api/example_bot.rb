@@ -49,7 +49,7 @@ module FactoryBot
 
     def factory(model)
       factories = FactoryBot.factories.instance_variable_get(:@items).keys
-      factories.include?("#{model}_example") ? "#{model}_example" : model
+      factories.include?("#{model}_example") ? "#{model}_example".to_sym : model
     end
 
     def reset_tables!

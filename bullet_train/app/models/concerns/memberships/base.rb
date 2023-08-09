@@ -2,6 +2,8 @@ module Memberships::Base
   extend ActiveSupport::Concern
 
   included do
+    attr_accessor :user_profile_photo_removal
+
     # See `docs/permissions.md` for details.
     include Roles::Support
 
@@ -16,6 +18,9 @@ module Memberships::Base
 
     has_many :scaffolding_absolutely_abstract_creative_concepts_collaborators, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator", dependent: :destroy
 
+    # Image uploading
+    has_one_attached :user_profile_photo
+
     after_destroy do
       # if we're destroying a user's membership to the team they have set as
       # current, then we need to remove that so they don't get an error.
@@ -24,6 +29,8 @@ module Memberships::Base
         user.save
       end
     end
+
+    after_validation :remove_user_profile_photo, if: :user_profile_photo_removal?
 
     scope :excluding_platform_agents, -> { where(platform_agent_of: nil) }
     scope :platform_agents, -> { where.not(platform_agent_of: nil) }
@@ -140,4 +147,14 @@ module Memberships::Base
   def should_receive_notifications?
     invitation.present? || user.present?
   end
+
+  def user_profile_photo_removal?
+    user_profile_photo_removal.present?
+  end
+
+  def remove_user_profile_photo
+    user_profile_photo.purge
+  end
+
+  ActiveSupport.run_load_hooks :bullet_train_memberships_base, self
 end

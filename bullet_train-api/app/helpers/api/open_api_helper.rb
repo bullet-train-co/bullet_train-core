@@ -33,6 +33,33 @@ module Api
     def automatic_paths_for(model, parent, except: [])
       output = render("api/#{@version}/open_api/shared/paths", except: except)
       output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
+
+      custom_actions_file_path = "api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"
+      output += render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
+
+      # There are some placeholders specific to this method that we still need to transform.
+      model_symbol = model.name.underscore.tr("/", "_").to_sym
+
+      if (get_example = FactoryBot.get_example(model_symbol, version: @version))
+        output.gsub!("🚅 get_example", get_example)
+      end
+
+      if (post_parameters = FactoryBot.post_parameters(model_symbol, version: @version))
+        output.gsub!("🚅 post_parameters", post_parameters)
+      end
+
+      if (post_examples = FactoryBot.post_examples(model_symbol, version: @version))
+        output.gsub!("🚅 post_examples", post_examples)
+      end
+
+      if (put_parameters = FactoryBot.put_parameters(model_symbol, version: @version))
+        output.gsub!("🚅 put_parameters", put_parameters)
+      end
+
+      if (put_example = FactoryBot.put_example(model_symbol, version: @version))
+        output.gsub!("🚅 put_example", put_example)
+      end
+
       indent(output, 1)
     end
 

@@ -3,9 +3,9 @@
 <% url ||= nil %>
 <% default_message = local_assigns[:default_message] || t('global.formats.timestamp_unavailable') %>
 
-<% if object.send(attribute).present? %>
+<% if object.public_send(attribute).present? %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-    <%= display_date_and_time(object.send(attribute), local_assigns[:date_format], local_assigns[:time_format]) %>
+    <%= display_date_and_time(object.public_send(attribute), local_assigns[:date_format], local_assigns[:time_format]) %>
   <% end %>
 <% else %>
   <%= default_message %>
