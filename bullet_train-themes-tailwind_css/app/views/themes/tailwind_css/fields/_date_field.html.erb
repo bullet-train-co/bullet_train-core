@@ -31,8 +31,8 @@ other_options ||= {}
       data-<%= stimulus_controller %>-t-value="<%= I18n.t("daterangepicker").deep_transform_keys { |k| k.to_s.camelize(:lower) }.to_json %>"
       data-<%= stimulus_controller %>-current-time-zone-value="<%= current_user.time_zone ||current_user.current_team.time_zone || "UTC" %>"
     >
-      <%= form.text_field method, options %>
       <%= form.text_field method, data_options %>
+      <%= form.text_field method, options %>
       <% unless options[:disabled] %>
       <button type="button" class="clear py-2 px-3 border border-transparent inline-flex items-center whitespace-nowrap absolute rounded-md top-1 md:top-0.5 right-0.5"
         data-<%= stimulus_controller %>-target="clearButton"
