@@ -67,8 +67,17 @@ module FactoryBot
           clone.send("#{name}=", associations)
           @tables_to_reset << name
         elsif %i[belongs_to has_one].include?(reflection.macro)
-          clone.send("#{name}=", instance.send(name).clone)
-          @tables_to_reset << name.pluralize
+          # Calling e.g. address.team= throws an error,
+          # if address has_one team through person
+          # and person has_one team through company
+          # and company belongs_to team
+          # so the resulting error will be caught here and a warning logged.
+          begin
+            clone.send("#{name}=", instance.send(name).clone)
+            @tables_to_reset << name.pluralize
+          rescue ActiveRecord::HasOneThroughNestedAssociationsAreReadonly
+            Rails.logger.warn("ExampleBot.deep_clone ignored setting #{name} of #{instance}")
+          end
         end
       end
 
