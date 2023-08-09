@@ -1,13 +1,8 @@
 module Fields::DateAndTimeSupport
   extend ActiveSupport::Concern
 
+  # deprecated - keep for backward compability
   def assign_date_and_time(strong_params, attribute)
-    deprecator = ActiveSupport::Deprecation.new("2.0", "BulletTrain::Fields")
-    deprecator.deprecation_warning(
-      "assign_date_and_time",
-      "Please assign an ISO8601 datetime string as form field value instead and remove all assign_date_and_time assignments,
-      see https://ruby-doc.org/3.2.2/exts/date/DateTime.html"
-    )
     attribute = attribute.to_s
     time_zone_attribute = "#{attribute}_time_zone"
     if strong_params.dig(attribute).present?
