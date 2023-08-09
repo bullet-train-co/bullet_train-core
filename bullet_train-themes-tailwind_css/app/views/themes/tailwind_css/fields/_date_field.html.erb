@@ -18,6 +18,7 @@ options[:value] = form.object.send(method) && I18n.l(form.object.send(method), f
 options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
 
 other_options ||= {}
+current_time_zone = tz_name_to_tz_id[current_user.time_zone] || tz_name_to_tz_id[current_user.current_team.time_zone] || "UTC"
 
 %>
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
