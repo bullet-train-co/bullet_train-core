@@ -3,21 +3,14 @@ require("daterangepicker/daterangepicker.css");
 
 // requires jQuery, moment, might want to consider a vanilla JS alternative
 import 'daterangepicker';
-import moment from 'moment-timezone'
-import { rubyTzNameToUnixTz } from '../../utils'
 
 export default class extends Controller {
-  static targets = [ "field", "displayField", "clearButton", "currentTimeZoneWrapper", "timeZoneButtons", "timeZoneSelectWrapper", "timeZoneField" ]
+  static targets = [ "field", "clearButton", "currentTimeZoneWrapper", "timeZoneButtons", "timeZoneSelectWrapper", "timeZoneField" ]
   static values = {
     includeTime: Boolean,
     defaultTimeZones: Array,
     cancelButtonLabel: { type: String, default: "Cancel" },
-    applyButtonLabel: { type: String, default: "Apply" },
-    dateFormat: String,
-    timeFormat: String,
-    currentTimeZone: String,
-    isAmPm: Boolean,
-    t: { type: Object, default: {} }
+    applyButtonLabel: { type: String, default: "Apply" }
   }
 
   connect() {
@@ -33,19 +26,13 @@ export default class extends Controller {
     event.preventDefault()
 
     $(this.fieldTarget).val('')
-    $(this.displayFieldTarget).val('')
   }
 
   applyDateToField(event, picker) {
-    const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    const pickerMomentVal = picker.startDate
-    const momentVal = moment(pickerMomentVal.toISOString()).tz(rubyTzNameToUnixTz[this.currentTimeZoneValue], true)
-    const displayVal = momentVal.format(format)
-    const dataVal = this.includeTimeValue ? momentVal.toISOString() : momentVal.format('YYYY-MM-DD')
-    $(this.displayFieldTarget).val(displayVal)
-    $(this.fieldTarget).val(dataVal)
+    const format = this.includeTimeValue ? 'MM/DD/YYYY h:mm A' : 'MM/DD/YYYY'
+    $(this.fieldTarget).val(picker.startDate.format(format))
     // bubble up a change event when the input is updated for other listeners
-    $(this.displayFieldTarget).trigger('change', picker)
+    this.fieldTarget.dispatchEvent(new CustomEvent('change', { detail: { picker: picker }}))
   }
 
   showTimeZoneButtons(event) {
@@ -95,26 +82,22 @@ export default class extends Controller {
   }
 
   initPluginInstance() {
-    const t = this.tValue
-    const isAmPm = this.isAmPmValue
-    var localeValues = JSON.parse(JSON.stringify(t))
-    localeValues['format'] = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
-    localeValues['applyLabel'] = this.applyButtonLabelValue
-    localeValues['cancelLabel'] = this.cancelButtonLabelValue
-
-    $(this.displayFieldTarget).daterangepicker({
+    $(this.fieldTarget).daterangepicker({
       singleDatePicker: true,
       timePicker: this.includeTimeValue,
       timePickerIncrement: 5,
       autoUpdateInput: false,
-      locale: localeValues,
-      timePicker24Hour: !isAmPm,
+      locale: {
+        cancelLabel: this.cancelButtonLabelValue,
+        applyLabel: this.applyButtonLabelValue,
+        format: this.includeTimeValue ? 'MM/DD/YYYY h:mm A' : 'MM/DD/YYYY'
+      }
     })
 
-    $(this.displayFieldTarget).on('apply.daterangepicker', this.applyDateToField.bind(this))
-    $(this.displayFieldTarget).on('cancel.daterangepicker', this.clearDate.bind(this))
+    $(this.fieldTarget).on('apply.daterangepicker', this.applyDateToField.bind(this))
+    $(this.fieldTarget).on('cancel.daterangepicker', this.clearDate.bind(this))
 
-    this.pluginMainEl = this.displayFieldTarget
+    this.pluginMainEl = this.fieldTarget
     this.plugin = $(this.pluginMainEl).data('daterangepicker') // weird
 
     // Init time zone select

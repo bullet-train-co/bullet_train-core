@@ -140,8 +140,4 @@ module Controllers::Base
       format.json { render "#{params[:controller].gsub(/^account\//, "api/#{BulletTrain::Api.current_version}/")}/#{params[:action]}" }
     end
   end
-
-  def am_pm?
-    !"#{I18n.t("time.am", fallback: false, default: "")}#{I18n.t("time.pm", fallback: false, default: "")}".empty?
-  end
 end
