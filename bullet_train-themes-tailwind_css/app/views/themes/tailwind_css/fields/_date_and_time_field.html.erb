@@ -2,7 +2,6 @@
 stimulus_controller = 'fields--date'
 
 form ||= current_fields_form
-options ||= {}
 
 # data options
 data_options ||= {}
@@ -12,11 +11,12 @@ data_options[:value] = form.object.send(method)&.utc&.iso8601
 data_options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 
 # localized display options
-options[:id] ||=  "#{form.field_id(method)}_display"
-options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{options[:class]}".strip
+display_options ||= {}
+display_options[:id] ||=  "#{form.field_id(method)}_display"
+display_options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{options[:class]}".strip
 raw_value = form.object.send(method)&.in_time_zone(current_user.time_zone || current_team.time_zone || "UTC")
-options[:value] = raw_value && I18n.l(raw_value, format: :date_and_time_field)
-options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
+display_options[:value] = raw_value && I18n.l(raw_value, format: :date_and_time_field)
+display_options = display_options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
 
 other_options ||= {}
 %>
@@ -35,7 +35,7 @@ other_options ||= {}
       data-<%= stimulus_controller %>-current-time-zone-value="<%= current_user.time_zone ||current_user.current_team.time_zone || "UTC" %>"
     >
       <%= form.text_field method, data_options %>
-      <%= form.text_field method, options %>
+      <%= form.text_field method, display_options %>
       <% unless options[:disabled] %>
       <button type="button" class="clear py-2 px-3 border border-transparent inline-flex items-center whitespace-nowrap absolute rounded-md top-1 md:top-0.5 right-0.5"
         data-<%= stimulus_controller %>-target="clearButton"
