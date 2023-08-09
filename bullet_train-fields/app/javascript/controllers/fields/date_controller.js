@@ -4,6 +4,7 @@ require("daterangepicker/daterangepicker.css");
 // requires jQuery, moment, might want to consider a vanilla JS alternative
 import 'daterangepicker';
 import moment from 'moment-timezone'
+import { rubyTzNameToUnixTz } from '../../utils'
 
 export default class extends Controller {
   static targets = [ "field", "displayField", "clearButton", "currentTimeZoneWrapper", "timeZoneButtons", "timeZoneSelectWrapper", "timeZoneField", "timeZoneSelect" ]
@@ -16,8 +17,7 @@ export default class extends Controller {
     timeFormat: String,
     currentTimeZone: String,
     isAmPm: Boolean,
-    t: { type: Object, default: {} },
-    tzNameToTzId: { type: Object, default: {} },
+    t: { type: Object, default: {} }
   }
 
   connect() {
@@ -39,7 +39,7 @@ export default class extends Controller {
   applyDateToField(event, picker) {
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
     const tz = (
-      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || this.tzNameToTzIdValue[this.currentTimeZoneValue]
+      ( this.hasTimeZoneFieldTarget && this.timeZoneFieldTarget.value ) || rubyTzNameToUnixTz[this.currentTimeZoneValue]
     )
     const momentVal = (
       picker ?
@@ -97,7 +97,7 @@ export default class extends Controller {
 
     const currentTimeZoneEl = this.currentTimeZoneWrapperTarget.querySelector('a')
     const {value: tzName} = event.target.dataset
-    const value = this.tzNameToTzIdValue[tzName]
+    const value = rubyTzNameToUnixTz[tzName]
     
     $(this.timeZoneFieldTarget).val(value)
     $(currentTimeZoneEl).text(tzName)
@@ -114,7 +114,7 @@ export default class extends Controller {
 
   cancelSelect(event) {
     event.preventDefault()
-    const tz = this.tzNameToTzIdValue[this.currentTimeZoneValue]
+    const tz = rubyTzNameToUnixTz[this.currentTimeZoneValue]
     const format = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
     const momentVal = moment(this.fieldTarget.value).tz(tz, false)
     const displayVal = momentVal.format(format)
