@@ -129,3 +129,18 @@ export default class extends Controller {
 
 [select2]: https://select2.org
 [select2_events]: https://select2.org/programmatic-control/events
+
+## Options
+Select2 has different options available which you can check [here](https://select2.org/configuration/options-api).
+
+You can pass these options to the super select partial like so:
+```erb
+<%= render 'shared/fields/super_select', method: :project,
+  select2_options: {
+    allowClear: true,
+    placeholder: 'Your Custom Placeholder'
+  }
+%>
+```
+
+*Passing options like this doesn't allow JS callbacks or functions to be used, so you must extend the Stimulus controller and add options to the `optionsOverride` getter if you want to do so.

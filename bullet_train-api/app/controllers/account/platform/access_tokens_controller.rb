@@ -70,6 +70,7 @@ class Account::Platform::AccessTokensController < Account::ApplicationController
   include strong_parameters_from_api
 
   def process_params(strong_params)
+    assign_date_and_time(strong_params, :last_used_at)
     # 🚅 super scaffolding will insert processing for new fields above this line.
   end
 end

@@ -17,7 +17,12 @@ other_options ||= {}
           <% end %>
         <% end %>
         <% if form.object.send(method).attached? %>
-          <div class="button-alternative cursor-pointer mr-3" data-action="click->fields--file-field#removeFile" data-fields--file-field-target="removeFileButton">
+          <% if form.object.send(method).representable? %>
+            <div class="mt-2">
+              <%= image_tag(form.object.send(method).representation(resize_to_limit: [200, 200])) %>
+            </div>
+          <% end %>
+          <div class="mt-2 button-alternative cursor-pointer mr-3" data-action="click->fields--file-field#removeFile" data-fields--file-field-target="removeFileButton">
             <i class="leading-none mr-2 text-base ti ti-trash"></i>
             <span><%= t('fields.remove_document') %></span>
           </div>

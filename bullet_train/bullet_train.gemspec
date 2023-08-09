@@ -42,6 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-routes"
   spec.add_dependency "devise"
   spec.add_dependency "xxhash"
+  spec.add_dependency "image_processing"
 
   spec.add_dependency "cancancan"
 
