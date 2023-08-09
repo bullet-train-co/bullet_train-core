@@ -23,7 +23,7 @@ module Account::DatesHelper
   end
 
   def time_zone_name_to_id
-    ActiveSupport::TimeZone.all.map{|tz| {"#{tz.name}" => tz.tzinfo.name}}.reduce({}, :merge)
+    ActiveSupport::TimeZone.all.map { |tz| {tz.name.to_s => tz.tzinfo.name} }.reduce({}, :merge)
   end
 
   def current_time_zone
