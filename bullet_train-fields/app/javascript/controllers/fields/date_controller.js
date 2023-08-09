@@ -45,7 +45,7 @@ export default class extends Controller {
     $(this.displayFieldTarget).val(displayVal)
     $(this.fieldTarget).val(dataVal)
     // bubble up a change event when the input is updated for other listeners
-    this.displayFieldTarget.dispatchEvent(new CustomEvent('change', { detail: { picker: picker }}))
+    $(this.displayFieldTarget).trigger('change', picker)
   }
 
   showTimeZoneButtons(event) {
