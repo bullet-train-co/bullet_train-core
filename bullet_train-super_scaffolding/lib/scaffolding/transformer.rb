@@ -319,7 +319,12 @@ class Scaffolding::Transformer
       return false
     end
 
-    if target_file_content.include?(transformed_content)
+    # When Super Scaffolding strong parameters, if an attribute named :project exists for a model `Project`,
+    # the `account_load_and_authorize_resource :project,` code prevents the attribute from being scaffolded
+    # since the transformed content is `:project,`. We bypass that here with this check.
+    content_matches_model_name = transformed_content.gsub(/[:|,]/, "").capitalize == child
+
+    if target_file_content.include?(transformed_content) && !content_matches_model_name
       puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'." unless silence_logs?
 
     else
