@@ -53,7 +53,6 @@ if defined?(Api::V1::ApplicationController)
           :cloudinary_image_value,
           :date_field_value,
           :date_and_time_field_value,
-          :date_and_time_field_value_time_zone,
           :email_field_value,
           :file_field_value,
           :file_field_value_removal,

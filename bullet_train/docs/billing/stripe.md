@@ -14,7 +14,7 @@ First, [purchase Bullet Train Billing for Stripe](https://buy.stripe.com/28o8zg4
 
 You'll need to specify both Ruby gems in your `Gemfile`, since we have to specify a private source for both:
 
-```
+```ruby
 source "https://YOUR_TOKEN_HERE@gem.fury.io/bullettrain" do
   gem "bullet_train-billing"
   gem "bullet_train-billing-stripe"
@@ -37,6 +37,8 @@ cp `bundle show --paths | grep bullet_train-billing-stripe | sort | head -n 1`/d
 ```
 
 Note this is different than how many Rails engines ask you to install migrations. This is intentional, as we want to maintain the original timestamps associated with these migrations.
+
+<aside><small>TODO Let's create a `rake bullet_train:billing:stripe:install` task.</small></aside>
 
 ### 2.4. Run Migrations
 
@@ -62,7 +64,7 @@ Bullet Train defines subscription plans and pricing options in `config/models/bi
 
 Edit `config/application.yml` and add your new Stripe secret key to the file:
 
-```
+```yaml
 STRIPE_SECRET_KEY: sk_0CJw2Iu5wwIKXUDdqphrt2zFZyOCH
 ```
 
@@ -101,7 +103,7 @@ Ensure you've completed the steps from [HTTP Tunneling with ngrok](/docs/tunneli
 
 After creating the webhook endpoint, click "reveal" under the heading "signing secret". Copy the `whsec_...` value into your `config/application.yml` like so:
 
-```
+```yaml
 STRIPE_WEBHOOKS_ENDPOINT_SECRET: whsec_vchvkw3hrLK7SmUiEenExipUcsCgahf9
 ```
 

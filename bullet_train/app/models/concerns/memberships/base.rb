@@ -140,4 +140,6 @@ module Memberships::Base
   def should_receive_notifications?
     invitation.present? || user.present?
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_memberships_base, self
 end

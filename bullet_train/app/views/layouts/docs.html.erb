@@ -109,7 +109,7 @@
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalzation' do |p| %>
+                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalization' do |p| %>
                   <% p.icon do %>
                   <i class="fa-brands fa-js ti ti-world"></i>
                   <% end %>
@@ -150,6 +150,12 @@
                 <%= render 'account/shared/menu/item', url: '/docs/application-options', label: 'Application Options' do |p| %>
                   <% p.icon do %>
                     <i class="fal fa-gear ti ti-settings"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/application-hash.md', label: 'Application Hash' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-brackets-curly ti ti-view-list-alt"></i>
                   <% end %>
                 <% end %>
               <% end %>
@@ -204,12 +210,24 @@
                     <i class="fal fa-swatchbook ti ti-widget"></i>
                   <% end %>
                 <% end %>
+
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/showcase', label: 'Showcase' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-swatchbook ti ti-panel"></i>
+                  <% end %>
+                <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Billing' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/billing/stripe', label: 'Stripe' do |p| %>
                   <% p.icon do %>
                     <i class="fab fa-stripe-s ti ti-money"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/billing/usage', label: 'Usage' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-gauge ti ti-ruler"></i>
                   <% end %>
                 <% end %>
               <% end %>
@@ -286,7 +304,7 @@
             <button
               data-mobile-menu-target="revealable"
               data-action="mobile-menu#close"
-              
+
               data-transition-enter="transition-opacity ease-linear duration-200"
               data-transition-enter-start="opacity-0"
               data-transition-enter-end="opacity-100"
@@ -300,7 +318,7 @@
             </button>
             <div
               data-mobile-menu-target="revealable"
-              
+
               data-transition-enter="transition ease-in-out duration-200 transform"
               data-transition-enter-start="-translate-x-full"
               data-transition-enter-end="translate-x-0"

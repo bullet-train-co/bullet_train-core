@@ -1,6 +1,14 @@
+require "active_support/security_utils"
+
 module InvitationOnlyHelper
   def invited?
-    session[:invitation_key].present? && invitation_keys.include?(session[:invitation_key])
+    return false unless session[:invitation_key].present?
+
+    result = invitation_keys.find do |key|
+      ActiveSupport::SecurityUtils.secure_compare(key, session[:invitation_key])
+    end
+
+    result.present?
   end
 
   def show_sign_up_options?

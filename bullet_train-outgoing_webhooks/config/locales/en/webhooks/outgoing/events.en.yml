@@ -2,44 +2,22 @@ en:
   webhooks/outgoing/events: &events
     label: &label Webhooks Events
     fields: &fields
-      data:
-        _: &data Event Data
-        label: *data
-        heading: *data
+      id:
+        _: &id Event ID
+        label: *id
+        heading: *id
 
-        id:
-          _: &id Event ID
-          label: *id
-          heading: *id
+      team_id:
+        _: &team_id Team ID
+        label: *team_id
+        heading: *team_id
 
-        name:
-          _: &name Event Name
-          label: *name
-          heading: *name
-
-        description:
-          _: &description Event Description
-          label: *description
-          heading: *description
-
-        created_at:
-          _: &created_at DateTime Event was added
-          label: *created_at
-          heading: *created_at
-        updated_at:
-          _: &updated_at DateTime Event was updated
-          label: *updated_at
-          heading: *updated_at
-
-      event_id:
-        _: &event_id Event UUID
-        label: *event_id
-        heading: *event_id
-
-      event_type:
+      event_type_id: &event_type_id
         _: &event_type Event Type
         label: *event_type
         heading: *event_type
+
+      event_type: *event_type_id
 
       subject_id:
         _: &subject_id Subject ID
@@ -70,3 +48,13 @@ en:
         _: &event_type_name Event Type Name
         label: *event_type_name
         heading: *event_type_name
+
+      data:
+        _: &data Object Data
+        label: *data
+        heading: *data
+
+      created_at:
+        _: &created_at Happened At
+        label: *created_at
+        heading: *created_at
