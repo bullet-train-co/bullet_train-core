@@ -34,6 +34,9 @@ en:
       user_profile_photo_id:
         name: &user_profile_photo_id Profile Photo
         label: *user_profile_photo_id
+      user_profile_photo:
+        name: &user_profile_photo Profile Photo
+        label: *user_profile_photo
       role_ids:
         name: &roles Special Privileges
         label: *roles

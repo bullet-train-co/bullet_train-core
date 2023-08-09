@@ -15,7 +15,9 @@ module Api::V1::Users::ControllerBase
         :last_name,
         :time_zone,
         :locale,
-        :profile_photo_id
+        :profile_photo_id, # For Cloudinary
+        :profile_photo,    # For ActiveStorage
+        :profile_photo_removal
       ]
 
       selected_fields = if params.is_a?(BulletTrain::Api::StrongParametersReporter)
