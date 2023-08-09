@@ -33,7 +33,7 @@ other_options ||= {}
       data-<%= stimulus_controller %>-date-format-value="<%= I18n.t('date.formats.date_controller') %>"
       data-<%= stimulus_controller %>-time-format-value="<%= I18n.t('time.formats.date_controller') %>"
       data-<%= stimulus_controller %>-is-am-pm-value="<%= am_pm? %>"
-      data-<%= stimulus_controller %>-picker-locale-value="<%= I18n.t("daterangepicker").deep_transform_keys { |k| k.to_s.camelize(:lower) }.to_json %>"
+      data-<%= stimulus_controller %>-t-value="<%= I18n.t("daterangepicker").deep_transform_keys { |k| k.to_s.camelize(:lower) }.to_json %>"
       data-<%= stimulus_controller %>-default-time-zones-value="<%= "[\"#{current_user.time_zone}\",\"#{current_user.current_team.time_zone}\"]" %>"
       data-<%= stimulus_controller %>-current-time-zone-value="<%= current_user.time_zone ||current_user.current_team.time_zone || "UTC" %>"
       data-<%= stimulus_controller %>-tz-name-to-tz-id-value="<%= tz_name_to_tz_id.to_json %>"

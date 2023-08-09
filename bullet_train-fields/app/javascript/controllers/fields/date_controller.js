@@ -10,11 +10,13 @@ export default class extends Controller {
   static values = {
     includeTime: Boolean,
     defaultTimeZones: Array,
+    cancelButtonLabel: { type: String, default: "Cancel" },
+    applyButtonLabel: { type: String, default: "Apply" },
     dateFormat: String,
     timeFormat: String,
     currentTimeZone: String,
     isAmPm: Boolean,
-    pickerLocale: { type: Object, default: {} },
+    t: { type: Object, default: {} },
     tzNameToTzId: { type: Object, default: {} },
   }
 
@@ -121,10 +123,12 @@ export default class extends Controller {
   }
 
   initPluginInstance() {
-    const t = this.pickerLocaleValue
+    const t = this.tValue
     const isAmPm = this.isAmPmValue
     var localeValues = JSON.parse(JSON.stringify(t))
     localeValues['format'] = this.includeTimeValue ? this.timeFormatValue : this.dateFormatValue
+    localeValues['applyLabel'] = this.applyButtonLabelValue
+    localeValues['cancelLabel'] = this.cancelButtonLabelValue
 
     $(this.displayFieldTarget).daterangepicker({
       singleDatePicker: true,
