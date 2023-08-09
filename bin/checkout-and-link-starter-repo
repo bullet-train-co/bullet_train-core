@@ -51,10 +51,6 @@ do
   echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
 done
 
-echo "-------------------------------------------------------"
-cat Gemfile
-echo "-------------------------------------------------------"
-
 updates="${packages[@]}"
 bundle lock --update $updates
 
