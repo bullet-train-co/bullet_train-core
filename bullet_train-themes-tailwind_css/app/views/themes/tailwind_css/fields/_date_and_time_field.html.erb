@@ -3,16 +3,12 @@ stimulus_controller = 'fields--date'
 
 form ||= current_fields_form
 options ||= {}
-user_tz = ActiveSupport::TimeZone.find_tzinfo(current_user.time_zone).name
-team_tz = ActiveSupport::TimeZone.find_tzinfo(current_user.current_team.time_zone).name
-current_tz_name = current_user.time_zone || current_user.current_team.time_zone || "UTC"
-current_tz =  ActiveSupport::TimeZone.find_tzinfo(current_tz_name).name
 
 # data options
 data_options ||= {}
 data_options[:id] ||= form.field_id(method)
 data_options[:class] = "hidden"
-data_options[:value] = form.object.send(method)&.in_time_zone(current_tz)&.iso8601
+data_options[:value] = form.object.send(method)&.utc&.iso8601
 data_options = data_options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 
 # localized display options
@@ -21,6 +17,11 @@ options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg
 raw_value = form.object.send(method)&.in_time_zone(current_user.time_zone || current_team.time_zone || "UTC")
 options[:value] = raw_value && I18n.l(raw_value, format: :date_and_time_field)
 options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
+
+user_tz = ActiveSupport::TimeZone.find_tzinfo(current_user.time_zone).name
+team_tz = ActiveSupport::TimeZone.find_tzinfo(current_user.current_team.time_zone).name
+current_tz_name = current_user.time_zone || current_user.current_team.time_zone || "UTC"
+current_tz =  ActiveSupport::TimeZone.find_tzinfo(current_tz_name).name
 
 other_options ||= {}
 %>
