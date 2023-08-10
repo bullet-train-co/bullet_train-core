@@ -103,3 +103,10 @@ npx yalc add @bullet-train/$npm_package
 cat package.json
 
 
+# We do this here becausue the  node/install-packages step complains about
+# needing to modify the lock file.
+
+yarn install
+yarn build
+
+
