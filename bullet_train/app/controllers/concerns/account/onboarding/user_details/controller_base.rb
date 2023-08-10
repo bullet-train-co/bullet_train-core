@@ -25,7 +25,7 @@ module Account::Onboarding::UserDetails::ControllerBase
         bypass_sign_in current_user.reload
 
         if @user.details_provided?
-          format.html { redirect_to account_team_path(@user.teams.first), notice: "" }
+          format.html { redirect_to new_account_onboarding_invitation_list_path(@user) }
         else
           format.html {
             flash[:error] = I18n.t("global.notifications.all_fields_required")

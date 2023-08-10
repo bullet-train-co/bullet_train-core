@@ -1,0 +1,10 @@
+en:
+  onboarding: &onboarding
+    invitation_lists:
+      buttons: &buttons
+        next: Next
+      new:
+        header: Invite your team members
+        buttons: *buttons
+  account:
+    onboarding: *onboarding

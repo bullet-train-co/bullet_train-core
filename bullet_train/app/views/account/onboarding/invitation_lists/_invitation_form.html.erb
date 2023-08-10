@@ -1,0 +1,13 @@
+<%= form.fields_for :invitations, Invitation.new do |invitation_form| %>
+  <div class="col-span-3">
+    <%= render 'shared/fields/email_field', form: invitation_form, method: :email, options: {autofocus: true} %>
+  </div>
+
+  <%= invitation_form.fields_for :membership, Membership.new do |membership_form| %>
+    <div class="col-span-3">
+      <%= render 'shared/fields/super_select', form: membership_form, method: :role_ids,
+          # TODO: Get roles from roles.yml.
+          choices: ["Foo", "Bar", "Baz"] %>
+    </div>
+  <% end %>
+<% end %>
