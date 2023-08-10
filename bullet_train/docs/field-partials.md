@@ -139,6 +139,15 @@ Set the data type to `jsonb` whenever passing the `multiple` option to a new att
 > bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
 ```
 
+## Formating `date` and `date_and_time`
+After Super Scaffolding a `date` or `date_and_time` field, you can pass a format for the object like so:
+
+```
+<%= render 'shared/attributes/date', attribute: date_object, format: :short %>
+```
+
+Please refer to the [Ruby on Rails documentation](https://guides.rubyonrails.org/i18n.html#adding-date-time-formats) for more information.
+
 ## Additional Field Partials Documentation
  - [`buttons`](/docs/field-partials/buttons.md)
  - [`super_select`](/docs/field-partials/super-select.md)
