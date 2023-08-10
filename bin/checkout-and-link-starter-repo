@@ -62,6 +62,8 @@ packages=(
 echo "yalc dir ======"
 npx yalc dir
 
+starting_dir=$PWD
+
 for package in "${packages[@]}"
 do
   :
@@ -74,7 +76,7 @@ do
   yarn build
   npx yalc publish
 
-  cd tmp/starter
+  cd $starting_dir
   npx yalc add @bullet-train/$npm_package
 done
 
