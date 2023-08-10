@@ -107,6 +107,5 @@ cat package.json
 # needing to modify the lock file.
 
 yarn install
-yarn build
 
 
