@@ -59,6 +59,10 @@ packages=(
   "bullet_train-sortable"
 )
 
+starting_dir=${pwd}
+
+echo "starting_dir: $starting_dir"
+
 echo "yalc dir ======"
 npx yalc dir
 
@@ -69,12 +73,12 @@ do
   echo "linking package: $package"
   echo "npm package: $npm_package"
 
-  cd ./core/$package
+  cd ../../$package
   yarn install
   yarn build
   npx yalc publish
 
-  cd ../../
+  cd $starting_dir
   npx yalc add @bullet-train/$npm_package
 done
 
@@ -89,12 +93,12 @@ npm_package="fields"
 echo "linking package: $package"
 echo "npm package: $npm_package"
 
-cd ./core/$package
+cd ../../$package
 yarn install
 yarn build
 npx yalc publish
 
-cd ../../
+cd $starting_dir
 npx yalc add @bullet-train/$npm_package
 
 
