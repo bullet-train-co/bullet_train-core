@@ -15,6 +15,6 @@ module Account::DatesHelper
   end
 
   def local_time(timestamp)
-    timestamp&.in_time_zone(current_time_zone)
+    timestamp&.in_time_zone(current_user.time_zone)
   end
 end
