@@ -59,10 +59,6 @@ packages=(
   "bullet_train-sortable"
 )
 
-starting_dir=${pwd}
-
-echo "starting_dir: $starting_dir"
-
 echo "yalc dir ======"
 npx yalc dir
 
@@ -78,7 +74,7 @@ do
   yarn build
   npx yalc publish
 
-  cd $starting_dir
+  cd tmp/starter
   npx yalc add @bullet-train/$npm_package
 done
 
