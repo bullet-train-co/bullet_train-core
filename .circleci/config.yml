@@ -76,6 +76,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run: yarn build:css
+      - run: yarn build
 
       - *wait_for_docker
 
@@ -128,6 +129,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run: yarn build:css
+      - run: yarn build
 
       - *wait_for_docker
 
