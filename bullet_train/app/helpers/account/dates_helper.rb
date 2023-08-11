@@ -1,10 +1,9 @@
 module Account::DatesHelper
   def display_date(timestamp, custom_date_format = nil, format: :default, date_format: nil)
+    return nil unless timestamp
     format = date_format if date_format
 
-    if format && format != :default
-      localize(local_time(timestamp).to_date, format: format) if timestamp
-    else
+    if format && format == :default
       # e.g. October 11, 2018
       if custom_date_format
         local_time(timestamp).strftime(custom_date_format)
@@ -13,26 +12,28 @@ module Account::DatesHelper
       else
         local_time(timestamp).strftime("%B %-d, %Y")
       end
+    else
+      localize(local_time(timestamp).to_date, format: format)
     end
   end
 
   def display_time(timestamp, custom_time_format = nil, format: :default, time_format: nil)
+    return nil unless timestamp
     format = time_format if time_format
 
-    if format && format != :default
-      localize(local_time(timestamp).to_time, format: format) if timestamp
-    else
+    if format && format == :default
       # e.g. 4:22 PM
       local_time(timestamp).strftime(custom_time_format || "%l:%M %p")
+    else
+      localize(local_time(timestamp).to_time, format: format)
     end
   end
 
   def display_date_and_time(timestamp, custom_date_format = nil, custom_time_format = nil, format: :default, date_format: nil, time_format: nil)
+    return nil unless timestamp
     format = "#{date_format} #{time_format}" if date_format && time_format
 
-    if format && format != :default
-      localize(local_time(timestamp).to_datetime, format: format) if timestamp
-    else
+    if format && format == :default
       # e.g. Today at 4:22 PM
       # e.g. Yesterday at 2:12 PM
       # e.g. April 24 at 7:39 AM
@@ -45,6 +46,8 @@ module Account::DatesHelper
       else
         "#{display_date(timestamp, custom_date_format)} at #{display_time(timestamp, custom_time_format)}"
       end
+    else
+      localize(local_time(timestamp).to_datetime, format: format)
     end
   end
 
