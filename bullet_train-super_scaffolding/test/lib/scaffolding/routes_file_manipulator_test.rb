@@ -203,5 +203,25 @@ describe Scaffolding::RoutesFileManipulator do
       manipulator.add_concern_at_line(:activity, line_number)
       assert_equal "resources :books, concerns: [:sortable, :activity] do", manipulator.lines[line_number].squish
     end
+    it "adds a concern to an existing route with a block" do
+      manipulator = subject.new(example_file, "Book", "Team")
+      line_number = manipulator.apply(["account"])
+      # fake the start of a block for this resource
+      line = manipulator.lines[line_number]
+      line = line.squish + " do\n"
+      manipulator.lines[line_number] = line
+      manipulator.add_concern_at_line(:activity, line_number)
+      assert_equal "resources :books, concerns: [:activity] do", manipulator.lines[line_number].squish
+    end
+    it "won't add a concern if it already exists" do
+      manipulator = subject.new(example_file, "Book", "Team")
+      line_number = manipulator.apply(["account"])
+      # fake an existing concern already added to this resource
+      line = manipulator.lines[line_number]
+      line = line.squish + ", concerns: [:sortable]\n"
+      manipulator.lines[line_number] = line
+      manipulator.add_concern_at_line(:sortable, line_number)
+      assert_equal "resources :books, concerns: [:sortable]", manipulator.lines[line_number].squish
+    end
   end
 end

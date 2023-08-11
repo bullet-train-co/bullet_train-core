@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::SuperLoadAndAuthorizeResource::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train-super_load_and_authorize_resource"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-super_load_and_authorize_resource"
   spec.summary = "Bullet Train Super Load And Authorize Resource"
   spec.description = spec.summary
   spec.license = "MIT"

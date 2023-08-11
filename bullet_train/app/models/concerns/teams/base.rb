@@ -4,7 +4,7 @@ module Teams::Base
   included do
     # super scaffolding
     unless scaffolding_things_disabled?
-      has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_updates: true
+      has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_cable_ready_updates: true
     end
 
     # memberships and invitations
@@ -27,10 +27,6 @@ module Teams::Base
       if defined?(Billing::Stripe::Subscription)
         has_many :billing_stripe_subscriptions, class_name: "Billing::Stripe::Subscription", dependent: :destroy, foreign_key: :team_id
       end
-
-      if defined?(Billing::Usage::TeamSupport)
-        include Billing::Usage::TeamSupport
-      end
     end
 
     # validations
@@ -39,9 +35,7 @@ module Teams::Base
   end
 
   def platform_agent_access_tokens
-    # TODO This could be written better.
-    platform_agent_user_ids = memberships.platform_agents.map(&:user_id).compact
-    Platform::AccessToken.joins(:application).where(resource_owner_id: platform_agent_user_ids, application: {team: nil})
+    Platform::AccessToken.joins(:application).where(resource_owner_id: users.where.not(platform_agent_of_id: nil), application: {team: nil})
   end
 
   def admins
@@ -83,4 +77,6 @@ module Teams::Base
       billing_subscriptions.active.empty?
     end
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_teams_base, self
 end

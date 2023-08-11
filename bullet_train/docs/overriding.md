@@ -10,7 +10,7 @@ When it comes to object-oriented classes, wholesale copying framework files into
 
 For this reason, common points of extension like framework-provided models and controllers actually exist as a kind of "stub" in the local repository, but include their base functionality from framework-provided concerns, like so:
 
-```
+```ruby
 class User < ApplicationRecord
   include Users::Base
 

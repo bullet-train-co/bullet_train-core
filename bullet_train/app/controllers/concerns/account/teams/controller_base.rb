@@ -9,7 +9,7 @@ module Account::Teams::ControllerBase
 
     prepend_before_action do
       if params["action"] == "new"
-        current_user.current_team = nil
+        current_user&.current_team = nil
       end
     end
 

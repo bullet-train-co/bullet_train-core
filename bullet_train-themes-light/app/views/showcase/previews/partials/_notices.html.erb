@@ -1,0 +1,6 @@
+<% showcase.sample "Basic" do %>
+  <% flash.now[:notice] = "Success Notice" %>
+  <% flash.now[:error] = "Error Notice" %>
+
+  <%= render "shared/notices" %>
+<% end %>
