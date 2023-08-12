@@ -9,6 +9,7 @@
   <% yield form %>
 <% end %>
 
+<%# To display further options use `showcase.options.x` as options with a block will clear the old options. See `_options.html.erb` for an example. %>
 <% showcase.options do |o| %>
   <% o.required :form, "Reference to the form object", type: "ActionView::Helpers::FormBuilder" %>
   <% o.required :method, "Attribute of the model" %>
