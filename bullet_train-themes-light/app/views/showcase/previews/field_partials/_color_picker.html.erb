@@ -1,23 +1,7 @@
-<% showcase.sample "Basic" do %>
-  <% form_with(model: Scaffolding::CompletelyConcrete::TangibleThing.new, url: '/dummy', local: true, method: :post) do |form| %>
-    <%= render(
-          'shared/fields/color_picker',
-          form: form,
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Basic" do %>
+    <%= render 'shared/fields/color_picker', form: form,
           method: :color_picker_value,
-          options: {color_picker_options: t('scaffolding/completely_concrete/tangible_things.fields.color_picker_value.options')}
-        )
-    %>
+          options: {color_picker_options: t('scaffolding/completely_concrete/tangible_things.fields.color_picker_value.options')} %>
   <% end %>
-<% end %>
-
-<% showcase.options do |o| %>
-  <% o.required :form, "Reference to the form object", type: "ActionView::Helpers::FormBuilder" %>
-  <% o.required :method, "Attribute of the model" %>
-  <% o.optional :options, "Options passed directly to the underlying Rails form field helper.", default: {} %>
-  <% o.optional :other_options, "Additional options for things like hiding labels, displaying specific error messages, etc.", default: {} %>
-  <% o.optional "other_options[:icon]", "Display an icon." %>
-  <% o.optional "other_options[:label]", "Display a specific field label." %>
-  <% o.optional "other_options[:hide_label]", "Hide the field label.", default: false %>
-  <% o.optional "other_options[:help]", "Display a specific help string." %>
-  <% o.optional "other_options[:error]", "Display a specific error string." %>
 <% end %>
