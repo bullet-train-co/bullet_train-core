@@ -50,6 +50,7 @@ npm_packages.each do |package|
   puts "releasing npm package: #{package}"
   Dir.chdir "./#{package}"
 
+  puts `yarn`
   puts `yarn build`
   puts output = `yarn pack`
   npm_file = output.chomp.lines[1].split("/").last.split("\"").first
