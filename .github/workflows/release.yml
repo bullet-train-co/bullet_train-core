@@ -45,7 +45,7 @@ jobs:
       run: gem install bump
 
     - name: "Bump all"
-      run: ./bin/bump-all
+      run: ./bin/bump-all ${{ inputs.versionBump }}
 
     - name: "echo versions"
       run: cat */lib/*/version.rb | grep VERSION
