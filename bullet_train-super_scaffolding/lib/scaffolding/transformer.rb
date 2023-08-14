@@ -738,7 +738,7 @@ class Scaffolding::Transformer
 
         # When rendering a super_select element we need to use `html_options: {multiple: true}`,
         # but all other fields simply use `multiple: true` to work.
-        if attribute.is_multiple
+        if attribute.is_multiple?
           if type == "super_select"
             field_options[:multiple] = "true"
           else
