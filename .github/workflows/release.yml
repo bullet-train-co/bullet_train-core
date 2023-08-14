@@ -35,5 +35,18 @@ jobs:
     - name: "echo ls -al"
       run: ls -al
 
+    - name: "echo versions"
+      run: cat */lib/*/version.rb | grep VERSION
+
+    - name: "Bump all"
+      run: ./bin/bump-all
+
+    - name: "echo versions"
+      run: cat */lib/*/version.rb | grep VERSION
+
+
+
+
+
 
 
