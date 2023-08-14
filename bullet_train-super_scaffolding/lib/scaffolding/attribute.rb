@@ -26,7 +26,7 @@ class Scaffolding::Attribute
     # We mutate `type` within the transformer, so `original_type` allows us
     # to access what the developer originally passed to bin/super-scaffold.
     # (Refer to sql_type_to_field_type_mapping in the transformer)
-    self.original_type = self.type
+    self.original_type = type
 
     # Ensure `options` is a hash.
     self.options = if options
