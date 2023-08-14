@@ -645,7 +645,7 @@ class Scaffolding::Transformer
       end
 
       if sql_type_to_field_type_mapping[attribute.type]
-        type = sql_type_to_field_type_mapping[attribute.type]
+        attribute.type = sql_type_to_field_type_mapping[attribute.type]
       end
 
       cell_attributes = if attribute.type == "boolean"
@@ -739,7 +739,7 @@ class Scaffolding::Transformer
         # When rendering a super_select element we need to use `html_options: {multiple: true}`,
         # but all other fields simply use `multiple: true` to work.
         if attribute.is_multiple?
-          if type == "super_select"
+          if attribute.type == "super_select"
             field_options[:multiple] = "true"
           else
             field_attributes[:multiple] = "true"
@@ -907,7 +907,7 @@ class Scaffolding::Transformer
               yes: "Yes"
               no: "No"
 
-            <% elsif ["buttons", "super_select", "options"].include?(type) && !attribute.is_association? %>
+            <% elsif ["buttons", "super_select", "options"].include?(attribute.type) && !attribute.is_association? %>
 
             options:
               one: One
@@ -1133,7 +1133,7 @@ class Scaffolding::Transformer
         end
 
         # Add `default: false` to boolean migrations.
-        if attribute.type == "boolean"
+        if attribute.is_boolean?
           # Give priority to crud-field migrations if they exist.
           add_column_reference = "add_column :#{class_names_transformer.table_name}, :#{attribute.name}"
           create_table_reference = "create_table :#{class_names_transformer.table_name}"
