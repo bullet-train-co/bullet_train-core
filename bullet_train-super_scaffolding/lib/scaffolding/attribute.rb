@@ -151,6 +151,8 @@ class Scaffolding::Attribute
       "file"
     when "password_field"
       "text"
+    when "number_field"
+      "number"
     else
       raise "Invalid field type: #{type}."
     end
