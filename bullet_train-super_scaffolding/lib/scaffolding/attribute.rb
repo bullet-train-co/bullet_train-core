@@ -11,7 +11,7 @@
 # Here, we determine the association for the `tag_ids` attribute by its suffix, `_ids`.
 
 class Scaffolding::Attribute
-  attr_accessor :name, :type, :options, :scaffolding_type, :attribute_index
+  attr_accessor :name, :type, :options, :scaffolding_type, :attribute_index, :original_type
 
   # @attribute_definition [String]: The raw attribute name, type, and options that are passed to bin/super-scaffold.
   # @scaffoldng_type [Key]: The type of scaffolder we're using to Super Scaffold the model as a whole.
@@ -22,6 +22,11 @@ class Scaffolding::Attribute
     self.type, self.options = get_type_and_options_from(parts)
     self.scaffolding_type = scaffolding_type
     self.attribute_index = attribute_index
+
+    # We mutate `type` within the transformer, so `original_type` allows us
+    # to access what the developer originally passed to bin/super-scaffold.
+    # (Refer to sql_type_to_field_type_mapping in the transformer)
+    self.original_type = self.type
 
     # Ensure `options` is a hash.
     self.options = if options
@@ -67,7 +72,7 @@ class Scaffolding::Attribute
   end
 
   def is_boolean?
-    scaffolding_type == "boolean"
+    original_type == "boolean"
   end
 
   # Sometimes we need all the magic of a `*_id` field, but without the scoping stuff.
