@@ -66,6 +66,10 @@ class Scaffolding::Attribute
     options&.key?(:multiple) || is_has_many?
   end
 
+  def is_boolean?
+    scaffolding_type == "boolean"
+  end
+
   # Sometimes we need all the magic of a `*_id` field, but without the scoping stuff.
   # Possibly only ever used internally by `join-model`.
   def is_unscoped?
