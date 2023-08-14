@@ -54,6 +54,12 @@ jobs:
       run: |
         touch .npmrc
         printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
+        echo "----"
+        cat .npmrc
+        echo "----"
+        pwd
+        echo "----"
+        cat /home/runner/work/_temp/.npmrc
 
     - name: "Test npm api key"
       run: npm whoami
