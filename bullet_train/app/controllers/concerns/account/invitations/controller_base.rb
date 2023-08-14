@@ -93,27 +93,17 @@ module Account::Invitations::ControllerBase
   # POST /invitations
   # POST /invitations.json
   def create
-    # Prevent duplicate invitations if a membership with this email has already been invited.
-    membership = Membership.find_by(user_email: @invitation.email)
-
-    if membership
-      respond_to do |format|
-        format.html { redirect_to new_account_team_invitation_path(@team), alert: I18n.t("invitations.notifications.duplicate", user_email: membership.user_email) }
-        format.json { render json: I18n.t("invitations.notifications.duplicate", user_email: membership.user_email) }
-      end
-    else
-      @invitation.membership.team = current_team
-      # this allows notifications to be sent to a user before they've accepted their invitation.
-      @invitation.membership.user_email = @invitation.email
-      @invitation.from_membership = current_membership
-      respond_to do |format|
-        if @invitation.save
-          format.html { redirect_to account_team_invitations_path(@team), notice: I18n.t("invitations.notifications.created") }
-          format.json { render :show, status: :created, location: [:account, @team, @invitation] }
-        else
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @invitation.errors, status: :unprocessable_entity }
-        end
+    @invitation.membership.team = current_team
+    # this allows notifications to be sent to a user before they've accepted their invitation.
+    @invitation.membership.user_email = @invitation.email
+    @invitation.from_membership = current_membership
+    respond_to do |format|
+      if @invitation.save
+        format.html { redirect_to account_team_invitations_path(@team), notice: I18n.t("invitations.notifications.created") }
+        format.json { render :show, status: :created, location: [:account, @team, @invitation] }
+      else
+        format.html { render :new, status: :unprocessable_entity }
+        format.json { render json: @invitation.errors, status: :unprocessable_entity }
       end
     end
   end
