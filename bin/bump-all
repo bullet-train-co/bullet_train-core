@@ -1,35 +1,31 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-cd bullet_train
-echo bullet_train
-bump $1
-cd .. 
-
-packages=( 
-  "api" 
-  "fields" 
-  "has_uuid"
-  "incoming_webhooks"
-  "integrations"
-  "integrations-stripe"
-  "obfuscates_id"
-  "outgoing_webhooks"
-  "roles"
-  "scope_questions"
-  "scope_validator"
-  "sortable"
-  "super_load_and_authorize_resource"
-  "super_scaffolding"
-  "themes"
-  "themes-light"
-  "themes-tailwind_css"
+packages=%w(
+  bullet_train
+  bullet_train-api
+  bullet_train-fields
+  bullet_train-has_uuid
+  bullet_train-incoming_webhooks
+  bullet_train-integrations
+  bullet_train-integrations-stripe
+  bullet_train-obfuscates_id
+  bullet_train-outgoing_webhooks
+  bullet_train-roles
+  bullet_train-scope_questions
+  bullet_train-scope_validator
+  bullet_train-sortable
+  bullet_train-super_load_and_authorize_resource
+  bullet_train-super_scaffolding
+  bullet_train-themes
+  bullet_train-themes-light
+  bullet_train-themes-tailwind_css
 )
 
-for package in "${packages[@]}"
-do
-  : 
-  cd bullet_train-${package}
-  echo bullet_train-${package}
-  bump $1
-  cd .. 
-done
+packages.each do |package|
+  puts "bumping package: #{package}"
+  Dir.chdir "./#{package}"
+  puts output = `bump patch`
+  version = output.chomp.lines.last.chomp
+  puts "Bumped to #{version}."
+  Dir.chdir ".."
+end
