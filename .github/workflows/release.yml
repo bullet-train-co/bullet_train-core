@@ -71,10 +71,10 @@ jobs:
 
     # TODO: Do we need something like this?
     # Will we need to do it in each subdirectory?
-    #- name: "Setup npm credentials file"
-      #run: |
-        #mkdir -p .npmrc
-        #printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
+    - name: "Setup npm credentials file"
+      run: |
+        mkdir -p .npmrc
+        printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
 
     - name: "Test npm api key"
       run: npm whoami
