@@ -1,5 +1,15 @@
 #!/usr/bin/env ruby
 
+bump_version = ARGV[0]
+
+if !bump_version || !['patch', 'minor', 'major'].include?(bump_version)
+  puts "Invalid or no version bump specified. Should be one of: patch, minor, major"
+  if bump_version
+    puts "Version bump supplied: #{bump_version}"
+  end
+  return
+end
+
 packages=%w(
   bullet_train
   bullet_train-api
@@ -21,6 +31,14 @@ packages=%w(
   bullet_train-themes-tailwind_css
 )
 
+# This is a little hacky. I'm just declaring the variable outside
+# of a loop so that we have access to it after the loop is done.
+# This assumes that all gems in this repo are being bumped at the
+# same time and are being kept in sync. That's a safe assumption
+# based on how we _want_ things to work, but it might not always
+# work exactly how we want. So...
+version = ""
+
 packages.each do |package|
   puts "bumping package: #{package}"
   Dir.chdir "./#{package}"
@@ -29,3 +47,22 @@ packages.each do |package|
   puts "Bumped to #{version}."
   Dir.chdir ".."
 end
+
+puts "the last version = #{version}"
+
+npm_packages=%w(
+  bullet_train
+  bullet_train-fields
+  bullet_train-sortable
+)
+
+npm_packages.each do |package|
+  puts "bumping npm package: #{package}"
+  Dir.chdir "./#{package}"
+  #puts output = `bump patch`
+  #version = output.chomp.lines.last.chomp
+  #puts "Bumped to #{version}."
+  Dir.chdir ".."
+end
+
+
