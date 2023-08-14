@@ -50,23 +50,23 @@ jobs:
 
     # TODO: Do we need something like this?
     # Will we need to do it in each subdirectory?
-    - name: "Setup npm credentials file"
-      run: |
-        touch .npmrc
-        printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
-        echo "----"
-        cat .npmrc
-        echo "----"
-        pwd
-        echo "----"
-        cat /home/runner/work/_temp/.npmrc
+    #- name: "Setup npm credentials file"
+      #run: |
+        #touch .npmrc
+        #printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
+        #echo "----"
+        #cat .npmrc
+        #echo "----"
+        #pwd
+        #echo "----"
+        #cat /home/runner/work/_temp/.npmrc
 
     - name: "Test npm api key"
       run: npm whoami
       env:
         # Make sure to update the secret name
         # if yours isn't named RUBYGEMS_AUTH_TOKEN
-        NPM_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
+        #NPM_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
         NODE_AUTH_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
 
     - name: "echo pwd"
