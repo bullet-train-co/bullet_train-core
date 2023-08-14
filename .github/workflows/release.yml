@@ -34,6 +34,34 @@ jobs:
         node-version: '20.x'
         registry-url: 'https://registry.npmjs.org'
 
+    - name: "Setup ruby gems credentials file"
+      run: |
+        mkdir -p $HOME/.gem
+        touch $HOME/.gem/credentials
+        chmod 0600 $HOME/.gem/credentials
+        printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
+
+    - name: "Test rubygems api key"
+      run: gem signin
+      env:
+        # Make sure to update the secret name
+        # if yours isn't named RUBYGEMS_AUTH_TOKEN
+        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
+
+    # TODO: Do we need something like this?
+    # Will we need to do it in each subdirectory?
+    - name: "Setup npm credentials file"
+      run: |
+        touch .npmrc
+        printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
+
+    - name: "Test npm api key"
+      run: npm whoami
+      env:
+        # Make sure to update the secret name
+        # if yours isn't named RUBYGEMS_AUTH_TOKEN
+        NPM_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
+
     - name: "echo pwd"
       run: pwd
 
@@ -54,34 +82,6 @@ jobs:
 
     - name: "Bump all"
       run: ./bin/bump-all ${{ inputs.versionBump }}
-
-    - name: "Setup ruby gems credentials file"
-      run: |
-        mkdir -p $HOME/.gem
-        touch $HOME/.gem/credentials
-        chmod 0600 $HOME/.gem/credentials
-        printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
-
-    - name: "Test rubygems api key"
-      run: gem signin
-      env:
-        # Make sure to update the secret name
-        # if yours isn't named RUBYGEMS_AUTH_TOKEN
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
-
-    # TODO: Do we need something like this?
-    # Will we need to do it in each subdirectory?
-    - name: "Setup npm credentials file"
-      run: |
-        mkdir -p .npmrc
-        printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
-
-    - name: "Test npm api key"
-      run: npm whoami
-      env:
-        # Make sure to update the secret name
-        # if yours isn't named RUBYGEMS_AUTH_TOKEN
-        NPM_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
 
     - name: "Release all"
       run: ./bin/release-all
