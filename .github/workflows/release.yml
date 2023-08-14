@@ -41,6 +41,9 @@ jobs:
     - name: "echo versions"
       run: cat */lib/*/*/version.rb | grep VERSION
 
+    - name: "echo npm versions"
+      run: cat */package.json | grep version
+
     - name: "Install bump"
       run: gem install bump
 
@@ -53,10 +56,6 @@ jobs:
     - name: "echo versions"
       run: cat */lib/*/*/version.rb | grep VERSION
 
-
-
-
-
-
-
+    - name: "echo npm versions"
+      run: cat */package.json | grep version
 

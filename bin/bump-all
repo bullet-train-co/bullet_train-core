@@ -42,9 +42,11 @@ version = ""
 packages.each do |package|
   puts "bumping package: #{package}"
   Dir.chdir "./#{package}"
+
   puts output = `bump patch`
   version = output.chomp.lines.last.chomp
   puts "Bumped to #{version}."
+
   Dir.chdir ".."
 end
 
@@ -59,9 +61,11 @@ npm_packages=%w(
 npm_packages.each do |package|
   puts "bumping npm package: #{package}"
   Dir.chdir "./#{package}"
-  #puts output = `bump patch`
-  #version = output.chomp.lines.last.chomp
-  #puts "Bumped to #{version}."
+
+  text = File.read("package.json")
+  new_contents = text.gsub(/"version": ".*"/, "\"version\": \"#{version}\"")
+  File.open("package.json", "w") { |file| file.puts new_contents }
+
   Dir.chdir ".."
 end
 
