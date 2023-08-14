@@ -29,6 +29,11 @@ jobs:
         bundler-cache: true
         ruby-version: 3.2
 
+    - name: "echo pwd"
+      run: pwd
+
+    - name: "echo ls -al"
+      run: ls -al
 
 
 
