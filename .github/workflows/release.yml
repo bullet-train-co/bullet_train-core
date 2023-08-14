@@ -22,11 +22,11 @@ jobs:
     runs-on: ubunto-latest
 
     steps:
-    - uses: actions/checkout@v3
+    - uses: "actions/checkout@v3"
 
     - uses: "ruby/setup-ruby@v1"
-        with:
-          bundler-cache: true
+      with:
+        bundler-cache: true
 
 
 
