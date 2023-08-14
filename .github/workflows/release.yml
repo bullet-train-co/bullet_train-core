@@ -69,6 +69,20 @@ jobs:
         # if yours isn't named RUBYGEMS_AUTH_TOKEN
         GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
 
+    # TODO: Do we need something like this?
+    # Will we need to do it in each subdirectory?
+    #- name: "Setup npm credentials file"
+      #run: |
+        #mkdir -p .npmrc
+        #printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
+
+    - name: "Test npm api key"
+      run: npm whoami
+      env:
+        # Make sure to update the secret name
+        # if yours isn't named RUBYGEMS_AUTH_TOKEN
+        NPM_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
+
     - name: "Release all"
       run: ./bin/release-all
 
