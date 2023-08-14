@@ -38,11 +38,21 @@ jobs:
     - name: "echo versions"
       run: cat */lib/*/version.rb | grep VERSION
 
+    - name: "echo versions"
+      run: cat */lib/*/*/version.rb | grep VERSION
+
+    - name: "Install bump"
+      run: gem install bump
+
     - name: "Bump all"
       run: ./bin/bump-all
 
     - name: "echo versions"
       run: cat */lib/*/version.rb | grep VERSION
+
+    - name: "echo versions"
+      run: cat */lib/*/*/version.rb | grep VERSION
+
 
 
 
