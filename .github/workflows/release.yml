@@ -50,6 +50,9 @@ jobs:
     - name: "Bump all"
       run: ./bin/bump-all ${{ inputs.versionBump }}
 
+    - name: "Release all"
+      run: ./bin/release-all
+
     - name: "echo versions"
       run: cat */lib/*/version.rb | grep VERSION
 
