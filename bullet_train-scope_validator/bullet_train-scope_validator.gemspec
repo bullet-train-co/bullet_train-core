@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
 
   spec.summary = "Protect `belongs_to` attributes from ID stuffing."
   spec.description = spec.summary
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train-scope_validator"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-scope_validator"
   spec.license = "MIT"
   spec.required_ruby_version = ">= 2.6.0"
 

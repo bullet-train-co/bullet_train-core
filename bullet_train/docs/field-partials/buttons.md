@@ -4,13 +4,13 @@
 
 If you invoke the field partial in `app/views/account/some_class_name/_form.html.erb` like so:
 
-```
+```erb
 <%= render 'shared/fields/buttons', form: form, method: :enabled %>
 ```
 
 You can define the available buttons in `config/locales/en/some_class_name.en.yml` like so:
 
-```
+```yaml
 en:
   some_class_name:
     fields:
@@ -27,7 +27,7 @@ en:
 
 You can generate the available buttons using a collection of database objects by passing the `options` option like so:
 
-```
+```erb
 <%= render 'shared/fields/buttons', form: form, method: :category_id,
   options: Category.all.map { |category| [category.id, category.label_string] } %>
 ```
@@ -36,7 +36,7 @@ You can generate the available buttons using a collection of database objects by
 
 You can allow multiple buttons to be selected using the `multiple` option, like so:
 
-```
+```erb
 <%= render 'shared/fields/buttons', form: form, method: :category_ids,
   options: Category.all.map { |category| [category.id, category.label_string] }, multiple: true %>
 ```

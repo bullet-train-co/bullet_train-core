@@ -40,10 +40,13 @@ namespace :bullet_train do
       puts "\nOK, paste what you've got for us and hit <Return>!\n".blue
 
       input = $stdin.gets.strip
+      # we only resolve the first line of user input and ignore the rest
       $stdin.getc while $stdin.ready?
 
       # Extract absolute paths from annotated views.
       if input =~ /<!-- BEGIN (.*) -->/
+        input = $1
+      elsif input =~ /<!-- END (.*) -->/
         input = $1
       end
 
@@ -72,7 +75,34 @@ namespace :bullet_train do
     end
   end
 
-  task :develop, [:all_options] => :environment do |t, arguments|
+  desc "Eject files from the Bullet Train's core logic to your application."
+  task :eject, [:type] => :environment do |task, args|
+    if args[:type] == "locales"
+      gem_names = I18n.t("framework_packages").map { |key, value| key.to_s }
+      gem_names.each do |gem|
+        puts "Searching for locales in #{gem}...".blue
+        gem_path = `bundle show #{gem}`.chomp
+        locales = Dir.glob("#{gem_path}/**/config/locales/**/*.yml").reject { |path| path.match?("dummy") }
+        next if locales.empty?
+
+        puts "Found locales. Ejecting to your application...".green
+        locales.each do |locale|
+          relative_path = locale.split("/config/locales").pop
+          path_parts = relative_path.split("/")
+          base_path = path_parts.join("/")
+          FileUtils.mkdir_p("./config/locales#{base_path}") unless Dir.exist?("./config/locales#{base_path}")
+
+          unless File.exist?("config/locales#{relative_path}")
+            puts "Ejecting #{relative_path}..."
+            File.new("config/locales#{relative_path}", "w")
+            `cp #{locale} config/locales#{relative_path}`
+          end
+        end
+      end
+    end
+  end
+
+  task :hack, [:all_options] => :environment do |t, arguments|
     def stream(command, prefix = "  ")
       puts ""
 

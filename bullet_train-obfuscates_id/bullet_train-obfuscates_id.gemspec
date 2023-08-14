@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::ObfuscatesId::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train-obfuscates_id"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-obfuscates_id"
   spec.summary = "Bullet Train Obfuscates ID"
   spec.description = spec.summary
   spec.license = "MIT"

@@ -10,7 +10,7 @@
   </div>
 <% else %>
   <div>
-    <div class="inline-block relative group" data-controller="desktop-menu" data-action="keydown->desktop-menu#hideSubmenu" id="<%= title.underscore %>">
+    <div class="inline-block relative group" data-controller="desktop-menu" data-action="keydown->desktop-menu#hideSubmenu" id="<%= title.parameterize(separator: '_') %>">
       <%= render 'account/shared/menu/heading' do %>
         <%= title %>
 

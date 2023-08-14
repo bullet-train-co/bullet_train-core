@@ -1,0 +1,13 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Single Option" do %>
+    <%= render 'shared/fields/options', form: form, method: :option_value %>
+  <% end %>
+
+  <% showcase.sample "Multiple Option" do %>
+    <%= render 'shared/fields/options', form: form, method: :multiple_option_values, multiple: true, show_select_all_top: true %>
+  <% end %>
+<% end %>
+
+<% showcase.options.optional :multiple, "Whether to select single or multiple values", default: false %>
+<% showcase.options.optional :show_select_all_top, "Whether to put the select all toggle before the options", default: false %>
+<% showcase.options.optional :show_select_all_bottom, "Whether to put the select all toggle after the options", default: false %>

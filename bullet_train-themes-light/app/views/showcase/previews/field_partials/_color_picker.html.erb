@@ -1,0 +1,7 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Basic" do %>
+    <%= render 'shared/fields/color_picker', form: form,
+          method: :color_picker_value,
+          options: {color_picker_options: t('scaffolding/completely_concrete/tangible_things.fields.color_picker_value.options')} %>
+  <% end %>
+<% end %>

@@ -4,9 +4,9 @@
 <% disable_links ||= false %>
 <% link_options ||= {} %>
 
-<% if object.send(attribute).any? %>
+<% if object.public_send(attribute).any? %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy do %>
-    <%= object.send(attribute).map do |child_object| %>
+    <%= object.public_send(attribute).map do |child_object| %>
       <% capture do %>
         <% if disable_links %>
           <%= child_object.label_string %>
