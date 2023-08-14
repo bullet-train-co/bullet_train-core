@@ -648,7 +648,7 @@ class Scaffolding::Transformer
         attribute.type = sql_type_to_field_type_mapping[attribute.type]
       end
 
-      cell_attributes = if attribute.type == "boolean"
+      cell_attributes = if attribute.is_boolean?
         ' class="text-center"'
       end
 
@@ -901,7 +901,7 @@ class Scaffolding::Transformer
             <% end %>
             <% end %>
 
-            <% if attribute.type == "boolean" %>
+            <% if attribute.is_boolean? %>
 
             options:
               yes: "Yes"
@@ -1202,7 +1202,7 @@ class Scaffolding::Transformer
         when "trix_editor"
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
         when "buttons"
-          if attribute.type == "boolean"
+          if attribute.is_boolean?
             scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
           end
         end

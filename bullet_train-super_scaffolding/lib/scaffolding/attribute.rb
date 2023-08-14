@@ -182,7 +182,7 @@ class Scaffolding::Attribute
     when "date_and_time_field"
       "assign_date_and_time(strong_params, :#{name})"
     when "buttons"
-      if type == "boolean"
+      if is_boolean?
         "assign_boolean(strong_params, :#{name})"
       elsif is_multiple?
         "assign_checkboxes(strong_params, :#{name})"
@@ -192,7 +192,7 @@ class Scaffolding::Attribute
         "assign_checkboxes(strong_params, :#{name})"
       end
     when "super_select"
-      if type == "boolean"
+      if is_boolean?
         "assign_boolean(strong_params, :#{name})"
       elsif is_multiple?
         "assign_select_options(strong_params, :#{name})"
