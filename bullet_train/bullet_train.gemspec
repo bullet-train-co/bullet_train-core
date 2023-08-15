@@ -42,6 +42,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-routes"
   spec.add_dependency "devise"
   spec.add_dependency "xxhash"
+  spec.add_dependency "image_processing"
 
   spec.add_dependency "cancancan"
 
@@ -84,7 +85,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "valid_email"
 
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
-  spec.add_dependency "commonmarker", ">= 1.0.0.pre10"
+  spec.add_dependency "commonmarker"
 
   # Extract the body from emails received using action inbox.
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`

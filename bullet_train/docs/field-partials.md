@@ -118,8 +118,8 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 | [`buttons`](/docs/field-partials/buttons.md)           | `string`     | Optionally       | `assign_checkboxes`     |                                                                                   |                                                                                          |
 | `cloudinary_image`                                     | `string`     |                  |                         |                                                                                   |                                                                                          |
 | `color_picker`                                         | `string`     |                  |                         | [pickr](https://simonwep.github.io/pickr/)                                        |                                                                                          |
-| `date_and_time_field`                                  | `datetime`   |                  |                  | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
-| `date_field`                                           | `date`       |                  |                  | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
+| `date_and_time_field`                                  | `datetime`   |                  | `assign_date_and_time`  | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
+| `date_field`                                           | `date`       |                  | `assign_date`           | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
 | `email_field`                                          | `string`     |                  |                         |                                                                                   |                                                                                          |
 | `emoji_field`                                          | `string`     |                  |                         | [Emoji Mart](https://missiveapp.com/open/emoji-mart) | A front-end library which allows users to browse and select emojis with ease. |                                       |
 | [`file_field`](/docs/field-partials/file-field.md)     | `attachment` |                  |                         | [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) |                                                                                          |
@@ -138,6 +138,15 @@ Set the data type to `jsonb` whenever passing the `multiple` option to a new att
 > rails generate model Project team:references multiple_buttons:jsonb
 > bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
 ```
+
+## Formating `date` and `date_and_time`
+After Super Scaffolding a `date` or `date_and_time` field, you can pass a format for the object like so:
+
+```
+<%= render 'shared/attributes/date', attribute: date_object, format: :short %>
+```
+
+Please refer to the [Ruby on Rails documentation](https://guides.rubyonrails.org/i18n.html#adding-date-time-formats) for more information.
 
 ## Additional Field Partials Documentation
  - [`buttons`](/docs/field-partials/buttons.md)

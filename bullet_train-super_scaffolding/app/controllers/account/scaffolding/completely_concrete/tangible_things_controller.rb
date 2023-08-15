@@ -68,6 +68,7 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   def process_params(strong_params)
     # 🚅 skip this section when scaffolding.
     assign_boolean(strong_params, :boolean_button_value)
+    assign_date_and_time(strong_params, :date_and_time_field_value)
     assign_checkboxes(strong_params, :multiple_button_values)
     assign_checkboxes(strong_params, :multiple_option_values)
     assign_select_options(strong_params, :multiple_super_select_values)

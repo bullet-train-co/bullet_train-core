@@ -56,6 +56,10 @@ en:
         _: &profile_photo_id Profile Photo
         label: *profile_photo_id
         heading: *profile_photo_id
+      profile_photo:
+        _: &profile_photo Profile Photo
+        label: *profile_photo
+        heading: *profile_photo
       current_password:
         label: Current Password
       password:
@@ -116,6 +120,7 @@ en:
         last_name: *last_name
         email: *email
         profile_photo_id: *profile_photo_id
+        profile_photo: *profile_photo
         time_zone: *time_zone
         locale: *locale
         # 🚅 super scaffolding will insert new activerecord attributes above this line.

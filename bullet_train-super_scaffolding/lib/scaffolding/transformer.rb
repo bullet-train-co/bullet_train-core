@@ -319,7 +319,12 @@ class Scaffolding::Transformer
       return false
     end
 
-    if target_file_content.include?(transformed_content)
+    # When Super Scaffolding strong parameters, if an attribute named :project exists for a model `Project`,
+    # the `account_load_and_authorize_resource :project,` code prevents the attribute from being scaffolded
+    # since the transformed content is `:project,`. We bypass that here with this check.
+    content_matches_model_name = transformed_content.gsub(/[:|,]/, "").capitalize == child
+
+    if target_file_content.include?(transformed_content) && !content_matches_model_name
       puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'." unless silence_logs?
 
     else
@@ -841,13 +846,21 @@ class Scaffolding::Transformer
           field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
         end
 
+        # When rendering a super_select element we need to use `html_options: {multiple: true}`,
+        # but all other fields simply use `multiple: true` to work.
+        if is_multiple
+          if type == "super_select"
+            field_options[:multiple] = "true"
+          else
+            field_attributes[:multiple] = "true"
+          end
+        end
+
         valid_values = if is_id
           "valid_#{name_without_id.pluralize}"
         elsif is_ids
           "valid_#{collection_name}"
         end
-
-        field_options[:multiple] = "true" if is_multiple
 
         # https://stackoverflow.com/questions/21582464/is-there-a-ruby-hashto-s-equivalent-for-the-new-hash-syntax
         if field_options.any? || options.any?
@@ -1061,6 +1074,10 @@ class Scaffolding::Transformer
         end
 
         special_processing = case type
+        when "date_field"
+          "assign_date(strong_params, :#{name})"
+        when "date_and_time_field"
+          "assign_date_and_time(strong_params, :#{name})"
         when "buttons"
           if boolean_buttons
             "assign_boolean(strong_params, :#{name})"
