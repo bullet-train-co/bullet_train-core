@@ -65,7 +65,7 @@ module Users::Base
   def create_default_team
     # This creates a `Membership`, because `User` `has_many :teams, through: :memberships`
     default_team = teams.create(name: I18n.t("teams.new.default_team_name"), time_zone: time_zone)
-    memberships.find_by(team: default_team).update role_ids: [Role.admin.id]
+    memberships.find_by(team: default_team).update(user_email: email, role_ids: [Role.admin.id])
     update(current_team: default_team)
   end
 

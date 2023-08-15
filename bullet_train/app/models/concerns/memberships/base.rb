@@ -16,6 +16,8 @@ module Memberships::Base
 
     has_many :scaffolding_absolutely_abstract_creative_concepts_collaborators, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator", dependent: :destroy
 
+    validates :user_email, uniqueness: { scope: :team }
+
     after_destroy do
       # if we're destroying a user's membership to the team they have set as
       # current, then we need to remove that so they don't get an error.
