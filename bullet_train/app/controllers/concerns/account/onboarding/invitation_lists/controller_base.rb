@@ -25,13 +25,13 @@ module Account::Onboarding::InvitationLists::ControllerBase
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def strong_params
-    params.permit(:invitation_list).require(
-      :team,
-      :creator_membership_id,
+  def invitation_list_params
+    params.permit(:account_onboarding_invitation_list).require(
       invitations_attributes: [
         :email,
-        # TODO: Membership
+        membership_attributes: [
+          role_ids: []
+        ]
       ]
     )
   end
