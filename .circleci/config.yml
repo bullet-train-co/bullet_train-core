@@ -29,7 +29,7 @@ jobs:
     steps:
       - checkout
       - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
+          firefox-version: "112.0"
 
       - ruby/install-deps:
           clean-bundle: true
@@ -62,7 +62,7 @@ jobs:
       - checkout:
           path: ~/project
       - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
+          firefox-version: "112.0"
 
       # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
       # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
@@ -76,6 +76,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run: yarn build:css
+      - run: yarn build
 
       - *wait_for_docker
 
@@ -114,7 +115,7 @@ jobs:
       - checkout:
           path: ~/project
       - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
+          firefox-version: "112.0"
 
       # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
       # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
@@ -128,6 +129,7 @@ jobs:
       - node/install-packages:
           pkg-manager: yarn
       - run: yarn build:css
+      - run: yarn build
 
       - *wait_for_docker
 
@@ -139,6 +141,9 @@ jobs:
       - run:
           name: 'Run Super Scaffolding Test'
           command: "bundle exec rails test test/system/super_scaffolding_test.rb"
+      - run:
+          name: 'Run Super Scaffolding Partial Test'
+          command: 'bundle exec rails test test/system/super_scaffolding_partial_test.rb'
 
 workflows:
   version: 2

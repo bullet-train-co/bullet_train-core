@@ -1,15 +1,21 @@
 module BulletTrain
   class Configuration
+    include Singleton
     attr_accessor :strong_passwords
 
-    @default = Configuration.new
+    @@config = nil
 
     def initialize
-      self.strong_passwords = true
+      @@config = self
+
+      # Default values
+      @strong_passwords = true
     end
 
     class << self
-      attr_reader :default
+      def strong_passwords
+        @@config&.strong_passwords
+      end
     end
   end
 end

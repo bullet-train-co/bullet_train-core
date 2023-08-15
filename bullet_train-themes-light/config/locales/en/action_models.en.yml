@@ -1,0 +1,9 @@
+en:
+  action_models:
+    processed: Processed %{at}
+    processed_of: Processed %{performed_count} of %{target_count} %{at}
+    awaiting: Awaiting approval
+    scheduled_for: Scheduled for %{for}
+    processing_of: Processing %{performed_count} of %{target_count}
+    preparing_to_process: Preparing to process
+    preparing_to_process_of: Preparing to process %{performed_count} of %{target_count}

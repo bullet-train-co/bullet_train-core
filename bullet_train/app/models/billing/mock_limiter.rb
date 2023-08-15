@@ -10,7 +10,7 @@ class Billing::MockLimiter
     true
   end
 
-  def exhausted?(model)
+  def exhausted?(model, enforcement = "hard")
     false
   end
 end

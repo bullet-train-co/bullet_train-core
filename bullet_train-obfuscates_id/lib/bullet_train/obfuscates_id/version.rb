@@ -1,5 +1,5 @@
 module BulletTrain
   module ObfuscatesId
-    VERSION = "1.2.26"
+    VERSION = "1.3.0"
   end
 end

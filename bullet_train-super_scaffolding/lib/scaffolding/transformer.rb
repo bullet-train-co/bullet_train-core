@@ -76,9 +76,7 @@ class Scaffolding::Transformer
   end
 
   def transform_string(string)
-    [
-
-      # full class name plural.
+    full_class_name = [
       "Scaffolding::AbsolutelyAbstract::CreativeConcepts",
       "Scaffolding::CompletelyConcrete::TangibleThings",
       "ScaffoldingAbsolutelyAbstractCreativeConcepts",
@@ -94,41 +92,19 @@ class Scaffolding::Transformer
       "scaffolding_completely_concrete_tangible_things",
       "scaffolding-absolutely-abstract-creative-concepts",
       "scaffolding-completely-concrete-tangible-things",
+      "scaffolding.completely_concrete.tangible_things"
+    ]
 
-      # full class name singular.
-      "Scaffolding::AbsolutelyAbstract::CreativeConcept",
-      "Scaffolding::CompletelyConcrete::TangibleThing",
-      "ScaffoldingAbsolutelyAbstractCreativeConcept",
-      "ScaffoldingCompletelyConcreteTangibleThing",
-      "Scaffolding Absolutely Abstract Creative Concept",
-      "Scaffolding Completely Concrete Tangible Thing",
-      "Scaffolding/Absolutely Abstract/Creative Concept",
-      "Scaffolding/Completely Concrete/Tangible Thing",
-      "scaffolding/absolutely_abstract/creative_concept",
-      "scaffolding/completely_concrete/tangible_thing",
-      "scaffolding_absolutely_abstract_creative_concept",
-      "scaffolding_completely_concrete_tangible_thing",
-      "scaffolding-absolutely-abstract-creative-concept",
-      "scaffolding-completely-concrete-tangible-thing",
-      "scaffolding.completely_concrete.tangible_things",
-
-      # class name in context plural.
+    class_name_with_context = [
       "absolutely_abstract_creative_concepts",
       "completely_concrete_tangible_things",
       "absolutely_abstract/creative_concepts",
       "completely_concrete/tangible_things",
       "absolutely-abstract-creative-concepts",
       "completely-concrete-tangible-things",
+    ]
 
-      # class name in context singular.
-      "absolutely_abstract_creative_concept",
-      "completely_concrete_tangible_thing",
-      "absolutely_abstract/creative_concept",
-      "completely_concrete/tangible_thing",
-      "absolutely-abstract-creative-concept",
-      "completely-concrete-tangible-thing",
-
-      # just class name singular.
+    class_name = [
       "creative_concepts",
       "tangible_things",
       "creative-concepts",
@@ -139,24 +115,14 @@ class Scaffolding::Transformer
       "Tangible things",
       "creative concepts",
       "tangible things",
+    ]
 
-      # just class name plural.
-      "creative_concept",
-      "tangible_thing",
-      "creative-concept",
-      "tangible-thing",
-      "Creative Concept",
-      "Tangible Thing",
-      "Creative concept",
-      "Tangible thing",
-      "creative concept",
-      "tangible thing",
-
-      # Account namespace vs. others.
-      ":account",
-      "/account/"
-
-    ].each do |needle|
+    (
+      full_class_name + full_class_name.map(&:singularize) +
+      class_name_with_context + class_name_with_context.map(&:singularize) +
+      class_name + class_name.map(&:singularize) +
+      [":account", "/account/"] # Account namespace vs. others.
+    ).each do |needle|
       string = string.gsub(needle, encode_double_replacement_fix(class_names_transformer.replacement_for(needle)))
     end
 
@@ -175,9 +141,6 @@ class Scaffolding::Transformer
 
   def resolve_template_path(file)
     # Figure out the actual location of the file.
-    # Originally all the potential source files were in the repository alongside the application.
-    # Now the files could be provided by an included Ruby gem, so we allow those Ruby gems to register their base
-    # path and then we check them in order to see which template we should use.
     BulletTrain::SuperScaffolding.template_paths.map do |base_path|
       base_path = Pathname.new(base_path)
       resolved_path = base_path.join(file).to_s
@@ -356,7 +319,12 @@ class Scaffolding::Transformer
       return false
     end
 
-    if target_file_content.include?(transformed_content)
+    # When Super Scaffolding strong parameters, if an attribute named :project exists for a model `Project`,
+    # the `account_load_and_authorize_resource :project,` code prevents the attribute from being scaffolded
+    # since the transformed content is `:project,`. We bypass that here with this check.
+    content_matches_model_name = transformed_content.gsub(/[:|,]/, "").capitalize == child
+
+    if target_file_content.include?(transformed_content) && !content_matches_model_name
       puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'." unless silence_logs?
 
     else
@@ -878,8 +846,8 @@ class Scaffolding::Transformer
           field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{name}.options')"
         end
 
-        # TODO: This feels incorrect.
-        # Should we adjust the partials to only use `{multiple: true}` or `html_options: {multiple_true}`?
+        # When rendering a super_select element we need to use `html_options: {multiple: true}`,
+        # but all other fields simply use `multiple: true` to work.
         if is_multiple
           if type == "super_select"
             field_options[:multiple] = "true"
@@ -1264,7 +1232,6 @@ class Scaffolding::Transformer
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{name_without_id}/)
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute_options[:class_name].tableize.tr("/", "_")}\"}", /add_reference :#{child.underscore.pluralize.tr("/", "_")}, :#{name_without_id}/)
 
-              # TODO also solve the 60 character long index limitation.
               modified_migration = true
             else
               add_additional_step :yellow, "We would have expected there to be a migration that defined `#{expected_reference}`, but we didn't find one. Where was the reference added to this model? It's _probably_ the original creation of the table. Either way, you need to rollback, change \"foreign_key: true\" to \"foreign_key: {to_table: '#{attribute_options[:class_name].tableize.tr("/", "_")}'}\" for this column, and re-run the migration."
@@ -1300,14 +1267,17 @@ class Scaffolding::Transformer
 
         # Add `default: false` to boolean migrations.
         if boolean_buttons
-          confirmation_reference = "create_table :#{class_names_transformer.table_name}"
-          confirmation_migration_file_name = `grep "#{confirmation_reference}" db/migrate/*`.split(":").first
+          # Give priority to crud-field migrations if they exist.
+          add_column_reference = "add_column :#{class_names_transformer.table_name}, :#{name}"
+          create_table_reference = "create_table :#{class_names_transformer.table_name}"
+          confirmation_migration_file_name = `grep "#{add_column_reference}" db/migrate/*`.split(":").first
+          confirmation_migration_file_name ||= `grep "#{create_table_reference}" db/migrate/*`.split(":").first
 
           old_line, new_line = nil
           File.open(confirmation_migration_file_name) do |migration_file|
             old_lines = migration_file.readlines
             old_lines.each do |line|
-              target_attribute = line.match?(/\s*t\.boolean :#{name}/)
+              target_attribute = line.match?(/:#{class_names_transformer.table_name}, :#{name}, :boolean/) || line.match?(/\s*t\.boolean :#{name}/)
               if target_attribute
                 old_line = line
                 new_line = "#{old_line.chomp}, default: false\n"
@@ -1532,6 +1502,8 @@ class Scaffolding::Transformer
 
     # add sortability.
     if cli_options["sortable"]
+      scaffold_replace_line_in_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", transform_string("<tbody data-controller=\"sortable\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"), "<tbody>")
+
       unless cli_options["skip-model"]
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "def collection\n  absolutely_abstract_creative_concept.completely_concrete_tangible_things\nend\n\n", METHODS_HOOK, prepend: true)
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "include Sortable\n", CONCERNS_HOOK, prepend: true)
@@ -1541,10 +1513,6 @@ class Scaffolding::Transformer
         parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
         new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
         Scaffolding::FileManipulator.write(migration, new_lines)
-      end
-
-      unless cli_options["skip-table"]
-        scaffold_replace_line_in_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", transform_string("<tbody data-controller=\"sortable\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"), "<tbody>")
       end
 
       unless cli_options["skip-controller"]
@@ -1642,7 +1610,9 @@ class Scaffolding::Transformer
           icon_name = cli_options["sidebar"]
         else
           puts ""
-          puts "Hey, models that are scoped directly off of a Team (or nothing) are eligible to be added to the sidebar."
+          # TODO: Update this help text letting developers know they can Super Scaffold
+          # models without a parent after the `--skip-parent` logic is implemented.
+          puts "Hey, models that are scoped directly off of a Team are eligible to be added to the navbar."
           puts "Do you want to add this resource to the sidebar menu? (y/N)"
           response = $stdin.gets.chomp
           if response.downcase[0] == "y"
@@ -1693,7 +1663,7 @@ class Scaffolding::Transformer
       end
     end
 
-    add_additional_step :yellow, transform_string("If you would like the table view you've just generated to reactively update when a Tangible Thing is updated on the server, please edit `app/models/scaffolding/absolutely_abstract/creative_concept.rb`, locate the `has_many :completely_concrete_tangible_things`, and add `enable_updates: true` to it.")
+    add_additional_step :yellow, transform_string("If you would like the table view you've just generated to reactively update when a Tangible Thing is updated on the server, please edit `app/models/scaffolding/absolutely_abstract/creative_concept.rb`, locate the `has_many :completely_concrete_tangible_things`, and add `enable_cable_ready_updates: true` to it.")
 
     restart_server unless ENV["CI"].present?
   end

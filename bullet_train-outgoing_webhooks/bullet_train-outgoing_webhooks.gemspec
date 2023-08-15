@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::OutgoingWebhooks::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train-outgoing_webhooks"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-outgoing_webhooks"
   spec.summary = "Allow users of your Rails application to subscribe and receive webhooks when activity takes place in your application."
   spec.description = spec.summary
   spec.license = "MIT"
