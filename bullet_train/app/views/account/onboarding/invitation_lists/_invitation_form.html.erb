@@ -6,8 +6,7 @@
   <%= invitation_form.fields_for :membership, Membership.new do |membership_form| %>
     <div class="col-span-3">
       <%= render 'shared/fields/super_select', form: membership_form, method: :role_ids,
-          # TODO: Get roles from roles.yml.
-          choices: ["Foo", "Bar", "Baz"] %>
+          choices: Role.all.map {|role| role.attributes[:key].capitalize} %>
     </div>
   <% end %>
 <% end %>
