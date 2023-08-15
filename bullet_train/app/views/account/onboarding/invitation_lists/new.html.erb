@@ -19,6 +19,7 @@
 
         <div class="buttons">
           <%= f.submit t('.buttons.next'), class: first_button_primary %>
+          <%= link_to t('.buttons.skip'), main_app.account_teams_path, class: first_button_primary %>
           <% if other_teams.any? %>
             <%= link_to t('global.buttons.back'), main_app.account_teams_path, class: first_button_primary %>
           <% else %>

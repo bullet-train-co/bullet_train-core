@@ -3,6 +3,7 @@ en:
     invitation_lists:
       buttons: &buttons
         next: Next
+        skip: Skip
       new:
         header: Invite your team members
         buttons: *buttons
