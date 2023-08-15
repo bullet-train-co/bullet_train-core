@@ -13,7 +13,7 @@ module Account::Onboarding::InvitationLists::ControllerBase
   end
 
   def new
-    @invitation_list = Account::Onboarding::InvitationList.new
+    @account_onboarding_invitation_list = Account::Onboarding::InvitationList.new
   end
 
   # We don't actually create a InvitationList record here,
@@ -25,8 +25,10 @@ module Account::Onboarding::InvitationLists::ControllerBase
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.
-  def invitation_list_params
-    params.permit(:account_onboarding_invitation_list).require(
+  def account_onboarding_invitation_list_params
+    params.(:account_onboarding_invitation_list).require(
+      :team_id,
+      :creator_membership_id,
       invitations_attributes: [
         :email,
         membership_attributes: [
