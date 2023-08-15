@@ -26,7 +26,7 @@ module Account::Onboarding::InvitationLists::ControllerBase
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def account_onboarding_invitation_list_params
-    params.(:account_onboarding_invitation_list).require(
+    params.permit(:account_onboarding_invitation_list).require(
       :team_id,
       :creator_membership_id,
       invitations_attributes: [
