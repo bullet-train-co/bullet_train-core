@@ -61,7 +61,7 @@ jobs:
       uses: peter-evans/create-pull-request@v5
       with:
         commit-message: "Version bump: ${{ inputs.versionBump }} - ${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}"
-        branch: example-patches
+        branch: "version-bump/${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}"
         delete-branch: true
         title: "Version bump: ${{ inputs.versionBump }} - ${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}"
         body: |
