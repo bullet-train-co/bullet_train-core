@@ -4,7 +4,7 @@ class Scaffolding::AbsolutelyAbstract::CreativeConcept < ApplicationRecord
   belongs_to :team
   # 🚅 add belongs_to associations above.
 
-  # TODO: We shouldn't have to explicitly set the order to :asc here, so we need to find out why these records
+  # TODO: We shouldn't have to explicitly set the order here, so we need to find out why these records
   # are being returned in descending order when calling @creative_concept.completely_concrete_tangible_things.
   has_many :completely_concrete_tangible_things, -> { order(:id) }, class_name: "Scaffolding::CompletelyConcrete::TangibleThing", foreign_key: :absolutely_abstract_creative_concept_id, dependent: :destroy
   has_many :collaborators, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator", dependent: :destroy, foreign_key: :creative_concept_id
