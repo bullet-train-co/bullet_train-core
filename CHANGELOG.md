@@ -1,4 +1,5 @@
 ### Next
+### v1.3.2 - 2023-08-16
 ### v1.3.1 - 2023-08-16
 
 * Contain commonmarker upgrade to just Bullet Train for now https://github.com/bullet-train-co/bullet_train-core/pull/398
