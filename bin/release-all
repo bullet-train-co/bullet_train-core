@@ -1,5 +1,10 @@
 #!/usr/bin/env ruby
 
+puts output = `bump patch`
+version = output.chomp.lines.last.chomp
+
+"Releasing version: #{version}"
+
 packages=%w(
   bullet_train
   bullet_train-api

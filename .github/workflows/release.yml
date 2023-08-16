@@ -70,6 +70,9 @@ jobs:
     - name: "echo npm versions"
       run: cat */package.json | grep version
 
+    - name: "Install bump"
+      run: gem install bump
+
     - name: "Release all"
       run: ./bin/release-all
 
