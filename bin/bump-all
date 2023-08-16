@@ -69,4 +69,8 @@ npm_packages.each do |package|
   Dir.chdir ".."
 end
 
-
+# This block allows us to pass the new bump version out to the workflow.
+github_output_file = ENV['GITHUB_OUTPUT']
+if github_output_file
+  IO.write(github_output_file, "NEW_VERSION_NUMBER=#{version}\n", mode: 'a')
+end
