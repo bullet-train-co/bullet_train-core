@@ -30,8 +30,7 @@ packages.each do |package|
   gem_file = output.chomp.lines.last.chomp.split.last
   puts "Built gem file: #{gem_file}"
 
-  # TODO Enable this after things are looking pretty good
-  #gem push *.gem
+  puts output = `gem push #{gem_file}`
 
   File.delete(gem_file)
 
@@ -54,12 +53,11 @@ npm_packages.each do |package|
   puts `yarn build`
   puts output = `yarn pack`
   npm_file = output.chomp.lines[1].split("/").last.split("\"").first
-  puts npm_file
+  puts "Built npm file: #{npm_file}"
 
-  # TODO Enable this after things are looking good
-  #yarn publish #{npm_file} --new-version #{version}
+  puts output = `yarn publish #{npm_file} --new-version #{version}`
 
-  #File.delete(npm_file)
+  File.delete(npm_file)
 
   Dir.chdir ".."
 end
