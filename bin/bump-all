@@ -43,7 +43,7 @@ packages.each do |package|
   puts "bumping package: #{package}"
   Dir.chdir "./#{package}"
 
-  puts output = `bump patch`
+  puts output = `bump #{bump_version}`
   version = output.chomp.lines.last.chomp
   puts "Bumped to #{version}."
 
