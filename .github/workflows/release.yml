@@ -75,6 +75,11 @@ jobs:
 
     - name: "Release all"
       run: ./bin/release-all
+      env:
+        # Make sure to update the secret name
+        # if yours isn't named RUBYGEMS_AUTH_TOKEN
+        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
+        NODE_AUTH_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
 
     - name: "echo versions"
       run: cat */lib/*/version.rb | grep VERSION
