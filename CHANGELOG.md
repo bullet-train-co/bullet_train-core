@@ -1,4 +1,5 @@
 ### Next
+### v1.3.1 - 2023-08-16
 
 * https://github.com/bullet-train-co/bullet_train-core/pull/398
 * https://github.com/bullet-train-co/bullet_train-core/pull/396
