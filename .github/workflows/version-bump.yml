@@ -1,0 +1,66 @@
+name: "Create Version Bump PR For Ruby Gems & NPM Packages"
+
+on:
+  workflow_dispatch:
+    inputs:
+      versionBump:
+        description: 'Version Bump'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+        - patch
+        - minor
+        - major
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: "actions/checkout@v3"
+
+    - uses: "ruby/setup-ruby@v1"
+      with:
+        bundler-cache: true
+        ruby-version: 3.2
+
+    - uses: "actions/setup-node@v3"
+      with:
+        node-version: '20.x'
+        registry-url: 'https://registry.npmjs.org'
+
+    - name: "echo pwd"
+      run: pwd
+
+    - name: "echo ls -al"
+      run: ls -al
+
+    - name: "echo versions"
+      run: cat */lib/*/version.rb | grep VERSION
+
+    - name: "echo versions"
+      run: cat */lib/*/*/version.rb | grep VERSION
+
+    - name: "echo npm versions"
+      run: cat */package.json | grep version
+
+    - name: "Install bump"
+      run: gem install bump
+
+    - name: "Bump all"
+      run: ./bin/bump-all ${{ inputs.versionBump }}
+
+    - name: "echo versions"
+      run: cat */lib/*/version.rb | grep VERSION
+
+    - name: "echo versions"
+      run: cat */lib/*/*/version.rb | grep VERSION
+
+    - name: "echo npm versions"
+      run: cat */package.json | grep version
+

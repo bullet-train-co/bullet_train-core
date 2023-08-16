@@ -13,10 +13,6 @@ on:
         - minor
         - major
 
-permissions:
-  contents: write
-  pull-requests: write
-
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -83,12 +79,6 @@ jobs:
 
     - name: "echo npm versions"
       run: cat */package.json | grep version
-
-    - name: "Install bump"
-      run: gem install bump
-
-    - name: "Bump all"
-      run: ./bin/bump-all ${{ inputs.versionBump }}
 
     - name: "Release all"
       run: ./bin/release-all
