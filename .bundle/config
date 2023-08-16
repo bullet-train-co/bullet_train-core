@@ -1,0 +1,4 @@
+---
+BUNDLE_PATH: "/home/runner/work/bullet_train-core/bullet_train-core/vendor/bundle"
+BUNDLE_DEPLOYMENT: "true"
+BUNDLE_JOBS: "4"
