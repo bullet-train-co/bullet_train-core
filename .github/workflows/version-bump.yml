@@ -34,21 +34,6 @@ jobs:
         node-version: '20.x'
         registry-url: 'https://registry.npmjs.org'
 
-    - name: "echo pwd"
-      run: pwd
-
-    - name: "echo ls -al"
-      run: ls -al
-
-    - name: "echo versions"
-      run: cat */lib/*/version.rb | grep VERSION
-
-    - name: "echo versions"
-      run: cat */lib/*/*/version.rb | grep VERSION
-
-    - name: "echo npm versions"
-      run: cat */package.json | grep version
-
     - name: "Install bump"
       run: gem install bump
 
@@ -77,14 +62,4 @@ jobs:
           [1]: https://github.com/peter-evans/create-pull-request
         labels: |
           version bump
-        # reviewers: peter-evans
-
-    - name: "echo versions"
-      run: cat */lib/*/version.rb | grep VERSION
-
-    - name: "echo versions"
-      run: cat */lib/*/*/version.rb | grep VERSION
-
-    - name: "echo npm versions"
-      run: cat */package.json | grep version
-
+        #reviewers: andreculver,jagthedrummer,pascallaliberte
