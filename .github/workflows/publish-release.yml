@@ -1,4 +1,4 @@
-name: Publish relesae after tagging
+name: Publish release after tagging
 
 on:
   push:
