@@ -36,7 +36,7 @@ packages=%w(
 # `bump` happy.
 
 puts "bumping core & CHANGELOG"
-puts output = `bump #{bump_version} --changelog`
+puts output = `bump #{bump_version} --changelog --tag`
 version = output.chomp.lines.last.chomp
 puts "Bumped to #{version}."
 
