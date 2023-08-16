@@ -2,16 +2,6 @@ name: "Release Ruby Gems & NPM Packages"
 
 on:
   workflow_dispatch:
-    inputs:
-      versionBump:
-        description: 'Version Bump'
-        required: true
-        default: 'patch'
-        type: choice
-        options:
-        - patch
-        - minor
-        - major
 
 jobs:
   release:
@@ -37,58 +27,11 @@ jobs:
         chmod 0600 $HOME/.gem/credentials
         printf -- "---\n:rubygems_api_key: ${GEM_HOST_API_KEY}\n" > $HOME/.gem/credentials
 
-    - name: "Test rubygems api key"
-      run: gem signin
-      env:
-        # Make sure to update the secret name
-        # if yours isn't named RUBYGEMS_AUTH_TOKEN
-        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
-
-    # TODO: Do we need something like this?
-    # Will we need to do it in each subdirectory?
-    #- name: "Setup npm credentials file"
-      #run: |
-        #touch .npmrc
-        #printf -- "//registry.npmjs.org/:${NPM_TOKEN}\n" > .npmrc
-        #echo "----"
-        #cat .npmrc
-        #echo "----"
-        #pwd
-        #echo "----"
-        #cat /home/runner/work/_temp/.npmrc
-
-    - name: "Test npm api key"
-      run: npm whoami
-      env:
-        # Make sure to update the secret name
-        # if yours isn't named RUBYGEMS_AUTH_TOKEN
-        #NPM_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
-        NODE_AUTH_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"
-
-    - name: "echo pwd"
-      run: pwd
-
-    - name: "echo ls -al"
-      run: ls -al
-
-    - name: "echo versions"
-      run: cat */lib/*/version.rb | grep VERSION
-
-    - name: "echo versions"
-      run: cat */lib/*/*/version.rb | grep VERSION
-
-    - name: "echo npm versions"
-      run: cat */package.json | grep version
+    - name: "Install bump"
+      run: gem install bump
 
     - name: "Release all"
       run: ./bin/release-all
-
-    - name: "echo versions"
-      run: cat */lib/*/version.rb | grep VERSION
-
-    - name: "echo versions"
-      run: cat */lib/*/*/version.rb | grep VERSION
-
-    - name: "echo npm versions"
-      run: cat */package.json | grep version
-
+      env:
+        GEM_HOST_API_KEY: "${{secrets.RUBYGEMS_AUTH_TOKEN}}"
+        NODE_AUTH_TOKEN: "${{secrets.NPM_AUTH_TOKEN}}"

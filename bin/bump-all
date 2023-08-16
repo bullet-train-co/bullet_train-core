@@ -31,22 +31,20 @@ packages=%w(
   bullet_train-themes-tailwind_css
 )
 
-# This is a little hacky. I'm just declaring the variable outside
-# of a loop so that we have access to it after the loop is done.
-# This assumes that all gems in this repo are being bumped at the
-# same time and are being kept in sync. That's a safe assumption
-# based on how we _want_ things to work, but it might not always
-# work exactly how we want. So...
-version = ""
+# First we run `bump` at the top level, mainly to have it update
+# the CHANGELOG. We have a fake version file in `lib`, just to keep
+# `bump` happy.
 
+puts "bumping core & CHANGELOG"
+puts output = `bump #{bump_version} --changelog --tag`
+version = output.chomp.lines.last.chomp
+puts "Bumped to #{version}."
+
+# Now we bump each of the sub gems
 packages.each do |package|
   puts "bumping package: #{package}"
   Dir.chdir "./#{package}"
-
-  puts output = `bump patch`
-  version = output.chomp.lines.last.chomp
-  puts "Bumped to #{version}."
-
+  puts output = `bump #{bump_version}`
   Dir.chdir ".."
 end
 
@@ -58,6 +56,7 @@ npm_packages=%w(
   bullet_train-sortable
 )
 
+# And now we munge the package.json files
 npm_packages.each do |package|
   puts "bumping npm package: #{package}"
   Dir.chdir "./#{package}"
@@ -69,4 +68,8 @@ npm_packages.each do |package|
   Dir.chdir ".."
 end
 
-
+# This block allows us to pass the new bump version out to the workflow.
+github_output_file = ENV['GITHUB_OUTPUT']
+if github_output_file
+  IO.write(github_output_file, "NEW_VERSION_NUMBER=#{version}\n", mode: 'a')
+end
