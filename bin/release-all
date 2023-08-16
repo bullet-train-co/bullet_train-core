@@ -1,37 +1,67 @@
-#!/usr/bin/env bash
+#!/usr/bin/env ruby
 
-cd bullet_train
-gem build
-gem push *.gem
-rm *.gem
-cd ..
-
-packages=( 
-  "api" 
-  "fields" 
-  "has_uuid"
-  "incoming_webhooks"
-  "integrations"
-  "integrations-stripe"
-  "obfuscates_id"
-  "outgoing_webhooks"
-  "roles"
-  "scope_questions"
-  "scope_validator"
-  "sortable"
-  "super_load_and_authorize_resource"
-  "super_scaffolding"
-  "themes"
-  "themes-light"
-  "themes-tailwind_css"
+packages=%w(
+  bullet_train
+  bullet_train-api
+  bullet_train-fields
+  bullet_train-has_uuid
+  bullet_train-incoming_webhooks
+  bullet_train-integrations
+  bullet_train-integrations-stripe
+  bullet_train-obfuscates_id
+  bullet_train-outgoing_webhooks
+  bullet_train-roles
+  bullet_train-scope_questions
+  bullet_train-scope_validator
+  bullet_train-sortable
+  bullet_train-super_load_and_authorize_resource
+  bullet_train-super_scaffolding
+  bullet_train-themes
+  bullet_train-themes-light
+  bullet_train-themes-tailwind_css
 )
 
-for package in "${packages[@]}"
-do
-  : 
-  cd bullet_train-${package}
-  gem build
-  gem push *.gem
-  rm *.gem
-  cd ..
-done
+
+packages.each do |package|
+  puts "releasing package: #{package}"
+  Dir.chdir "./#{package}"
+
+  puts output = `gem build`
+  gem_file = output.chomp.lines.last.chomp.split.last
+  puts "Built gem file: #{gem_file}"
+
+  # TODO Enable this after things are looking pretty good
+  #gem push *.gem
+
+  File.delete(gem_file)
+
+  Dir.chdir ".."
+
+end
+
+
+npm_packages=%w(
+  bullet_train
+  bullet_train-fields
+  bullet_train-sortable
+)
+
+npm_packages.each do |package|
+  puts "releasing npm package: #{package}"
+  Dir.chdir "./#{package}"
+
+  puts `yarn`
+  puts `yarn build`
+  puts output = `yarn pack`
+  npm_file = output.chomp.lines[1].split("/").last.split("\"").first
+  puts npm_file
+
+  # TODO Enable this after things are looking good
+  #yarn publish #{npm_file} --new-version #{version}
+
+  #File.delete(npm_file)
+
+  Dir.chdir ".."
+end
+
+
