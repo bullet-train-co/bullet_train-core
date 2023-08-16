@@ -45,6 +45,7 @@ jobs:
       id: cpr
       uses: peter-evans/create-pull-request@v5
       with:
+        author: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
         committer: "${{ github.actor }} <${{ github.actor }}@users.noreply.github.com>"
         commit-message: "Version bump: ${{ inputs.versionBump }} - ${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}"
         branch: "version-bump/${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}"
