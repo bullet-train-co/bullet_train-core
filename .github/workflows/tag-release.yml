@@ -47,5 +47,3 @@ jobs:
     if: ${{ startsWith(needs.tag.outputs.tag, 'v') }}
     uses: ./.github/workflows/push.yml
     secrets: inherit
-    with:
-      tag_name: ${{ needs.tag.outputs.tag }}
