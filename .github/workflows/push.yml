@@ -1,14 +1,11 @@
-name: "Release Ruby Gems & NPM Packages"
+name: "Push Ruby Gems & NPM Packages"
 
 on:
+  workflow_call:
   workflow_dispatch:
-  release:
-    types:
-      - created
-      - published
 
 jobs:
-  release:
+  push:
     runs-on: ubuntu-latest
 
     steps:
