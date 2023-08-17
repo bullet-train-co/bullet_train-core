@@ -2,9 +2,8 @@ name: "Release Ruby Gems & NPM Packages"
 
 on:
   workflow_dispatch:
-  push:
-    tags:
-      - "v*.*.*"
+  release:
+    types: created
 
 jobs:
   release:
