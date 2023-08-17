@@ -31,4 +31,5 @@ jobs:
         if: ${{ startsWith(steps.tag-on-pr-merge.outputs.tag, 'v') }}
         uses: softprops/action-gh-release@v1
         with:
+          tag_name: ${{ steps.tag-on-pr-merge.outputs.tag }}
           generate_release_notes: true
