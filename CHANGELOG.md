@@ -1,21 +1,13 @@
-### Next
-### v1.3.7 - 2023-08-17
-### v1.3.6 - 2023-08-17
-### v1.3.5 - 2023-08-17
-### v1.3.4 - 2023-08-17
-### v1.3.3 - 2023-08-17
-### v1.3.2 - 2023-08-16
-### v1.3.1 - 2023-08-16
+### Changes
 
-* Contain commonmarker upgrade to just Bullet Train for now https://github.com/bullet-train-co/bullet_train-core/pull/398
-* Link npm packages in CI https://github.com/bullet-train-co/bullet_train-core/pull/396
-* Run `yarn build` in CI https://github.com/bullet-train-co/bullet_train-core/pull/399
-* Fix breaking date change https://github.com/bullet-train-co/bullet_train-core/pull/400
-* bump npm packages to 1.3.0 https://github.com/bullet-train-co/bullet_train-core/pull/401
-* Fix Stimulus targeting in emoji picker https://github.com/bullet-train-co/bullet_train-core/pull/404
-
-### v1.3.0 - 2023-08-11
-
-Lots of changes since 1.2.27, and we weren't previously keeping a CHANGELOG.
+Prior to Version 1.3.1 we weren't really tracking changes.
 
 Sorry about that! 😬 We're gonna start doing better.
+
+Now the best way to track changes is with the GitHub Releases.
+
+https://github.com/bullet-train-co/bullet_train-core/releases
+
+Whenever a new version is relased that page will be automatically updated
+and you can drill down on any release to see a full diff of everything
+that changed since the last release.
