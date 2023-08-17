@@ -23,3 +23,12 @@ jobs:
           push-tag: true
       - name: Print fetched tag
         run: echo "${{ steps.tag-on-pr-merge.outputs.tag }}"
+      # If we created a `v*` tag then we checkout the repo and tag a release.
+      - name: Checkout
+        if: ${{ steps.tag-on-pr-merge.outputs.tag, 'v') }}
+        uses: actions/checkout@v3
+      - name: Release
+        if: ${{ steps.tag-on-pr-merge.outputs.tag, 'v') }}
+        uses: softprops/action-gh-release@v1
+        with:
+          generate_release_notes: true
