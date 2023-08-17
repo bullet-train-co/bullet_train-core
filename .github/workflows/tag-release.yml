@@ -43,9 +43,9 @@ jobs:
           generate_release_notes: true
   push:
     name: Push
-    needs: release
-    if: ${{ startsWith(needs.release.outputs.tag, 'v') }}
+    needs: [tag, release]
+    if: ${{ startsWith(needs.tag.outputs.tag, 'v') }}
     uses: ./.github/workflows/push.yml
     secrets: inherit
     with:
-      tag_name: ${{ needs.release.outputs.tag }}
+      tag_name: ${{ needs.tag.outputs.tag }}
