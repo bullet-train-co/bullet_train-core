@@ -31,12 +31,11 @@ packages=%w(
   bullet_train-themes-tailwind_css
 )
 
-# First we run `bump` at the top level, mainly to have it update
-# the CHANGELOG. We have a fake version file in `lib`, just to keep
-# `bump` happy.
+# First we run `bump` at the top level, this acts as the authorative gem version.
+# We have a fake version file in `lib`, just to keep `bump` happy.
 
 puts "bumping core & CHANGELOG"
-puts output = `bump #{bump_version} --changelog --tag`
+puts output = `bump #{bump_version} --tag`
 version = output.chomp.lines.last.chomp
 puts "Bumped to #{version}."
 
