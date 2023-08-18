@@ -4,6 +4,7 @@ module Account::Onboarding::InvitationLists::ControllerBase
   included do
     layout "devise"
 
+    # TODO: Check if we need these, and also for the InvitationList resource.
     # load_and_authorize_resource class: "User"
     # load_and_authorize_resource class: "Team"
 
