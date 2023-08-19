@@ -6,6 +6,6 @@ module Account::Onboarding::InvitationListsHelper
       [role.attributes[:key]] + role.attributes[:manageable_roles]
     end.flatten.uniq
 
-    role_ids.map {|role| role.capitalize}
+    role_ids.map { |role| role.capitalize }
   end
 end

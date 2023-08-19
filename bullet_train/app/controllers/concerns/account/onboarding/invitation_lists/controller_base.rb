@@ -36,7 +36,7 @@ module Account::Onboarding::InvitationLists::ControllerBase
         format.json { render :show, status: :ok, location: [:account, @user] }
       else
         format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @account_onboarding_invitation_list.errors, status: :unprocessable_entity}
+        format.json { render json: @account_onboarding_invitation_list.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -62,6 +62,6 @@ module Account::Onboarding::InvitationLists::ControllerBase
   # Since there is only one membership (an admin) on the team when sending bulk invitations,
   # we don't have to worry about filtering these roles according to if they're manageable or not.
   def available_roles
-    current_membership.roles.map {|role| [role.attributes[:key]] + role.attributes[:manageable_roles] }.flatten.uniq
+    current_membership.roles.map { |role| [role.attributes[:key]] + role.attributes[:manageable_roles] }.flatten.uniq
   end
 end
