@@ -8,9 +8,6 @@
         <%= render 'account/shared/forms/errors', form: f %>
         <%= render 'account/shared/notices', form: f %>
 
-        <%= f.hidden_field :team_id, value: @team.id %>
-        <%= f.hidden_field :sender_id, value: @user.memberships.find_by(team: @team).id %>
-
         <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
           <% 3.times do %>
             <%= render 'invitation_form', form: f %>

@@ -1,16 +1,9 @@
 <%= form.fields_for :invitations, Invitation.new do |invitation_form| %>
-  <%= invitation_form.hidden_field :team_id, value: @team.id %>
-  <%= invitation_form.hidden_field :from_membership_id, value: @user.memberships.find_by(team: @team).id %>
-
   <div class="col-span-3">
     <%= render 'shared/fields/email_field', form: invitation_form, method: :email, options: {autofocus: true} %>
   </div>
 
   <%= invitation_form.fields_for :membership, Membership.new do |membership_form| %>
-    <%= membership_form.hidden_field :team_id, value: @team.id %>
-    <%= membership_form.hidden_field :user_first_name, value: "First Name" %>
-    <%= membership_form.hidden_field :user_last_name, value: "Last Name" %>
-
     <div class="col-span-3">
       <%= render 'shared/fields/super_select', form: membership_form, method: :role_ids,
           choices: Role.all.map {|role| role.attributes[:key].capitalize} %>
