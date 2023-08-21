@@ -1,70 +1,133 @@
 #!/usr/bin/env ruby
 
-puts output = `bump current`
-version = output.chomp.lines.last.chomp
+require 'thor'
 
-"Releasing version: #{version}"
+class CoreBumpCLI < Thor
+  desc "release", "Build ruby gems & npm packages and push them to their respective platforms."
+  option :allow_local
+  def release
+    if !github_output_file && !options[:allow_local]
+      banner = <<~BANNER
+        --------------------------------------------------------------------------------------------------------
+        - It looks like you're running this scirpt locally.
+        - This script was designed to run as part of a GitHub workflow.
+        - We don't recommend using this script locally to directly publish gems and packages.
+        -
+        - You can run the workflow by going here:
+        - https://github.com/bullet-train-co/bullet_train-core/actions/workflows/version-bump.yml
+        -
+        - If you really want to run this locally you should make sure you're not on the `main` branch,
+        - and then you can pass the `--allow-local` flag to skip this notice and run the script.
+        -
+        - For example:
+        - ./bin/release-all --allow-local
+        -------------------------------------------------------------------------------------------------------
+      BANNER
+      say_error banner, :red
+      return
+    end
 
-packages=%w(
-  bullet_train
-  bullet_train-api
-  bullet_train-fields
-  bullet_train-has_uuid
-  bullet_train-incoming_webhooks
-  bullet_train-integrations
-  bullet_train-integrations-stripe
-  bullet_train-obfuscates_id
-  bullet_train-outgoing_webhooks
-  bullet_train-roles
-  bullet_train-scope_questions
-  bullet_train-scope_validator
-  bullet_train-sortable
-  bullet_train-super_load_and_authorize_resource
-  bullet_train-super_scaffolding
-  bullet_train-themes
-  bullet_train-themes-light
-  bullet_train-themes-tailwind_css
-)
+    puts output = `bump current`
+    @version = output.chomp.lines.last.chomp
+    "Releasing version: #{@version}"
 
+    release_ruby_gems
+    release_npm_packages
+    write_to_github_output_file
+  end
 
-packages.each do |package|
-  puts "releasing package: #{package}"
-  Dir.chdir "./#{package}"
+  # This allows failure to be reported to the shell correctly.
+  # https://github.com/rails/thor/wiki/Making-An-Executable
+  def self.exit_on_failure?
+    true
+  end
 
-  puts output = `gem build`
-  gem_file = output.chomp.lines.last.chomp.split.last
-  puts "Built gem file: #{gem_file}"
+  # This allows us to define helper methods that aren't attached to thor commands
+  no_commands do
+    def github_output_file
+      ENV['GITHUB_OUTPUT']
+    end
 
-  puts output = `gem push #{gem_file}`
+    def release_ruby_gems
+      ruby_gems.each do |package|
+        puts "releasing package: #{package}"
+        Dir.chdir "./#{package}"
 
-  File.delete(gem_file)
+        puts output = `gem build`
+        gem_file = output.chomp.lines.last.chomp.split.last
+        puts "Built gem file: #{gem_file}"
 
-  Dir.chdir ".."
+        puts output = `gem push #{gem_file}`
 
+        File.delete(gem_file)
+
+        Dir.chdir ".."
+
+      end
+    end
+
+    def release_npm_packages
+      npm_packages.each do |package|
+        puts "releasing npm package: #{package}"
+        Dir.chdir "./#{package}"
+
+        puts `yarn`
+        puts `yarn build`
+        puts output = `yarn pack`
+        npm_file = output.chomp.lines[1].split("/").last.split("\"").first
+        puts "Built npm file: #{npm_file}"
+
+        puts output = `yarn publish #{npm_file} --new-version #{@version}`
+
+        File.delete(npm_file)
+
+        Dir.chdir ".."
+      end
+    end
+
+    def write_to_github_output_file
+      if github_output_file
+        puts "The new version to pass to the GitHub output file = #{@version}"
+        IO.write(github_output_file, "NEW_VERSION_NUMBER=#{@version}\n", mode: 'a')
+      else
+        say "We don't seem to be running in GitHub actions. Skipping the GitHub output file."
+      end
+    end
+
+    def ruby_gems
+      %w(
+        bullet_train
+        bullet_train-api
+        bullet_train-fields
+        bullet_train-has_uuid
+        bullet_train-incoming_webhooks
+        bullet_train-integrations
+        bullet_train-integrations-stripe
+        bullet_train-obfuscates_id
+        bullet_train-outgoing_webhooks
+        bullet_train-roles
+        bullet_train-scope_questions
+        bullet_train-scope_validator
+        bullet_train-sortable
+        bullet_train-super_load_and_authorize_resource
+        bullet_train-super_scaffolding
+        bullet_train-themes
+        bullet_train-themes-light
+        bullet_train-themes-tailwind_css
+      )
+    end
+
+    def npm_packages
+      %w(
+        bullet_train
+        bullet_train-fields
+        bullet_train-sortable
+      )
+    end
+  end
 end
 
+# We create our own args array so that we don't have to ask the user to include `release` on the command line
+args = ["release"] + ARGV
 
-npm_packages=%w(
-  bullet_train
-  bullet_train-fields
-  bullet_train-sortable
-)
-
-npm_packages.each do |package|
-  puts "releasing npm package: #{package}"
-  Dir.chdir "./#{package}"
-
-  puts `yarn`
-  puts `yarn build`
-  puts output = `yarn pack`
-  npm_file = output.chomp.lines[1].split("/").last.split("\"").first
-  puts "Built npm file: #{npm_file}"
-
-  puts output = `yarn publish #{npm_file} --new-version #{version}`
-
-  File.delete(npm_file)
-
-  Dir.chdir ".."
-end
-
-
+CoreBumpCLI.start(args)
