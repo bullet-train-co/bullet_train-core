@@ -37,6 +37,9 @@ jobs:
     - name: "Install bump"
       run: gem install bump
 
+    - name: "Install thor"
+      run: gem install thor
+
     - name: "Bump all"
       id: bump-all
       run: ./bin/bump-all ${{ inputs.versionBump }}
