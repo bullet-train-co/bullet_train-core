@@ -67,10 +67,6 @@ class CoreBumpCLI < Thor
       end
     end
 
-    def current_version
-      @current_version || `bump current`
-    end
-
     def bump_npm_packages
       # And now we munge the package.json files
       npm_packages.each do |package|
