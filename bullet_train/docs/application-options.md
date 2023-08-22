@@ -13,5 +13,6 @@ The following configuration options are available for your Bullet Train applicat
 | `OPENAI_ACCESS_TOKEN` | Enable OpenAI-powered UX improvements | `sk-Tnko8PI15i6du03KkxVExTz3lbkFJV...` | `openai_enabled?` |
 | `REDOCLY_ORGANIZATION_ID` | Enable Redocly-powered API documentation | `your-organization-name` | |
 | `REDOCLY_API_KEY` | Enable Redocly-powered API documentation |`orgsk_lfyrXAAym8nbSrar9b8wvTN+...`| |
+| `DISABLE_DEVELOPER_MENU` | Disable the `developer` tab in the navigation bar | `true` | disable_developer_menu? |
 
 <sup><a name="footnote-1"></a>1</sup> Any credentials listed here aren't real, but we wanted you to know what each looks like so you can recognize the correct value from each provider.
