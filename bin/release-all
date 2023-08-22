@@ -103,6 +103,7 @@ class CoreBumpCLI < Thor
         bullet_train-incoming_webhooks
         bullet_train-integrations
         bullet_train-integrations-stripe
+        bullet_train-internationalization
         bullet_train-obfuscates_id
         bullet_train-outgoing_webhooks
         bullet_train-roles
