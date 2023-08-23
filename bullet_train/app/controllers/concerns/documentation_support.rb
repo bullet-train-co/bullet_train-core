@@ -1,7 +1,7 @@
 module DocumentationSupport
   extend ActiveSupport::Concern
 
-  BULLET_TRAIN_BASE_PATH=`bundle show bullet_train`.chomp
+  BULLET_TRAIN_BASE_PATH = `bundle show bullet_train`.chomp
 
   def docs
     target = params[:page].presence || "index"
