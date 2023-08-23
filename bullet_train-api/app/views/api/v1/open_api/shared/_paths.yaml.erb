@@ -31,7 +31,7 @@
               items:
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
             example:
-              🚅 get_example
+              🚅 get_examples
   <% end %>
   <% unless except.include?(:create) %>
   post:
@@ -68,7 +68,7 @@
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
             example:
-              🚅 post_examples
+              🚅 post_example
   <% end %>
 <% end %>
 <% unless except.include?(:show) && except.include?(:update) && except.include?(:destroy) %>

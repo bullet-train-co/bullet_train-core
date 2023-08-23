@@ -39,7 +39,9 @@ module FactoryBot
       objects
     end
 
-    %i[get_examples get_example post_examples post_parameters put_example put_parameters patch_example patch_parameters].each do |method|
+    REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
+
+    REST_METHODS.each do |method|
       define_method(method) do |model, **options|
         _path_examples(method.to_s, model, **options)
       end
