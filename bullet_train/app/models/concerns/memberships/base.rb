@@ -21,6 +21,8 @@ module Memberships::Base
     # Image uploading
     has_one_attached :user_profile_photo
 
+    validates :user_email, uniqueness: {scope: :team}
+
     after_destroy do
       # if we're destroying a user's membership to the team they have set as
       # current, then we need to remove that so they don't get an error.
