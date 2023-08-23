@@ -9,6 +9,7 @@ In addition, Bullet Train has integrated the direct-uploads feature of Active St
 ## Example
 
 The following steps illustrate how to add a `document` file attachment to a `Post` model.
+
 Add the following to `app/models/post.rb`:
 
 ```ruby
@@ -21,4 +22,31 @@ Run the following command to generate the scaffolding for the `document` field o
 
 ```bash
 ./bin/super-scaffold crud-field Post document:file_field
+```
+
+## Multiple Attachment Example
+
+The following steps illustrate how to add multiple `document` file attachments to a `Post` model.
+
+Add the following to `app/models/post.rb`:
+
+```ruby
+has_many_attached :documents
+```
+
+Note, no database migration is required as ActiveStorage uses its own tables to store the attachments.
+
+Run the following command to generate the scaffolding for the `documents` field on the `Post` model:
+
+```bash
+./bin/super-scaffold crud-field Post documents:file_field{multiple}
+```
+
+## Generating a Model & Super Scaffold Example
+
+If you're starting fresh, and don't have an existing model you can do something like this:
+
+```
+rails g model Project team:references name:string specification:attachment documents:attachments
+bin/super-scaffold crud Project Team name:text_field specification:file_field documents:file_field{multiple}
 ```
