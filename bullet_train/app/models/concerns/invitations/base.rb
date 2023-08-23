@@ -10,7 +10,7 @@ module Invitations::Base
 
     accepts_nested_attributes_for :membership
 
-    validates :email, presence: true
+    validates :email, presence: true, uniqueness: {scope: :team}
 
     after_create :set_added_by_membership
     after_create :send_invitation_email

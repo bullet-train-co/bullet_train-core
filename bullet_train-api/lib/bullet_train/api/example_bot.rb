@@ -39,7 +39,9 @@ module FactoryBot
       objects
     end
 
-    %i[get_examples get_example post_examples post_parameters put_example put_parameters patch_example patch_parameters].each do |method|
+    REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
+
+    REST_METHODS.each do |method|
       define_method(method) do |model, **options|
         _path_examples(method.to_s, model, **options)
       end
@@ -53,6 +55,8 @@ module FactoryBot
     end
 
     def reset_tables!
+      # This is only availble for postgres
+      return unless ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
       @tables_to_reset.each do |name|
         ActiveRecord::Base.connection.reset_pk_sequence!(name) if ActiveRecord::Base.connection.table_exists?(name)
       end

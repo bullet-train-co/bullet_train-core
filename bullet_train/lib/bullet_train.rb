@@ -170,3 +170,7 @@ end
 def bulk_invitations_enabled?
   BulletTrain::Configuration.enable_bulk_invitations
 end
+
+def disable_developer_menu?
+  ENV["DISABLE_DEVELOPER_MENU"].present?
+end
