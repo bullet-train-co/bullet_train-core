@@ -89,6 +89,10 @@ module Api::Controllers::Base
     current_user&.teams&.first
   end
 
+  def current_membership
+    current_user.memberships.where(team: current_team).first
+  end
+
   def collection_variable
     @collection_variable ||= "@#{self.class.name.split("::").last.gsub("Controller", "").underscore}"
   end

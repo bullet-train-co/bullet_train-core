@@ -13,10 +13,26 @@ en:
       confirmations:
         destroy: Are you sure you want cancel the invitation to %{invitation_name}? The invitation they've received will no longer work. This can't be undone.
     fields: &fields
+      id:
+        _: &id Invitation ID
+        label: *id
+        heading: *id
       email:
-        name: &email Email Address
+        _: &email Email Address
         label: *email
         heading: *email
+      uuid:
+        name: &uuid Invitation UUID
+        label: *uuid
+        heading: *uuid
+      from_membership_id:
+        name: &from_membership_id Who sent ID
+        label: *from_membership_id
+        heading: *from_membership_id
+      team_id:
+        name: &team_id Team ID
+        label: *team_id
+        heading: *team_id
       roles: &role_ids
         name: &roles Special Privileges
         label: *roles
@@ -26,6 +42,9 @@ en:
       created_at:
         name: &created_at Sent
         heading: *created_at
+      updated_at:
+        name: &updated_at Updated
+        heading: *updated_at
     index:
       section: "Invitations for %{team_name}"
       header: Team Member Invitations

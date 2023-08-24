@@ -5,7 +5,6 @@ module Invitations::Base
     belongs_to :team
     belongs_to :from_membership, class_name: "Membership"
     has_one :membership, dependent: :nullify
-    has_many :roles, through: :membership
 
     accepts_nested_attributes_for :membership
 
@@ -15,6 +14,10 @@ module Invitations::Base
     after_create :send_invitation_email
 
     attribute :uuid, default: -> { SecureRandom.hex }
+
+    def roles
+      membership.roles
+    end
   end
 
   def set_added_by_membership
