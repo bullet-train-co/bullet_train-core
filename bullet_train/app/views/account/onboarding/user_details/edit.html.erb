@@ -1,11 +1,12 @@
 <% @title = t('.header') %>
 
-<%= render 'account/shared/workflow/box' do |p| %>
-  <% p.content_for :title, @title %>
-  <% p.content_for :body do %>
+<%= render 'account/shared/workflow/box' do |box| %>
+  <% box.title @title %>
+  <% box.body do %>
     <% within_fields_namespace(:self) do %>
       <%= form_for @user, url: account_onboarding_user_detail_path(@user), method: :put, html: {class: 'form'} do |f| %>
         <%= render 'account/shared/forms/errors', form: f %>
+        <%= render 'account/shared/notices', form: f %>
 
         <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
           <div class="sm:col-span-1">

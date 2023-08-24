@@ -40,10 +40,13 @@ namespace :bullet_train do
       puts "\nOK, paste what you've got for us and hit <Return>!\n".blue
 
       input = $stdin.gets.strip
+      # we only resolve the first line of user input and ignore the rest
       $stdin.getc while $stdin.ready?
 
       # Extract absolute paths from annotated views.
       if input =~ /<!-- BEGIN (.*) -->/
+        input = $1
+      elsif input =~ /<!-- END (.*) -->/
         input = $1
       end
 
@@ -72,7 +75,34 @@ namespace :bullet_train do
     end
   end
 
-  task :develop, [:all_options] => :environment do |t, arguments|
+  desc "Eject files from the Bullet Train's core logic to your application."
+  task :eject, [:type] => :environment do |task, args|
+    if args[:type] == "locales"
+      gem_names = I18n.t("framework_packages").map { |key, value| key.to_s }
+      gem_names.each do |gem|
+        puts "Searching for locales in #{gem}...".blue
+        gem_path = `bundle show #{gem}`.chomp
+        locales = Dir.glob("#{gem_path}/**/config/locales/**/*.yml").reject { |path| path.match?("dummy") }
+        next if locales.empty?
+
+        puts "Found locales. Ejecting to your application...".green
+        locales.each do |locale|
+          relative_path = locale.split("/config/locales").pop
+          path_parts = relative_path.split("/")
+          base_path = path_parts.join("/")
+          FileUtils.mkdir_p("./config/locales#{base_path}") unless Dir.exist?("./config/locales#{base_path}")
+
+          unless File.exist?("config/locales#{relative_path}")
+            puts "Ejecting #{relative_path}..."
+            File.new("config/locales#{relative_path}", "w")
+            `cp #{locale} config/locales#{relative_path}`
+          end
+        end
+      end
+    end
+  end
+
+  task :hack, [:all_options] => :environment do |t, arguments|
     def stream(command, prefix = "  ")
       puts ""
 
@@ -109,15 +139,26 @@ namespace :bullet_train do
         flags_with_values.each do |process|
           case process[:flag]
           when "--help"
-            puts "bin/hack: Clone bullet_train-core and link up gems (will only link up gems if already cloned).".blue
-            puts "bin/hack --link: Link all of your Bullet Train gems to `local/bullet_train-core`".blue
-            puts "bin/hack --reset: Resets all of your gems to their original definition.".blue
-            puts "bin/hack --watch-js: Watches for any changes in JavaScript files gems that have an npm package.".blue
-            puts "bin/hack --clean-js: Resets all of your npm packages from `local/bullet_train-core` to their original definition".blue
+            puts ""
+            puts "bin/hack: " + "Clone bullet_train-core and link up gems (will only link up gems if already cloned).".blue
+            puts "bin/hack --link: " + "Link all of your Bullet Train gems to `local/bullet_train-core`.".blue
+            puts "bin/hack --link github: " + "Link all of your Bullet Train gems to the public repositories on GitHub".blue
+            puts "bin/hack --link (version-number): " + "Link all of your Bullet Train gems to the version number passed.".blue
+            puts "bin/hack --reset: " + "Resets all of your gems to their original definition.".blue
+            puts "bin/hack --watch-js: " + "Watches for any changes in JavaScript files gems that have an npm package.".blue
+            puts "bin/hack --clean-js: " + "Resets all of your npm packages from `local/bullet_train-core` to their original definition.".blue
             exit
           when "--link", "--reset"
-            set_core_gems(process[:flag], framework_packages)
-            stream "bundle install"
+            link_flag_value = process[:values].pop
+            set_core_gems(process[:flag], link_flag_value, framework_packages)
+
+            # Bundler will throw an error if we try to `bundle install` right after adding the GitHub link to the Gemfile.
+            if link_flag_value == "github"
+              puts ""
+              puts "Now you can run `bundle install` to check out the public repositories on GitHub."
+            else
+              stream "bundle install"
+            end
           when "--watch-js", "--clean-js"
             package_name = process[:values].pop
             framework_package = framework_packages.select { |k, v| k.to_s == package_name }
@@ -185,7 +226,7 @@ namespace :bullet_train do
 
     # Link all of the local gems to the current Gemfile.
     puts "Now we'll try to link up the Bullet Train core repositories in the `Gemfile`.".blue
-    set_core_gems("--link", framework_packages)
+    set_core_gems("--link", nil, framework_packages)
 
     puts ""
     puts "Now we'll run `bundle install`.".blue
@@ -215,38 +256,74 @@ namespace :bullet_train do
   end
 
   # Pass "--link" or "--reset" as a flag to set the gems.
-  def set_core_gems(flag, framework_packages)
+  def set_core_gems(flag, link_flag_value, framework_packages)
     packages = framework_packages.keys
     gemfile_lines = File.readlines("./Gemfile")
-    new_lines = gemfile_lines.map do |line|
-      packages.each do |package|
-        if line.match?(/"#{package}"/)
-          original_path = "gem \"#{package}\""
-          local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
+    version_regexp = /[\d|.]/
 
-          case flag
-          when "--link"
-            if `cat Gemfile | grep "gem \\\"#{package}\\\", path: \\\"local/#{package}\\\""`.chomp.present?
+    packages.each do |package|
+      original_path = "gem \"#{package}\""
+      local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
+      match_found = false
+
+      new_lines = gemfile_lines.map do |line|
+        if line.match?(/"#{package}"/)
+          match_found = true
+
+          if flag == "--link"
+            if `cat Gemfile | grep "gem \\\"#{package}\\\", path: \\\"local/bullet_train-core/#{package}\\\""`.chomp.present?
               puts "#{package} is already linked to a checked out copy in `local` in the `Gemfile`.".green
-            elsif `cat Gemfile | grep "gem \\\"#{package}\\\","`.chomp.present?
+            # We can update this later to match a regular expression at the end
+            # (git: "...", require: "...", etc.), but this will do for now.
+            elsif `cat Gemfile | grep "gem \\\"#{package}\\\", path:"`.chomp.present?
               puts "#{package} already has some sort of alternative source configured in the `Gemfile`.".yellow
               puts "We can't do anything with this. Sorry! We'll proceed, but you have to link this package yourself.".red
             elsif `cat Gemfile | grep "gem \\\"#{package}\\\""`.chomp.present?
               puts "#{package} is directly present in the `Gemfile`, so we'll update that line.".green
-              line.gsub!(original_path, local_path)
+
+              line = if link_flag_value == "github"
+                "#{line.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
+              elsif link_flag_value&.match?(version_regexp)
+                "#{line.chomp}, \"#{link_flag_value}\"\n"
+              else
+                line.gsub(original_path, local_path)
+              end
             end
-            break
-          when "--reset"
-            line.gsub!(local_path, original_path)
+          elsif flag == "--reset"
+            if line.match?(/bullet_train/)
+              line.gsub!(local_path, original_path) # Reset local path
+              line.gsub!(/, "[0-9|.]*"$/, "") # Reset specific version
+            end
             puts "Resetting '#{package}' package in the Gemfile...".blue
-            break
           end
         end
+        line
       end
-      line
+
+      # Add/Remove any packages that aren't primarily in the Gemfile.
+      if flag == "--link"
+        unless match_found
+          puts "Could not find #{package}. Adding to the end of the Gemfile.".blue
+          new_lines << if link_flag_value == "github"
+            "#{original_path.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
+          elsif link_flag_value&.match?(version_regexp)
+            "#{original_path.chomp}, \"#{link_flag_value}\"\n"
+          else
+            "#{local_path}\n"
+          end
+        end
+      elsif flag == "--reset"
+        gem_regexp = /bullet_train-[a-z|A-Z_-]+/
+        while new_lines.last.match?(gem_regexp)
+          puts "Removing #{new_lines.last.scan(gem_regexp).first} from the Gemfile.".yellow
+          new_lines.pop
+        end
+      end
+
+      gemfile_lines = new_lines
     end
 
-    File.write("./Gemfile", new_lines.join)
+    File.write("./Gemfile", gemfile_lines.join)
   end
 
   def set_npm_package(flag, package)

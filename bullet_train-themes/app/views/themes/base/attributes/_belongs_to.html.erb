@@ -3,12 +3,12 @@
 <% disable_link ||= false %>
 <% url ||= nil %>
 
-<% if object.send(attribute).present? %>
+<% if object.public_send(attribute).present? %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
     <% if disable_link %>
-      <%= object.send(attribute).label_string %>
+      <%= object.public_send(attribute).label_string %>
     <% else %>
-      <%= link_to object.send(attribute).label_string, url || [:account, object.send(attribute)] %>
+      <%= link_to object.public_send(attribute).label_string, url || [:account, object.public_send(attribute)] %>
     <% end %>
   <% end %>
 <% end %>

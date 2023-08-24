@@ -32,15 +32,15 @@
     <meta property="og:url" content="<%= request.base_url + request.path %>" />
     <meta property="og:description" content="<%= description.truncate(200) %>" />
   </head>
-  <body class="bg-light-gradient text-gray-700 text-sm font-normal dark:bg-dark-gradient dark:text-darkPrimary-300">
+  <body class="<%= BulletTrain::Themes::Light.background || "bg-gradient-to-br from-secondary-200 to-primary-400 dark:from-primary-900 dark:to-primary-600" %> text-slate-700 text-sm font-normal dark:text-slate-300">
     <div class="md:p-5">
-      <div class="h-screen md:h-auto overflow-hidden md:rounded-lg flex shadow"
+      <div class="min-h-screen md:h-auto overflow-hidden md:rounded-lg flex shadow"
         data-controller="mobile-menu"
         data-mobile-menu-hidden-class="hidden"
       >
 
         <% menu = capture do %>
-          <div class="flex items-center flex-shrink-0 p-4 bg-blue-darker md:rounded-tl-lg">
+          <div class="flex items-center flex-shrink-0 p-4 bg-blue-700 md:rounded-tl-lg">
             <%= image_tag image_path("logo/logo.png"), class: 'h-5 w-auto mx-auto' %>
 
             <div class="lg:hidden absolute right-0">
@@ -60,19 +60,19 @@
 
               <%= render 'account/shared/menu/section', title: 'Introduction' do %>
                 <%= render 'account/shared/menu/item', url: '/docs', label: 'Table of Contents' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-home-lg-alt ti ti-list"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/getting-started', label: 'Getting Started' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-terminal ti ti-flag"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/upgrades', label: 'Upgrades' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-sparkles ti ti-arrow-up"></i>
                   <% end %>
                 <% end %>
@@ -80,37 +80,37 @@
 
               <%= render 'account/shared/menu/section', title: 'General Topics' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/modeling', label: 'Domain Modeling' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-bolt ti ti-ruler-pencil"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/indirection', label: 'Indirection' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-bolt ti ti-direction"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/overriding', label: 'Overriding' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-bolt ti ti-spray"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/tunneling', label: 'Tunneling' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-bolt ti ti-bolt"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/javascript', label: 'JavaScript' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                   <i class="fa-brands fa-js ti ti-pulse"></i>
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalzation' do |p| %>
-                  <% p.content_for :icon do %>
+                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalization' do |p| %>
+                  <% p.icon do %>
                   <i class="fa-brands fa-js ti ti-world"></i>
                   <% end %>
                 <% end %>
@@ -118,69 +118,75 @@
 
               <%= render 'account/shared/menu/section', title: 'Developer Tools' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/super-scaffolding', label: 'Super Scaffolding' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-magic ti ti-wand"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/action-models', label: 'Action Models' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-bars-progress ti ti-target"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/seeds', label: 'Database Seeds' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-seedling ti ti-server"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/testing', label: 'Test Suite' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-check ti ti-check"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/magic_test', label: 'Magic Test' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-check ti ti-video-camera"></i>
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: 'docs/application-options.md', label: 'Application Options' do |p| %>
-                  <% p.content_for :icon do %>
+                <%= render 'account/shared/menu/item', url: '/docs/application-options', label: 'Application Options' do |p| %>
+                  <% p.icon do %>
                     <i class="fal fa-gear ti ti-settings"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/application-hash.md', label: 'Application Hash' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-brackets-curly ti ti-view-list-alt"></i>
                   <% end %>
                 <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Accounts & Teams' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/authentication', label: 'Authentication' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-fingerprint ti ti-id-badge"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/teams', label: 'Teams' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-users ti ti-user"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/permissions', label: 'Roles & Permissions' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-lock-alt ti ti-lock"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/onboarding', label: 'Onboarding' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-snowboarding ti ti-direction"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/namespacing', label: 'Namespacing' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-object-group ti ti-widgetized"></i>
                   <% end %>
                 <% end %>
@@ -188,59 +194,71 @@
 
               <%= render 'account/shared/menu/section', title: 'User Interface' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/field-partials', label: 'Field Partials' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-i-cursor ti ti-text"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/themes', label: 'Themes' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-swatchbook ti ti-palette"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/nice_partials', label: 'Nice Partials' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-swatchbook ti ti-widget"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/showcase', label: 'Showcase' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-swatchbook ti ti-panel"></i>
                   <% end %>
                 <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Billing' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/billing/stripe', label: 'Stripe' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fab fa-stripe-s ti ti-money"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/billing/usage', label: 'Usage' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-gauge ti ti-ruler"></i>
                   <% end %>
                 <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Integration' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/api', label: 'REST API' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-brackets-curly ti ti-settings"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/zapier', label: 'Zapier' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-bolt ti ti-bolt"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/oauth', label: 'OAuth Providers' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-at ti ti-reload"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/webhooks/outgoing', label: 'Outgoing Webhooks' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-outlet ti ti-pulse"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/webhooks/incoming', label: 'Incoming Webhooks' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-plug ti ti-plug"></i>
                   <% end %>
                 <% end %>
@@ -248,7 +266,7 @@
 
               <%= render 'account/shared/menu/section', title: 'Internationalization' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Translations' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-language ti ti-world"></i>
                   <% end %>
                 <% end %>
@@ -256,7 +274,7 @@
 
               <%= render 'account/shared/menu/section', title: 'Add-Ons' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/font-awesome-pro', label: 'Font Awesome Pro' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-flag ti ti-flag"></i>
                   <% end %>
                 <% end %>
@@ -264,13 +282,13 @@
 
               <%= render 'account/shared/menu/section', title: 'Deployment' do %>
                 <%= render 'account/shared/menu/item', url: '/docs/heroku', label: 'Heroku' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-cloud ti ti-cloud-up"></i>
                   <% end %>
                 <% end %>
 
                 <%= render 'account/shared/menu/item', url: '/docs/desktop', label: 'Desktop Applications' do |p| %>
-                  <% p.content_for :icon do %>
+                  <% p.icon do %>
                     <i class="fal fa-window-restore ti ti-desktop"></i>
                   <% end %>
                 <% end %>
@@ -286,7 +304,7 @@
             <button
               data-mobile-menu-target="revealable"
               data-action="mobile-menu#close"
-              
+
               data-transition-enter="transition-opacity ease-linear duration-200"
               data-transition-enter-start="opacity-0"
               data-transition-enter-end="opacity-100"
@@ -296,11 +314,11 @@
 
               class="fixed inset-0" aria-hidden="true"
             >
-              <div class="absolute inset-0 bg-light-gradient opacity-75"></div>
+              <div class="absolute inset-0 bg-gradient-to-br from-secondary-200 to-primary-400 opacity-75"></div>
             </button>
             <div
               data-mobile-menu-target="revealable"
-              
+
               data-transition-enter="transition ease-in-out duration-200 transform"
               data-transition-enter-start="-translate-x-full"
               data-transition-enter-end="translate-x-0"
@@ -308,7 +326,7 @@
               data-transition-leave-start="translate-x-0"
               data-transition-leave-end="-translate-x-full"
 
-              class="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-dark-gradient shadow-xl"
+              class="relative flex-1 flex flex-col max-w-xs w-full pb-4 bg-gradient-to-br from-primary-900 to-primary-600 shadow-xl"
             >
               <%= menu %>
             </div>
@@ -316,16 +334,16 @@
           </div>
         </div>
 
-        <div class="hidden lg:flex lg:flex-shrink-0 overflow-y-auto bg-gradient-to-b from-primary-700 to-primary-800 dark:from-darkPrimary-800 dark:to-darkPrimary-800">
+        <div class="hidden lg:flex lg:flex-shrink-0 overflow-y-auto bg-gradient-to-b from-primary-700 to-primary-800 dark:from-slate-800 dark:to-slate-800">
           <div class="w-64">
             <%= menu %>
           </div>
         </div>
 
-        <div class="flex flex-col w-0 flex-1 overflow-y-auto bg-gray-100 dark:bg-darkPrimary-800 lg:border-l dark:border-gray-500">
+        <div class="flex flex-col w-0 flex-1 overflow-y-auto bg-slate-100 dark:bg-slate-800 lg:border-l dark:border-slate-500">
           <main class="flex-1 relative z-0 overflow-y-auto focus:outline-none" tabindex="0">
 
-            <button class="lg:hidden h-12 w-12 ml-1 flex-none inline-flex items-center justify-center rounded-md text-gray-500 hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue"
+            <button class="lg:hidden h-12 w-12 ml-1 flex-none inline-flex items-center justify-center rounded-md text-slate-500 hover:text-slate-900 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue"
               data-action="mobile-menu#open"
             >
               <span class="sr-only">Open Application Menu</span>
@@ -337,7 +355,7 @@
             <div class="py-2 px-1">
               <div class="mx-auto sm:px-6 sm:py-4 px-2">
                 <div class="bg-white rounded-md shadow sm:py-14 sm:px-12 py-10 px-7">
-                  <div class="prose" style="max-width: none;">
+                  <div class="prose" style="max-width: none;" id="bt-docs-content">
                     <%= yield %>
                   </div>
                 </div>

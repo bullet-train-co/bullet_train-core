@@ -73,6 +73,17 @@ module Account::Invitations::ControllerBase
     end
   end
 
+  # POST /invitations/1/resend
+  def resend
+    @invitation = Invitation.find_by(uuid: params[:id])
+    if @invitation&.touch
+      UserMailer.invited(params[:id]).deliver_later
+      redirect_to account_team_invitations_path(@invitation.membership.team), notice: I18n.t("invitations.notifications.resent")
+    else
+      redirect_to account_dashboard_path, alert: I18n.t("invitations.notifications.resent_error")
+    end
+  end
+
   # GET /invitations/new
   def new
     @invitation.build_membership

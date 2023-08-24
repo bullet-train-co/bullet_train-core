@@ -18,7 +18,7 @@ Once you buy a license for Font Awesome Pro, set `FONTAWESOME_NPM_AUTH_TOKEN` in
 - Add `export FONTAWESOME_NPM_AUTH_TOKEN=XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX` in `~/.zshrc`.
 - Restart your terminal.
 
-If you're configuring this in another type of shell, please let us know what the steps are [in a new GitHub issue](http://github.com/bullet-train-co/bullet-train-tailwind-css/issues/new) and we'll add them here for others.
+If you're configuring this in another type of shell, please let us know what the steps are [in a new GitHub issue](https://github.com/bullet-train-co/bullet_train/issues/new) and we'll add them here for others.
 
 ### 2. Add `.npmrc` Configuration
 
@@ -45,6 +45,6 @@ No, that's not a typo. [That's the name of their company.](https://fortawesome.c
 
 In `app/javascript/application.js`, below `require("@icon/themify-icons/themify-icons.css")`, add:
 
-```
+```js
 require("@fortawesome/fontawesome-pro/css/all.css")
 ```

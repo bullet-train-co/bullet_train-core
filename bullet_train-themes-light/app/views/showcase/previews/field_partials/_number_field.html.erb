@@ -1,0 +1,5 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Basic" do %>
+    <%= render 'shared/fields/number_field', form: form, method: :number_field_value %>
+  <% end %>
+<% end %>

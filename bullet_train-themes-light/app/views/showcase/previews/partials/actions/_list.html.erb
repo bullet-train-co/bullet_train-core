@@ -1,0 +1,8 @@
+<% showcase.sample "Basic" do %>
+  <%= render "shared/actions/list", content: "This is a list" %>
+  <%= render "shared/actions/list", content: "This is a second list" %>
+
+  <%= render "shared/actions/list" do %>
+    This is a block invoked list
+  <% end %>
+<% end %>

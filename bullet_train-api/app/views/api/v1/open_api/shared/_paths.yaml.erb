@@ -4,7 +4,7 @@
   <% unless except.include?(:index) %>
   get:
     tags:
-      - "Scaffolding/Completely Concrete/Tangible Things"
+      - Scaffolding::CompletelyConcrete::TangibleThing
     summary: "List Tangible Things"
     operationId: listScaffoldingCompletelyConcreteTangibleThings
     parameters:
@@ -12,7 +12,7 @@
         in: path
         required: true
         schema:
-          type: string
+          type: integer
       - $ref: "#/components/parameters/after"
     responses:
       "404":
@@ -30,11 +30,13 @@
               type: array
               items:
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+            example:
+              🚅 get_examples
   <% end %>
   <% unless except.include?(:create) %>
   post:
     tags:
-      - "Scaffolding/Completely Concrete/Tangible Things"
+      - Scaffolding::CompletelyConcrete::TangibleThing
     summary: "Create Tangible Thing"
     operationId: createScaffoldingCompletelyConcreteTangibleThings
     parameters:
@@ -42,7 +44,7 @@
         in: path
         required: true
         schema:
-          type: string
+          type: integer
     requestBody:
       description: "Information about a new Tangible Thing"
       required: true
@@ -54,6 +56,8 @@
               scaffolding_completely_concrete_tangible_thing:
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
+          example:
+            🚅 post_parameters
     responses:
       "404":
         description: "Not Found"
@@ -63,6 +67,8 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+            example:
+              🚅 post_example
   <% end %>
 <% end %>
 <% unless except.include?(:show) && except.include?(:update) && except.include?(:destroy) %>
@@ -70,7 +76,7 @@
   <% unless except.include?(:show) %>
   get:
     tags:
-      - "Scaffolding/Completely Concrete/Tangible Things"
+      - Scaffolding::CompletelyConcrete::TangibleThing
     summary: "Fetch Tangible Thing"
     operationId: getScaffoldingCompletelyConcreteTangibleThings
     parameters:
@@ -84,11 +90,13 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+            example:
+              🚅 get_example
   <% end %>
   <% unless except.include?(:update) %>
   put:
     tags:
-      - "Scaffolding/Completely Concrete/Tangible Things"
+      - Scaffolding::CompletelyConcrete::TangibleThing
     summary: "Update Tangible Thing"
     operationId: updateScaffoldingCompletelyConcreteTangibleThings
     parameters:
@@ -104,6 +112,8 @@
               scaffolding_completely_concrete_tangible_thing:
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParameters"
+          example:
+            🚅 put_parameters
     responses:
       "404":
         description: "Not Found"
@@ -113,11 +123,13 @@
           application/json:
             schema:
               $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+            example:
+              🚅 put_example
   <% end %>
   <% unless except.include?(:destroy) %>
   delete:
     tags:
-      - "Scaffolding/Completely Concrete/Tangible Things"
+      - Scaffolding::CompletelyConcrete::TangibleThing
     summary: "Remove Tangible Thing"
     operationId: removeScaffoldingCompletelyConcreteTangibleThings
     parameters:

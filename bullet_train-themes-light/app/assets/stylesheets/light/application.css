@@ -8,18 +8,7 @@
 @import './devise';
 @import './fields';
 @import './turn';
-
-/* TODO We should be able to do this in Tailwind CSS. */
-.hover-indent-child {
-  .indent-child {
-    transition: transform 0.2s ease;
-  }
-  &:hover {
-    .indent-child {
-      transform:translateX(8px);
-    }
-  }
-}
+@import './docs';
 
 form.button_to {
   @apply inline-block;
@@ -33,3 +22,9 @@ form.button_to {
 
 /* hide the first breadcrumb chevron */
 ol.breadcrumb li:first-child svg { display: none; }
+
+/* Override Turbo's progress bar color with the application's theme. */
+.turbo-progress-bar {
+  height: 5px;
+  @apply bg-primary-500;
+}

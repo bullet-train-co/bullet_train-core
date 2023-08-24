@@ -24,7 +24,7 @@ If you need to modify behavior in these framework-provided classes or modules, s
 
 Even in vanilla Rails development, when you're looking at a view file, the path you see passed to a `render` call isn't the actual file name of the partial that will be rendered. This is even more true in Bullet Train where certain partial paths are [magically served from theme gems](/docs/themes.md).
 
-`bin/resolve` makes it easy to figure out where where a partial is being served from:
+`bin/resolve` makes it easy to figure out where a partial is being served from:
 
 ```
 bin/resolve shared/box
@@ -61,13 +61,15 @@ Would you like to open `/Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/
 y
 ```
 
-You may also want to consider using `bin/develop`, which will clone the Bullet Train package of your choice to `local/` within your main application's root directory. Running this command will also automatically link the package to your main application and open it in the code editor for you, so you can start using the cloned repository and make changes to your main application right away.
+You may also want to consider using `bin/hack`, which will clone the Bullet Train core packages to `local/bullet_train-core` within your main application's root directory. Running this command will also automatically link the packages to your main application and open bullet_train-core in the code editor for you, so you can start using the cloned repository and make changes to your main application right away.
+
+To revert back to using the original gems, run `bin/hack --reset`. You can link up to your local packages at any time with `bin/hack --link`.
 
 Note that in the example above, the view in question isn't actually coming from the application repository. Instead, it's being included from the `bullet_train-themes-light` package. For further instructions on how to customize it, see [Overriding Framework Defaults](/docs/overriding.md).
 
 ### Drilling Down on Translation Keys
 
-Even in vanilla Rails applications, extracting strings from view files into I18N translation YAML files introduces a layer of indirection. Bullet Train tries to improve the resulting DX with a couple tools that make it easier to figure out where a translation you see in your browser is coming from.
+Even in vanilla Rails applications, extracting strings from view files into I18n translation YAML files introduces a layer of indirection. Bullet Train tries to improve the resulting DX with a couple of tools that make it easier to figure out where a translation you see in your browser is coming from.
 
 #### Show Translation Keys in the Browser with `?show_locales=true`
 
@@ -75,11 +77,15 @@ You can see the full translation key of any string on the page by adding `?show_
 
 #### Log Translation Keys to the Console with `?log_locales=true`
 
-You can also log all the translation key for anything being rendered to the console by adding `?log_locales=true` to the request URL. This can make it easier to copy and paste translation keys for strings that are rendered in non-selectable UI elements.
+You can also log all the translation keys for anything being rendered to the console by adding `?log_locales=true` to the request URL. This can make it easier to copy and paste translation keys for strings that are rendered in non-selectable UI elements.
+
+#### Eject all Translations to your Application
+
+Run `rake bullet_train:themes[eject]` to put all of Bullet Train's core locales into your repository. Then you can sift through the files to keep the ones you want to customize, and remove the ones you don't need.
 
 #### Resolving Translation Keys with `bin/resolve`
 
-Once you have the full I18N translation key, you can use `bin/resolve` to figure out which package and file it's coming from. At that point, if you need to customize it, you can also use the `--eject` option to copy the  the framework for customization in your local application:
+Once you have the full I18n translation key, you can use `bin/resolve` to figure out which package and file it's coming from. At that point, if you need to customize it, you can also use the `--eject` option to copy the framework for customization in your local application:
 
 ```
 bin/resolve en.account.onboarding.user_details.edit.header --eject --open

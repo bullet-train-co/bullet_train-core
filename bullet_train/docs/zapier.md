@@ -4,7 +4,7 @@ Bullet Train provides out-of-the-box support for Zapier. New Bullet Train projec
 ## Background
 Zapier was designed to take advantage of an application's existing [REST API](/docs/api.md), [outgoing webhook capabilities](/docs/webhooks/outgoing.md), and OAuth2 authorization workflows. Thankfully for us, Bullet Train provides the first two and pre-configures Doorkeeper to provide the latter. We also have a smooth OAuth2 connection workflow that accounts for the mismatch between user-based OAuth2 and team-based multitenancy.
 
-## Prerequitesites
+## Prerequisites
  - You must be developing in an environment with [tunneling enabled](/docs/tunneling.md).
 
 ## Getting Started in Development

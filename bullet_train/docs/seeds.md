@@ -6,7 +6,7 @@ Bullet Train introduces a new, slightly different expectation for Rails seed dat
 
 This is different than the Rails default, [as evidenced by the Rails example](https://guides.rubyonrails.org/v6.1.1/active_record_migrations.html#migrations-and-seed-data) which uses `Product.create`:
 
-```
+```ruby
 5.times do |i|
   Product.create(name: "Product ##{i}", description: "A product.")
 end
@@ -16,7 +16,7 @@ end
 
 In Bullet Train applications, you would implement that same `db/seeds.rb` logic like so:
 
-```
+```ruby
 5.times do |i|
   Product.find_or_create_by(name: "Product ##{i}") do |product|
     # this only happens if on a `create`.
@@ -29,7 +29,7 @@ end
 We do this so Bullet Train applications can re-use the logic in `db/seeds.rb` for three purposes:
 
 1. Set up new local development environments.
-2. Ensure the test suite has the same configuration for features whose configuration is backed by Active Record (e.g. [subscriptions](/docs/subscriptions.md) and [outgoing webhooks](/docs/webhooks/outgoing.md)).
+2. Ensure the test suite has the same configuration for features whose configuration is backed by Active Record (e.g. [outgoing webhooks](/docs/webhooks/outgoing.md)).
 3. Ensure any updates to the baseline configuration that have been tested both locally and in CI are the exact same updates being executed in production upon deploy.
 
 This makes `db/seeds.rb` a single source of truth for this sort of baseline data, instead of having this concern spread and sometimes duplicated across `db/seeds.rb`, `db/migrations/*`, and `test/fixtures`.
@@ -39,7 +39,7 @@ In some cases, you may have core seed data like roles that needs to exist in eve
 
 Then in `db/seeds.rb`, you can load all of the shared core seed data at the beginning of `db/seeds.rb` and then load the environment-specific seeds only when you've specified one of those environments.
 
-```
+```ruby
 load "#{Rails.root}/db/seeds/development.rb" if Rails.env.development?
 load "#{Rails.root}/db/seeds/test.rb" if Rails.env.test?
 ```

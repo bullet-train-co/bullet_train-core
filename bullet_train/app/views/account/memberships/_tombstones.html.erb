@@ -1,13 +1,13 @@
 <% context ||= @team %>
 <% hide_actions ||= false %>
 
-<%= render 'account/shared/box' do |p| %>
-  <% p.content_for :title, t("memberships.tombstones.contexts.#{context.class.name.underscore}.header") %>
-  <% p.content_for :description do %>
+<%= render 'account/shared/box' do |box| %>
+  <% box.title t("memberships.tombstones.contexts.#{context.class.name.underscore}.header") %>
+  <% box.description do %>
     <%= raw t("memberships.tombstones.contexts.#{context.class.name.underscore}.#{memberships.any? ? 'description' : 'description_empty'}") %>
   <% end %>
 
-  <% p.content_for :body do %>
+  <% box.body do %>
     <% if memberships.any? %>
       <table class="table">
         <thead>

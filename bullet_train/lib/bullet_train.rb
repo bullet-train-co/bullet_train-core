@@ -13,6 +13,7 @@ require "colorizer"
 require "bullet_train/core_ext/string_emoji_helper"
 
 require "devise"
+require "xxhash"
 # require "devise-two-factor"
 # require "rqrcode"
 require "cancancan"
@@ -32,6 +33,7 @@ require "commonmarker"
 require "extended_email_reply_parser"
 require "pagy"
 require "devise/pwned_password"
+require "openai"
 
 module BulletTrain
   mattr_accessor :routing_concerns, default: []
@@ -40,20 +42,17 @@ module BulletTrain
   mattr_accessor :base_class, default: "ApplicationRecord"
 
   def self.configure
-    if block_given?
-      yield(BulletTrain::Configuration.default)
-    else
-      BulletTrain::Configuration.default
-    end
+    config = BulletTrain::Configuration.instance
+    yield(config) if block_given?
   end
 end
 
 def default_url_options_from_base_url
   unless ENV["BASE_URL"].present?
     if Rails.env.development?
-      ENV["BASE_URL"] ||= "http://localhost:3000"
+      ENV["BASE_URL"] = "http://localhost:3000"
     else
-      raise "you need to define the value of ENV['BASE_URL'] in your environment. if you're on heroku, you can do this with `heroku config:add BASE_URL=https://your-app-name.herokuapp.com` (or whatever your configured domain is)."
+      return {}
     end
   end
 
@@ -71,12 +70,16 @@ def default_url_options_from_base_url
   default_url_options
 end
 
+def heroku?
+  ENV["PATH"]&.include?("/app/.heroku/")
+end
+
 def inbound_email_enabled?
   ENV["INBOUND_EMAIL_DOMAIN"].present?
 end
 
 def billing_enabled?
-  defined?(BulletTrain::Billing)
+  ENV["STRIPE_SECRET_KEY"].present? && defined?(BulletTrain::Billing)
 end
 
 # TODO This should be in an initializer or something.
@@ -98,12 +101,20 @@ def webhooks_enabled?
   true
 end
 
+def hide_things?
+  ActiveModel::Type::Boolean.new.cast(ENV["HIDE_THINGS"])
+end
+
+def hide_examples?
+  ActiveModel::Type::Boolean.new.cast(ENV["HIDE_EXAMPLES"])
+end
+
 def scaffolding_things_disabled?
-  ENV["HIDE_THINGS"].present? || ENV["HIDE_EXAMPLES"].present?
+  hide_things? || hide_examples?
 end
 
 def sample_role_disabled?
-  ENV["HIDE_EXAMPLES"].present?
+  hide_examples?
 end
 
 def demo?
@@ -115,7 +126,7 @@ def cloudinary_enabled?
 end
 
 def two_factor_authentication_enabled?
-  ENV["TWO_FACTOR_ENCRYPTION_KEY"].present?
+  Rails.application.credentials.active_record_encryption&.primary_key.present?
 end
 
 # Don't redefine this if an application redefines it locally.
@@ -146,4 +157,16 @@ end
 
 def silence_logs?
   ENV["SILENCE_LOGS"].present?
+end
+
+def openai_enabled?
+  ENV["OPENAI_ACCESS_TOKEN"].present?
+end
+
+def openai_organization_exists?
+  ENV["OPENAI_ORGANIZATION_ID"]
+end
+
+def disable_developer_menu?
+  ENV["DISABLE_DEVELOPER_MENU"].present?
 end

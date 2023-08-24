@@ -1,0 +1,10 @@
+<%= stylesheet_link_tag "application" %>
+<%= javascript_include_tag "application" %>
+
+<script>
+  const color = "<%= BulletTrain::Themes::Light.color %>"
+  const secondaryColor = "<%= BulletTrain::Themes::Light.secondary_color %>"
+
+  if (color) document.documentElement.classList.add(`theme-${color}`)
+  if (secondaryColor) document.documentElement.classList.add(`theme-secondary-${secondaryColor}`)
+</script>

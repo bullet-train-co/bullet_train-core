@@ -13,6 +13,12 @@ rescue LoadError
   # Devise isn't in the Gemfile, and we don't have any other load order dependencies.
 end
 
+begin
+  # Similarly we need to hoist showcase-rails, so our view paths can override Showcase.
+  require "showcase-rails"
+rescue LoadError
+end
+
 module BulletTrain
   class Engine < ::Rails::Engine
   end

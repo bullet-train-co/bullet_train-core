@@ -10,7 +10,7 @@ When it comes to object-oriented classes, wholesale copying framework files into
 
 For this reason, common points of extension like framework-provided models and controllers actually exist as a kind of "stub" in the local repository, but include their base functionality from framework-provided concerns, like so:
 
-```
+```ruby
 class User < ApplicationRecord
   include Users::Base
 
@@ -18,4 +18,4 @@ class User < ApplicationRecord
 end
 ```
 
-In this case, for most customizations or extensions you would want to make, you don't need to eject `Users::Core` into your local repository. Instead, you can simply re-define methods from that concern in your local `User` model after the inclusion of the concern.
+In this case, for most customizations or extensions you would want to make, you don't need to eject `Users::Base` into your local repository. Instead, you can simply re-define methods from that concern in your local `User` model after the inclusion of the concern.

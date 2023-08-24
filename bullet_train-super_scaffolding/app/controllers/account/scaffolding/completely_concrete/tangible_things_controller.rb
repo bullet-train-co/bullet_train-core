@@ -26,7 +26,7 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   def create
     respond_to do |format|
       if @tangible_thing.save
-        format.html { redirect_to [:account, @absolutely_abstract_creative_concept, :completely_concrete_tangible_things], notice: I18n.t("scaffolding/completely_concrete/tangible_things.notifications.created") }
+        format.html { redirect_to [:account, @tangible_thing], notice: I18n.t("scaffolding/completely_concrete/tangible_things.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @tangible_thing] }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -68,7 +68,6 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   def process_params(strong_params)
     # 🚅 skip this section when scaffolding.
     assign_boolean(strong_params, :boolean_button_value)
-    assign_date_and_time(strong_params, :date_and_time_field_value)
     assign_checkboxes(strong_params, :multiple_button_values)
     assign_checkboxes(strong_params, :multiple_option_values)
     assign_select_options(strong_params, :multiple_super_select_values)

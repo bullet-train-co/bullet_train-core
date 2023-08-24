@@ -3,7 +3,7 @@ require "scaffolding/block_manipulator"
 # TODO: If we move this and the BlockManipulator into their own gems,
 # we can probably call these methods with something shorter without `Scaffolding::`.
 module Scaffolding::FileManipulator
-  def self.find(lines, needle, within = nil)
+  def self.find(lines, needle, within = 0)
     lines_within(lines, within).each_with_index do |line, line_number|
       return (within + (within ? 1 : 0) + line_number) if line.match?(needle)
     end
@@ -15,11 +15,6 @@ module Scaffolding::FileManipulator
     lines[(within + 1)..(Scaffolding::BlockManipulator.find_block_end(starting_from: within, lines: lines) + 1)]
   end
 
-  # TODO I was running into an error in a downstream application where it couldn't find silence_logs? We should implement it in this package.
-  def self.silence_logs?
-    ENV["SILENCE_LOGS"].present?
-  end
-
   def self.replace_line_in_file(file, content, in_place_of, options = {})
     begin
       target_file_content = File.read(file)
@@ -28,7 +23,7 @@ module Scaffolding::FileManipulator
       return false
     end
 
-    if target_file_content.include?(content)
+    if options[:content_replacement_transformed] && target_file_content.include?(content)
       puts "No need to update '#{file}'. It already has '#{content}'."
     else
       puts "Updating '#{file}'." unless silence_logs?

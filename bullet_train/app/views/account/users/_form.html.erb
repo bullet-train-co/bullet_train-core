@@ -13,11 +13,13 @@
         <%= render 'shared/fields/text_field', method: :last_name %>
       </div>
 
-      <% if cloudinary_enabled? %>
-        <div class="sm:col-span-2">
+      <div class="sm:col-span-2">
+        <% if cloudinary_enabled? %>
           <%= render 'shared/fields/cloudinary_image', method: :profile_photo_id %>
-        </div>
-      <% end %>
+        <% else %>
+          <%= render 'shared/fields/file_field', method: :profile_photo %>
+        <% end %>
+      </div>
 
       <div class="sm:col-span-2">
         <%= render 'shared/fields/super_select', method: :time_zone,

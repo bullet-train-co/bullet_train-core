@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::Themes::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train-themes"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-themes"
   spec.summary = "Bullet Train Themes"
   spec.description = spec.summary
   spec.license = "MIT"

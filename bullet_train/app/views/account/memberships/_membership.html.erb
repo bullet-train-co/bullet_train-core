@@ -8,7 +8,7 @@
       <div class="ml-3">
         <span class="group-hover:underline"><%= membership.label_string %></span>
         <% if membership.unclaimed? %>
-          <span class="ml-1.5 px-2 inline-flex text-xs text-green-dark bg-green-light border border-green-dark rounded-md">
+          <span class="ml-1.5 px-2 inline-flex text-xs text-green-800 bg-green-light border border-green-800 rounded-md">
             Invited
           </span>
         <% end %>
@@ -24,6 +24,9 @@
     <% end %>
   </td>
   <td class="text-right">
+    <% if membership.unclaimed? %>
+      <%= button_to t('.buttons.resend'), resend_account_invitation_path(membership.invitation.uuid), class: 'button-secondary button-smaller' %>
+    <% end %>
     <%= link_to t('.buttons.show'), [:account, membership], class: 'button-secondary button-smaller' %>
   </td>
 </tr>
