@@ -1,7 +1,7 @@
 module BulletTrain
   class Configuration
     include Singleton
-    attr_accessor :strong_passwords, :enable_bulk_invitations
+    attr_accessor :strong_passwords, :enable_bulk_invitations, :incoming_webhooks_parent_class_name
 
     @@config = nil
 
@@ -11,6 +11,7 @@ module BulletTrain
       # Default values
       @strong_passwords = true
       @enable_bulk_invitations = false
+      @incoming_webhooks_parent_class_name = "ApplicationRecord"
     end
 
     class << self
@@ -20,6 +21,10 @@ module BulletTrain
 
       def enable_bulk_invitations
         @@config&.enable_bulk_invitations
+      end
+
+      def incoming_webhooks_parent_class_name
+        @@config&.incoming_webhooks_parent_class_name
       end
     end
   end
