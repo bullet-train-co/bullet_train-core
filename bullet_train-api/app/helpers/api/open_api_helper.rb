@@ -60,7 +60,7 @@ module Api
       }.merge(locals))
 
       schema_json = jbuilder.json(
-        model.new,
+        FactoryBot.example(model.model_name.param_key.to_sym) || model.new,
         title: I18n.t("#{model.name.underscore.pluralize}.label"),
         # TODO Improve this. We don't have a generic description for models we can use here.
         description: I18n.t("#{model.name.underscore.pluralize}.label"),
@@ -92,7 +92,8 @@ module Api
 
         parameters_output = JSON.parse(schema_json)
         parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
-        parameters_output["properties"].select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
+        parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
+        parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
 
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
