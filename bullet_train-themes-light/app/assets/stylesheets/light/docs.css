@@ -1,0 +1,45 @@
+#bt-docs-content h1,
+#bt-docs-content h2,
+#bt-docs-content h3,
+#bt-docs-content h4,
+#bt-docs-content h5,
+#bt-docs-content h6{
+  position: relative;
+  margin-left: -1.2em;
+  padding-left: 1.2em;
+}
+#bt-docs-content h1 a,
+#bt-docs-content h2 a,
+#bt-docs-content h3 a,
+#bt-docs-content h4 a,
+#bt-docs-content h5 a,
+#bt-docs-content h6 a{
+  text-decoration: none;
+  display: none;
+  position: absolute;
+  float:left;
+  margin-left:-1.2em;
+  line-height: 1;
+  width: 1em;
+  height: 100%;
+}
+
+#bt-docs-content h1 a::before,
+#bt-docs-content h2 a::before,
+#bt-docs-content h3 a::before,
+#bt-docs-content h4 a::before,
+#bt-docs-content h5 a::before,
+#bt-docs-content h6 a::before{
+  content: "🔗";
+}
+
+#bt-docs-content h1:hover a,
+#bt-docs-content h2:hover a,
+#bt-docs-content h3:hover a,
+#bt-docs-content h4:hover a,
+#bt-docs-content h5:hover a,
+#bt-docs-content h6:hover a{
+  display: flex;
+  justify-content: center; /* Align horizontal */
+  align-items: center; /* Align vertical */
+}
