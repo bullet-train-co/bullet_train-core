@@ -10,6 +10,7 @@ module BulletTrain
 
       # Default values
       @strong_passwords = true
+      @incoming_webhooks_parent_class_name = "ApplicationRecord"
     end
 
     class << self
