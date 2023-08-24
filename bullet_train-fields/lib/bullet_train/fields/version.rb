@@ -1,5 +1,5 @@
 module BulletTrain
   module Fields
-    VERSION = "1.3.14"
+    VERSION = "1.3.15"
   end
 end
