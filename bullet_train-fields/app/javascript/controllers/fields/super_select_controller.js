@@ -11,6 +11,7 @@ export default class extends Controller {
     acceptsNew: Boolean,
     enableSearch: Boolean,
     searchUrl: String,
+    select2Options: String,
   }
   
   // will be reissued as native dom events name prepended with '$' e.g. '$change', '$select2:closing', etc
@@ -26,6 +27,11 @@ export default class extends Controller {
 
   get isSelect2LoadedOnWindowJquery() {
     return window?.$?.fn?.select2 !== undefined
+  }
+
+  get optionsOverride() {
+    if (!this.hasSelect2OptionsValue) { return {} }
+    return this.select2OptionsValue
   }
 
   connect() {
@@ -65,13 +71,16 @@ export default class extends Controller {
           }
           return query
         }
-        // Any additional params go here...
       }
     }
 
     options.templateResult = this.formatState;
     options.templateSelection = this.formatState;
     options.width = 'style';
+
+    // Merge in custom options.
+    const custom_options = Object.keys(this.optionsOverride).length > 0 ? JSON.parse(this.optionsOverride) : {}
+    options = {...options, ...custom_options}
 
     this.cleanupBeforeInit() // in case improperly torn down
     this.pluginMainEl = this.selectTarget // required because this.selectTarget is unavailable on disconnect()

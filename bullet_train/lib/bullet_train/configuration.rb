@@ -1,15 +1,26 @@
 module BulletTrain
   class Configuration
-    attr_accessor :strong_passwords
+    include Singleton
+    attr_accessor :strong_passwords, :incoming_webhooks_parent_class_name
 
-    @default = Configuration.new
+    @@config = nil
 
     def initialize
-      self.strong_passwords = true
+      @@config = self
+
+      # Default values
+      @strong_passwords = true
+      @incoming_webhooks_parent_class_name = "ApplicationRecord"
     end
 
     class << self
-      attr_reader :default
+      def strong_passwords
+        @@config&.strong_passwords
+      end
+
+      def incoming_webhooks_parent_class_name
+        @@config&.incoming_webhooks_parent_class_name
+      end
     end
   end
 end

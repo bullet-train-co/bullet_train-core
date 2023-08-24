@@ -72,7 +72,6 @@ module Api::Controllers::Base
     end
 
     # TODO Remove this rescue once workspace clusters can write to this column on the identity server.
-    # TODO Make this logic configurable so that downstream developers can write different methods for this column getting updated.
     if doorkeeper_token
       begin
         doorkeeper_token.update(last_used_at: Time.zone.now)
@@ -88,6 +87,10 @@ module Api::Controllers::Base
   def current_team
     # Application agents are users but only have one team.
     current_user&.teams&.first
+  end
+
+  def current_membership
+    current_user.memberships.where(team: current_team).first
   end
 
   def collection_variable

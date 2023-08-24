@@ -5,10 +5,15 @@ STARTER_REPO_BRANCH="main"
 
 # Look for a matching branch on the starter repository when running tests on CircleCI.
 CI_BRANCH=$CIRCLE_BRANCH
-if [[ -v CI_BRANCH ]]; then
-  BRANCH_RESPONSE=$(curl --head -H "Accept: application.vnd.github+json" https://api.github.com/repos/bullet-train-co/bullet_train/branches/$CI_BRANCH)
+if [[ -v CI_BRANCH ]]
+then
+  BRANCH_RESPONSE=$(curl --verbose -H "Accept: application.vnd.github+json" https://api.github.com/repos/bullet-train-co/bullet_train/branches/$CI_BRANCH)
 
-  if echo $BRANCH_RESPONSE | grep "200"; then
+  echo "Branch response ===================="
+  echo $BRANCH_RESPONSE
+
+  # If the branch is missing in the repo the response will not contain the branch name
+  if echo $BRANCH_RESPONSE | grep "$CIRCLE_BRANCH"; then
     STARTER_REPO_BRANCH=$CI_BRANCH
   fi
 fi
@@ -16,6 +21,7 @@ fi
 echo "Cloning from ${STARTER_REPO_BRANCH}..."
 git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
 
+# TODO: Maybe generate this list automatically based on the subdirectories in core that contain a .gemspec?
 packages=(
   "bullet_train"
   "bullet_train-api"
@@ -47,3 +53,59 @@ done
 
 updates="${packages[@]}"
 bundle lock --update $updates
+
+packages=(
+  "bullet_train"
+  "bullet_train-sortable"
+)
+
+echo "yalc dir ======"
+npx yalc dir
+
+starting_dir=$PWD
+
+for package in "${packages[@]}"
+do
+  :
+  npm_package=${package/_/-}
+  echo "linking package: $package"
+  echo "npm package: $npm_package"
+
+  cd ../../$package
+  yarn install
+  yarn build
+  npx yalc publish
+
+  cd $starting_dir
+  npx yalc add @bullet-train/$npm_package
+done
+
+
+# For some reason the fields package is called bullet-train/field and doesn't match the pattern for other packages.
+# If it did match other packages it would be   bullet-train/bullet-train-fields.
+# Since it's different we have to treat it special. It would be nice to standardize, but that's likely to have
+# impacts beyond just fixing CI, so I'm doing the messy thing for now.
+
+package="bullet_train-fields"
+npm_package="fields"
+echo "linking package: $package"
+echo "npm package: $npm_package"
+
+cd ../../$package
+yarn install
+yarn build
+npx yalc publish
+
+cd $starting_dir
+npx yalc add @bullet-train/$npm_package
+
+
+cat package.json
+
+
+# We do this here becausue the  node/install-packages step complains about
+# needing to modify the lock file.
+
+yarn install
+
+

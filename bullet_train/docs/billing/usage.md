@@ -6,7 +6,7 @@ Bullet Train provides a holistic method for defining model-based usage limits in
 
 ### 1. Purchase Bullet Train Pro
 
-First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to way a little to receive your keys.
+First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to wait a little to receive your keys.
 
 ### 2. Install the Package
 
@@ -51,21 +51,21 @@ There are two concerns that need to be added to your application models.
 
 The first concern is `Billing::UsageSupport` and it allows tracking of usage of verbs on the models you want to support tracking usage on. It is recommended to add this capability to all models, so you can add this.
 
-```
+```ruby
 # app/models/application_record.rb
 
 class ApplicationRecord
-  include Billing::Usage
+  include Billing::UsageSupport
 end
 ```
 
-The second concern is `Billing::HasTrackers` and it allows any model to hold the usage tracking. This is usually done on the `Team` model.
+The second concern is `Billing::Usage::HasTrackers` and it allows any model to hold the usage tracking. This is usually done on the `Team` model.
 
-```
+```ruby
 # app/models/team.rb
 
 class Team
-  include Billing::HasTrackers
+  include Billing::Usage::HasTrackers
 end
 ```
 
@@ -191,7 +191,7 @@ current_limits.exhausted?(Blogs::Post, :soft)
 
 If you want to present an error or warning to the user based on their usage, there themed alert partials that can be displayed in your views. These partials can be rendered via the path `shared/limits/error` and `shared/limits/warning` respectively.
 
-```ruby
+```erb
 <%= render "shared/limits/warning", model: model.class %>
 
 <%= render "shared/limits/error", action: :create, model: model.class, count: 1, cancel_path: cancel_path %>

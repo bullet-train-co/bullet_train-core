@@ -39,7 +39,9 @@ module FactoryBot
       objects
     end
 
-    %i[get_examples get_example post_examples post_parameters put_example put_parameters patch_example patch_parameters].each do |method|
+    REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
+
+    REST_METHODS.each do |method|
       define_method(method) do |model, **options|
         _path_examples(method.to_s, model, **options)
       end
@@ -48,16 +50,13 @@ module FactoryBot
     private
 
     def factory(model)
-      # TODO Why do we sometimes get a real object here and sometimes just a model name as a symbol?
-      unless model.is_a?(String)
-        model = model.name.underscore.tr("/", "_").to_sym
-      end
-
       factories = FactoryBot.factories.instance_variable_get(:@items).keys
       factories.include?("#{model}_example") ? "#{model}_example".to_sym : model
     end
 
     def reset_tables!
+      # This is only availble for postgres
+      return unless ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
       @tables_to_reset.each do |name|
         ActiveRecord::Base.connection.reset_pk_sequence!(name) if ActiveRecord::Base.connection.table_exists?(name)
       end
@@ -72,8 +71,17 @@ module FactoryBot
           clone.send("#{name}=", associations)
           @tables_to_reset << name
         elsif %i[belongs_to has_one].include?(reflection.macro)
-          clone.send("#{name}=", instance.send(name).clone)
-          @tables_to_reset << name.pluralize
+          # Calling e.g. address.team= throws an error,
+          # if address has_one team through person
+          # and person has_one team through company
+          # and company belongs_to team
+          # so the resulting error will be caught here and a warning logged.
+          begin
+            clone.send("#{name}=", instance.send(name).clone)
+            @tables_to_reset << name.pluralize
+          rescue ActiveRecord::HasOneThroughNestedAssociationsAreReadonly
+            Rails.logger.warn("ExampleBot.deep_clone ignored setting #{name} of #{instance}")
+          end
         end
       end
 
@@ -91,7 +99,7 @@ module FactoryBot
       else
         template, class_name, var_name, values = _set_values("get_example", model)
 
-        unless %w[example examples].include?(method.split("_").last)
+        if method.end_with?("parameters")
           if has_strong_parameters?("::Api::#{version.upcase}::#{class_name.pluralize}Controller".constantize)
             strong_params_module = "::Api::#{version.upcase}::#{class_name.pluralize}Controller::StrongParameters".constantize
             strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(class_name.constantize, strong_params_module).report
@@ -103,6 +111,9 @@ module FactoryBot
 
             parameters_output = JSON.parse(output)
             parameters_output&.select! { |key| strong_parameter_keys.include?(key.to_sym) }
+
+            # Wrapping the example as parameters should be wrapped with the model name:
+            parameters_output = {model.to_s => parameters_output}
 
             return indent(parameters_output.to_yaml.delete_prefix("---\n"), 6).html_safe
           end

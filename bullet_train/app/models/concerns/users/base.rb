@@ -2,6 +2,8 @@ module Users::Base
   extend ActiveSupport::Concern
 
   included do
+    attr_accessor :profile_photo_removal
+
     if two_factor_authentication_enabled?
       devise :two_factor_authenticatable, :two_factor_backupable
     else
@@ -9,7 +11,7 @@ module Users::Base
     end
 
     devise :omniauthable
-    devise :pwned_password if BulletTrain::Configuration.default.strong_passwords
+    devise :pwned_password if BulletTrain::Configuration.strong_passwords
     devise :registerable
     devise :recoverable
     devise :rememberable
@@ -27,6 +29,9 @@ module Users::Base
     # oauth providers
     has_many :oauth_stripe_accounts, class_name: "Oauth::StripeAccount" if stripe_enabled?
 
+    # Image uploading
+    has_one_attached :profile_photo
+
     # platform functionality.
     belongs_to :platform_agent_of, class_name: "Platform::Application", optional: true
 
@@ -35,6 +40,7 @@ module Users::Base
     validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.all.map(&:name)}, allow_nil: true
 
     # callbacks
+    after_validation :remove_profile_photo, if: :profile_photo_removal?
     after_update :set_teams_time_zone
   end
 
@@ -65,7 +71,7 @@ module Users::Base
   def create_default_team
     # This creates a `Membership`, because `User` `has_many :teams, through: :memberships`
     default_team = teams.create(name: I18n.t("teams.new.default_team_name"), time_zone: time_zone)
-    memberships.find_by(team: default_team).update role_ids: [Role.admin.id]
+    memberships.find_by(team: default_team).update(user_email: email, role_ids: [Role.admin.id])
     update(current_team: default_team)
   end
 
@@ -165,5 +171,13 @@ module Users::Base
     teams.where(time_zone: nil).each do |team|
       team.update(time_zone: time_zone) if team.users.count == 1
     end
+  end
+
+  def profile_photo_removal?
+    profile_photo_removal.present?
+  end
+
+  def remove_profile_photo
+    profile_photo.purge
   end
 end
