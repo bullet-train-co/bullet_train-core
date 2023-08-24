@@ -139,7 +139,7 @@ namespace :bullet_train do
             template: "api/#{@version}/open_api/index",
             layout: false,
             format: :text,
-            assigns: { version: @version }
+            assigns: {version: @version}
           )
         )
       end
