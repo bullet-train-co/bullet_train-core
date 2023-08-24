@@ -99,7 +99,7 @@ module FactoryBot
       else
         template, class_name, var_name, values = _set_values("get_example", model)
 
-        unless %w[example examples].include?(method.split("_").last)
+        if method.end_with?("parameters")
           if has_strong_parameters?("::Api::#{version.upcase}::#{class_name.pluralize}Controller".constantize)
             strong_params_module = "::Api::#{version.upcase}::#{class_name.pluralize}Controller::StrongParameters".constantize
             strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(class_name.constantize, strong_params_module).report
@@ -111,6 +111,9 @@ module FactoryBot
 
             parameters_output = JSON.parse(output)
             parameters_output&.select! { |key| strong_parameter_keys.include?(key.to_sym) }
+
+            # Wrapping the example as parameters should be wrapped with the model name:
+            parameters_output = {model.to_s => parameters_output}
 
             return indent(parameters_output.to_yaml.delete_prefix("---\n"), 6).html_safe
           end
