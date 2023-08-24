@@ -26,8 +26,8 @@ module Account::Onboarding::UserDetails::ControllerBase
 
         # Only redirect users to the bulk invitation page if they're the
         # one who created the team (meaning there's only one membership on the team).
-        if @user.details_provided? && @user.teams.first.memberships.size == 1
-          if bulk_invitations_enabled?
+        if @user.details_provided?
+          if bulk_invitations_enabled? && @user.teams.first.memberships.size == 1
             format.html { redirect_to new_account_onboarding_invitation_list_path(@user) }
           else
             format.html { redirect_to account_team_path(@user.teams.first), notice: "" }
