@@ -4,9 +4,18 @@
 
 <% if object.public_send(attribute).attached? %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-    <%= link_to url_for(object.public_send(attribute)), class: 'button download-file' do %>
-      <i class="leading-none mr-2 text-base ti ti-download"></i>
-      <span><%= t("global.file_fields.download") %></span>
+    <% if object.public_send(attribute).is_a?(ActiveStorage::Attached::Many) %>
+      <% object.public_send(attribute).blobs.each do |file| %>
+        <%= link_to url_for(file), class: 'button download-file' do %>
+          <i class="leading-none mr-2 text-base ti ti-download"></i>
+          <span><%= t("global.file_fields.download") %></span>
+        <% end %>
+      <% end %>
+    <% else %>
+      <%= link_to url_for(object.public_send(attribute)), class: 'button download-file' do %>
+        <i class="leading-none mr-2 text-base ti ti-download"></i>
+        <span><%= t("global.file_fields.download") %></span>
+      <% end %>
     <% end %>
   <% end %>
 <% end %>
