@@ -11,7 +11,7 @@ You should specifically sign up for a paid account. Although ngrok offers a free
 Once you have ngrok installed, you can start your tunnel like so, replacing `YOUR-SUBDOMAIN` with whatever subdomain you reserved in your ngrok account:
 
 ```
-ngrok http 3000 --subdomain=YOUR-SUBDOMAIN
+ngrok http --domain=YOUR-SUBDOMAIN 3000
 ```
 
 ## Updating Your Configuration
