@@ -157,7 +157,7 @@ class Scaffolding::Attribute
     when "text_area"
       "text"
     when "file_field"
-      "file"
+      "file#{"s" if is_multiple?}"
     when "password_field"
       "text"
     when "number_field"
