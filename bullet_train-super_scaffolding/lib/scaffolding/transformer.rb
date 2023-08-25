@@ -955,6 +955,9 @@ class Scaffolding::Transformer
         ].each do |file|
           if attribute.is_ids? || attribute.is_multiple?
             scaffold_add_line_to_file(file, "#{attribute.name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            if attribute.type == "file_field"
+              scaffold_add_line_to_file(file, "#{attribute.name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            end
           else
             scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
             if attribute.type == "file_field"
@@ -984,7 +987,11 @@ class Scaffolding::Transformer
           when "date_and_time_field"
             "assert_equal_or_nil DateTime.parse(tangible_thing_data['#{attribute.name}']), tangible_thing.#{attribute.name}"
           when "file_field"
-            "assert_equal tangible_thing_data['#{attribute.name}'], rails_blob_path(@tangible_thing.#{attribute.name}) unless controller.action_name == 'create'"
+            if attribute.is_multiple?
+              "assert_equal tangible_thing_data['#{attribute.name}'], @tangible_thing.#{attribute.name}.map{|file| rails_blob_path(file)} unless controller.action_name == 'create'"
+            else
+              "assert_equal tangible_thing_data['#{attribute.name}'], rails_blob_path(@tangible_thing.#{attribute.name}) unless controller.action_name == 'create'"
+            end
           else
             "assert_equal_or_nil tangible_thing_data['#{attribute.name}'], tangible_thing.#{attribute.name}"
           end
@@ -993,13 +1000,30 @@ class Scaffolding::Transformer
 
         # File fields are handled in a specific way when using the jsonapi-serializer.
         if attribute.type == "file_field"
-          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", "json.#{attribute.name} url_for(tangible_thing.#{attribute.name}) if tangible_thing.#{attribute.name}.attached?", RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
+          jbuilder_content = if attribute.is_multiple?
+            <<~RUBY
+              json.#{attribute.name} do 
+                json.array! tangible_thing.#{attribute.name}.map { |file| url_for(file)  }
+              end if tangible_thing.#{attribute.name}.attached?
+            RUBY
+          else
+            "json.#{attribute.name} url_for(tangible_thing.#{attribute.name}) if tangible_thing.#{attribute.name}.attached?"
+          end
+
+          scaffold_add_line_to_file("./app/views/api/v1/scaffolding/completely_concrete/tangible_things/_tangible_thing.json.jbuilder", jbuilder_content, RUBY_FILES_HOOK, prepend: true, suppress_could_not_find: true)
           # We also want to make sure we attach the dummy file in the API test on setup
           file_name = "./test/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller_test.rb"
-          content = <<~RUBY
-            @#{child.underscore}.#{attribute.name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
-            @another_#{child.underscore}.#{attribute.name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
-          RUBY
+          content = if attribute.is_multiple?
+            <<~RUBY
+              @#{child.underscore}.#{attribute.name} = [Rack::Test::UploadedFile.new("test/support/foo.txt")]
+              @another_#{child.underscore}.#{attribute.name} = [Rack::Test::UploadedFile.new("test/support/foo.txt")]
+            RUBY
+          else
+            <<~RUBY
+              @#{child.underscore}.#{attribute.name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
+              @another_#{child.underscore}.#{attribute.name} = Rack::Test::UploadedFile.new("test/support/foo.txt")
+            RUBY
+          end
           scaffold_add_line_to_file(file_name, content, RUBY_FILES_HOOK, prepend: true)
         end
 
@@ -1168,7 +1192,27 @@ class Scaffolding::Transformer
 
         case attribute.type
         when "file_field"
-          remove_file_methods =
+          remove_file_methods = if attribute.is_multiple?
+            <<~RUBY
+              def #{attribute.name}_removal?
+                #{attribute.name}_removal&.any?
+              end
+
+              def remove_#{attribute.name}
+                #{attribute.name}_attachments.where(id: #{attribute.name}_removal).map(&:purge)
+              end
+
+              def #{attribute.name}=(attachables)
+                attachables = Array(attachables).compact_blank
+            
+                if attachables.any?
+                  attachment_changes["#{name}"] =
+                    ActiveStorage::Attached::Changes::CreateMany.new("#{attribute.name}", self, #{attribute.name}.blobs + attachables)
+                end
+              end
+
+            RUBY
+          else
             <<~RUBY
               def #{attribute.name}_removal?
                 #{attribute.name}_removal.present?
@@ -1178,6 +1222,7 @@ class Scaffolding::Transformer
                 #{attribute.name}.purge
               end
             RUBY
+          end
 
           # Generating a model with an `attachment(s)` data type (i.e. - `rails g ModelName file:attachment`)
           # adds `has_one_attached` or `has_many_attached` to our model, just not directly above the
@@ -1473,14 +1518,24 @@ class Scaffolding::Transformer
 
       if top_level_model?
         icon_name = nil
-        if cli_options["sidebar"].present?
-          icon_name = cli_options["sidebar"]
+        if cli_options["navbar"].present?
+          icon_name = if cli_options["navbar"].match?(/^ti/)
+            "ti #{cli_options["navbar"]}"
+          elsif cli_options["navbar"].match?(/^fa/)
+            "fal #{cli_options["navbar"]}"
+          else
+            puts ""
+            puts "'#{cli_options["navbar"]}' is not a valid icon.".red
+            puts "Please refer to the Themify or Font Awesome documentation and pass the value like so:"
+            puts "--navbar=\"ti-world\""
+            exit
+          end
         else
           puts ""
           # TODO: Update this help text letting developers know they can Super Scaffold
           # models without a parent after the `--skip-parent` logic is implemented.
           puts "Hey, models that are scoped directly off of a Team are eligible to be added to the navbar."
-          puts "Do you want to add this resource to the sidebar menu? (y/N)"
+          puts "Do you want to add this resource to the navbar menu? (y/N)"
           response = $stdin.gets.chomp
           if response.downcase[0] == "y"
             puts ""

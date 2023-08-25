@@ -22,21 +22,49 @@ en:
         destroy_own: Are you sure you want to remove yourself from %{team_name}? You won't be able to undo this.
         reinvite: Are you sure you want to re-invite %{membership_name} to %{team_name}?
     fields: &fields
+      id:
+        _: &id Membership ID
+        label: *id
+        heading: *id
+      user_id:
+        name: &user_id User ID
+        heading: *user_id
+      team_id:
+        name: &team_id Team ID
+        heading: *team_id
+      invitation_id:
+        name: &invitation_id Invitation ID
+        heading: *invitation_id
       name:
-        _: &name Full Name
+        name: &name Full Name
         heading: *name
       user_first_name:
         name: &user_first_name First Name
         label: *user_first_name
+        heading: *user_first_name
       user_last_name:
         name: &user_last_name Last Name
         label: *user_last_name
+        heading: *user_last_name
       user_profile_photo_id:
         name: &user_profile_photo_id Profile Photo
         label: *user_profile_photo_id
       user_profile_photo:
         name: &user_profile_photo Profile Photo
         label: *user_profile_photo
+        heading: *user_profile_photo_id
+      user_email:
+        name: &user_email User Email
+        heading: *user_email
+      added_by_id:
+        name: &added_by_id Added by User ID
+        heading: *added_by_id
+      platform_agent_of_id:
+        name: &platform_agent_of_id Platform Agent of ID
+        heading: *platform_agent_of_id
+      platform_agent:
+        name: &platform_agent Platform Agent
+        heading: *platform_agent
       role_ids:
         name: &roles Special Privileges
         label: *roles
@@ -52,6 +80,12 @@ en:
             label: Editor
             description: Can edit all resources on this team and allow others to do the same.
         none: Viewer
+      created_at:
+        _: &created_at Created At
+        heading: *created_at
+      updated_at:
+        _: &updated_at Updated At
+        heading: *updated_at
     index:
       section: "%{team_name} Team Members"
       contexts:

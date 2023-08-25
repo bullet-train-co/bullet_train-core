@@ -71,7 +71,6 @@ class Account::Webhooks::Outgoing::DeliveriesController < Account::ApplicationCo
       # 🚅 super scaffolding will insert new arrays above this line.
     )
 
-    assign_date_and_time(strong_params, :delivered_at)
     # 🚅 super scaffolding will insert processing for new fields above this line.
 
     strong_params
