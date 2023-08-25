@@ -221,7 +221,7 @@ module BulletTrain
         # This addresses one specific file where the hierarchy is
         # different after the file is ejected into the main application.
         def adjust_directory_hierarchy(file_name, theme_name)
-          file_name.match?("lib/bullet_train/themes/#{theme_name}") ? file_name.gsub(/\/app/, "") : file_name
+          file_name.match?("lib/bullet_train/themes/#{theme_name}") ? file_name.gsub("/app", "") : file_name
         end
 
         # i.e. - foo_bar or foo-bar to FooBar

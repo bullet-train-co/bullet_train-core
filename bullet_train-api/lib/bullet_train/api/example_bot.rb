@@ -4,13 +4,13 @@ module FactoryBot
   module ExampleBot
     attr_accessor :tables_to_reset
 
-    def example(model, **options)
+    def example(model, **)
       @tables_to_reset = [model.to_s.pluralize]
 
       object = nil
 
       ActiveRecord::Base.transaction do
-        instance = FactoryBot.create(factory(model), **options)
+        instance = FactoryBot.create(factory(model), **)
         object = deep_clone(instance)
 
         raise ActiveRecord::Rollback
@@ -20,13 +20,13 @@ module FactoryBot
       object
     end
 
-    def example_list(model, quantity, **options)
+    def example_list(model, quantity, **)
       @tables_to_reset = [model.to_s.pluralize]
 
       objects = []
 
       ActiveRecord::Base.transaction do
-        instances = FactoryBot.create_list(factory(model), quantity, **options)
+        instances = FactoryBot.create_list(factory(model), quantity, **)
 
         instances.each do |instance|
           objects << deep_clone(instance)
