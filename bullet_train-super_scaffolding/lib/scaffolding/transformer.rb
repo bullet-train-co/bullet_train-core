@@ -1206,7 +1206,7 @@ class Scaffolding::Transformer
                 attachables = Array(attachables).compact_blank
             
                 if attachables.any?
-                  attachment_changes["#{name}"] =
+                  attachment_changes["#{attribute.name}"] =
                     ActiveStorage::Attached::Changes::CreateMany.new("#{attribute.name}", self, #{attribute.name}.blobs + attachables)
                 end
               end
