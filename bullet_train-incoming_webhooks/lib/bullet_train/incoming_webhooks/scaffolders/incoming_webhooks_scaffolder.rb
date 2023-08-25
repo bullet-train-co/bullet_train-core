@@ -30,7 +30,7 @@ module BulletTrain
           puts "     See http://bullettrain.co/docs/tunneling for more information.".yellow
           puts ""
           puts "2. Once you have a tunnel running, you can configure the provider to deliver webhooks to:".yellow
-          puts "     https://your-tunnel.ngrok.io/webhooks/incoming/#{provider_name.tableize}_webhooks".yellow
+          puts "     https://your-tunnel.ngrok.io/webhooks/incoming/#{provider_name.tableize.singularize}_webhooks".yellow
           puts ""
 
           transformer.restart_server
