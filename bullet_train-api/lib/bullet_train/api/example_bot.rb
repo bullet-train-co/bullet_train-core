@@ -16,8 +16,9 @@ module FactoryBot
         raise ActiveRecord::Rollback
       end
 
-      reset_tables!
       object
+    ensure
+      reset_tables!
     end
 
     def example_list(model, quantity, **)
@@ -35,8 +36,9 @@ module FactoryBot
         raise ActiveRecord::Rollback
       end
 
-      reset_tables!
       objects
+    ensure
+      reset_tables!
     end
 
     REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
@@ -55,8 +57,11 @@ module FactoryBot
     end
 
     def reset_tables!
-      # This is only availble for postgres
+      # This is only available for postgres
+      return unless @tables_to_reset.present?
+
       return unless ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
+
       @tables_to_reset.each do |name|
         ActiveRecord::Base.connection.reset_pk_sequence!(name) if ActiveRecord::Base.connection.table_exists?(name)
       end
