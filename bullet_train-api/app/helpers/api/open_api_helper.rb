@@ -33,9 +33,13 @@ module Api
       # There are some placeholders specific to this method that we still need to transform.
       model_symbol = model.name.underscore.tr("/", "_").to_sym
 
-      FactoryBot::ExampleBot::REST_METHODS.each do |method|
-        if (code = FactoryBot.send(method, model_symbol, version: @version))
-          output.gsub!("🚅 #{method}", code)
+      factory_path = "test/factories/#{model.model_name.collection}.rb"
+      cache_key = [model_symbol, File.ctime(factory_path)]
+      Rails.cache.fetch(cache_key) do
+        FactoryBot::ExampleBot::REST_METHODS.each do |method|
+          if (code = FactoryBot.send(method, model_symbol, version: @version))
+            output.gsub!("🚅 #{method}", code)
+          end
         end
       end
 
