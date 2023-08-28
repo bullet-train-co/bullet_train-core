@@ -125,19 +125,22 @@ module FactoryBot
     end
 
     def _set_values(method, model, count = 1)
+      model_name = ActiveRecord::Base.descendants.find { |klass| klass.model_name.param_key == model.to_s }&.model_name
+      factory_path = "test/factories/#{model_name.collection}.rb"
+
       if count > 1
-        values = FactoryBot.example_list(model, count)
-        class_name = values.first.class.name
-        var_name = class_name.demodulize.underscore.pluralize
+        cache_key = [:example_list, model_name.param_key, File.ctime(factory_path)]
+        values = Rails.cache.fetch(cache_key) { FactoryBot.example_list(model, count) }
+        var_name = model_name.element.pluralize
       else
-        values = FactoryBot.example(model)
-        class_name = values.class.name
-        var_name = class_name.demodulize.underscore
+        cache_key = [:example, model_name.param_key, File.ctime(factory_path)]
+        values = Rails.cache.fetch(cache_key) { FactoryBot.example(model) }
+        var_name = model_name.element
       end
 
       template = (method == "get_examples") ? "index" : "show"
 
-      [template, class_name, var_name, values]
+      [template, model_name.name, var_name, values]
     end
 
     def _json_output(template, version, class_name, var_name, values)
