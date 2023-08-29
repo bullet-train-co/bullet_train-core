@@ -135,8 +135,8 @@ module BulletTrain
           oauth_scaffold_add_line_to_file("./config/routes.rb", "resources :stripe_accounts if stripe_enabled?", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./config/routes.rb", "resources :stripe_installations if stripe_enabled?", "# 🚅 super scaffolding will insert new integration installations above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./Gemfile", "gem 'omniauth-stripe-connect'", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
-          oauth_scaffold_add_line_to_file("./lib/bullet_train.rb", "def stripe_enabled?\n  ENV['STRIPE_CLIENT_ID'].present? && ENV['STRIPE_SECRET_KEY'].present?\nend\n", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
-          oauth_scaffold_add_line_to_file("./lib/bullet_train.rb", "stripe_enabled?,", "# 🚅 super scaffolding will insert new oauth provider checks above this line.", options, prepend: true)
+          oauth_scaffold_add_line_to_file("./lib/bullet_train_oauth_scaffolder_support.rb", "def stripe_enabled?\n  ENV['STRIPE_CLIENT_ID'].present? && ENV['STRIPE_SECRET_KEY'].present?\nend\n", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
+          oauth_scaffold_add_line_to_file("./lib/bullet_train_oauth_scaffolder_support.rb", "stripe_enabled?,", "# 🚅 super scaffolding will insert new oauth provider checks above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./app/models/ability.rb", "if stripe_enabled?\n        can [:read, :create, :destroy], Oauth::StripeAccount, user_id: user.id\n        can :manage, Integrations::StripeInstallation, team_id: user.team_ids\n        can :destroy, Integrations::StripeInstallation, oauth_stripe_account: {user_id: user.id}\n      end\n", "# 🚅 super scaffolding will insert any new oauth providers above.", options, prepend: true)
 
           # find the database migration that defines this relationship.
