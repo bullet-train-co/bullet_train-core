@@ -27,7 +27,7 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     steps:
-      - checkout
+      - checkout:
         path: ~/project-gems
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
