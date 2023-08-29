@@ -22,7 +22,7 @@ else
 end
 
 wrapper_options = { data: { controller: stimulus_controller }}
-wrapper_options[:data]["#{stimulus_controller}-enable-search-value"] = true if other_options[:search]
+wrapper_options[:data]["#{stimulus_controller}-enable-search-value"] = true if (other_options[:search] || other_options[:accepts_new])
 wrapper_options[:data]["#{stimulus_controller}-accepts-new-value"] = true if other_options[:accepts_new]
 wrapper_options[:data]["#{stimulus_controller}-search-url-value"] = choices_url if choices_url.present?
 wrapper_options[:data]["#{stimulus_controller}-select2-options-value"] = select2_options.to_json if select2_options.present?
