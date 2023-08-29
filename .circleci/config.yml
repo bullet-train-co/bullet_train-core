@@ -28,16 +28,27 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
+        path: ~/project-gems
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
 
+      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
+      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
+      - run:
+          command: rm LICENSE.chromedriver
+
+      - run: ../../bin/checkout-and-link-starter-repo
+
       - ruby/install-deps:
           clean-bundle: true
-      - run: "yarn install"
+      - node/install-packages:
+          pkg-manager: yarn
+      - run: yarn build:css
+      - run: yarn build
       - *wait_for_docker
       - run:
           name: Run unit tests
-          command: bundle exec rails test
+          command: ../../bin/test-core-gems
 
   'Local Standard Ruby':
     docker:
@@ -149,7 +160,7 @@ workflows:
   version: 2
   build:
     jobs:
-      # - 'Local Minitest'
       - 'Local Standard Ruby'
+      - 'Local Minitest'
       - 'Starter Repo Minitest'
       - 'Starter Repo Minitest for Super Scaffolding'
