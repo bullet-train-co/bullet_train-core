@@ -87,21 +87,5 @@ module Records::Base
     end
   end
 
-  # TODO This should really be in the API package and included from there.
-  if defined?(BulletTrain::Api)
-    # We default this to the current version of the API, but developers can request a specific version.
-    def to_api_json(api_version = BulletTrain::Api.current_version_numeric)
-      controller = "Api::V#{api_version}::ApplicationController".constantize.new
-      # TODO We need to fix host names here.
-      controller.request = ActionDispatch::Request.new({})
-      local_class_key = self.class.name.underscore.split("/").last.to_sym
-
-      # Returns a hash, not string.
-      JbuilderTemplate.new(controller.view_context) do |json|
-        json.partial! "api/#{BulletTrain::Api.current_version}/#{self.class.name.underscore.pluralize}/#{local_class_key}", local_class_key => self
-      end.attributes!
-    end
-  end
-
   ActiveSupport.run_load_hooks :bullet_train_records_base, self
 end
