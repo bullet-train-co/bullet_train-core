@@ -4,7 +4,7 @@ When you're ready to deploy to Heroku, it's highly recommended you use this butt
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=http://github.com/bullet-train-co/bullet_train)
 
-This button leverages the configuration found in `app.json`, including sensible defaults for dyno formation, third-party services, buildpack configuration, etc.
+This button leverages the configuration found in `app.json`, including sensible production-ready defaults for dyno formation, third-party services, buildpack configuration, etc. The resources provisioned will cost about **$140/month**.
 
 ## What's Included?
 

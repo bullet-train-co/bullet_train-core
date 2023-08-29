@@ -8,6 +8,7 @@
 @import './devise';
 @import './fields';
 @import './turn';
+@import './docs';
 
 form.button_to {
   @apply inline-block;

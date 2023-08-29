@@ -20,6 +20,8 @@ module Records::Base
       include QuestionMethodsFromScopes
     end
 
+    include BulletTrain::Api::Attributes
+
     include CableReady::Updatable
     enable_cable_ready_updates
 

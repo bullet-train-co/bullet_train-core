@@ -1,4 +1,4 @@
-class Webhooks::Incoming::BulletTrainWebhook < ApplicationRecord
+class Webhooks::Incoming::BulletTrainWebhook < BulletTrain::Configuration.incoming_webhooks_parent_class_name.constantize
   include Webhooks::Incoming::Webhook
   include Rails.application.routes.url_helpers
 
