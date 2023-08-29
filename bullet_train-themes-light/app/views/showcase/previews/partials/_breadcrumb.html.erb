@@ -1,0 +1,15 @@
+<% showcase.sample "Basic" do %>
+  <ul>
+    <%= render "shared/breadcrumb", url: root_url, label: "Breadcrumb Link" %>
+    <%= render "shared/breadcrumb", label: "Unlinked label" %>
+  </ul>
+<% end %>
+
+<% showcase.sample "With model url_for" do %>
+  <%= render 'account/shared/breadcrumb', label: t('memberships.label'), url: [:account, current_team, :memberships] %>
+<% end %>
+
+<% showcase.options do |o| %>
+  <% o.required :label, "The breadcrumb text, either shown in the link or the plain label" %>
+  <% o.optional :url, "A URL string, e.g. root_url, or something that's passed to url_for.", type: [String, "Valid url_for argument", "nil"].join("\n") %>
+<% end %>

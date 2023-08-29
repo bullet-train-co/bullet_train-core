@@ -50,7 +50,7 @@ end
 
 ### Example Form
 
-```
+```erb
 <%= form.collection_select(:customer_id, @team.customers, :id, :name) %>
 ```
 
@@ -101,7 +101,7 @@ end
 
 If you're wondering what the connection between `validates :customer, scope: true` and `def valid_customers` is, it's just a convention that the former will call the latter based on the name of the attibute being validated. We've favored a full-blown method definition for this instead of simply passing in a proc into the validator because having a method allows us to also DRY up our form view to use the same definition of valid options, like so:
 
-```
+```erb
 <%= form.collection_select(:customer_id, form.object.valid_customers, :id, :name) %>
 ```
 

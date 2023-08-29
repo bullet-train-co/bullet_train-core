@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  unless Rails.env.production?
+    mount Showcase::Engine, at: "/docs/showcase" if defined?(Showcase::Engine)
+  end
+
   scope module: "public" do
     root to: "home#index"
     get "invitation" => "home#invitation", :as => "invitation"
@@ -33,6 +37,7 @@ Rails.application.routes.draw do
           member do
             get :accept
             post :accept
+            post :resend
           end
         end
 

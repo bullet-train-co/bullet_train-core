@@ -19,9 +19,15 @@ class Role < ActiveYaml::Base
     find_by_key("default")
   end
 
+  # Allow us to use either symbols or strings when searching
+  def self.find_by_key(key)
+    super(key.to_s)
+  end
+
   def self.includes(role_or_key)
-    role_key = role_or_key.is_a?(Role) ? role_or_key.key : role_or_key
+    role_key = role_or_key.is_a?(Role) ? role_or_key.key : role_or_key.to_s
     role = Role.find_by_key(role_key)
+    return [] if role.nil?
     return Role.all.select(&:assignable?) if role.default?
     result = []
     all.each do |role|
@@ -35,7 +41,7 @@ class Role < ActiveYaml::Base
   end
 
   def self.find(key)
-    all.find { |role| role.key == key }
+    all.find { |role| role.key == key.to_s }
   end
 
   # We don't want to ever use the automatically generated ids from ActiveYaml.  These are created based on the order of objects in the yml file

@@ -9,7 +9,6 @@ module BulletTrain
 
     mattr_reader :partial_paths, default: {}
 
-    # TODO Do we want this to be configurable by downstream applications?
     INVOCATION_PATTERNS = [
       # ❌ This path is included for legacy purposes, but you shouldn't reference partials like this in new code.
       /^account\/shared\//,

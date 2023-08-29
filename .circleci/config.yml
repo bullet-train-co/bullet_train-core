@@ -1,34 +1,11 @@
 version: 2.1
 orbs:
-  ruby: circleci/ruby@0.1.2
+  ruby: circleci/ruby@2.0.0
+  node: circleci/node@5.1.0
   browser-tools: circleci/browser-tools@1.4.1
-  jq: circleci/jq@2.2.0
 aliases:
-  - &restore_bundler_cache
-      name: Restore Bundler cache
-      keys:
-        - gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-        - gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-{{ .Branch }}-
-        - gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-
-        - gem-cache-v1-
-  - &restore_yarn_cache
-      name: Restore Yarn cache
-      keys:
-        - yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-        - yarn-packages-v1-{{ .Branch }}-
-        - yarn-packages-
-  - &save_bundler_cache
-      name: Save Bundler cache
-      key: gem-cache-v1-{{ .Environment.CIRCLE_WORKING_DIRECTORY }}-{{ .Branch }}-{{ checksum "Gemfile.lock" }}
-      paths:
-        - vendor/bundle
-  - &save_yarn_cache
-      name: Save Yarn cache
-      key: yarn-packages-v1-{{ .Branch }}-{{ checksum "yarn.lock" }}
-      paths:
-        - node_modules
   - &ruby_node_browsers_docker_image
-      - image: cimg/ruby:3.2.0-browsers
+      - image: cimg/ruby:3.2.2-browsers
         environment:
           PGHOST: localhost
           PGUSER: untitled_application
@@ -52,11 +29,10 @@ jobs:
     steps:
       - checkout
       - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
+          firefox-version: "112.0"
 
-      # Install dependencies
-      - run: "bundle install"
-      - run: "bundle clean --force"
+      - ruby/install-deps:
+          clean-bundle: true
       - run: "yarn install"
       - *wait_for_docker
       - run:
@@ -68,21 +44,8 @@ jobs:
       - <<: *ruby_node_browsers_docker_image
     steps:
       - checkout
-
-      # TODO Figure out how to make these work for `tmp/starter`
-      # # Restore dependency caches
-      # - restore_cache: *restore_bundler_cache
-      # - restore_cache: *restore_yarn_cache
-
-      # Install dependencies
-      - ruby/bundle-install
-      - run: bundle clean --force
-
-      # # Save dependency caches
-      # # We only do this as part of this job, because it's time consuming and we don't want it to slow down test runners.
-      # - save_cache: *save_bundler_cache
-      # - save_cache: *save_yarn_cache
-
+      - ruby/install-deps:
+          clean-bundle: true
       - run:
           name: Check Standard Ruby
           command: bundle exec standardrb
@@ -94,29 +57,25 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    environment:
-      BUNDLE_PATH: vendor/bundle
     parallelism: 16
     steps:
       - checkout:
           path: ~/project
       - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
+          firefox-version: "112.0"
+
+      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
+      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
+      - run:
+          command: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
-      - restore_cache: *restore_bundler_cache
-      - run: bundle install
-      - run: bundle clean --force
-      - run: bundle exec rake bt:link
-      - run: yarn install
-      - run: yarn build
+      - ruby/install-deps:
+          clean-bundle: true
+      - node/install-packages:
+          pkg-manager: yarn
       - run: yarn build:css
-
-      - save_cache: *save_bundler_cache
-
-      # TODO Figure out how to make these work for `tmp/starter`
-      # - restore_cache: *restore_yarn_cache
 
       - *wait_for_docker
 
@@ -150,32 +109,29 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    environment:
-      BUNDLE_PATH: vendor/bundle
     parallelism: 16
     steps:
       - checkout:
           path: ~/project
       - browser-tools/install-browser-tools:
-          firefox-version: 108.0.1
+          firefox-version: "112.0"
+
+      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
+      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
+      - run:
+          command: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
-      - restore_cache: *restore_bundler_cache
-      - run: bundle install
-      - run: bundle clean --force
-      - run: bundle exec rake bt:link
-      - run: yarn install
-      - run: yarn build
+      - ruby/install-deps:
+          clean-bundle: true
+      - node/install-packages:
+          pkg-manager: yarn
       - run: yarn build:css
-
-      - save_cache: *save_bundler_cache
-
-      # TODO Figure out how to make these work for `tmp/starter`
-      # - restore_cache: *restore_yarn_cache
 
       - *wait_for_docker
 
+      - run: "bundle config unset deployment" # Remove the lock from ruby/install-deps
       - run: "bundle add spring"
       - run:
           name: 'Setup Super Scaffolding System Test'
@@ -183,6 +139,9 @@ jobs:
       - run:
           name: 'Run Super Scaffolding Test'
           command: "bundle exec rails test test/system/super_scaffolding_test.rb"
+      - run:
+          name: 'Run Super Scaffolding Partial Test'
+          command: 'bundle exec rails test test/system/super_scaffolding_partial_test.rb'
 
 workflows:
   version: 2

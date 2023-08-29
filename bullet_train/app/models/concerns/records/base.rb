@@ -21,7 +21,7 @@ module Records::Base
     end
 
     include CableReady::Updatable
-    enable_updates
+    enable_cable_ready_updates
 
     extend ActiveHash::Associations::ActiveRecordExtensions
 
@@ -73,11 +73,16 @@ module Records::Base
   end
 
   def seeding?
-    rake_tasks = ObjectSpace.each_object(Rake::Task)
-    return false if rake_tasks.count.zero?
+    Rake::Task.task_defined?("db:seed") && Rake::Task["db:seed"].already_invoked
+  end
 
-    db_seed_task = rake_tasks.find { |task| task.name.match?(/^db:seed$/) }
-    db_seed_task.already_invoked
+  def all_blank?(attributes = {})
+    attributes = self.attributes if attributes.empty?
+    attributes.all? do |key, value|
+      key == "_destroy" || value.blank? ||
+        value.is_a?(Hash) && all_blank?(value) ||
+        value.is_a?(Array) && value.all? { |val| all_blank?(val) }
+    end
   end
 
   def all_blank?(attributes = {})
@@ -104,4 +109,6 @@ module Records::Base
       end.attributes!
     end
   end
+
+  ActiveSupport.run_load_hooks :bullet_train_records_base, self
 end

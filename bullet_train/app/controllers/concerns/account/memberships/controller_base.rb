@@ -110,7 +110,8 @@ module Account::Memberships::ControllerBase
     strong_params = params.require(:membership).permit(
       :user_first_name,
       :user_last_name,
-      :user_profile_photo_id,
+      :user_profile_photo_id, # For Cloudinary
+      :user_profile_photo,    # For ActiveStorage
       *permitted_fields,
       *permitted_arrays,
     )
