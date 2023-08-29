@@ -28,7 +28,7 @@ jobs:
     executor: ruby/default
     steps:
       - checkout:
-        path: ~/project-gems
+          path: ~/project-gems
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
 
