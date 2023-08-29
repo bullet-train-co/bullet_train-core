@@ -32,11 +32,6 @@ jobs:
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
 
-      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
-      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
-      - run:
-          command: rm LICENSE.chromedriver
-
       - run: ../../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
