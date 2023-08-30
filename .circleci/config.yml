@@ -72,8 +72,8 @@ jobs:
 
       # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
       # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
-      - run:
-          command: rm LICENSE.chromedriver
+      #- run:
+          #command: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
@@ -128,8 +128,8 @@ jobs:
 
       # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
       # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
-      - run:
-          command: rm LICENSE.chromedriver
+      #- run:
+          #command: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
