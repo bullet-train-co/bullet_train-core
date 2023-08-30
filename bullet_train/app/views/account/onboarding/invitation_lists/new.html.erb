@@ -5,7 +5,9 @@
   <% box.body do %>
     <% within_fields_namespace(:self) do %>
       <%= form_with(model: @account_onboarding_invitation_list, class: 'form', local: true) do |f| %>
-        <%= render 'account/shared/forms/errors', form: f %>
+        <% f.object.errors.each do |error| %>
+          <%= render 'account/shared/forms/errors', form: f, attributes: [error.attribute], resource: @account_onboarding_invitation_list %>
+        <% end %>
         <%= render 'account/shared/notices', form: f %>
 
         <div class="grid gap-y gap-x grid-cols-2">
