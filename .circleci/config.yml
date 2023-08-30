@@ -28,6 +28,7 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
+      - run: sudo apt-get update # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
           chrome-version: 116.0.5845.96 # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
@@ -62,6 +63,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - run: sudo apt-get update # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
           chrome-version: 116.0.5845.96 # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
@@ -116,6 +118,7 @@ jobs:
     steps:
       - checkout:
           path: ~/project
+      - run: sudo apt-get update # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
           chrome-version: 116.0.5845.96 # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
