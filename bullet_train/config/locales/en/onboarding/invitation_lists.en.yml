@@ -9,6 +9,8 @@ en:
         buttons: *buttons
       invitation_form:
         membership:
-          roles: Roles
+          roles:
+            label: Roles
+            default: Default
   account:
     onboarding: *onboarding
