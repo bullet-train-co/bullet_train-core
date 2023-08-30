@@ -30,6 +30,7 @@ jobs:
       - checkout
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
+          chrome-version: 116.0.5845.96 # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
 
       - ruby/install-deps:
           clean-bundle: true
@@ -63,6 +64,7 @@ jobs:
           path: ~/project
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
+          chrome-version: 116.0.5845.96 # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
 
       # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
       # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
@@ -116,6 +118,7 @@ jobs:
           path: ~/project
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
+          chrome-version: 116.0.5845.96 # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
 
       # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
       # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
