@@ -14,7 +14,7 @@ module Account::Onboarding::InvitationLists::ControllerBase
   end
 
   def create
-    @account_onboarding_invitation_list = Account::Onboarding::InvitationList.create(account_onboarding_invitation_list_params)
+    @account_onboarding_invitation_list = Account::Onboarding::InvitationList.new(account_onboarding_invitation_list_params)
 
     # Set default values for invitations and memberships.
     # `save` below checks if the values are valid or not.
