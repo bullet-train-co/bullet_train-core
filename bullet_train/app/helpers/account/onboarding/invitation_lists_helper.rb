@@ -4,8 +4,6 @@ module Account::Onboarding::InvitationListsHelper
   def available_roles
     role_ids = current_user.memberships.first.roles.map do |role|
       [role.attributes[:key]] + role.attributes[:manageable_roles]
-    end.flatten.uniq
-
-    role_ids.map { |role| role.capitalize }
+    end.flatten.uniq.reject {|role| role.match?("default")}
   end
 end

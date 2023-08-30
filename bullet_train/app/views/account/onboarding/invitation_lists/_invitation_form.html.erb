@@ -5,7 +5,7 @@
 
   <%= invitation_form.fields_for :membership, Membership.new do |membership_form| %>
     <div class="col-span-1">
-      <%= render 'shared/fields/super_select', form: membership_form, method: :role_ids, choices: available_roles, other_options: {label: t('.membership.role')} %>
+      <%= render 'shared/fields/super_select', form: membership_form, method: :role_ids, choices: available_roles, select2_options: {allowClear: false}, html_options: {multiple: true}, other_options: {label: t('.membership.roles')} %>
     </div>
   <% end %>
 <% end %>

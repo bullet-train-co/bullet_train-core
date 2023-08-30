@@ -23,11 +23,7 @@ module Account::Onboarding::InvitationLists::ControllerBase
       invitation.team = current_team
       invitation.from_membership = current_membership
       invitation.membership.team = current_team
-
-      # Role IDs don't get registered automatically because roles_ids is an array, so we handle that here.
-      if available_roles.include?(params[:account_onboarding_invitation_list][:invitations_attributes][idx.to_s][:membership_attributes][:role_ids].downcase)
-        invitation.membership.role_ids << params[:account_onboarding_invitation_list][:invitations_attributes][idx.to_s][:membership_attributes][:role_ids].downcase
-      end
+      invitation.membership.user_email = invitation.email
     end
 
     respond_to do |format|
@@ -62,6 +58,6 @@ module Account::Onboarding::InvitationLists::ControllerBase
   # Since there is only one membership (an admin) on the team when sending bulk invitations,
   # we don't have to worry about filtering these roles according to if they're manageable or not.
   def available_roles
-    current_membership.roles.map { |role| [role.attributes[:key]] + role.attributes[:manageable_roles] }.flatten.uniq
+    current_membership.roles.map { |role| [role.attributes[:key]] + role.attributes[:manageable_roles] }.flatten.uniq.reject {|role| role.match?("default")}
   end
 end
