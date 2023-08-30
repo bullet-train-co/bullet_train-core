@@ -2,7 +2,7 @@ version: 2.1
 orbs:
   ruby: circleci/ruby@2.0.0
   node: circleci/node@5.1.0
-  browser-tools: circleci/browser-tools@1.4.1
+  browser-tools: circleci/browser-tools@1.4.3
 aliases:
   - &ruby_node_browsers_docker_image
       - image: cimg/ruby:3.2.2-browsers
