@@ -15,6 +15,11 @@ options ||= {}
 options[:id] ||= form.field_id(method)
 # options[:disabled] ||= !field_editable?(form.object, method) if user_signed_in?
 options[:placeholder] ||= labels.placeholder if labels.placeholder
+
+if !options.key?(:required)
+  options[:required] = presence_validated?(form.object, method)
+end
+
 other_options ||= {}
 other_options[:help] = [other_options[:help], labels.help].compact.join(" ")
 
@@ -31,7 +36,7 @@ end
 
 %>
 
-<div class="<%= 'required' if presence_validated?(form.object, method) %>">
+<div class="<%= 'required' if options[:required] %>">
 
   <% # the label. %>
   <% unless other_options[:hide_label] == true %>
