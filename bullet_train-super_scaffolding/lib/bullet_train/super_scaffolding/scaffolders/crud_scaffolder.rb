@@ -35,6 +35,20 @@ module BulletTrain
           parents = parents.map(&:classify).uniq
           parent = parents.first
 
+          migration_file_name = `grep "create_table :#{child.tableize}" db/migrate/*`.split(":").shift
+          parent_foreign_key = nil
+          File.open(migration_file_name).readlines.each do |line|
+            parent_foreign_key = line.match?("t.references :#{parent.tableize.singularize}")
+            break if parent_foreign_key
+          end
+
+          unless parent_foreign_key
+            raise "#{child} does not have a foreign key referencing #{parent}.\n" \
+                  "Make sure you generate your model with a references type:\n" \
+                  "rails generate model Project team:references ...\n" \
+                  "\n"
+          end
+
           unless parents.include?("Team")
             raise "Parents for #{child} should trace back to the Team model, but Team wasn't provided. Please confirm that all of the parents tracing back to the Team model are present and try again.\n" \
               "E.g.:\n" \
