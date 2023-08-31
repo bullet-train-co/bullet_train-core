@@ -18,6 +18,7 @@ module.exports = {
     extend: {
       fontSize: {
         'xs': '.81rem',
+        '2xs': ['0.65rem', { lineHeight: '0.9rem', letterSpacing: '1px' }]
       },
       colors: {
         primary: {
