@@ -28,6 +28,20 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
     !(successful? || still_attempting?)
   end
 
+  def compute_signature(payload)
+    raise ArgumentError, "payload should be a string" unless payload.is_a?(String)
+
+    unless delivery.team.webhooks_signing_secret.present?
+      delivery.team.update(webhooks_signing_secret: SecureRandom.hex(32))
+    end
+    secret = delivery.team.webhooks_signing_secret
+    timestamp = Time.now
+
+    timestamped_payload = "#{timestamp.to_i}.#{payload}"
+    OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new("sha256"), secret,
+                            timestamped_payload)
+  end
+
   def attempt
     uri = URI.parse(delivery.endpoint_url)
 
@@ -50,6 +64,8 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
       uri.path = "/"
     end
 
+    signature = compute_signature(delivery.event.payload.to_s)
+
     http = Net::HTTP.new(hostname, uri.port)
     if uri.scheme == "https"
       http.use_ssl = true
@@ -61,6 +77,7 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
     request = Net::HTTP::Post.new(uri.request_uri)
     request.add_field("Host", uri.host)
     request.add_field("Content-Type", "application/json")
+    request.add_field("Bullet-Train-Signature", signature)
     request.body = delivery.event.payload.to_json
 
     begin
