@@ -12,7 +12,8 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
   def scaffold_incoming_webhook
     files = [
       "./app/models/webhooks/incoming/bullet_train_webhook.rb",
-      "./app/controllers/webhooks/incoming/bullet_train_webhooks_controller.rb"
+      "./app/controllers/webhooks/incoming/bullet_train_webhooks_controller.rb",
+      "./test/controllers/webhooks/incoming/bullet_train_webhooks_controller_test.rb"
     ]
 
     files.each do |name|
@@ -23,8 +24,9 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
       end
     end
 
-    file_name_hook = "bullet_train_webhook"
-    new_model_file_name, _ = files.map { |file| file.gsub(file_name_hook, replacement_for(file_name_hook)) }
+    new_model_file_name = files.first.gsub("bullet_train_webhook", replacement_for("bullet_train_webhook"))
+    new_test_file_name = files.last.gsub("bullet_train_webhooks", replacement_for("bullet_train_webhooks"))
+
 
     # Set up the model's `verify_authenticity` method to return `true`.
     model_file_lines = File.readlines(new_model_file_name)
