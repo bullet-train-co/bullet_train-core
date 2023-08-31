@@ -169,22 +169,22 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       # 3. on action resource, we have a specific id for the child resource, so load it directly.
       load_and_authorize_resource model,
-                                  options.merge(
-                                    class: model_class_name,
-                                    only: member_actions,
-                                    prepend: true,
-                                    shallow: true
-                                  )
+        options.merge(
+          class: model_class_name,
+          only: member_actions,
+          prepend: true,
+          shallow: true
+        )
 
       # 2. only load the child resource through the parent resource for collection actions.
       load_and_authorize_resource model,
-                                  options.merge(
-                                    class: model_class_name,
-                                    through: through_as_symbols,
-                                    only: collection_actions,
-                                    prepend: true,
-                                    shallow: true
-                                  )
+        options.merge(
+          class: model_class_name,
+          through: through_as_symbols,
+          only: collection_actions,
+          prepend: true,
+          shallow: true
+        )
 
       # 1. load the parent resource for collection actions only. (we're using shallow routes.)
       # since a controller can have multiple potential parents, we have to run this as a loop on every possible
@@ -192,12 +192,12 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       through_class_names.each_with_index do |through_class_name, index|
         load_and_authorize_resource through_as_symbols[index],
-                                    options.merge(
-                                      class: through_class_name,
-                                      only: collection_actions,
-                                      prepend: true,
-                                      shallow: true
-                                    )
+          options.merge(
+            class: through_class_name,
+            only: collection_actions,
+            prepend: true,
+            shallow: true
+          )
       end
     end
   end
