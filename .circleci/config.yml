@@ -68,11 +68,6 @@ jobs:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
           replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
 
-      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
-      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
-      #- run:
-          #command: rm LICENSE.chromedriver
-
       - run: ../../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
@@ -122,11 +117,6 @@ jobs:
           firefox-version: "112.0"
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
           replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-
-      # TODO: This is a workaround to get `git clone` working, but it shouldn't be here.
-      # https://github.com/CircleCI-Public/browser-tools-orb/issues/62
-      #- run:
-          #command: rm LICENSE.chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
