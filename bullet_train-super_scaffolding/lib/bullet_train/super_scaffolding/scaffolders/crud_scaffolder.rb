@@ -45,7 +45,7 @@ module BulletTrain
           unless parent_foreign_key
             raise "#{child} does not have a foreign key referencing #{parent}.\n" \
                   "Make sure you generate your model with a references type:\n" \
-                  "rails generate model Project team:references ...\n" \
+                  "rails generate model #{child} #{parent.tableize.singularize}:references ...\n" \
                   "\n"
           end
 
