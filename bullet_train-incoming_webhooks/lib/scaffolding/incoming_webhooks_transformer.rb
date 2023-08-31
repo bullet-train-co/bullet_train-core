@@ -27,7 +27,6 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
     new_model_file_name = files.first.gsub("bullet_train_webhook", replacement_for("bullet_train_webhook"))
     new_test_file_name = files.last.gsub("bullet_train_webhooks", replacement_for("bullet_train_webhooks"))
 
-
     # Set up the model's `verify_authenticity` method to return `true`.
     model_file_lines = File.readlines(new_model_file_name)
     comment_lines = [

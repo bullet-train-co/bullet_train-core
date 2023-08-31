@@ -36,7 +36,7 @@ class Webhooks::Incoming::BulletTrainWebhooksControllerTest < ActionDispatch::In
     }
 
     post "/webhooks/incoming/bullet_train_webhooks", params: webhook_params.to_json
-    assert_equal response.parsed_body, {"status"=>"OK"}
+    assert_equal response.parsed_body, {"status" => "OK"}
 
     webhook = Webhooks::Incoming::BulletTrainWebhook.first
     assert_equal webhook.data.to_json, webhook_params.to_json
