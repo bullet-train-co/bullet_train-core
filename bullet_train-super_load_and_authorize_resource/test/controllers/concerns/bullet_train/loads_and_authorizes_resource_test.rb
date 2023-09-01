@@ -3,10 +3,24 @@ require "test_helper"
 class BulletTrain::LoadsAndAuthorizeResourceTest < ActiveSupport::TestCase
   class TestClass
     include BulletTrain::LoadsAndAuthorizesResource
+
+    def self.regex_to_remove_controller_namespace
+    end
   end
 
-  test "it defines .model_namespace_from_controller_namespace" do
-    assert TestClass.respond_to?(:model_namespace_from_controller_namespace)
+  module Users
+    class TestClass
+      include BulletTrain::LoadsAndAuthorizesResource
+
+      def self.regex_to_remove_controller_namespace
+        /^BulletTrain::LoadsAndAuthorizeResourceTest::/
+      end
+    end
+  end
+
+  test "model_namespace_from_controller_namespace returns an array of modules names based on the classes namespace minus regex_to_remove_controller_namespace" do
+    assert_equal ["BulletTrain", "LoadsAndAuthorizeResourceTest"], TestClass.model_namespace_from_controller_namespace
+    assert_equal ["Users"], Users::TestClass.model_namespace_from_controller_namespace
   end
 
   test "it defines .account_load_and_authorize_resource" do

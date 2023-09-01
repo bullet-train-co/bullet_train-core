@@ -2,17 +2,12 @@ module BulletTrain::LoadsAndAuthorizesResource
   extend ActiveSupport::Concern
 
   class_methods do
+    # Returns an array of module names based on the classes namespace minus regex_to_remove_controller_namespace
     def model_namespace_from_controller_namespace
-      controller_class_name =
-        if regex_to_remove_controller_namespace
-          name.gsub(regex_to_remove_controller_namespace, "")
-        else
-          name
-        end
-      namespace = controller_class_name.split("::")
-      # Remove "::ThingsController"
-      namespace.pop
-      namespace
+      name
+        .gsub(regex_to_remove_controller_namespace || //, "")
+        .split("::")
+        .slice(0...-1) # drops actual class name
     end
 
     def regex_to_remove_controller_namespace
