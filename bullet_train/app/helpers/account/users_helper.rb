@@ -1,4 +1,8 @@
 module Account::UsersHelper
+  def photo_url_for_active_storage_attachment attachment, size_details
+    attachment.representation(size_details)
+  end
+
   def profile_photo_for(url: nil, email: nil, first_name: nil, last_name: nil, profile_header: false)
     size_details = profile_header ? {width: 700, height: 200} : {width: 100, height: 100}
     size_details[:crop] = :fill
