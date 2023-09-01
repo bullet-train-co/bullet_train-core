@@ -33,12 +33,15 @@
   BulletTrain.theme = new ___theme()
   BulletTrain.theme.start()
 
-  document.addEventListener("DOMContentLoaded", () => {
+  function placeThemeSelector() {
     const node = document.getElementById("bullet_train_theme_selects").content.cloneNode(true)
     document.querySelector("main").appendChild(node)
     const selectorNode = document.getElementById("bt-theme-selector")
     document.querySelector("main").style.paddingBottom = selectorNode.offsetHeight + "px"
-  })
+  }
+
+  document.addEventListener("DOMContentLoaded", placeThemeSelector);
+  document.addEventListener("turbo:load", placeThemeSelector);
 </script>
 
 <template id="bullet_train_theme_selects">
