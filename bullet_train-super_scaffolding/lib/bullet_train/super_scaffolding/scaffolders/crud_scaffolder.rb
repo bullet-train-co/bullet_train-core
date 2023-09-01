@@ -35,18 +35,24 @@ module BulletTrain
           parents = parents.map(&:classify).uniq
           parent = parents.first
 
-          migration_file_name = `grep "create_table :#{child.tableize}" db/migrate/*`.split(":").shift
+          # Pull the parent foreign key from the `create_table` call
+          # if a migration with `add_reference` hasn't been created.
+          migration_file_name = `grep "add_reference :#{child.tableize}, :#{parent.tableize.singularize}" db/migrate/*`.split(":").shift
+          migration_file_name ||= `grep "create_table :#{child.tableize}" db/migrate/*`.split(":").shift
+          parent_t_references = "t.references :#{parent.tableize.singularize}"
+          parent_add_reference = "add_reference :#{child.tableize}, :#{parent.tableize.singularize}"
           parent_foreign_key = nil
           File.open(migration_file_name).readlines.each do |line|
-            parent_foreign_key = line.match?("t.references :#{parent.tableize.singularize}")
+            parent_foreign_key = line.match?(/#{parent_add_reference}|#{parent_t_references}/)
             break if parent_foreign_key
           end
 
           unless parent_foreign_key
-            raise "#{child} does not have a foreign key referencing #{parent}.\n" \
-                  "Make sure you generate your model with a references type:\n" \
-                  "rails generate model #{child} #{parent.tableize.singularize}:references ...\n" \
-                  "\n"
+            puts "#{child} does not have a foreign key referencing #{parent}".red
+            puts ""
+            puts "Please re-generate your model, or execute the following to add the foreign key:"
+            puts "rails generate migration add_#{parent.tableize.singularize}_to_#{child.tableize} #{parent.tableize.singularize}:references\n"
+            exit 1
           end
 
           unless parents.include?("Team")
