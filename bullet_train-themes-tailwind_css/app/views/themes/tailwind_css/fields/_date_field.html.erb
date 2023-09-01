@@ -22,8 +22,8 @@ other_options ||= {}
 %>
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
-    <div 
-      class="date-input relative" 
+    <div
+      class="date-input relative"
       data-controller="<%= stimulus_controller %>"
       data-<%= stimulus_controller %>-date-format-value="<%= I18n.t('date.formats.date_controller') %>"
       data-<%= stimulus_controller %>-time-format-value="<%= I18n.t('time.formats.date_controller') %>"

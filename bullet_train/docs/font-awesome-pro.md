@@ -45,6 +45,6 @@ No, that's not a typo. [That's the name of their company.](https://fortawesome.c
 
 In `app/javascript/application.js`, below `require("@icon/themify-icons/themify-icons.css")`, add:
 
-```
+```js
 require("@fortawesome/fontawesome-pro/css/all.css")
 ```

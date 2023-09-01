@@ -180,14 +180,81 @@ module BulletTrain
       end
 
       def self.clean_theme(theme_name, args)
-        theme_base_path = `bundle show --paths bullet_train-themes-#{theme_name}`.chomp
-        `find app/views/themes/#{args[:theme]} | grep html.erb`.lines.map(&:chomp).each do |path|
-          _, file = path.split("app/views/themes/#{args[:theme]}/")
-          original_theme_path = "#{theme_base_path}/app/views/themes/#{theme_name}/#{file}"
-          if File.read(path) == File.read(original_theme_path)
-            puts "No changes in `#{path}` since being ejected. Removing."
-            `rm #{path}`
+        light_base_path = `bundle show --paths bullet_train-themes-light`.chomp
+        tailwind_base_path = `bundle show --paths bullet_train-themes-tailwind_css`.chomp
+        theme_base_path = `bundle show --paths bullet_train-themes`.chomp
+
+        directory_content = `find . | grep 'app/.*#{args[:theme]}'`.lines.map(&:chomp)
+        directory_content = directory_content.reject { |content| content.match?("app/assets/builds/") }
+        files = directory_content.select { |file| file.match?(/(\.erb)|(\.rb)|(\.css)|(\.js)$/) }
+
+        # Files that exist outside of "./app/" that we need to check.
+        files += [
+          "tailwind.#{args[:theme]}.config.js",
+          "tailwind.mailer.#{args[:theme]}.config.js",
+        ]
+
+        # This file doesn't exist under "app/" in its original gem, so we handle it differently.
+        # Also, don't remove this file from the starter repository in case
+        # the developer has any ejected files that have been customized.
+        files.delete("./app/lib/bullet_train/themes/#{args[:theme]}.rb")
+
+        files.each do |file|
+          original_theme_path = nil
+
+          # Remove the current directory syntax for concatenation with the gem base path.
+          file.gsub!("./", "")
+
+          [light_base_path, tailwind_base_path, theme_base_path].each do |theme_path|
+            # Views exist under "base" when the gem is "bullet_train-themes".
+            theme_gem_name = theme_path.scan(/(.*themes-)(.*$)/).flatten.pop || "base"
+            original_theme_path = file.gsub(args[:theme], theme_gem_name)
+
+            if File.exist?("#{theme_path}/#{original_theme_path}")
+              original_theme_path = "#{theme_path}/#{original_theme_path}"
+              break
+            end
           end
+
+          ejected_file_content = File.read(file)
+
+          # These are the only files where we replace the theme name inside of them when ejecting,
+          # so we revert the contents and check if the file has been changed or not.
+          transformed_files = [
+            "app/views/themes/foo/layouts/_head.html.erb",
+            "app/assets/stylesheets/foo.tailwind.css",
+            "tailwind.mailer.#{args[:theme]}.config.js"
+          ]
+          ejected_file_content.gsub!(/#{args[:theme]}/i, theme_name) if transformed_files.include?(file)
+
+          if ejected_file_content == File.read(original_theme_path)
+            puts "No changes in `#{file}` since being ejected. Removing."
+            `rm #{file}`
+          end
+        end
+
+        # Delete all leftover directories with empty content.
+        [
+          "./app/assets/stylesheets/",
+          "./app/views/themes/"
+        ].each do |remaining_directory|
+          puts "Cleaning out directory: #{remaining_directory}"
+          remaining_directory_content = Dir.glob(remaining_directory + "**/*")
+          remaining_directories = remaining_directory_content.select { |content| File.directory?(content) }
+          remaining_directories.reverse_each { |dir| Dir.rmdir dir if Dir.empty?(dir) }
+          FileUtils.rmdir(remaining_directory) if Dir.empty?(remaining_directory)
+        end
+
+        # These are files from the starter repository that need to be set back to the original theme.
+        [
+          "Procfile.dev",
+          "app/helpers/application_helper.rb",
+          "package.json",
+          "test/system/resolver_system_test.rb"
+        ].each do |file|
+          puts "Reverting changes in #{file}."
+          new_lines = File.open(file).readlines.join.gsub(/#{args[:theme]}/i, theme_name)
+          File.write(file, new_lines)
         end
       end
 

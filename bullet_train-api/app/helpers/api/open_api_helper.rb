@@ -7,13 +7,6 @@ module Api
       lines.unshift(first_line).join.html_safe
     end
 
-    # TODO: Remove this method? It's not being used anywhere
-    def components_for(model)
-      for_model model do
-        indent(render("api/#{@version}/open_api/#{model.name.underscore.pluralize}/components"), 2)
-      end
-    end
-
     def current_model
       @model_stack.last
     end
@@ -38,26 +31,12 @@ module Api
       output += render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
 
       # There are some placeholders specific to this method that we still need to transform.
-      model_symbol = model.name.underscore.tr("/", "_")
+      model_symbol = model.name.underscore.tr("/", "_").to_sym
 
-      if (get_example = FactoryBot.get_example(model_symbol, version: @version))
-        output.gsub!("🚅 get_example", get_example)
-      end
-
-      if (post_parameters = FactoryBot.post_parameters(model_symbol, version: @version))
-        output.gsub!("🚅 post_parameters", post_parameters)
-      end
-
-      if (post_examples = FactoryBot.post_examples(model_symbol, version: @version))
-        output.gsub!("🚅 post_examples", post_examples)
-      end
-
-      if (put_parameters = FactoryBot.put_parameters(model_symbol, version: @version))
-        output.gsub!("🚅 put_parameters", put_parameters)
-      end
-
-      if (put_example = FactoryBot.put_example(model_symbol, version: @version))
-        output.gsub!("🚅 put_example", put_example)
+      FactoryBot::ExampleBot::REST_METHODS.each do |method|
+        if (code = FactoryBot.send(method, model_symbol, version: @version))
+          output.gsub!("🚅 #{method}", code)
+        end
       end
 
       indent(output, 1)
@@ -74,7 +53,7 @@ module Api
       }.merge(locals))
 
       schema_json = jbuilder.json(
-        model.new,
+        FactoryBot.example(model.model_name.param_key.to_sym) || model.new,
         title: I18n.t("#{model.name.underscore.pluralize}.label"),
         # TODO Improve this. We don't have a generic description for models we can use here.
         description: I18n.t("#{model.name.underscore.pluralize}.label"),
@@ -106,7 +85,8 @@ module Api
 
         parameters_output = JSON.parse(schema_json)
         parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
-        parameters_output["properties"].select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
+        parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
+        parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
 
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
@@ -124,22 +104,6 @@ module Api
         indent(render("api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"), 1)
       end
     end
-
-    def attribute(attribute)
-      heading = t("#{current_model.name.underscore.pluralize}.fields.#{attribute}.heading")
-      attribute_data = current_model.columns_hash[attribute.to_s]
-
-      # Default to `string` when the type returns nil.
-      type = attribute_data.nil? ? "string" : attribute_data.type
-
-      attribute_block = <<~YAML
-        #{attribute}:
-          description: "#{heading}"
-          type: #{type}
-      YAML
-      indent(attribute_block.chomp, 2)
-    end
-    alias_method :parameter, :attribute
 
     private
 

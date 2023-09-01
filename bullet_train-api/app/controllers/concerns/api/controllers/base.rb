@@ -89,13 +89,17 @@ module Api::Controllers::Base
     current_user&.teams&.first
   end
 
+  def current_membership
+    current_user.memberships.where(team: current_team).first
+  end
+
   def collection_variable
     @collection_variable ||= "@#{self.class.name.split("::").last.gsub("Controller", "").underscore}"
   end
 
   def apply_pagination
     collection = instance_variable_get collection_variable
-    @pagy, collection = pagy_cursor collection, after: params[:after]
+    @pagy, collection = pagy_cursor collection, after: params[:after], order: {id: :asc}
     instance_variable_set collection_variable, collection
   end
 

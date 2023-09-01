@@ -17,6 +17,16 @@
     }
   }
 
+  /* Override Tailwind's preflight styles */
+  /* https://github.com/tailwindlabs/tailwindcss/issues/989#issuecomment-506555308 */
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
   action-text-attachment {
     .attachment {
       padding: 0 !important;

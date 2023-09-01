@@ -25,7 +25,7 @@ You can also pass an annotated path to a view after running `bin/resolve --inter
 
 To use a theme component, simply include it from "within" `shared` like so:
 
-```
+```erb
 <%= render 'shared/fields/text_field', method: :text_field_value %>
 ```
 
@@ -40,7 +40,7 @@ This small piece of indirection buys us an incredible amount of power in buildin
 Your application will automatically be configured to use your new theme whenever you run the eject command. You can run the below command to re-install the standard light theme.
 ```
 > rake bullet_train:themes:light:install
-``` 
+```
 
 ## Additional Guidance and Principles
 
@@ -56,7 +56,7 @@ On the other hand, if you decide to try to build a theme from the ground up, you
 
 #### ❌ Don’t do this, even in theme partials:
 
-```
+```erb
 <%= render "themes/light/box" do |p| %>
   ...
 <% end %>
@@ -64,7 +64,7 @@ On the other hand, if you decide to try to build a theme from the ground up, you
 
 #### ✅ Instead, always do this:
 
-```
+```erb
 <%= render "shared/box" do |p| %>
   ...
 <% end %>
