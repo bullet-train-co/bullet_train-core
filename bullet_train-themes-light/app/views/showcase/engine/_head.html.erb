@@ -36,11 +36,13 @@
   document.addEventListener("DOMContentLoaded", () => {
     const node = document.getElementById("bullet_train_theme_selects").content.cloneNode(true)
     document.querySelector("main").appendChild(node)
+    const selectorNode = document.getElementById("bt-theme-selector")
+    document.querySelector("main").style.paddingBottom = selectorNode.offsetHeight + "px"
   })
 </script>
 
 <template id="bullet_train_theme_selects">
-  <section class="border-t w-full p-4 flex justify-end left-0 bottom-0">
+  <section class="border-t w-full p-4 flex justify-end left-0 bottom-0 fixed bg-white dark:sc-bg-neutral-900" id="bt-theme-selector">
     <h3 class="pt-2">Bullet Train Light theme options</h3>
 
     <div>
