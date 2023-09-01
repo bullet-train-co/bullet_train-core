@@ -10,11 +10,11 @@
 
         <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
           <div class="sm:col-span-1">
-            <%= render 'shared/fields/text_field', form: f, method: :first_name, options: {autofocus: true} %>
+            <%= render 'shared/fields/text_field', form: f, method: :first_name, other_options: {required: true}, options: {autofocus: true} %>
           </div>
 
           <div class="sm:col-span-1">
-            <%= render 'shared/fields/text_field', form: f, method: :last_name %>
+            <%= render 'shared/fields/text_field', form: f, method: :last_name, other_options: {required: true} %>
           </div>
 
           <% # only edit the team name if this user is an admin and they are the first user. %>
@@ -30,7 +30,7 @@
           <div class="sm:col-span-2">
             <%= render 'shared/fields/super_select', form: f, method: :time_zone,
               choices: time_zone_options_for_select(@user.time_zone, nil, ActiveSupport::TimeZone),
-              other_options: {search: true} %>
+              other_options: {search: true, required: true} %>
           </div>
         </div>
 

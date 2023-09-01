@@ -17,7 +17,7 @@
            <%= render 'shared/fields/password_field', form: f, method: :password, options: {show_strength_indicator: true} %>
          </div>
          <div>
-           <%= render 'shared/fields/password_field', form: f, method: :password_confirmation, options:{ required: true }, other_options: {error: f.object.errors.full_messages_for(:password).first, hide_custom_error: true} %>
+           <%= render 'shared/fields/password_field', form: f, method: :password_confirmation, other_options: {required: true, error: f.object.errors.full_messages_for(:password).first, hide_custom_error: true} %>
          </div>
        </div>
 
