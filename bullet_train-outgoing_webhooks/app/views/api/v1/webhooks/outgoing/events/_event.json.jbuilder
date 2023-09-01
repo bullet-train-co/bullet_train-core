@@ -1,6 +1,6 @@
 json.extract! event,
   :id,
-  :team_id,
+  BulletTrain::OutgoingWebhooks.parent_association.to_s.foreign_key.to_sym,
   :uuid,
   :event_type_id,
   :subject_id,

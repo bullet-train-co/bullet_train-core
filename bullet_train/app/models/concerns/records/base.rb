@@ -78,5 +78,14 @@ module Records::Base
     Rake::Task.task_defined?("db:seed") && Rake::Task["db:seed"].already_invoked
   end
 
+  def all_blank?(attributes = {})
+    attributes = self.attributes if attributes.empty?
+    attributes.all? do |key, value|
+      key == "_destroy" || value.blank? ||
+        value.is_a?(Hash) && all_blank?(value) ||
+        value.is_a?(Array) && value.all? { |val| all_blank?(val) }
+    end
+  end
+
   ActiveSupport.run_load_hooks :bullet_train_records_base, self
 end
