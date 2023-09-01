@@ -3,46 +3,40 @@ require "test_helper"
 class Webhooks::Incoming::BulletTrainWebhooksControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  # We can only run this test when Scaffolding things are enabled
-  # because the default webhook triggers come from `CreativeConcept`, etc.
-  unless scaffolding_things_disabled?
-    def setup
-      super
-      @user = FactoryBot.create(:onboarded_user)
-      sign_in @user
-      @team = @user.current_team
-    end
+  def setup
+    super
+    @user = FactoryBot.create(:onboarded_user)
+    @membership = @user.memberships.first
+    @team = @user.current_team
+  end
 
-    test "should get incoming webhook" do
-      creative_concept = Scaffolding::AbsolutelyAbstract::CreativeConcept.create(name: "Test Concept")
-
-      webhook_params = {
+  test "should get incoming webhook" do
+    webhook_params = {
+      data: {
         data: {
-          data: {
-            name: "Test",
-            team_id: {
-              id: @team.id,
-              slug: nil,
-              locale: nil,
-              time_zone: @team.time_zone,
-              created_at: creative_concept.created_at,
-              updated_at: creative_concept.updated_at,
-              being_destroyed: nil,
-            },
-            description: ""
+          name: "Test",
+          team_id: {
+            id: @team.id,
+            slug: nil,
+            locale: nil,
+            time_zone: @team.time_zone,
+            created_at: @membership.created_at,
+            updated_at: @membership.updated_at,
+            being_destroyed: nil,
           },
-          event_type: "scaffolding/absolutely_abstract/creative_concept.created",
-          subject_type: "Scaffolding::AbsolutelyAbstract::CreativeConcept"
+          description: ""
         },
-        verified_at: nil,
-        processed_at: nil,
-      }
+        event_type: "membership.created",
+        subject_type: "Membership"
+      },
+      verified_at: nil,
+      processed_at: nil,
+    }
 
-      post "/webhooks/incoming/bullet_train_webhooks", params: webhook_params.to_json
-      assert_equal response.parsed_body, {"status" => "OK"}
+    post "/webhooks/incoming/bullet_train_webhooks", params: webhook_params.to_json
+    assert_equal response.parsed_body, {"status" => "OK"}
 
-      webhook = Webhooks::Incoming::BulletTrainWebhook.first
-      assert_equal webhook.data.to_json, webhook_params.to_json
-    end
+    webhook = Webhooks::Incoming::BulletTrainWebhook.first
+    assert_equal webhook.data.to_json, webhook_params.to_json
   end
 end
