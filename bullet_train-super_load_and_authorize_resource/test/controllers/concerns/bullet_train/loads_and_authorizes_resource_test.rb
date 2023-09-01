@@ -13,11 +13,11 @@ class BulletTrain::LoadsAndAuthorizeResourceTest < ActiveSupport::TestCase
     assert TestClass.respond_to?(:account_load_and_authorize_resource)
   end
 
-  test "it defines #load_team" do
-    assert TestClass.new.respond_to?(:load_team)
+  test "it defines .regex_to_remove_controller_namespace" do
+    assert TestClass.respond_to?(:regex_to_remove_controller_namespace)
   end
 
-  test "it defines #regex_to_remove_controller_namespace" do
-    assert TestClass.new.respond_to?(:regex_to_remove_controller_namespace)
+  test "it defines #load_team" do
+    assert TestClass.new.respond_to?(:load_team)
   end
 end

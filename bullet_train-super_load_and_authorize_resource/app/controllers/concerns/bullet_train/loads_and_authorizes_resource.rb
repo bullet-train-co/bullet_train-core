@@ -15,6 +15,10 @@ module BulletTrain::LoadsAndAuthorizesResource
       namespace
     end
 
+    def regex_to_remove_controller_namespace
+      raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+    end
+
     # this is one of the few pieces of 'magical' functionality that bullet train implements
     # for you in your controllers beyond that is provided by the underlying gems that we've
     # tied together. we've taken the liberty of doing this because it's heavily based on
@@ -200,10 +204,6 @@ module BulletTrain::LoadsAndAuthorizesResource
           )
       end
     end
-  end
-
-  def regex_to_remove_controller_namespace
-    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
   end
 
   def load_team
