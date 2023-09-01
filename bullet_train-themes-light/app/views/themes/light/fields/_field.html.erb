@@ -20,7 +20,7 @@ other_options ||= {}
 other_options[:help] = [other_options[:help], labels.help].compact.join(" ")
 
 if !other_options.key?(:required)
-  other_options[:required] = options.key?(:required) ? options[:required] : presence_validated?(form.object, method)
+  other_options[:required] = options.fetch(:required) { presence_validated?(form.object, method) }
 end
 
 if other_options[:required]
