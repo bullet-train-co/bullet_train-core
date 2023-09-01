@@ -7,10 +7,12 @@ module BulletTrain::LoadsAndAuthorizesResource
       name
         .gsub(regex_to_remove_controller_namespace || //, "")
         .split("::")
-        .slice(0...-1) # drops actual class name
+        .tap(&:pop) # drops actual class name
     end
 
     def regex_to_remove_controller_namespace
+      return super if defined?(super)
+
       raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
     end
 
@@ -202,17 +204,13 @@ module BulletTrain::LoadsAndAuthorizesResource
   end
 
   def load_team
-    # Not all objects that need to be authorized belong to a team,
-    # so we give @team a nil value if no association is found.
-    begin
-      # Sometimes `@team` has already been populated by earlier `before_action` steps.
-      @team ||= @child_object&.team || @parent_object&.team
-    rescue NoMethodError
-      @team = nil
-    end
+    @team ||= @child_object&.try(:team) || @parent_object&.try(:team)
 
-    # Update current attributes.
-    Current.team = @team
+    return unless @team
+
+    if defined?(Current) && Current.respond_to?(:team=)
+      Current.team = @team
+    end
 
     # If the currently loaded team is saved to the database, make that the user's new current team.
     if @team.try(:persisted?)
