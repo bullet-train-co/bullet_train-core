@@ -111,8 +111,10 @@ class Scaffolding::Attribute
     if is_ids?
       # user_ids should be 'Users'
       name_without_ids.humanize.titlecase
+    elsif is_id? && is_vanilla?
+      "#{name.humanize.titlecase} ID"
     else
-      "#{name.humanize.titlecase}#{" ID" if is_id?}"
+      name.humanize.titlecase
     end
   end
 

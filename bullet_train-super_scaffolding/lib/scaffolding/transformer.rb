@@ -820,7 +820,7 @@ class Scaffolding::Transformer
 
         # this gets stripped and is one line, so indentation isn't a problem.
         field_content = <<-ERB
-          <%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.name} %>
+          <%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.is_vanilla? ? attribute.name : attribute.name_without_id_suffix} %>
         ERB
 
         if attribute.type == "password_field"
@@ -839,7 +839,7 @@ class Scaffolding::Transformer
       unless cli_options["skip-table"]
 
         # table header.
-        field_content = "<th#{cell_attributes.present? ? " " + cell_attributes : ""}><%= t('.fields.#{attribute.name}.heading') %></th>"
+        field_content = "<th#{cell_attributes.present? ? " " + cell_attributes : ""}><%= t('.fields.#{attribute.is_vanilla? ? attribute.name : attribute.name_without_id_suffix}.heading') %></th>"
 
         unless ["Team", "User"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content, "<%# 🚅 super scaffolding will insert new field headers above this line. %>", prepend: true)
@@ -867,7 +867,7 @@ class Scaffolding::Transformer
 
         # this gets stripped and is one line, so indentation isn't a problem.
         field_content = <<-ERB
-          <td#{cell_attributes}><%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.name}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
+          <td#{cell_attributes}><%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.is_vanilla? ? attribute.name : attribute.name_without_id_suffix}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
         ERB
 
         if attribute.type == "password_field"
