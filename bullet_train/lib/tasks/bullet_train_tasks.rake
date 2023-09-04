@@ -311,6 +311,8 @@ namespace :bullet_train do
             "#{original_path.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
           elsif link_flag_value&.match?(version_regexp)
             "#{original_path.chomp}, \"#{link_flag_value}\"\n"
+          elsif link_flag_value
+            "#{original_path.chomp}, path: \"#{link_flag_value}/#{package}\"\n"
           else
             "#{local_path}\n"
           end
