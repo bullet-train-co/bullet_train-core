@@ -1,7 +1,7 @@
 version: 2.1
 orbs:
   ruby: circleci/ruby@2.0.0
-  browser-tools: circleci/browser-tools@1.4.1
+  browser-tools: circleci/browser-tools@1.4.4
 aliases:
   - &restore_bundler_cache
       name: Restore Bundler cache
@@ -48,7 +48,10 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-browser-tools:
+          firefox-version: "112.0"
+          chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - checkout
 
       # Install dependencies
@@ -93,7 +96,10 @@ jobs:
     executor: ruby/default
     parallelism: 16
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-browser-tools:
+          firefox-version: "112.0"
+          chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - checkout
       - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
 
@@ -147,7 +153,10 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     steps:
-      - browser-tools/install-browser-tools
+      - browser-tools/install-browser-tools:
+          firefox-version: "112.0"
+          chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - checkout
       - run: "git clone https://github.com/bullet-train-co/bullet_train.git tmp/starter"
 
