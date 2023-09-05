@@ -1,6 +1,6 @@
 module Account::UsersHelper
   def photo_url_for_active_storage_attachment attachment, options
-    size_details ={resize_to_limit: [options[:width], options[:height]]}
+    size_details = {resize_to_limit: [options[:width], options[:height]]}
     attachment.representation(size_details)
   end
 
