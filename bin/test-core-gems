@@ -27,13 +27,13 @@ for ((i = 0; i < ${#packages[@]}; ++i)); do
     # Run tests for two gems per node.
     FIRST_TEST_INDEX=($i * 2)
     echo "Running tests for ${packages[$FIRST_TEST_INDEX]}"
-    bundle exec rails test ../../${packages[$FIRST_TEST_INDEX]}
+    bundle exec rails test project/${packages[$FIRST_TEST_INDEX]}
 
     if [ -z ${packages[($FIRST_TEST_INDEX + 1)]} ]; then
       echo "No more unit tests to run."
     else
       echo "Running tests for ${packages[($FIRST_TEST_INDEX + 1)]}"
-      bundle exec rails test ../../${packages[($FIRST_TEST_INDEX + 1)]}
+      bundle exec rails test project/${packages[($FIRST_TEST_INDEX + 1)]}
     fi
   fi
 done
