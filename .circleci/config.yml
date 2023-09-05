@@ -47,7 +47,7 @@ jobs:
       - *wait_for_docker
       - run:
           name: Run unit tests
-          command: ./project/bin/test-core-gems
+          command: ./local/bullet_train-core/bin/test-core-gems
 
   'Local Standard Ruby':
     docker:
