@@ -19,7 +19,9 @@ then
 fi
 
 echo "Cloning from ${STARTER_REPO_BRANCH}..."
-git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
+git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git gem-test
+mv gem-test/* .
+rmdir gem-test
 
 # TODO: Maybe generate this list automatically based on the subdirectories in core that contain a .gemspec?
 packages=(
