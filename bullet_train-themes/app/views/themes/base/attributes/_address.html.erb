@@ -1,0 +1,12 @@
+<% object ||= current_attributes_object %>
+<% strategy ||= current_attributes_strategy || :none %>
+<% url ||= nil %>
+<% one_line ||= false %>
+
+<% if object.send(attribute).present? && !object.send(attribute).all_blank? %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
+    <address class="not-italic">
+      <%= address_formatted(object.send(attribute), one_line: one_line) %>
+    </address>
+  <% end %>
+<% end %>
