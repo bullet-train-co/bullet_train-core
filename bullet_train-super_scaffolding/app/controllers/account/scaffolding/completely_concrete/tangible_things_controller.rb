@@ -15,10 +15,16 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
 
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things/new
   def new
+    # 🚅 skip this section when scaffolding.
+    @tangible_thing.address_value = Address.new
+    # 🚅 stop any skipping we're doing now.
   end
 
   # GET /account/scaffolding/completely_concrete/tangible_things/:id/edit
   def edit
+    # 🚅 skip this section when scaffolding.
+    @tangible_thing.address_value ||= Address.new
+    # 🚅 stop any skipping we're doing now.
   end
 
   # POST /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things
