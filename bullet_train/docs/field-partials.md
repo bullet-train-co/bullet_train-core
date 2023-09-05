@@ -65,27 +65,14 @@ For example, to suppress a label on any field, we can use the `hide_label` optio
 | `hide_label` | boolean | Hide the field label. |
 | `required` | boolean | Display an asterisk by the field label to indicate the field is required. |
 
-## `options: {required: true}` vs. `other_options:{required: true}`
+## `required`: through presence validation vs. `options: {required: true}` vs. `other_options:{required: true}`
 
-In short:
+By default, where there's a presence validation on the model attribute, we add an asterisk to indicate the field is required. For fields without a presence validation, you have options to pass the `:required` detail:
 
-* `options: {required: true}` gives a visual indicator that the field is required AND triggers client-side validation.
-* `other_options: {required: true}` only gives a visual indicator that the field is required.
+1. `other_options: {required: true}` adds the asterisk to the field manually.
+2. `options: {required: true}` adds asterisk but also triggers client-side validation via the [`required`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required) attribute.
 
-We will attempt to determine a value for the `other_options[:required]` option if it is not passed in explicitly.
-If `other_options[:required]` is not passed in we'll check to see if `options[:required]` is passed in.
-If so, we'll use that value. If neither option is explicitly passed in then we fallback to checking whether
-there is a validation for `presence` on the attribute for that field.
-
-Usually you should stick to using `other_options[:required]` to mark fields as required (_only_ if they don't get marked automatically).
-
-If you pass `options[:required]` you'll be triggering a client-side validation, and many browsers would prvent the form from being submitted with out a value.
-
-The way that browsers communicate info about client-side validations varies from browser to browswer and is not easily controller or styled.
-
-For these reasons we generally recommend that you start with server-side validations and avoid using client-side validations for most simple forms.
-
-If you want to use client-side validations, and you want to be able to control the user experience [this article should give you a good starting place to work from.](https://www.jorgemanrubia.com/2019/02/16/form-validations-with-html5-and-modern-rails/)
+Since client-side validations vary from browser to browser, we recommend relying on server-side validation for most forms, and thus mostly using `other_options[:required]`.
 
 ## Reducing Repetition
 When you're including multiple fields, you can DRY up redundant settings (e.g. `form: form`) like so:
