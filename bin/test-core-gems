@@ -21,9 +21,14 @@ packages=(
   "bullet_train-themes-tailwind_css"
 )
 
+# TODO: Run these in parallel like we do with
+# test/bin/setup-super-scaffolding-system-test.
 for package in "${packages[@]}"
 do
   :
   # bundle exec rails test ../../${package}
-  bundle exec rails test ../../bullet_train
 done
+
+# TODO: Eventually delete this.
+# Currently here for testing purposes.
+bundle exec rails test ../../bullet_train
