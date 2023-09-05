@@ -35,5 +35,5 @@ for ((i = 0; i < ${#packages[@]}; ++i)); do
       echo "Running tests for ${packages[($FIRST_TEST_INDEX + 1)]}"
       bundle exec rails test ../../${packages[($FIRST_TEST_INDEX + 1)]}
     fi
-  done
+  fi
 done
