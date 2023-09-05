@@ -20,6 +20,7 @@ fi
 
 echo "Cloning from ${STARTER_REPO_BRANCH}..."
 git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git gem-test
+shopt -s dotglob # Ensure the following glob picks up dot files like .ruby-version.
 mv gem-test/* .
 rm -rf gem-test
 
