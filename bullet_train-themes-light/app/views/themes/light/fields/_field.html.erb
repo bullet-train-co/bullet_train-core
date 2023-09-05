@@ -15,8 +15,17 @@ options ||= {}
 options[:id] ||= form.field_id(method)
 # options[:disabled] ||= !field_editable?(form.object, method) if user_signed_in?
 options[:placeholder] ||= labels.placeholder if labels.placeholder
+
 other_options ||= {}
 other_options[:help] = [other_options[:help], labels.help].compact.join(" ")
+
+if !other_options.key?(:required)
+  other_options[:required] = options.fetch(:required) { presence_validated?(form.object, method) }
+end
+
+if other_options[:required]
+  options[:"aria-required"] = true
+end
 
 errors = [method, method.to_s.gsub(/_id$/, '').to_sym].uniq.map { |attribute| form.object.errors.full_messages_for(attribute) }.flatten
 has_errors = errors.any? || partial.error? || other_options[:error].present?
@@ -31,7 +40,7 @@ end
 
 %>
 
-<div class="<%= 'required' if presence_validated?(form.object, method) %>">
+<div class="<%= 'required' if other_options[:required] %>">
 
   <% # the label. %>
   <% unless other_options[:hide_label] == true %>
