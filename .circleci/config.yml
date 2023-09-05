@@ -32,7 +32,7 @@ jobs:
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
 
-      - run: ../../bin/checkout-and-link-starter-repo
+      - run: ../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
           clean-bundle: true
