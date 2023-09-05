@@ -2,26 +2,13 @@ require_relative "../../../app/helpers/api/open_api_helper"
 
 module FactoryBot
   module ExampleBot
-    attr_accessor :tables_to_reset
 
-    def example(model, **options)
-      @tables_to_reset = [model.to_s.pluralize]
-
-      object = FactoryBot.build(factory(model), **)
-
-      object
-    ensure
-      reset_tables!
+    def example(model, **)
+      FactoryBot.build(factory(model), **)
     end
 
-    def example_list(model, quantity, **options)
-      @tables_to_reset = [model.to_s.pluralize]
-
-      objects = FactoryBot.build_list(factory(model), quantity, **)
-
-      objects
-    ensure
-      reset_tables!
+    def example_list(model, quantity, **)
+      FactoryBot.build_list(factory(model), quantity, **)
     end
 
     REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
@@ -37,43 +24,6 @@ module FactoryBot
     def factory(model)
       factories = FactoryBot.factories.instance_variable_get(:@items).keys
       factories.include?("#{model}_example") ? "#{model}_example".to_sym : model
-    end
-
-    def reset_tables!
-      # This is only available for postgres
-      return unless @tables_to_reset.present?
-
-      return unless ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
-
-      @tables_to_reset.each do |name|
-        ActiveRecord::Base.connection.reset_pk_sequence!(name) if ActiveRecord::Base.connection.table_exists?(name)
-      end
-    end
-
-    def deep_clone(instance)
-      clone = instance.clone
-
-      instance.class.reflections.each do |name, reflection|
-        if reflection.macro == :has_many
-          associations = instance.send(name).map { |association| association.clone }
-          clone.send("#{name}=", associations)
-          @tables_to_reset << name
-        elsif %i[belongs_to has_one].include?(reflection.macro)
-          # Calling e.g. address.team= throws an error,
-          # if address has_one team through person
-          # and person has_one team through company
-          # and company belongs_to team
-          # so the resulting error will be caught here and a warning logged.
-          begin
-            clone.send("#{name}=", instance.send(name).clone)
-            @tables_to_reset << name.pluralize
-          rescue ActiveRecord::HasOneThroughNestedAssociationsAreReadonly
-            Rails.logger.warn("ExampleBot.deep_clone ignored setting #{name} of #{instance}")
-          end
-        end
-      end
-
-      clone
     end
 
     include ::Api::OpenApiHelper
