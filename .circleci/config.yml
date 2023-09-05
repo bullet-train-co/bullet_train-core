@@ -26,6 +26,7 @@ jobs:
       - <<: *postgres_docker_image
       - image: circleci/redis
     executor: ruby/default
+    working_directory: tmp/starter-for-core-tests
     steps:
       - checkout:
           path: ~/project-gems
@@ -34,7 +35,7 @@ jobs:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
           replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
 
-      - run: ../bin/checkout-and-link-starter-repo
+      - run: ../../bin/checkout-and-link-starter-repo
 
       - ruby/install-deps:
           clean-bundle: true
