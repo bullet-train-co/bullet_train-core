@@ -27,6 +27,7 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
+    parallelism: 16
     steps:
       - checkout:
           path: ~/project

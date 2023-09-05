@@ -21,14 +21,17 @@ packages=(
   "bullet_train-themes-tailwind_css"
 )
 
-# TODO: Run these in parallel like we do with
-# test/bin/setup-super-scaffolding-system-test.
-for package in "${packages[@]}"
-do
-  :
-  # bundle exec rails test ../../${package}
-done
+for ((i = 0; i < ${#packages[@]}; ++i)); do
+  if [ -z "${CIRCLE_NODE_INDEX}" ] || [ "${CIRCLE_NODE_INDEX}" == "${i}" ]; then
 
-# TODO: Eventually delete this.
-# Currently here for testing purposes.
-bundle exec rails test ../../bullet_train
+    # Run tests for two gems per node.
+    FIRST_TEST_INDEX=($i * 2)
+    bundle exec rails test ../../${packages[$FIRST_TEST_INDEX]}
+
+    if [ -z ${packages[($FIRST_TEST_INDEX + 1)]} ]; then
+      echo "No more unit tests to run."
+    else
+      bundle exec rails test ../../${packages[($FIRST_TEST_INDEX + 1)]}
+    fi
+  done
+done
