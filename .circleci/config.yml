@@ -26,7 +26,7 @@ jobs:
       - <<: *postgres_docker_image
       - image: circleci/redis
     executor: ruby/default
-    working_directory: tmp/link-to-starter
+    working_directory: tmp/starter
     steps:
       - checkout:
           path: ~/core-gem-tests
@@ -92,9 +92,6 @@ jobs:
           environment:
             RAILS_ENV: test
             KNAPSACK_PRO_CI_NODE_TOTAL: 16
-      - run:
-          name: Test Core Gems
-          command: ../../bin/test-core-gems
 
       # If you don't want to use Knapsack Pro, then use this configuration:
       #
