@@ -26,17 +26,17 @@ jobs:
       - <<: *postgres_docker_image
       - image: circleci/redis
     executor: ruby/default
-    working_directory: ~/ # As opposed to ~/project
+    working_directory: ~/project
     parallelism: 16
     steps:
       - checkout:
-          path: ~/project
+          path: ~/project/local/bullet_train-core
       - browser-tools/install-browser-tools:
           firefox-version: "112.0"
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
           replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
 
-      - run: ./project/bin/checkout-and-link-starter-repo-2
+      - run: local/bullet_train-core/bin/checkout-and-link-starter-repo-2
 
       - ruby/install-deps:
           clean-bundle: true

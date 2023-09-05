@@ -48,7 +48,7 @@ do
   :
   grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
   mv Gemfile.tmp Gemfile
-  echo "gem \"$package\", path: \"project/$package\"" >> Gemfile
+  echo "gem \"$package\", path: \"local/bullet_train-core/$package\"" >> Gemfile
 done
 
 updates="${packages[@]}"
@@ -71,7 +71,7 @@ do
   echo "linking package: $package"
   echo "npm package: $npm_package"
 
-  cd project/$package
+  cd local/bullet_train-core/$package
   yarn install
   yarn build
   npx yalc publish
@@ -91,7 +91,7 @@ npm_package="fields"
 echo "linking package: $package"
 echo "npm package: $npm_package"
 
-cd project/$package
+cd local/bullet_train-core/$package
 yarn install
 yarn build
 npx yalc publish
