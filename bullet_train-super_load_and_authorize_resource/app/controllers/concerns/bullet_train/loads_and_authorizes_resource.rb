@@ -29,7 +29,7 @@ module BulletTrain::LoadsAndAuthorizesResource
     #
     # to help you understand the code below, usually `through` is `team`
     # and `model` is something like `project`.
-    def account_load_and_authorize_resource(model, options, old_options = {})
+    def account_load_and_authorize_resource(model, positional_through = nil, through: positional_through, **options)
       # options are now required, because you have to have at least a 'through' setting.
 
       # we used to support calling this method with a signature like this:
@@ -40,17 +40,6 @@ module BulletTrain::LoadsAndAuthorizesResource
       # signature as cancancan's original `load_and_authorize_resource` method.
       if model.is_a?(Array)
         raise "Bullet Train has depreciated this method of calling `account_load_and_authorize_resource`. Read the comments on this line of source for more details."
-      end
-
-      # this is providing backward compatibility for folks who are calling this method like this:
-      #   account_load_and_authorize_resource :thing, through: :team, through_association: :scaffolding_things
-      # i'm going to deprecate this at some point.
-      if options.is_a?(Hash)
-        through = options[:through]
-        options.delete(:through)
-      else
-        through = options
-        options = old_options
       end
 
       # fetch the namespace of the controller. this should generally match the namespace of the model, except for the
