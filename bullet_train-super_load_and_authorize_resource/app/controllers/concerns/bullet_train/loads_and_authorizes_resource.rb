@@ -70,7 +70,7 @@ module BulletTrain::LoadsAndAuthorizesResource
         raise "When a resource can be loaded through multiple parents, please specify the 'polymorphic' option to tell us what that controller calls the parent, e.g. `polymorphic: :imageable`."
       end
 
-      instance_variable_name = :@"#{options[:polymorphic] || through_as_symbols.first}"
+      instance_variable_name = "@#{options[:polymorphic] || through_as_symbols.first}"
 
       # `collection_actions:` and `member_actions:` provide support for shallow nested resources, which
       # keep our routes tidy even after many levels of nesting. most people
@@ -96,7 +96,7 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       # x. this and the thing below it are only here to make a sortable concern possible.
       prepend_before_action only: member_actions do
-        @child_object = instance_variable_get(:@"#{model}")
+        @child_object = instance_variable_get("@#{model}")
         @parent_object = instance_variable_get instance_variable_name
       end
 
