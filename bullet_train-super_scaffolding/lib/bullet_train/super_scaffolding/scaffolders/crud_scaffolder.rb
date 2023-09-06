@@ -37,8 +37,8 @@ module BulletTrain
 
           # Pull the parent foreign key from the `create_table` call
           # if a migration with `add_reference` hasn't been created.
-          tableized_child = child.tableize.gsub("/", "_") # Compensate for namespaced models (i.e. - `Projects::Deliverable` to `projects/deliverable`).
-          parent_reference = parent.tableize.singularize.gsub("/", "_")
+          tableized_child = child.tableize.tr("/", "_") # Compensate for namespaced models (i.e. - `Projects::Deliverable` to `projects/deliverable`).
+          parent_reference = parent.tableize.singularize.tr("/", "_")
           migration_file_name = `grep "add_reference :#{tableized_child}, :#{parent_reference}" db/migrate/*`.split(":").shift
           migration_file_name ||= `grep "create_table :#{tableized_child}" db/migrate/*`.split(":").shift
           parent_t_references = "t.references :#{parent_reference}"
