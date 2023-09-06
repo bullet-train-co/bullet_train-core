@@ -26,14 +26,32 @@ for ((i = 0; i < ${#packages[@]}; ++i)); do
 
     # Run tests for two gems per node.
     FIRST_TEST_INDEX=($i * 2)
+    echo "#####################################################################"
+    echo ""
     echo "Running tests for ${packages[$FIRST_TEST_INDEX]}"
+    echo ""
+    echo "#####################################################################"
     bundle exec rails test local/bullet_train-core/${packages[$FIRST_TEST_INDEX]}
+
+    if [ $? == "1" ]; then
+      echo "Tests failed, exiting."
+      exit 1
+    fi
 
     if [ -z ${packages[($FIRST_TEST_INDEX + 1)]} ]; then
       echo "No more unit tests to run."
     else
+      echo "#####################################################################"
+      echo ""
       echo "Running tests for ${packages[($FIRST_TEST_INDEX + 1)]}"
+      echo ""
+      echo "#####################################################################"
       bundle exec rails test local/bullet_train-core/${packages[($FIRST_TEST_INDEX + 1)]}
+
+      if [ $? == "1" ]; then
+        echo "Tests failed, exiting."
+        exit 1
+      fi
     fi
   fi
 done
