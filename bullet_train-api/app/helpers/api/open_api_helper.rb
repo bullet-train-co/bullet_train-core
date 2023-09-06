@@ -52,8 +52,14 @@ module Api
         :current_user => User.new
       }.merge(locals))
 
+      factory_path = "test/factories/#{model.model_name.collection}.rb"
+      cache_key = [:example, model.model_name.param_key, File.ctime(factory_path)]
+      example = Rails.cache.fetch(cache_key) do
+        FactoryBot.example(model.model_name.param_key.to_sym)
+      end
+
       schema_json = jbuilder.json(
-        FactoryBot.example(model.model_name.param_key.to_sym) || model.new,
+        example || model.new,
         title: I18n.t("#{model.name.underscore.pluralize}.label"),
         # TODO Improve this. We don't have a generic description for models we can use here.
         description: I18n.t("#{model.name.underscore.pluralize}.label"),
