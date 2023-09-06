@@ -71,7 +71,7 @@ module BulletTrain
             puts "#{child} does not have a foreign key referencing #{parent}".red
             puts ""
             puts "Please re-generate your model, or execute the following to add the foreign key:"
-            puts "rails generate migration add_#{parent.tableize.singularize}_to_#{child.tableize} #{parent.tableize.singularize}:references\n"
+            puts "rails generate migration add_#{parent_reference}_to_#{tableized_child} #{parent_reference}:references\n"
             exit 1
           end
 
