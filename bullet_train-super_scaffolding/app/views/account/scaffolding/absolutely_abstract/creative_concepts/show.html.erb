@@ -1,7 +1,7 @@
 <%= render 'account/shared/page' do |page| %>
   <% page.title t('.section') %>
   <% page.body do %>
-    <%= cable_ready_updates_for @creative_concept do %>
+    <%= updates_for @creative_concept do %>
       <%= render 'account/shared/box', divider: true do |box| %>
         <% box.t :description, title: '.header' %>
         <% box.body do %>

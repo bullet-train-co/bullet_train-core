@@ -21,7 +21,7 @@ module Records::Base
     end
 
     include CableReady::Updatable
-    enable_cable_ready_updates
+    enable_updates
 
     extend ActiveHash::Associations::ActiveRecordExtensions
 

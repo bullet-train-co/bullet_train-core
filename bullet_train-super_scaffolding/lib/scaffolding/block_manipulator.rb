@@ -6,7 +6,7 @@ module Scaffolding
       #
       # Wrap a block of ruby code with another block on the outside.
       #
-      # @param [String] `starting` A string to search for at the start of the block. Eg "<%= cable_ready_updates_for context, collection do"
+      # @param [String] `starting` A string to search for at the start of the block. Eg "<%= updates_for context, collection do"
       # @param [Array] `with` An array with two String elements. The text that should wrap the block. Eg ["<%= action_model_select_controller do %>", "<% end %>"]
       #
       def wrap_block(starting:, with:, lines:)

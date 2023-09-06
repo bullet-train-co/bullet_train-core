@@ -6,7 +6,7 @@
 <% pagy ||= nil %>
 <% pagy, creative_concepts = pagy(creative_concepts, page_param: :creative_concepts_page) unless pagy %>
 
-<%= cable_ready_updates_for context, :scaffolding_absolutely_abstract_creative_concepts do %>
+<%= updates_for context, :scaffolding_absolutely_abstract_creative_concepts do %>
   <%= render 'account/shared/box' do |box| %>
     <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
     <% box.description do %>
