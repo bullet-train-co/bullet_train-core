@@ -72,8 +72,7 @@ module BulletTrain::LoadsAndAuthorizesResource
         end
       end
 
-      # treat through as an array even if the user only specified one parent type.
-      through_as_symbols = through.is_a?(Array) ? through : [through]
+      through_as_symbols = Array(through)
 
       through = []
       through_class_names = []
