@@ -34,6 +34,46 @@ module BulletTrain
           parents = argv[1] ? argv[1].split(",") : []
           parents = parents.map(&:classify).uniq
           parent = parents.first
+          child_parts = child.split("::")
+          parent_parts = parent.split("::")
+
+          # Pop off however many spaces match.
+          child_parts_dup = child_parts.dup
+          parent_parts_dup = parent_parts.dup
+          parent_without_namespace = nil
+          child_parts_dup.each.with_index do |child_part, idx|
+            if child_part == parent_parts_dup[idx]
+              child_parts.shift
+              parent_parts.shift
+            else
+              parent_without_namespace = parent_parts.join("::")
+              break
+            end
+          end
+
+          # `tr` here compensates for namespaced models (i.e. - `Projects::Deliverable` to `projects/deliverable`).
+          parent_reference = parent_without_namespace.tableize.singularize.tr("/", "_")
+          tableized_child = child.tableize.tr("/", "_")
+
+          # Pull the parent foreign key from the `create_table` call
+          # if a migration with `add_reference` hasn't been created.
+          migration_file_name = `grep "add_reference :#{tableized_child}, :#{parent_reference}" db/migrate/*`.split(":").shift
+          migration_file_name ||= `grep "create_table :#{tableized_child}" db/migrate/*`.split(":").shift
+          parent_t_references = "t.references :#{parent_reference}"
+          parent_add_reference = "add_reference :#{tableized_child}, :#{parent_reference}"
+          parent_foreign_key = nil
+          File.open(migration_file_name).readlines.each do |line|
+            parent_foreign_key = line.match?(/#{parent_add_reference}|#{parent_t_references}/)
+            break if parent_foreign_key
+          end
+
+          unless parent_foreign_key
+            puts "#{child} does not have a foreign key referencing #{parent}".red
+            puts ""
+            puts "Please re-generate your model, or execute the following to add the foreign key:"
+            puts "rails generate migration add_#{parent_reference}_to_#{tableized_child} #{parent_reference}:references\n"
+            exit 1
+          end
 
           unless parents.include?("Team")
             raise "Parents for #{child} should trace back to the Team model, but Team wasn't provided. Please confirm that all of the parents tracing back to the Team model are present and try again.\n" \
