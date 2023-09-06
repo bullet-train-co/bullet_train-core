@@ -153,10 +153,10 @@ module BulletTrain
         helper = Pathname.new("./app/helpers/application_helper.rb")
         msmn = Masamune::AbstractSyntaxTree.new(helper.readlines.join)
         current_theme_def_line_no = msmn.method_definitions(name: "current_theme").pop[:line_number]
-        current_theme = msmn.symbols.find {|node| node[:line_number] > current_theme_def_line_no}[:token]
+        current_theme = msmn.symbols.find { |node| node[:line_number] > current_theme_def_line_no }[:token]
         helper.write msmn.replace(type: :symbol, old_token: current_theme, new_token: theme_name)
 
-        [ Pathname.new("./Procfile.dev"), Pathname.new("./package.json") ].each do |file|
+        [Pathname.new("./Procfile.dev"), Pathname.new("./package.json")].each do |file|
           changed = file.read.gsub! current_theme, theme_name
           if changed
             file.write changed
