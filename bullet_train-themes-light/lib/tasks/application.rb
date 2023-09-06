@@ -150,33 +150,16 @@ module BulletTrain
       end
 
       def self.install_theme(theme_name)
-        current_theme = nil
-        new_content = nil
-        File.open("./app/helpers/application_helper.rb", "r") do |f|
-          msmn = Masamune::AbstractSyntaxTree.new(f.readlines.join)
-          current_theme = msmn.symbols.first[:token]
-          new_content = msmn.replace(type: :symbol, old_token: current_theme, new_token: theme_name)
-        end
+        helper = Pathname.new("./app/helpers/application_helper.rb")
+        msmn = Masamune::AbstractSyntaxTree.new(helper.readlines.join)
+        current_theme_def_line_no = msmn.method_definitions(name: "current_theme").pop[:line_number]
+        current_theme = msmn.symbols.find {|node| node[:line_number] > current_theme_def_line_no}[:token]
+        helper.write msmn.replace(type: :symbol, old_token: current_theme, new_token: theme_name)
 
-        File.open("./app/helpers/application_helper.rb", "w") do |f|
-          f.puts new_content
-        end
-
-        new_lines = []
-        [
-          "./Procfile.dev",
-          "./package.json"
-        ].each do |file|
-          File.open(file, "r") do |f|
-            new_lines = f.readlines
-            new_lines = new_lines.map do |line|
-              line.gsub!(/#{current_theme}/, theme_name) unless current_theme.nil?
-              line
-            end
-          end
-
-          File.open(file, "w") do |f|
-            f.puts new_lines.join
+        [ Pathname.new("./Procfile.dev"), Pathname.new("./package.json") ].each do |file|
+          changed = file.read.gsub! current_theme, theme_name
+          if changed
+            file.write changed
           end
         end
       end
