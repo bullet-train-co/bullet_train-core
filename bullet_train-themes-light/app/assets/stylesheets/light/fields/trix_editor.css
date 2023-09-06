@@ -9,27 +9,6 @@ trix-toolbar {
   }
 }
 
-/* Override Tailwind's preflight styles */
-/* https://github.com/tailwindlabs/tailwindcss/issues/989#issuecomment-506555308 */
-trix-editor ul {
-  list-style-type: disc;
-  padding-left: 2.5rem;
-}
-
-trix-editor ol {
-  list-style-type: decimal;
-  padding-left: 2.5rem;
-}
-
-.trix-button {
-  @apply dark:bg-slate-300 !important;
-}
-
-/* Prevent red ring on Trix Editor */
-:-moz-focusring {
-  outline-style: none;
-}
-
 a[href^="bullettrain://"], span.tribute-reference {
   border-radius: 4px;
   display: inline-block;

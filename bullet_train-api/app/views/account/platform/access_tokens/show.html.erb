@@ -1,15 +1,15 @@
-<%= render 'account/shared/page' do |page| %>
-  <% page.title t('.section') %>
-  <% page.body do %>
+<%= render 'account/shared/page' do |p| %>
+  <% p.content_for :title, t('.section') %>
+  <% p.content_for :body do %>
     <%= updates_for @access_token do %>
-      <%= render 'account/shared/box', divider: true do |box| %>
-        <% box.title t('.header') %>
-        <% box.description do %>
+      <%= render 'account/shared/box', divider: true do |p| %>
+        <% p.content_for :title, t('.header') %>
+        <% p.content_for :description do %>
           <%= t('.description') %>
           <%= t('.manage_description') if can? :manage, @access_token %>
         <% end %>
 
-        <% box.body do %>
+        <% p.content_for :body do %>
           <% with_attribute_settings object: @access_token, strategy: :label do %>
             <%= render 'shared/attributes/text', attribute: :token %>
             <%= render 'shared/attributes/date_and_time', attribute: :last_used_at %>
@@ -18,14 +18,14 @@
           <% end %>
         <% end %>
 
-        <% box.actions do %>
+        <% p.content_for :actions do %>
           <%= link_to t('.buttons.edit'), [:edit, :account, @access_token], class: first_button_primary if can? :edit, @access_token %>
           <%# 🚅 super scaffolding will insert new action model buttons above this line. %>
           <%= button_to t('.buttons.destroy'), [:account, @access_token], method: :delete, class: first_button_primary, data: { confirm: t('.buttons.confirmations.destroy', model_locales(@access_token)) } if can? :destroy, @access_token %>
           <%= link_to t('global.buttons.back'), [:account, @application, :access_tokens], class: first_button_primary %>
         <% end %>
 
-        <% box.raw_footer do %>
+        <% p.content_for :raw_footer do %>
           <%# 🚅 super scaffolding will insert new action model index views above this line. %>
         <% end %>
       <% end %>

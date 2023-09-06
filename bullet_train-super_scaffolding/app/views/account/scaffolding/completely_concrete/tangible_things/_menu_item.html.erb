@@ -3,7 +3,7 @@
     url: main_app.polymorphic_path([:account, current_team, :scaffolding_completely_concrete_tangible_things]),
     label: t('scaffolding/completely_concrete/tangible_things.navigation.label'),
   } do |p| %>
-    <% p.icon do %>
+    <% p.content_for :icon do %>
       <i class="<%= t('scaffolding/completely_concrete/tangible_things.navigation.icon') %>"></i>
     <% end %>
   <% end %>

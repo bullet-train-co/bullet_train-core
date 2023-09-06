@@ -6,9 +6,9 @@ else
 end
 %>
 
-<%= render 'account/shared/workflow/box' do |box| %>
-  <% box.title @title %>
-  <% box.body do %>
+<%= render 'account/shared/workflow/box' do |p| %>
+  <% p.content_for :title, @title %>
+  <% p.content_for :body do %>
     <%= form_with model: @team, url: [:account, @team], local: true, class: 'form' do |form| %>
       <%= render 'account/shared/notices' %>
       <%= render 'account/shared/forms/errors', form: form %>

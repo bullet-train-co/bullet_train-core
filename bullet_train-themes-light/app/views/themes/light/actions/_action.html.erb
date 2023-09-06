@@ -1,3 +1,5 @@
+<% yield p = np %>
+
 <div class="py-4 px-8 w-full space-y-3">
   <div class="flex space-x-4">
     <% if action.is_a?(Actions::TracksCreator) %>
@@ -13,7 +15,7 @@
           </div>
         </div>
         <div class="flex-0">
-          <%= partial.actions if partial.actions? %>
+          <%= p.yield :actions if p.content_for? :actions %>
           <% if action.is_a?(Actions::RequiresApproval) %>
             <% if !action.approved? && can?(:approve, action) %>
               <%= button_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.approve"), [:approve, :account, action], method: :post, class: 'button-secondary button-smaller' %>

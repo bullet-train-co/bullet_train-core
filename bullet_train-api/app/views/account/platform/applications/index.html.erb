@@ -1,6 +1,6 @@
-<%= render 'account/shared/page' do |page| %>
-  <% page.title t('.section') %>
-  <% page.body do %>
+<%= render 'account/shared/page' do |p| %>
+  <% p.content_for :title, t('.section') %>
+  <% p.content_for :body do %>
     <%= render 'index', applications: @applications %>
     <%= render 'account/platform/access_tokens/index', access_tokens: @team.platform_agent_access_tokens, context: @team %>
   <% end %>

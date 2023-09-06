@@ -16,7 +16,6 @@ module Scaffolding
       "email_field",
       "emoji_field",
       "file_field",
-      "number_field",
       "options",
       "password_field",
       "phone_field",

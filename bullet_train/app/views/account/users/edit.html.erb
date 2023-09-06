@@ -1,15 +1,18 @@
-<%= render 'account/shared/page' do |page| %>
-  <% page.title t('.section') %>
-  <% page.body do %>
+<%= render 'account/shared/page' do |p| %>
+  <% p.content_for :title, t('.section') %>
+  <% p.content_for :body do %>
     <%= form_for [:account, @user] do |form| %>
       <%= render 'account/shared/forms/errors', form: form %>
     <% end if @user.errors.any? %>
 
     <div class="grid grid-cols-1 gap-y gap-x-8 lg:grid-cols-2">
       <div class="xl:col-span-1 space-y-8">
-        <%= render 'account/shared/box', divider: true do |box| %>
-          <% box.t title: '.profile.header', description: '.profile.description' %>
-          <% box.body.render "account/users/form", user: @user %>
+        <%= render 'account/shared/box', divider: true do |p| %>
+          <% p.content_for :title, t('.profile.header') %>
+          <% p.content_for :description, t('.profile.description') %>
+          <% p.content_for :body do %>
+            <%= render "account/users/form", user: @user %>
+          <% end %>
         <% end %>
 
         <% if two_factor_authentication_enabled? %>
@@ -22,9 +25,9 @@
       <div class="xl:col-span-1 space-y-8">
         <%= render 'account/users/oauth' %>
 
-        <%= render 'account/shared/box', divider: true do |box| %>
-          <% box.title t('.password.header') %>
-          <% box.body do %>
+        <%= render 'account/shared/box', divider: true do |p| %>
+          <% p.content_for :title, t('.password.header') %>
+          <% p.content_for :body do %>
             <% within_fields_namespace(:update_self) do %>
               <%= form_for [:account, @user], html: {id: dom_id(@user, :password), class: 'form'} do |form| %>
                 <% with_field_settings form: form do %>

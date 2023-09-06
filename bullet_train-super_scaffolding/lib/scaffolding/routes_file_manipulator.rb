@@ -398,11 +398,10 @@ class Scaffolding::RoutesFileManipulator
     existing_concerns.map! { |e| e.tr(":", "").tr("\"", "").squish&.to_sym }
     existing_concerns.filter! { |e| e.present? }
     existing_concerns << concern
-    existing_concerns.uniq!
     if line.include?("concerns:")
       lines[line_number].gsub!(/concerns: \[(.*)\]/, "concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]")
-    elsif line.squish.ends_with?(" do")
-      lines[line_number].gsub!(/ do$/, ", concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}] do")
+    elsif line.ends_with?(" do")
+      lines[line_number].gsub!(/ do$/, " concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}] do")
     else
       lines[line_number].gsub!(/resources :(.*)$/, "resources :\\1, concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]")
     end

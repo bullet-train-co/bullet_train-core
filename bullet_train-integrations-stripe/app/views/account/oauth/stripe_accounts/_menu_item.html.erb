@@ -3,7 +3,7 @@
     url: main_app.polymorphic_path([:account, current_user, :oauth_stripe_accounts]),
     label: t('oauth/stripe_accounts.navigation.label'),
   } do |p| %>
-    <% p.icon do %>
+    <% p.content_for :icon do %>
       <i class="<%= t('oauth/stripe_accounts.navigation.icon') %>"></i>
     <% end %>
   <% end %>

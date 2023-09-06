@@ -1,6 +1,6 @@
-<%= render 'account/shared/page' do |page| %>
-  <% page.title t('.section') %>
-  <% page.body do %>
+<%= render 'account/shared/page' do |p| %>
+  <% p.content_for :title, t('.section') %>
+  <% p.content_for :body do %>
     <% if @memberships.current_and_invited.any? %>
       <%= render 'index' do %>
         <%= render @memberships.current_and_invited.includes(:user) %>

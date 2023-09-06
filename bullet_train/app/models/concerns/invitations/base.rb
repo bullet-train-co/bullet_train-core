@@ -11,10 +11,9 @@ module Invitations::Base
 
     validates :email, presence: true
 
+    before_create :generate_uuid
     after_create :set_added_by_membership
     after_create :send_invitation_email
-
-    attribute :uuid, default: -> { SecureRandom.hex }
   end
 
   def set_added_by_membership
@@ -23,6 +22,10 @@ module Invitations::Base
 
   def send_invitation_email
     UserMailer.invited(uuid).deliver_later
+  end
+
+  def generate_uuid
+    self.uuid = SecureRandom.hex
   end
 
   def accept_for(user)

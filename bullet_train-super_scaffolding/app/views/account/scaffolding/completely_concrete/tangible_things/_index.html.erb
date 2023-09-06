@@ -10,14 +10,14 @@
 
 <%= action_model_select_controller do %>
   <% updates_for context, collection do %>
-    <%= render 'account/shared/box', pagy: pagy do |box| %>
-      <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
-      <% box.description do %>
+    <%= render 'account/shared/box', pagy: pagy do |p| %>
+      <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
+      <% p.content_for :description do %>
         <%= t(".contexts.#{context.class.name.underscore}.description#{"_empty" unless tangible_things.any?}") %>
         <%= render "shared/limits/index", model: tangible_things.model %>
       <% end %>
 
-      <% box.table do %>
+      <% p.content_for :table do %>
         <% if tangible_things.any? %>
           <table class="table">
             <thead>
@@ -43,7 +43,7 @@
         <% end %>
       <% end %>
 
-      <% box.actions do %>
+      <% p.content_for :actions do %>
         <% unless hide_actions %>
           <% if context == absolutely_abstract_creative_concept %>
             <% if can? :create, Scaffolding::CompletelyConcrete::TangibleThing.new(absolutely_abstract_creative_concept: absolutely_abstract_creative_concept) %>
@@ -61,7 +61,7 @@
         <% end %>
       <% end %>
 
-      <% box.raw_footer do %>
+      <% p.content_for :raw_footer do %>
         <%# 🚅 super scaffolding will insert new action model index views above this line. %>
       <% end %>
     <% end %>

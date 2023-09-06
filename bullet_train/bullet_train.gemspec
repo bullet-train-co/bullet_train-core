@@ -73,10 +73,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "hiredis"
 
   # Add named slots to regular Rails partials.
-  spec.add_dependency "nice_partials", "~> 0.9"
-
-  # Allow users to document and showcase their partials, components, view helpers, etc.
-  spec.add_dependency "showcase-rails"
+  spec.add_dependency "nice_partials", "~> 0.1"
 
   # Inline all CSS for emails.
   spec.add_dependency "premailer-rails"
@@ -92,9 +89,6 @@ Gem::Specification.new do |spec|
 
   # Extract the body from emails received using action inbox.
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
-
-  # OpenAI
-  spec.add_dependency "ruby-openai"
 
   # Conversations.
   spec.add_runtime_dependency "unicode-emoji"

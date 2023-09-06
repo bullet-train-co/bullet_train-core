@@ -73,7 +73,11 @@ module Records::Base
   end
 
   def seeding?
-    Rake::Task.task_defined?("db:seed") && Rake::Task["db:seed"].already_invoked
+    rake_tasks = ObjectSpace.each_object(Rake::Task)
+    return false if rake_tasks.count.zero?
+
+    db_seed_task = rake_tasks.find { |task| task.name.match?(/^db:seed$/) }
+    db_seed_task.already_invoked
   end
 
   # TODO This should really be in the API package and included from there.

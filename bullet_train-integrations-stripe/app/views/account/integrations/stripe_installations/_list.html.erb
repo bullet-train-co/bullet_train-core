@@ -1,11 +1,13 @@
 <% context ||= @user %>
 <% collection ||= :integrations_stripe_installations %>
 
-<%= render 'account/shared/box' do |box| %>
-  <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
-  <% box.description t(".contexts.#{context.class.name.underscore}.description") %>
+<%= render 'account/shared/box' do |p| %>
+  <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
+  <% p.content_for :description do %>
+    <%= t(".contexts.#{context.class.name.underscore}.description") %>
+  <% end %>
 
-  <% box.body do %>
+  <% p.content_for :body do %>
     <% if stripe_installations.any? %>
       <div class="space-y-0 border border-slate-200 shadow-sm rounded-md divide-y divide-slate-200">
         <% stripe_installations.each do |stripe_installation| %>

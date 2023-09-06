@@ -23,7 +23,7 @@ module Scaffolding::FileManipulator
       return false
     end
 
-    if options[:content_replacement_transformed] && target_file_content.include?(content)
+    if target_file_content.include?(content)
       puts "No need to update '#{file}'. It already has '#{content}'."
     else
       puts "Updating '#{file}'." unless silence_logs?

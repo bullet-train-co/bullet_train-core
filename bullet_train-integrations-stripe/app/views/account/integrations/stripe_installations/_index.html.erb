@@ -4,11 +4,13 @@
 <% hide_actions ||= false %>
 <% hide_back ||= false %>
 
-<%= render 'account/shared/box' do |box| %>
-  <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
-  <% box.description t(".contexts.#{context.class.name.underscore}.description") %>
+<%= render 'account/shared/box' do |p| %>
+  <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
+  <% p.content_for :description do %>
+    <%= t(".contexts.#{context.class.name.underscore}.description") %>
+  <% end %>
 
-  <% box.body do %>
+  <% p.content_for :body do %>
     <% if stripe_installations.any? %>
       <div class="space-y-0 border border-slate-200 shadow-sm rounded-md divide-y divide-slate-200">
         <% stripe_installations.each do |stripe_installation| %>
@@ -33,7 +35,7 @@
     <% end %>
   <% end %>
 
-  <% box.actions do %>
+  <% p.content_for :actions do %>
     <% unless hide_actions %>
       <% if context == team %>
         <% if can? :create, Integrations::StripeInstallation.new(team: team) %>
@@ -51,7 +53,7 @@
     <% end %>
   <% end %>
 
-  <% box.footer do %>
+  <% p.content_for :footer do %>
     <%= raw t(".contexts.team.authentication_note", authentication_url: url_for([:edit, :account, current_user])) %>
   <% end %>
 <% end %>

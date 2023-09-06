@@ -7,15 +7,15 @@
 <% pagy, creative_concepts = pagy(creative_concepts, page_param: :creative_concepts_page) unless pagy %>
 
 <%= updates_for context, :scaffolding_absolutely_abstract_creative_concepts do %>
-  <%= render 'account/shared/box' do |box| %>
-    <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
-    <% box.description do %>
-      <%= t(".contexts.#{context.class.name.underscore}.description").html_safe %>
+  <%= render 'account/shared/box' do |p| %>
+    <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
+    <% p.content_for :description do %>
+      <%= t(".contexts.#{context.class.name.underscore}.#{creative_concepts.any? ? 'description' : 'description_empty'}") %>
       <%= render "shared/limits/index", model: creative_concepts.model %>
     <% end %>
 
     <% if creative_concepts.any? %>
-      <% box.table do %>
+      <% p.content_for :table do %>
         <table class="table">
           <thead>
             <tr>
@@ -35,15 +35,11 @@
       <% end %>
     <% end %>
 
-    <% box.actions do %>
+    <% p.content_for :actions do %>
       <% unless hide_actions %>
         <% if can? :create, Scaffolding::AbsolutelyAbstract::CreativeConcept.new(team: @team) %>
           <%= link_to t('.buttons.new'), [:new, :account, @team, :scaffolding_absolutely_abstract_creative_concept], class: "#{first_button_primary(:absolutely_abstract_creative_concept)} new" %>
         <% end %>
-
-        <%# 🚅 super scaffolding will insert new targets one parent action model buttons above this line. %>
-        <%# 🚅 super scaffolding will insert new bulk action model buttons above this line. %>
-        <%= render "shared/bulk_action_select" %>
 
         <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary(:absolutely_abstract_creative_concept)} back" unless hide_back %>
       <% end %>

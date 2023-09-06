@@ -1,7 +1,12 @@
-<%= render 'account/shared/page' do |page| %>
-  <% page.title t('.section') %>
-  <% page.body.render 'account/shared/box', divider: true do |box| %>
-    <% box.t :description, title: '.header' %>
-    <% box.body.render 'form', creative_concept: @creative_concept %>
+<%= render 'account/shared/page' do |p| %>
+  <% p.content_for :title, t('.section') %>
+  <% p.content_for :body do %>
+    <%= render 'account/shared/box', divider: true do |p| %>
+      <% p.content_for :title, t('.header') %>
+      <% p.content_for :description, t('.description') %>
+      <% p.content_for :body do %>
+        <%= render 'form', creative_concept: @creative_concept %>
+      <% end %>
+    <% end %>
   <% end %>
 <% end %>
