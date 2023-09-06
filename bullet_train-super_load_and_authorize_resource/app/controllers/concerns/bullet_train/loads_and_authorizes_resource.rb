@@ -46,7 +46,7 @@ module BulletTrain::LoadsAndAuthorizesResource
       # `account` part.
       namespace = model_namespace_from_controller_namespace
 
-      model_class_names = namespace.size.downto 0 do
+      model_class_names = namespace.size.downto(0).map do
         [*namespace, model.to_s.classify].join("::").tap { namespace.pop }
       end
 
