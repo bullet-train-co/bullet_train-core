@@ -70,6 +70,8 @@ module BulletTrain::LoadsAndAuthorizesResource
         raise "When a resource can be loaded through multiple parents, please specify the 'polymorphic' option to tell us what that controller calls the parent, e.g. `polymorphic: :imageable`."
       end
 
+      instance_variable_name = :@"#{options[:polymorphic] || through_as_symbols.first}"
+
       # `collection_actions:` and `member_actions:` provide support for shallow nested resources, which
       # keep our routes tidy even after many levels of nesting. most people
       # i talk to don't actually know about this feature in rails, but it's
@@ -94,14 +96,12 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       # x. this and the thing below it are only here to make a sortable concern possible.
       prepend_before_action only: member_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
         eval "@child_object = @#{model}"
-        eval "@parent_object = @#{instance_variable_name}"
+        eval "@parent_object = #{instance_variable_name}"
       end
 
       prepend_before_action only: collection_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        eval "@parent_object = @#{instance_variable_name}"
+        eval "@parent_object = #{instance_variable_name}"
         if options[:through_association].present?
           eval "@child_collection = :#{options[:through_association]}"
         else
@@ -110,18 +110,13 @@ module BulletTrain::LoadsAndAuthorizesResource
       end
 
       prepend_before_action only: member_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        possible_sources_of_parent =
-          through_as_symbols.map { |tas| "@#{model}.#{tas}" }.join(" || ")
-        eval_string =
-          "@#{instance_variable_name} ||= " + possible_sources_of_parent
-        eval eval_string
+        possible_sources_of_parent = through_as_symbols.map { |tas| "@#{model}.#{tas}" }.join(" || ")
+        eval "#{instance_variable_name} ||= " + possible_sources_of_parent
       end
 
       if options[:polymorphic]
         prepend_before_action only: collection_actions do
-          possible_sources_of_parent =
-            through_as_symbols.map { |tas| "@#{tas}" }.join(" || ")
+          possible_sources_of_parent = through_as_symbols.map { |tas| "@#{tas}" }.join(" || ")
           eval "@#{options[:polymorphic]} ||= #{possible_sources_of_parent}"
         end
       end
