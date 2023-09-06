@@ -62,17 +62,14 @@ module BulletTrain::LoadsAndAuthorizesResource
       end
 
       through_as_symbols = Array(through)
-
-      through_class_names = []
-
-      through_as_symbols.each do |through_as_symbol|
+      through_class_names = through_as_symbols.map do |through_as_symbol|
         # reflect on the belongs_to association of the child model to figure out the class names of the parents.
         association = model_class_name.constantize.reflect_on_association(through_as_symbol)
         unless association
           raise "Your 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
         end
 
-        through_class_names << association.klass.name
+        association.klass.name
       end
 
       if through_as_symbols.count > 1 && !options[:polymorphic]
