@@ -46,19 +46,14 @@ module BulletTrain::LoadsAndAuthorizesResource
       # `account` part.
       namespace = model_namespace_from_controller_namespace
 
-      tried = []
-      begin
-        # check whether the parent exists in the model namespace.
-        model_class_name = (namespace + [model.to_s.classify]).join("::")
-        model_class_name.constantize
-      rescue NameError
-        tried << model_class_name
-        if namespace.any?
-          namespace.pop
-          retry
-        else
-          raise "Your 'account_load_and_authorize_resource' is broken. We tried #{tried.join(" and ")}, but didn't find a valid class name."
-        end
+      model_class_names = namespace.size.downto 0 do
+        [*namespace, model.to_s.classify].join("::").tap { namespace.pop }
+      end
+
+      model_class = model_class_names.find(&:safe_constantize)
+      model_class_name = model_class.name
+      unless model_class
+        raise "Your 'account_load_and_authorize_resource' is broken. We tried #{model_class_names.join(" and ")}, but didn't find a valid class name."
       end
 
       through_as_symbols = Array(through)
