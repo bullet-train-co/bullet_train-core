@@ -96,17 +96,13 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       # x. this and the thing below it are only here to make a sortable concern possible.
       prepend_before_action only: member_actions do
-        eval "@child_object = @#{model}"
-        eval "@parent_object = #{instance_variable_name}"
+        @child_object = instance_variable_get(:@"#{model}")
+        @parent_object = instance_variable_get instance_variable_name
       end
 
       prepend_before_action only: collection_actions do
-        eval "@parent_object = #{instance_variable_name}"
-        if options[:through_association].present?
-          eval "@child_collection = :#{options[:through_association]}"
-        else
-          eval "@child_collection = :#{model.to_s.pluralize}"
-        end
+        @parent_object = instance_variable_get instance_variable_name
+        @child_collection = options[:through_association].presence&.to_sym || model.to_s.pluralize.to_sym
       end
 
       prepend_before_action only: member_actions do
