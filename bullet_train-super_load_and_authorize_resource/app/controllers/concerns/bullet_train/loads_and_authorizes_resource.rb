@@ -79,12 +79,8 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       through_as_symbols.each do |through_as_symbol|
         # reflect on the belongs_to association of the child model to figure out the class names of the parents.
-        unless (
-                 association =
-                   model_class_name.constantize.reflect_on_association(
-                     through_as_symbol
-                   )
-               )
+        association = model_class_name.constantize.reflect_on_association(through_as_symbol)
+        unless association
           raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
         end
 
