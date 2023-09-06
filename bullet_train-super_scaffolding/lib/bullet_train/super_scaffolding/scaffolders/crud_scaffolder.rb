@@ -34,11 +34,29 @@ module BulletTrain
           parents = argv[1] ? argv[1].split(",") : []
           parents = parents.map(&:classify).uniq
           parent = parents.first
+          child_parts = child.split("::")
+          parent_parts = parent.split("::")
+
+          # Pop off however many spaces match.
+          child_parts_dup = child_parts.dup
+          parent_parts_dup = parent_parts.dup
+          parent_without_namespace = nil
+          child_parts_dup.each.with_index do |child_part, idx|
+            if child_part == parent_parts_dup[idx]
+              child_parts.shift
+              parent_parts.shift
+            else
+              parent_without_namespace = parent_parts.join("::")
+              break
+            end
+          end
+
+          # `tr` here compensates for namespaced models (i.e. - `Projects::Deliverable` to `projects/deliverable`).
+          parent_reference = parent_without_namespace.tableize.singularize.tr("/", "_")
+          tableized_child = child.tableize.tr("/", "_")
 
           # Pull the parent foreign key from the `create_table` call
           # if a migration with `add_reference` hasn't been created.
-          tableized_child = child.tableize.tr("/", "_") # Compensate for namespaced models (i.e. - `Projects::Deliverable` to `projects/deliverable`).
-          parent_reference = parent.tableize.singularize.tr("/", "_")
           migration_file_name = `grep "add_reference :#{tableized_child}, :#{parent_reference}" db/migrate/*`.split(":").shift
           migration_file_name ||= `grep "create_table :#{tableized_child}" db/migrate/*`.split(":").shift
           parent_t_references = "t.references :#{parent_reference}"
