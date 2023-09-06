@@ -46,13 +46,19 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
     end
 
     # Net::HTTP will consider the url invalid (and not deliver the webhook) unless it ends with a '/'
-    unless uri.path.end_with?("/")
-      uri.path = uri.path + "/"
+    if uri.path == ""
+      uri.path = "/"
     end
 
     http = Net::HTTP.new(hostname, uri.port)
-    http.use_ssl = true if uri.scheme == "https"
-    request = Net::HTTP::Post.new(uri.path)
+    if uri.scheme == "https"
+      http.use_ssl = true
+      if BulletTrain::OutgoingWebhooks.http_verify_mode
+        # Developers might need to set this to `OpenSSL::SSL::VERIFY_NONE` in some cases.
+        http.verify_mode = BulletTrain::OutgoingWebhooks.http_verify_mode
+      end
+    end
+    request = Net::HTTP::Post.new(uri.request_uri)
     request.add_field("Host", uri.host)
     request.add_field("Content-Type", "application/json")
     request.body = delivery.event.payload.to_json

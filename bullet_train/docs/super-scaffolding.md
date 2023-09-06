@@ -130,7 +130,7 @@ bin/super-scaffold crud-field Project status:buttons
 
 By default, Super Scaffolding configures the buttons as "One", "Two", and "Three", but in this example you can edit those options in the `fields` section of `config/locales/en/projects.en.yml`. For example, you could specify the following options:
 
-```
+```yaml
 planned: Planned
 started: Started
 completed: Completed
@@ -138,7 +138,7 @@ completed: Completed
 
 If you want new `Project` models to be set to `planned` by default, you can add that to the migration file that was generated before running it, like so:
 
-```
+```ruby
 add_column :projects, :status, :string, default: "planned"
 ```
 
@@ -170,7 +170,7 @@ There are two important things to point out here:
 
 Finally, Super Scaffolding will prompt you to edit `app/models/project.rb` and implement the required logic in the `valid_leads` method. This is a template method that will be used to both populate the select field on the `Project` form, but also enforce some important security concerns in this multi-tenant system. In this case, you can define it as:
 
-```
+```ruby
 def valid_leads
   team.memberships.current_and_invited
 end
@@ -220,7 +220,7 @@ Just note that the suffix of the field is `_ids` plural, and this is an attribut
 
 The `crud-field` step will ask you to define the logic for the `valid_tags` method in `app/models/project.rb`. You can define it like so:
 
-```
+```ruby
 def valid_tags
   team.projects_tags
 end
@@ -245,10 +245,11 @@ Only the files associated with `Scaffolding::CompletelyConcrete::TangibleThing` 
 
 You won't want your end users seeing the Super Scaffolding templates in your environment, so you can disable their presentation by setting `HIDE_THINGS` in your environment. For example, you can add the following to `config/application.yml`:
 
-```
+```yaml
 HIDE_THINGS: true
 ```
 
 ## Advanced Examples
+ - [Super Scaffolding Options](/docs/super-scaffolding/options.md)
  - [Super Scaffolding with Delegated Types](/docs/super-scaffolding/delegated-types.md)
  - [Super Scaffolding with the `--sortable` option](/docs/super-scaffolding/sortable.md)

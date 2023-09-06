@@ -1,0 +1,13 @@
+<% object ||= current_attributes_object %>
+<% strategy ||= current_attributes_strategy || :none %>
+<% url ||= nil %>
+<% if object.send(attribute).attached? %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
+    <% object.send(attribute).each do |file| %>
+      <%= link_to url_for(file), class: 'button download-file' do %>
+        <i class="leading-none mr-2 text-base ti ti-download"></i>
+        <span>Download File</span>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

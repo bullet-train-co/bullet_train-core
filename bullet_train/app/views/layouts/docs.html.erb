@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html>
+<html lang="<%= I18n.locale %>">
   <head>
     <%
     # we're going to use the
@@ -31,6 +31,8 @@
     <meta property="og:title" content="<%= title.truncate(95) %>" />
     <meta property="og:url" content="<%= request.base_url + request.path %>" />
     <meta property="og:description" content="<%= description.truncate(200) %>" />
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3"/>
   </head>
   <body class="<%= BulletTrain::Themes::Light.background || "bg-gradient-to-br from-secondary-200 to-primary-400 dark:from-primary-900 dark:to-primary-600" %> text-slate-700 text-sm font-normal dark:text-slate-300">
     <div class="md:p-5">
@@ -109,7 +111,7 @@
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalzation' do |p| %>
+                <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalization' do |p| %>
                   <% p.icon do %>
                   <i class="fa-brands fa-js ti ti-world"></i>
                   <% end %>
@@ -150,6 +152,12 @@
                 <%= render 'account/shared/menu/item', url: '/docs/application-options', label: 'Application Options' do |p| %>
                   <% p.icon do %>
                     <i class="fal fa-gear ti ti-settings"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/application-hash.md', label: 'Application Hash' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-brackets-curly ti ti-view-list-alt"></i>
                   <% end %>
                 <% end %>
               <% end %>
@@ -202,6 +210,12 @@
                 <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/nice_partials', label: 'Nice Partials' do |p| %>
                   <% p.icon do %>
                     <i class="fal fa-swatchbook ti ti-widget"></i>
+                  <% end %>
+                <% end %>
+
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/showcase', label: 'Showcase' do |p| %>
+                  <% p.icon do %>
+                    <i class="fal fa-swatchbook ti ti-panel"></i>
                   <% end %>
                 <% end %>
               <% end %>
@@ -292,7 +306,7 @@
             <button
               data-mobile-menu-target="revealable"
               data-action="mobile-menu#close"
-              
+
               data-transition-enter="transition-opacity ease-linear duration-200"
               data-transition-enter-start="opacity-0"
               data-transition-enter-end="opacity-100"
@@ -306,7 +320,7 @@
             </button>
             <div
               data-mobile-menu-target="revealable"
-              
+
               data-transition-enter="transition ease-in-out duration-200 transform"
               data-transition-enter-start="-translate-x-full"
               data-transition-enter-end="translate-x-0"
@@ -343,7 +357,8 @@
             <div class="py-2 px-1">
               <div class="mx-auto sm:px-6 sm:py-4 px-2">
                 <div class="bg-white rounded-md shadow sm:py-14 sm:px-12 py-10 px-7">
-                  <div class="prose" style="max-width: none;">
+                  <div class="prose" style="max-width: none;" id="bt-docs-content">
+                    <div class="float-right relative z-10" id="docsearch"></div>
                     <%= yield %>
                   </div>
                 </div>
@@ -354,5 +369,25 @@
         </div>
       </div>
     </div>
+
+    <% if ENV['HEROKU_APP_NAME'] && ENV['HEROKU_APP_NAME'] == "bullettrain-co" %>
+      <% # We only show the docsearch widget in the demo site. %>
+      <% # We avoid showing it in downstream apps because it wouldn't link to that app, but to the demo site. %>
+      <script src="https://cdn.jsdelivr.net/npm/@docsearch/js@3"></script>
+      <script type="text/javascript">
+        function initDocsearch(){
+          docsearch({
+            appId: 'CJ5ZANVRGK',
+            apiKey: '2268d6d15b80e5bf7bcba35062b69112',
+            indexName: 'bullettrain',
+            insights: true, // Optional, automatically send insights when user interacts with search results
+            container: '#docsearch',
+            debug: false // Set debug to true if you want to inspect the modal
+          });
+        }
+        initDocsearch();
+      </script>
+    <% end %>
+
   </body>
 </html>

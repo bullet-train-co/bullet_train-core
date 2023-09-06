@@ -1,0 +1,23 @@
+<% showcase.description do %>
+  When you're building forms, use Bullet Train's Field Partials for your form fields. They DRY-up all the presentation logic without needing a third-party dependency like Formtastic.
+  <br/>
+  <br/>
+  Read much more about them in the extensive <a href="https://bullettrain.co/docs/field-partials" target="_blank">developer documentation</a>.
+<% end %>
+
+<% form_with model: Scaffolding::CompletelyConcrete::TangibleThing.new, url: "#" do |form| %>
+  <% yield form %>
+<% end %>
+
+<%# To display further options use `showcase.options.x` as options with a block will clear the old options. See `_options.html.erb` for an example. %>
+<% showcase.options do |o| %>
+  <% o.required :form, "Reference to the form object", type: "ActionView::Helpers::FormBuilder" %>
+  <% o.required :method, "Attribute of the model" %>
+  <% o.optional :options, "Options passed directly to the underlying Rails form field helper.", default: {} %>
+  <% o.optional :other_options, "Additional options for things like hiding labels, displaying specific error messages, etc.", default: {} %>
+  <% o.optional "other_options[:icon]", "Display an icon." %>
+  <% o.optional "other_options[:label]", "Display a specific field label." %>
+  <% o.optional "other_options[:hide_label]", "Hide the field label.", default: false %>
+  <% o.optional "other_options[:help]", "Display a specific help string." %>
+  <% o.optional "other_options[:error]", "Display a specific error string." %>
+<% end %>

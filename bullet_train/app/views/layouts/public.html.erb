@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html class="theme-<%= BulletTrain::Themes::Light.color %> <%= "theme-secondary-#{BulletTrain::Themes::Light.secondary_color}" if BulletTrain::Themes::Light.secondary_color %>" lang="<%= I18n.locale %>">
+  <head>
+    <%= render 'shared/layouts/head' %>
+  </head>
+
+  <body class="min-h-screen <%= BulletTrain::Themes::Light.background || "bg-gradient-to-br from-secondary-200 to-primary-400 dark:from-primary-900 dark:to-primary-600" %> text-slate-700 text-sm font-normal dark:text-slate-300">
+    <div class="md:p-5 main-container-padding">
+      <div class="h-screen md:h-auto md:rounded-lg flex shadow main-container">
+
+        <% if BulletTrain::Themes::Light.navigation == :left %>
+          <div class="hidden lg:flex lg:flex-shrink-0 bg-gradient-to-b from-primary-700 to-primary-800 dark:from-slate-800 dark:to-slate-800 md:rounded-l-lg">
+            <div class="w-64">
+              <%= render "account/shared/menu/sidebar" %>
+            </div>
+          </div>
+        <% end %>
+
+        <div class="flex flex-col w-0 flex-1 bg-slate-100 dark:bg-slate-800 dark:border-slate-500 md:rounded-lg <%= BulletTrain::Themes::Light.navigation == :left ? "lg:border-l lg:rounded-l-none" : "" %>">
+          <main class="flex-1 relative z-0 focus:outline-none" tabindex="0">
+            <div class="py-2 px-1">
+              <div class="mx-auto px-4 sm:px-6 py-4">
+                <%= yield %>
+              </div>
+            </div>
+          </main>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

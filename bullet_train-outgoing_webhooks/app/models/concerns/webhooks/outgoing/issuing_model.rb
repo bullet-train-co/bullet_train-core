@@ -13,6 +13,7 @@ module Webhooks::Outgoing::IssuingModel
     false
   end
 
+  # TODO This should probably be called `outgoing_webhooks_parent` to avoid colliding with downstream `parent` methods.
   def parent
     return unless respond_to? BulletTrain::OutgoingWebhooks.parent_association
     send(BulletTrain::OutgoingWebhooks.parent_association)
@@ -51,7 +52,7 @@ module Webhooks::Outgoing::IssuingModel
       webhook = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_events.create(
         event_type_id: event_type.id,
         subject: self,
-        data: to_api_json(api_version),
+        data: api_attributes(api_version),
         api_version: api_version
       )
 

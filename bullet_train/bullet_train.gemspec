@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train"
   spec.summary = "Bullet Train"
   spec.description = spec.summary
   spec.license = "MIT"
@@ -44,9 +44,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "xxhash"
   spec.add_dependency "masamune-ast", ">=1.2.0"
 
-  # This has been broken since Rails 7.
-  # spec.add_dependency "devise-two-factor"
-  # spec.add_dependency "rqrcode"
+  spec.add_dependency "image_processing"
 
   spec.add_dependency "cancancan"
 
@@ -69,7 +67,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "http_accept_language"
 
   # Reactive view magic.
-  # The `updates_for` feature replaces Bullet Train's earlier "Cable Collections" feature.
+  # The `cable_ready_updates_for` feature replaces Bullet Train's earlier "Cable Collections" feature.
   spec.add_dependency "cable_ready", "~> 5.0.0"
   spec.add_dependency "hiredis"
 
@@ -89,7 +87,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "valid_email"
 
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
-  spec.add_dependency "commonmarker" # TODO ➡️ `bullet_train-docs`?
+  spec.add_dependency "commonmarker"
 
   # Extract the body from emails received using action inbox.
   spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`

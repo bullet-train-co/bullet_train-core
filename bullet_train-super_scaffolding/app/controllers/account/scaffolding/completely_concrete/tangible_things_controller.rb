@@ -15,10 +15,16 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
 
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things/new
   def new
+    # 🚅 skip this section when scaffolding.
+    @tangible_thing.address_value = Address.new
+    # 🚅 stop any skipping we're doing now.
   end
 
   # GET /account/scaffolding/completely_concrete/tangible_things/:id/edit
   def edit
+    # 🚅 skip this section when scaffolding.
+    @tangible_thing.address_value ||= Address.new
+    # 🚅 stop any skipping we're doing now.
   end
 
   # POST /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things
@@ -68,7 +74,6 @@ class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Accou
   def process_params(strong_params)
     # 🚅 skip this section when scaffolding.
     assign_boolean(strong_params, :boolean_button_value)
-    assign_date_and_time(strong_params, :date_and_time_field_value)
     assign_checkboxes(strong_params, :multiple_button_values)
     assign_checkboxes(strong_params, :multiple_option_values)
     assign_select_options(strong_params, :multiple_super_select_values)
