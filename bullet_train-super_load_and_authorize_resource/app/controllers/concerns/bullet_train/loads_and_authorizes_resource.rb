@@ -50,7 +50,7 @@ module BulletTrain::LoadsAndAuthorizesResource
         [*namespace, model.to_s.classify].join("::").tap { namespace.pop }
       end
 
-      model_class = model_class_names.find(&:safe_constantize)
+      model_class = model_class_names.find(&:safe_constantize)&.safe_constantize
       unless model_class
         raise "Your 'account_load_and_authorize_resource' is broken. We tried #{model_class_names.join(" and ")}, but didn't find a valid class name."
       end
