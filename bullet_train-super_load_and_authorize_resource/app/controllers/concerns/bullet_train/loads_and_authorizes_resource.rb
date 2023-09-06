@@ -68,7 +68,7 @@ module BulletTrain::LoadsAndAuthorizesResource
           namespace.pop
           retry
         else
-          raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. We tried #{tried.join(" and ")}, but didn't find a valid class name."
+          raise "Your 'account_load_and_authorize_resource' is broken. We tried #{tried.join(" and ")}, but didn't find a valid class name."
         end
       end
 
@@ -81,7 +81,7 @@ module BulletTrain::LoadsAndAuthorizesResource
         # reflect on the belongs_to association of the child model to figure out the class names of the parents.
         association = model_class_name.constantize.reflect_on_association(through_as_symbol)
         unless association
-          raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
+          raise "Your 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
         end
 
         through_class_name = association.klass.name
@@ -90,7 +90,7 @@ module BulletTrain::LoadsAndAuthorizesResource
           through << through_class_name.constantize
           through_class_names << through_class_name
         rescue NameError
-          raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. We tried to load `#{through_class_name}}` (the class name defined for the `#{through_as_symbol}` association), but couldn't find it."
+          raise "Your 'account_load_and_authorize_resource' is broken. We tried to load `#{through_class_name}}` (the class name defined for the `#{through_as_symbol}` association), but couldn't find it."
         end
       end
 
