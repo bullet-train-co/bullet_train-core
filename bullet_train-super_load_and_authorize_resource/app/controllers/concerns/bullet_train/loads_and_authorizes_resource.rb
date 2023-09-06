@@ -72,13 +72,7 @@ module BulletTrain::LoadsAndAuthorizesResource
           raise "Your 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
         end
 
-        through_class_name = association.klass.name
-
-        begin
-          through_class_names << through_class_name
-        rescue NameError
-          raise "Your 'account_load_and_authorize_resource' is broken. We tried to load `#{through_class_name}}` (the class name defined for the `#{through_as_symbol}` association), but couldn't find it."
-        end
+        through_class_names << association.klass.name
       end
 
       if through_as_symbols.count > 1 && !options[:polymorphic]
