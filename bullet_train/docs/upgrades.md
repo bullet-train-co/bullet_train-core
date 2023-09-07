@@ -15,6 +15,7 @@
 ## The Stepwise Upgrade Method
 
 This method will ensure that the version of the Bullet Train gems that you app uses will stay in sync with the appliation framework provided by the starter repo.
+If you've ever upgraded a Rails app from version to verison this process should feel fairly similar.
 
 ## Pulling Updates from the Starter Repository
 
@@ -68,7 +69,7 @@ git checkout -b updating-bullet-train-1.4.1
 Each version of the starter repo is tagged, so you can merge in the tag from the upstread repo.
 
 ```
-git merge bullet-train/v1.4.1
+git merge v1.4.1
 ```
 
 It's quite possible you'll get some merge conflicts at this point. No big deal! Just go through and
@@ -76,8 +77,19 @@ resolve them like you would if you were integrating code from another developer 
 to comment our code heavily, but if you have any questions about the code you're trying to understand,
 let us know on Discord!
 
-Once you've resoled any conflicts it's a good idea to run `bundle install` just to make sure that your
-`Gemfile.lock` agrees with the new state of `Gemfile`.
+One of the files that's likely to have conflicts, and which can be the most frustrating to resolve is
+`Gemfile.lock`. You can try to sort it out by hand, or you can checkout a clean copy and then let bundler
+generate a new one that matches what you need:
+
+```
+git checkout HEAD -- Gemfile.lock
+bundle update
+```
+
+If you choose to sort out `Gemfile.lock` by hand it's a good idea to run `bundle install` just to make
+sure that your `Gemfile.lock` agrees with the new state of `Gemfile`.
+
+Once you've resolved all the conflicts go ahead and commit the changes.
 
 ```
 git diff

@@ -11,12 +11,6 @@
   </p>
 </div>
 
-
-
-## Upgrading the Framework
-
-First run `bundle update`.
-
 ## Pulling Updates from the Starter Repository
 
 There are times when you'll want to pull updates from the starter repository into your local application. Thankfully, `git merge` provides us with the perfect tool for just that. You can simply merge the upstream Bullet Train repository into your local repository. If you haven’t tinkered with the starter repository defaults at all, then this should happen with no meaningful conflicts at all. Simply run your automated tests (including the comprehensive integration tests Bullet Train ships with) to make sure everything is still working as it was before.
@@ -57,6 +51,20 @@ git merge bullet-train/main
 ```
 
 It's quite possible you'll get some merge conflicts at this point. No big deal! Just go through and resolve them like you would if you were integrating code from another developer on your team. We tend to comment our code heavily, but if you have any questions about the code you're trying to understand, let us know on Discord!
+
+One of the files that's likely to have conflicts, and which can be the most frustrating to resolve is
+`Gemfile.lock`. You can try to sort it out by hand, or you can checkout a clean copy and then let bundler
+generate a new one that matches what you need:
+
+```
+git checkout HEAD -- Gemfile.lock
+bundle update
+```
+
+If you choose to sort out `Gemfile.lock` by hand it's a good idea to run `bundle install` just to make
+sure that your `Gemfile.lock` agrees with the new state of `Gemfile`.
+
+Once you've resolved all the conflicts go ahead and commit the changes.
 
 ```
 git diff
