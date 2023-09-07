@@ -1,15 +1,21 @@
 # The YOLO Approach To Upgrading Your Bullet Train Application
 
 <div class="rounded-md border bg-amber-100 border-amber-200 py-4 px-5 mb-3 not-prose">
-  <p class="text-sm text-amber-800 font-light">
+  <p class="text-sm text-amber-800 font-light mb-2">
     Note: We don't really recommend using this method.
-    <a href="/docs/upgrades.md">Learn about other upgrade options.</a>
+    <a href="/docs/upgrades/options">Learn about other upgrade options.</a>
+  </p>
+  <p class="text-sm text-amber-800 font-light">
+    If you're already on version <code>1.4.0</code> or later you should use
+    <a href="/docs/upgrades">The Stepwise Upgrade Method</a>
   </p>
 </div>
 
+
+
 ## Upgrading the Framework
 
-The vast majority of Bullet Train's functionality is distributed via Ruby gems, so you can pull the latest updates by running `bundle update`.
+First run `bundle update`.
 
 ## Pulling Updates from the Starter Repository
 
