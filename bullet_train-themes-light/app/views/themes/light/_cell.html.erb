@@ -1,10 +1,12 @@
+<% yield p = np %>
+
 <% completion_percent ||= nil %>
 
 <div class="py-4 px-8 w-full space-y-3">
   <div class="flex space-x-4">
-    <% if partial.memberships? %>
+    <% if p.content_for? :memberships %>
       <div class="flex-0">
-        <%= partial.memberships %>
+        <%= p.content_for :memberships %>
       </div>
     <% end %>
 
@@ -12,13 +14,13 @@
       <div class="flex">
         <div class="flex-1 space-y-4 py-1">
           <div>
-            <%= partial.title %>
+            <%= p.content_for :title %>
           </div>
         </div>
 
-        <% if partial.actions? %>
+        <% if p.content_for? :actions %>
           <div class="flex-0">
-            <%= partial.actions %>
+            <%= p.content_for :actions %>
           </div>
         <% end %>
       </div>
@@ -29,9 +31,9 @@
         </div>
       <% end %>
 
-      <% if partial.status? %>
+      <% if p.content_for? :status %>
         <div class="<% "mt-2" if completion_percent %> uppercase text-xs text-slate-400">
-          <%= partial.status %>
+          <%= p.content_for :status %>
         </div>
       <% end %>
     </div>

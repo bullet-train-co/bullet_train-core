@@ -1,13 +1,13 @@
 <% context ||= @user %>
 <% hide_actions ||= false %>
 
-<%= render 'account/shared/box' do |box| %>
-  <% box.title t(".contexts.#{context.class.name.underscore}.header") %>
-  <% box.description do %>
+<%= render 'account/shared/box' do |p| %>
+  <% p.content_for :title, t(".contexts.#{context.class.name.underscore}.header") %>
+  <% p.content_for :description do %>
     <%= raw t(".contexts.#{context.class.name.underscore}.#{stripe_accounts.any? ? 'description' : 'description_empty'}") %>
   <% end %>
 
-  <% box.body do %>
+  <% p.content_for :body do %>
     <% if stripe_accounts.any? %>
       <div class="space-y-0 border border-slate-200 shadow-sm rounded-md divide-y divide-slate-200">
         <% stripe_accounts.each do |stripe_account| %>
@@ -33,7 +33,7 @@
   <% end %>
 
   <% unless hide_actions %>
-    <% box.actions do %>
+    <% p.content_for :actions do %>
       <% if can? :create, Oauth::StripeAccount.new(user: @user) %>
         <span data-turbo="false">
           <%= button_to user_stripe_connect_omniauth_authorize_path, class: "#{first_button_primary(:integrations_stripe_installation)} new" do %>
@@ -44,7 +44,7 @@
     <% end %>
   <% end %>
 
-  <% box.footer do %>
+  <% p.content_for :footer do %>
     <% if current_team %>
       <%= raw t(".contexts.user.integration_note", integration_url: url_for([:account, current_team, :integrations_stripe_installations])) %>
     <% end %>

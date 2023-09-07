@@ -30,7 +30,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rack-cors"
   spec.add_dependency "doorkeeper"
   spec.add_dependency "jbuilder-schema", ">= 2.0.0"
-  spec.add_dependency "factory_bot"
 
   spec.add_dependency "bullet_train"
 end

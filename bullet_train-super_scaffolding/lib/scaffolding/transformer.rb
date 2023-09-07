@@ -185,21 +185,6 @@ class Scaffolding::Transformer
     end.compact.first || raise("Couldn't find the Super Scaffolding template for `#{file}` in any of the following locations:\n\n#{BulletTrain::SuperScaffolding.template_paths.join("\n")}")
   end
 
-  def resolve_target_path(file)
-    # Only do something here if they are trying to specify a target directory.
-    return file unless ENV["TARGET"]
-
-    # If the file exists in the application repository, we want to target it there.
-    return file if File.exist?(file)
-
-    ENV["OTHER_TARGETS"]&.split(",")&.each do |possible_target|
-      candidate_path = "#{possible_target}/#{file}".gsub("//", "/")
-      return candidate_path if File.exist?(candidate_path)
-    end
-
-    "#{ENV["TARGET"]}/#{file}".gsub("//", "/")
-  end
-
   def get_transformed_file_content(file)
     transformed_file_content = []
 
@@ -280,7 +265,7 @@ class Scaffolding::Transformer
 
   def scaffold_file(file, overrides: false)
     transformed_file_content = get_transformed_file_content(file)
-    transformed_file_name = resolve_target_path(transform_string(file))
+    transformed_file_name = transform_string(file)
 
     # Remove `_overrides` from the file name if we're sourcing from a local override folder.
     transformed_file_name.gsub!("_overrides", "") if overrides
@@ -415,19 +400,17 @@ class Scaffolding::Transformer
   end
 
   def scaffold_add_line_to_file(file, content, hook, options = {})
-    file = resolve_target_path(transform_string(file))
+    file = transform_string(file)
     content = transform_string(content)
     hook = transform_string(hook)
     add_line_to_file(file, content, hook, options)
   end
 
-  def scaffold_replace_line_in_file(file, content, content_to_replace)
-    file = resolve_target_path(transform_string(file))
+  def scaffold_replace_line_in_file(file, content, in_place_of)
+    file = transform_string(file)
     # we specifically don't transform the content, we assume a builder function created this content.
-    transformed_content_to_replace = transform_string(content_to_replace)
-    content_replacement_transformed = content_to_replace != transformed_content_to_replace
-    options = {suppress_could_not_find: suppress_could_not_find, content_replacement_transformed: content_replacement_transformed}
-    Scaffolding::FileManipulator.replace_line_in_file(file, content, transformed_content_to_replace, **options)
+    in_place_of = transform_string(in_place_of)
+    Scaffolding::FileManipulator.replace_line_in_file(file, content, in_place_of, suppress_could_not_find: suppress_could_not_find)
   end
 
   # if class_name isn't specified, we use `child`.
@@ -515,20 +498,9 @@ class Scaffolding::Transformer
   def add_ability_line_to_roles_yml(class_names = nil)
     model_names = class_names || [child]
     role_file = "./config/models/roles.yml"
-    roles_hash = YAML.load_file(role_file)
-    default_role_placements = [
-      [:default, :models],
-      [:admin, :models]
-    ]
-
     model_names.each do |model_name|
-      default_role_placements.each do |role_placement|
-        stringified_role_placement = role_placement.map { |placement| placement.to_s }
-        if roles_hash.dig(*stringified_role_placement)[model_name].nil?
-          role_type = (role_placement.first == :admin) ? "manage" : "read"
-          Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: #{role_type}", role_placement)
-        end
-      end
+      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: read", [:default, :models])
+      Scaffolding::FileManipulator.add_line_to_yml_file(role_file, "#{model_name}: manage", [:admin, :models])
     end
   end
 
@@ -668,18 +640,6 @@ class Scaffolding::Transformer
       type = parts.join(":")
       boolean_buttons = type == "boolean"
 
-      if first_table_cell && ["trix_editor", "ckeditor", "text_area"].include?(type)
-        puts ""
-        puts "The first attribute of your model cannot be any of the following types:".red
-        puts "1. trix_editor"
-        puts "2. ckeditor"
-        puts "3. text_area"
-        puts ""
-        puts "Please ensure you have another attribute type as the first attribute for your model and try again."
-
-        exit
-      end
-
       # extract any options they passed in with the field.
       # will extract options declared with either [] or {}.
       type, attribute_options = type.scan(/^(.*){(.*)}/).first || type
@@ -751,8 +711,6 @@ class Scaffolding::Transformer
         "text"
       when "text_area"
         "text"
-      when "number_field"
-        "number"
       when "file_field"
         "file"
       when "password_field"
@@ -1106,10 +1064,6 @@ class Scaffolding::Transformer
         end
 
         special_processing = case type
-        when "date_field"
-          "assign_date(strong_params, :#{name})"
-        when "date_and_time_field"
-          "assign_date_and_time(strong_params, :#{name})"
         when "buttons"
           if boolean_buttons
             "assign_boolean(strong_params, :#{name})"
@@ -1535,12 +1489,6 @@ class Scaffolding::Transformer
       unless cli_options["skip-model"]
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "def collection\n  absolutely_abstract_creative_concept.completely_concrete_tangible_things\nend\n\n", METHODS_HOOK, prepend: true)
         scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "include Sortable\n", CONCERNS_HOOK, prepend: true)
-
-        migration = Dir.glob("db/migrate/*").last
-        migration_lines = File.open(migration).readlines
-        parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
-        new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
-        Scaffolding::FileManipulator.write(migration, new_lines)
       end
 
       unless cli_options["skip-table"]
@@ -1693,7 +1641,7 @@ class Scaffolding::Transformer
       end
     end
 
-    add_additional_step :yellow, transform_string("If you would like the table view you've just generated to reactively update when a Tangible Thing is updated on the server, please edit `app/models/scaffolding/absolutely_abstract/creative_concept.rb`, locate the `has_many :completely_concrete_tangible_things`, and add `enable_cable_ready_updates: true` to it.")
+    add_additional_step :yellow, transform_string("If you would like the table view you've just generated to reactively update when a Tangible Thing is updated on the server, please edit `app/models/scaffolding/absolutely_abstract/creative_concept.rb`, locate the `has_many :completely_concrete_tangible_things`, and add `enable_updates: true` to it.")
 
     restart_server unless ENV["CI"].present?
   end

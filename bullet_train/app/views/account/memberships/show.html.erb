@@ -1,8 +1,8 @@
-<%= render 'account/shared/page' do |page| %>
-  <% page.title t('.section') %>
-  <% page.body do %>
-    <%= render 'account/shared/box', divider: true do |box| %>
-      <% box.title do %>
+<%= render 'account/shared/page' do |p| %>
+  <% p.content_for :title, t('.section') %>
+  <% p.content_for :body do %>
+    <%= render 'account/shared/box', divider: true do |p| %>
+      <% p.content_for :title do %>
         <% if @membership.unclaimed? %>
           <%= t('.invitation_header') %>
         <% elsif @membership.tombstone? %>
@@ -12,14 +12,16 @@
         <% end %>
       <% end %>
 
-      <% box.t :description %>
+      <% p.content_for :description do %>
+        <%= t('.description') %>
+      <% end %>
 
-      <% box.body do %>
+      <% p.content_for :body do %>
         <% with_attribute_settings object: @membership, strategy: :label do %>
           <%= render 'shared/attributes/text', attribute: :name %>
-          <%= render 'shared/attributes/base' do |base| %>
-            <% base.heading t('.fields.role_ids.heading') %>
-            <% base.body do %>
+          <%= render 'shared/attributes/base' do |p| %>
+            <% p.content_for :heading, t('.fields.role_ids.heading') %>
+            <% p.content_for :body do %>
               <% if @membership.assignable_roles.any? %>
                 <%= @membership.assignable_roles.map { |role| t(".fields.role_ids.options.#{role.key}.label") }.to_sentence %>
               <% else %>
@@ -31,7 +33,7 @@
         <%# 🚅 super scaffolding will insert new fields above this line. %>
       <% end %>
 
-      <% box.actions do %>
+      <% p.content_for :actions do %>
         <% if @membership.tombstone? %>
           <%= link_to t('.buttons.reinvite'), [:reinvite, :account, @membership], class: first_button_primary, method: :post, data: {confirm: t('.buttons.confirmations.reinvite', membership_name: @membership.name)} if can? :edit, @membership %>
         <% end %>
@@ -51,6 +53,7 @@
 
         <%= link_to t('global.buttons.back'), [:account, @team, :memberships], class: first_button_primary %>
       <% end %>
+
     <% end %>
 
     <%= render 'account/scaffolding/completely_concrete/tangible_things/index', tangible_things: @membership.scaffolding_completely_concrete_tangible_things, context: @membership if @membership.scaffolding_completely_concrete_tangible_things.any? %>

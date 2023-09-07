@@ -38,8 +38,6 @@ cp `bundle show --paths | grep bullet_train-billing-stripe | sort | head -n 1`/d
 
 Note this is different than how many Rails engines ask you to install migrations. This is intentional, as we want to maintain the original timestamps associated with these migrations.
 
-<aside><small>TODO Let's create a `rake bullet_train:billing:stripe:install` task.</small></aside>
-
 ### 2.4. Run Migrations
 
 ```

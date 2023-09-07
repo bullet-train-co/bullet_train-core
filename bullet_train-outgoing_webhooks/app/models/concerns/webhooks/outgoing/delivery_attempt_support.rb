@@ -45,11 +45,6 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
       uri.hostname.downcase
     end
 
-    # Net::HTTP will consider the url invalid (and not deliver the webhook) unless it ends with a '/'
-    unless uri.path.end_with?("/")
-      uri.path = uri.path + "/"
-    end
-
     http = Net::HTTP.new(hostname, uri.port)
     http.use_ssl = true if uri.scheme == "https"
     request = Net::HTTP::Post.new(uri.path)
