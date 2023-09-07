@@ -76,6 +76,9 @@ resolve them like you would if you were integrating code from another developer 
 to comment our code heavily, but if you have any questions about the code you're trying to understand,
 let us know on Discord!
 
+Once you've resoled any conflicts it's a good idea to run `bundle install` just to make sure that your
+`Gemfile.lock` agrees with the new state of `Gemfile`.
+
 ```
 git diff
 git add -A
