@@ -8,7 +8,7 @@
 
 ## Quick Links
 
-* [The Standard Method - Step-wise updates after version `1.4.0`](/docs/upgrades#the-standard-method)
+* [The Stepwise Method - For `1.4.0` and above](#the-stepwise-upgrade-method)
 * [Upgrade from any verison to `1.4.0`](/docs/upgrades/yolo-140.md)
 * [Upgrade from any version to `1.3.0`](/docs/upgrades/yolo-130.md)
 * [Upgrade from `1.3.x` to `1.4.0`](/docs/upgrades/yolo-140.md)
@@ -56,27 +56,19 @@ Depending on what version you're starting on, and what version you want to get t
 In general your two main options are:
 
 1. Upgrade directly from whatever version you happen to be on all the way to the latest published version.
-2. Do a series of step-wise upgrades from the version you're on to the version you want to get to.
+2. Do a series of stepwise upgrades from the version you're on to the version you want to get to.
 
-### Upgrade directly from any previous version to the latest version (aka The YOLO Method)
-
-This was the original upgrade method that Bullet Train used for many years. It's still a perfectly useable way of
-upgrading, though it feels a little... let's call it "uncontrolled" to some people. It can definitely lead to some
-hairy merge conflicts if you haven't updated in a long time.
-
-[Read more about The YOLO Method](/docs/upgrades/yolo.md)
-
-### Upgrade from `1.4.0` (or later) to any later version (aka The Standard Method)
+### Upgrade from `1.4.0` (or later) to any later version (aka The Stepwise Method)
 
 This is the new standard upgrade method that we recommend. If you've ever upgraded a Rails app from version to verison
 this process should feel fairly similar.
 
-[Read more about The Standard Method](/docs/upgrades/yolo-140.md)
+[Read more about The Stepwise Method](#the-stepwise-upgrade-method)
 
-### YOLO from any previous verison to version `1.4.0`
+### Upgrade from any previous verison to version `1.4.0`
 
-If you're on a version prior to `1.4.0` it's a little tricky to do a step-wise upgrade to get to `1.4.0`. It's not
-impossible (see below), but we recommend starting with making an attempt to YOLO your app directly to `1.4.0`.
+If you're on a version prior to `1.4.0` it's a little tricky to do a stepwise upgrade to get to `1.4.0`. It's not
+impossible (see below), but we recommend starting with making an attempt to upgrade your app directly to `1.4.0`.
 
 [Read more about going directly to `1.4.0`](/docs/upgrades/yolo-140.md)
 
@@ -90,12 +82,22 @@ directly to `1.3.0`. With a few extra steps in the upgrade process it's (hopeful
 ### Upgrade from `1.3.x` to version `1.4.0`
 
 Once you make it to the end of the `1.3.x` line you only have one more step to get to the `1.4.0` branch. It's the
-same instructions as if you wanted to YOLO to `1.4.0` from any previous version.
+same instructions as if you wanted to upgrade to `1.4.0` from any previous version.
 
 [Read more about going from `1.3.x` to `1.4.0`](/docs/upgrades/yolo-140.md)
 
+### Upgrade directly from any previous version to the latest version (aka The YOLO Method)
 
-## Upgrading the Framework
+This was the original upgrade method that Bullet Train used for many years. It's still a perfectly useable way of
+upgrading, though it feels a little... let's call it "uncontrolled" to some people. It can definitely lead to some
+hairy merge conflicts if you haven't updated in a long time.
+
+[Read more about The YOLO Method](/docs/upgrades/yolo.md)
+
+
+
+
+## The Stepwise Upgrade Method
 
 The vast majority of Bullet Train's functionality is distributed via Ruby gems, so you can pull the latest updates by running `bundle update`.
 
