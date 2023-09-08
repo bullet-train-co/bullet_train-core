@@ -34,7 +34,7 @@ depending on which version you're currently on.
     ```ruby
     BULLET_TRAIN_VERSION = "1.4.0"
     ```
-   If your `Gemfile` has such a line, that should be the verison you're on. In this case `1.4.0`.
+   If your `Gemfile` has such a line, that should be the version you're on. In this case `1.4.0`.
 
 2. If you don't have a `BULLET_TRAIN_VERSION` line in `Gemfile`, then you need to open `Gemfile.lock` and look/search
    for a line for the `bullet_train` gem. For instance:
