@@ -29,19 +29,16 @@ depending on which version you're currently on.
 
 ## How to find your current version
 
-1. First open `Gemfile` in your application and look/search for a line that begins with `BULLET_TRAIN_VERSION`.
-   For instance:
-    ```ruby
-    BULLET_TRAIN_VERSION = "1.4.0"
-    ```
-   If your `Gemfile` has such a line, that should be the version you're on. In this case `1.4.0`.
+You can easily find your current version by running `bundle show | grep "bullet_train "`.
 
-2. If you don't have a `BULLET_TRAIN_VERSION` line in `Gemfile`, then you need to open `Gemfile.lock` and look/search
-   for a line for the `bullet_train` gem. For instance:
-   ```ruby
-   bullet_train (1.2.24)
-   ```
-   In this case the app is on version `1.2.24`
+For example:
+
+```
+$ bundle show | grep "bullet_train "
+  * bullet_train (1.3.20)
+```
+
+This app is on version `1.3.20`
 
 ## How to upgrade
 
