@@ -4,7 +4,7 @@
 
 * [The YOLO Method (The original upgrade method)](/docs/upgrades/yolo.md)
 * [The Stepwise Method - For `1.4.0` and above](/docs/upgrades)
-* [Upgrade from any verison to `1.4.0`](/docs/upgrades/yolo-140.md)
+* [Upgrade from any version to `1.4.0`](/docs/upgrades/yolo-140.md)
 * [Upgrade from any version to `1.3.0`](/docs/upgrades/yolo-130.md)
 * [Upgrade from `1.3.x` to `1.4.0`](/docs/upgrades/yolo-140.md)
 
