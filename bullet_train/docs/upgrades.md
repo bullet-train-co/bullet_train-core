@@ -15,7 +15,7 @@
 ## The Stepwise Upgrade Method
 
 This method will ensure that the version of the Bullet Train gems that your app uses will stay in sync with the appliation framework provided by the starter repo.
-If you've ever upgraded a Rails app from version to verison this process should feel fairly similar.
+If you've ever upgraded a Rails app from version to version this process should feel fairly similar.
 
 ## Pulling Updates from the Starter Repository
 
