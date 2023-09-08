@@ -69,10 +69,19 @@ module BulletTrain
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/module #{constantized_theme}/module #{ejected_theme_name.titlecase}/g" #{target_path})
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/TailwindCss/#{constantized_theme}/g" #{target_path})
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{target_path})
-        ["require", "TODO", "mattr_accessor"].each do |thing_to_remove|
-          `grep -v #{thing_to_remove} #{target_path} > #{target_path}.tmp`
-          `mv #{target_path}.tmp #{target_path}`
-        end
+
+        theme_file = Pathname.new(target_path)
+        msmn = Masamune::AbstractSyntaxTree.new(theme_file.readlines.join)
+        data_to_skip =
+          msmn.method_calls(name: "require") +
+          msmn.method_calls(name: "mattr_accessor") +
+          msmn.comments.select{|comment| comment[:token].match?("TODO")}
+        lines_to_skip = data_to_skip.map {|data| data[:line_number] - 1}
+        new_lines = theme_file.readlines.select.with_index do |line, idx|
+          line if !lines_to_skip.include?(idx) || line.match?("mattr_accessor :colors")
+        end.compact
+        theme_file.write new_lines.join
+
         `standardrb --fix #{target_path}`
 
         puts "Cutting local project over from `#{theme_name}` to `#{ejected_theme_name}` in `app/helpers/application_helper.rb`."
