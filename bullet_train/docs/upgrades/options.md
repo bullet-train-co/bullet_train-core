@@ -12,7 +12,7 @@
 
 The vast majority of Bullet Train's functionality is distributed via Ruby gems, but those gems depend on certain
 hooks and initializers being present in the hosting application. Those hooks and initializers are provided by the
-starter repository.
+[starter repository](https://github.com/bullet-train-co/bullet_train).
 
 Starting in mid-August of 2023 we began to iterate on how we publish gems and how we ensure that the starter repo
 will get the version of the gems that it expects.
