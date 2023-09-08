@@ -33,7 +33,7 @@ for ((i = 0; i < ${#packages[@]}; i++)); do
     echo "Running tests for ${packages[$i]}"
     echo ""
     echo "#####################################################################"
-    bundle exec rails test local/bullet_train-core/${packages[$FIRST_TEST_INDEX]}
+    bundle exec rails test local/bullet_train-core/${packages[$i]}
 
     if [ $? == "1" ]; then
       FAILED_TESTS+=("${packages[$i]}")
