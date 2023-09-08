@@ -78,8 +78,8 @@ module BulletTrain
           msmn.comments.select { |comment| comment[:token].match?("TODO") }
         lines_to_skip = data_to_skip.map { |data| data[:line_number] - 1 }
         new_lines = theme_file.readlines.select.with_index do |line, idx|
-          line if !lines_to_skip.include?(idx) || line.match?("mattr_accessor :colors")
-        end.compact
+          !lines_to_skip.include?(idx) || line.match?("mattr_accessor :colors")
+        end
         theme_file.write new_lines.join
 
         `standardrb --fix #{target_path}`
