@@ -59,7 +59,7 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    parallelism: 16
+    parallelism: 2
     steps:
       - checkout:
           path: ~/project
@@ -84,7 +84,7 @@ jobs:
           command: bundle exec rails "knapsack_pro:queue:minitest[--verbose]"
           environment:
             RAILS_ENV: test
-            KNAPSACK_PRO_CI_NODE_TOTAL: 16
+            KNAPSACK_PRO_CI_NODE_TOTAL: 2
 
       # If you don't want to use Knapsack Pro, then use this configuration:
       #
@@ -109,7 +109,7 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    parallelism: 16
+    parallelism: 7
     steps:
       - checkout:
           path: ~/project
