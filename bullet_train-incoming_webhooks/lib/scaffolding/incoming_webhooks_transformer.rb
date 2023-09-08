@@ -12,7 +12,8 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
   def scaffold_incoming_webhook
     files = [
       "./app/models/webhooks/incoming/bullet_train_webhook.rb",
-      "./app/controllers/webhooks/incoming/bullet_train_webhooks_controller.rb"
+      "./app/controllers/webhooks/incoming/bullet_train_webhooks_controller.rb",
+      "./test/controllers/webhooks/incoming/bullet_train_webhooks_controller_test.rb"
     ]
 
     files.each do |name|
