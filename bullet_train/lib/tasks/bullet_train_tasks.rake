@@ -295,7 +295,7 @@ namespace :bullet_train do
             end
           elsif flag == "--reset"
             if line.match?(/bullet_train/)
-              line.gsub!(/,.*$/, "")
+              line.gsub!(/,.*$/, ", BULLET_TRAIN_VERSION")
             end
             puts "Resetting '#{package}' package in the Gemfile...".blue
           end
