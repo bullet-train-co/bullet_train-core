@@ -62,7 +62,7 @@ hairy merge conflicts if you haven't updated in a long time.
 
 ### Upgrade from `1.4.0` (or later) to any later version (aka The Standard Stepwise Method)
 
-This is the new standard upgrade method that we recommend. If you've ever upgraded a Rails app from version to verison
+This is the new standard upgrade method that we recommend. If you've ever upgraded a Rails app from version to version
 this process should feel fairly similar.
 
 [Read more about The Stepwise Method](/docs/upgrades)
