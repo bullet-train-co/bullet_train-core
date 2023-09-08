@@ -27,7 +27,6 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: ~/project
-    parallelism: 16
     steps:
       - checkout:
           path: ~/project/local/bullet_train-core

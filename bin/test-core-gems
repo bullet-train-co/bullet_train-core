@@ -22,37 +22,29 @@ packages=(
   "bullet_train-themes-tailwind_css"
 )
 
-for ((i = 0; i < ${#packages[@]}; ++i)); do
+FAILED_TESTS=()
+
+for ((i = 0; i < ${#packages[@]}; i++)); do
   if [ -z "${CIRCLE_NODE_INDEX}" ] || [ "${CIRCLE_NODE_INDEX}" == "${i}" ]; then
 
     # Run tests for two gems per node.
-    FIRST_TEST_INDEX=($i * 2)
     echo "#####################################################################"
     echo ""
-    echo "Running tests for ${packages[$FIRST_TEST_INDEX]}"
+    echo "Running tests for ${packages[$i]}"
     echo ""
     echo "#####################################################################"
     bundle exec rails test local/bullet_train-core/${packages[$FIRST_TEST_INDEX]}
 
     if [ $? == "1" ]; then
-      echo "Tests failed, exiting."
-      exit 1
-    fi
-
-    if [ -z ${packages[($FIRST_TEST_INDEX + 1)]} ]; then
-      echo "No more unit tests to run."
-    else
-      echo "#####################################################################"
-      echo ""
-      echo "Running tests for ${packages[($FIRST_TEST_INDEX + 1)]}"
-      echo ""
-      echo "#####################################################################"
-      bundle exec rails test local/bullet_train-core/${packages[($FIRST_TEST_INDEX + 1)]}
-
-      if [ $? == "1" ]; then
-        echo "Tests failed, exiting."
-        exit 1
-      fi
+      FAILED_TESTS+=("${packages[$i]}")
     fi
   fi
 done
+
+if [ FAILED_TESTS.length > 0 ]; then
+  echo "The following tests failed:"
+  for ((i = 0; i < ${FAILED_TESTS[@]}; i++)); do
+    echo "${i}. ${FAILED_TESTS[$i]}"
+  done
+  exit 1
+fi
