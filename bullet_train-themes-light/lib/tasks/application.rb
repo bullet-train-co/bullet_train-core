@@ -75,8 +75,8 @@ module BulletTrain
         data_to_skip =
           msmn.method_calls(name: "require") +
           msmn.method_calls(name: "mattr_accessor") +
-          msmn.comments.select{|comment| comment[:token].match?("TODO")}
-        lines_to_skip = data_to_skip.map {|data| data[:line_number] - 1}
+          msmn.comments.select { |comment| comment[:token].match?("TODO") }
+        lines_to_skip = data_to_skip.map { |data| data[:line_number] - 1 }
         new_lines = theme_file.readlines.select.with_index do |line, idx|
           line if !lines_to_skip.include?(idx) || line.match?("mattr_accessor :colors")
         end.compact
