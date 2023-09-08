@@ -961,6 +961,20 @@ class Scaffolding::Transformer
             if attribute.type == "file_field"
               scaffold_add_line_to_file(file, "#{attribute.name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
             end
+          elsif attribute.type == "address_field"
+            address_strong_params = <<~RUBY
+              #{attribute.name}_attributes: [
+                :id,
+                :_destroy,
+                :address_one,
+                :address_two,
+                :city,
+                :country_id,
+                :region_id,
+                :postal_code
+              ],
+            RUBY
+            scaffold_add_line_to_file(file, address_strong_params, RUBY_NEW_ARRAYS_HOOK, prepend: true)
           else
             scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
             if attribute.type == "file_field"
@@ -970,6 +984,28 @@ class Scaffolding::Transformer
         end
 
         scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", attribute.special_processing, RUBY_NEW_FIELDS_PROCESSING_HOOK, prepend: true) if attribute.special_processing
+      end
+
+      #
+      # ASSOCIATED MODELS
+      #
+
+      unless cli_options["skip-form"] || attribute.options[:readonly]
+
+        # set default values for associated models.
+        case attribute.type
+        when "address_field"
+          scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", "before_action :set_default_#{attribute.name}, except: :index", "ApplicationController", increase_indent: true)
+
+          method_content = <<~RUBY
+            
+            def set_default_#{attribute.name}
+              @tangible_thing.address ||= Address.new
+            end
+          RUBY
+          scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", method_content, "end", prepend: true, increase_indent: true, exact_match: true)
+        end
+
       end
 
       #
