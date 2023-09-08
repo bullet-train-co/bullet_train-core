@@ -870,8 +870,11 @@ class Scaffolding::Transformer
           <td#{cell_attributes}><%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.is_vanilla? ? attribute.name : attribute.name_without_id_suffix}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
         ERB
 
-        if attribute.type == "password_field"
+        case attribute.type
+        when "password_field"
           field_content.gsub!(/\s%>/, ", options: { password: true } %>")
+        when "address_field"
+          field_content.gsub!(/\s%>/, ", one_line: true %>")
         end
 
         unless ["Team", "User"].include?(child)
@@ -1246,6 +1249,9 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "after_validation :remove_#{attribute.name}, if: :#{attribute.name}_removal?", CALLBACKS_HOOK, prepend: true)
         when "trix_editor"
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
+        when "address_field"
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_one :#{attribute.name}, class_name: \"Address\", as: :addressable", HAS_ONE_HOOK, prepend: true)
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "accepts_nested_attributes_for :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
         when "buttons"
           if attribute.is_boolean?
             scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)

@@ -7,6 +7,7 @@ module Scaffolding
 
   def self.valid_attribute_type?(type)
     [
+      "address_field",
       "boolean",
       "buttons",
       "cloudinary_image",
