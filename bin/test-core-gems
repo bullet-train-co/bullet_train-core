@@ -43,7 +43,7 @@ done
 
 if [ FAILED_TESTS.length > 0 ]; then
   echo "The following tests failed:"
-  for ((i = 0; i < ${FAILED_TESTS[@]}; i++)); do
+  for ((i = 0; i < ${#FAILED_TESTS[@]}; i++)); do
     echo "${i}. ${FAILED_TESTS[$i]}"
   done
   exit 1
