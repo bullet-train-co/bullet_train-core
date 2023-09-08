@@ -25,19 +25,15 @@ packages=(
 FAILED_TESTS=()
 
 for ((i = 0; i < ${#packages[@]}; i++)); do
-  if [ -z "${CIRCLE_NODE_INDEX}" ] || [ "${CIRCLE_NODE_INDEX}" == "${i}" ]; then
+  echo "#####################################################################"
+  echo ""
+  echo "Running tests for ${packages[$i]}"
+  echo ""
+  echo "#####################################################################"
+  bundle exec rails test local/bullet_train-core/${packages[$i]}
 
-    # Run tests for two gems per node.
-    echo "#####################################################################"
-    echo ""
-    echo "Running tests for ${packages[$i]}"
-    echo ""
-    echo "#####################################################################"
-    bundle exec rails test local/bullet_train-core/${packages[$i]}
-
-    if [ $? == "1" ]; then
-      FAILED_TESTS+=("${packages[$i]}")
-    fi
+  if [ $? == "1" ]; then
+    FAILED_TESTS+=("${packages[$i]}")
   fi
 done
 
