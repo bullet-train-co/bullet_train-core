@@ -28,16 +28,25 @@ module Webhooks::Outgoing::DeliverySupport
   def deliver_async
     if still_attempting?
       Webhooks::Outgoing::DeliveryJob.set(wait: next_reattempt_delay).perform_later(self)
+    else
+      # All delivery attempts have now failed. If no successful deliveries in the last 24 hours then disable
+      last_successful_delivery = endpoint.deliveries.where.not(delivered_at: nil).maximum(:delivered_at)
+      if last_successful_delivery.blank? || last_successful_delivery < 24.hours.ago
+        endpoint.disabled_from_failure = true
+        endpoint.save
+      end
     end
   end
 
   def deliver
     # TODO If we ever do away with the `async: true` default for webhook generation, then I believe this needs to
     # change otherwise we'd be attempting the first delivery of webhooks inline.
-    if delivery_attempts.create.attempt
-      touch(:delivered_at)
-    else
-      deliver_async
+    unless disabled?
+      if delivery_attempts.create.attempt
+        touch(:delivered_at)
+      else
+        deliver_async
+      end
     end
   end
 
@@ -56,6 +65,10 @@ module Webhooks::Outgoing::DeliverySupport
 
   def failed?
     !(delivered? || still_attempting?)
+  end
+
+  def disabled?
+    endpoint.disabled_from_failure
   end
 
   def name
