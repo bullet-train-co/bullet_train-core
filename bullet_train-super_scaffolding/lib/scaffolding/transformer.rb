@@ -998,7 +998,7 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", "before_action :set_default_#{attribute.name}, except: :index", "ApplicationController", increase_indent: true)
 
           method_content = <<~RUBY
-            
+
             def set_default_#{attribute.name}
               @tangible_thing.#{attribute.name} ||= Address.new
             end
