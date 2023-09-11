@@ -10,15 +10,10 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
   end
 
   def scaffold_incoming_webhook
-    gem_path = `bundle show bullet_train-incoming_webhooks`.chomp
-
     files = [
-      # Files in the starter repository.
       "./app/models/webhooks/incoming/bullet_train_webhook.rb",
       "./app/controllers/webhooks/incoming/bullet_train_webhooks_controller.rb",
-
-      # Files in bullet_train-incoming_webhooks.
-      "#{gem_path}/test/controllers/webhooks/incoming/bullet_train_webhooks_controller_test.rb"
+      "./test/controllers/webhooks/incoming/bullet_train_webhooks_controller_test.rb"
     ]
 
     files.each do |name|
