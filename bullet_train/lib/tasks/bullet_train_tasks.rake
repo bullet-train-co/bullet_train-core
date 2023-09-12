@@ -263,7 +263,7 @@ namespace :bullet_train do
     version_regexp = /^[\d|.]$/
 
     packages.each do |package|
-      original_path = "gem \"#{package}\""
+      original_path = "gem \"#{package}\", BULLET_TRAIN_VERSION"
       local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
       match_found = false
 
