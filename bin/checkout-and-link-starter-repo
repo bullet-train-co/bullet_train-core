@@ -21,27 +21,17 @@ fi
 echo "Cloning from ${STARTER_REPO_BRANCH}..."
 git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
 
-# TODO: Maybe generate this list automatically based on the subdirectories in core that contain a .gemspec?
-packages=(
-  "bullet_train"
-  "bullet_train-api"
-  "bullet_train-fields"
-  "bullet_train-has_uuid"
-  "bullet_train-incoming_webhooks"
-  "bullet_train-integrations"
-  "bullet_train-integrations-stripe"
-  "bullet_train-obfuscates_id"
-  "bullet_train-outgoing_webhooks"
-  "bullet_train-roles"
-  "bullet_train-scope_questions"
-  "bullet_train-scope_validator"
-  "bullet_train-sortable"
-  "bullet_train-super_load_and_authorize_resource"
-  "bullet_train-super_scaffolding"
-  "bullet_train-themes"
-  "bullet_train-themes-light"
-  "bullet_train-themes-tailwind_css"
-)
+REPOSITORY_ROOT_DATA=$(curl --verbose -H "Accept: application.vnd.github+json" https://api.github.com/repos/bullet-train-co/bullet_train-core/git/trees/main | jq -r '.tree')
+ROOT_DIRECTORIES=$(echo $response | grep -oP "bullet_train[a-z|A-Z|_|-]*")
+
+# The `grep` call above grabs `bullet_train-core` multiple times, so we remove it here.
+packages=()
+for gem in "${ROOT_DIRECTORES[@]}" ; do
+  echo $gem
+  if ! [[ $gem =~ /bullet_train-core/ ]] ; then
+    pakages+="$gem"
+  fi
+done
 
 for package in "${packages[@]}"
 do
