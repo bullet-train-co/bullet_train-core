@@ -23,18 +23,35 @@
         <%= render 'account/users/oauth' %>
 
         <%= render 'account/shared/box', divider: true do |box| %>
-          <% box.title t('.password.header') %>
+          <% box.title t('.email_and_password.header') %>
+          <% box.description t('.email_and_password.description') %>
           <% box.body do %>
             <% within_fields_namespace(:update_self) do %>
               <%= form_for [:account, @user], html: {id: dom_id(@user, :password), class: 'form'} do |form| %>
                 <% with_field_settings form: form do %>
-                  <%= render 'shared/fields/password_field', method: :current_password %>
-                  <%= render 'shared/fields/password_field', method: :password, options: {show_strength_indicator: true} %>
-                  <%= render 'shared/fields/password_field', method: :password_confirmation %>
+                  <%= render 'shared/fields/email_field', method: :email, options: {autofocus: true} %>
+
+                  <hr>
+
+                  <p><%= t('.email_and_password.new_password') %></p>
+
+                  <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
+                    <div class="sm:col-span-1">
+                      <%= render 'shared/fields/password_field', method: :password, options: {show_strength_indicator: true}, other_options: { required: false } %>
+                    </div>
+                    <div class="sm:col-span-1">
+                      <%= render 'shared/fields/password_field', method: :password_confirmation, other_options: { required: false, label: t('.email_and_password.confirm_new_password') } %>
+                    </div>
+                  </div>
+
+                  <hr>
+
+                  <p><%= t('.email_and_password.current_password') %></p>
+                  <%= render 'shared/fields/password_field', method: :current_password, other_options: { required: true } %>
                 <% end %>
 
                 <div class="buttons">
-                  <%= form.submit t('.buttons.update_password'), class: "button" %>
+                  <%= form.submit t('.buttons.update_email_and_password'), class: "button" %>
                 </div>
               <% end %>
             <% end %>

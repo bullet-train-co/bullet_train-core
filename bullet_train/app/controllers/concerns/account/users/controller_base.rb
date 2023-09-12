@@ -24,15 +24,15 @@ module Account::Users::ControllerBase
   def show
   end
 
-  def updating_password?
-    params[:user].key?(:password)
+  def updating_password_or_email?
+    params[:user].key?(:password) || params[:user].key?(:email)
   end
 
   # PATCH/PUT /account/users/1
   # PATCH/PUT /account/users/1.json
   def update
     respond_to do |format|
-      if updating_password? ? @user.update_with_password(user_params) : @user.update_without_password(user_params)
+      if updating_password_or_email? ? @user.update_with_password(user_params) : @user.update_without_password(user_params)
         # if you update your own user account, devise will normally kick you out, so we do this instead.
         bypass_sign_in current_user.reload
         format.html { redirect_to [:edit, :account, @user], notice: t("users.notifications.updated") }

@@ -5,14 +5,18 @@ en:
       label: *label
     buttons: &buttons
       update_profile: Update Profile
-      update_password: Update Password
+      update_email_and_password: Update Email & Password
     edit:
       section: "%{users_possessive} Profile"
       profile:
         header: Update Your Profile
-        description: You can update the email address where you'll receive notifications and also update the way your name is displayed.
-      password:
-        header: Update Your Password
+        description: You can update the way your name is displayed and your timezone.
+      email_and_password:
+        header: Update Your Email Addresss & Password
+        description: When you change these credentials we'll email you a confirmation.
+        new_password: If you don't want to change your password, leave these two fields blank.
+        current_password: For security reasons we need you to confirm your current password.
+        confirm_new_password: Confirm New Password
       two_factor:
         header: Two-Factor Authentication
         description_enabled: 2FA is currently enabled for your account.
