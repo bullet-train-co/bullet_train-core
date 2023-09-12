@@ -72,7 +72,6 @@ module Api::Controllers::Base
     end
 
     # TODO Remove this rescue once workspace clusters can write to this column on the identity server.
-    # TODO Make this logic configurable so that downstream developers can write different methods for this column getting updated.
     if doorkeeper_token
       begin
         doorkeeper_token.update(last_used_at: Time.zone.now)
@@ -90,13 +89,17 @@ module Api::Controllers::Base
     current_user&.teams&.first
   end
 
+  def current_membership
+    current_user.memberships.where(team: current_team).first
+  end
+
   def collection_variable
     @collection_variable ||= "@#{self.class.name.split("::").last.gsub("Controller", "").underscore}"
   end
 
   def apply_pagination
     collection = instance_variable_get collection_variable
-    @pagy, collection = pagy_cursor collection, after: params[:after]
+    @pagy, collection = pagy_cursor collection, after: params[:after], order: {id: :asc}
     instance_variable_set collection_variable, collection
   end
 

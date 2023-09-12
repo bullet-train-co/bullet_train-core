@@ -1,11 +1,10 @@
-<% yield %>
-
 <%
 stimulus_controller = 'fields--super-select'
 
 form ||= current_fields_form
 options ||= {}
 other_options ||= {}
+select2_options ||= nil
 html_options ||= {}
 html_options[:id] ||= form.field_id(method)
 html_options[:class] = "form-control select2 #{html_options[:class]}".strip
@@ -22,10 +21,14 @@ else
   end
 end
 
-wrapper_options = { data: { controller: stimulus_controller }}
-wrapper_options[:data]["#{stimulus_controller}-enable-search-value"] = true if other_options[:search]
+wrapper_options ||= {}
+wrapper_options[:data] ||= {}
+wrapper_options[:data][:controller] ||= ""
+wrapper_options[:data][:controller] += " #{stimulus_controller}"
+wrapper_options[:data]["#{stimulus_controller}-enable-search-value"] = true if (other_options[:search] || other_options[:accepts_new])
 wrapper_options[:data]["#{stimulus_controller}-accepts-new-value"] = true if other_options[:accepts_new]
 wrapper_options[:data]["#{stimulus_controller}-search-url-value"] = choices_url if choices_url.present?
+wrapper_options[:data]["#{stimulus_controller}-select2-options-value"] = select2_options.to_json if select2_options.present?
 
 unless options[:multiple]
   wrapper_options[:data]["action"] ||= ""
@@ -39,7 +42,7 @@ html_options[:data].merge!("#{stimulus_controller}-target": 'select')
 
 <%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
   <% content_for :field do %>
-    <%= content_tag :div, data: wrapper_options[:data] do %>
+    <%= content_tag :div, wrapper_options do %>
       <%= form.select method, choices, options, html_options %>
     <% end %>
   <% end %>

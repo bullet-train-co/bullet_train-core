@@ -5,7 +5,7 @@ Gem::Specification.new do |spec|
   spec.version = BulletTrain::Api::VERSION
   spec.authors = ["Andrew Culver"]
   spec.email = ["andrew.culver@gmail.com"]
-  spec.homepage = "https://github.com/bullet-train-co/bullet_train-api"
+  spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-api"
   spec.summary = "Bullet Train API"
   spec.description = spec.summary
   spec.license = "MIT"
@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "pagy_cursor"
   spec.add_dependency "rack-cors"
   spec.add_dependency "doorkeeper"
-  spec.add_dependency "jbuilder-schema", ">= 2.0.0"
+  spec.add_dependency "jbuilder-schema", ">= 2.2.0"
   spec.add_dependency "factory_bot"
 
   spec.add_dependency "bullet_train"

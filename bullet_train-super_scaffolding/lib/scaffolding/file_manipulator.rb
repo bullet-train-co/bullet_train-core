@@ -36,7 +36,7 @@ module Scaffolding::FileManipulator
   # For example, to add content to admin.models pass in [:admin, :models]
   def self.add_line_to_yml_file(file, content, location_array)
     # First check that the given location array actually exists in the yml file:
-    yml = YAML.safe_load(File.read(file))
+    yml = YAML.safe_load_file(file)
     location_array.map!(&:to_s)
 
     # TODO: Raise an error if we're returning nil.

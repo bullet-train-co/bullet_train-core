@@ -14,7 +14,7 @@ rails test:system
 
 When debugging tests, it's important to be able to see what Capybara is seeing. You can disable the headless browser mode by prefixing `rails test` like so:
 
-```
+```shell
 MAGIC_TEST=1 rails test
 ```
 

@@ -6,7 +6,7 @@ Bullet Train introduces a new, slightly different expectation for Rails seed dat
 
 This is different than the Rails default, [as evidenced by the Rails example](https://guides.rubyonrails.org/v6.1.1/active_record_migrations.html#migrations-and-seed-data) which uses `Product.create`:
 
-```
+```ruby
 5.times do |i|
   Product.create(name: "Product ##{i}", description: "A product.")
 end
@@ -16,7 +16,7 @@ end
 
 In Bullet Train applications, you would implement that same `db/seeds.rb` logic like so:
 
-```
+```ruby
 5.times do |i|
   Product.find_or_create_by(name: "Product ##{i}") do |product|
     # this only happens if on a `create`.
@@ -39,7 +39,7 @@ In some cases, you may have core seed data like roles that needs to exist in eve
 
 Then in `db/seeds.rb`, you can load all of the shared core seed data at the beginning of `db/seeds.rb` and then load the environment-specific seeds only when you've specified one of those environments.
 
-```
+```ruby
 load "#{Rails.root}/db/seeds/development.rb" if Rails.env.development?
 load "#{Rails.root}/db/seeds/test.rb" if Rails.env.test?
 ```

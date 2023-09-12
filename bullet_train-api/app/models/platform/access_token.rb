@@ -1,4 +1,4 @@
-class Platform::AccessToken < ApplicationRecord
+class Platform::AccessToken < BulletTrain::Api.base_class.constantize
   self.table_name = "oauth_access_tokens"
 
   include Doorkeeper::Orm::ActiveRecord::Mixins::AccessToken

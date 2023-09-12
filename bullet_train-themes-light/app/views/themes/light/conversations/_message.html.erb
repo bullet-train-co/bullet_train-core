@@ -34,7 +34,7 @@
 
 <% rounding_modifier = message_corner_class(next_message_in_series, current_user_message) %>
 
-<% timestamp = next_message_in_series || show_as_thread ? '' : time_ago_in_words(message.created_at) + " ago" %>
+<% timestamp = next_message_in_series || show_as_thread ? '' : t("global.time_ago", time: time_ago_in_words(message.created_at)) %>
 
 <% threaded_message = message.threaded? %>
 <% thread_started_by_current_user = message.thread_origin_user == current_author %>
@@ -126,7 +126,7 @@
             <path d="M0 57.7c.1 145.1 4.1 224 14.5 281.1 19.4 106.3 65.2 156.4 166.3 181.7 48.7 12.1 111.4 18.8 211.7 22.5 23.8.9 196.6 2.8 268.2 3H683l.2 67.8.3 67.8 170.3-102.1L1024 477.3l-170.2-102-170.3-102-.3 67.8-.2 67.9h-75.8c-184.7 0-266.9-4.8-327.2-19-34.2-8.1-62.8-21.1-81.2-37-36.1-31.3-52.3-76.8-58.8-165.5-2-28-3-69.2-3-127.8V0H0v57.7z"/>
           </svg>
           <div class="flex flex-col mr-10 min-w-max">
-            <div class="pt-0 mr-2 ml-4 text-xxs"><%= reply.membership.label_string %> reply: </div>
+            <div class="pt-0 mr-2 ml-4 text-xxs"><%= reply.membership.label_string %> <%= t('conversations.message.reply') %></div>
             <div class="bg-slate-100 rounded py-2 px-4 mt-0 text-slate-400 max-w-md"><%= reply.body.html_safe %></div>
           </div>
         </div>

@@ -128,5 +128,23 @@ namespace :bullet_train do
         puts "Failed to download the OpenAPI Document. Status code: #{response.status}"
       end
     end
+
+    desc "Export the OpenAPI schema for the application"
+    task export_openapi_schema: :environment do
+      @version = BulletTrain::Api.current_version
+      dir = "tmp/openapi"
+      Dir.mkdir(dir) unless File.exist?(dir)
+      File.open("#{dir}/openapi-#{Time.now.strftime("%Y%m%d-%H%M%S")}.yaml", "w+") do |f|
+        f.binmode
+        f.write(
+          ApplicationController.renderer.render(
+            template: "api/#{@version}/open_api/index",
+            layout: false,
+            format: :text,
+            assigns: {version: @version}
+          )
+        )
+      end
+    end
   end
 end

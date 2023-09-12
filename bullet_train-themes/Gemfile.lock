@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.2.24)
+    bullet_train-themes (1.4.0)
       rails (>= 6.0.0)
 
 GEM
@@ -78,8 +78,8 @@ GEM
     crass (1.0.6)
     date (3.3.3)
     erubi (1.12.0)
-    globalid (1.1.0)
-      activesupport (>= 5.0)
+    globalid (1.2.1)
+      activesupport (>= 6.1)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
     json (2.6.3)
@@ -94,10 +94,10 @@ GEM
       net-smtp
     marcel (1.0.2)
     method_source (1.0.0)
-    mini_mime (1.1.2)
+    mini_mime (1.1.5)
     mini_portile2 (2.8.1)
     minitest (5.16.3)
-    net-imap (0.3.4)
+    net-imap (0.3.7)
       date
       net-protocol
     net-pop (0.1.2)
@@ -176,15 +176,15 @@ GEM
       language_server-protocol (~> 3.17.0.2)
       rubocop (= 1.40.0)
       rubocop-performance (= 1.15.1)
-    thor (1.2.1)
-    timeout (0.3.2)
+    thor (1.2.2)
+    timeout (0.4.0)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.3.0)
-    websocket-driver (0.7.5)
+    websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    zeitwerk (2.6.7)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   arm64-darwin-20
