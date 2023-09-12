@@ -27,7 +27,11 @@ Rails.application.routes.draw do
         shallow do
           resources :users
           resources :teams do
-            resources :invitations
+            resources :invitations do
+              member do
+                post :resend
+              end
+            end
             resources :memberships
             namespace :platform do
               resources :applications do

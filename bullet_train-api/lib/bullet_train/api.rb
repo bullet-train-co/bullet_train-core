@@ -2,6 +2,7 @@ require "bullet_train/api/version"
 require "bullet_train/api/engine"
 require "bullet_train/api/strong_parameters_reporter"
 require "bullet_train/api/example_bot"
+require "bullet_train/api/attributes"
 require "bullet_train/platform/connection_workflow"
 
 # require "wine_bouncer"
@@ -13,6 +14,7 @@ require "scaffolding"
 require "scaffolding/block_manipulator"
 require "scaffolding/transformer"
 require "jbuilder/schema"
+require "jbuilder/values_transformer"
 
 module BulletTrain
   module Api

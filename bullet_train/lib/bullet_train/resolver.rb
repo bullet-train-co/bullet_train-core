@@ -160,7 +160,7 @@ module BulletTrain
           _, partial_view_package, partial_path_without_package = @needle.partition(/(bullet_train-core\/)?bullet_train[a-z|\-._0-9]*/)
 
           # Pop off `bullet_train-core` and the gem's version so we can call `bundle show` correctly.
-          partial_view_package.gsub!(/bullet_train-core\//, "")
+          partial_view_package.gsub!("bullet_train-core/", "")
           partial_view_package.gsub!(/[-|.0-9]*$/, "") if partial_view_package.match?(/[-|.0-9]*$/)
 
           local_package_path = `bundle show #{partial_view_package}`.chomp

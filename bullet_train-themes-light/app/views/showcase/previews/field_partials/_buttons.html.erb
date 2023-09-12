@@ -1,0 +1,13 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Single Basic Button" do %>
+    <%= render "shared/fields/buttons", form: form, method: :button_value %>
+  <% end %>
+
+  <% showcase.sample "Multiple Buttons" do %>
+    <%= render "shared/fields/buttons", form: form, method: :multiple_button_values, multiple: true %>
+  <% end %>
+
+  <% showcase.sample "Boolean Button" do %>
+    <%= render "shared/fields/buttons", form: form, method: :boolean_button_value %>
+  <% end %>
+<% end %>

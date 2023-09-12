@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.2.27)
+    bullet_train (1.4.0)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -19,7 +19,7 @@ PATH
       bullet_train-themes
       cable_ready (~> 5.0.0)
       cancancan
-      commonmarker (>= 1.0.0.pre10)
+      commonmarker
       devise
       devise-pwned_password
       extended_email_reply_parser
@@ -27,6 +27,8 @@ PATH
       figaro
       hiredis
       http_accept_language
+      image_processing
+      masamune-ast (>= 1.2.0)
       microscope
       nice_partials (~> 0.9)
       pagy
@@ -108,7 +110,7 @@ GEM
       i18n (>= 1.6, < 2)
       minitest (>= 5.1)
       tzinfo (~> 2.0)
-    addressable (2.8.4)
+    addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
     ast (2.4.2)
     awesome_print (1.9.2)
@@ -117,23 +119,23 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.2.26)
+    bullet_train-fields (1.3.25)
       chronic
       cloudinary
       phonelib
       rails (>= 6.0.0)
-    bullet_train-has_uuid (1.2.26)
+    bullet_train-has_uuid (1.3.25)
       rails (>= 6.0.0)
-    bullet_train-roles (1.2.26)
+    bullet_train-roles (1.3.25)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.2.26)
-    bullet_train-super_load_and_authorize_resource (1.2.26)
+    bullet_train-scope_validator (1.3.25)
+    bullet_train-super_load_and_authorize_resource (1.3.25)
       rails (>= 6.0.0)
-    bullet_train-themes (1.2.26)
+    bullet_train-themes (1.3.25)
       rails (>= 6.0.0)
     cable_ready (5.0.1)
       actionpack (>= 5.2)
@@ -144,7 +146,7 @@ GEM
     cancancan (3.5.0)
     charlock_holmes (0.7.7)
     chronic (0.10.2)
-    cloudinary (1.26.0)
+    cloudinary (1.27.0)
       aws_cf_signer
       rest-client (>= 2.0.0)
     coderay (1.1.3)
@@ -156,7 +158,7 @@ GEM
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
-    css_parser (1.14.0)
+    css_parser (1.16.0)
       addressable
     date (3.3.3)
     debug_inspector (1.1.0)
@@ -185,10 +187,11 @@ GEM
       multipart-post (~> 2)
     faraday-net_http (3.0.2)
     fastimage (2.2.7)
+    ffi (1.15.5)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
-    globalid (1.1.0)
-      activesupport (>= 5.0)
+    globalid (1.2.1)
+      activesupport (>= 6.1)
     hiredis (0.6.3)
     htmlentities (4.3.4)
     http-accept (1.7.0)
@@ -197,6 +200,9 @@ GEM
     http_accept_language (2.1.1)
     i18n (1.12.0)
       concurrent-ruby (~> 1.0)
+    image_processing (1.12.2)
+      mini_magick (>= 4.9.5, < 5)
+      ruby-vips (>= 2.0.17, < 3)
     json (2.6.3)
     language_server-protocol (3.17.0.2)
     loofah (2.20.0)
@@ -208,14 +214,17 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
+    masamune-ast (1.2.0)
+      activesupport
     method_source (1.0.0)
     microscope (1.1.1)
       activerecord (>= 4.1.0)
       activesupport (>= 4.1.0)
-    mime-types (3.4.1)
+    mime-types (3.5.1)
       mime-types-data (~> 3.2015)
-    mime-types-data (3.2023.0218.1)
-    mini_mime (1.1.2)
+    mime-types-data (3.2023.0808)
+    mini_magick (4.12.0)
+    mini_mime (1.1.5)
     mini_portile2 (2.8.1)
     minitest (5.18.0)
     multipart-post (2.3.0)
@@ -229,7 +238,7 @@ GEM
     net-smtp (0.3.3)
       net-protocol
     netrc (0.11.0)
-    nice_partials (0.9.3)
+    nice_partials (0.10.0)
       actionview (>= 4.2.6)
     nio4r (2.5.9)
     nokogiri (1.14.3)
@@ -240,7 +249,7 @@ GEM
     parallel (1.22.1)
     parser (3.1.3.0)
       ast (~> 2.4.1)
-    phonelib (0.8.2)
+    phonelib (0.8.3)
     possessive (1.0.1)
     premailer (1.21.0)
       addressable
@@ -290,7 +299,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
-    redis-client (0.14.1)
+    redis-client (0.17.0)
       connection_pool
     regexp_parser (2.6.1)
     responders (3.1.0)
@@ -317,12 +326,14 @@ GEM
     rubocop-performance (1.15.1)
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
-    ruby-openai (4.2.0)
+    ruby-openai (5.1.0)
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.11.0)
+    ruby-vips (2.1.4)
+      ffi (~> 1.12)
     ruby2_keywords (0.0.5)
-    showcase-rails (0.4.5)
+    showcase-rails (0.4.6)
       rails (>= 6.1.0)
     sidekiq (7.1.2)
       concurrent-ruby (< 2)
@@ -365,7 +376,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xxhash (0.5.0)
-    zeitwerk (2.6.9)
+    zeitwerk (2.6.11)
 
 PLATFORMS
   ruby
@@ -373,6 +384,7 @@ PLATFORMS
 DEPENDENCIES
   active_hash!
   bullet_train!
+  commonmarker (>= 1.0.0.pre10)
   pry
   pry-stack_explorer
   sprockets-rails

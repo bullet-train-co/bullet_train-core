@@ -21,7 +21,7 @@ module BulletTrain
           provider_name = argv.shift
           transformer = Scaffolding::IncomingWebhooksTransformer.new(provider_name)
 
-          `yes n | bin/rails g model webhooks_incoming_#{provider_name.tableize.singularize}_webhook data:jsonb processed_at:datetime verified_at:datetime`
+          `yes n | bin/rails g model Webhooks::Incoming::#{provider_name}Webhook data:jsonb processed_at:datetime verified_at:datetime`
 
           transformer.scaffold_incoming_webhook
 
@@ -30,7 +30,7 @@ module BulletTrain
           puts "     See http://bullettrain.co/docs/tunneling for more information.".yellow
           puts ""
           puts "2. Once you have a tunnel running, you can configure the provider to deliver webhooks to:".yellow
-          puts "     https://your-tunnel.ngrok.io/webhooks/incoming/#{provider_name.tableize}_webhooks".yellow
+          puts "     https://your-tunnel.ngrok.io/webhooks/incoming/#{provider_name.tableize.singularize}_webhooks".yellow
           puts ""
 
           transformer.restart_server

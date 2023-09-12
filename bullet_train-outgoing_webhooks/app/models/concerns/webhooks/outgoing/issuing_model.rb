@@ -52,7 +52,7 @@ module Webhooks::Outgoing::IssuingModel
       webhook = send(BulletTrain::OutgoingWebhooks.parent_association).webhooks_outgoing_events.create(
         event_type_id: event_type.id,
         subject: self,
-        data: to_api_json(api_version),
+        data: api_attributes(api_version),
         api_version: api_version
       )
 

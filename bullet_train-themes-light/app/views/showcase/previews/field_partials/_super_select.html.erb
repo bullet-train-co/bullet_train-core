@@ -1,0 +1,9 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Single Select" do %>
+    <%= render 'shared/fields/super_select', form: form, method: :super_select_value, other_options: {search: true} %>
+  <% end %>
+
+  <% showcase.sample "Multiple Select" do %>
+    <%= render 'shared/fields/super_select', form: form,  method: :multiple_super_select_values, other_options: {search: true}, html_options: {multiple: true} %>
+  <% end %>
+<% end %>

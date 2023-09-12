@@ -1,7 +1,65 @@
-<script>
-  const color = "<%= BulletTrain::Themes::Light.color %>"
-  const secondaryColor = "<%= BulletTrain::Themes::Light.secondary_color %>"
+<%= stylesheet_link_tag "application" %>
+<%= javascript_include_tag "application" %>
 
-  if (color) document.documentElement.classList.add(`theme-${color}`)
-  if (secondaryColor) document.documentElement.classList.add(`theme-secondary-${secondaryColor}`)
+<script>
+  const BulletTrain = {}
+
+  class ___theme {
+    start() {
+      this.color = "<%= BulletTrain::Themes::Light.color %>"
+      this.secondaryColor = "<%= BulletTrain::Themes::Light.secondary_color %>"
+    }
+
+    set color(value) {
+      this.removeMatching(/theme-\w+$/)
+      if (value) this.classList.add(`theme-${value}`)
+    }
+
+    set secondaryColor(value) {
+      this.removeMatching(/theme-secondary-\w+$/)
+      if (value) this.classList.add(`theme-secondary-${value}`)
+    }
+
+    removeMatching(matching) {
+      const values = Array.from(this.classList.values()).filter((key) => matching.test(key))
+      if (values.length) this.classList.remove(...values)
+    }
+
+    get classList() {
+      return document.documentElement.classList
+    }
+  }
+
+  BulletTrain.theme = new ___theme()
+  BulletTrain.theme.start()
+
+  function placeThemeSelector() {
+    const node = document.getElementById("bullet_train_theme_selects").content.cloneNode(true)
+    document.querySelector("main").appendChild(node)
+    const selectorNode = document.getElementById("bt-theme-selector")
+    document.querySelector("main").style.paddingBottom = selectorNode.offsetHeight + "px"
+  }
+
+  document.addEventListener("DOMContentLoaded", placeThemeSelector);
+  document.addEventListener("turbo:load", placeThemeSelector);
 </script>
+
+<template id="bullet_train_theme_selects">
+  <section class="border-t w-full p-4 flex justify-end left-0 bottom-0 fixed bg-white dark:sc-bg-neutral-900" id="bt-theme-selector">
+    <h3 class="pt-2">Bullet Train Light theme options</h3>
+
+    <div>
+      <label for="bullet_train_color" class="pl-4">Color</label>
+      <select id="bullet_train_color" class="rounded-lg text-xs" style="background-color: inherit !important;" onchange="BulletTrain.theme.color = this.value">
+        <option value=""></option>
+        <%= options_for_select BulletTrain::Themes::Light.colors.index_by(&:humanize), BulletTrain::Themes::Light.color %>
+      </select>
+
+      <label for="bullet_train_secondary_color" class="pl-4">Secondary Color</label>
+      <select id="bullet_train_secondary_color" class="rounded-lg text-xs" style="background-color: inherit !important;" onchange="BulletTrain.theme.secondaryColor = this.value">
+        <option value=""></option>
+        <%= options_for_select BulletTrain::Themes::Light.colors.index_by(&:humanize), BulletTrain::Themes::Light.secondary_color %>
+      </select>
+    </div>
+  </section>
+</template>

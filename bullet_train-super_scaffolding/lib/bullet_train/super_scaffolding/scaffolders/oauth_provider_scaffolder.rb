@@ -7,10 +7,6 @@ module BulletTrain
             puts ""
             puts "🚅  usage: bin/super-scaffold oauth-provider <omniauth_gem> <gems_provider_name> <our_provider_name> <PROVIDER_API_KEY_ENV_VAR_NAME> <PROVIDER_API_SECRET_ENV_VAR_NAME> [options]"
             puts ""
-            puts "E.g. what we'd do to start Stripe off (if we didn't already do it):"
-            puts "  bin/super-scaffold oauth-provider omniauth-stripe-connect stripe_connect Oauth::StripeAccount STRIPE_CLIENT_ID STRIPE_SECRET_KEY --icon=ti-money"
-            puts "  (Please note here that the STRIPE_CLIENT_ID and STRIPE_SECRET_KEY strings are not the actual values, just the names we give to the environment variables.)"
-            puts ""
             puts "E.g. what we actually did to start Shopify off:"
             puts "  bin/super-scaffold oauth-provider omniauth-shopify-oauth2 shopify Oauth::ShopifyAccount SHOPIFY_API_KEY SHOPIFY_API_SECRET_KEY --icon=ti-shopping-cart"
             puts "  (Please note here that the SHOPIFY_API_KEY and SHOPIFY_API_SECRET_KEY strings are not the actual values, just the names we give to the environment variables.)"
@@ -25,6 +21,13 @@ module BulletTrain
           end
 
           _, omniauth_gem, gems_provider_name, our_provider_name, api_key, api_secret = *ARGV
+
+          if omniauth_gem == "omniauth-stripe-connect"
+            puts "Stripe is already available for use and does not need any scaffolding to be done.".green
+            puts "Just add your `STRIPE_CLIENT_ID` and `STRIPE_SECRET_KEY` values to application.yml"
+            puts "and you should be able to use Stripe as an OAuth provider out of the box."
+            exit
+          end
 
           unless (match = our_provider_name.match(/Oauth::(.*)Account/))
             puts "\n🚨 Your provider name must match the pattern of `Oauth::{Name}Account`, e.g. `Oauth::StripeAccount`\n".red
@@ -132,8 +135,8 @@ module BulletTrain
           oauth_scaffold_add_line_to_file("./config/routes.rb", "resources :stripe_accounts if stripe_enabled?", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./config/routes.rb", "resources :stripe_installations if stripe_enabled?", "# 🚅 super scaffolding will insert new integration installations above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./Gemfile", "gem 'omniauth-stripe-connect'", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
-          oauth_scaffold_add_line_to_file("./lib/bullet_train.rb", "def stripe_enabled?\n  ENV['STRIPE_CLIENT_ID'].present? && ENV['STRIPE_SECRET_KEY'].present?\nend\n", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
-          oauth_scaffold_add_line_to_file("./lib/bullet_train.rb", "stripe_enabled?,", "# 🚅 super scaffolding will insert new oauth provider checks above this line.", options, prepend: true)
+          oauth_scaffold_add_line_to_file("./lib/bullet_train_oauth_scaffolder_support.rb", "def stripe_enabled?\n  ENV['STRIPE_CLIENT_ID'].present? && ENV['STRIPE_SECRET_KEY'].present?\nend\n", "# 🚅 super scaffolding will insert new oauth providers above this line.", options, prepend: true)
+          oauth_scaffold_add_line_to_file("./lib/bullet_train_oauth_scaffolder_support.rb", "stripe_enabled?,", "# 🚅 super scaffolding will insert new oauth provider checks above this line.", options, prepend: true)
           oauth_scaffold_add_line_to_file("./app/models/ability.rb", "if stripe_enabled?\n        can [:read, :create, :destroy], Oauth::StripeAccount, user_id: user.id\n        can :manage, Integrations::StripeInstallation, team_id: user.team_ids\n        can :destroy, Integrations::StripeInstallation, oauth_stripe_account: {user_id: user.id}\n      end\n", "# 🚅 super scaffolding will insert any new oauth providers above.", options, prepend: true)
 
           # find the database migration that defines this relationship.
@@ -147,7 +150,7 @@ module BulletTrain
 
           migration_file_name = `grep "create_table #{oauth_transform_string(":webhooks_incoming_oauth_stripe_account_webhooks", options)}" db/migrate/*`.split(":").first
           empty_transformer.replace_in_file(migration_file_name, "null: false", "null: true")
-          empty_transformer.replace_in_file(migration_file_name, "foreign_key: true", oauth_transform_string('foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}'))
+          empty_transformer.replace_in_file(migration_file_name, "foreign_key: true", oauth_transform_string('foreign_key: true, index: {name: "index_stripe_webhooks_on_oauth_stripe_account_id"}', options))
 
           puts ""
           puts "🎉"
