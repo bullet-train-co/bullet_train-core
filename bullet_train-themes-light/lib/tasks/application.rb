@@ -91,9 +91,14 @@ module BulletTrain
       end
 
       def self.release_theme(original_theme_name, args)
+        # We only want developers publishing gems off of `bullet_train-themes-light`, so if the task looks
+        # something like `rake bullet_train:themes:foo:release[bar]`, we prevent them from moving any further here.
         if original_theme_name != "light"
           puts "You can only release new themes based off of Bullet Train's Light theme. Please eject a new theme from there, and publish your gem once you've finished making changes.".red
           exit 1
+        elsif original_theme_name.nil?
+          puts "Please run the command with the name of the theme you want to release.".red
+          puts "For example: > rake bullet_train:themes:light:release[foo]"
         end
 
         puts "Preparing to release your custom theme: ".blue + args[:theme_name]
@@ -118,19 +123,28 @@ module BulletTrain
           raise "You already have a repository named `bullet_train-themes-#{args[:theme_name]}` in `./local`.\n" \
             "Make sure you delete it first to create an entirely new gem."
         end
-        `git clone git@github.com:bullet-train-co/bullet_train-themes-light.git ./local/bullet_train-themes-#{args[:theme_name]}`
 
-        custom_file_replacer = BulletTrain::Themes::Light::CustomThemeFileReplacer.new(args[:theme_name])
-        custom_file_replacer.replace_theme("light", args[:theme_name])
+        # Pull `bullet_train-themes-light` only from `bullet_train-core` into the new theme directory.
+        # https://www.git-scm.com/docs/git-sparse-checkout
+        `mkdir ./local/bullet_train-themes-#{args[:theme_name]}`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git init && git remote add bullet-train-core git@github.com:bullet-train-co/bullet_train-core.git`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git config core.sparseCheckout true && echo "bullet_train-themes-light/**/*" >> .git/info/sparse-checkout`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git pull bullet-train-core main && git remote rm bullet-train-core`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && mv bullet_train-themes-light/* . && mv bullet_train-themes-light/.* .`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && rmdir bullet_train-themes-light/`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git config core.sparseCheckout false`
+
+        BulletTrain::Themes::Light::CustomThemeFileReplacer.new(original_theme_name, args[:theme_name]).replace_theme
 
         work_tree_flag = "--work-tree=local/bullet_train-themes-#{args[:theme_name]}"
         git_dir_flag = "--git-dir=local/bullet_train-themes-#{args[:theme_name]}/.git"
         path = "./local/bullet_train-themes-#{args[:theme_name]}"
 
         # Set up the proper remote.
-        `git #{work_tree_flag} #{git_dir_flag} remote set-url origin #{ssh_path}`
+        `git #{work_tree_flag} #{git_dir_flag} remote add origin #{ssh_path}`
         `git #{work_tree_flag} #{git_dir_flag} add .`
         `git #{work_tree_flag} #{git_dir_flag} commit -m "Add initial files"`
+        `git #{work_tree_flag} #{git_dir_flag} branch -m main`
 
         # Build the gem.
         `(cd #{path} && gem build bullet_train-themes-#{args[:theme_name]}.gemspec)`
@@ -153,9 +167,14 @@ module BulletTrain
         puts "You may have to wait for some time until the gem can be downloaded via the Gemfile.".blue
         puts "After a few minutes, run the following command in your main application:".blue
         puts "bundle add bullet_train-themes-#{args[:theme_name]}"
-        puts "rake bullet_train:themes:#{args[:theme_name]}:install"
         puts ""
         puts "Then you'll be ready to use your custom gem in your Bullet Train application.".blue
+        puts ""
+        puts "Please note that we have deleted the new theme from your main application.".blue
+        puts "run `git log -1` for details."
+        puts ""
+        puts "Use `rake bullet_train:themes:light:install` to revert to the original theme,".blue
+        puts "or run `rake bullet_train:themes:#{args[:theme_name]}:install` whenever you want to use your new theme.".blue
       end
 
       def self.install_theme(theme_name)
@@ -171,6 +190,8 @@ module BulletTrain
             file.write changed
           end
         end
+
+        puts "Finished installing `#{theme_name}`.".blue
       end
 
       def self.clean_theme(theme_name, args)
