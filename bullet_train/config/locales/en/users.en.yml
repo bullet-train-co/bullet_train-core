@@ -10,7 +10,7 @@ en:
       section: "%{users_possessive} Profile"
       profile:
         header: Update Your Profile
-        description: You can update the way your name is displayed and your timezone.
+        description: You can update the way your name is displayed and your time zone.
       email_and_password:
         header: Update Your Email Addresss & Password
         description: When you change these credentials we'll email you a confirmation.
@@ -22,7 +22,7 @@ en:
         description_enabled: 2FA is currently enabled for your account.
         description_disabled: You can increase the security of your account by enabling two-factor authentication.
         verification_fail: Verification failed. You can try enabling again. Please make sure you scan the new QR code with your Authenticator app.
-        verification_success: Success! Thanks for verifying. 2FA is now enabled. 
+        verification_success: Success! Thanks for verifying. 2FA is now enabled.
         warning: "In order to enable two-factor authentication, you <strong>must</strong> install an Authenticator app and <strong>enter your Verification Code from the app below</strong>. 2FA will not be enabled until you do so. This is to avoid you getting locked out of your account."
         instructions: "Install <a href='https://authy.com/download/' target='_blank'>Authy</a> or <a href='https://support.google.com/accounts/answer/1066447'>Google Authentication</a> on your phone and scan the barcode displayed below."
         recovery_codes: "You can also make a copy of the following recovery codes. Each one can help you get back into your account once should you lose access to the device you're using for two-factor authentication."
