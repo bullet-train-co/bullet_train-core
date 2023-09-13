@@ -1,3 +1,8 @@
+require "bullet_train"
+require "bullet_train/api"
+require "bullet_train/super_load_and_authorize_resource"
+require "cable_ready"
+
 require "bullet_train/outgoing_webhooks/version"
 require "bullet_train/outgoing_webhooks/engine"
 

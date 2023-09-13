@@ -25,5 +25,10 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "standard"
 
   spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "bullet_train"
+  spec.add_dependency "bullet_train-api"
+  spec.add_dependency "bullet_train-super_scaffolding"
+  spec.add_dependency "bullet_train-super_load_and_authorize_resource"
+  spec.add_dependency "cable_ready"
   spec.add_dependency "public_suffix"
 end
