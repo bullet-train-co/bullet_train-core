@@ -1,3 +1,7 @@
+require "bullet_train"
+require "bullet_train/super_scaffolding"
+require "bullet_train/super_load_and_authorize_resource"
+
 require "bullet_train/integrations/stripe/version"
 require "bullet_train/integrations/stripe/engine"
 
