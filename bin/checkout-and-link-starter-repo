@@ -28,7 +28,6 @@ readarray -t packages <<<"$packages_string" # Convert to an array.
 for package in "${packages[@]}"
 do
   :
-  echo "Currently linking ${package}"
   grep -v "gem \"$package\"" Gemfile > Gemfile.tmp
   mv Gemfile.tmp Gemfile
   echo "gem \"$package\", path: \"../../$package\"" >> Gemfile
