@@ -22,8 +22,9 @@ echo "Cloning from ${STARTER_REPO_BRANCH}..."
 git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
 bundle install
 
-# TODO: Need to make this into an array.
-packages=$(find ./../../ -name 'bullet_train*.gemspec' | grep -o 'bullet_train.*' | sed "s/\/.*//")
+# This searches two directories up because we're in tmp/starter (the CI working directory).
+packages_string=$(find ./../../ -name 'bullet_train*.gemspec' | grep -o 'bullet_train.*' | sed "s/\/.*//")
+readarray -t packages <<<"$packages_string" # Convert to an array.
 
 for package in "${packages[@]}"
 do
