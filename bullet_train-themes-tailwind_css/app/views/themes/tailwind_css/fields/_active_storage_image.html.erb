@@ -26,7 +26,7 @@ options[:height] ||= 100
             <% persisted_files.each do |file| %>
               <div data-controller="fields--file-item" data-fields--file-item-id-value="<%= file.id %>">
                 <%= form.hidden_field "#{method}_removal".to_sym, multiple: multiple, value: nil, data: {'fields--file-item-target': 'removeFileFlag'} %>
-                <%= image_tag photo_url_for_active_storage_attachment(file, options), class: 'mb-1.5' %>
+                <%= image_tag photo_url_for_active_storage_attachment(file, options), class: 'mb-1.5', data: {'fields--file-item-target': "fileName"} %>
 
                 <%= link_to url_for(file), class: 'button download-file mr-3', data: {'fields--file-item-target': 'downloadFileButton'} do %>
                   <i class="leading-none mr-2 text-base ti ti-download"></i>
