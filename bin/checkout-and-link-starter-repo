@@ -22,7 +22,7 @@ echo "Cloning from ${STARTER_REPO_BRANCH}..."
 git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
 bundle install
 
-packages=$(find . -name 'bullet_train*.gemspec' | grep -o 'bullet_train.*' | sed -e "s/\/.*//")
+packages=$(find ./../../ -name 'bullet_train*.gemspec' | grep -o 'bullet_train.*' | sed "s/\/.*//")
 echo $packages
 for package in "${packages[@]}"
 do
