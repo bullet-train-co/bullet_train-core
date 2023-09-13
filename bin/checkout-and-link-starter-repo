@@ -20,7 +20,6 @@ fi
 
 echo "Cloning from ${STARTER_REPO_BRANCH}..."
 git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
-bundle install
 
 # This searches two directories up because we're in tmp/starter (the CI working directory).
 packages_string=$(find ./../../ -name 'bullet_train*.gemspec' | grep -o 'bullet_train.*' | sed "s/\/.*//")
