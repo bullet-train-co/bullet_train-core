@@ -7,6 +7,7 @@ module Scaffolding
 
   def self.valid_attribute_type?(type)
     [
+      "active_storage_image",
       "boolean",
       "buttons",
       "cloudinary_image",
@@ -16,6 +17,7 @@ module Scaffolding
       "email_field",
       "emoji_field",
       "file_field",
+      "image",
       "number_field",
       "options",
       "password_field",
