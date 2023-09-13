@@ -1,5 +1,6 @@
 class Account::ApplicationController < ApplicationController
   include Account::Controllers::Base
+  include Controllers::Base
 
   def ensure_onboarding_is_complete
     # First check that Bullet Train doesn't have any onboarding steps it needs to enforce.
