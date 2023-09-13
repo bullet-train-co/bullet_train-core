@@ -7,6 +7,26 @@ require "scaffolding/routes_file_manipulator"
 
 require_relative "../bullet_train/terminal_commands"
 
+FIELD_PARTIALS = {
+  boolean: "boolean",
+  buttons: "string",
+  cloudinary_image: "string",
+  color_picker: "string",
+  date_and_time_field: "datetime",
+  date_field: "date_field",
+  email_field: "string",
+  emoji_field: "string",
+  file_field: "attachment",
+  options: "string",
+  password_field: "string",
+  phone_field: "string",
+  super_select: "string",
+  text_area: "text",
+  text_field: "string",
+  number_field: "integer",
+  trix_editor: "text"
+}
+
 # filter out options.
 argv = []
 @options = {}
@@ -29,10 +49,19 @@ def standard_protip
 end
 
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
+  generation_command = case scaffolding_type
+  when "crud"
+    "bin/rails generate model #{child}#{" #{parent_reference = parent.tableize.singularize.tr("/", "_")}:references" if parent}"
+  when "crud-field"
+    "bin/rails generate migration"
+  end
+
   attributes.each do |attribute|
     parts = attribute.split(":")
     name = parts.shift
     type = parts.join(":")
+
+    generation_command += " #{name}:#{FIELD_PARTIALS[type.to_sym]}"
 
     unless Scaffolding.valid_attribute_type?(type)
       raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " \
@@ -86,6 +115,9 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       end
     end
   end
+
+  # TODO: We probably want to run the `rails g` command here
+  # `#{generation_command}`
 end
 
 def show_usage
@@ -120,35 +152,16 @@ elsif ARGV.first.present?
   when "--field-partials"
     puts "Bullet Train uses the following field partials for Super Scaffolding".blue
     puts ""
-    field_partials = {
-      boolean: "boolean",
-      buttons: "string",
-      cloudinary_image: "string",
-      color_picker: "string",
-      date_and_time_field: "datetime",
-      date_field: "date_field",
-      email_field: "string",
-      emoji_field: "string",
-      file_field: "attachment",
-      options: "string",
-      password_field: "string",
-      phone_field: "string",
-      super_select: "string",
-      text_area: "text",
-      text_field: "string",
-      number_field: "integer",
-      trix_editor: "text"
-    }
 
     max_name_length = 0
-    field_partials.each do |key, value|
+    FIELD_PARTIALS.each do |key, value|
       if key.to_s.length > max_name_length
         max_name_length = key.to_s.length
       end
     end
 
     printf "\t%#{max_name_length}s:Data Type\n".bold, "Field Partial Name"
-    field_partials.each { |key, value| printf "\t%#{max_name_length}s:#{value}\n", key }
+    FIELD_PARTIALS.each { |key, value| printf "\t%#{max_name_length}s:#{value}\n", key }
 
     puts ""
     puts "For more details, check out the documentation:"
