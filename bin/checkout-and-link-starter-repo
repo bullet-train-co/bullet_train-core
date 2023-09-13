@@ -22,6 +22,7 @@ echo "Cloning from ${STARTER_REPO_BRANCH}..."
 git clone -b $STARTER_REPO_BRANCH --depth 1 https://github.com/bullet-train-co/bullet_train.git .
 
 packages=$(find . -name 'bullet_train*.gemspec' | grep -o 'bullet_train.*' | sed -e "s/-[0-9].*//")
+echo $packages
 for package in "${packages[@]}"
 do
   :
