@@ -228,6 +228,46 @@ end
 
 Honestly, it's crazy that we got to the point where we can handle this particular use case automatically. It seems simple, but there is so much going on to make this feature work.
 
+### 7. Scaffolding image upload attributes
+
+Bullet Train comes with two different ways to handle image uploads.
+
+* Cloudinary - This option allows your app deployment to be simpler because you don't need to ship any image manipulation libraries. But it does introduce a dependence on a 3rd party service.
+* ActiveStorate - This option doesn't include reliance on a 3rd party service, but you do have to include image manipulation libararies in your deployment process.
+
+#### Scaffolding images with Cloudinary
+
+When you scaffold your model you need to include an `_id` field (as a `string`) where Cloudinary can store a reference to the image.
+
+For instance to scaffold a `Project` model with a `logo` image upload.
+
+```
+rails g model Project team:references name:string logo_id:string
+```
+
+Then you can use `image` as a field type for super scaffolding:
+
+```
+bin/super-scaffold crud Project Team name:text_field logo:image
+rake db:migrate
+```
+#### Scaffolding images with ActiveStorage
+
+When you scaffold your model you need to generate an `attachment` type attribute.
+
+For instance to scaffold a `Project` model with a `logo` image upload.
+
+```
+rails g model Project team:references name:string logo:attachment
+```
+
+Then you can use `image` as a field type for super scaffolding:
+
+```
+bin/super-scaffold crud Project Team name:text_field logo:image
+rake db:migrate
+```
+
 ## Additional Notes
 
 ### `TangibleThing` and `CreativeConcept`
