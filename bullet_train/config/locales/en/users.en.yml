@@ -12,7 +12,7 @@ en:
         header: Update Your Profile
         description: You can update the way your name is displayed and your time zone.
       email_and_password:
-        header: Update Your Email Addresss & Password
+        header: Update Your Email Address & Password
         description: When you change these credentials we'll email you a confirmation.
         new_password: If you don't want to change your password, leave these two fields blank.
         current_password: For security reasons we need you to confirm your current password.
