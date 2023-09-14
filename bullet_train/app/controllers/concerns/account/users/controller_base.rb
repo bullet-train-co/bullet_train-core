@@ -28,6 +28,16 @@ module Account::Users::ControllerBase
     params[:user].key?(:password) || params[:user].key?(:email)
   end
 
+  # TODO: We're keeping this method for backward compatibility in case someone in a downstream app
+  # might be using it. At some point in the future (unclear exactly when) we should remove it.
+  def updating_password?
+    ActiveSupport::Deprecation.warn(
+      "#updating_password? is deprecated. " \
+      "Use #updating_password_or_email? instead."
+    )
+    params[:user].key?(:password)
+  end
+
   # PATCH/PUT /account/users/1
   # PATCH/PUT /account/users/1.json
   def update
