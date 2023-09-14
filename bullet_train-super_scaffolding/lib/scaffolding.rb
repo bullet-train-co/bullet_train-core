@@ -7,9 +7,10 @@ module Scaffolding
 
   def self.valid_attribute_type?(type)
     [
-      "active_storage_image",
       "boolean",
       "buttons",
+      # TODO: We're leaving cloudinary_image here for now for backwards compatibility.
+      # We should remove it in a future major update.
       "cloudinary_image",
       "color_picker",
       "date_and_time_field",
