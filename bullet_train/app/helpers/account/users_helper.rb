@@ -9,7 +9,7 @@ module Account::UsersHelper
     size_details[:crop] = :fill
 
     if cloudinary_enabled? && !url.blank?
-      cl_image_path(url, size_details[:width], size_details[:height], size_details[:crop])
+      cl_image_path(url, size_details)
     elsif !url.blank?
       url + "?" + size_details.to_param
     else
@@ -43,7 +43,7 @@ module Account::UsersHelper
   # leaving them in case we have other developers depending on these methods.
   def profile_header_photo_for(url: nil, email: nil, first_name: nil, last_name: nil)
     if cloudinary_enabled? && !url.blank?
-      cl_image_path(url, width: 700, height: 200, crop: :fill)
+      cl_image_path(url, {width: 700, height: 200, crop: :fill})
     elsif !url.blank?
       url + "?" + {size: 200}.to_param
     else
