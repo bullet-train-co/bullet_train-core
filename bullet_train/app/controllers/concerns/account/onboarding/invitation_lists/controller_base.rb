@@ -58,6 +58,6 @@ module Account::Onboarding::InvitationLists::ControllerBase
   # Since there is only one membership (an admin) on the team when sending bulk invitations,
   # we don't have to worry about filtering these roles according to if they're manageable or not.
   def available_roles
-    current_membership.roles.map { |role| [role.attributes[:key]] + role.attributes[:manageable_roles] }.flatten.uniq.reject {|role| role.match?("default")}
+    current_membership.roles.map { |role| [role.attributes[:key]] + role.attributes[:manageable_roles] }.flatten.uniq.reject { |role| role.match?("default") }
   end
 end
