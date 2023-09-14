@@ -237,12 +237,12 @@ Bullet Train comes with two different ways to handle image uploads.
 
 #### Scaffolding images with Cloudinary
 
-When you scaffold your model you need to include an `_id` field (as a `string`) where Cloudinary can store a reference to the image.
+When you scaffold your model you need to include a `string` where Cloudinary can store a reference to the image.
 
 For instance to scaffold a `Project` model with a `logo` image upload.
 
 ```
-rails g model Project team:references name:string logo_id:string
+rails g model Project team:references name:string logo:string
 ```
 
 Then you can use `image` as a field type for super scaffolding:
