@@ -28,10 +28,10 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
-      - browser-tools/install-browser-tools:
-          firefox-version: "112.0"
+      - browser-tools/install-chrome:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      - browser-tools/install-chromedriver
 
       - ruby/install-deps:
           clean-bundle: true
@@ -63,10 +63,10 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - browser-tools/install-browser-tools:
-          firefox-version: "112.0"
+      - browser-tools/install-chrome:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      - browser-tools/install-chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
@@ -113,10 +113,10 @@ jobs:
     steps:
       - checkout:
           path: ~/project
-      - browser-tools/install-browser-tools:
-          firefox-version: "112.0"
+      - browser-tools/install-chrome:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      - browser-tools/install-chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
