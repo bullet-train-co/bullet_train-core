@@ -233,7 +233,7 @@ Honestly, it's crazy that we got to the point where we can handle this particula
 Bullet Train comes with two different ways to handle image uploads.
 
 * Cloudinary - This option allows your app deployment to be simpler because you don't need to ship any image manipulation libraries. But it does introduce a dependence on a 3rd party service.
-* ActiveStorate - This option doesn't include reliance on a 3rd party service, but you do have to include image manipulation libararies in your deployment process.
+* ActiveStorage - This option doesn't include reliance on a 3rd party service, but you do have to include image manipulation libararies in your deployment process.
 
 #### Scaffolding images with Cloudinary
 
