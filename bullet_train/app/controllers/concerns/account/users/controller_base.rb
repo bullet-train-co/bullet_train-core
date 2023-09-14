@@ -24,7 +24,17 @@ module Account::Users::ControllerBase
   def show
   end
 
+  def updating_password_or_email?
+    params[:user].key?(:password) || params[:user].key?(:email)
+  end
+
+  # TODO: We're keeping this method for backward compatibility in case someone in a downstream app
+  # might be using it. At some point in the future (unclear exactly when) we should remove it.
   def updating_password?
+    ActiveSupport::Deprecation.warn(
+      "#updating_password? is deprecated. " \
+      "Use #updating_password_or_email? instead."
+    )
     params[:user].key?(:password)
   end
 
@@ -32,7 +42,7 @@ module Account::Users::ControllerBase
   # PATCH/PUT /account/users/1.json
   def update
     respond_to do |format|
-      if updating_password? ? @user.update_with_password(user_params) : @user.update_without_password(user_params)
+      if updating_password_or_email? ? @user.update_with_password(user_params) : @user.update_without_password(user_params)
         # if you update your own user account, devise will normally kick you out, so we do this instead.
         bypass_sign_in current_user.reload
         format.html { redirect_to [:edit, :account, @user], notice: t("users.notifications.updated") }
