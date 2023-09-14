@@ -5,10 +5,7 @@
 <% options[:height] ||= 200 %>
 
 <% if cloudinary_enabled? %>
-  <%
-      cloudinary_attribute = (attribute.to_s + "_id").to_sym
-  %>
-  <%= cloudinary_image_tag object.public_send(cloudinary_attribute), options %>
+  <%= cloudinary_image_tag object.public_send(attribute), options %>
 <% else %>
   <%= image_tag photo_url_for_active_storage_attachment(object.public_send(attribute), options), class: 'mb-1.5', data: {'fields--file-item-target': "fileName"} %>
 <% end %>

@@ -7,10 +7,7 @@ multiple ||= false
 %>
 
 <% if cloudinary_enabled? %>
-  <%
-      cloudinary_method = (method.to_s + "_id").to_sym
-  %>
-  <%= render 'shared/fields/cloudinary_image', method: cloudinary_method, form: form, options: options, other_options: other_options %>
+  <%= render 'shared/fields/cloudinary_image', method: method, form: form, options: options, other_options: other_options %>
 <% else %>
   <%= render 'shared/fields/active_storage_image', method: method, form: form, options: options, other_options: other_options %>
 <% end %>

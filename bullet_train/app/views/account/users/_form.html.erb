@@ -10,7 +10,13 @@
       </div>
 
       <div class="sm:col-span-2">
-        <%= render 'shared/fields/image', method: :profile_photo %>
+        <%
+            image_method = :profile_photo
+            if cloudinary_enabled?
+              image_method = :profile_photo_id
+            end
+        %>
+        <%= render 'shared/fields/image', method: image_method %>
       </div>
 
       <div class="sm:col-span-2">
