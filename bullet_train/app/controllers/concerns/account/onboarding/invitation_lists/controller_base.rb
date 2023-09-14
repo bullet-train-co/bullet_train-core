@@ -5,6 +5,7 @@ module Account::Onboarding::InvitationLists::ControllerBase
     layout "devise"
 
     before_action do
+      # TODO: Is this okay?
       @user = current_user
     end
   end
