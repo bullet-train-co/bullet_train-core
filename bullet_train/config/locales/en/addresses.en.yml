@@ -1,0 +1,51 @@
+en:
+  addresses:
+    label: "Address"
+    contact: "Contact"
+    fields:
+      address_one:
+        _: &address_one Address
+        label: *address_one
+        heading: *address_one
+      address_two:
+        _: &address_two Address cont.
+        label: *address_two
+        heading: *address_two
+      city:
+        _: &city City
+        label: *city
+        heading: *city
+      region_id: &region
+        _: &region_id State / Province / Region
+        label: *region_id
+        heading: *region_id
+      region: *region
+      region_name:
+        _: &region_name Region name
+        label: *region_name
+        heading: *region_name
+      admin_divisions:
+        states: State
+        provinces_territories: Province or Territory
+        prefectures: Prefecture
+        provinces: Province
+        states_territories: State or Territory
+        regions: Region
+        federal_states: Federal State
+        departments: Department
+        counties: County
+        cantons: Canton
+        default: State / Province / Region
+      country_id: &country
+        _: &country_id Country
+        label: *country_id
+        heading: *country_id
+      country: *country
+      postal_code:
+        _: &postal_code Postal code
+        label: *postal_code
+        heading: *postal_code
+      zip_code:
+        _: &zip_code Zip code
+        label: *zip_code
+        heading: *zip_code

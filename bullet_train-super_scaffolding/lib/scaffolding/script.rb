@@ -64,8 +64,14 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
 
         attribute_options[:class_name] ||= name_without_id.classify
 
-        file_name = "app/models/#{attribute_options[:class_name].underscore}.rb"
-        unless File.exist?(file_name)
+        file_name = Dir.glob("app/models/**/*.rb").find { |model| model.match?(/#{attribute_options[:class_name].underscore}\.rb/) } || ""
+
+        # If a model is namespaced, the parent's model file might exist under
+        # `app/models/`, but sometimes these files are modules that resolve
+        # table names by providing a prefix as opposed to an actual ApplicationRecord.
+        # This check ensures that the _id attribute really is a model.
+        is_active_record_class = attribute_options[:class_name].constantize.ancestors.include?(ActiveRecord::Base)
+        unless File.exist?(file_name) && is_active_record_class
           puts ""
           puts "Attributes that end with `_id` or `_ids` trigger awesome, powerful magic in Super Scaffolding. However, because no `#{attribute_options[:class_name]}` class was found defined in `#{file_name}`, you'll need to specify a `class_name` that exists to let us know what model class is on the other side of the association, like so:".red
           puts ""

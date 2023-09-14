@@ -144,6 +144,7 @@ namespace :bullet_train do
             puts "bin/hack --link: " + "Link all of your Bullet Train gems to `local/bullet_train-core`.".blue
             puts "bin/hack --link github: " + "Link all of your Bullet Train gems to the public repositories on GitHub".blue
             puts "bin/hack --link (version-number): " + "Link all of your Bullet Train gems to the version number passed.".blue
+            puts "bin/hack --link (custom path to package): " + "Pass a custom path to where your bullet_train-core gems are.".blue
             puts "bin/hack --reset: " + "Resets all of your gems to their original definition.".blue
             puts "bin/hack --watch-js: " + "Watches for any changes in JavaScript files gems that have an npm package.".blue
             puts "bin/hack --clean-js: " + "Resets all of your npm packages from `local/bullet_train-core` to their original definition.".blue
@@ -259,10 +260,10 @@ namespace :bullet_train do
   def set_core_gems(flag, link_flag_value, framework_packages)
     packages = framework_packages.keys
     gemfile_lines = File.readlines("./Gemfile")
-    version_regexp = /[\d|.]/
+    version_regexp = /^[\d|.]$/
 
     packages.each do |package|
-      original_path = "gem \"#{package}\""
+      original_path = "gem \"#{package}\", BULLET_TRAIN_VERSION"
       local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
       match_found = false
 
@@ -285,14 +286,16 @@ namespace :bullet_train do
                 "#{line.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
               elsif link_flag_value&.match?(version_regexp)
                 "#{line.chomp}, \"#{link_flag_value}\"\n"
+              elsif link_flag_value.present?
+                link_flag_value.gsub!(/\/$/, "") # Ensure the custom path doesn't have a slash at the end.
+                local_path.gsub(/path:.*/, "path: \"#{link_flag_value}/#{package}\"\n")
               else
                 line.gsub(original_path, local_path)
               end
             end
           elsif flag == "--reset"
             if line.match?(/bullet_train/)
-              line.gsub!(local_path, original_path) # Reset local path
-              line.gsub!(/, "[0-9|.]*"$/, "") # Reset specific version
+              line.gsub!(/,.*$/, ", BULLET_TRAIN_VERSION")
             end
             puts "Resetting '#{package}' package in the Gemfile...".blue
           end
@@ -308,6 +311,8 @@ namespace :bullet_train do
             "#{original_path.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
           elsif link_flag_value&.match?(version_regexp)
             "#{original_path.chomp}, \"#{link_flag_value}\"\n"
+          elsif link_flag_value
+            "#{original_path.chomp}, path: \"#{link_flag_value}/#{package}\"\n"
           else
             "#{local_path}\n"
           end

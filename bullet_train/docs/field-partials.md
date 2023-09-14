@@ -63,6 +63,16 @@ For example, to suppress a label on any field, we can use the `hide_label` optio
 | `help` | string | Display a specific help string. |
 | `error` | string | Display a specific error string. |
 | `hide_label` | boolean | Hide the field label. |
+| `required` | boolean | Display an asterisk by the field label to indicate the field is required. |
+
+## `required`: through presence validation vs. `options: {required: true}` vs. `other_options:{required: true}`
+
+By default, where there's a presence validation on the model attribute, we add an asterisk to indicate the field is required. For fields without a presence validation, you have options to pass the `:required` detail:
+
+1. `other_options: {required: true}` adds the asterisk to the field manually.
+2. `options: {required: true}` adds asterisk but also triggers client-side validation via the [`required`](https://developer.mozilla.org/en-US/docs/Web/HTML/Attributes/required) attribute.
+
+Since client-side validations vary from browser to browser, we recommend relying on server-side validation for most forms, and thus mostly using `other_options[:required]`.
 
 ## Reducing Repetition
 When you're including multiple fields, you can DRY up redundant settings (e.g. `form: form`) like so:

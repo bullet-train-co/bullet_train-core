@@ -132,7 +132,9 @@ namespace :bullet_train do
     desc "Export the OpenAPI schema for the application"
     task export_openapi_schema: :environment do
       @version = BulletTrain::Api.current_version
-      File.open("openapi-#{Time.now.strftime("%Y%m%d-%H%M%S")}.yaml", "w+") do |f|
+      dir = "tmp/openapi"
+      Dir.mkdir(dir) unless File.exist?(dir)
+      File.open("#{dir}/openapi-#{Time.now.strftime("%Y%m%d-%H%M%S")}.yaml", "w+") do |f|
         f.binmode
         f.write(
           ApplicationController.renderer.render(

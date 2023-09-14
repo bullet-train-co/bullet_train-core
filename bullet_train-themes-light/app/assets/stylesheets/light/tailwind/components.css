@@ -119,7 +119,7 @@
 
 
     th {
-      @apply px-3 py-3 text-2xs font-semibold font-normal;
+      @apply px-3 py-3 text-2xs font-semibold font-normal uppercase;
       @apply dark:text-slate-400;
 
       &:first-child {

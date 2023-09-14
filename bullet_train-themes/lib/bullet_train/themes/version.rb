@@ -1,5 +1,5 @@
 module BulletTrain
   module Themes
-    VERSION = "1.3.16"
+    VERSION = "1.4.2"
   end
 end

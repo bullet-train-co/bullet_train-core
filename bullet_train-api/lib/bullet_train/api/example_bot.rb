@@ -4,29 +4,30 @@ module FactoryBot
   module ExampleBot
     attr_accessor :tables_to_reset
 
-    def example(model, **options)
+    def example(model, **)
       @tables_to_reset = [model.to_s.pluralize]
 
       object = nil
 
       ActiveRecord::Base.transaction do
-        instance = FactoryBot.create(factory(model), **options)
+        instance = FactoryBot.create(factory(model), **)
         object = deep_clone(instance)
 
         raise ActiveRecord::Rollback
       end
 
-      reset_tables!
       object
+    ensure
+      reset_tables!
     end
 
-    def example_list(model, quantity, **options)
+    def example_list(model, quantity, **)
       @tables_to_reset = [model.to_s.pluralize]
 
       objects = []
 
       ActiveRecord::Base.transaction do
-        instances = FactoryBot.create_list(factory(model), quantity, **options)
+        instances = FactoryBot.create_list(factory(model), quantity, **)
 
         instances.each do |instance|
           objects << deep_clone(instance)
@@ -35,8 +36,9 @@ module FactoryBot
         raise ActiveRecord::Rollback
       end
 
-      reset_tables!
       objects
+    ensure
+      reset_tables!
     end
 
     REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
@@ -55,8 +57,11 @@ module FactoryBot
     end
 
     def reset_tables!
-      # This is only availble for postgres
+      # This is only available for postgres
+      return unless @tables_to_reset.present?
+
       return unless ActiveRecord::Base.connection.respond_to?(:reset_pk_sequence!)
+
       @tables_to_reset.each do |name|
         ActiveRecord::Base.connection.reset_pk_sequence!(name) if ActiveRecord::Base.connection.table_exists?(name)
       end
@@ -125,19 +130,22 @@ module FactoryBot
     end
 
     def _set_values(method, model, count = 1)
+      model_name = ActiveRecord::Base.descendants.find { |klass| klass.model_name.param_key == model.to_s }&.model_name
+      factory_path = "test/factories/#{model_name.collection}.rb"
+
       if count > 1
-        values = FactoryBot.example_list(model, count)
-        class_name = values.first.class.name
-        var_name = class_name.demodulize.underscore.pluralize
+        cache_key = [:example_list, model_name.param_key, File.ctime(factory_path)]
+        values = Rails.cache.fetch(cache_key) { FactoryBot.example_list(model, count) }
+        var_name = model_name.element.pluralize
       else
-        values = FactoryBot.example(model)
-        class_name = values.class.name
-        var_name = class_name.demodulize.underscore
+        cache_key = [:example, model_name.param_key, File.ctime(factory_path)]
+        values = Rails.cache.fetch(cache_key) { FactoryBot.example(model) }
+        var_name = model_name.element
       end
 
       template = (method == "get_examples") ? "index" : "show"
 
-      [template, class_name, var_name, values]
+      [template, model_name.name, var_name, values]
     end
 
     def _json_output(template, version, class_name, var_name, values)
