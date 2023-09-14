@@ -1,0 +1,9 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Basic" do %>
+    <%
+      # super scaffolding will add a `set_default_{address_field_name}` to your controller, so this isn't needed
+      form.object.address_value = Address.new
+    %>
+    <%= render 'shared/fields/address_field', form: form, method: :address_value %>
+  <% end %>
+<% end %>
