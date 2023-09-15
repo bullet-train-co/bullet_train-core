@@ -8,7 +8,7 @@ class Api::OpenApiController < ApplicationController
   before_action :set_default_response_format
 
   def index
-    @version = params[:version]
+    @version = params[:version].match?(/v\d+/) ? params[:version] : raise("Unknown version error")
     render "api/#{@version}/open_api/index", layout: nil, format: :text
   end
 end
