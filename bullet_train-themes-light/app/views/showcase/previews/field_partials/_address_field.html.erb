@@ -6,11 +6,11 @@
 <% end %>
 
 <% form_with model: Scaffolding::CompletelyConcrete::TangibleThing.new, url: "#" do |form| %>
+  <%
+    form.object.address_value = Address.new
+  %>
+
   <% showcase.sample "Basic" do %>
-    <%
-      # super scaffolding will add a `set_default_{address_field_name}` to your controller, so this isn't needed
-      form.object.address_value = Address.new
-    %>
     <%= render 'shared/fields/address_field', form: form, method: :address_value %>
   <% end %>
 <% end %>
