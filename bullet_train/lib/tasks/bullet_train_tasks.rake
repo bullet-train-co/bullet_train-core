@@ -102,6 +102,10 @@ namespace :bullet_train do
             puts "Ejecting #{path_in_locale}..."
             File.new("config/locales#{path_in_locale}", "w")
             `cp #{locale} config/locales#{path_in_locale}`
+            file = Pathname.new("config/locales#{path_in_locale}")
+            lines = file.readlines
+            lines.unshift("# Ejected from #{relative_path}\n\n")
+            file.write(lines.join)
           end
         end
       end
