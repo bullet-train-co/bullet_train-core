@@ -68,7 +68,7 @@ git checkout -b updating-bullet-train-1.4.1
 
 ### 5. Merge in the newest stuff from Bullet Train and resolve any merge conflicts.
 
-Each version of the starter repo is tagged, so you can merge in the tag from the upstread repo.
+Each version of the starter repo is tagged, so you can merge in the tag from the upstream repo.
 
 ```
 git merge v1.4.1
@@ -116,5 +116,5 @@ git branch -d updating-bullet-train-1.4.1
 ```
 
 Alternatively, if you're using GitHub, you can push the `updating-bullet-train-1.4.1` branch up and create a
-PR from it and let your CI integration do it's thing and then merge in the PR and delete the branch there.
+PR from it and let your CI integration do its thing and then merge in the PR and delete the branch there.
 (That's what we typically do.)
