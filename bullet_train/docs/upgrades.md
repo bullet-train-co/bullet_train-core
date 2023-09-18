@@ -30,6 +30,8 @@ recent version of the starter repository should cause a merge conflict in Git. T
 opportunity to compare our upstream changes with your local customizations and allow you to resolve them in a way that makes sense for
 your application.
 
+⚠️ If you have ejected files or a new custom theme, there is a possibility that those ejected files need to be updated although no merge conflicts arose from `git merge`. You will need to compare your ejected views with the original views in [bullet_train-core](https://github.com/bullet-train-co/bullet_train-core) to ensure everything is working properly. Please refer to the documentation on [indirection](indirection) to find out more about ejected views.
+
 ### 1. Decide which version you want to upgrade to
 
 For the purposes of these instructions we'll assume that you're on version `1.4.0` and are going to upgrade to version `1.4.1`.
