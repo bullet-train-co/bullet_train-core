@@ -1,4 +1,11 @@
-<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+<% showcase.description do %>
+  When you're building forms, use Bullet Train's Field Partials for your form fields. They DRY-up all the presentation logic without needing a third-party dependency like Formtastic.
+  <br/>
+  <br/>
+  Read much more about them in the extensive <a href="https://bullettrain.co/docs/field-partials" target="_blank">developer documentation</a>.
+<% end %>
+
+<% form_with model: Scaffolding::CompletelyConcrete::TangibleThing.new, url: "#" do |form| %>
   <% showcase.sample "Basic" do %>
     <%
       # super scaffolding will add a `set_default_{address_field_name}` to your controller, so this isn't needed
@@ -6,4 +13,10 @@
     %>
     <%= render 'shared/fields/address_field', form: form, method: :address_value %>
   <% end %>
+<% end %>
+
+<%# To display further options use `showcase.options.x` as options with a block will clear the old options. See `_options.html.erb` for an example. %>
+<% showcase.options do |o| %>
+  <% o.required :form, "Reference to the form object", type: "ActionView::Helpers::FormBuilder" %>
+  <% o.required :method, "Attribute of the model" %>
 <% end %>
