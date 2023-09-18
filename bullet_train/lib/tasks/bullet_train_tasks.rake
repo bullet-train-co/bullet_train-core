@@ -87,15 +87,15 @@ namespace :bullet_train do
 
         puts "Found locales. Ejecting to your application...".green
         locales.each do |locale|
-          relative_path = locale.split("/config/locales").pop
-          path_parts = relative_path.split("/")
+          path_in_locale = locale.split("/config/locales").pop
+          path_parts = path_in_locale.split("/")
           base_path = path_parts.join("/")
           FileUtils.mkdir_p("./config/locales#{base_path}") unless Dir.exist?("./config/locales#{base_path}")
 
-          unless File.exist?("config/locales#{relative_path}")
-            puts "Ejecting #{relative_path}..."
-            File.new("config/locales#{relative_path}", "w")
-            `cp #{locale} config/locales#{relative_path}`
+          unless File.exist?("config/locales#{path_in_locale}")
+            puts "Ejecting #{path_in_locale}..."
+            File.new("config/locales#{path_in_locale}", "w")
+            `cp #{locale} config/locales#{path_in_locale}`
           end
         end
       end
