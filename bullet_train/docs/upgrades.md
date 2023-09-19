@@ -30,6 +30,8 @@ recent version of the starter repository should cause a merge conflict in Git. T
 opportunity to compare our upstream changes with your local customizations and allow you to resolve them in a way that makes sense for
 your application.
 
+⚠️ If you have ejected files or a new custom theme, there is a possibility that those ejected files need to be updated although no merge conflicts arose from `git merge`. You will need to compare your ejected views with the original views in [bullet_train-core](https://github.com/bullet-train-co/bullet_train-core) to ensure everything is working properly. Please refer to the documentation on [indirection](indirection) to find out more about ejected views.
+
 ### 1. Decide which version you want to upgrade to
 
 For the purposes of these instructions we'll assume that you're on version `1.4.0` and are going to upgrade to version `1.4.1`.
@@ -66,7 +68,7 @@ git checkout -b updating-bullet-train-1.4.1
 
 ### 5. Merge in the newest stuff from Bullet Train and resolve any merge conflicts.
 
-Each version of the starter repo is tagged, so you can merge in the tag from the upstread repo.
+Each version of the starter repo is tagged, so you can merge in the tag from the upstream repo.
 
 ```
 git merge v1.4.1
@@ -114,5 +116,5 @@ git branch -d updating-bullet-train-1.4.1
 ```
 
 Alternatively, if you're using GitHub, you can push the `updating-bullet-train-1.4.1` branch up and create a
-PR from it and let your CI integration do it's thing and then merge in the PR and delete the branch there.
+PR from it and let your CI integration do its thing and then merge in the PR and delete the branch there.
 (That's what we typically do.)
