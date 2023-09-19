@@ -1,0 +1,11 @@
+<%= form.fields_for :invitations, Invitation.new do |invitation_form| %>
+  <div class="col-span-1">
+    <%= render 'shared/fields/email_field', form: invitation_form, method: :email, options: {autofocus: true} %>
+  </div>
+
+  <%= invitation_form.fields_for :membership, Membership.new do |membership_form| %>
+    <div class="col-span-1">
+      <%= render 'shared/fields/super_select', form: membership_form, method: :role_ids, choices: available_roles, html_options: {multiple: true}, select2_options: {placeholder: t('.membership.roles.default')}, other_options: {label: t('.membership.roles.label')} %>
+    </div>
+  <% end %>
+<% end %>

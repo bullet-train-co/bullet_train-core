@@ -1,0 +1,16 @@
+en:
+  onboarding: &onboarding
+    invitation_lists:
+      buttons: &buttons
+        next: Next
+        skip: Skip
+      new:
+        header: Invite your team members
+        buttons: *buttons
+      invitation_form:
+        membership:
+          roles:
+            label: Roles
+            default: Default
+  account:
+    onboarding: *onboarding
