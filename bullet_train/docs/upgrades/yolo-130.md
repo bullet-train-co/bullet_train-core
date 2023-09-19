@@ -136,7 +136,7 @@ gem "bullet_train-themes-tailwind_css", BULLET_TRAIN_VERSION
 (We have to do this since we didn't start explicitly tracking versions until `1.4.0` and
 want to make sure that our gem versions match what the starter repo expects.)
 
-Then run `bundle update`
+Then run `bundle install`
 
 Then go ahead and commit the changes.
 
@@ -247,7 +247,7 @@ BULLET_TRAIN_VERSION = "1.3.1"
 (We have to do this since we didn't start explicitly tracking versions until `1.4.0` and
 want to make sure that our gem versions match what the starter repo expects.)
 
-Then run `bundle update`
+Then run `bundle install`
 
 Then go ahead and commit the changes.
 
