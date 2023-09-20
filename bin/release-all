@@ -99,7 +99,7 @@ class CoreBumpCLI < Thor
     end
 
     def npm_packages
-      Dir.glob("*/package.json").map{|gemspec| gemspec.split("/").first }
+      Dir.glob("*/package.json").map{|package| package.split("/").first }
     end
   end
 end
