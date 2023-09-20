@@ -89,6 +89,7 @@ PATH
       bullet_train-routes
       bullet_train-scope_validator
       bullet_train-super_load_and_authorize_resource
+      bullet_train-super_scaffolding
       bullet_train-themes
       cable_ready (~> 5.0.0)
       cancancan
@@ -392,6 +393,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    rb_sys (0.9.81)
     redis-client (0.17.0)
       connection_pool
     regexp_parser (2.6.1)
