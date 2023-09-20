@@ -81,12 +81,12 @@ When you're including multiple fields, you can DRY up redundant settings (e.g. `
 <% with_field_settings form: form do %>
   <%= render 'shared/fields/text_field', method: :text_field_value, options: {autofocus: true} %>
   <%= render 'shared/fields/buttons', method: :button_value %>
-  <%= render 'shared/fields/cloudinary_image', method: :cloudinary_image_value %>
+  <%= render 'shared/fields/image', method: :cloudinary_image_value %>
 <% end %>
 ```
 
 ## Field partials that integrate with third-party service providers
- - `cloudinary_image` makes it trivial to upload photos and videos to [Cloudinary](https://cloudinary.com) and store their resulting Cloudinary ID as an attribute of the model backing the form. To enable this field partial, sign up for Cloudinary and copy the "Cloudinary URL" they provide you with into your `config/application.yml` as `CLOUDINARY_URL`. If you use our [Heroku app.json](https://github.com/bullet-train-co/bullet_train/blob/main/app.json) to provision your production environment, this will happen in that environment automatically.
+ - `image` makes it trivial to upload photos and videos to [Cloudinary](https://cloudinary.com) and store their resulting Cloudinary ID as an attribute of the model backing the form. To enable this field partial, sign up for Cloudinary and copy the "Cloudinary URL" they provide you with into your `config/application.yml` as `CLOUDINARY_URL`. If you use our [Heroku app.json](https://github.com/bullet-train-co/bullet_train/blob/main/app.json) to provision your production environment, this will happen in that environment automatically.
 
 ## Yaml Configuration
 The localization Yaml file (where you configure label and option values for a field) is automatically generated when you run Super Scaffolding for a model. If you haven't done this yet, the localization Yaml file for `Scaffolding::CompletelyConcrete::TangibleThing` serves as a good example. Under `en.scaffolding/completely_concrete/tangible_things.fields` you'll see definitions like this:
@@ -126,7 +126,7 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 |--------------------------------------------------------|--------------|------------------|-------------------------|-----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
 | `boolean`                                              | `boolean`    |                  | `assign_boolean`        |                                                                                   |                                                                                          |
 | [`buttons`](/docs/field-partials/buttons.md)           | `string`     | Optionally       | `assign_checkboxes`     |                                                                                   |                                                                                          |
-| `cloudinary_image`                                     | `string`     |                  |                         |                                                                                   |                                                                                          |
+| `image`                                                | `string` or `attachment`*  |                  |                         |                                                                                   |                                                                                          |
 | `color_picker`                                         | `string`     |                  |                         | [pickr](https://simonwep.github.io/pickr/)                                        |                                                                                          |
 | `date_and_time_field`                                  | `datetime`   |                  |                  | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
 | `date_field`                                           | `date`       |                  |                  | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
@@ -139,8 +139,11 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 | [`super_select`](/docs/field-partials/super-select.md) | `string`     | Optionally       | `assign_select_options` | [Select2](https://select2.org)                                                    | Provides powerful option search, AJAX search, and multi-select functionality.            |
 | `text_area`                                            | `text`       |                  |                         |                                                                                   |                                                                                          |
 | `text_field`                                           | `string`     |                  |                         |                                                                                   |                                                                                          |
-| `number_field`                                           | `integer`     |                  |                         |                                                                                   |                                                                                          |
+| `number_field`                                         | `integer`    |                  |                         |                                                                                   |                                                                                          |
 | `trix_editor`                                          | `text`       |                  |                         | [Trix](https://github.com/basecamp/trix)                                          | Basic HTML-powered formatting features and support for at-mentions amongst team members. |
+
+* The data type for `image` fields will vary based on whether you're using Cloudinary or ActiveStorage.
+For Cloudinary you should use `string`, and for ActiveStorage you should use `attachment`.
 
 ## A Note On Data Types
 Set the data type to `jsonb` whenever passing the `multiple` option to a new attribute.
