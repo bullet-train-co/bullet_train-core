@@ -8,7 +8,7 @@ require "bullet_train/super_scaffolding/scaffolders/join_model_scaffolder"
 require "bullet_train/super_scaffolding/scaffolders/oauth_provider_scaffolder"
 
 require "indefinite_article"
-require "colorizer"
+#require "colorizer"
 
 module BulletTrain
   module SuperScaffolding

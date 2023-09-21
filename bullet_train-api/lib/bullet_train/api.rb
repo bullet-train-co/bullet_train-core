@@ -1,3 +1,5 @@
+require "bullet_train"
+
 require "bullet_train/api/version"
 require "bullet_train/api/engine"
 require "bullet_train/api/strong_parameters_reporter"
