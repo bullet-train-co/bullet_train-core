@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.4.6)
+    bullet_train-fields (1.4.7)
       chronic
       cloudinary
       phonelib
