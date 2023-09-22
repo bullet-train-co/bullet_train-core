@@ -48,13 +48,14 @@ def standard_protip
   puts "If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f` ."
 end
 
-def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
+def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil, generate_migration = false)
   generation_command = case scaffolding_type
   when "crud"
     "bin/rails generate model #{child}#{" #{parent.tableize.singularize.tr("/", "_")}:references" if parent}"
   when "crud-field"
-    "bin/rails generate migration"
+    "" # This is blank so we can create the proper migration name first after we get the attributes.
   end
+  attribute_names = []
 
   attributes.each do |attribute|
     parts = attribute.split(":")
@@ -62,6 +63,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     type = parts.join(":")
 
     generation_command += " #{name}:#{FIELD_PARTIALS[type.to_sym]}"
+    attribute_names << name
 
     unless Scaffolding.valid_attribute_type?(type)
       raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " \
@@ -116,8 +118,15 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     end
   end
 
-  # TODO: We probably want to run the `rails g` command here
-  # `#{generation_command}`
+  case scaffolding_type
+  when "crud"
+    puts "Generating #{child} model with '#{generation_command}'".green
+  when "crud-field"
+    generation_command = "bin/rails generate migration add_#{attribute_names.join("_and_")}_to_#{child.tableize.tr("/", "_")}#{generation_command}"
+    puts "Adding new fields to #{child} with '#{generation_command}'".green
+  end
+  puts ""
+  `#{generation_command}`
 end
 
 def show_usage

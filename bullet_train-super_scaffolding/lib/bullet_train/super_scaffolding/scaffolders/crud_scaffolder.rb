@@ -54,7 +54,7 @@ module BulletTrain
           # get all the attributes.
           attributes = argv[2..]
 
-          check_required_options_for_attributes("crud", attributes, child, parent)
+          check_required_options_for_attributes("crud", attributes, child, parent, @options["generate-migration"])
 
           # `tr` here compensates for namespaced models (i.e. - `Projects::Deliverable` to `projects/deliverable`).
           parent_reference = parent_without_namespace.tableize.singularize.tr("/", "_")

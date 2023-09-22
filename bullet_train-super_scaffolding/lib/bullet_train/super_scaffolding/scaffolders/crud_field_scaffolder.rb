@@ -26,7 +26,8 @@ module BulletTrain
           # get all the attributes.
           attributes = argv[1..]
 
-          check_required_options_for_attributes("crud-field", attributes, child)
+          # We put `nil` here as the parent because the `crud-field` scaffolder doesn't need to know what the parent is.
+          check_required_options_for_attributes("crud-field", attributes, child, nil, @options["generate-migration"])
 
           transformer = Scaffolding::Transformer.new(child, parents, @options)
           transformer.add_attributes_to_various_views(attributes, type: :crud_field)
