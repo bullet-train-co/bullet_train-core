@@ -48,7 +48,7 @@ def standard_protip
   puts "If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f` ."
 end
 
-def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil, generate_migration = false)
+def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
   generation_command = case scaffolding_type
   when "crud"
     "bin/rails generate model #{child}#{" #{parent.tableize.singularize.tr("/", "_")}:references" if parent}"
