@@ -51,7 +51,7 @@ end
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
   generation_command = case scaffolding_type
   when "crud"
-    "bin/rails generate model #{child}#{" #{parent_reference = parent.tableize.singularize.tr("/", "_")}:references" if parent}"
+    "bin/rails generate model #{child}#{" #{parent.tableize.singularize.tr("/", "_")}:references" if parent}"
   when "crud-field"
     "bin/rails generate migration"
   end
