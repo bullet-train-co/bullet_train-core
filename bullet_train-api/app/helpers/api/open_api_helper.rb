@@ -44,7 +44,7 @@ module Api
 
     def automatic_components_for(model, locals: {})
       path = "app/views/api/#{@version}"
-      paths = [path, "app/views"] + gem_paths.product([path, "app/views"]).map(&:join)
+      paths = [path, "app/views"] + gem_paths.product(%W[/#{path} /app/views]).map(&:join)
 
       jbuilder = Jbuilder::Schema.renderer(paths, locals: {
         # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
