@@ -142,7 +142,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     end
   end
 
-  # Even if there are attributes passed to the scaffolder,
+  # Some attributes don't have to be generated, i.e. - *_ids
   if attributes_to_generate.any?
     case scaffolding_type
     when "crud"
