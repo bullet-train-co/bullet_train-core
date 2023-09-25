@@ -34,7 +34,7 @@ other_options ||= {}
         %>
       </div>
       <div class="sm:col-span-2">
-        <%= render "shared/fields/dependent_fields_turbo_frame", 
+        <%= render "shared/fields/dependent_fields_frame", 
           id: form.field_id(:country, :dependent_fields),
           form: address_form,
           dependable_fields: [:country_id],

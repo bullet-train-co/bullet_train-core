@@ -1,12 +1,12 @@
 <%
-  stimulus_controller = "refresh-fields"
+  stimulus_controller = "dependent-fields-frame"
   html_options ||= {}
   html_options[:data] ||= {}
   html_options[:data][:controller] ||= ""
   html_options[:data][:controller] += " #{stimulus_controller}"
   html_options[:data][:action] ||= ""
-  html_options[:data][:action] += " dependable:updated->refresh-fields#updateFrameFromDependentField turbo:frame-render->refresh-fields#finishFrameUpdate"
-  html_options[:data][:refresh_fields_loading_class] ||= "opacity-60"
+  html_options[:data][:action] += " dependable:updated->#{stimulus_controller}#updateFrameFromDependableField turbo:frame-render->#{stimulus_controller}#finishFrameUpdate"
+  html_options[:data]["#{stimulus_controller}-loading-class"] ||= "opacity-60"
 
   dependable_fields ||= []
 %>
