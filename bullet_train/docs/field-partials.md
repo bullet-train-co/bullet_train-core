@@ -160,6 +160,7 @@ After Super Scaffolding a `date` or `date_and_time` field, you can pass a format
 Please refer to the [Ruby on Rails documentation](https://guides.rubyonrails.org/i18n.html#adding-date-time-formats) for more information.
 
 ## Additional Field Partials Documentation
+ - [`address_field`](/docs/field-partials/address-field.md)
  - [`buttons`](/docs/field-partials/buttons.md)
  - [`super_select`](/docs/field-partials/super-select.md)
  - [`file_field`](/docs/field-partials/file-field.md)
