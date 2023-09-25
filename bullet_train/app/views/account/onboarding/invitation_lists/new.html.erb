@@ -1,0 +1,31 @@
+<% @title = t('.header') %>
+
+<%= render 'account/shared/workflow/box' do |box| %>
+  <% box.title @title %>
+  <% box.body do %>
+    <% within_fields_namespace(:self) do %>
+      <%= form_with(model: @account_onboarding_invitation_list, class: 'form', local: true) do |f| %>
+        <% f.object.errors.each do |error| %>
+          <%= render 'account/shared/forms/errors', form: f, attributes: [error.attribute], resource: @account_onboarding_invitation_list %>
+        <% end %>
+        <%= render 'account/shared/notices', form: f %>
+
+        <div class="grid gap-y gap-x grid-cols-2">
+          <% 1.times do %>
+            <%= render 'invitation_form', form: f %>
+          <% end %>
+        </div>
+
+        <div class="buttons">
+          <%= f.submit t('.buttons.next'), class: first_button_primary %>
+          <%= link_to t('.buttons.skip'), main_app.account_teams_path, class: first_button_primary %>
+          <% if other_teams.any? %>
+            <%= link_to t('global.buttons.back'), main_app.account_teams_path, class: first_button_primary %>
+          <% else %>
+            <%= link_to t('menus.main.labels.logout'), main_app.destroy_user_session_path(@user, onboard_logout: true), class: first_button_primary, method: 'delete' %>
+          <% end %>
+        </div>
+      <% end %>
+    <% end %>
+  <% end %>
+<% end %>

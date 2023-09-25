@@ -1,4 +1,4 @@
-Note: before you attempt to manually wire up a `super_select` field, note that Super Scaffolding will automatically do that for your models. See [Super Scoffolding](/docs/super-scaffolding.md) docs, section 4, for an example. And make sure Super Scoffolding doesn't automatically do what you're trying to do.
+Note: before you attempt to manually wire up a `super_select` field, note that Super Scaffolding will automatically do that for your models. See [Super Scaffolding](/docs/super-scaffolding.md) docs, section 4, for an example. And make sure Super Scaffolding doesn't automatically do what you're trying to do.
 
 # Examples for the `super_select` Field Partial
 

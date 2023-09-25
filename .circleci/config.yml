@@ -30,10 +30,10 @@ jobs:
     steps:
       - checkout:
           path: ~/project/local/bullet_train-core
-      - browser-tools/install-browser-tools:
-          firefox-version: "112.0"
+      - browser-tools/install-chrome:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      - browser-tools/install-chromedriver
 
       - run: local/bullet_train-core/bin/checkout-and-link-starter-repo-for-core-tests
 
@@ -66,14 +66,14 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    parallelism: 16
+    parallelism: 2
     steps:
       - checkout:
           path: ~/project
-      - browser-tools/install-browser-tools:
-          firefox-version: "112.0"
+      - browser-tools/install-chrome:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      - browser-tools/install-chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 
@@ -91,7 +91,7 @@ jobs:
           command: bundle exec rails "knapsack_pro:queue:minitest[--verbose]"
           environment:
             RAILS_ENV: test
-            KNAPSACK_PRO_CI_NODE_TOTAL: 16
+            KNAPSACK_PRO_CI_NODE_TOTAL: 2
 
       # If you don't want to use Knapsack Pro, then use this configuration:
       #
@@ -116,14 +116,14 @@ jobs:
       - image: circleci/redis
     executor: ruby/default
     working_directory: tmp/starter
-    parallelism: 16
+    parallelism: 7
     steps:
       - checkout:
           path: ~/project
-      - browser-tools/install-browser-tools:
-          firefox-version: "112.0"
+      - browser-tools/install-chrome:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
-          replace-existing-chrome: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+          replace-existing: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
+      - browser-tools/install-chromedriver
 
       - run: ../../bin/checkout-and-link-starter-repo
 

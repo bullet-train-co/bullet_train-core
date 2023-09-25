@@ -11,12 +11,16 @@ module BulletTrain
     def run(eject: false, open: false, force: false, interactive: false)
       # Try to figure out what kind of thing they're trying to look up.
       source_file = calculate_source_file_details
+      source_file[:relative_path] = nil
 
       if source_file[:absolute_path]
         puts ""
         puts "Absolute path:".green
         puts "  #{source_file[:absolute_path]}".green
         puts ""
+
+        source_file[:relative_path] = source_file[:absolute_path].split(/(?=#{source_file[:package_name]})/).pop
+
         if source_file[:package_name].present?
           puts "Package name:".green
           puts "  #{source_file[:package_name]}".green
@@ -44,9 +48,9 @@ module BulletTrain
               File.open((source_file[:project_path]).to_s, "w+") do |file|
                 case source_file[:project_path].split(".").last
                 when "rb", "yml"
-                  file.puts "# Ejected from `#{source_file[:package_name]}`.\n\n"
+                  file.puts "# Ejected from `#{source_file[:relative_path] || source_file[:package_name]}`.\n\n"
                 when "erb"
-                  file.puts "<% # Ejected from `#{source_file[:package_name]}`. %>\n\n"
+                  file.puts "<% # Ejected from `#{source_file[:relative_path] || source_file[:package_name]}`. %>\n\n"
                 end
               end
               `cat #{source_file[:absolute_path]} >> #{source_file[:project_path]}`.strip

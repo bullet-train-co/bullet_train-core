@@ -1,3 +1,5 @@
+require "masamune"
+
 module BulletTrain
   module Themes
     module Application
@@ -27,6 +29,7 @@ module BulletTrain
 
         `mkdir #{Rails.root}/app/views/themes`
 
+        new_files = {}
         {
           "bullet_train-themes" => "base",
           "bullet_train-themes-tailwind_css" => "tailwind_css",
@@ -43,6 +46,8 @@ module BulletTrain
             else
               puts "Copying `#{target_file_or_directory}`."
               `cp #{file_or_directory} #{target_file_or_directory}`
+              gem_with_version = gem_path.split("/").last
+              new_files[target_file_or_directory] = file_or_directory.split(/(?=#{gem_with_version})/).last
             end
           end
         end
@@ -67,10 +72,34 @@ module BulletTrain
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/module #{constantized_theme}/module #{ejected_theme_name.titlecase}/g" #{target_path})
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/TailwindCss/#{constantized_theme}/g" #{target_path})
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{target_path})
-        ["require", "TODO", "mattr_accessor"].each do |thing_to_remove|
-          `grep -v #{thing_to_remove} #{target_path} > #{target_path}.tmp`
-          `mv #{target_path}.tmp #{target_path}`
+
+        theme_file = Pathname.new(target_path)
+        msmn = Masamune::AbstractSyntaxTree.new(theme_file.readlines.join)
+        data_to_skip =
+          msmn.method_calls(name: "require") +
+          msmn.method_calls(name: "mattr_accessor") +
+          msmn.comments.select { |comment| comment[:token].match?("TODO") }
+        lines_to_skip = data_to_skip.map { |data| data[:line_number] - 1 }
+        new_lines = theme_file.readlines.select.with_index do |line, idx|
+          !lines_to_skip.include?(idx) || line.match?("mattr_accessor :colors")
         end
+        theme_file.write new_lines.join
+
+        # We add the comment to the ejected files here so the sed calls don't
+        # overwrite package names like `bullet_train-themes-light`.
+        new_files.each do |key, value|
+          file = Pathname.new(key)
+          lines = file.readlines
+
+          new_lines = case key.split(".").last
+          when "rb", "yml"
+            lines.unshift("# Ejected from #{value}\n\n")
+          when "erb"
+            lines.unshift("<% # Ejected from #{value} %>\n\n")
+          end
+          file.write(new_lines.join)
+        end
+
         `standardrb --fix #{target_path}`
 
         puts "Cutting local project over from `#{theme_name}` to `#{ejected_theme_name}` in `app/helpers/application_helper.rb`."
@@ -80,9 +109,14 @@ module BulletTrain
       end
 
       def self.release_theme(original_theme_name, args)
+        # We only want developers publishing gems off of `bullet_train-themes-light`, so if the task looks
+        # something like `rake bullet_train:themes:foo:release[bar]`, we prevent them from moving any further here.
         if original_theme_name != "light"
           puts "You can only release new themes based off of Bullet Train's Light theme. Please eject a new theme from there, and publish your gem once you've finished making changes.".red
           exit 1
+        elsif original_theme_name.nil?
+          puts "Please run the command with the name of the theme you want to release.".red
+          puts "For example: > rake bullet_train:themes:light:release[foo]"
         end
 
         puts "Preparing to release your custom theme: ".blue + args[:theme_name]
@@ -107,19 +141,28 @@ module BulletTrain
           raise "You already have a repository named `bullet_train-themes-#{args[:theme_name]}` in `./local`.\n" \
             "Make sure you delete it first to create an entirely new gem."
         end
-        `git clone git@github.com:bullet-train-co/bullet_train-themes-light.git ./local/bullet_train-themes-#{args[:theme_name]}`
 
-        custom_file_replacer = BulletTrain::Themes::Light::CustomThemeFileReplacer.new(args[:theme_name])
-        custom_file_replacer.replace_theme("light", args[:theme_name])
+        # Pull `bullet_train-themes-light` only from `bullet_train-core` into the new theme directory.
+        # https://www.git-scm.com/docs/git-sparse-checkout
+        `mkdir ./local/bullet_train-themes-#{args[:theme_name]}`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git init && git remote add bullet-train-core git@github.com:bullet-train-co/bullet_train-core.git`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git config core.sparseCheckout true && echo "bullet_train-themes-light/**/*" >> .git/info/sparse-checkout`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git pull bullet-train-core main && git remote rm bullet-train-core`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && mv bullet_train-themes-light/* . && mv bullet_train-themes-light/.* .`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && rmdir bullet_train-themes-light/`
+        `cd ./local/bullet_train-themes-#{args[:theme_name]} && git config core.sparseCheckout false`
+
+        BulletTrain::Themes::Light::CustomThemeFileReplacer.new(original_theme_name, args[:theme_name]).replace_theme
 
         work_tree_flag = "--work-tree=local/bullet_train-themes-#{args[:theme_name]}"
         git_dir_flag = "--git-dir=local/bullet_train-themes-#{args[:theme_name]}/.git"
         path = "./local/bullet_train-themes-#{args[:theme_name]}"
 
         # Set up the proper remote.
-        `git #{work_tree_flag} #{git_dir_flag} remote set-url origin #{ssh_path}`
+        `git #{work_tree_flag} #{git_dir_flag} remote add origin #{ssh_path}`
         `git #{work_tree_flag} #{git_dir_flag} add .`
         `git #{work_tree_flag} #{git_dir_flag} commit -m "Add initial files"`
+        `git #{work_tree_flag} #{git_dir_flag} branch -m main`
 
         # Build the gem.
         `(cd #{path} && gem build bullet_train-themes-#{args[:theme_name]}.gemspec)`
@@ -142,41 +185,31 @@ module BulletTrain
         puts "You may have to wait for some time until the gem can be downloaded via the Gemfile.".blue
         puts "After a few minutes, run the following command in your main application:".blue
         puts "bundle add bullet_train-themes-#{args[:theme_name]}"
-        puts "rake bullet_train:themes:#{args[:theme_name]}:install"
         puts ""
         puts "Then you'll be ready to use your custom gem in your Bullet Train application.".blue
+        puts ""
+        puts "Please note that we have deleted the new theme from your main application.".blue
+        puts "run `git log -1` for details."
+        puts ""
+        puts "Use `rake bullet_train:themes:light:install` to revert to the original theme,".blue
+        puts "or run `rake bullet_train:themes:#{args[:theme_name]}:install` whenever you want to use your new theme.".blue
       end
 
       def self.install_theme(theme_name)
-        # Grabs the current theme from
-        # def current_theme
-        #   :theme_name
-        # end
-        current_theme_regexp = /(^    :)(.*)/
-        current_theme = nil
+        helper = Pathname.new("./app/helpers/application_helper.rb")
+        msmn = Masamune::AbstractSyntaxTree.new(helper.readlines.join)
+        current_theme_def = msmn.method_definitions(name: "current_theme").pop
+        current_theme = msmn.symbols.find { |node| node[:line_number] > current_theme_def[:line_number] }[:token]
+        helper.write msmn.replace(type: :symbol, old_token: current_theme, new_token: theme_name)
 
-        new_lines = []
-        [
-          "./app/helpers/application_helper.rb",
-          "./Procfile.dev",
-          "./package.json"
-        ].each do |file|
-          File.open(file, "r") do |f|
-            new_lines = f.readlines
-            new_lines = new_lines.map do |line|
-              # Make sure we get the current theme before trying to replace it in any of the files.
-              # We grab it from the first file in the array above.
-              current_theme = line.scan(current_theme_regexp).flatten.last if line.match?(current_theme_regexp)
-
-              line.gsub!(/#{current_theme}/, theme_name) unless current_theme.nil?
-              line
-            end
-          end
-
-          File.open(file, "w") do |f|
-            f.puts new_lines.join
+        [Pathname.new("./Procfile.dev"), Pathname.new("./package.json")].each do |file|
+          changed = file.read.gsub! current_theme, theme_name
+          if changed
+            file.write changed
           end
         end
+
+        puts "Finished installing `#{theme_name}`.".blue
       end
 
       def self.clean_theme(theme_name, args)

@@ -20,6 +20,8 @@ en:
       git: "bullet-train-co/bullet_train-core"
     bullet_train-outgoing_webhooks:
       git: "bullet-train-co/bullet_train-core"
+    bullet_train-roles:
+      git: "bullet-train-co/bullet_train-core"
     bullet_train-scope_questions:
       git: "bullet-train-co/bullet_train-core"
     bullet_train-scope_validator:

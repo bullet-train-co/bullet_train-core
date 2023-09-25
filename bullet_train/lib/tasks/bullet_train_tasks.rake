@@ -82,20 +82,30 @@ namespace :bullet_train do
       gem_names.each do |gem|
         puts "Searching for locales in #{gem}...".blue
         gem_path = `bundle show #{gem}`.chomp
+        gem_with_version = gem_path.split("/").last
         locales = Dir.glob("#{gem_path}/**/config/locales/**/*.yml").reject { |path| path.match?("dummy") }
         next if locales.empty?
 
         puts "Found locales. Ejecting to your application...".green
         locales.each do |locale|
-          relative_path = locale.split("/config/locales").pop
-          path_parts = relative_path.split("/")
-          base_path = path_parts.join("/")
-          FileUtils.mkdir_p("./config/locales#{base_path}") unless Dir.exist?("./config/locales#{base_path}")
+          relative_path = locale.split(/(?=#{gem_with_version}\/config\/locales)/).last
+          path_in_locale = locale.split("/config/locales").pop
 
-          unless File.exist?("config/locales#{relative_path}")
-            puts "Ejecting #{relative_path}..."
-            File.new("config/locales#{relative_path}", "w")
-            `cp #{locale} config/locales#{relative_path}`
+          base_path = relative_path.split("/")
+          base_path.pop
+          base_path = base_path.join("/")
+          starter_repo_locale_path = base_path.gsub(gem_with_version, ".")
+
+          FileUtils.mkdir_p(starter_repo_locale_path) unless Dir.exist?(starter_repo_locale_path)
+
+          unless File.exist?("config/locales#{path_in_locale}")
+            puts "Ejecting #{path_in_locale}..."
+            File.new("config/locales#{path_in_locale}", "w")
+            `cp #{locale} config/locales#{path_in_locale}`
+            file = Pathname.new("config/locales#{path_in_locale}")
+            lines = file.readlines
+            lines.unshift("# Ejected from #{relative_path}\n\n")
+            file.write(lines.join)
           end
         end
       end
@@ -263,7 +273,7 @@ namespace :bullet_train do
     version_regexp = /^[\d|.]$/
 
     packages.each do |package|
-      original_path = "gem \"#{package}\""
+      original_path = "gem \"#{package}\", BULLET_TRAIN_VERSION"
       local_path = "gem \"#{package}\", path: \"local/bullet_train-core/#{package}\""
       match_found = false
 
@@ -295,7 +305,7 @@ namespace :bullet_train do
             end
           elsif flag == "--reset"
             if line.match?(/bullet_train/)
-              line.gsub!(/,.*$/, "")
+              line.gsub!(/,.*$/, ", BULLET_TRAIN_VERSION")
             end
             puts "Resetting '#{package}' package in the Gemfile...".blue
           end
@@ -311,6 +321,8 @@ namespace :bullet_train do
             "#{original_path.chomp}, git: 'http://github.com/bullet-train-co/bullet_train-core.git'\n"
           elsif link_flag_value&.match?(version_regexp)
             "#{original_path.chomp}, \"#{link_flag_value}\"\n"
+          elsif link_flag_value
+            "#{original_path.chomp}, path: \"#{link_flag_value}/#{package}\"\n"
           else
             "#{local_path}\n"
           end

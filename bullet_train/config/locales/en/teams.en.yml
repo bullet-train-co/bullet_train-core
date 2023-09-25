@@ -13,6 +13,9 @@ en:
       create: Create Team
       edit: Edit Team
       update: Update Team
+      destroy: Delete Team
+      confirmations:
+        destroy: Are you sure you want to delete this team?
     index:
       section: Teams
       header: Your Teams
@@ -40,7 +43,9 @@ en:
     notifications:
       created: Team was successfully created.
       updated: Team was successfully updated.
+      destroyed: Team was successfully destroyed.
       invitation_only: Creating new teams is currently limited to users who have been invited for early access. If you've received an early access URL, please visit it before trying again.
+      cannot_delete_last_team: You cannot delete the last team you belong to.
     form:
       buttons: *buttons
     fields: &fields
