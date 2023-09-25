@@ -17,6 +17,7 @@ FIELD_PARTIALS = {
   email_field: "string",
   emoji_field: "string",
   file_field: "attachment",
+  image: "attachment",
   options: "string",
   password_field: "string",
   phone_field: "string",
@@ -62,7 +63,8 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     name = parts.shift
     type = parts.join(":")
 
-    generation_command += " #{name}:#{FIELD_PARTIALS[type.to_sym]}"
+    data_type = (type == "image" && cloudinary_enabled?) ? "string" : FIELD_PARTIALS[type.to_sym]
+    generation_command += " #{name}:#{data_type}"
     attribute_names << name
 
     unless Scaffolding.valid_attribute_type?(type)
