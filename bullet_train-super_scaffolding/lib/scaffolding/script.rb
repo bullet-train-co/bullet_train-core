@@ -56,7 +56,11 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
   when "crud-field"
     "" # This is blank so we can create the proper migration name first after we get the attributes.
   end
-  attribute_names = []
+
+  # Even if there are attributes passed to the scaffolder,
+  # They may already exist in previous migrations.
+  # i.e. - *_ids attributes in the join-model scaffolder.
+  attributes_to_generate= []
 
   attributes.each do |attribute|
     parts = attribute.split(":")
@@ -64,8 +68,13 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     type = parts.join(":")
 
     data_type = (type == "image" && cloudinary_enabled?) ? "string" : FIELD_PARTIALS[type.to_sym]
-    generation_command += " #{name}:#{data_type}"
-    attribute_names << name
+
+    # For join models, we don't want to generate a migration when
+    # running the crud-field scaffolder in the last step.
+    unless name.match?(/_ids$/)
+      generation_command += " #{name}:#{data_type}"
+      attributes_to_generate << name
+    end
 
     unless Scaffolding.valid_attribute_type?(type)
       raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " \
@@ -120,15 +129,18 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     end
   end
 
-  case scaffolding_type
-  when "crud"
-    puts "Generating #{child} model with '#{generation_command}'".green
-  when "crud-field"
-    generation_command = "bin/rails generate migration add_#{attribute_names.join("_and_")}_to_#{child.tableize.tr("/", "_")}#{generation_command}"
-    puts "Adding new fields to #{child} with '#{generation_command}'".green
+  # Even if there are attributes passed to the scaffolder,
+  if attributes_to_generate.any?
+    case scaffolding_type
+    when "crud"
+      puts "Generating #{child} model with '#{generation_command}'".green
+    when "crud-field"
+      generation_command = "bin/rails generate migration add_#{attributes_to_generate.join("_and_")}_to_#{child.tableize.tr("/", "_")}#{generation_command}"
+      puts "Adding new fields to #{child} with '#{generation_command}'".green
+    end
+    puts ""
+    `#{generation_command}`
   end
-  puts ""
-  `#{generation_command}`
 end
 
 def show_usage
