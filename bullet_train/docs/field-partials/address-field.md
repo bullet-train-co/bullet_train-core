@@ -15,9 +15,9 @@ The address field partial adds a block of fields to your form. It creates and st
 
 If you'd like to add or remove fields, you'll need to update your own version of the `Address` model and eject and modify the `shared/fields/address_field` partial.
 
-## Self-Updating Form Fields
+## Dynamically Updating `region_id` and `postal_code` Fields and Labels
 
-The `address_field` partial has custom Stimulus controllers to auto-update its own fields. Depending on the value of the `country_id` selected, the `region_id` and `postal_code` fields will be updated. For this, a turbo_frame surrounds these two adjacent fields, refetching the same current form endpoint (`#new` or `#edit` on the current controller), with the `country_id`'s full field name and value in a query_string param. No need to update your controller's `strong_params`, as the `address_field` is equipped to read that specific query_string variable by itself.
+The `address_field` partial implements Bullet Train's [Dependent Fields Pattern](/docs/field-partials/dynamic-forms-dependent-fields.md) to automatically update the `region_id` and `postal_code` fields and their labels based on the value of the selected `country_id`.
 
 ## Customizing the Address Output
 
