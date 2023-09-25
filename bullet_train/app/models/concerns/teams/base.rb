@@ -7,6 +7,10 @@ module Teams::Base
       has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_cable_ready_updates: true
     end
 
+    # added_by_id is a foreign_key to other Memberships on the same team,
+    # so we nullify this to remove the constraint to delete the team.
+    before_destroy { Membership.where(team: self).update_all(added_by_id: nil) }
+
     # memberships and invitations
     has_many :memberships, dependent: :destroy
     has_many :users, through: :memberships

@@ -111,17 +111,14 @@ module Account::Teams::ControllerBase
   # # DELETE /teams/1
   # # DELETE /teams/1.json
   def destroy
-    if current_user.teams.size == 1
-      respond_to do |format|
-        format.html { redirect_to edit_account_team_url(@team), alert: t("account.teams.notifications.cannot_delete_last_team") }
-        format.json { head :no_content }
-      end
-    else
+    respond_to do |format|
+      raise RemovingLastTeamException if current_user.one_team?
       @team.destroy
-      respond_to do |format|
-        format.html { redirect_to account_teams_url, notice: t("account.teams.notifications.destroyed") }
-        format.json { head :no_content }
-      end
+      format.html { redirect_to account_teams_url, notice: t("account.teams.notifications.destroyed") }
+      format.json { head :no_content }
+    rescue RemovingLastTeamException => _
+      format.html { redirect_to edit_account_team_url(@team), alert: t("account.teams.notifications.cannot_delete_last_team") }
+      format.json { head :no_content }
     end
   end
 
