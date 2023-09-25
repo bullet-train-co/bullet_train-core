@@ -4,7 +4,6 @@
 form ||= current_fields_form
 options ||= {}
 other_options ||= {}
-id_of_dependent_fields_turbo_frame = form.field_id(method, :dependent_fields)
 %>
 
 <%= form.fields_for(method) do |address_form| %>
@@ -20,7 +19,7 @@ id_of_dependent_fields_turbo_frame = form.field_id(method, :dependent_fields)
         data: {
           'controller': "dependable",
           'action': '$change->dependable#updateDependents',
-          'dependable-dependents-selector-value': "##{id_of_dependent_fields_turbo_frame}"
+          'dependable-dependents-selector-value': "##{form.field_id(:country, :dependent_fields)}"
         }
       }
     %>
@@ -36,7 +35,7 @@ id_of_dependent_fields_turbo_frame = form.field_id(method, :dependent_fields)
       </div>
       <div class="sm:col-span-2">
         <%= render "shared/fields/dependent_fields_turbo_frame", 
-          id: id_of_dependent_fields_turbo_frame,
+          id: form.field_id(:country, :dependent_fields),
           form: address_form,
           dependable_fields: [:country_id],
           html_options: { class: "block space-y-5" } do |dependent_fields_controller_name|
