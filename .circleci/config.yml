@@ -26,20 +26,27 @@ jobs:
       - <<: *postgres_docker_image
       - image: circleci/redis
     executor: ruby/default
+    working_directory: ~/project
     steps:
-      - checkout
+      - checkout:
+          path: ~/project/local/bullet_train-core
       - browser-tools/install-chrome:
           chrome-version: "116.0.5845.96" # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
           replace-existing: true # TODO: remove -> https://github.com/CircleCI-Public/browser-tools-orb/issues/75
       - browser-tools/install-chromedriver
 
+      - run: local/bullet_train-core/bin/checkout-and-link-starter-repo-for-core-tests
+
       - ruby/install-deps:
           clean-bundle: true
-      - run: "yarn install"
+      - node/install-packages:
+          pkg-manager: yarn
+      - run: yarn build:css
+      - run: yarn build
       - *wait_for_docker
       - run:
           name: Run unit tests
-          command: bundle exec rails test
+          command: ./local/bullet_train-core/bin/test-core-gems
 
   'Local Standard Ruby':
     docker:
@@ -145,7 +152,7 @@ workflows:
   version: 2
   build:
     jobs:
-      # - 'Local Minitest'
       - 'Local Standard Ruby'
+      - 'Local Minitest'
       - 'Starter Repo Minitest'
       - 'Starter Repo Minitest for Super Scaffolding'
