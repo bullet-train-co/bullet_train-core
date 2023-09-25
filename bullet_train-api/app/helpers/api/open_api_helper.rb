@@ -44,7 +44,8 @@ module Api
 
     def automatic_components_for(model, locals: {})
       path = "app/views/api/#{@version}"
-      paths = ([path] + gem_paths.map { |gem_path| "#{gem_path}/#{path}" })
+      paths = [path, "app/views"] + gem_paths.product(%W[/#{path} /app/views]).map(&:join)
+
       jbuilder = Jbuilder::Schema.renderer(paths, locals: {
         # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
         model.name.underscore.split("/").last.to_sym => model.new,
@@ -62,7 +63,7 @@ module Api
         example || model.new,
         title: I18n.t("#{model.name.underscore.pluralize}.label"),
         # TODO Improve this. We don't have a generic description for models we can use here.
-        description: I18n.t("#{model.name.underscore.pluralize}.label"),
+        description: I18n.t("#{model.name.underscore.pluralize}.label")
       )
 
       attributes_output = JSON.parse(schema_json)
