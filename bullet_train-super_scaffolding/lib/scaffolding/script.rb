@@ -13,7 +13,7 @@ FIELD_PARTIALS = {
   cloudinary_image: "string",
   color_picker: "string",
   date_and_time_field: "datetime",
-  date_field: "date_field",
+  date_field: "date",
   email_field: "string",
   emoji_field: "string",
   file_field: "attachment",
@@ -58,24 +58,16 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
   end
 
   # Even if there are attributes passed to the scaffolder,
-  # They may already exist in previous migrations.
+  # They may already exist in previous migrations, so we
+  # only register ones that need to be generated.
   # i.e. - *_ids attributes in the join-model scaffolder.
-  attributes_to_generate= []
+  attributes_to_generate = []
 
   attributes.each do |attribute|
     parts = attribute.split(":")
     name = parts.shift
     type = parts.join(":")
     type_without_option = type.gsub(/{.*}/, "")
-
-    data_type = (type == "image" && cloudinary_enabled?) ? "string" : FIELD_PARTIALS[type_without_option.to_sym]
-
-    # For join models, we don't want to generate a migration when
-    # running the crud-field scaffolder in the last step.
-    unless name.match?(/_ids$/)
-      generation_command += " #{name}:#{data_type}"
-      attributes_to_generate << name
-    end
 
     unless Scaffolding.valid_attribute_type?(type)
       raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " \
@@ -94,6 +86,26 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       end.to_h
     else
       {}
+    end
+
+    data_type = if type == "image" && cloudinary_enabled?
+      "string"
+    elsif attribute_options[:multiple]
+      case type
+      when "file"
+        "attachments"
+      else
+        "jsonb"
+      end
+    else
+      FIELD_PARTIALS[type_without_option.to_sym]
+    end
+
+    # For join models, we don't want to generate a migration when
+    # running the crud-field scaffolder in the last step.
+    unless name.match?(/_ids$/)
+      generation_command += " #{name}:#{data_type}"
+      attributes_to_generate << name
     end
 
     if name.match?(/_id$/) || name.match?(/_ids$/)
