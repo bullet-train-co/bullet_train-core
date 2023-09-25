@@ -66,8 +66,9 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     parts = attribute.split(":")
     name = parts.shift
     type = parts.join(":")
+    type_without_option = type.gsub(/{.*}/, "")
 
-    data_type = (type == "image" && cloudinary_enabled?) ? "string" : FIELD_PARTIALS[type.to_sym]
+    data_type = (type == "image" && cloudinary_enabled?) ? "string" : FIELD_PARTIALS[type_without_option.to_sym]
 
     # For join models, we don't want to generate a migration when
     # running the crud-field scaffolder in the last step.
