@@ -181,7 +181,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       puts "Adding new fields to #{child} with '#{generation_command}'".green
     end
     puts ""
-    `#{generation_command}`
+    `#{generation_command}` unless @options["skip-migration-generation"]
   end
 end
 
