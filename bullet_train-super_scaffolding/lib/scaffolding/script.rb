@@ -53,32 +53,31 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
   tableized_parent = nil
 
   # Ensure the parent attribute name has the proper namespacing for adding as a foreign key.
-  # TODO: Refactor this conditional, add tableized_parent ||= ... below inside.
-  if parent.present? && child.include?("::") && parent.include?("::")
-    child_parts = child.split("::")
-    parent_parts = parent.split("::")
-    child_parts_dup = child_parts.dup
-    parent_parts_dup = parent_parts.dup
+  if parent.present?
+    if child.include?("::") && parent.include?("::")
+      child_parts = child.split("::")
+      parent_parts = parent.split("::")
+      child_parts_dup = child_parts.dup
+      parent_parts_dup = parent_parts.dup
 
-    # Pop off however many spaces match.
-    child_parts_dup.each.with_index do |child_part, idx|
-      if child_part == parent_parts_dup[idx]
-        child_parts.shift
-        parent_parts.shift
-      else
-        tableized_parent = parent_parts.map(&:downcase).join("_")
-        break
+      # Pop off however many spaces match.
+      child_parts_dup.each.with_index do |child_part, idx|
+        if child_part == parent_parts_dup[idx]
+          child_parts.shift
+          parent_parts.shift
+        else
+          tableized_parent = parent_parts.map(&:downcase).join("_")
+          break
+        end
       end
     end
+    # In case we're not working with namespaces, just tableize the parent as is.
+    tableized_parent ||= parent.tableize.singularize.tr("/", "_") if parent.present?
   end
-
-  # In case we're not working with namespaces, just tableize the parent as is.
-  tableized_parent ||= parent.tableize.singularize.tr("/", "_") if parent.present?
 
   generation_command = case scaffolding_type
   when "crud"
-    # TODO: I don't think we need `if parent` here.
-    "bin/rails generate model #{child}#{" #{tableized_parent}:references" if parent}"
+    "bin/rails generate model #{child} #{tableized_parent}:references"
   when "crud-field"
     "" # This is blank so we can create the proper migration name first after we get the attributes.
   end
@@ -171,7 +170,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     end
   end
 
-  # Some attributes don't have to be generated, i.e. - *_ids
+  # Generate the models/migrations with the attributes passed.
   if attributes_to_generate.any?
     case scaffolding_type
     when "crud"
