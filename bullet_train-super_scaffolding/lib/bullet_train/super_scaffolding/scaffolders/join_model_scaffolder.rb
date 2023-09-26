@@ -44,6 +44,14 @@ module BulletTrain
           # There should only be two attributes.
           attributes = [argv[1], argv[2]]
 
+          attributes_without_options = attributes.map{|attribute| attribute.gsub(/{.*}$/, "")}
+          attributes_without_id = attributes_without_options.map{|attribute| attribute.gsub(/_id$/, "")}
+          attributes_with_references = attributes_without_id.map{|attribute| attribute + ":references"}
+
+          generation_command = "bin/rails generate model #{child} #{attributes_with_references.join(" ")}"
+          puts "Generating model with '#{generation_command}'".green
+          `#{generation_command}`
+
           # Pretend we're doing a `super_select` scaffolding because it will do the correct thing.
           attributes = attributes.map { |attribute| attribute.gsub("{", ":super_select{") }
           attributes = attributes.map { |attribute| attribute.gsub("}", ",required}") }

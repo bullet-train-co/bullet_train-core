@@ -173,6 +173,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
   # Generate the models/migrations with the attributes passed.
   if attributes_to_generate.any?
     case scaffolding_type
+    # "join-model" is not here because the `rails g` command is written inline in its own scaffolder.
     when "crud"
       puts "Generating #{child} model with '#{generation_command}'".green
     when "crud-field"
