@@ -1,0 +1,13 @@
+<%
+form ||= current_fields_form
+options ||= {}
+other_options ||= {}
+multiple ||= false
+#persisted_files = multiple ? form.object.send(method) : [form.object.send(method)]
+%>
+
+<% if cloudinary_enabled? %>
+  <%= render 'shared/fields/cloudinary_image', method: method, form: form, options: options, other_options: other_options %>
+<% else %>
+  <%= render 'shared/fields/active_storage_image', method: method, form: form, options: options, other_options: other_options %>
+<% end %>

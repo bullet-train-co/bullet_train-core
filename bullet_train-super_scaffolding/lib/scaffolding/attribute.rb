@@ -138,6 +138,11 @@ class Scaffolding::Attribute
         "option#{"s" if is_multiple?}"
       end
     when "cloudinary_image"
+      # TODO: We're preserving cloudinary_image here for backwards compatibility.
+      # Remove it in a future major release.
+      options[:height] = 200
+      "image"
+    when "image"
       options[:height] = 200
       "image"
     when "phone_field"

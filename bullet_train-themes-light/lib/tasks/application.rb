@@ -29,6 +29,7 @@ module BulletTrain
 
         `mkdir #{Rails.root}/app/views/themes`
 
+        new_files = {}
         {
           "bullet_train-themes" => "base",
           "bullet_train-themes-tailwind_css" => "tailwind_css",
@@ -45,6 +46,8 @@ module BulletTrain
             else
               puts "Copying `#{target_file_or_directory}`."
               `cp #{file_or_directory} #{target_file_or_directory}`
+              gem_with_version = gem_path.split("/").last
+              new_files[target_file_or_directory] = file_or_directory.split(/(?=#{gem_with_version})/).last
             end
           end
         end
@@ -81,6 +84,21 @@ module BulletTrain
           !lines_to_skip.include?(idx) || line.match?("mattr_accessor :colors")
         end
         theme_file.write new_lines.join
+
+        # We add the comment to the ejected files here so the sed calls don't
+        # overwrite package names like `bullet_train-themes-light`.
+        new_files.each do |key, value|
+          file = Pathname.new(key)
+          lines = file.readlines
+
+          new_lines = case key.split(".").last
+          when "rb", "yml"
+            lines.unshift("# Ejected from #{value}\n\n")
+          when "erb"
+            lines.unshift("<% # Ejected from #{value} %>\n\n")
+          end
+          file.write(new_lines.join)
+        end
 
         `standardrb --fix #{target_path}`
 

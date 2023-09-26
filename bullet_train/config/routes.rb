@@ -26,6 +26,7 @@ Rails.application.routes.draw do
       namespace :onboarding do
         resources :user_details
         resources :user_email
+        resources :invitation_lists, only: [:new, :create]
       end
 
       # user specific resources.

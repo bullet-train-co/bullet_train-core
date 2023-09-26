@@ -3,3 +3,6 @@ en:
     download_document: Download Current Document
     upload_document: Upload New Document
     remove_document: Remove Current Document
+    download_image: Download Current Image
+    upload_image: Upload New Image
+    remove_image: Remove Current Image

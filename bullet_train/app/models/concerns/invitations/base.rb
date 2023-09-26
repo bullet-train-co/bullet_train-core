@@ -4,6 +4,7 @@ module Invitations::Base
   included do
     belongs_to :team
     belongs_to :from_membership, class_name: "Membership"
+    belongs_to :invitation_list, class_name: "Account::Onboarding::InvitationList", optional: true
     has_one :membership, dependent: :nullify
 
     accepts_nested_attributes_for :membership

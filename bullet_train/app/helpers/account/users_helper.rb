@@ -1,10 +1,15 @@
 module Account::UsersHelper
+  def photo_url_for_active_storage_attachment attachment, options
+    size_details = {resize_to_limit: [options[:width], options[:height]]}
+    attachment.representation(size_details)
+  end
+
   def profile_photo_for(url: nil, email: nil, first_name: nil, last_name: nil, profile_header: false)
     size_details = profile_header ? {width: 700, height: 200} : {width: 100, height: 100}
     size_details[:crop] = :fill
 
     if cloudinary_enabled? && !url.blank?
-      cl_image_path(url, size_details[:width], size_details[:height], size_details[:crop])
+      cl_image_path(url, size_details)
     elsif !url.blank?
       url + "?" + size_details.to_param
     else
@@ -38,7 +43,7 @@ module Account::UsersHelper
   # leaving them in case we have other developers depending on these methods.
   def profile_header_photo_for(url: nil, email: nil, first_name: nil, last_name: nil)
     if cloudinary_enabled? && !url.blank?
-      cl_image_path(url, width: 700, height: 200, crop: :fill)
+      cl_image_path(url, {width: 700, height: 200, crop: :fill})
     elsif !url.blank?
       url + "?" + {size: 200}.to_param
     else

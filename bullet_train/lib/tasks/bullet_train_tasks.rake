@@ -82,20 +82,30 @@ namespace :bullet_train do
       gem_names.each do |gem|
         puts "Searching for locales in #{gem}...".blue
         gem_path = `bundle show #{gem}`.chomp
+        gem_with_version = gem_path.split("/").last
         locales = Dir.glob("#{gem_path}/**/config/locales/**/*.yml").reject { |path| path.match?("dummy") }
         next if locales.empty?
 
         puts "Found locales. Ejecting to your application...".green
         locales.each do |locale|
-          relative_path = locale.split("/config/locales").pop
-          path_parts = relative_path.split("/")
-          base_path = path_parts.join("/")
-          FileUtils.mkdir_p("./config/locales#{base_path}") unless Dir.exist?("./config/locales#{base_path}")
+          relative_path = locale.split(/(?=#{gem_with_version}\/config\/locales)/).last
+          path_in_locale = locale.split("/config/locales").pop
 
-          unless File.exist?("config/locales#{relative_path}")
-            puts "Ejecting #{relative_path}..."
-            File.new("config/locales#{relative_path}", "w")
-            `cp #{locale} config/locales#{relative_path}`
+          base_path = relative_path.split("/")
+          base_path.pop
+          base_path = base_path.join("/")
+          starter_repo_locale_path = base_path.gsub(gem_with_version, ".")
+
+          FileUtils.mkdir_p(starter_repo_locale_path) unless Dir.exist?(starter_repo_locale_path)
+
+          unless File.exist?("config/locales#{path_in_locale}")
+            puts "Ejecting #{path_in_locale}..."
+            File.new("config/locales#{path_in_locale}", "w")
+            `cp #{locale} config/locales#{path_in_locale}`
+            file = Pathname.new("config/locales#{path_in_locale}")
+            lines = file.readlines
+            lines.unshift("# Ejected from #{relative_path}\n\n")
+            file.write(lines.join)
           end
         end
       end

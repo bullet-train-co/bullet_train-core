@@ -1,0 +1,46 @@
+#!/usr/bin/env bash
+
+# TODO: Tests for the commented out gems are failing.
+packages=(
+  "bullet_train"
+  "bullet_train-api"
+  "bullet_train-fields"
+  "bullet_train-has_uuid"
+  "bullet_train-incoming_webhooks"
+  "bullet_train-integrations"
+  "bullet_train-integrations-stripe"
+  "bullet_train-obfuscates_id"
+  # "bullet_train-outgoing_webhooks"
+  # "bullet_train-roles"
+  "bullet_train-scope_questions"
+  "bullet_train-scope_validator"
+  "bullet_train-sortable"
+  "bullet_train-super_load_and_authorize_resource"
+  # "bullet_train-super_scaffolding"
+  "bullet_train-themes"
+  "bullet_train-themes-light"
+  "bullet_train-themes-tailwind_css"
+)
+
+FAILED_TESTS=()
+
+for ((i = 0; i < ${#packages[@]}; i++)); do
+  echo "#####################################################################"
+  echo ""
+  echo "Running tests for ${packages[$i]}"
+  echo ""
+  echo "#####################################################################"
+  bundle exec rails test local/bullet_train-core/${packages[$i]}
+
+  if [ $? == "1" ]; then
+    FAILED_TESTS+=("${packages[$i]}")
+  fi
+done
+
+if [ ${#FAILED_TESTS[@]} != "0" ]; then
+  echo "The following tests failed:"
+  for ((i = 0; i < ${#FAILED_TESTS[@]}; i++)); do
+    echo "${i}. ${FAILED_TESTS[$i]}"
+  done
+  exit 1
+fi

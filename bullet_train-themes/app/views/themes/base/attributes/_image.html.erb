@@ -4,4 +4,8 @@
 <% options ||= {} %>
 <% options[:height] ||= 200 %>
 
-<%= cloudinary_image_tag object.public_send(attribute), options %>
+<% if cloudinary_enabled? %>
+  <%= cloudinary_image_tag object.public_send(attribute), options %>
+<% else %>
+  <%= image_tag photo_url_for_active_storage_attachment(object.public_send(attribute), options) %>
+<% end %>

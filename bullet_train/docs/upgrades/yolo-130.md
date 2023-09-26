@@ -136,7 +136,7 @@ gem "bullet_train-themes-tailwind_css", BULLET_TRAIN_VERSION
 (We have to do this since we didn't start explicitly tracking versions until `1.4.0` and
 want to make sure that our gem versions match what the starter repo expects.)
 
-Then run `bundle update`
+Then run `bundle install`
 
 Then go ahead and commit the changes.
 
@@ -247,7 +247,7 @@ BULLET_TRAIN_VERSION = "1.3.1"
 (We have to do this since we didn't start explicitly tracking versions until `1.4.0` and
 want to make sure that our gem versions match what the starter repo expects.)
 
-Then run `bundle update`
+Then run `bundle install`
 
 Then go ahead and commit the changes.
 
@@ -272,7 +272,7 @@ If anything fails, investigate the failures and get things working again, and co
 git checkout main
 git merge updating-bullet-train-v1.3.1
 git push origin main
-git branch -d updating-bullet-train-v1.3.1`
+git branch -d updating-bullet-train-v1.3.1
 ```
 
-Alternatively, if you're using GitHub, you can push the `updating-bullet-train-v1.3.1` branch up and create a PR from it and let your CI integration do it's thing and then merge in the PR and delete the branch there. (That's what we typically do.)
+Alternatively, if you're using GitHub, you can push the `updating-bullet-train-v1.3.1` branch up and create a PR from it and let your CI integration do its thing and then merge in the PR and delete the branch there. (That's what we typically do.)

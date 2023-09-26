@@ -33,7 +33,7 @@
       color: #dde2ec;
       background: transparent;
       border: 0;
-      vertical-align: -7px;
+      overflow: visible;
       &:focus, &:active {
         i {
           color: var(--primary-500);
@@ -45,7 +45,7 @@
         display: none;
       }
       & + button.clear {
-        display: inline;
+        display: inline-block;
       }
     }
     &:focus, &:active {

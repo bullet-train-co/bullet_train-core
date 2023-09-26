@@ -110,13 +110,17 @@ module Account::Teams::ControllerBase
 
   # # DELETE /teams/1
   # # DELETE /teams/1.json
-  # def destroy
-  #   @team.destroy
-  #   respond_to do |format|
-  #     format.html { redirect_to account_teams_url, notice: 'Team was successfully destroyed.' }
-  #     format.json { head :no_content }
-  #   end
-  # end
+  def destroy
+    respond_to do |format|
+      raise RemovingLastTeamException if current_user.one_team?
+      @team.destroy
+      format.html { redirect_to account_teams_url, notice: t("account.teams.notifications.destroyed") }
+      format.json { head :no_content }
+    rescue RemovingLastTeamException => _
+      format.html { redirect_to edit_account_team_url(@team), alert: t("account.teams.notifications.cannot_delete_last_team") }
+      format.json { head :no_content }
+    end
+  end
 
   private
 

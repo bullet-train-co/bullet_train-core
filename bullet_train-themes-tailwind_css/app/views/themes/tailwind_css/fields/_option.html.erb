@@ -13,7 +13,7 @@ labels = labels_for(form, method) if form
 # 4. form.radio_button
 #
 # the `append_class` local can be used to append any other styles desired for the element.
-option_field_options[:class] ||= "focus:ring-blue h-4 w-4 text-blue border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if multiple || single_check_box}"
+option_field_options[:class] ||= "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if multiple || single_check_box}"
 option_field_options[:class] += " #{append_class}"
 %>
 
