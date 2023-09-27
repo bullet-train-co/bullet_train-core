@@ -47,6 +47,5 @@ Run the following command to generate the scaffolding for the `documents` field 
 If you're starting fresh, and don't have an existing model you can do something like this:
 
 ```
-rails g model Project team:references name:string specification:attachment documents:attachments
 bin/super-scaffold crud Project Team name:text_field specification:file_field documents:file_field{multiple}
 ```
