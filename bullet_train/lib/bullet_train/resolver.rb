@@ -54,6 +54,28 @@ module BulletTrain
                 end
               end
               `cat #{source_file[:absolute_path]} >> #{source_file[:project_path]}`.strip
+
+              # Look for showcase preview.
+              file_name = source_file[:absolute_path].split("/").last
+              showcase_partials = Dir.glob(`bundle show bullet_train-themes-light`.chomp + "/app/views/showcase/**/*.html.erb")
+              has_showcase_partial = false
+              showcase_partial = nil
+              showcase_partials.each do |partial|
+                has_showcase_preview = partial.match?(/#{file_name}$/)
+                if has_showcase_preview
+                  showcase_partial = partial
+                  break
+                end
+              end
+
+              if has_showcase_partial
+                puts "Ejecting showcase preview for #{source_file[:relative_path]}"
+                partial_relative_path = showcase_preview.scan(/(?=app\/views\/showcase).*/).last
+                directory = partial_relative_path.split("/")[0..-2].join("/")
+                FileUtils.mkdir_p(directory)
+                FileUtils.touch(partial_relative_path)
+                `cp #{showcase_preview} #{partial_relative_path}`
+              end
             end
 
             # Just in case they try to open the file, open it from the new location.
