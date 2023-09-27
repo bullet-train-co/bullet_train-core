@@ -8,6 +8,7 @@ module Webhooks::Outgoing::EndpointSupport
 
     has_many :deliveries, class_name: "Webhooks::Outgoing::Delivery", dependent: :destroy, foreign_key: :endpoint_id
     has_many :events, -> { distinct }, through: :deliveries
+    has_many :shared_secrets, class_name: "Webhooks::Outgoing::Endpoints::SharedSecret"
 
     scope :listening_for_event_type_id, ->(event_type_id) { where("event_type_ids @> ? OR event_type_ids = '[]'::jsonb", "\"#{event_type_id}\"") }
 
