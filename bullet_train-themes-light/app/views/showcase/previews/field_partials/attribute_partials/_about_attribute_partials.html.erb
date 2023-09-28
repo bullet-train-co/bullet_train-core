@@ -11,7 +11,5 @@
 <% showcase.options do |o| %>
   <% o.required :object, "Reference to the model object", type: "Object" %>
   <% o.required :attribute, "Attribute of the model" %>
-  <% if partial.options? %>
-    <%= partial.options.yield o %>
-  <% end %>
+  <%= partial.options.optional.yield o %>
 <% end %>
