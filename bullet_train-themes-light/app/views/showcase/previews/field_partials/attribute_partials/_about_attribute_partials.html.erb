@@ -4,9 +4,7 @@
   Read more about them and about the form field partials in the extensive <a href="https://bullettrain.co/docs/field-partials" target="_blank">developer documentation</a>.
 <% end %>
 
-<% if partial.body? %>
-  <%= partial.body.yield Scaffolding::CompletelyConcrete::TangibleThing.new %>
-<% end %>
+<%= partial.body.optional.yield Scaffolding::CompletelyConcrete::TangibleThing.new %>
 
 
 <%# To display further options use `showcase.options.x` as options with a block will clear the old options. See `_options.html.erb` for an example. %>
