@@ -82,7 +82,7 @@ For these situations, Bullet Train has a `dependent_fields_turbo_frame` partial 
 <%= render "shared/fields/dependent_fields_frame", 
   id: form.field_id(:heard_from, :dependent_fields),
   form: form,
-  dependable_fields: [:heard_from] %>
+  dependable_fields: [:heard_from] do %>
 
   <% if form.object&.heard_from == "other" %>
     <%# no need for a custom `id` or the `disabled` attribute %>
