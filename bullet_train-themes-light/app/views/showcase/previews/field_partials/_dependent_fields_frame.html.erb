@@ -8,7 +8,7 @@
   %>
 
   <% showcase.sample "Basic" do %>
-    <%# here we're wrapping a div to trap the `change` event %>
+    <%# here we're wrapping the field to trap the `change` event %>
     <%= tag.div data: {
         'controller': "dependable",
         'action': 'change->dependable#updateDependents',
