@@ -58,17 +58,8 @@ module BulletTrain
               # Look for showcase preview.
               file_name = source_file[:absolute_path].split("/").last
               showcase_partials = Dir.glob(`bundle show bullet_train-themes-light`.chomp + "/app/views/showcase/**/*.html.erb")
-              has_showcase_partial = false
-              showcase_partial = nil
-              showcase_partials.each do |partial|
-                has_showcase_preview = partial.match?(/#{file_name}$/)
-                if has_showcase_preview
-                  showcase_partial = partial
-                  break
-                end
-              end
-
-              if has_showcase_partial
+              showcase_preview = showcase_partials.find { _1.end_with?(file_name) }
+              if showcase_preview
                 puts "Ejecting showcase preview for #{source_file[:relative_path]}"
                 partial_relative_path = showcase_preview.scan(/(?=app\/views\/showcase).*/).last
                 directory = partial_relative_path.split("/")[0..-2].join("/")
