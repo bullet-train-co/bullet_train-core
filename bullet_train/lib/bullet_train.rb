@@ -9,6 +9,8 @@ require "bullet_train/super_load_and_authorize_resource"
 require "bullet_train/has_uuid"
 require "bullet_train/scope_validator"
 
+require "exceptions"
+
 require "colorizer"
 require "bullet_train/core_ext/string_emoji_helper"
 
