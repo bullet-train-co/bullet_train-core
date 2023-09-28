@@ -10,6 +10,8 @@ module Scaffolding
       "address_field",
       "boolean",
       "buttons",
+      # TODO: We're leaving cloudinary_image here for now for backwards compatibility.
+      # We should remove it in a future major update.
       "cloudinary_image",
       "color_picker",
       "date_and_time_field",
@@ -17,6 +19,7 @@ module Scaffolding
       "email_field",
       "emoji_field",
       "file_field",
+      "image",
       "number_field",
       "options",
       "password_field",

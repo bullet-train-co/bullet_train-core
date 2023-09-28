@@ -54,7 +54,7 @@ end
             <%= check_box_tag "#{html_options[:id]}-select_all", 'select-all', false, data: {
               "select-all-target": 'toggleCheckbox',
               'action': "select-all#selectAllOrNone"
-            }, class: "focus:ring-blue h-4 w-4 text-blue border-slate-300 rounded" %>
+            }, class: "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 rounded" %>
           </div>
           <div class="ml-2.5 text-sm pr-4">
             <%= t("global.bulk_select.all") %>

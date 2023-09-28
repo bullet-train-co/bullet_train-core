@@ -11,12 +11,16 @@ module BulletTrain
     def run(eject: false, open: false, force: false, interactive: false)
       # Try to figure out what kind of thing they're trying to look up.
       source_file = calculate_source_file_details
+      source_file[:relative_path] = nil
 
       if source_file[:absolute_path]
         puts ""
         puts "Absolute path:".green
         puts "  #{source_file[:absolute_path]}".green
         puts ""
+
+        source_file[:relative_path] = source_file[:absolute_path].split(/(?=#{source_file[:package_name]})/).pop
+
         if source_file[:package_name].present?
           puts "Package name:".green
           puts "  #{source_file[:package_name]}".green
@@ -44,12 +48,34 @@ module BulletTrain
               File.open((source_file[:project_path]).to_s, "w+") do |file|
                 case source_file[:project_path].split(".").last
                 when "rb", "yml"
-                  file.puts "# Ejected from `#{source_file[:package_name]}`.\n\n"
+                  file.puts "# Ejected from `#{source_file[:relative_path] || source_file[:package_name]}`.\n\n"
                 when "erb"
-                  file.puts "<% # Ejected from `#{source_file[:package_name]}`. %>\n\n"
+                  file.puts "<% # Ejected from `#{source_file[:relative_path] || source_file[:package_name]}`. %>\n\n"
                 end
               end
               `cat #{source_file[:absolute_path]} >> #{source_file[:project_path]}`.strip
+
+              # Look for showcase preview.
+              file_name = source_file[:absolute_path].split("/").last
+              showcase_partials = Dir.glob(`bundle show bullet_train-themes-light`.chomp + "/app/views/showcase/**/*.html.erb")
+              has_showcase_partial = false
+              showcase_partial = nil
+              showcase_partials.each do |partial|
+                has_showcase_preview = partial.match?(/#{file_name}$/)
+                if has_showcase_preview
+                  showcase_partial = partial
+                  break
+                end
+              end
+
+              if has_showcase_partial
+                puts "Ejecting showcase preview for #{source_file[:relative_path]}"
+                partial_relative_path = showcase_preview.scan(/(?=app\/views\/showcase).*/).last
+                directory = partial_relative_path.split("/")[0..-2].join("/")
+                FileUtils.mkdir_p(directory)
+                FileUtils.touch(partial_relative_path)
+                `cp #{showcase_preview} #{partial_relative_path}`
+              end
             end
 
             # Just in case they try to open the file, open it from the new location.

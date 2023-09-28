@@ -1,0 +1,56 @@
+<%# TODO: This is mostly just copy pasta from the field_field partial.
+  # Should we just try to make that partial aware of images?
+  # If not, should we make a new dedicated stimulus controler for this partial,
+  # instead of hijacking the "fields--file-field" controller?
+%>
+<%
+form ||= current_fields_form
+options ||= {}
+other_options ||= {}
+multiple ||= false
+persisted_files = multiple ? form.object.send(method) : [form.object.send(method)]
+
+options[:width] ||= 100
+options[:height] ||= 100
+
+# options[:resize_to_limit] ||= [options[:width], options[:height]]
+%>
+
+<%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do %>
+  <% content_for :field do %>
+    <div class="file-field" data-controller="fields--file-field">
+      <%= form.file_field method, class: 'file-upload hidden', multiple: multiple, direct_upload: true, data: {'fields--file-field-target': 'fileField', action: 'change->fields--file-field#handleFileSelected'} %>
+      <div>
+        <% if form.object.send(method).attached? %>
+          <div class="divide-y-2 divide-dashed">
+            <% persisted_files.each do |file| %>
+              <div data-controller="fields--file-item" data-fields--file-item-id-value="<%= file.id %>">
+                <%= form.hidden_field "#{method}_removal".to_sym, multiple: multiple, value: nil, data: {'fields--file-item-target': 'removeFileFlag'} %>
+                <%= image_tag photo_url_for_active_storage_attachment(file, options), class: 'mb-1.5', data: {'fields--file-item-target': "fileName"} %>
+
+                <%= link_to url_for(file), class: 'button download-file mr-3', data: {'fields--file-item-target': 'downloadFileButton'} do %>
+                  <i class="leading-none mr-2 text-base ti ti-download"></i>
+                  <span><%= t('fields.download_image') %></span>
+                <% end %>
+                <div class="button-alternative cursor-pointer mr-3" data-action="click->fields--file-item#removeFile" data-fields--file-item-target="removeFileButton">
+                  <i class="leading-none mr-2 text-base ti ti-trash"></i>
+                  <span><%= t('fields.remove_image') %></span>
+                </div>
+              </div>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+      <div class="mt-2">
+        <div class="button-alternative cursor-pointer" data-action="click->fields--file-field#uploadFile" data-fields--file-field-target="selectFileButton">
+          <i class="leading-none mr-2 text-base ti ti-upload dark:text-white"></i>
+          <span class="dark:text-white"><%= t('fields.upload_image') %></span>
+        </div>
+        <div class="mt-2 hidden overflow-hidden text-xs rounded bg-slate-100 shadow-inner relative">
+          <div data-fields--file-field-target="progressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="absolute top-0 left-0 whitespace-nowrap overflow-hidden animate-pulse bg-primary-500 dark:bg-slate-800 rounded" role="progressbar" style="width: 0%;">&nbsp;</div>
+          <div class="text-black text-center" data-fields--file-field-target="progressLabel">0%</div>
+        </div>
+      </div>
+    </div>
+  <% end %>
+<% end %>
