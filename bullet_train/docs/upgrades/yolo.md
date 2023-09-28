@@ -58,7 +58,7 @@ generate a new one that matches what you need:
 
 ```
 git checkout HEAD -- Gemfile.lock
-bundle update
+bundle install
 ```
 
 If you choose to sort out `Gemfile.lock` by hand it's a good idea to run `bundle install` just to make
