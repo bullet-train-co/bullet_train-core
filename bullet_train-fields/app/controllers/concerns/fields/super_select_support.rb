@@ -26,4 +26,34 @@ module Fields::SuperSelectSupport
       end
     end
   end
+
+  def create_model_if_string(id_or_string)
+    return id_or_string unless id_or_string.present?
+
+    if /^\d+$/.match?(id_or_string)
+      id_or_string
+    else
+      yield(id_or_string).id.to_s
+    end
+  end
+
+  def filter_valid_id_and_create_model_if_string(id_or_string, collection: [], attribute: :id)
+    return id_or_string unless id_or_string.present?
+
+    id = create_model_if_string(id_or_string) do |string|
+      yield(string)
+    end
+
+    collection.valid_attribute_values([id], attribute: attribute).first
+  end
+
+  def filter_valid_ids_and_create_model_if_string(ids_or_strings, collection: [], attribute: :id)
+    ids = ids_or_strings.map do |id_or_string|
+      create_model_if_string(id_or_string) do |string|
+        yield(string)
+      end
+    end
+    collection.valid_attribute_values([ids], attribute: attribute).first
+  end
+
 end
