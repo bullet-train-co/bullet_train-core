@@ -18,6 +18,19 @@ Then you should:
 * Commit the updated test files
 * Update to v1.5.0
 
+### Dealing with merge conflicts after merging v1.5.0
+
+When you update to 1.5.0 you may have rather large merge conflicts in some system test files,
+especially if you've modified those files to accomodate changes to user flows in your own app.
+
+When you're resolving conflicts you'll mostly want to pick your own version of stuff (that is,
+the code on the `HEAD` side of the conflict). If you want to avoid manually sorting a conflict
+and just preserve your own version of a file you can do something like this:
+
+```
+git checkout HEAD -- test/system/the_test_file_in_question.rb
+```
+
 ### About this change
 
 We've introduced a new `device_test` helper that wraps up some of the implementation
