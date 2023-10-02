@@ -129,7 +129,7 @@ module Api
           schema_part = value.split("#/components/schemas/").last
 
           # Capitalize each part and join them
-          capitalized_schema = schema_part.split('/').map(&:capitalize).join
+          capitalized_schema = schema_part.split("/").map(&:capitalize).join
 
           # Update the value
           hash[key] = "#/components/schemas/#{capitalized_schema}Attributes"
