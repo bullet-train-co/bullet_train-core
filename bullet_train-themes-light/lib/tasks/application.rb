@@ -54,17 +54,8 @@ module BulletTrain
 
             # Look for showcase preview.
             file_name = target_file_or_directory.split("/").last
-            has_showcase_preview = false
-            showcase_preview = nil
-            showcase_partials.each do |partial|
-              has_showcase_preview = partial.match?(/#{file_name}$/)
-              if has_showcase_preview
-                showcase_preview = partial
-                break
-              end
-            end
-
-            if has_showcase_preview
+            showcase_preview = showcase_partials.find { _1.end_with?(file_name) }
+            if showcase_preview
               puts "Ejecting showcase preview for #{target_file_or_directory}"
               partial_relative_path = showcase_preview.scan(/(?=app\/views\/showcase).*/).last
               directory = partial_relative_path.split("/")[0..-2].join("/")
