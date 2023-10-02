@@ -54,6 +54,10 @@ module Records::Base
     def label_attribute
       columns_hash.values.find { |column| column.sql_type_metadata.type == :string }&.name
     end
+
+    def valid_attribute_values(values, attribute: :id)
+      where(attribute => values).pluck(attribute)
+    end
   end
 
   # this is a template method you can override in activerecord models if we shouldn't just use their first string to
