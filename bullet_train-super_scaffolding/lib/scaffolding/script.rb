@@ -121,6 +121,7 @@ elsif ARGV.first.present?
     puts "Bullet Train uses the following field partials for Super Scaffolding".blue
     puts ""
     field_partials = {
+      address_field: "string",
       boolean: "boolean",
       buttons: "string",
       cloudinary_image: "string",
