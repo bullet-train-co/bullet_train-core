@@ -129,10 +129,10 @@ module Api
           schema_part = value.split("#/components/schemas/").last
 
           # Capitalize each part and join them
-          capitalized_schema = schema_part.split("/").map(&:capitalize).join
+          camelized_schema = schema_part.split("/").map(&:camelize).join
 
           # Update the value
-          hash[key] = "#/components/schemas/#{capitalized_schema}Attributes"
+          hash[key] = "#/components/schemas/#{camelized_schema}Attributes"
         elsif value.is_a?(Hash)
           # Recursively call the method for nested hashes
           update_ref_values!(value)
