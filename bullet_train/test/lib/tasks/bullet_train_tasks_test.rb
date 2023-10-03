@@ -3,6 +3,7 @@ require "rake"
 Rails.application.load_tasks
 
 module BulletTrain::Tasks; end
+
 class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
   test "resolves the path when passed BEGIN absolute path from annotated view" do
     mock_stdin_with [
@@ -10,7 +11,7 @@ class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
       "n", # Would you like to eject the file into the local project? (y/n):
       "n" # Would you like to open `#{source_file[:absolute_path]}`? (y/n):
     ] do
-      assert_output /Absolute path:/ do
+      assert_output(/Absolute path:/) do
         Rake::Task["bullet_train:resolve"].invoke("--interactive")
         Rake::Task["bullet_train:resolve"].reenable
       end
@@ -23,7 +24,7 @@ class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
       "n", # Would you like to eject the file into the local project? (y/n):
       "n" # Would you like to open `#{source_file[:absolute_path]}`? (y/n):
     ] do
-      assert_output /Absolute path:/ do
+      assert_output(/Absolute path:/) do
         Rake::Task["bullet_train:resolve"].invoke("--interactive")
         Rake::Task["bullet_train:resolve"].reenable
       end
@@ -34,7 +35,8 @@ class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
 
   def mock_stdin_with(inputs)
     old_stdin, $stdin = $stdin, StringIO.new(inputs.join("\n"))
-    def $stdin.ready? = false # StringIO doens't have `IO#ready?`, so we stub a method on the singleton.
+    # StringIO doens't have `IO#ready?`, so we stub a method on the singleton.
+    $stdin.define_singleton_method(:ready?) { false }
     yield
   ensure
     $stdin = old_stdin
