@@ -11,5 +11,8 @@ gem "sprockets-rails"
 gem "bullet_train"
 gem "bullet_train-api"
 
+gem "masamune-ast" # TODO: Remove the bullet_train.gemspec dependency to super_scaffolding's gemspec.
+gem "pry" # TODO: Remove masumune's internal `require "pry"` call.
+
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
