@@ -1,4 +1,4 @@
-module RefreshFieldsHelper
+module DependentFieldsFrameHelper
   def accept_query_string_override_for(form, method)
     field_name = form.field_name(method)
 

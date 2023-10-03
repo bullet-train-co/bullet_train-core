@@ -1,0 +1,15 @@
+<% showcase.description do %>
+  Attribute partials are used to display a single attribute of a model, within an `index` table colum or the resource's `show` screen.
+
+  Read more about them and about the form field partials in the extensive <a href="https://bullettrain.co/docs/field-partials" target="_blank">developer documentation</a>.
+<% end %>
+
+<%= partial.body.optional.yield Scaffolding::CompletelyConcrete::TangibleThing.new %>
+
+
+<%# To display further options use `showcase.options.x` as options with a block will clear the old options. See `_options.html.erb` for an example. %>
+<% showcase.options do |o| %>
+  <% o.required :object, "Reference to the model object", type: "Object" %>
+  <% o.required :attribute, "Attribute of the model" %>
+  <%= partial.options.optional.yield o %>
+<% end %>

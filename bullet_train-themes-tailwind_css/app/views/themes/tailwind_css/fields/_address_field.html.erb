@@ -4,15 +4,11 @@
 form ||= current_fields_form
 options ||= {}
 other_options ||= {}
-id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
 %>
 
 <%= form.fields_for(method) do |address_form| %>
   <% with_field_settings form: address_form do %>
   
-    <% # For self-updating the fields in the turbo_frame further down %>
-    <% accept_query_string_override_for(address_form, :country_id) %>
-    
     <%= render 'shared/fields/super_select',
       method: :country_id,
       choices: populate_country_options,
@@ -23,7 +19,7 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
         data: {
           'controller': "dependable",
           'action': '$change->dependable#updateDependents',
-          'dependable-dependents-selector-value': "##{id_of_dependent_fields_frame}"
+          'dependable-dependents-selector-value': "##{form.field_id(:country, :dependent_fields)}"
         }
       }
     %>
@@ -38,13 +34,11 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
         %>
       </div>
       <div class="sm:col-span-2">
-        <%= turbo_frame_tag id_of_dependent_fields_frame,
-          class: "block space-y-5",
-          data: { 
-            'controller': "refresh-fields",
-            'action': "dependable:updated->refresh-fields#updateFrameFromDependentField turbo:frame-render->refresh-fields#finishFrameUpdate",
-            'refresh-fields-loading-class': 'opacity-60'
-          } do
+        <%= render "shared/fields/dependent_fields_frame", 
+          id: form.field_id(:country, :dependent_fields),
+          form: address_form,
+          dependable_fields: [:country_id],
+          html_options: { class: "block space-y-5" } do |dependent_fields_controller_name|
         %>
         
           <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
@@ -61,7 +55,7 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
                 html_options: {
                   disabled: address_form.object.country_id.nil?,
                   data: {
-                    "refresh-fields-target": "field"
+                    "#{dependent_fields_controller_name}-target": "field"
                   }
                 }
               %>
@@ -71,7 +65,7 @@ id_of_dependent_fields_frame = form.field_id(method, :dependent_fields)
               <%= render 'shared/fields/text_field', method: :postal_code,
                 options: {
                   data: {
-                    "refresh-fields-target": "field"
+                    "#{dependent_fields_controller_name}-target": "field"
                   }
                 },
                 other_options: {

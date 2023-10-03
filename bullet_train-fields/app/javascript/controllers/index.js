@@ -12,7 +12,7 @@ import PasswordController from './fields/password_controller'
 import PhoneController from './fields/phone_controller'
 import SuperSelectController from './fields/super_select_controller'
 import DependableController from './dependable_controller'
-import RefreshFieldsController from './refresh_fields_controller'
+import DependentFieldsFrameController from './dependent_fields_frame_controller'
 
 export const controllerDefinitions = [
   [FieldController, 'fields/field_controller.js'],
@@ -27,7 +27,7 @@ export const controllerDefinitions = [
   [PhoneController, 'fields/phone_controller.js'],
   [SuperSelectController, 'fields/super_select_controller.js'],
   [DependableController, 'dependable_controller.js'],
-  [RefreshFieldsController, 'refresh_fields_controller.js'],
+  [DependentFieldsFrameController, 'dependent_fields_frame_controller.js'],
 ].map(function(d) {
   const key = d[1]
   const controller = d[0]
@@ -50,5 +50,5 @@ export {
   PhoneController,
   SuperSelectController,
   DependableController,
-  RefreshFieldsController,
+  DependentFieldsFrameController,
 }
