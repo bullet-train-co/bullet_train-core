@@ -23,9 +23,9 @@ multiple ||= false
         <% checked = form.object.send(method).is_a?(Array) ? form.object.send(method).map(&:to_s).include?(value.to_s) : form.object.send(method).to_s == value.to_s  %>
         <label class="btn-toggle" data-controller="<%= stimulus_controller %>">
           <% if multiple %>
-            <%= form.check_box method, {multiple: multiple, checked: checked, data: { "#{stimulus_controller}-target": 'shadowField' }, **options}, value, "" %>
+            <%= form.check_box method, {multiple: multiple, checked: checked, data: { "#{stimulus_controller}-target": 'shadowField' }, **options.except(:id)}, value, "" %>
           <% else %>
-            <%= form.radio_button method, value, { data: { "#{stimulus_controller}-target": 'shadowField' }, checked: checked, **options} %>
+            <%= form.radio_button method, value, { data: { "#{stimulus_controller}-target": 'shadowField' }, checked: checked, **options.except(:id)} %>
           <% end %>
           <button type="button" class="button-alternative mb-1.5 mr-1" data-action="<%= stimulus_controller %>#clickShadowField">
             <%= label %>
