@@ -8,7 +8,9 @@ options ||= {}
 other_options ||= {}
 button_field_options ||= options_for(form, method)
 
-options.merge!(html_options) # For backwards compatibility.
+# For backwards compatibility.
+options.merge!(html_options)if options.is_a?(Hash)
+
 options[:id] ||= form.field_id(method)
 
 multiple ||= false
