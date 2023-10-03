@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.5.1)
+    bullet_train-themes (1.5.2)
       rails (>= 6.0.0)
 
 GEM
