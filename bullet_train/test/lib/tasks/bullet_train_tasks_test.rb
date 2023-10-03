@@ -4,16 +4,8 @@ Rails.application.load_tasks
 
 module BulletTrain::Tasks; end
 class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
-  setup do
-    @original_stdin = $stdin
-    @original_stdout = $stdout
-    $stdout = StringIO.new
-  end
-
-  teardown do
-    $stdin = @original_stdin
-    $stdout = @original_stdout
-  end
+  setup { @original_stdin = $stdin }
+  teardown { $stdin = @original_stdin }
 
   test "resolves the path when passed BEGIN absolute path from annotated view" do
     inputs = [
@@ -25,11 +17,10 @@ class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
     stdin_mock.define_singleton_method(:ready?) { false }
     $stdin = stdin_mock
 
-    Rake::Task["bullet_train:resolve"].invoke("--interactive")
-    Rake::Task["bullet_train:resolve"].reenable
-
-    output = $stdout.string
-    assert output.include?("Absolute path:")
+    assert_output /Absolute path:/ do
+      Rake::Task["bullet_train:resolve"].invoke("--interactive")
+      Rake::Task["bullet_train:resolve"].reenable
+    end
   end
 
   test "resolves the path when passed END absolute path from annotated view" do
@@ -42,10 +33,9 @@ class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
     stdin_mock.define_singleton_method(:ready?) { false }
     $stdin = stdin_mock
 
-    Rake::Task["bullet_train:resolve"].invoke("--interactive")
-    Rake::Task["bullet_train:resolve"].reenable
-
-    output = $stdout.string
-    assert output.include?("Absolute path:")
+    assert_output /Absolute path:/ do
+      Rake::Task["bullet_train:resolve"].invoke("--interactive")
+      Rake::Task["bullet_train:resolve"].reenable
+    end
   end
 end
