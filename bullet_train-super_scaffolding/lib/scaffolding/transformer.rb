@@ -102,7 +102,7 @@ class Scaffolding::Transformer
       "absolutely_abstract/creative_concepts",
       "completely_concrete/tangible_things",
       "absolutely-abstract-creative-concepts",
-      "completely-concrete-tangible-things",
+      "completely-concrete-tangible-things"
     ]
 
     class_name = [
@@ -115,7 +115,7 @@ class Scaffolding::Transformer
       "Creative concepts",
       "Tangible things",
       "creative concepts",
-      "tangible things",
+      "tangible things"
     ]
 
     (

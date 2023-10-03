@@ -3,6 +3,7 @@ require "scaffolding/routes_file_manipulator"
 
 class Scaffolding::RoutesFileManipulatorTest < ActiveSupport::TestCase
   def subject = Scaffolding::RoutesFileManipulator
+
   def example_file = "test/lib/scaffolding/examples/example._rb"
 
   test "initializes" do

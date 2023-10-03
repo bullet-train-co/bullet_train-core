@@ -24,11 +24,11 @@ class Scaffolding::BlockManipulatorTest < ActiveSupport::TestCase
   test "inserts within a block and after the given location" do
     lines = write_source <<~INITIAL
 
-        <% test_block do %>
-          <p>with some content</p>
-        <% end %>
+      <% test_block do %>
+        <p>with some content</p>
+      <% end %>
 
-      INITIAL
+    INITIAL
 
     new_lines = Scaffolding::BlockManipulator.insert("a new string", within: "<% test_block", after: "<p>", lines: lines)
     Scaffolding::FileManipulator.write(path, new_lines, strip: false)
