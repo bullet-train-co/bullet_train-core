@@ -7,6 +7,6 @@ class LoadsAndAuthorizeResourceTest < ActiveSupport::TestCase
 
   test "includes BulletTrain::LoadsAndAuthorizesResource" do
     assert TestClass.ancestors.include? BulletTrain::LoadsAndAuthorizesResource
-    assert TestClass.respond_to?(:account_load_and_authorize_resource)
+    assert_respond_to TestClass, :account_load_and_authorize_resource
   end
 end
