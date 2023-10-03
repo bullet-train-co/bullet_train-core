@@ -173,6 +173,8 @@ Before doing this you should have already followed the instructions above to get
 
 For purposes of this example we'll assume that you're stepping up from `1.3.0` to `1.3.1`.
 
+[Be sure to check our Notable Versions list to see if there's anything tricky about the version you're moving to.](/docs/upgrades/notable-versions)
+
 ### 1. Make sure you're working with a clean local copy.
 
 ```

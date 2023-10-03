@@ -36,6 +36,8 @@ your application.
 
 For the purposes of these instructions we'll assume that you're on version `1.4.0` and are going to upgrade to version `1.4.1`.
 
+[Be sure to check our Notable Versions list to see if there's anything tricky about the version you're moving to.](/docs/upgrades/notable-versions)
+
 ### 2. Make sure you're working with a clean local copy.
 
 ```
@@ -85,7 +87,7 @@ generate a new one that matches what you need:
 
 ```
 git checkout HEAD -- Gemfile.lock
-bundle update
+bundle install
 ```
 
 If you choose to sort out `Gemfile.lock` by hand it's a good idea to run `bundle install` just to make

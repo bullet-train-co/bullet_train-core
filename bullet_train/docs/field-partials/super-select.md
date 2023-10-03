@@ -144,3 +144,12 @@ You can pass these options to the super select partial like so:
 ```
 
 *Passing options like this doesn't allow JS callbacks or functions to be used, so you must extend the Stimulus controller and add options to the `optionsOverride` getter if you want to do so.
+
+## Dynamically Updating Form Fields
+
+If you'd like to:
+
+* modify other fields based on the value of your `super_select`, or
+* modify your `super_select` based on the value of other fields
+
+See [Dynamic Forms and Dependent Fields](/docs/field-partials/dynamic-forms-dependent-fields.md).

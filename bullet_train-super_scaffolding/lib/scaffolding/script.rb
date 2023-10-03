@@ -8,6 +8,7 @@ require "scaffolding/routes_file_manipulator"
 require_relative "../bullet_train/terminal_commands"
 
 FIELD_PARTIALS = {
+  address_field: "string",
   boolean: "boolean",
   buttons: "string",
   cloudinary_image: "string",

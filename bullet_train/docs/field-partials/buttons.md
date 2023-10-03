@@ -40,3 +40,12 @@ You can allow multiple buttons to be selected using the `multiple` option, like 
 <%= render 'shared/fields/buttons', form: form, method: :category_ids,
   options: Category.all.map { |category| [category.id, category.label_string] }, multiple: true %>
 ```
+
+## Dynamically Updating Form Fields
+
+If you'd like to:
+
+* modify other fields based on the value of your `buttons` field, or
+* modify your `buttons` field based on the value of other fields
+
+See [Dynamic Forms and Dependent Fields](/docs/field-partials/dynamic-forms-dependent-fields.md).

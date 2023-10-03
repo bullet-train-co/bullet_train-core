@@ -36,6 +36,8 @@ module BulletTrain
           "bullet_train-themes-light" => "light"
         }.each do |gem, theme_name|
           gem_path = `bundle show --paths #{gem}`.chomp
+          showcase_partials = Dir.glob("#{gem_path}/app/views/showcase/**/*.html.erb")
+
           `find #{gem_path}/app/views/themes`.lines.map(&:chomp).each do |file_or_directory|
             target_file_or_directory = file_or_directory.gsub(gem_path, "").gsub("/#{theme_name}", "/#{ejected_theme_name}")
             target_file_or_directory = Rails.root.to_s + target_file_or_directory
@@ -48,6 +50,19 @@ module BulletTrain
               `cp #{file_or_directory} #{target_file_or_directory}`
               gem_with_version = gem_path.split("/").last
               new_files[target_file_or_directory] = file_or_directory.split(/(?=#{gem_with_version})/).last
+            end
+
+            # Look for showcase preview.
+            file_name = target_file_or_directory.split("/").last
+            showcase_preview = showcase_partials.find { _1.end_with?(file_name) }
+            if showcase_preview
+              puts "Ejecting showcase preview for #{target_file_or_directory}"
+              partial_relative_path = showcase_preview.scan(/(?=app\/views\/showcase).*/).last
+              directory = partial_relative_path.split("/")[0..-2].join("/")
+              FileUtils.mkdir_p(directory)
+              FileUtils.touch(partial_relative_path)
+              `cp #{showcase_preview} #{partial_relative_path}`
+              new_files[partial_relative_path] = showcase_preview
             end
           end
         end
