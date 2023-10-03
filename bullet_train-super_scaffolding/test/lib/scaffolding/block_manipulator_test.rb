@@ -1,9 +1,7 @@
 require "test_helper"
-require "minitest/spec"
-
 require "scaffolding/block_manipulator"
 
-describe Scaffolding::BlockManipulator do
+class Scaffolding::BlockManipulatorTest < ActiveSupport::TestCase
   file_path = "./test/lib/scaffolding/examples/block_manipulator_data.html.erb"
   initial_file_contents =
     <<~INITIAL
@@ -13,15 +11,15 @@ describe Scaffolding::BlockManipulator do
       <% end %>
     INITIAL
 
-  after :all do
+  teardown do
     File.write(file_path, initial_file_contents)
   end
 
-  def initialize_demo_file file_path, data = nil
+  private def initialize_demo_file(file_path, data = nil)
     File.write(file_path, data)
   end
 
-  it "inserts within a block and after the given location" do
+  test "inserts within a block and after the given location" do
     initial_data =
       <<~INITIAL
 
@@ -45,10 +43,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
-  it "inserts multiple lines within a block using the proper indentation" do
+
+  test "inserts multiple lines within a block using the proper indentation" do
     initial_data =
       <<~INITIAL
         <% test_block do %>
@@ -69,11 +68,11 @@ describe Scaffolding::BlockManipulator do
           third
         <% end %>
       RESULT
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "inserts multiple lines within a block when using a heredoc" do
+  test "inserts multiple lines within a block when using a heredoc" do
     initial_data =
       <<~INITIAL
         <% test_block do %>
@@ -99,11 +98,11 @@ describe Scaffolding::BlockManipulator do
           third
         <% end %>
       RESULT
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "inserts into an empty block" do
+  test "inserts into an empty block" do
     initial_data =
       <<~INITIAL
 
@@ -129,11 +128,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       EXPECTED
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "inserts content after the given block" do
+  test "inserts content after the given block" do
     initial_data =
       <<~INITIAL
 
@@ -159,11 +158,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       EXPECTED
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "appends a line after the block" do
+  test "appends a line after the block" do
     initial_data =
       <<~DATA
 
@@ -185,11 +184,11 @@ describe Scaffolding::BlockManipulator do
         This is a new line
 
       RESULT
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "inserts within an if statement" do
+  test "inserts within an if statement" do
     initial_data =
       <<~INITIAL
 
@@ -213,11 +212,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "inserts a new block then adds a line to it" do
+  test "inserts a new block then adds a line to it" do
     initial_data =
       <<~INITIAL
 
@@ -246,11 +245,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       EXPECTED
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "wraps a block with a new block" do
+  test "wraps a block with a new block" do
     initial_data =
       <<~DATA
 
@@ -273,11 +272,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "wraps a nested block" do
+  test "wraps a nested block" do
     initial_data =
       <<~INITIAL
 
@@ -304,11 +303,11 @@ describe Scaffolding::BlockManipulator do
         <% end %>
 
       RESULT
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
-  it "unwraps a nested block" do
+  test "unwraps a nested block" do
     initial_data =
       <<~INITIAL
 
@@ -333,12 +332,12 @@ describe Scaffolding::BlockManipulator do
 
       RESULT
 
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result
   end
 
   # Using an Array instead of a Heredoc to get the test the proper spacing.
-  it "shifts a block's contents to the left" do
+  test "shifts a block's contents to the left" do
     initial_data =
       [
         "block_with_contents do\n",
@@ -363,12 +362,12 @@ describe Scaffolding::BlockManipulator do
         "end\n"
       ]
 
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result.join)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result.join
   end
 
   # Using an Array instead of a Heredoc to get the test the proper spacing.
-  it "shifts a block's contents to the right" do
+  test "shifts a block's contents to the right" do
     initial_data =
       [
         "block_with_contents do\n",
@@ -394,7 +393,7 @@ describe Scaffolding::BlockManipulator do
         "end\n"
       ]
 
-    assert_equal(File.readlines(file_path), new_lines)
-    assert_equal(File.read(file_path), expected_result.join)
+    assert_equal File.readlines(file_path), new_lines
+    assert_equal File.read(file_path), expected_result.join
   end
 end
