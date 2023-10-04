@@ -8,7 +8,7 @@ export default class extends Controller {
   }
   static classes = [ "loading" ]
   
-  updateFrameFromDependentField(event) {
+  updateFrameFromDependableField(event) {
     const field = event?.detail?.event?.detail?.event?.target || // super select nests its original jQuery event, contains <select> target
                   event?.detail?.event?.target || // dependable_controller will include the original event in detail
                   event?.target // maybe it was fired straight from the field

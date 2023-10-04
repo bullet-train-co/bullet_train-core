@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.5.1)
+    bullet_train (1.5.2)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -28,7 +28,6 @@ PATH
       hiredis
       http_accept_language
       image_processing
-      masamune-ast (>= 1.2.0)
       microscope
       nice_partials (~> 0.9)
       pagy
@@ -120,24 +119,24 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.5.0)
+    bullet_train-fields (1.5.1)
       chronic
       cloudinary
       phonelib
       rails (>= 6.0.0)
-    bullet_train-has_uuid (1.5.0)
+    bullet_train-has_uuid (1.5.1)
       rails (>= 6.0.0)
-    bullet_train-roles (1.5.0)
+    bullet_train-roles (1.5.1)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.5.0)
-    bullet_train-super_load_and_authorize_resource (1.5.0)
+    bullet_train-scope_validator (1.5.1)
+    bullet_train-super_load_and_authorize_resource (1.5.1)
       cancancan
       rails (>= 6.0.0)
-    bullet_train-themes (1.5.0)
+    bullet_train-themes (1.5.1)
       rails (>= 6.0.0)
     cable_ready (5.0.1)
       actionpack (>= 5.2)
@@ -217,8 +216,6 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
-    masamune-ast (1.2.0)
-      activesupport
     method_source (1.0.0)
     microscope (1.1.1)
       activerecord (>= 4.1.0)
@@ -395,4 +392,4 @@ DEPENDENCIES
   standard
 
 BUNDLED WITH
-   2.3.8
+   2.4.20

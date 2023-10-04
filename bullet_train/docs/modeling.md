@@ -68,7 +68,7 @@ Even if you know there's an attribute or model that you're going to want to poli
 
 ## A Systematic Approach
 
-### 1. Write `rails g` and `bin/super-scaffold` commands in a scratch file.
+### 1. Write `bin/super-scaffold` commands in a scratch file.
 
 See the [Super Scaffolding documentation](/docs/super-scaffolding.md) for more specific guidance. Leave plenty of comments in your scratch file describing anything that isn't obvious and providing examples of values that might populate attributes.
 

@@ -167,6 +167,8 @@ class Scaffolding::Attribute
       "text"
     when "number_field"
       "number"
+    when "address_field"
+      "address"
     else
       raise "Invalid field type: #{type}."
     end

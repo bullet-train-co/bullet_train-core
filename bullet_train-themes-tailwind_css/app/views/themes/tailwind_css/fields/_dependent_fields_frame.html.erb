@@ -1,0 +1,21 @@
+<%
+  stimulus_controller = "dependent-fields-frame"
+  html_options ||= {}
+  html_options[:data] ||= {}
+  html_options[:data][:controller] ||= ""
+  html_options[:data][:controller] += " #{stimulus_controller}"
+  html_options[:data][:action] ||= ""
+  html_options[:data][:action] += " dependable:updated->#{stimulus_controller}#updateFrameFromDependableField turbo:frame-render->#{stimulus_controller}#finishFrameUpdate"
+  html_options[:data]["#{stimulus_controller}-loading-class"] ||= "opacity-60"
+
+  dependable_fields ||= []
+%>
+<%= turbo_frame_tag id, **html_options do %>
+  <%
+    dependable_fields.each do |method|
+      accept_query_string_override_for(form, method)
+    end
+  %>
+
+  <%= yield stimulus_controller %>
+<% end %>

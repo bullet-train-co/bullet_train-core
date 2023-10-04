@@ -1,0 +1,45 @@
+<% showcase.description do %>
+  Follows the <a href="/docs/field-partials/dynamic-forms-dependent-fields.md" target="_blank">Dependent Fields Pattern (See developer documentation)</a> to display form fields that depend on the value of another field.
+<% end %>
+
+<% form_with model: Scaffolding::CompletelyConcrete::TangibleThing.new, url: "#" do |form| %>
+  <%
+    form.object.boolean_button_value = false
+  %>
+
+  <% showcase.sample "Basic" do %>
+    <%# here we're wrapping the field to trap the `change` event %>
+    <%= tag.div data: {
+        'controller': "dependable",
+        'action': 'change->dependable#updateDependents',
+        'dependable-dependents-selector-value': "##{form.field_id(:button, :dependent_fields)}"
+      } do %>
+      <%= render "shared/fields/buttons",
+        form: form,
+        method: :boolean_button_value,
+        other_options: { label: "Should I present more fields?" } %>
+    <% end %>
+    
+    <%= render "shared/fields/dependent_fields_frame",
+        id: form.field_id(:button, :dependent_fields),
+        form: form,
+        dependable_fields: [:boolean_button_value] do %>
+
+      <div class="my-3">
+        <% if form.object.boolean_button_value %>
+          <strong>More fields would be shown here.</strong>
+        <% else %>
+          <em>No fields should be shown here.</em>
+        <% end %>
+      </div>
+
+    <% end %>
+  <% end %>
+<% end %>
+
+<%# To display further options use `showcase.options.x` as options with a block will clear the old options. See `_options.html.erb` for an example. %>
+<% showcase.options do |o| %>
+  <% o.required :id, "id of the turbo_frame element" %>
+  <% o.required :form, "Reference to the form object", type: "ActionView::Helpers::FormBuilder" %>
+  <% o.required :dependable_fields, "Attributes of the model for the fields on whose values this frame depends", type: "Array" %>
+<% end %>

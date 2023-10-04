@@ -51,6 +51,11 @@ module BulletTrain
             end
           end
 
+          # get all the attributes.
+          attributes = argv[2..]
+
+          check_required_options_for_attributes("crud", attributes, child, parent)
+
           # `tr` here compensates for namespaced models (i.e. - `Projects::Deliverable` to `projects/deliverable`).
           parent_reference = parent_without_namespace.tableize.singularize.tr("/", "_")
           tableized_child = child.tableize.tr("/", "_")
@@ -81,11 +86,6 @@ module BulletTrain
               "rails g model Section page:references title:text body:text\n" \
               "bin/super-scaffold crud Section Page,Site,Team title:text body:text\n"
           end
-
-          # get all the attributes.
-          attributes = argv[2..]
-
-          check_required_options_for_attributes("crud", attributes, child, parent)
 
           transformer = Scaffolding::Transformer.new(child, parents, @options)
           transformer.scaffold_crud(attributes)

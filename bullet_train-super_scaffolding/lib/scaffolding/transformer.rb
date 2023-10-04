@@ -870,8 +870,11 @@ class Scaffolding::Transformer
           <td#{cell_attributes}><%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.is_vanilla? ? attribute.name : attribute.name_without_id_suffix}#{", #{table_cell_options.join(", ")}" if table_cell_options.any?} %></td>
         ERB
 
-        if attribute.type == "password_field"
+        case attribute.type
+        when "password_field"
           field_content.gsub!(/\s%>/, ", options: { password: true } %>")
+        when "address_field"
+          field_content.gsub!(/\s%>/, ", one_line: true %>")
         end
 
         unless ["Team", "User"].include?(child)
@@ -958,6 +961,20 @@ class Scaffolding::Transformer
             if attribute.type == "file_field"
               scaffold_add_line_to_file(file, "#{attribute.name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
             end
+          elsif attribute.type == "address_field"
+            address_strong_params = <<~RUBY
+              #{attribute.name}_attributes: [
+                :id,
+                :_destroy,
+                :address_one,
+                :address_two,
+                :city,
+                :country_id,
+                :region_id,
+                :postal_code
+              ],
+            RUBY
+            scaffold_add_line_to_file(file, address_strong_params, RUBY_NEW_ARRAYS_HOOK, prepend: true)
           else
             scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
             if attribute.type == "file_field"
@@ -967,6 +984,28 @@ class Scaffolding::Transformer
         end
 
         scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", attribute.special_processing, RUBY_NEW_FIELDS_PROCESSING_HOOK, prepend: true) if attribute.special_processing
+      end
+
+      #
+      # ASSOCIATED MODELS
+      #
+
+      unless cli_options["skip-form"] || attribute.options[:readonly]
+
+        # set default values for associated models.
+        case attribute.type
+        when "address_field"
+          scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", "before_action :set_default_#{attribute.name}, except: :index", "ApplicationController", increase_indent: true)
+
+          method_content = <<~RUBY
+
+            def set_default_#{attribute.name}
+              @tangible_thing.#{attribute.name} ||= Address.new
+            end
+          RUBY
+          scaffold_add_line_to_file("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb", method_content, "end", prepend: true, increase_indent: true, exact_match: true)
+        end
+
       end
 
       #
@@ -1246,6 +1285,9 @@ class Scaffolding::Transformer
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "after_validation :remove_#{attribute.name}, if: :#{attribute.name}_removal?", CALLBACKS_HOOK, prepend: true)
         when "trix_editor"
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
+        when "address_field"
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_one :#{attribute.name}, class_name: \"Address\", as: :addressable", HAS_ONE_HOOK, prepend: true)
+          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "accepts_nested_attributes_for :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
         when "buttons"
           if attribute.is_boolean?
             scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
