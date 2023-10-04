@@ -8,7 +8,7 @@ require "scaffolding/routes_file_manipulator"
 require_relative "../bullet_train/terminal_commands"
 
 FIELD_PARTIALS = {
-  address_field: "string",
+  address_field: nil,
   boolean: "boolean",
   buttons: "string",
   cloudinary_image: "string",
@@ -165,7 +165,8 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
 
     # For join models, we don't want to generate a migration when
     # running the crud-field scaffolder in the last step, so we skip *_ids.
-    unless name.match?(/_ids$/)
+    # Addresses belong_to :addressable, so they don't hae to be represented in a migration.
+    unless name.match?(/_ids$/) || data_type.nil?
       generation_command += " #{name_without_id || name}:#{data_type}"
       attributes_to_generate << name
     end
