@@ -147,12 +147,15 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 For Cloudinary you should use `string`, and for ActiveStorage you should use `attachment`.
 
 ## A Note On Data Types
-Set the data type to `jsonb` whenever passing the `multiple` option to a new attribute.
+When creating a `multiple` option attribute, Bullet Train generates these values as a `jsonb`.
 ```
-> rails generate model Project team:references multiple_buttons:jsonb
-> bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
+bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
 ```
 
+This will run the following rails command.
+```
+rails generate model Project team:references multiple_buttons:jsonb
+```
 ## Formating `date` and `date_and_time`
 After Super Scaffolding a `date` or `date_and_time` field, you can pass a format for the object like so:
 

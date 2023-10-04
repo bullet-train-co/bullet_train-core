@@ -7,6 +7,28 @@ require "scaffolding/routes_file_manipulator"
 
 require_relative "../bullet_train/terminal_commands"
 
+FIELD_PARTIALS = {
+  address_field: "string",
+  boolean: "boolean",
+  buttons: "string",
+  cloudinary_image: "string",
+  color_picker: "string",
+  date_and_time_field: "datetime",
+  date_field: "date",
+  email_field: "string",
+  emoji_field: "string",
+  file_field: "attachment",
+  image: "attachment",
+  options: "string",
+  password_field: "string",
+  phone_field: "string",
+  super_select: "string",
+  text_area: "text",
+  text_field: "string",
+  number_field: "integer",
+  trix_editor: "text"
+}
+
 # filter out options.
 argv = []
 @options = {}
@@ -29,10 +51,49 @@ def standard_protip
 end
 
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
+  tableized_parent = nil
+
+  # Ensure the parent attribute name has the proper namespacing for adding as a foreign key.
+  if parent.present?
+    if child.include?("::") && parent.include?("::")
+      child_parts = child.split("::")
+      parent_parts = parent.split("::")
+      child_parts_dup = child_parts.dup
+      parent_parts_dup = parent_parts.dup
+
+      # Pop off however many spaces match.
+      child_parts_dup.each.with_index do |child_part, idx|
+        if child_part == parent_parts_dup[idx]
+          child_parts.shift
+          parent_parts.shift
+        else
+          tableized_parent = parent_parts.map(&:downcase).join("_")
+          break
+        end
+      end
+    end
+    # In case we're not working with namespaces, just tableize the parent as is.
+    tableized_parent ||= parent.tableize.singularize.tr("/", "_") if parent.present?
+  end
+
+  generation_command = case scaffolding_type
+  when "crud"
+    "bin/rails generate model #{child} #{tableized_parent}:references"
+  when "crud-field"
+    "" # This is blank so we can create the proper migration name first after we get the attributes.
+  end
+
+  # Even if there are attributes passed to the scaffolder,
+  # They may already exist in previous migrations, so we
+  # only register ones that need to be generated.
+  # i.e. - *_ids attributes in the join-model scaffolder.
+  attributes_to_generate = []
+
   attributes.each do |attribute|
     parts = attribute.split(":")
     name = parts.shift
     type = parts.join(":")
+    type_without_option = type.gsub(/{.*}/, "")
 
     unless Scaffolding.valid_attribute_type?(type)
       raise "You have entered an invalid attribute type: #{type}. General data types are used when creating new models, but Bullet Train " \
@@ -51,6 +112,19 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       end.to_h
     else
       {}
+    end
+
+    data_type = if type == "image" && cloudinary_enabled?
+      "string"
+    elsif attribute_options[:multiple]
+      case type
+      when "file"
+        "attachments"
+      else
+        "jsonb"
+      end
+    else
+      FIELD_PARTIALS[type_without_option.to_sym]
     end
 
     if name.match?(/_id$/) || name.match?(/_ids$/)
@@ -85,6 +159,30 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
         end
       end
     end
+
+    # TODO: Is there ever a case that we want this to be a string?
+    data_type = "references" if name.match?(/_id$/)
+
+    # For join models, we don't want to generate a migration when
+    # running the crud-field scaffolder in the last step, so we skip *_ids.
+    unless name.match?(/_ids$/)
+      generation_command += " #{name_without_id || name}:#{data_type}"
+      attributes_to_generate << name
+    end
+  end
+
+  # Generate the models/migrations with the attributes passed.
+  if attributes_to_generate.any?
+    case scaffolding_type
+    # "join-model" is not here because the `rails g` command is written inline in its own scaffolder.
+    when "crud"
+      puts "Generating #{child} model with '#{generation_command}'".green
+    when "crud-field"
+      generation_command = "bin/rails generate migration add_#{attributes_to_generate.join("_and_")}_to_#{child.tableize.tr("/", "_")}#{generation_command}"
+      puts "Adding new fields to #{child} with '#{generation_command}'".green
+    end
+    puts ""
+    `#{generation_command}` unless @options["skip-migration-generation"]
   end
 end
 
@@ -120,36 +218,16 @@ elsif ARGV.first.present?
   when "--field-partials"
     puts "Bullet Train uses the following field partials for Super Scaffolding".blue
     puts ""
-    field_partials = {
-      address_field: "string",
-      boolean: "boolean",
-      buttons: "string",
-      cloudinary_image: "string",
-      color_picker: "string",
-      date_and_time_field: "datetime",
-      date_field: "date_field",
-      email_field: "string",
-      emoji_field: "string",
-      file_field: "attachment",
-      options: "string",
-      password_field: "string",
-      phone_field: "string",
-      super_select: "string",
-      text_area: "text",
-      text_field: "string",
-      number_field: "integer",
-      trix_editor: "text"
-    }
 
     max_name_length = 0
-    field_partials.each do |key, value|
+    FIELD_PARTIALS.each do |key, value|
       if key.to_s.length > max_name_length
         max_name_length = key.to_s.length
       end
     end
 
     printf "\t%#{max_name_length}s:Data Type\n".bold, "Field Partial Name"
-    field_partials.each { |key, value| printf "\t%#{max_name_length}s:#{value}\n", key }
+    FIELD_PARTIALS.each { |key, value| printf "\t%#{max_name_length}s:#{value}\n", key }
 
     puts ""
     puts "For more details, check out the documentation:"
