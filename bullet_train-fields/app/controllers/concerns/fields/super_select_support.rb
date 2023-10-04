@@ -13,7 +13,7 @@ module Fields::SuperSelectSupport
   def create_model_if_new(id)
     ActiveSupport::Deprecation.warn(
       "#create_model_if_new is deprecated. " \
-      "Use #ensure_valid_id_or_create_model instead."
+      "Use #ensure_valid_id_or_create_model instead. See an example at https://bullettrain.co/docs/field-partials/super-select#accepting-new-entries"
     )
     if id.present?
       unless /^\d+$/.match?(id)
@@ -26,7 +26,7 @@ module Fields::SuperSelectSupport
   def create_models_if_new(ids)
     ActiveSupport::Deprecation.warn(
       "#create_models_if_new is deprecated. " \
-      "Use #ensure_valid_ids_or_create_model instead."
+      "Use #ensure_valid_ids_or_create_model instead. See an example at https://bullettrain.co/docs/field-partials/super-select#accepting-new-entries"
     )
     ids.map do |id|
       create_model_if_new(id) do
