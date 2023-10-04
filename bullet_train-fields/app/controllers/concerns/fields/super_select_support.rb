@@ -11,6 +11,10 @@ module Fields::SuperSelectSupport
   end
 
   def create_model_if_new(id)
+    ActiveSupport::Deprecation.warn(
+      "#create_model_if_new is deprecated. " \
+      "Use #ensure_valid_id_or_create_model instead."
+    )
     if id.present?
       unless /^\d+$/.match?(id)
         id = yield(id).id.to_s
@@ -20,6 +24,10 @@ module Fields::SuperSelectSupport
   end
 
   def create_models_if_new(ids)
+    ActiveSupport::Deprecation.warn(
+      "#create_models_if_new is deprecated. " \
+      "Use #ensure_valid_ids_or_create_model instead."
+    )
     ids.map do |id|
       create_model_if_new(id) do
         yield(id)
