@@ -1,0 +1,18 @@
+Description:
+    Generate a production ready CRUD interface for a model. See the docs for more details:
+    https://bullettrain.co/docs/super-scaffolding
+
+Example:
+    bin/rails generate super_scaffold Project Team name:text_field
+
+    This will create:
+        app/controllers/account/projects_controller.rb
+        app/controllers/api/v1/projects_controller.rb
+        app/models/project.rb
+        app/views/account/projects/
+        app/views/api/v1/projects/
+        config/locales/en/projects.en.yml
+        db/migrate/20231004190209_create_projects.rb
+        test/controllers/api/v1/projects_controller_test.rb
+        test/factories/projects.rb
+        test/models/project_test.rb
