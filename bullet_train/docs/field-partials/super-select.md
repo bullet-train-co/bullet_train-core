@@ -76,8 +76,8 @@ To handle the new entry's text on the server, see the `ensure_valid_id_or_create
 
 ```rb
 if strong_params[:category_id]
-  strong_params[:category_id] = ensure_valid_id_or_create_model(strong_params[:category_id], collection: current_team.categories) do |text, collection|
-    collection.find_or_create_by(name: text)
+  strong_params[:category_id] = ensure_valid_id_or_create_model(strong_params[:category_id], collection: current_team.categories) do |new_text, collection|
+    collection.find_or_create_by(name: new_text)
   end
 end
 ```
