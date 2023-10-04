@@ -71,6 +71,19 @@ Here is an example allowing a new option to be entered by the user:
 </code></pre>
 
 Note: this will set the option `value` (which will be submitted to the server) to the entered text.
+
+To handle the new entry's text on the server, see the `ensure_valid_id_or_create_model` method (or `ensure_valid_ids_or_create_model` if `multiple: true`).
+
+```rb
+if strong_params[:category_id]
+  strong_params[:category_id] = ensure_valid_id_or_create_model(strong_params[:category_id], collection: current_team.categories) do |text, collection|
+    collection.find_or_create_by(name: text)
+  end
+end
+```
+
+These methods perform a validation step to ensure valid `ids` against the collection. You'd likely pass a custom scope as the `collection` param if you'd like to validate further, e.g. `current_team.categories.not_archived`.
+
 ## Events
 
 All events dispatched from the `super_select` partial are [Select2's jQuery events][select2_events] re-dispatched as native DOM events with the following caveats:
