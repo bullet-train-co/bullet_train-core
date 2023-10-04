@@ -38,6 +38,12 @@ class SuperScaffoldGenerator < Rails::Generators::NamedBase
   remove_class_option :skip
 
   def generate
-    rake "bullet_train:super_scaffolding[crud\\ #{new_args}]"
+    # In order to pass the args to the rake task we have to join them
+    # into a single string with spaces and commas escaped. (Due to
+    # weird rake syntax requirements.) We add the name of the specific
+    # super_scaffolding command that we want to invoke to the beginning
+    # of the argument string.
+    new_args = (['crud'] + ARGV).join("\\ ").gsub(",", "\\,")
+    rake "bullet_train:super_scaffolding[#{new_args}]"
   end
 end
