@@ -28,7 +28,6 @@ PATH
       hiredis
       http_accept_language
       image_processing
-      masamune-ast (>= 1.2.0)
       microscope
       nice_partials (~> 0.9)
       pagy
@@ -217,8 +216,6 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
-    masamune-ast (1.2.0)
-      activesupport
     method_source (1.0.0)
     microscope (1.1.1)
       activerecord (>= 4.1.0)
@@ -395,4 +392,4 @@ DEPENDENCIES
   standard
 
 BUNDLED WITH
-   2.3.8
+   2.4.20
