@@ -41,24 +41,27 @@ Let's implement the following feature:
 
 > An organization has many projects.
 
-First, generate the model with the standard Rails generator:
-
-```
-rails g model Project team:references name:string
-```
-
-In the above example, `team` represents the model that a `Project` primarily belongs to.
-
-⚠️ Don't run migrations right away. It would be fine in this case, but sometimes the subsequent Super Scaffolding step actually updates the migration as part of its magic.
-
-Next, run the `crud` scaffolder:
-
+First, run the `crud` scaffolder:
 ```
 bin/super-scaffold crud Project Team name:text_field
 rake db:migrate
 ```
 
-In the above example, `text_field` was selected from [the list of available field partials](/docs/field-partials.md). We'll show examples with `trix_editor` and `super_select` later.
+In the above example, `team` represents the model that a `Project` primarily belongs to. Also, `text_field` was selected from [the list of available field partials](/docs/field-partials.md). We'll show examples with `trix_editor` and `super_select` later.
+
+Super Scaffolding automatically generates models for you. However, if you want to split this process, you can pass the `--skip-migration-generation` to the command.
+
+For example, generate the model with the standard Rails generator:
+```
+rails g model Project team:references name:string
+```
+
+⚠️ Don't run migrations right away. It would be fine in this case, but sometimes the subsequent Super Scaffolding step actually updates the migration as part of its magic.
+
+Then you can run the scaffolder with the flag:
+```
+bin/super-scaffold crud Project Team name:text_field --skip-migration-generation
+```
 
 ### 2. Nested CRUD Scaffolding with `crud`
 
@@ -68,22 +71,14 @@ Building on that example, let's implement the following feature:
 A project has many goals.
 ```
 
-Again, we'll generate the model using the standard Rails generator:
-
-```
-rails g model Goal project:references description:string
-```
-
-You can see in the example above that there is no direct reference to team, but to `project` instead, since that's where a `Goal` belongs.
-
-Now, run the `crud` scaffolder:
+First, run the `crud` scaffolder:
 
 ```
 bin/super-scaffold crud Goal Project,Team description:text_field
 rake db:migrate
 ```
 
-You can see in the example above how we've specified `Project,Team`, because we want to specify the entire chain of ownership back to the `Team`. This allows Super Scaffolding to automatically generate the required permissions.
+You can see in the example above how we've specified `Project,Team`, because we want to specify the entire chain of ownership back to the `Team`. This allows Super Scaffolding to automatically generate the required permissions. Take note that this generates a foreign key for `Project` and not for `Team`.
 
 ### 3. Adding New Fields with `crud-field`
 
@@ -93,13 +88,7 @@ Building on the earlier example, consider the following new requirement:
 
 > In addition to a name, a project can have a description.
 
-First, use the standard Rails migration generator to add the attribute in the database:
-
-```
-rails g migration add_description_to_projects description:text
-```
-
-Then, use the `crud-field` scaffolder to add it throughout the application:
+Use the `crud-field` scaffolder to add it throughout the application:
 
 ```
 bin/super-scaffold crud-field Project description:trix_editor
@@ -113,6 +102,11 @@ If you want to scaffold a new field to use for read-only purposes, add the follo
 bin/super-scaffold crud-field Project description:trix_editor{readonly}
 ```
 
+Again, if you would like to automatically generate the migration on your own, pass the `--skip-migration-generation` flag:
+```
+bin/super-scaffold crud-field Project description:trix_editor --skip-migration-generation
+```
+
 ### 4. Adding Option Fields with Fixed, Translatable Options
 
 Continuing with the earlier example, let's address the following new requirement:
@@ -124,7 +118,6 @@ We have multiple [field partials](/docs/field-partials.md) that we could use for
 In this example, let's add a status attribute and present it as buttons:
 
 ```
-rails g migration add_status_to_projects status:string
 bin/super-scaffold crud-field Project status:buttons
 ```
 
@@ -153,20 +146,15 @@ Although you might think this calls for a reference to `User`, we've learned the
 We can accomplish this like so:
 
 ```
-rails g migration add_lead_to_projects lead:references
-```
-
-Then, to add the field, we specify the following:
-
-```
 bin/super-scaffold crud-field Project lead_id:super_select{class_name=Membership}
 rake db:migrate
 ```
 
-There are two important things to point out here:
+There are three important things to point out here:
 
-1. When we use `rails g model` or `rails g migration`, we specify the `references` column name as `lead`, but when we're specifying the _field_ we want to scaffold, we specify it as `lead_id`, because that's the name of the attribute on the form, in strong parameters, etc.
-2. We have to specify the model name with the `class_name` option so that Super Scaffolding can fully work it's magic. We can't reflect on the association, because at this point the association isn't properly defined yet. With this information, Super Scaffolding can handle that step for you.
+1. The scaffolder automatically adds a foreign key for `lead` to `Project`.
+2. When adding this foreign key the `references` column is generated under the name `lead`, but when we're specifying the _field_ we want to scaffold, we specify it as `lead_id`, because that's the name of the attribute on the form, in strong parameters, etc.
+3. We have to specify the model name with the `class_name` option so that Super Scaffolding can fully work it's magic. We can't reflect on the association, because at this point the association isn't properly defined yet. With this information, Super Scaffolding can handle that step for you.
 
 Finally, Super Scaffolding will prompt you to edit `app/models/project.rb` and implement the required logic in the `valid_leads` method. This is a template method that will be used to both populate the select field on the `Project` form, but also enforce some important security concerns in this multi-tenant system. In this case, you can define it as:
 
@@ -189,17 +177,12 @@ We can accomplish this with a new model, a new join model, and a `super_select` 
 First, let's create the tag model:
 
 ```
-rails g model Projects::Tag team:references name:string
 bin/super-scaffold crud Projects::Tag Team name:text_field
 ```
 
 Note that project tags are specifically defined at the `Team` level. The same tag can be applied to multiple `Project` models.
 
-Now, let's create a join model for the has-many-through association:
-
-```
-rails g model Projects::AppliedTag project:references tag:references
-```
+Now, let's create a join model for the has-many-through association.
 
 We're not going to scaffold this model with the typical `crud` scaffolder, but some preparation is needed before we can use it with the `crud-field` scaffolder, so we need to do the following:
 
@@ -237,34 +220,39 @@ Bullet Train comes with two different ways to handle image uploads.
 
 #### Scaffolding images with Cloudinary
 
-When you scaffold your model you need to include a `string` where Cloudinary can store a reference to the image.
+When you scaffold your model a `string` is generated where Cloudinary can store a reference to the image.
+
+Make sure you have the `CLOUDINARY_URL` environment variable to use Cloudinary for your images.
 
 For instance to scaffold a `Project` model with a `logo` image upload.
-
-```
-rails g model Project team:references name:string logo:string
-```
-
-Then you can use `image` as a field type for super scaffolding:
+Use `image` as a field type for super scaffolding:
 
 ```
 bin/super-scaffold crud Project Team name:text_field logo:image
 rake db:migrate
 ```
+
+Under the hood, Bullet Train will generate your model with the following command:
+```
+bin/super-scaffold crud Project Team name:text_field
+rake db:migrate
+```
+
 #### Scaffolding images with ActiveStorage
 
-When you scaffold your model you need to generate an `attachment` type attribute.
+When you scaffold your model we generate an `attachment` type attribute.
 
 For instance to scaffold a `Project` model with a `logo` image upload.
-
-```
-rails g model Project team:references name:string logo:attachment
-```
-
-Then you can use `image` as a field type for super scaffolding:
+Use `image` as a field type for super scaffolding:
 
 ```
 bin/super-scaffold crud Project Team name:text_field logo:image
+rake db:migrate
+```
+
+Under the hood, Bullet Train will generate your model with the following command:
+```
+bin/super-scaffold crud Project Team name:text_field
 rake db:migrate
 ```
 

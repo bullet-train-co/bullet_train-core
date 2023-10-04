@@ -68,6 +68,9 @@ module Api
 
       attributes_output = JSON.parse(schema_json)
 
+      # Add "Attributes" part to $ref's
+      update_ref_values!(attributes_output)
+
       # Rails attachments aren't technically attributes in a model,
       # so we add the attributes manually to make them available in the API.
       if model.attachment_reflections.any?
@@ -117,6 +120,29 @@ module Api
     def has_strong_parameters?(controller)
       methods = controller.action_methods
       methods.include?("create") || methods.include?("update")
+    end
+
+    def update_ref_values!(hash)
+      hash.each do |key, value|
+        if key == "$ref" && value.is_a?(String) && !value.include?("Attributes")
+          # Extract the part after "#/components/schemas/"
+          schema_part = value.split("#/components/schemas/").last
+
+          # Capitalize each part and join them
+          camelized_schema = schema_part.split("/").map(&:camelize).join
+
+          # Update the value
+          hash[key] = "#/components/schemas/#{camelized_schema}Attributes"
+        elsif value.is_a?(Hash)
+          # Recursively call the method for nested hashes
+          update_ref_values!(value)
+        elsif value.is_a?(Array)
+          # Recursively call the method for each hash in the array
+          value.each do |item|
+            update_ref_values!(item) if item.is_a?(Hash)
+          end
+        end
+      end
     end
   end
 end

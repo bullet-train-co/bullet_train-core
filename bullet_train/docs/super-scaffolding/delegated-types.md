@@ -39,7 +39,7 @@ Note that in this specific approach we don't need a `team:references` on `Messag
 ### 2. Super Scaffolding for `Entry`
 
 ```
-bin/super-scaffold crud Entry Team entryable_type:buttons
+bin/super-scaffold crud Entry Team entryable_type:buttons --skip-migration-generation
 ```
 
 We use `entryable_type:buttons` because we're going to allow people to choose which type of `Entry` they're creating with a list of buttons. This isn't the only option available to us, but it's the easiest to implement for now.

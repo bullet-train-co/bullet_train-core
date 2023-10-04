@@ -7,6 +7,8 @@
 * [Upgrade from any version to `1.4.0`](/docs/upgrades/yolo-140.md)
 * [Upgrade from any version to `1.3.0`](/docs/upgrades/yolo-130.md)
 * [Upgrade from `1.3.x` to `1.4.0`](/docs/upgrades/yolo-140.md)
+* [Notable versions](/docs/upgrades/notable-versions)
+
 
 ## About the upgrade process
 
@@ -26,6 +28,8 @@ which is less hidden and is not as prone to having merge conflicts as `Gemfile.l
 
 As a result of these changes, there are a few different ways that you might choose to upgrade your application
 depending on which version you're currently on.
+
+[Be sure to check our Notable Versions list to see if there's anything tricky about the version you're moving to.](/docs/upgrades/notable-versions)
 
 ## How to find your current version
 

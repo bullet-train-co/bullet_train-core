@@ -122,36 +122,40 @@ Certain form field partials like `buttons` and `super_select` can also have thei
 
 ## Available Field Partials
 
-| Field Partial                                          | Data Type    | Multiple Values? | Assignment Helpers      | JavaScript Library                                                                | Description                                                                              |
-|--------------------------------------------------------|--------------|------------------|-------------------------|-----------------------------------------------------------------------------------|------------------------------------------------------------------------------------------|
-| `boolean`                                              | `boolean`    |                  | `assign_boolean`        |                                                                                   |                                                                                          |
-| [`buttons`](/docs/field-partials/buttons.md)           | `string`     | Optionally       | `assign_checkboxes`     |                                                                                   |                                                                                          |
-| `image`                                                | `string` or `attachment`*  |                  |                         |                                                                                   |                                                                                          |
-| `color_picker`                                         | `string`     |                  |                         | [pickr](https://simonwep.github.io/pickr/)                                        |                                                                                          |
-| `date_and_time_field`                                  | `datetime`   |                  |                  | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
-| `date_field`                                           | `date`       |                  |                  | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                          |
-| `email_field`                                          | `string`     |                  |                         |                                                                                   |                                                                                          |
-| `emoji_field`                                          | `string`     |                  |                         | [Emoji Mart](https://missiveapp.com/open/emoji-mart) | A front-end library which allows users to browse and select emojis with ease. |                                       |
-| [`file_field`](/docs/field-partials/file-field.md)     | `attachment` |                  |                         | [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) |                                                                                          |
-| `options`                                              | `string`     | Optionally       | `assign_checkboxes`     |                                                                                   |                                                                                          |
-| `password_field`                                       | `string`     |                  |                         |                                                                                   |                                                                                          |
-| `phone_field`                                          | `string`     |                  |                         | [International Telephone Input](https://intl-tel-input.com)                       | Ensures telephone numbers are in a format that can be used by providers like Twilio.     |
-| [`super_select`](/docs/field-partials/super-select.md) | `string`     | Optionally       | `assign_select_options` | [Select2](https://select2.org)                                                    | Provides powerful option search, AJAX search, and multi-select functionality.            |
-| `text_area`                                            | `text`       |                  |                         |                                                                                   |                                                                                          |
-| `text_field`                                           | `string`     |                  |                         |                                                                                   |                                                                                          |
-| `number_field`                                         | `integer`    |                  |                         |                                                                                   |                                                                                          |
-| `trix_editor`                                          | `text`       |                  |                         | [Trix](https://github.com/basecamp/trix)                                          | Basic HTML-powered formatting features and support for at-mentions amongst team members. |
+| Field Partial                                            | Data Type                 | Multiple Values? | Assignment Helpers      | JavaScript Library                                                                | Description                                                                                                                                              |
+|----------------------------------------------------------|---------------------------|------------------|-------------------------|-----------------------------------------------------------------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [`address_field`](/docs/field-partials/address-field.md) | `Address`                 |                  |                         |                                                                                   | Adds a block of address fields. On change, its country super-select auto-updates the state/province/region super-select and postal/zip code field label. |
+| `boolean`                                                | `boolean`                 |                  | `assign_boolean`        |                                                                                   |                                                                                                                                                          |
+| [`buttons`](/docs/field-partials/buttons.md)             | `string`                  | Optionally       | `assign_checkboxes`     |                                                                                   |                                                                                                                                                          |
+| `image`                                                  | `string` or `attachment`* |                  |                         |                                                                                   |                                                                                                                                                          |
+| `color_picker`                                           | `string`                  |                  |                         | [pickr](https://simonwep.github.io/pickr/)                                        |                                                                                                                                                          |
+| `date_and_time_field`                                    | `datetime`                |                  |                         | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                                                                                          |
+| `date_field`                                             | `date`                    |                  |                         | [Date Range Picker](https://www.daterangepicker.com)                              |                                                                                                                                                          |
+| `email_field`                                            | `string`                  |                  |                         |                                                                                   |                                                                                                                                                          |
+| `emoji_field`                                            | `string`                  |                  |                         | [Emoji Mart](https://missiveapp.com/open/emoji-mart) | A front-end library which allows users to browse and select emojis with ease. |                                                                                                       |
+| [`file_field`](/docs/field-partials/file-field.md)       | `attachment`              |                  |                         | [Active Storage](https://edgeguides.rubyonrails.org/active_storage_overview.html) |                                                                                                                                                          |
+| `options`                                                | `string`                  | Optionally       | `assign_checkboxes`     |                                                                                   |                                                                                                                                                          |
+| `password_field`                                         | `string`                  |                  |                         |                                                                                   |                                                                                                                                                          |
+| `phone_field`                                            | `string`                  |                  |                         | [International Telephone Input](https://intl-tel-input.com)                       | Ensures telephone numbers are in a format that can be used by providers like Twilio.                                                                     |
+| [`super_select`](/docs/field-partials/super-select.md)   | `string`                  | Optionally       | `assign_select_options` | [Select2](https://select2.org)                                                    | Provides powerful option search, AJAX search, and multi-select functionality.                                                                            |
+| `text_area`                                              | `text`                    |                  |                         |                                                                                   |                                                                                                                                                          |
+| `text_field`                                             | `string`                  |                  |                         |                                                                                   |                                                                                                                                                          |
+| `number_field`                                           | `integer`                 |                  |                         |                                                                                   |                                                                                                                                                          |
+| `trix_editor`                                            | `text`                    |                  |                         | [Trix](https://github.com/basecamp/trix)                                          | Basic HTML-powered formatting features and support for at-mentions amongst team members.                                                                 |
 
 * The data type for `image` fields will vary based on whether you're using Cloudinary or ActiveStorage.
 For Cloudinary you should use `string`, and for ActiveStorage you should use `attachment`.
 
 ## A Note On Data Types
-Set the data type to `jsonb` whenever passing the `multiple` option to a new attribute.
+When creating a `multiple` option attribute, Bullet Train generates these values as a `jsonb`.
 ```
-> rails generate model Project team:references multiple_buttons:jsonb
-> bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
+bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
 ```
 
+This will run the following rails command.
+```
+rails generate model Project team:references multiple_buttons:jsonb
+```
 ## Formating `date` and `date_and_time`
 After Super Scaffolding a `date` or `date_and_time` field, you can pass a format for the object like so:
 
@@ -161,7 +165,19 @@ After Super Scaffolding a `date` or `date_and_time` field, you can pass a format
 
 Please refer to the [Ruby on Rails documentation](https://guides.rubyonrails.org/i18n.html#adding-date-time-formats) for more information.
 
+## Dynamic Forms and Dependent Fields
+
+To dynamically update your forms on field changes, Bullet Train introduces two new concepts:
+
+1. Dependent Fields Pattern
+2. Dependent Fields Frame
+
+These concepts are currently used by the `address_field` to dynamically update the _State / Province / Region_ field on _Country_ change, as well as the label for the _Postal Code_ field.
+
+[Read more about Dynamic Forms and Dependent Fields](/docs/field-partials/dynamic-forms-dependent-fields.md)
+
 ## Additional Field Partials Documentation
+ - [`address_field`](/docs/field-partials/address-field.md)
  - [`buttons`](/docs/field-partials/buttons.md)
  - [`super_select`](/docs/field-partials/super-select.md)
  - [`file_field`](/docs/field-partials/file-field.md)

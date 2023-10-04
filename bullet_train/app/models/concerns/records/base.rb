@@ -36,14 +36,6 @@ module Records::Base
     scope :newest_updated, -> { order("updated_at DESC") }
     scope :oldest_updated, -> { order("updated_at ASC") }
 
-    # TODO Probably we can provide a way for gem packages to define these kinds of extensions.
-    if billing_enabled?
-      # By default, any model in a collection is considered active for billing purposes.
-      # This can be overloaded in the child model class to specify more specific criteria for billing.
-      # See `app/models/concerns/memberships/base.rb` for an example.
-      scope :billable, -> { order("TRUE") }
-    end
-
     # Microscope adds useful scopes targeting ActiveRecord `boolean`, `date` and `datetime` attributes.
     # https://github.com/mirego/microscope
     acts_as_microscope

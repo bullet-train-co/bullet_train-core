@@ -73,7 +73,6 @@ bin/super-scaffold action-model:targets-one-parent
 ### 1. Generate and scaffold an example `Project` model.
 
 ```
-rails g model Project team:references name:string
 bin/super-scaffold crud Project Team name:text_field
 ```
 
@@ -104,7 +103,6 @@ Because Action Models are just regular models, you can add new fields to them wi
 For example:
 
 ```
-rails g migration add_notify_users_to_projects_archive_actions notify_users:boolean
 # side quest: update the generated migration with `default: false` on the new boolean field.
 bin/super-scaffold crud-field Projects::ArchiveAction notify_users:boolean
 ```

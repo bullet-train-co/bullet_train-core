@@ -1,0 +1,24 @@
+<%= render "showcase/previews/field_partials/attribute_partials/about_attribute_partials", showcase: showcase do |partial| %>
+  <% partial.body do |object| %>
+    <% object.address_value = Address.new(
+        country_id: 233,
+        address_one: "2800 East Observatory Road",
+        city: "Los Angeles",
+        region_id: 1416,
+        postal_code: "90027"
+      )
+    %>
+
+    <% showcase.sample "Multi-line" do %>
+      <%= render 'shared/attributes/address', object: object, attribute: :address_value %>
+    <% end %>
+
+    <% showcase.sample "One-line" do %>
+      <%= render 'shared/attributes/address', object: object, attribute: :address_value, one_line: true %>
+    <% end %>
+  <% end %>
+
+  <% partial.options do |o| %>
+    <% o.optional :one_line, "Render into a single line", type: "Boolean" %>
+  <% end %>
+<% end %>

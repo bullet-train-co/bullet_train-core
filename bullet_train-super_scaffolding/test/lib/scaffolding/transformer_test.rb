@@ -1,14 +1,12 @@
 require "test_helper"
-require "minitest/spec"
-
 require "scaffolding/transformer"
 
-describe Scaffolding::Transformer do
-  it "initializes" do
+class Scaffolding::TransformerTest < ActiveSupport::TestCase
+  test "initializes" do
     Scaffolding::Transformer.new("CuriousKid", ["ProtectiveParent", "Team"])
   end
 
-  it "properly generates a controller file for CuriousKid and ProtectiveParent" do
+  test "properly generates a controller file for CuriousKid and ProtectiveParent" do
     @transformer = Scaffolding::Transformer.new("CuriousKid", ["ProtectiveParent", "Team"])
     @transformer.get_transformed_file_content("./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb")
   end
