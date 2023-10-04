@@ -37,23 +37,31 @@ module Fields::SuperSelectSupport
     end
   end
 
+  def ids_or_create_from_string(ids_or_strings)
+    ids_or_strings&.map do |id_or_string|
+      id_or_create_from_string(id_or_string) do
+        yield(id_or_string)
+      end
+    end
+  end
+
   def ensure_valid_id_or_create_model(id_or_string, collection: [], attribute: :id)
     return id_or_string unless id_or_string.present?
 
     id = id_or_create_from_string(id_or_string) do |string|
-      yield(string)
+      yield(string, collection)
     end
 
     collection.valid_attribute_values([id], attribute: attribute).first
   end
 
   def ensure_valid_ids_or_create_model(ids_or_strings, collection: [], attribute: :id)
-    ids = ids_or_strings.map do |id_or_string|
+    ids = ids_or_strings&.map do |id_or_string|
       id_or_create_from_string(id_or_string) do |string|
-        yield(string)
+        yield(string, collection)
       end
     end
-    collection.valid_attribute_values([ids], attribute: attribute).first
+    collection.valid_attribute_values([ids], attribute: attribute)
   end
 
 end
