@@ -60,7 +60,7 @@ module Fields::SuperSelectSupport
       yield(string, collection)
     end
 
-    collection.valid_attribute_values([id], attribute:).first
+    collection.find_by(attribute => id).send(attribute)
   end
 
   def ensure_valid_ids_or_create_model(ids_or_strings, collection: [], attribute: :id)
