@@ -45,7 +45,7 @@ module Fields::SuperSelectSupport
     yield(string, collection)&.id&.to_s
   end
 
-  def ensure_valid_ids_or_create_model(ids_or_strings, collection: [], attribute: :id)
+  def ensure_valid_ids_or_create_models(ids_or_strings, collection: [], attribute: :id)
     valid_ids = collection.valid_attribute_values([ids_or_strings], attribute:)
     new_entries = ids_or_strings - valid_ids
 

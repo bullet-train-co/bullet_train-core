@@ -72,7 +72,7 @@ Here is an example allowing a new option to be entered by the user:
 
 Note: this will set the option `value` (which will be submitted to the server) to the entered text.
 
-To handle the new entry's text on the server, see the `ensure_valid_id_or_create_model` method (or `ensure_valid_ids_or_create_model` if `multiple: true`).
+To handle the new entry's text on the server, see the `ensure_valid_id_or_create_model` method (or `ensure_valid_ids_or_create_models` if `multiple: true`).
 
 ```rb
 if strong_params[:category_id]
