@@ -46,7 +46,9 @@ module Fields::SuperSelectSupport
   end
 
   def ensure_valid_ids_or_create_models(ids_or_strings, collection: [], attribute: :id)
-    valid_ids = collection.valid_attribute_values([ids_or_strings], attribute:)
+    return ids_or_strings if ids_or_strings.nil? || ids_or_strings.empty?
+
+    valid_ids = collection.valid_attribute_values([ids_or_strings], attribute: attribute).map(&:to_s)
     new_entries = ids_or_strings - valid_ids
 
     valid_ids + new_entries.map { |string|
