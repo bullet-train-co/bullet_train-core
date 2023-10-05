@@ -11,21 +11,19 @@ button_field_options ||= options_for(form, method)
 # For backwards compatibility.
 options.merge!(html_options)if options.is_a?(Hash)
 
-options[:id] ||= form.field_id(method)
-
 multiple ||= false
 %>
 
-<% content = render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
+<% content = render 'shared/fields/field', form: form, method: method, options: options.with_defaults(id: form.field_id(method)), other_options: other_options do %>
   <% content_for :field do %>
     <div>
       <% button_field_options.each do |value, label| %>
         <% checked = form.object.send(method).is_a?(Array) ? form.object.send(method).map(&:to_s).include?(value.to_s) : form.object.send(method).to_s == value.to_s  %>
         <label class="btn-toggle" data-controller="<%= stimulus_controller %>">
           <% if multiple %>
-            <%= form.check_box method, {multiple: multiple, checked: checked, data: { "#{stimulus_controller}-target": 'shadowField' }, **options.except(:id)}, value, "" %>
+            <%= form.check_box method, {multiple: multiple, checked: checked, data: { "#{stimulus_controller}-target": 'shadowField' }, **options}, value, "" %>
           <% else %>
-            <%= form.radio_button method, value, { data: { "#{stimulus_controller}-target": 'shadowField' }, checked: checked, **options.except(:id)} %>
+            <%= form.radio_button method, value, { data: { "#{stimulus_controller}-target": 'shadowField' }, checked: checked, **options} %>
           <% end %>
           <button type="button" class="button-alternative mb-1.5 mr-1" data-action="<%= stimulus_controller %>#clickShadowField">
             <%= label %>
