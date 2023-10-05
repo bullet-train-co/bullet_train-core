@@ -41,6 +41,7 @@ module Fields::SuperSelectSupport
     valid_id = collection.find_by(attribute => id_or_string)&.send(attribute)
     return valid_id.to_s unless valid_id.nil?
 
+    string = id_or_string
     yield(string, collection)&.id&.to_s
   end
 
