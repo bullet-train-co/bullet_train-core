@@ -72,17 +72,30 @@ Here is an example allowing a new option to be entered by the user:
 
 Note: this will set the option `value` (which will be submitted to the server) to the entered text.
 
-To handle the new entry's text on the server, see the `ensure_valid_id_or_create_model` method (or `ensure_valid_ids_or_create_models` if `multiple: true`).
+To handle the new entry's text on the server, use `ensure_backing_models_on`.
+
+`ensure_backing_models_on` validates an `id:` or multiple `ids:` against a passed Active Record relation, and yields for each missing id so you can create backing models. Like this:
 
 ```rb
 if strong_params[:category_id]
-  strong_params[:category_id] = ensure_valid_id_or_create_model(strong_params[:category_id], collection: current_team.categories) do |new_text, collection|
-    collection.find_or_create_by(name: new_text)
+  strong_params[:category_id] = ensure_backing_models_on(current_team.categories, id: strong_params[:category_id]) do |scope, id|
+    scope.find_or_create_by(name: id)
   end
 end
 ```
 
-These methods perform a validation step to ensure valid `ids` against the collection. You'd likely pass a custom scope as the `collection` param if you'd like to validate further, e.g. `current_team.categories.not_archived`.
+In case our form had `multiple: true`, we could have used `ids:` instead:
+
+```rb
+if strong_params[:category_ids]
+  strong_params[:category_ids] = ensure_backing_models_on(current_team.categories, ids: strong_params[:category_ids]) do |scope, id|
+    scope.find_or_create_by(name: id)
+  end
+end
+```
+
+Note, if you need to constrain the collection further you could pass any extra scope, e.g. `current_team.categories.not_archived`.
+
 
 ## Events
 
@@ -128,11 +141,11 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
   static targets = [ "dependentField" ]
-  
+
   updateDependentFields(event) {
     const originalSelect2Event = event.detail.event
     console.log(`catching event ${event.type}`, originalSelect2Event)
-    
+
     this.dependentFieldTargets.forEach((dependentField) => {
       // update dependentField based on value found in originalSelect2Event.target.value
     })
