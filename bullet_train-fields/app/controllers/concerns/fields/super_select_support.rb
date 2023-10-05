@@ -41,7 +41,7 @@ module Fields::SuperSelectSupport
     return ids if ids.empty?
 
     existing_ids = collection.where(id: ids).ids.map(&:to_s)
-    new_ids      = ids.without(existing_ids).filter_map { yield(collection, _1)&.id&.to_s }
+    new_ids = ids.without(existing_ids).filter_map { yield(collection, _1)&.id&.to_s }
     (existing_ids + new_ids).then { id ? _1.first : _1 }
   end
 end
