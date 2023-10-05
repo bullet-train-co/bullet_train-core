@@ -38,7 +38,7 @@ module Fields::SuperSelectSupport
   def ensure_valid_id_or_create_model(id_or_string, collection: [], attribute: :id)
     return id_or_string unless id_or_string.present?
 
-    valid_id = collection.find_by(attribute => id_or_string)&.send(attribute)
+    valid_id = collection.find_by(attribute => id_or_string)&.public_send(attribute)
     return valid_id.to_s unless valid_id.nil?
 
     string = id_or_string
