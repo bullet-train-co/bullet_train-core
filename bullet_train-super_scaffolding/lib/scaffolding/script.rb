@@ -50,6 +50,20 @@ def standard_protip
   puts "If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f` ."
 end
 
+def git_status
+  `git status`.split("\n")
+end
+
+def has_untracked_files?(status_lines)
+  status_lines.include?("Untracked files:")
+end
+
+# All untracked files begin with a tab (i.e. - "\tapp/models/model.rb").
+def get_untracked_files(status_lines)
+  idx = status_lines.index("Untracked files:")
+  status_lines[idx..].select { |lines| lines.match?(/\t/) }
+end
+
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
   tableized_parent = nil
 
@@ -183,7 +197,19 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       puts "Adding new fields to #{child} with '#{generation_command}'".green
     end
     puts ""
-    `#{generation_command}` unless @options["skip-migration-generation"]
+
+    unless @options["skip-migration-generation"]
+      untracked_files = has_untracked_files?(git_status) ? get_untracked_files(git_status) : []
+      generation_thread = Thread.new { `#{generation_command}` }
+      generation_thread.join # Wait for the process to finish.
+
+      newly_untracked_files = has_untracked_files?(git_status) ? get_untracked_files(git_status) : []
+      if (newly_untracked_files - untracked_files).size.zero?
+        # Rails will output an error if nothing was generated,
+        # so we don't have to write anything extra upon exiting.
+        exit 1
+      end
+    end
   end
 end
 
