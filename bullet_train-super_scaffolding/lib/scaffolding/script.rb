@@ -60,8 +60,7 @@ end
 
 # All untracked files begin with a tab (i.e. - "\tapp/models/model.rb").
 def get_untracked_files(status_lines)
-  idx = status_lines.index("Untracked files:")
-  status_lines[idx..].select { |lines| lines.match?(/\t/) }
+  `git ls-files --other --directory --exclude-standard`.split("\n")
 end
 
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
