@@ -43,7 +43,7 @@ class SuperScaffoldGenerator < Rails::Generators::NamedBase
     # weird rake syntax requirements.) We add the name of the specific
     # super_scaffolding command that we want to invoke to the beginning
     # of the argument string.
-    new_args = (['crud'] + ARGV).join("\\ ").gsub(",", "\\,")
+    new_args = (["crud"] + ARGV).join("\\ ").gsub(",", "\\,")
     rake "bullet_train:super_scaffolding[#{new_args}]"
   end
 end
