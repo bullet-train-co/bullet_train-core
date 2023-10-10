@@ -50,6 +50,19 @@ def standard_protip
   puts "If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f` ."
 end
 
+def git_status
+  `git status`.split("\n")
+end
+
+def has_untracked_files?(status_lines)
+  status_lines.include?("Untracked files:")
+end
+
+# All untracked files begin with a tab (i.e. - "\tapp/models/model.rb").
+def get_untracked_files(status_lines)
+  `git ls-files --other --exclude-standard`.split("\n")
+end
+
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
   tableized_parent = nil
 
@@ -183,7 +196,24 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       puts "Adding new fields to #{child} with '#{generation_command}'".green
     end
     puts ""
-    `#{generation_command}` unless @options["skip-migration-generation"]
+
+    unless @options["skip-migration-generation"]
+      untracked_files = has_untracked_files?(git_status) ? get_untracked_files(git_status) : []
+      generation_thread = Thread.new { `#{generation_command}` }
+      generation_thread.join # Wait for the process to finish.
+
+      newly_untracked_files = has_untracked_files?(git_status) ? get_untracked_files(git_status) : []
+      if (newly_untracked_files - untracked_files).size.zero?
+        error_message = <<~MESSAGE
+          Since you have already created the #{child} model, Super Scaffolding won't allow you to re-create it.
+          You can either delete the model and try Super Scaffolding again, or add the `--skip-migration-generation`
+          flag to Super Scaffold the classic Bullet Train way.
+        MESSAGE
+        puts ""
+        puts error_message.red
+        exit 1
+      end
+    end
   end
 end
 
