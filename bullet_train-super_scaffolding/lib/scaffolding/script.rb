@@ -204,8 +204,13 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
 
       newly_untracked_files = has_untracked_files?(git_status) ? get_untracked_files(git_status) : []
       if (newly_untracked_files - untracked_files).size.zero?
-        # Rails will output an error if nothing was generated,
-        # so we don't have to write anything extra upon exiting.
+        error_message = <<~MESSAGE
+          Since you have already created the #{child} model, Super Scaffolding won't allow you to re-create it.
+          You can either delete the model and try Super Scaffolding again, or add the `--skip-migration-generation`
+          flag to Super Scaffold the classic Bullet Train way.
+        MESSAGE
+        puts ""
+        puts error_message.red
         exit 1
       end
     end
