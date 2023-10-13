@@ -37,6 +37,8 @@ class SuperScaffoldGenerator < Rails::Generators::Base
   remove_class_option :quiet
   remove_class_option :skip
 
+  class_option :skip_migration_generation, type: :boolean, default: false
+
   namespace "super_scaffold"
 
   argument :model, type: :string
