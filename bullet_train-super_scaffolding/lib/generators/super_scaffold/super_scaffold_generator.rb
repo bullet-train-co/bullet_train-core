@@ -37,13 +37,13 @@ class SuperScaffoldGenerator < Rails::Generators::Base
   remove_class_option :quiet
   remove_class_option :skip
 
-  class_option :skip_migration_generation, type: :boolean, default: false
-
   namespace "super_scaffold"
 
   argument :model, type: :string
   argument :parent_models, type: :string
   argument :attributes, type: :array, default: [],  banner: "attribute:type attribute:type"
+
+  class_option :skip_migration_generation, type: :boolean, default: false
 
   def generate
     # We add the name of the specific super_scaffolding command that we want to
