@@ -41,7 +41,7 @@ class SuperScaffoldGenerator < Rails::Generators::Base
 
   argument :model, type: :string
   argument :parent_models, type: :string
-  argument :attributes, type: :array, default: [],  banner: "attribute:type attribute:type"
+  argument :attributes, type: :array, default: [], banner: "attribute:type attribute:type"
 
   class_option :skip_migration_generation, type: :boolean, default: false
 

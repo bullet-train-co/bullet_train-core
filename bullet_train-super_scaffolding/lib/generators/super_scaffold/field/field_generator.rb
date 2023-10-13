@@ -40,7 +40,7 @@ class FieldGenerator < Rails::Generators::Base
   namespace "super_scaffold:field"
 
   argument :model, type: :string
-  argument :attributes, type: :array, default: [],  banner: "attribute:type attribute:type"
+  argument :attributes, type: :array, default: [], banner: "attribute:type attribute:type"
 
   class_option :skip_table, type: :boolean, default: false, desc: "Only add to the new/edit form and show view."
 
