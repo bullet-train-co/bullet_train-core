@@ -1,4 +1,4 @@
-class SuperScaffoldGenerator < Rails::Generators::NamedBase
+class SuperScaffoldGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
   # ##############################
@@ -36,6 +36,12 @@ class SuperScaffoldGenerator < Rails::Generators::NamedBase
   remove_class_option :pretend
   remove_class_option :quiet
   remove_class_option :skip
+
+  namespace "super_scaffold"
+
+  argument :model, type: :string
+  argument :parent_models, type: :string
+  argument :attributes, type: :array, default: [],  banner: "attribute:type attribute:type"
 
   def generate
     # We add the name of the specific super_scaffolding command that we want to
