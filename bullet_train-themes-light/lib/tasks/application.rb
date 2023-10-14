@@ -62,7 +62,7 @@ module BulletTrain
               FileUtils.mkdir_p(directory)
               FileUtils.touch(partial_relative_path)
               `cp #{showcase_preview} #{partial_relative_path}`
-              new_files[partial_relative_path] = showcase_preview
+              new_files[partial_relative_path] = "#{gem_path.scan(/#{gem}.*/).pop}/#{partial_relative_path}"
             end
           end
         end
