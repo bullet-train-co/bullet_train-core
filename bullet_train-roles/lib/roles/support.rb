@@ -40,7 +40,7 @@ module Roles
       # For example, if you do with_roles(editor) it will return admin users if the admin role includes the editor role
       def self.with_roles(roles)
         # Mysql and postgres have different syntax for searching json or jsonb columns so we need different queries depending on the database
-        ActiveRecord::Base.connection.adapter_name.downcase.include?("mysql") ? with_roles_mysql(roles) : with_roles_postgres(roles)
+        mysql? ? with_roles_mysql(roles) : with_roles_postgres(roles)
       end
 
       def self.with_roles_mysql(roles)
@@ -54,6 +54,10 @@ module Roles
 
       def self.with_roles_postgres(roles)
         where("#{table_name}.role_ids ?| array[:keys]", keys: roles.map(&:key_plus_included_by_keys).flatten.uniq.map(&:to_s))
+      end
+
+      def self.mysql?
+        ["mysql", "trilogy"].any? { |adapter| ActiveRecord::Base.connection.adapter_name.downcase.include?(adapter) }
       end
 
       def validate_roles
