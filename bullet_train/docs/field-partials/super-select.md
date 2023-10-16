@@ -71,6 +71,32 @@ Here is an example allowing a new option to be entered by the user:
 </code></pre>
 
 Note: this will set the option `value` (which will be submitted to the server) to the entered text.
+
+To handle the new entry's text on the server, use `ensure_backing_models_on`.
+
+`ensure_backing_models_on` validates an `id:` or multiple `ids:` against a passed Active Record relation, and yields for each missing id so you can create backing models. Like this:
+
+```rb
+if strong_params[:category_id]
+  strong_params[:category_id] = ensure_backing_models_on(current_team.categories, id: strong_params[:category_id]) do |scope, id|
+    scope.find_or_create_by(name: id)
+  end
+end
+```
+
+In case our form had `multiple: true`, we could have used `ids:` instead:
+
+```rb
+if strong_params[:category_ids]
+  strong_params[:category_ids] = ensure_backing_models_on(current_team.categories, ids: strong_params[:category_ids]) do |scope, id|
+    scope.find_or_create_by(name: id)
+  end
+end
+```
+
+Note, if you need to constrain the collection further you could pass any extra scope, e.g. `current_team.categories.not_archived`.
+
+
 ## Events
 
 All events dispatched from the `super_select` partial are [Select2's jQuery events][select2_events] re-dispatched as native DOM events with the following caveats:
@@ -115,11 +141,11 @@ import { Controller } from "stimulus"
 
 export default class extends Controller {
   static targets = [ "dependentField" ]
-  
+
   updateDependentFields(event) {
     const originalSelect2Event = event.detail.event
     console.log(`catching event ${event.type}`, originalSelect2Event)
-    
+
     this.dependentFieldTargets.forEach((dependentField) => {
       // update dependentField based on value found in originalSelect2Event.target.value
     })
