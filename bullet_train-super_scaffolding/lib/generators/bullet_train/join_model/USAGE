@@ -1,0 +1,28 @@
+Description:
+  Generate a Bullet Train Join Model.
+
+Example:
+  E.g. Add project-specific tags to a project:
+
+  Given the following example models:
+
+    rails g super_scaffold Project Team name:text_field description:trix_editor
+    rails g super_scaffold Projects::Tag Team name:text_field
+
+  1️⃣  Use the standard Rails model generator to generate the join model:
+
+    rails g model Projects::AppliedTag project:references tag:references
+
+    👋 Don't run migrations yet! Sometimes Super Scaffolding updates them for you.
+
+  2️⃣  Use `join-model` scaffolding to prepare the join model for use in `crud-field` scaffolding:
+
+    rails g bullet_train:join_model Projects::AppliedTag project_id{class_name=Project} tag_id{class_name=Projects::Tag}
+
+  3️⃣  Now you can use `crud-field` scaffolding to actually add the field to the form of the parent model:
+
+    rails g super_scaffold:field Project tag_ids:super_select{class_name=Projects::Tag}
+
+    👋 Heads up! There will be one follow-up step output by this command that you need to take action on.
+
+  4️⃣  Now you can run your migrations.

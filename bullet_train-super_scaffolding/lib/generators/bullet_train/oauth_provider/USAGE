@@ -1,0 +1,50 @@
+Description:
+  Generate the setup and configuration for using an external OAuth Provider.
+
+  For a list of readily available provider strategies, see https://github.com/omniauth/omniauth/wiki/List-of-Strategies
+
+Example:
+  E.g. what we actually did to start Shopify off:
+    bin/rails generate bullet_train:oauth_provider omniauth-shopify-oauth2 shopify Oauth::ShopifyAccount SHOPIFY_API_KEY SHOPIFY_API_SECRET_KEY --icon=ti-shopping-cart
+    (Please note here that the SHOPIFY_API_KEY and SHOPIFY_API_SECRET_KEY strings are not the actual values, just the names we give to the environment variables.)
+
+  This will create:
+    app/models/oauth/shopify_account.rb
+    app/models/concerns/oauth/shopify_accounts/base.rb
+    app/models/webhooks/incoming/oauth/shopify_account_webhook.rb
+    app/models/concerns/webhooks/incoming/oauth/shopify_account_webhooks/base.rb
+    app/controllers/account/oauth/shopify_accounts_controller.rb
+    app/controllers/webhooks/incoming/oauth/shopify_account_webhooks_controller.rb
+    app/views/account/oauth/shopify_accounts/index.html.erb
+    app/views/account/oauth/shopify_accounts/_menu_item.html.erb
+    app/views/account/oauth/shopify_accounts/_index.html.erb
+    app/views/account/oauth/shopify_accounts/edit.html.erb
+    app/views/account/oauth/shopify_accounts/show.html.erb
+    app/views/account/oauth/shopify_accounts/_form.html.erb
+    app/views/account/oauth/shopify_accounts/_breadcrumbs.html.erb
+    test/models/oauth/shopify_account_test.rb
+    test/factories/oauth/shopify_accounts.rb
+    config/locales/en/oauth/shopify_accounts.en.yml
+    app/views/devise/shared/oauth/_shopify.html.erb
+    app/models/integrations/shopify_installation.rb
+    app/models/concerns/integrations/shopify_installations/base.rb
+    app/controllers/account/integrations/shopify_installations_controller.rb
+    app/views/account/integrations/shopify_installations/index.html.erb
+    app/views/account/integrations/shopify_installations/_menu_item.html.erb
+    app/views/account/integrations/shopify_installations/_index.html.erb
+    app/views/account/integrations/shopify_installations/_list.html.erb
+    app/views/account/integrations/shopify_installations/edit.html.erb
+    app/views/account/integrations/shopify_installations/show.html.erb
+    app/views/account/integrations/shopify_installations/_form.html.erb
+    app/views/account/integrations/shopify_installations/new.html.erb
+    app/views/account/integrations/shopify_installations/_breadcrumbs.html.erb
+    test/models/integrations/shopify_installation_test.rb
+    test/factories/integrations/shopify_installations.rb
+    config/locales/en/integrations/shopify_installations.en.yml
+    app/models/webhooks/incoming/oauth/shopify_account_webhook.rb
+    app/controllers/webhooks/incoming/oauth/shopify_account_webhooks_controller.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.
+
+
