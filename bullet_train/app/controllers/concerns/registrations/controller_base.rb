@@ -15,7 +15,7 @@ module Registrations::ControllerBase
         end
 
         # We only want the session to store the key on the redirect from InviteOnlySupport.
-        session[:invitation_key] = nil
+        session.delete(:invitation_key) if session[:invitation_key]
       end
 
       # do all the regular devise stuff.
