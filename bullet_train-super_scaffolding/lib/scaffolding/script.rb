@@ -178,7 +178,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
 
     # For join models, we don't want to generate a migration when
     # running the crud-field scaffolder in the last step, so we skip *_ids.
-    # Addresses belong_to :addressable, so they don't hae to be represented in a migration.
+    # Addresses belong_to :addressable, so they don't have to be represented in a migration.
     unless name.match?(/_ids$/) || data_type.nil?
       generation_command += " #{name_without_id || name}:#{data_type}"
       attributes_to_generate << name
