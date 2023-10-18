@@ -37,7 +37,7 @@ en:
             description: Can view all data
           editor:
             label: Editor
-            description: Can edit but not delet this object
+            description: Can edit but not delete this object
           admin:
             label: Admin
             description: Can manage all data
