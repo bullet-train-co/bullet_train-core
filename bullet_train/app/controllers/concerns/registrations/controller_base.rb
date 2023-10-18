@@ -13,6 +13,9 @@ module Registrations::ControllerBase
         unless session[:invitation_uuid] || session[:invitation_key]
           return redirect_to root_path
         end
+
+        # We only want the session to store the key on the redirect from InviteOnlySupport.
+        session[:invitation_key] = nil
       end
 
       # do all the regular devise stuff.

@@ -82,6 +82,9 @@ module Controllers::Base
       unless helpers.invited?
         redirect_to [:account, :teams], notice: t("teams.notifications.invitation_only")
       end
+
+      # We only want the session to store the key on the redirect from InviteOnlySupport.
+      session[:invitation_key] = nil
     end
   end
 
