@@ -1,4 +1,4 @@
-class BulletTrain::JoinModelGenerator < Rails::Generators::Base
+class JoinModelGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
   # ##############################
@@ -36,6 +36,8 @@ class BulletTrain::JoinModelGenerator < Rails::Generators::Base
   remove_class_option :pretend
   remove_class_option :quiet
   remove_class_option :skip
+
+  namespace "super_scaffold:join_model"
 
   argument :join_model
   argument :left_association

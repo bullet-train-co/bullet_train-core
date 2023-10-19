@@ -1,4 +1,4 @@
-class BulletTrain::IncomingWebhooksGenerator < Rails::Generators::Base
+class IncomingWebhooksGenerator < Rails::Generators::Base
   source_root File.expand_path("templates", __dir__)
 
   # ##############################
@@ -36,6 +36,8 @@ class BulletTrain::IncomingWebhooksGenerator < Rails::Generators::Base
   remove_class_option :pretend
   remove_class_option :quiet
   remove_class_option :skip
+
+  namespace "super_scaffold:incoming_webhooks"
 
   argument :provider_name
 

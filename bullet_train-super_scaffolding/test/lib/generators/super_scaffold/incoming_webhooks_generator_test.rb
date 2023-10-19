@@ -1,8 +1,8 @@
 require "test_helper"
-require "generators/bullet_train/incoming_webhooks/incoming_webhooks_generator"
+require "generators/super_scaffold/incoming_webhooks/incoming_webhooks_generator"
 
-class BulletTrain::IncomingWebhooksGeneratorTest < Rails::Generators::TestCase
-  tests BulletTrain::IncomingWebhooksGenerator
+class SuperScaffold::IncomingWebhooksGeneratorTest < Rails::Generators::TestCase
+  tests SuperScaffold::IncomingWebhooksGenerator
   destination Rails.root.join("tmp/generators")
   setup :prepare_destination
 
