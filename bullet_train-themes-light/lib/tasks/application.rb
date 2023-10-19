@@ -91,10 +91,10 @@ module BulletTrain
         theme_file = Pathname.new(target_path)
         msmn = Masamune::AbstractSyntaxTree.new(theme_file.readlines.join)
         data_to_skip =
-          msmn.method_calls(name: "require") +
-          msmn.method_calls(name: "mattr_accessor") +
-          msmn.comments.select { |comment| comment[:token].match?("TODO") }
-        lines_to_skip = data_to_skip.map { |data| data[:line_number] - 1 }
+          msmn.method_calls(token_value: "require") +
+          msmn.method_calls(token_value: "mattr_accessor") +
+          msmn.comments.select { |comment| comment.token_value.match?("TODO") }
+        lines_to_skip = data_to_skip.map { |data| data.line_number- 1 }
         new_lines = theme_file.readlines.select.with_index do |line, idx|
           !lines_to_skip.include?(idx) || line.match?("mattr_accessor :colors")
         end
@@ -213,9 +213,9 @@ module BulletTrain
       def self.install_theme(theme_name)
         helper = Pathname.new("./app/helpers/application_helper.rb")
         msmn = Masamune::AbstractSyntaxTree.new(helper.readlines.join)
-        current_theme_def = msmn.method_definitions(name: "current_theme").pop
-        current_theme = msmn.symbols.find { |node| node[:line_number] > current_theme_def[:line_number] }[:token]
-        helper.write msmn.replace(type: :symbol, old_token: current_theme, new_token: theme_name)
+        current_theme_def = msmn.method_definitions(token_value: "current_theme").pop
+        current_theme = msmn.symbols.find { |node| node.line_number > current_theme_def.line_number }.token_value
+        helper.write msmn.replace(type: :symbol, old_token_value: current_theme, new_token_value: theme_name)
 
         [Pathname.new("./Procfile.dev"), Pathname.new("./package.json")].each do |file|
           changed = file.read.gsub! current_theme, theme_name
