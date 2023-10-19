@@ -26,5 +26,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "bullet_train-themes-tailwind_css"
-  spec.add_dependency "masamune-ast", "~> 1.2.1"
+  spec.add_dependency "masamune-ast", "~> 2.0.2"
 end
