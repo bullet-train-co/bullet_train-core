@@ -51,8 +51,6 @@ class JoinModelGenerator < Rails::Generators::Base
   class_option :skip_api, type: :boolean, default: false, desc: "Don't alter the api payloads"
   class_option :skip_model, type: :boolean, default: false, desc: "Don't alter the model file"
 
-
-
   def generate
     # We add the name of the specific super_scaffolding command that we want to
     # invoke to the beginning of the argument string.
