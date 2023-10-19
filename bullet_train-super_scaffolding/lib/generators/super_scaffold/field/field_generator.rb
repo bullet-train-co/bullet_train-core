@@ -43,6 +43,7 @@ class FieldGenerator < Rails::Generators::Base
   argument :attributes, type: :array, default: [], banner: "attribute:type attribute:type"
 
   class_option :skip_table, type: :boolean, default: false, desc: "Only add to the new/edit form and show view."
+  class_option :skip_locales, type: :boolean, default: false, desc: "Don't generate locale files"
 
   def generate
     # We add the name of the specific super_scaffolding command that we want to
