@@ -55,6 +55,7 @@ class SuperScaffoldGenerator < Rails::Generators::Base
   class_option :skip_model, type: :boolean, default: false, desc: "Don't generate a model file"
   class_option :skip_controller, type: :boolean, default: false, desc: "Don't generate a controller file"
   class_option :skip_routes, type: :boolean, default: false, desc: "Don't generate any routes"
+  class_option :skip_parent, type: :boolean, default: false, desc: "Don't add child models to the show page of their parent"
 
   def generate
     # We add the name of the specific super_scaffolding command that we want to
