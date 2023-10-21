@@ -1,8 +1,6 @@
-@layer utilities {
-  .home-page-background {
-    /* TODO: ダークモードを使うように */
-  }
+/* TODO: Most of the styles here are the same as what's in billing.css */
 
+@layer utilities {
   .home-page-background-fade-container {
     position: fixed;
     top: 0;
@@ -34,5 +32,15 @@
     transform: translate(-360px, 0px) rotate(-45deg);
     z-index: -1;
     @apply bg-primary-400 bg-gradient-to-r from-white
+  }
+
+  .home-page-title {
+    font-size: 2.99rem;
+    margin: 30px 0px;
+    margin-top: 10px;
+    position: relative;
+    letter-spacing: -0.025em;
+    line-height: 120%;
+    @apply text-slate-800 font-bold hover:text-primary-600 hover:no-underline;
   }
 }
