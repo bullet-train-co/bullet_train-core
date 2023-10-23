@@ -19,7 +19,6 @@ If you're using Bullet Train for the first time, begin by learning these five im
 2. Use `bin/super-scaffold crud-field` to add a new field to a model you've already scaffolded:
 
     ```
-    rails g migration add_description_to_projects description:text
     bin/super-scaffold crud-field Project description:trix_editor
     ```
 
