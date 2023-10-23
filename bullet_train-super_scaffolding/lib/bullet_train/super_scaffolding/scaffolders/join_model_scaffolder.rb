@@ -11,29 +11,21 @@ module BulletTrain
             puts ""
             puts "  Given the following example models:".blue
             puts ""
-            puts "    rails g model Project team:references name:string description:text"
             puts "    bin/super-scaffold crud Project Team name:text_field description:trix_editor"
             puts ""
-            puts "    rails g model Projects::Tag team:references name:string"
             puts "    bin/super-scaffold crud Projects::Tag Team name:text_field"
             puts ""
-            puts "  1️⃣  Use the standard Rails model generator to generate the join model:".blue
-            puts ""
-            puts "    rails g model Projects::AppliedTag project:references tag:references"
-            puts ""
-            puts "    👋 Don't run migrations yet! Sometimes Super Scaffolding updates them for you.".yellow
-            puts ""
-            puts "  2️⃣  Use `join-model` scaffolding to prepare the join model for use in `crud-field` scaffolding:".blue
+            puts "  1️⃣   Use `join-model` scaffolding to generate the join model for use in `crud-field` scaffolding:".blue
             puts ""
             puts "    bin/super-scaffold join-model Projects::AppliedTag project_id{class_name=Project} tag_id{class_name=Projects::Tag}"
             puts ""
-            puts "  3️⃣  Now you can use `crud-field` scaffolding to actually add the field to the form of the parent model:".blue
+            puts "  2️⃣  Now you can use `crud-field` scaffolding to actually add the field to the form of the parent model:".blue
             puts ""
             puts "    bin/super-scaffold crud-field Project tag_ids:super_select{class_name=Projects::Tag}"
             puts ""
             puts "    👋 Heads up! There will be one follow-up step output by this command that you need to take action on."
             puts ""
-            puts "  4️⃣  Now you can run your migrations.".blue
+            puts "  3️⃣  Now you can run your migrations.".blue
             exit
           end
 

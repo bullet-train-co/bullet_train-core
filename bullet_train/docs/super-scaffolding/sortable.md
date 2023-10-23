@@ -4,7 +4,6 @@ When issuing a `bin/super-scaffold crud` command, you can pass the `--sortable` 
 
 ```
 # E.g. Pages belong to a Site and are sortable via drag-and-drop:
-rails g model Page site:references name:string path:text
 bin/super-scaffold crud Page Site,Team name:text_field path:text_area --sortable
 ```
 
