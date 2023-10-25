@@ -9,12 +9,13 @@ stimulus_controller = 'fields--ckeditor'
 
 form ||= current_fields_form
 options ||= {}
-options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 other_options ||= {}
 
+options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 %>
 
-<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
+<%# We don't have to pass `options` here because we're already sending it below to form.text_area. %>
+<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
   <% content_for :field do %>
     <div data-controller="<%= stimulus_controller %>">
       <%= form.text_area method, options %>

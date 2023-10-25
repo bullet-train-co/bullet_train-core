@@ -6,14 +6,16 @@ options ||= {}
 other_options ||= {}
 select2_options ||= nil
 html_options ||= {}
+choices_url ||= nil
+
 html_options[:id] ||= form.field_id(method)
 html_options[:class] = "form-control select2 #{html_options[:class]}".strip
-choices_url ||= nil
+
 if choices_url.nil?
   choices ||= options_for(form, method)&.invert
 else
   # If we have a choices_url, we're going to lazy load the choices.  However, we still want to show the currently selected option.
-  method_without_id = method.to_s.gsub("_id", "")
+  method_without_id = method.to_s.gsub("_id", "") # TODO: We should use /_id$/.
   if current_selection = form.object.send(method_without_id)
     choices = [[current_selection.label_string, current_selection.id]]
   else
@@ -24,6 +26,8 @@ end
 other_options[:use_browser_time_zone] = true if other_options[:use_browser_time_zone].nil?
 use_browser_time_zone = other_options[:use_browser_time_zone]
 
+# TODO: Change name for `wrapper_options`, maybe to simply `wrapper`.
+# This seems to be internal, so we shouldn't need to write docs or a deprecation message for it.
 wrapper_options ||= {}
 wrapper_options[:data] ||= {}
 wrapper_options[:data][:controller] ||= ""
@@ -41,10 +45,10 @@ end
 html_options[:data] ||= {}
 html_options[:data].merge!("#{stimulus_controller}-target": 'select')
 html_options[:data].merge!("use-browser-time-zone": use_browser_time_zone )
-
 %>
 
-<%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
+<%# We don't have to pass `options` or `html_options` here because we're already sending both below to form.select. %>
+<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
   <% content_for :field do %>
     <%= content_tag :div, wrapper_options do %>
       <%= form.select method, choices, options, html_options %>

@@ -2,6 +2,8 @@
 form ||= current_fields_form
 labels = labels_for(form, method)
 options ||= {}
+other_options ||= {}
+
 options[:class] = "formatted_content trix-content #{options[:class]}"
 options[:placeholder] ||= labels.placeholder if labels.placeholder
 options[:data] ||= {}
@@ -16,11 +18,11 @@ options[:data][:topics] ||= []
 # current_team.scaffolding_things.map { |scaffolding_thing|
 #   {key: scaffolding_thing.name, value: scaffolding_thing.id, protocol: 'bullettrain', model: 'scaffolding/things', id: scaffolding_thing.id, label: scaffolding_thing.name, photo: photo_for(scaffolding_thing)}
 # }.to_json
-other_options ||= {}
 %>
 
 <div class="<%= 'trix-hide-toolbar' if other_options[:hide_toolbar] %>">
-<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
+<%# We don't have to pass `options` here because we're already sending it below to form.rich_text_area. %>
+<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
   <% content_for :field do %>
     <%= form.rich_text_area method, options %>
     <%= partial.submit_button.presence %>
