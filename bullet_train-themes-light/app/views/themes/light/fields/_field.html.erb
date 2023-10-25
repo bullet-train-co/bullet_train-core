@@ -11,12 +11,15 @@ end
 form ||= current_fields_form
 # returns a struct with `label`, `placeholder`, and `help` methods.
 labels = labels_for(form, method)
+
+# Initialize options.
 options ||= {}
+other_options ||= {}
+
 options[:id] ||= form.field_id(method)
 # options[:disabled] ||= !field_editable?(form.object, method) if user_signed_in?
 options[:placeholder] ||= labels.placeholder if labels.placeholder
 
-other_options ||= {}
 other_options[:help] = [other_options[:help], labels.help].compact.join(" ")
 
 if !other_options.key?(:required)
@@ -53,8 +56,12 @@ end
     <% end %>
   <% end %>
 
+  <%# Here, we prioritize yielding the partial's field markup if it already exists. %>
+  <%# `form.send` below calls the original Rails Form helpers, such as %>
+  <%# `form.text_field(method, options)`. Refer to the form helpers for more details: %>
+  <%# https://github.com/rails/rails/blob/main/actionview/lib/action_view/helpers/form_helper.rb %>
   <div class="mt-1.5">
-    <% # the actual field. %>
+    <% # The actual field. %>
     <% if partial.field? %>
       <%= partial.field %>
     <% else %>
