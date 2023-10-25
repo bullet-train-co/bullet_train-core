@@ -46,6 +46,18 @@ The 1:1 relationship between these field partials and their underlying Rails for
 
 Individual field partials might have additional options available based on the underlying Rails form field helper. Links to the documentation for individual form field partials are listed at the end of this page.
 
+## `options` vs. `html_options`
+
+Most of the native form helpers use `options` to define html attributes like so:
+
+```ruby
+def text_field(object, method, options = {})
+  ...
+end
+```
+
+However, there are other helper methods that use a different set of arguments that define `options` and `html options` separately. For field partials that use `html_options`, refer to the extra documentation at the end of this page for field partials such as `super_select`. All other partials seen here simply use `options`.
+
 ## `options` vs. `other_options`
 
 Because Bullet Train field partials have more responsibilities than the underlying Rails form field helpers, there are also additional options for things like hiding labels, displaying specific error messages, etc. For these options, we pass them separately as `other_options`. This keeps them separate from the options in `options` that will be passed directly to the underlying Rails form field helper.
