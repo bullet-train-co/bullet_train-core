@@ -29,6 +29,14 @@ module BulletTrain
 
           child = argv[0]
           parents = argv[1] ? argv[1].split(",") : []
+
+          # Raise an error if the developer skipped adding the parent and went straight to the attributes.
+          if FIELD_PARTIALS.keys.map(&:to_s).include?(parents.first.split(":").last)
+            puts "It looks like you forgot to add the model's parent to your scaffolding command.".red
+            puts "Add the parent name after the model and try again.".red
+            exit
+          end
+
           parents = parents.map(&:classify).uniq
           parent = parents.first
           child_parts = child.split("::")
