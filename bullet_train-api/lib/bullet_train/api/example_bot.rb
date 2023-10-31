@@ -3,12 +3,12 @@ require_relative "../../../app/helpers/api/open_api_helper"
 module FactoryBot
   module ExampleBot
 
-    def example(model, **)
-      FactoryBot.build(factory(model), **)
+    def example(model, **options)
+      FactoryBot.build(factory(model), **options)
     end
 
-    def example_list(model, quantity, **)
-      FactoryBot.build_list(factory(model), quantity, **)
+    def example_list(model, quantity, **options)
+      FactoryBot.build_list(factory(model), quantity, **options)
     end
 
     REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
