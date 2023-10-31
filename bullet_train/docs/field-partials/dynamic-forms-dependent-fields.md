@@ -74,7 +74,7 @@ What if you'd instead want to:
 * Show/hide multiple dependent fields based on the value of the `dependable` field.
 * Update more than the field itself, but also the value of its `label`. As an example, the [`address_field`](/docs/field-partials/address-field.md) partial shows an empty "State / Province / Region" sub-field by default, and on changing the `:country_id` field to the United States, changes the whole `:region_id` to "State" as its label and with all US States as its choices.
 
-For these situations, Bullet Train has a `dependent_fields_turbo_frame` partial that's made to listen to `dependable:updated` events by default.
+For these situations, Bullet Train has a `dependent_fields_frame` partial that's made to listen to `dependable:updated` events by default.
 
 ```erb
 # update the super-select `dependable-dependents-selector-value` to "##{form.field_id(:heard_from, :dependent_fields)}" to match

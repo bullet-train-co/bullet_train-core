@@ -146,7 +146,29 @@ git add -A
 git commit -m "Upgrading Bullet Train gems."
 ```
 
-### 5. Run Tests.
+### 6. Update the version of JavaScript packages
+
+You'll need to also update your `package.json` to point to the same Bullet Train version set in your `Gemfile`.
+
+Also note that we're removing the `^` "compatible with version" character. For each version change through `1.3.x` versions, we'll specify the exact version. `v1.4.0` releases (and above) include this change automatically.
+
+So we're changing from:
+
+```json
+    "@bullet-train/bullet-train": "^1.3.0",
+    "@bullet-train/bullet-train-sortable": "^1.3.0",
+    "@bullet-train/fields": "^1.3.0",
+```
+
+To this:
+
+```json
+    "@bullet-train/bullet-train": "1.3.0",
+    "@bullet-train/bullet-train-sortable": "1.3.0",
+    "@bullet-train/fields": "1.3.0",
+```
+
+### 7. Run Tests.
 
 ```
 rails test
@@ -155,7 +177,7 @@ rails test:system
 
 If anything fails, investigate the failures and get things working again, and commit those changes.
 
-### 6. Merge into `main` and delete the branch.
+### 8. Merge into `main` and delete the branch.
 
 ```
 git checkout main
