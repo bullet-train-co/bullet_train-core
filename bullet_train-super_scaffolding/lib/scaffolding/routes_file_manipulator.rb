@@ -345,8 +345,8 @@ class Scaffolding::RoutesFileManipulator
 
       if child_namespaces.size > 1
         # If a model has multiple namespaces, we have to account for that here.
-        # For example, creates the :issues namespace here when `SendAction`
-        # doesn't require an `Issue` as a resource.
+        # For example, this creates the :issues namespace here when `SendAction`
+        # and the `parent_resource` is `newsletters`.
         #
         # resources :newsletters do
         #   scope module: 'newsletters' do
@@ -357,7 +357,7 @@ class Scaffolding::RoutesFileManipulator
         #   end
         # end
 
-        # TODO: just #shift the child_namespaces variable, it should be fine.
+        # TODO: We should be able to just do `child_namespaces.shift`.
         child_namespaces_without_parent = child_namespaces.dup
         child_namespaces_without_parent.shift
         deeply_nested_within = find_or_create_namespaces(child_namespaces_without_parent, scope_within)
