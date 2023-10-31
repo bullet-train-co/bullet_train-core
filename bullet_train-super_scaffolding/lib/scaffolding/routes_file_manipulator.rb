@@ -326,7 +326,7 @@ class Scaffolding::RoutesFileManipulator
     within = find_or_create_namespaces(base_namespaces)
 
     # e.g. Project and Projects::Deliverable
-    if parent_namespaces.empty? && child_namespaces.one? && parent_resource == child_namespaces.first
+    if parent_namespaces.empty? && child_namespaces.any? && parent_resource == child_namespaces.first
 
       # resources :projects do
       #   scope module: 'projects' do
@@ -343,19 +343,40 @@ class Scaffolding::RoutesFileManipulator
         scope_within = insert([line, "end"], parent_within)
       end
 
-      find_or_create_resource([child_resource], options: "only: collection_actions", within: scope_within)
+      if child_namespaces.size > 1
+        # If a model has multiple namespaces, we have to account for that here.
+        # For example, creates the :issues namespace here when `SendAction`
+        # doesn't require an `Issue` as a resource.
+        #
+        # resources :newsletters do
+        #   scope module: 'newsletters' do
+        #     resources :issues, only: collection_actions
+        #     namespace :issues do
+        #       resources :send_actions, shallow: false
+        #     end
+        #   end
+        # end
 
-      # namespace :projects do
-      #   resources :deliverables, except: collection_actions
-      # end
+        # TODO: just #shift the child_namespaces variable, it should be fine.
+        child_namespaces_without_parent = child_namespaces.dup
+        child_namespaces_without_parent.shift
+        deeply_nested_within = find_or_create_namespaces(child_namespaces_without_parent, scope_within)
+        find_or_create_resource([child_resource], options: "shallow: false", within: deeply_nested_within)
+      else
+        find_or_create_resource([child_resource], options: "only: collection_actions", within: scope_within)
 
-      # We want to see if there are any namespaces one level above the parent itself,
-      # because namespaces with the same name as the resource can exist on the same level.
-      parent_block_start = Scaffolding::BlockManipulator.find_block_parent(parent_within, lines)
-      namespace_line_within = find_or_create_namespaces(child_namespaces, parent_block_start)
-      find_or_create_resource([child_resource], options: "except: collection_actions", within: namespace_line_within)
-      unless find_namespaces(child_namespaces, within)[child_namespaces.last]
-        raise "tried to insert `namespace :#{child_namespaces.last}` but it seems we failed"
+        # namespace :projects do
+        #   resources :deliverables, except: collection_actions
+        # end
+
+        # We want to see if there are any namespaces one level above the parent itself,
+        # because namespaces with the same name as the resource can exist on the same level.
+        parent_block_start = Scaffolding::BlockManipulator.find_block_parent(parent_within, lines)
+        namespace_line_within = find_or_create_namespaces(child_namespaces, parent_block_start)
+        find_or_create_resource([child_resource], options: "except: collection_actions", within: namespace_line_within)
+        unless find_namespaces(child_namespaces, within)[child_namespaces.last]
+          raise "tried to insert `namespace :#{child_namespaces.last}` but it seems we failed"
+        end
       end
 
     # e.g. Projects::Deliverable and Objective Under It, Abstract::Concept and Concrete::Thing
