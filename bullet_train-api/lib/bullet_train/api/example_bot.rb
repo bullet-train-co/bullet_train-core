@@ -2,7 +2,6 @@ require_relative "../../../app/helpers/api/open_api_helper"
 
 module FactoryBot
   module ExampleBot
-
     def example(model, **options)
       FactoryBot.build(factory(model), **options)
     end
