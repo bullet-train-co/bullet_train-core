@@ -34,7 +34,7 @@ do
 done
 
 updates="${packages[@]}"
-bundle lock --update $updates
+bundle lock --conservative --update $updates
 
 packages=(
   "bullet_train"
