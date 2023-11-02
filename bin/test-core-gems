@@ -35,6 +35,13 @@ for ((i = 0; i < ${#packages[@]}; i++)); do
   if [ $? == "1" ]; then
     FAILED_TESTS+=("${packages[$i]}")
   fi
+
+  echo "#####################################################################"
+  echo ""
+  echo "After tests for ${packages[$i]}"
+  echo "FAILED_TESTS = ${FAILED_TESTS[@]}"
+  echo ""
+  echo "#####################################################################"
 done
 
 if [ ${#FAILED_TESTS[@]} != "0" ]; then
