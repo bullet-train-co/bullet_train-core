@@ -31,7 +31,7 @@ for ((i = 0; i < ${#packages[@]}; i++)); do
   echo "FAILED_TESTS = ${FAILED_TESTS[@]}"
   echo ""
   echo "#####################################################################"
-  bundle exec rails test local/bullet_train-core/${packages[$i]}
+  bundle exec rails test -v local/bullet_train-core/${packages[$i]}
 
   EXIT_CODE=$?
   if [ $EXIT_CODE == "1" ]; then
