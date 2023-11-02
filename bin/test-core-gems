@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+set -euo pipefail
+
 # TODO: Tests for the commented out gems are failing.
 packages=(
   "bullet_train"
