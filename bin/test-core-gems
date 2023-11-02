@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-#set -euo pipefail
-
 # TODO: Tests for the commented out gems are failing.
 packages=(
   "bullet_train"
@@ -30,23 +28,14 @@ for ((i = 0; i < ${#packages[@]}; i++)); do
   echo "#####################################################################"
   echo ""
   echo "Running tests for ${packages[$i]}"
-  echo "FAILED_TESTS = ${FAILED_TESTS[@]}"
   echo ""
   echo "#####################################################################"
   bundle exec rails test -v local/bullet_train-core/${packages[$i]}
 
   EXIT_CODE=$?
   if [ $EXIT_CODE == "1" ]; then
-    echo "we failed with an exit code of $EXIT_CODE in ${packages[$i]}"
     FAILED_TESTS+=("${packages[$i]}")
   fi
-
-  echo "#####################################################################"
-  echo ""
-  echo "After tests for ${packages[$i]}"
-  echo "FAILED_TESTS = ${FAILED_TESTS[@]}"
-  echo ""
-  echo "#####################################################################"
 done
 
 if [ ${#FAILED_TESTS[@]} != "0" ]; then
