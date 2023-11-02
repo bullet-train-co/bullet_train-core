@@ -15,12 +15,12 @@ module BulletTrain
 
       if source_file[:absolute_path]
         if File.exist?(source_file[:absolute_path])
-          puts "" # standard:disable all
+          puts "" # standard:disable Style/IdenticalConditionalBranches
           puts "Absolute path:".green
           puts "  #{source_file[:absolute_path]}".green
           puts ""
         else
-          puts "" # standard:disable all
+          puts "" # standard:disable Style/IdenticalConditionalBranches
           puts "Sorry, we could not find the file you're looking for.".red
           puts "Please check the path and try again.".red
           exit
