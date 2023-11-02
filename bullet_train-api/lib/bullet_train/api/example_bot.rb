@@ -2,6 +2,10 @@ require_relative "../../../app/helpers/api/open_api_helper"
 
 module FactoryBot
   module ExampleBot
+    # Anonymous argument forwarding is a new feature in Ruby 3.2 and trying to use it breaks
+    # things when people are using an older verison of Ruby. So for now we're silencing the
+    # linter complaints and are using named arguments.
+    # standard:disable Style/ArgumentsForwarding
     def example(model, **options)
       FactoryBot.build(factory(model), **options)
     end
@@ -9,6 +13,7 @@ module FactoryBot
     def example_list(model, quantity, **options)
       FactoryBot.build_list(factory(model), quantity, **options)
     end
+    # standard:enable Style/ArgumentsForwarding
 
     REST_METHODS = %i[get_examples get_example post_example post_parameters put_example put_parameters patch_example patch_parameters]
 
