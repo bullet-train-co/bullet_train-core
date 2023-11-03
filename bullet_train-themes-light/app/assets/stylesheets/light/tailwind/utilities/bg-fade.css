@@ -1,0 +1,53 @@
+@layer utilities {
+  .background-fade-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    max-width: 100vw;
+    overflow: hidden;
+    z-index: -1;
+  }
+
+  .background-fade {
+    &:before {
+      content: "";
+      position: absolute;
+      z-index: 1;
+      @apply bg-primary-200 bg-gradient-to-r from-white
+    }
+
+    position: absolute;
+    top: 0px;
+    transform: translate(-360px, 0px) rotate(-45deg);
+    z-index: -1;
+    @apply bg-primary-400 bg-gradient-to-r from-white
+  }
+
+  .medium-fade {
+    &:before {
+      right: -40px;
+      top: -200px;
+      width: 1000px;
+      height: 600px;
+    }
+
+    right: -800px;
+    width: 800px;
+    height: 600px;
+  }
+
+  .large-fade {
+    &:before {
+      right: -0px;
+      top: -200px;
+      width: 1500px;
+      height: 800px;
+    }
+
+    right: -700px;
+    width: 1000px;
+    height: 800px;
+  }
+}

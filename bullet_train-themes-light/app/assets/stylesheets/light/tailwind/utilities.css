@@ -1,4 +1,6 @@
+@import "./utilities/bg-fade";
 @import "./utilities/billing";
+@import "./utilities/scroll-reveal";
 
 @layer utilities {
   .space-y {

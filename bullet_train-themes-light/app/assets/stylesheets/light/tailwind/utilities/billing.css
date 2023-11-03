@@ -7,39 +7,6 @@
     background-image: linear-gradient(to bottom, #f8faff, #fff);
   }
 
-  .pricing-page-background-fade-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 100vw;
-    max-width: 100vw;
-    overflow: hidden;
-    z-index: -1;
-  }
-
-  .pricing-page-background-fade {
-    &:before {
-      content: "";
-      position: absolute;
-      right: -40px;
-      top: -200px;
-      width: 1000px;
-      height: 600px;
-      z-index: -1;
-      @apply bg-primary-200 bg-gradient-to-r from-white
-    }
-
-    position: absolute;
-    right: -800px;
-    top: 0px;
-    width: 800px;
-    height: 600px;
-    transform: translate(-360px, 0px) rotate(-45deg);
-    z-index: -1;
-    @apply bg-primary-400 bg-gradient-to-r from-white
-  }
-
   .brand-title {
     color: #047bf8;
     font-size: 2.99rem;
