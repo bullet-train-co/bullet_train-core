@@ -23,7 +23,7 @@ module BulletTrain
           puts "" # standard:disable Style/IdenticalConditionalBranches
           puts "Sorry, we could not find the file you're looking for.".red
           puts "Please check the path and try again.".red
-          exit
+          exit 1
         end
 
         source_file[:relative_path] = source_file[:absolute_path].split(/(?=#{source_file[:package_name]})/).pop
