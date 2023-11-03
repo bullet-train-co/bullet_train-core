@@ -14,10 +14,17 @@ module BulletTrain
       source_file[:relative_path] = nil
 
       if source_file[:absolute_path]
-        puts ""
-        puts "Absolute path:".green
-        puts "  #{source_file[:absolute_path]}".green
-        puts ""
+        if File.exist?(source_file[:absolute_path])
+          puts "" # standard:disable Style/IdenticalConditionalBranches
+          puts "Absolute path:".green
+          puts "  #{source_file[:absolute_path]}".green
+          puts ""
+        else
+          puts "" # standard:disable Style/IdenticalConditionalBranches
+          puts "Sorry, we could not find the file you're looking for.".red
+          puts "Please check the path and try again.".red
+          exit 1
+        end
 
         source_file[:relative_path] = source_file[:absolute_path].split(/(?=#{source_file[:package_name]})/).pop
 

@@ -5,9 +5,15 @@ Rails.application.load_tasks
 module BulletTrain::Tasks; end
 
 class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
+  setup do
+    light_theme_gem = `bundle show bullet_train-themes-light`.chomp
+    light_box_path = "#{light_theme_gem}/app/views/themes/light/workflow/_box.html.erb"
+    @annotated_path = "<!-- BEGIN #{light_box_path} -->"
+  end
+
   test "resolves the path when passed BEGIN absolute path from annotated view" do
     mock_stdin_with [
-      "<!-- BEGIN /Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb -->",
+      @annotated_path,
       "n", # Would you like to eject the file into the local project? (y/n):
       "n" # Would you like to open `#{source_file[:absolute_path]}`? (y/n):
     ] do
@@ -20,7 +26,7 @@ class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
 
   test "resolves the path when passed END absolute path from annotated view" do
     mock_stdin_with [
-      "<!-- END /Users/andrewculver/.rbenv/versions/3.1.2/lib/ruby/gems/3.1.0/gems/bullet_train-themes-light-1.0.10/app/views/themes/light/workflow/_box.html.erb -->",
+      @annotated_path,
       "n", # Would you like to eject the file into the local project? (y/n):
       "n" # Would you like to open `#{source_file[:absolute_path]}`? (y/n):
     ] do
