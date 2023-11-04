@@ -1,23 +1,43 @@
 <%
 stimulus_controller = 'fields--button-toggle'
 form ||= current_fields_form
+
+button_field_options ||= options_for(form, method)
+options ||= {}
 html_options ||= {}
-html_options[:id] ||= form.field_id(method)
-multiple ||= false
 other_options ||= {}
-options ||= options_for(form, method)
+
+options[:id] ||= form.field_id(method)
+options[:data] ||= {}
+options[:data]["#{stimulus_controller}-target"] = 'shadowField'
+
+# From the Rails documentation concerning `options`:
+# Any standard HTML attributes for the tag can be passed in, for example :class
+# https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-check_box
+ActiveSupport::Deprecation.warn(
+  "The `html_options` attribute for checkboxes and radio buttons will be removed in a later version " \
+  "Pass all of your html options like `class` to `options` instead."
+)
+options.merge!(html_options)
+
+ActiveSupport::Deprecation.warn(
+  "The `multiple` attribute will be removed in a later version. " \
+  "Please pass `options: {multiple: true}` to `render` instead."
+)
+multiple ||= false
+options[:multiple] ||= multiple
 %>
 
-<% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
+<% content = render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <div>
-      <% options.each do |value, label| %>
-        <% checked = form.object.send(method).is_a?(Array) ? form.object.send(method).map(&:to_s).include?(value.to_s) : form.object.send(method).to_s == value.to_s  %>
+      <% button_field_options.each do |value, label| %>
+        <% options[:checked] = form.object.send(method).is_a?(Array) ? form.object.send(method).map(&:to_s).include?(value.to_s) : form.object.send(method).to_s == value.to_s  %>
         <label class="btn-toggle" data-controller="<%= stimulus_controller %>">
-          <% if multiple %>
-            <%= form.check_box method, {multiple: multiple, checked: checked, data: { "#{stimulus_controller}-target": 'shadowField' }}, value, "" %>
+          <% if options[:multiple] %>
+            <%= form.check_box method, options, value, "" %>
           <% else %>
-            <%= form.radio_button method, value, { data: { "#{stimulus_controller}-target": 'shadowField' }, checked: checked} %>
+            <%= form.radio_button method, value, options %>
           <% end %>
           <button type="button" class="button-alternative mb-1.5 mr-1" data-action="<%= stimulus_controller %>#clickShadowField">
             <%= label %>
