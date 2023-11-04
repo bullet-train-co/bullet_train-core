@@ -7,6 +7,7 @@ ActiveSupport::Deprecation.warn(
   "Please pass all of the strings you want to appear in your buttons to `button_field_buttons`."
 )
 options ||= {}
+button_field_buttons ||= {}
 button_field_options ||= options
 button_field_options = options_for(form, method) if button_field_buttons.empty?
 
