@@ -2,9 +2,15 @@
 stimulus_controller = 'fields--button-toggle'
 form ||= current_fields_form
 
-button_field_options ||= options_for(form, method)
+ActiveSupport::Deprecation.warn(
+  "`options` will be replaced with `button_field_options` in a later version. " \
+  "Please pass all of the strings you want to appear in your buttons to `button_field_buttons`."
+)
 options ||= {}
-html_options ||= {}
+button_field_options ||= options
+button_field_options = options_for(form, method) if button_field_buttons.empty?
+
+html_options ||= {} # TODO: Deprecated.
 other_options ||= {}
 
 options[:id] ||= form.field_id(method)
