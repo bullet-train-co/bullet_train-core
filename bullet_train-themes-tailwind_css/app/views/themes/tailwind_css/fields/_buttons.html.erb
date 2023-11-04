@@ -11,6 +11,11 @@ button_field_buttons ||= {}
 button_field_options ||= options
 button_field_options = options_for(form, method) if button_field_buttons.empty?
 
+# Reinitialize options.
+# TODO: We need to do this because `options` is currently an array of strings
+# i.e. - ["One", "Two", "Three"]
+options ||= {}
+
 html_options ||= {} # TODO: Deprecated.
 other_options ||= {}
 
