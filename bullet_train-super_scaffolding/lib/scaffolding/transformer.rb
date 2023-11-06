@@ -732,10 +732,6 @@ class Scaffolding::Transformer
           # add_additional_step :yellow, transform_string("We've added a reference to a `placeholder` to the form for the select or super_select field, but unfortunately earlier versions of the scaffolded locales Yaml don't include a reference to `fields: *fields` under `form`. Please add it, otherwise your form won't be able to locate the appropriate placeholder label.")
         end
 
-        if attribute.type == "color_picker"
-          field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{attribute.name}.options')"
-        end
-
         # When rendering a super_select element we need to use `html_options: {multiple: true}`,
         # but all other fields simply use `multiple: true` to work.
         if attribute.is_multiple?
@@ -777,6 +773,10 @@ class Scaffolding::Transformer
           when "super_select"
             field_attributes["\n  choices"] = "@tangible_thing.#{valid_values}.map { |#{short}| [#{short}.#{attribute.options[:label]}, #{short}.id] }"
           end
+        end
+
+        if attribute.type == "color_picker"
+          field_attributes[:color_picker_field_options] = "t('#{child.pluralize.underscore}.fields.#{attribute.name}.options')"
         end
 
         field_content = "<%= render 'shared/fields/#{attribute.type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"
