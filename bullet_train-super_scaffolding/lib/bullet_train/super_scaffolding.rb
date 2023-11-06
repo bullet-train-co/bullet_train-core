@@ -22,6 +22,22 @@ module BulletTrain
 
     class Runner
       def run
+        # If this scaffolder is being run, it means that the developer
+        # did not specify which scaffolder they want to use.
+        puts ""
+        puts "🚅  usage: bin/super-scaffold [type] (... | --help)"
+        puts ""
+        puts "Supported types of scaffolding:"
+        puts ""
+        puts "  crud"
+        puts "  crud-field"
+        puts "  join-model"
+        puts "  oauth-provider"
+        puts "  breadcrumbs"
+        puts ""
+        puts "Try \`bin/super-scaffold [type]` for usage examples.".blue
+        puts ""
+
         # Make `rake` invocation compatible with how this was run historically.
         require "scaffolding/script"
       end
