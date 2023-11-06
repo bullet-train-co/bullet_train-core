@@ -1,18 +1,35 @@
 <%
 stimulus_controller = 'fields--color-picker'
-
 form ||= current_fields_form
+
+ActiveSupport::Deprecation.warn(
+  "`options` will be replaced with `color_picker_field_options` in a later version. " \
+  "Please pass all of the colors you want as strings to `color_picker_field_options`."
+)
+color_picker_field_options ||= options_for(form, method)
+options ||= {}
+options.delete(:color_picker_options)
+
 html_options ||= {}
-html_options[:id] ||= form.field_id(method)
-multiple ||= false
 other_options ||= {}
-options ||= options_for(form, method)
+
+options[:id] ||= form.field_id(method)
+
+# TODO: I don't think multiple is even used for this attribute,
+# we should probably delete this altogether.
+ActiveSupport::Deprecation.warn(
+  "The `multiple` attribute will be removed in a later version. " \
+  "Please pass `options: {multiple: true}` to `render` instead."
+)
+multiple ||= false
+options[:multiple] ||= multiple
+
 value = form.object.send(method)
 
 color_selected_classes = "ring-2 ring-offset-2"
 %>
 
-<% content = render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
+<% content = render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <div class="space-x-1" 
       data-controller="<%= stimulus_controller %>"
@@ -21,14 +38,14 @@ color_selected_classes = "ring-2 ring-offset-2"
     >
       <%= form.hidden_field method, value: value, data: {"#{stimulus_controller}-target": "colorPickerValue"} %>
       <div class="inline space-x-1" data-<%= stimulus_controller %>-target="colorOptions">
-        <% options[:color_picker_options].each do |color| %>
+        <% color_picker_field_options.each do |color| %>
           <label class="btn-toggle btn-color-picker">
             <button type="button" class="button-color mb-1.5 dark:ring-offset-slate-700 <%= color == value ? color_selected_classes : '' %>" style="background-color: <%= color %>; --tw-ring-color: <%= color %>" data-action="<%= stimulus_controller %>#pickColor" data-<%= stimulus_controller %>-target="colorButton" data-color="<%= color %>">&nbsp;</button>
           </label>
         <% end %>
       </div>
       <label class="btn-toggle btn-color-picker">
-        <button type="button" class="button-color mr-1 dark:ring-offset-slate-700 <%= value.blank? || options.include?(value) ? 'hidden' : color_selected_classes %>" data-action="<%= stimulus_controller %>#pickColor" data-<%= stimulus_controller %>-target="userSelectedColor colorButton" data-color="<%= value %>" style="background-color: <%= value %>; --tw-ring-color: <%= value %>">&nbsp;</button>
+        <button type="button" class="button-color mr-1 dark:ring-offset-slate-700 <%= value.blank? || color_picker_field_options.include?(value) ? 'hidden' : color_selected_classes %>" data-action="<%= stimulus_controller %>#pickColor" data-<%= stimulus_controller %>-target="userSelectedColor colorButton" data-color="<%= value %>" style="background-color: <%= value %>; --tw-ring-color: <%= value %>">&nbsp;</button>
       </label>
       <span class="relative">
         <input type="text" disabled="disabled" class="rounded-md shadow-sm font-light font-mono text-sm focus:ring-blue focus:border-blue border-slate-300 w-48 dark:bg-slate-800 dark:border-slate-900" value="<%= value %>" data-<%= stimulus_controller %>-target="colorInput"/>
