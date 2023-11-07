@@ -1,8 +1,7 @@
 <%
 stimulus_controller = 'fields--date'
-
 form ||= current_fields_form
-options ||= {}
+
 user_tz = defined?(current_user.time_zone) ? ActiveSupport::TimeZone.find_tzinfo(current_user.time_zone).name : nil
 
 current_team_time_zone = if current_user&.respond_to?(:current_team)
@@ -12,8 +11,12 @@ else
 end
 team_tz = ActiveSupport::TimeZone.find_tzinfo(current_team_time_zone)&.name
 
-# data options
+options ||= {}
 data_options ||= {}
+other_options ||= {}
+
+# data_options represents the iso8601 date and time value in a hidden input field.
+# The value we display on screen is in options[:value].
 data_options[:id] ||= form.field_id(method)
 data_options[:class] = "hidden"
 data_options[:value] = form.object.send(method)&.in_time_zone(current_time_zone)&.iso8601
@@ -26,10 +29,10 @@ raw_value = form.object.send(method)&.in_time_zone(current_user&.time_zone || cu
 options[:value] = raw_value && I18n.l(raw_value, format: :date_and_time_field)
 options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
 
-other_options ||= {}
 %>
 
-<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
+<%# We don't need to pass options here because we pass it below to `text_field`. %>
+<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
   <% content_for :field do %>
     <div
       class="date-input relative"
