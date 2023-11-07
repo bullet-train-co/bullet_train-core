@@ -736,6 +736,7 @@ class Scaffolding::Transformer
         # but all other fields simply use `multiple: true` to work.
         if attribute.is_multiple?
           if attribute.type == "super_select"
+            # TODO: We should be able to just do `field_options[:multiple] = true` for everything.
             field_options[:multiple] = "true"
           else
             field_attributes[:multiple] = "true"
