@@ -38,7 +38,7 @@ You can allow multiple buttons to be selected using the `multiple` option, like 
 
 ```erb
 <%= render 'shared/fields/buttons', form: form, method: :category_ids,
-  options: Category.all.map { |category| [category.id, category.label_string] }, multiple: true %>
+  options: Category.all.map { |category| [category.id, category.label_string] }, options: {multiple: true} %>
 ```
 
 ## Dynamically Updating Form Fields
