@@ -732,11 +732,7 @@ class Scaffolding::Transformer
           # add_additional_step :yellow, transform_string("We've added a reference to a `placeholder` to the form for the select or super_select field, but unfortunately earlier versions of the scaffolded locales Yaml don't include a reference to `fields: *fields` under `form`. Please add it, otherwise your form won't be able to locate the appropriate placeholder label.")
         end
 
-        # When rendering a super_select element we need to use `html_options: {multiple: true}`,
-        # but all other fields simply use `multiple: true` to work.
-        if attribute.is_multiple?
-          field_options[:multiple] = "true"
-        end
+        field_options[:multiple] = "true" if attribute.is_multiple?
 
         valid_values = if attribute.is_id?
           "valid_#{attribute.name_without_id.pluralize}"
