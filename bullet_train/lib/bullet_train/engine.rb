@@ -19,6 +19,12 @@ begin
 rescue LoadError
 end
 
+begin
+  # And the same holds true for invisible_captcha
+  require "invisible_captcha"
+rescue LoadError
+end
+
 module BulletTrain
   class Engine < ::Rails::Engine
   end
