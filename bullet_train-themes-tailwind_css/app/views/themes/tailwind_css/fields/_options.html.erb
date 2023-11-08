@@ -23,7 +23,7 @@ if html_options.any?
   options.merge!(html_options)
 end
 
-if !options[:multiple]
+if defined?(multiple)
   ActiveSupport::Deprecation.warn(
     "The `multiple` attribute will be removed in a later version. " \
     "Please pass `options: {multiple: true}` to `render` instead."

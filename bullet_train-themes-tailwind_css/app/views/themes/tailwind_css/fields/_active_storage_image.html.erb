@@ -8,10 +8,12 @@ form ||= current_fields_form
 options ||= {}
 other_options ||= {}
 
-ActiveSupport::Deprecation.warn(
-  "the `multiple` attribute for image partials will be removed in a later version. " \
-  "Pass `options: {multiple: true}` to `render` instead."
-)
+if defined?(multiple)
+  ActiveSupport::Deprecation.warn(
+    "the `multiple` attribute for image partials will be removed in a later version. " \
+    "Pass `options: {multiple: true}` to `render` instead."
+  )
+end
 options[:multiple] ||= false
 multiple ||= options[:multiple]
 

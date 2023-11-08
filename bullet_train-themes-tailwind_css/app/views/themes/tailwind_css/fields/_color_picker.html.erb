@@ -17,10 +17,12 @@ options[:id] ||= form.field_id(method)
 
 # TODO: I don't think multiple is even used for this attribute,
 # we should probably delete this altogether.
-ActiveSupport::Deprecation.warn(
-  "The `multiple` attribute will be removed in a later version. " \
-  "Please pass `options: {multiple: true}` to `render` instead."
-)
+if defined?(multiple)
+  ActiveSupport::Deprecation.warn(
+    "The `multiple` attribute will be removed in a later version. " \
+    "Please pass `options: {multiple: true}` to `render` instead."
+  )
+end
 multiple ||= false
 options[:multiple] ||= multiple
 

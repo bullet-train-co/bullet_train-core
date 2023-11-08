@@ -3,10 +3,12 @@ form ||= current_fields_form
 options ||= {}
 other_options ||= {}
 
-ActiveSupport::Deprecation.warn(
-  "The `multiple` attribute will be removed in a later version. " \
-  "Please pass `options: {multiple: true}` to `render` instead."
-)
+if defined?(multiple)
+  ActiveSupport::Deprecation.warn(
+    "The `multiple` attribute will be removed in a later version. " \
+    "Please pass `options: {multiple: true}` to `render` instead."
+  )
+end
 multiple ||= false
 options[:multiple] ||= multiple
 
