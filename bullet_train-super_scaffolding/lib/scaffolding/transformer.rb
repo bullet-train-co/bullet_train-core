@@ -735,12 +735,7 @@ class Scaffolding::Transformer
         # When rendering a super_select element we need to use `html_options: {multiple: true}`,
         # but all other fields simply use `multiple: true` to work.
         if attribute.is_multiple?
-          if attribute.type == "super_select"
-            # TODO: We should be able to just do `field_options[:multiple] = true` for everything.
-            field_options[:multiple] = "true"
-          else
-            field_attributes[:multiple] = "true"
-          end
+          field_options[:multiple] = "true"
         end
 
         valid_values = if attribute.is_id?
@@ -751,7 +746,7 @@ class Scaffolding::Transformer
 
         # https://stackoverflow.com/questions/21582464/is-there-a-ruby-hashto-s-equivalent-for-the-new-hash-syntax
         if field_options.any? || options.any?
-          field_options_key = if ["buttons", "super_select", "options"].include?(attribute.type)
+          field_options_key = if attribute.type == "super_select"
             if options.any?
               field_attributes[:options] = "{" + field_options.map { |key, value| "#{key}: #{value}" }.join(", ") + "}"
             end
