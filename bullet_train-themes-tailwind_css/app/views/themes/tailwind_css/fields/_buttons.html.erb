@@ -16,25 +16,29 @@ button_field_options = options_for(form, method) if button_field_buttons.empty?
 # i.e. - ["One", "Two", "Three"]
 options = {} if options.is_a?(Array)
 
-html_options ||= {} # TODO: Deprecated.
 other_options ||= {}
 
 options[:data] ||= {}
 options[:data]["#{stimulus_controller}-target"] = 'shadowField'
 
-# From the Rails documentation concerning `options`:
-# Any standard HTML attributes for the tag can be passed in, for example :class
-# https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-check_box
-ActiveSupport::Deprecation.warn(
-  "The `html_options` attribute for checkboxes and radio buttons will be removed in a later version " \
-  "Pass all of your html options like `class` to `options` instead."
-)
+if defined?(html_options)
+  # From the Rails documentation concerning `options`:
+  # Any standard HTML attributes for the tag can be passed in, for example :class
+  # https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-check_box
+  ActiveSupport::Deprecation.warn(
+    "The `html_options` attribute for checkboxes and radio buttons will be removed in a later version " \
+    "Pass all of your html options like `class` to `options` instead."
+  )
+end
+html_options ||= {}
 options.merge!(html_options)
 
-ActiveSupport::Deprecation.warn(
-  "The `multiple` attribute will be removed in a later version. " \
-  "Please pass `options: {multiple: true}` to `render` instead."
-)
+if defined?(multiple)
+  ActiveSupport::Deprecation.warn(
+    "The `multiple` attribute will be removed in a later version. " \
+    "Please pass `options: {multiple: true}` to `render` instead."
+  )
+end
 multiple ||= false
 options[:multiple] ||= multiple
 %>

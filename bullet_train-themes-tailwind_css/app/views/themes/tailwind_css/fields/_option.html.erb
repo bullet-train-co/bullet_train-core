@@ -6,7 +6,7 @@ labels = labels_for(form, method) if form
 
 options ||= {}
 
-if !options[:multiple]
+if defined?(multiple)
   ActiveSupport::Deprecation.warn(
     "The `multiple` attribute will be removed in a later version. " \
     "Please pass `options: {multiple: true}` to `render` instead."
