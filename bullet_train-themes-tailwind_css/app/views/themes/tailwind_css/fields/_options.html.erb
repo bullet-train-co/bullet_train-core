@@ -14,6 +14,15 @@ option_field_options ||= options_for(form, method)
 options ||= {}
 other_options ||= {}
 
+html_options ||= {}
+if html_options.any?
+  ActiveSupport::Deprecation.warn(
+    "The `html_options` attribute for checkboxes and radio buttons will be removed in a later version " \
+    "Pass all of your html options like `class` to `options` instead."
+  )
+  options.merge!(html_options)
+end
+
 if !options[:multiple]
   ActiveSupport::Deprecation.warn(
     "The `multiple` attribute will be removed in a later version. " \
