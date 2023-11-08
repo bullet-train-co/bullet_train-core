@@ -9,27 +9,36 @@ end
 
 <%
 form ||= current_fields_form
-html_options ||= {}
-html_options[:id] ||= form.field_id(method)
+
+option_field_options ||= options_for(form, method)
+options ||= {}
+other_options ||= {}
+
+if !options[:multiple]
+  ActiveSupport::Deprecation.warn(
+    "The `multiple` attribute will be removed in a later version. " \
+    "Please pass `options: {multiple: true}` to `render` instead."
+  )
+end
 multiple ||= false
+options[:multiple] ||= multiple
+
+options[:id] ||= form.field_id(method)
 show_select_all_top ||= false
 show_select_all_bottom ||= false
 use_columns ||= false
-other_options ||= {}
-options ||= options_for(form, method)
 labels = labels_for(form, method)
 
-option_field_options ||= {}
-option_field_options[:data] ||= {}
-option_field_options[:data][:controller] ||= ""
-option_field_options[:data][:controller] += " fields--field"
+options[:data] ||= {}
+options[:data][:controller] ||= ""
+options[:data][:controller] += " fields--field"
 
-if multiple
-  option_field_options[:data] = option_field_options[:data].merge({
+if options[:multiple]
+  options[:data] = options[:data].merge({
     "select-all-target": 'checkbox'
   })
-  option_field_options[:data][:action] ||= ""
-  option_field_options[:data][:action] += " select-all#updateToggle"
+  options[:data][:action] ||= ""
+  options[:data][:action] += " select-all#updateToggle"
 end
 
 %>
@@ -38,7 +47,7 @@ end
   # TODO: We should either remove this, or move the Action Models `bulk_action_select`
   # partial here to bullet_train-core because this cannot work with the setup we currently have.
 %>
-<% if multiple && (show_select_all_top || show_select_all_bottom) %>
+<% if options[:multiple] && (show_select_all_top || show_select_all_bottom) %>
   <% select_all = capture do %>
     <div class="flex">
       <%= tag.div class: [
@@ -66,22 +75,23 @@ end
   <% end %>
 <% end %>
 
-<%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
+<% # We don't need to pass `options` here because we pass it to `check_box`, `check_box_tag`, or `radio_button` later on. %>
+<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
   <% content_for :field do %>
     <%= tag.div class: "pt-1.5 pb-1 sm:col-span-2", data: {
       controller: "select-all",
       "select-all-unavailable-class": "hidden"
     } do %>
 
-      <% if multiple && show_select_all_top && !show_select_all_bottom %>
+      <% if options[:multiple] && show_select_all_top && !show_select_all_bottom %>
         <%= select_all %>
       <% end %>
 
       <%= tag.div class: ["max-w-lg": !use_columns, "max-w-3xl": use_columns, "columns-[var(--column-width,_15ch)_3]": use_columns] do %>
-        <%= render 'shared/fields/option', method: method, form: form, option_field_options: option_field_options, multiple: multiple, options: options %>
+        <%= render 'shared/fields/option', method: method, form: form, option_field_options: option_field_options, options: options %>
       <% end %>
 
-      <% if multiple && !show_select_all_top && show_select_all_bottom %>
+      <% if options[:multiple] && !show_select_all_top && show_select_all_bottom %>
         <%= select_all %>
       <% end %>
 
