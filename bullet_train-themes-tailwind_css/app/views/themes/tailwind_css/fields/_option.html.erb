@@ -1,10 +1,19 @@
 <%
 form ||= current_fields_form
 single_check_box ||= false
-multiple ||= false
-option_field_options ||= {}
 append_class ||= ''
 labels = labels_for(form, method) if form
+
+options ||= {}
+
+if !options[:multiple]
+  ActiveSupport::Deprecation.warn(
+    "The `multiple` attribute will be removed in a later version. " \
+    "Please pass `options: {multiple: true}` to `render` instead."
+  )
+end
+multiple ||= false
+options[:multiple] ||= multiple
 
 # Since we don't know at this point which tag we'll be using, we specify
 # the class only once here for simplicity and apply it to one of the following tags:
@@ -13,32 +22,30 @@ labels = labels_for(form, method) if form
 # 3. form.radio_button
 #
 # the `append_class` local can be used to append any other styles desired for the element.
-option_field_options[:class] ||= "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if multiple || single_check_box}"
-option_field_options[:class] += " #{append_class}"
+options[:class] ||= "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if options[:multiple] || single_check_box}"
+options[:class] += " #{append_class}"
 %>
 
 <% if single_check_box %>
   <% if form %>
     <div class="flex items-center">
-      <%= form.check_box method, option_field_options %>
+      <%= form.check_box method, options %>
       <%= form.label method, class: 'ml-2' %>
     </div>
   <% else %>
-    <% value = option_field_options.delete(:value) %>
-    <% checked = option_field_options.delete(:checked) %>
-    <%= check_box_tag method, value, checked, option_field_options %>
+    <% value = options.delete(:value) %>
+    <% checked = options.delete(:checked) %>
+    <%= check_box_tag method, value, checked, options %>
   <% end %>
 <% else %>
-  <% options.each do |value, label| %>
+  <% option_field_options.each do |value, label| %>
     <label class="relative flex items-start mb-3">
       <div class="flex items-center h-5">
-        <% if multiple %>
-          <% checked_value = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
-          <%= form.check_box method, {
-            multiple: multiple, checked: checked_value, data: option_field_options[:data], class: option_field_options[:class]
-          }, value, "" %>
+        <% if options[:multiple] %>
+          <% options[:checked] = form.object.send(method).nil? ? nil : form.object.send(method).map(&:to_s).include?(value.to_s) %>
+          <%= form.check_box method, options, value, "" %>
         <% else %>
-          <%= form.radio_button method, value, {class: option_field_options[:class]} %>
+          <%= form.radio_button method, value, options %>
         <% end %>
       </div>
       <div class="ml-2.5 text-sm">
