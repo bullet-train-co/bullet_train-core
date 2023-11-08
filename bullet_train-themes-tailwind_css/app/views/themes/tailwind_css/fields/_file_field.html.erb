@@ -29,7 +29,7 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
           <div class="divide-y-2 divide-dashed">
             <% persisted_files.each do |file| %>
               <div data-controller="fields--file-item" data-fields--file-item-id-value="<%= file.id %>">
-                <%= form.hidden_field "#{method}_removal".to_sym, multiple: multiple, value: nil, data: {'fields--file-item-target': 'removeFileFlag'} %>
+                <%= form.hidden_field "#{method}_removal".to_sym, multiple: options[:multiple], value: nil, data: {'fields--file-item-target': 'removeFileFlag'} %>
                 <span data-fields--file-item-target="fileName" %>
                   <%= file.blob.filename %>
                 </span>
