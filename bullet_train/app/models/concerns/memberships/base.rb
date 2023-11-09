@@ -16,8 +16,6 @@ module Memberships::Base
     has_many :scaffolding_completely_concrete_tangible_things_assignments, class_name: "Scaffolding::CompletelyConcrete::TangibleThings::Assignment", dependent: :destroy
     has_many :scaffolding_completely_concrete_tangible_things, through: :scaffolding_completely_concrete_tangible_things_assignments, source: :tangible_thing
 
-    has_many :scaffolding_absolutely_abstract_creative_concepts_collaborators, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator", dependent: :destroy
-
     # Image uploading
     has_one_attached :user_profile_photo
 

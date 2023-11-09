@@ -7,8 +7,6 @@ class Scaffolding::AbsolutelyAbstract::CreativeConcept < ApplicationRecord
   # TODO: We shouldn't have to explicitly set the order here, so we need to find out why these records
   # are being returned in descending order when calling @creative_concept.completely_concrete_tangible_things.
   has_many :completely_concrete_tangible_things, -> { order(:id) }, class_name: "Scaffolding::CompletelyConcrete::TangibleThing", foreign_key: :absolutely_abstract_creative_concept_id, dependent: :destroy
-  has_many :collaborators, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator", dependent: :destroy, foreign_key: :creative_concept_id
-  has_many :memberships, through: :collaborators
   # 🚅 add has_many associations above.
 
   # 🚅 add oauth providers above.
@@ -23,22 +21,6 @@ class Scaffolding::AbsolutelyAbstract::CreativeConcept < ApplicationRecord
   # 🚅 add callbacks above.
 
   # 🚅 add delegations above.
-
-  def admins
-    collaborators.admins.map(&:membership)
-  end
-
-  def editors
-    collaborators.editors.map(&:membership)
-  end
-
-  def viewers
-    collaborators.viewers.map(&:membership)
-  end
-
-  def all_collaborators
-    team.admins.or(Membership.where(id: memberships.pluck(:id)))
-  end
 
   # 🚅 add methods above.
 end
