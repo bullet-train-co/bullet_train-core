@@ -9,27 +9,34 @@ end
 
 <%
 form ||= current_fields_form
+labels = labels_for(form, method)
+
+# Initialize options.
 html_options ||= {}
-html_options[:id] ||= form.field_id(method)
+options ||= {}
+other_options ||= {}
+option_field_options = options_for(form, method)
+
+# For backwards compatibility.
+options.merge!(html_options)
+options.merge!(option_field_options)
+
+options[:id] ||= form.field_id(method)
 multiple ||= false
 show_select_all_top ||= false
 show_select_all_bottom ||= false
 use_columns ||= false
-other_options ||= {}
-options ||= options_for(form, method)
-labels = labels_for(form, method)
 
-option_field_options ||= {}
-option_field_options[:data] ||= {}
-option_field_options[:data][:controller] ||= ""
-option_field_options[:data][:controller] += " fields--field"
+options[:data] ||= {}
+options[:data][:controller] ||= ""
+options[:data][:controller] += " fields--field"
 
 if multiple
-  option_field_options[:data] = option_field_options[:data].merge({
+  options[:data] = options[:data].merge({
     "select-all-target": 'checkbox'
   })
-  option_field_options[:data][:action] ||= ""
-  option_field_options[:data][:action] += " select-all#updateToggle"
+  options[:data][:action] ||= ""
+  options[:data][:action] += " select-all#updateToggle"
 end
 
 %>
@@ -51,10 +58,11 @@ end
       } do %>
         <label class="relative flex items-start">
           <div class="flex items-center h-5">
-            <%= check_box_tag "#{html_options[:id]}-select_all", 'select-all', false, data: {
+            <%= check_box_tag "#{options[:id]}-select_all", 'select-all', false, data: {
               "select-all-target": 'toggleCheckbox',
               'action': "select-all#selectAllOrNone"
-            }, class: "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 rounded" %>
+            }, class: "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 rounded",
+            disabled: options[:disabled] %>
           </div>
           <div class="ml-2.5 text-sm pr-4">
             <%= t("global.bulk_select.all") %>
@@ -66,7 +74,7 @@ end
   <% end %>
 <% end %>
 
-<%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
+<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <%= tag.div class: "pt-1.5 pb-1 sm:col-span-2", data: {
       controller: "select-all",
