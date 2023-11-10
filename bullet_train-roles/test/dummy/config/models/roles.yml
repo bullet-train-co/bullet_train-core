@@ -35,4 +35,3 @@ admin:
     Membership: manage
     Document: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
-    Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator: manage
