@@ -11,7 +11,7 @@ module Fields::AddressFieldHelper
   def admin_division_label_for(address_form)
     # using country_id because it's fastest, even if this case statement is hard to read
     admin_divisions_key = case address_form.object.country_id
-    when 233, 31, 142, 239, 101
+    when 31, 142, 239, 101
       :states
     when 39
       :provinces_territories
@@ -19,7 +19,7 @@ module Fields::AddressFieldHelper
       :prefectures
     when 107, 45, 116, 182, 207, 219, 230, 156, 204
       :provinces
-    when 14
+    when 14, 233
       :states_territories
     when 59
       :regions
