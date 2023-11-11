@@ -91,8 +91,7 @@ end
   <% end %>
 <% end %>
 
-<% # We don't need to pass `options` here because we pass it to `check_box`, `check_box_tag`, or `radio_button` later on. %>
-<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
+<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <%= tag.div class: "pt-1.5 pb-1 sm:col-span-2", data: {
       controller: "select-all",
