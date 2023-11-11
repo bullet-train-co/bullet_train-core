@@ -22,7 +22,6 @@ options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField'
 
 <%# Although we pass options below to `text_field`, we need to pass options here %>
 <%# too because the id we set earlier is not the usual `form.field_id(method)`. %>
-<%# TODO: Passing options here is producing two ids which is not good. %>
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <div
