@@ -33,14 +33,14 @@ end
 html_options ||= {}
 options.merge!(html_options)
 
+options[:multiple] ||= false
 if defined?(multiple)
+  options[:multiple] = multiple
   ActiveSupport::Deprecation.warn(
     "The `multiple` attribute will be removed in a later version. " \
     "Please pass `options: {multiple: true}` to `render` instead."
   )
 end
-multiple ||= false
-options[:multiple] ||= multiple
 %>
 
 <% content = render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
