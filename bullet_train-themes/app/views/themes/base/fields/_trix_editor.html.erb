@@ -20,7 +20,7 @@ options[:data][:topics] ||= []
 
 <div class="<%= 'trix-hide-toolbar' if other_options[:hide_toolbar] %>">
 <%# We don't have to pass `options` here because we're already sending it below to form.rich_text_area. %>
-<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
+<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <%= form.rich_text_area method, options %>
     <%= partial.submit_button.presence %>

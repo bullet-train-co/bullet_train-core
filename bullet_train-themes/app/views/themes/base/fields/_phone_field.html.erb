@@ -9,6 +9,5 @@ options = options.merge({type: 'tel', data: {method: method, "#{stimulus_control
 %>
 
 <div data-controller="<%= stimulus_controller %>">
-  <%# We don't call the `phone_field` helper inline in this partial, so we need to pass `options: options` here. %>
   <%= render 'shared/fields/field', form: form, method: method, helper: :text_field, options: options, other_options: other_options %>
 </div>
