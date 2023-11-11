@@ -2,36 +2,35 @@
 stimulus_controller = 'fields--button-toggle'
 form ||= current_fields_form
 
-ActiveSupport::Deprecation.warn(
-  "`options` will be replaced with `button_field_options` in a later version. " \
-  "Please pass all of the strings you want to appear in your buttons to `button_field_buttons`."
-)
+# TODO: We need to do this because `options` is currently an array of strings.
+# i.e. - ["One", "Two", "Three"]
+if defined?(options) && options.is_a?(Array)
+  button_field_buttons = options
+  options = defined?(html_options) ? html_options : {}
+  ActiveSupport::Deprecation.warn(
+    "`options` will be replaced with `button_field_options` in a later version. " \
+    "Please pass all of the strings you want to appear in your buttons to `button_field_buttons`."
+  )
+end
+
 options ||= {}
 button_field_buttons ||= {}
-button_field_options ||= options
-button_field_options = options_for(form, method) if button_field_buttons.empty?
-
-# Reinitialize options.
-# TODO: We need to do this because `options` is currently an array of strings
-# i.e. - ["One", "Two", "Three"]
-options = {} if options.is_a?(Array)
-
 other_options ||= {}
-
-options[:data] ||= {}
-options[:data]["#{stimulus_controller}-target"] = 'shadowField'
 
 if defined?(html_options)
   # From the Rails documentation concerning `options`:
   # Any standard HTML attributes for the tag can be passed in, for example :class
   # https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-check_box
   ActiveSupport::Deprecation.warn(
-    "The `html_options` attribute for checkboxes and radio buttons will be removed in a later version " \
+    "The `html_options` attribute for checkboxes and radio buttons will be removed in a later version. " \
     "Pass all of your html options like `class` to `options` instead."
   )
 end
-html_options ||= {}
-options.merge!(html_options)
+
+button_field_options = options_for(form, method) if button_field_buttons.empty?
+
+options[:data] ||= {}
+options[:data]["#{stimulus_controller}-target"] = 'shadowField'
 
 options[:multiple] ||= false
 if defined?(multiple)
