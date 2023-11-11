@@ -25,8 +25,7 @@ options[:height] ||= 100
 # options[:resize_to_limit] ||= [options[:width], options[:height]]
 %>
 
-<% # We don't need to pass `options` here because we pass it below to `photo_url_for_active_storage_attachment` %>
-<%= render 'shared/fields/field', form: form, method: method, helper: :file_field, other_options: other_options do %>
+<%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <div class="file-field" data-controller="fields--file-field">
       <%= form.file_field method, class: 'file-upload hidden', multiple: options[:multiple], direct_upload: true, data: {'fields--file-field-target': 'fileField', action: 'change->fields--file-field#handleFileSelected'} %>

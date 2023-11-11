@@ -21,8 +21,7 @@ options[:data][:action] = "change->fields--file-field#handleFileSelected"
 persisted_files = options[:multiple] ? form.object.send(method) : [form.object.send(method)]
 %>
 
-<%# We don't need to pass options here. %>
-<%= render 'shared/fields/field', form: form, method: method, helper: :file_field, other_options: other_options do %>
+<%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <div class="file-field" data-controller="fields--file-field">
       <%= form.file_field method, options %>

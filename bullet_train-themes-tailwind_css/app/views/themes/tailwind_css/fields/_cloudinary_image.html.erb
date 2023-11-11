@@ -42,8 +42,7 @@ wrapper_options[:data]["#{stimulus_controller}-google-api-key-value"] = options[
 %>
 
 
-<%# We don't pass options here because it is passed below to `image_tag`. %>
-<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
+<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <%= content_tag :div, class: 'cloudinary-field', data: wrapper_options[:data] do %>
       <%= form.hidden_field method, data: { "#{stimulus_controller}-target": 'hiddenField' } %>

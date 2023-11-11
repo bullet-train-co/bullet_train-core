@@ -47,8 +47,7 @@ html_options[:data].merge!("#{stimulus_controller}-target": 'select')
 html_options[:data].merge!("use-browser-time-zone": use_browser_time_zone )
 %>
 
-<%# We don't have to pass `options` or `html_options` here because we're already sending both below to form.select. %>
-<%= render 'shared/fields/field', form: form, method: method, other_options: other_options do %>
+<%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
   <% content_for :field do %>
     <%= content_tag :div, wrapper_options do %>
       <%= form.select method, choices, options, html_options %>
