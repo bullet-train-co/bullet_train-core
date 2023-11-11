@@ -5,6 +5,11 @@
 # each serve their own specific purpose, so please read the
 # Field Partial documentation to get more familiar with how these work.
 # https://bullettrain.co/docs/field-partials
+#
+# Even though not all form helpers are invoked in this partial,
+# all instances of `options` must be passed here because
+# We add the `for` attribute for labels with `options[:id]`,
+# and this isn't always as simple as `form.field_id(method)`.
 %>
 
 <%
@@ -45,7 +50,8 @@ end
 errors = [method, method.to_s.gsub(/_id$/, '').to_sym].uniq.map { |attribute| form.object.errors.full_messages_for(attribute) }.flatten
 has_errors = errors.any? || partial.error? || other_options[:error].present?
 
-# TODO: Partials that don't invoke form helpers in this file don't have access to these class definitions.
+# TODO: Partials which invoke form helpers inline aren't using
+# these classes, although we have the `has_errors` conditional with some style below.
 options[:class] = "#{options[:class]} block w-full rounded-md shadow-sm font-light text-sm dark:bg-slate-800 dark:text-slate-300"
 options[:class] += if has_errors
   " pr-10 border-red-500 text-red-900 placeholder-red-500 outline-none focus:ring-red-500 focus:border-red-500 dark:text-slate-300"
