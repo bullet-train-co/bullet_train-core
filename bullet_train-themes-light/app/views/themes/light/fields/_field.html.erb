@@ -29,6 +29,7 @@ options[:id] ||= form.field_id(method)
 options[:placeholder] ||= labels.placeholder if labels.placeholder
 
 # TODO: Why is this commented out, and where is `field_editable?`?
+# Delete this and finish https://github.com/bullet-train-co/bullet_train-core/pull/587.
 # options[:disabled] ||= !field_editable?(form.object, method) if user_signed_in?
 
 other_options[:help] = [other_options[:help], labels.help].compact.join(" ")
