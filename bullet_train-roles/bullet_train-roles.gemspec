@@ -28,7 +28,6 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "byebug", "~> 11.1.0"
   spec.add_development_dependency "factory_bot_rails", "~> 6.2.0"
-  spec.add_development_dependency "knapsack_pro", "~> 3.1.0"
   spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "pg", "~> 1.3"
   spec.add_development_dependency "rails", "~> 7.0.0"
