@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.6.10)
+    bullet_train-fields (1.6.11)
       chronic
       cloudinary
       phonelib
@@ -79,12 +79,12 @@ GEM
     aws_cf_signer (0.1.3)
     builder (3.2.4)
     chronic (0.10.2)
-    cloudinary (1.27.0)
+    cloudinary (1.28.0)
       aws_cf_signer
       rest-client (>= 2.0.0)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
-    date (3.3.3)
+    date (3.3.4)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
     erubi (1.10.0)
@@ -112,12 +112,12 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.1)
     minitest (5.16.2)
-    net-imap (0.4.3)
+    net-imap (0.4.5)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.1)
+    net-protocol (0.2.2)
       timeout
     net-smtp (0.4.0)
       net-protocol
@@ -129,7 +129,7 @@ GEM
     parallel (1.22.1)
     parser (3.1.2.0)
       ast (~> 2.4.1)
-    phonelib (0.8.4)
+    phonelib (0.8.5)
     racc (1.6.0)
     rack (2.2.4)
     rack-test (2.0.2)
@@ -197,12 +197,12 @@ GEM
       rubocop (= 1.32.0)
       rubocop-performance (= 1.14.3)
     thor (1.3.0)
-    timeout (0.4.0)
+    timeout (0.4.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.8.2)
+    unf_ext (0.0.9)
     unicode-display_width (2.2.0)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)

@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.6.10)
+    bullet_train-themes (1.6.11)
       rails (>= 6.0.0)
 
 GEM
@@ -76,7 +76,7 @@ GEM
     builder (3.2.4)
     concurrent-ruby (1.1.10)
     crass (1.0.6)
-    date (3.3.3)
+    date (3.3.4)
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -97,12 +97,12 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.1)
     minitest (5.16.3)
-    net-imap (0.4.3)
+    net-imap (0.4.5)
       date
       net-protocol
     net-pop (0.1.2)
       net-protocol
-    net-protocol (0.2.1)
+    net-protocol (0.2.2)
       timeout
     net-smtp (0.4.0)
       net-protocol
@@ -177,7 +177,7 @@ GEM
       rubocop (= 1.40.0)
       rubocop-performance (= 1.15.1)
     thor (1.3.0)
-    timeout (0.4.0)
+    timeout (0.4.1)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.3.0)
