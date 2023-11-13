@@ -237,6 +237,8 @@ scaffolding_type = argv.shift
 if BulletTrain::SuperScaffolding.scaffolders.include?(scaffolding_type)
   scaffolder = BulletTrain::SuperScaffolding.scaffolders[scaffolding_type].constantize
   scaffolder.new(argv, @options).run
+elsif argv.empty? || !BulletTrain::SuperScaffolding.scaffolders.include?(scaffolding_type)
+  show_usage
 elsif argv.count > 1
   puts ""
   puts "👋"
