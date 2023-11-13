@@ -396,7 +396,7 @@ class Scaffolding::Transformer
     transformed_content_to_replace = transform_string(content_to_replace)
     content_replacement_transformed = content_to_replace != transformed_content_to_replace
     options = {suppress_could_not_find: suppress_could_not_find, content_replacement_transformed: content_replacement_transformed}
-    Scaffolding::FileManipulator.replace_line_in_file(file, content, transformed_content_to_replace, **options)
+    Scaffolding::FileManipulator.replace_line_in_file(file, content, transformed_content_to_replace, options)
   end
 
   # if class_name isn't specified, we use `child`.
