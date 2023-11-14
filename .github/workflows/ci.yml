@@ -74,14 +74,14 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
-      - run: pwd
+      #- run: pwd
 
-      - run: ls -al
+      #- run: ls -al
 
-      - run: ls -al ./test/dummy/db/schema.rb
-        continue-on-error: true
+      #- run: ls -al ./test/dummy/db/schema.rb
+        #continue-on-error: true
 
-      - run: echo "=${{ hashFiles('./test/dummy/db/schema.rb') }}="
+      #- run: echo "=${{ hashFiles('./test/dummy/db/schema.rb') }}="
 
       - run: bin/rails db:setup
         #if: ${{ hashFiles('./test/dummy/db/schema.rb') != '' }}
