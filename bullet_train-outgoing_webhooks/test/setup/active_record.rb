@@ -27,9 +27,9 @@ ActiveRecord::Schema.define do
   end
 end
 
-class Team < ActiveRecord::Base
-  has_many :webhooks_outgoing_endpoints, class_name: "Webhooks::Outgoing::Endpoint"
-end
+#class Team < ActiveRecord::Base
+  #has_many :webhooks_outgoing_endpoints, class_name: "Webhooks::Outgoing::Endpoint"
+#end
 
 class Webhooks::Outgoing::Delivery; end
 

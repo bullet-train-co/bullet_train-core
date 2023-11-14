@@ -14,7 +14,7 @@ gem "active_hash", github: "bullet-train-co/active_hash"
 #gem "commonmarker", ">= 1.0.0.pre10"
 
 gem "bullet_train-api", path: "../bullet_train-api"
-#gem "bullet_train-fields", path: "../bullet_train-fields"
+gem "bullet_train-fields", path: "../bullet_train-fields"
 gem "bullet_train-roles", path: "../bullet_train-roles"
 gem "bullet_train-super_scaffolding", path: "../bullet_train-super_scaffolding"
 gem "bullet_train-super_load_and_authorize_resource", path: "../bullet_train-super_load_and_authorize_resource"
