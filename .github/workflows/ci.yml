@@ -74,7 +74,8 @@ jobs:
           ruby-version: ${{ matrix.ruby-version }}
           working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
-      #- run: bin/rails db:setup
+      - run: rails db:setup
+        continue-on-error: true
 
       - name: Run Tests
-        run: bin/rails test test/
+        run: rails test
