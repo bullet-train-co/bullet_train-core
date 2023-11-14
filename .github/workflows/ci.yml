@@ -80,7 +80,7 @@ jobs:
 
       - run: ls -al ./test/dummy/db/schema.rb
 
-      - run: echo ${{ hashFiles('./test/dummy/db/schema.rb') }}
+      - run: echo "=${{ hashFiles('./test/dummy/db/schema.rb') }}="
 
       - run: bin/rails db:setup
         if: ${{ hashFiles('./test/dummy/db/schema.rb') != '' }}
