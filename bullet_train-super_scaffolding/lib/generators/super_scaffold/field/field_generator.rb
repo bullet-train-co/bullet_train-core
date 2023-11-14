@@ -1,4 +1,4 @@
-require_relative '../super_scaffold_base'
+require_relative "../super_scaffold_base"
 
 class FieldGenerator < Rails::Generators::Base
   include SuperScaffoldBase

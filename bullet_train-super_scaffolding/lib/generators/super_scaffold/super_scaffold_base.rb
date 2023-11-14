@@ -2,7 +2,6 @@ module SuperScaffoldBase
   extend ActiveSupport::Concern
 
   included do
-
     # ##############################
     #
     # TODO: Should we retain some of these class options?
