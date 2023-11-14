@@ -2,6 +2,7 @@ module Teams::Base
   extend ActiveSupport::Concern
 
   included do
+    include Records::Base
     # super scaffolding
     unless scaffolding_things_disabled?
       has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_cable_ready_updates: true

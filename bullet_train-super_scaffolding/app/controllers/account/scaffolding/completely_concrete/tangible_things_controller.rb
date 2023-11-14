@@ -1,4 +1,5 @@
 class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Account::ApplicationController
+  include Controllers::Base
   account_load_and_authorize_resource :tangible_thing, through: :absolutely_abstract_creative_concept, through_association: :completely_concrete_tangible_things
 
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things
