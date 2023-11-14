@@ -1,3 +1,4 @@
+require "bullet_train"
 require "bullet_train/fields/version"
 require "bullet_train/fields/engine"
 
