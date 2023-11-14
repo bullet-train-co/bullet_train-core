@@ -89,7 +89,6 @@ PATH
       bullet_train-routes
       bullet_train-scope_validator
       bullet_train-super_load_and_authorize_resource
-      bullet_train-super_scaffolding
       bullet_train-themes
       cable_ready (~> 5.0.0)
       cancancan
@@ -195,6 +194,11 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
+    bullet_train-fields (1.6.11)
+      chronic
+      cloudinary
+      phonelib
+      rails (>= 6.0.0)
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
     bullet_train-themes-tailwind_css (1.6.13)
@@ -482,7 +486,6 @@ DEPENDENCIES
   active_hash!
   bullet_train!
   bullet_train-api!
-  bullet_train-fields!
   bullet_train-has_uuid!
   bullet_train-roles!
   bullet_train-scope_validator!
