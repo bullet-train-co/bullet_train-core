@@ -13,5 +13,6 @@ gem "bullet_train-api", path: "../bullet_train-api"
 gem "bullet_train-fields", path: "../bullet_train-fields"
 gem "bullet_train-super_scaffolding", path: "../bullet_train-super_scaffolding"
 gem "bullet_train-incoming_webhooks", path: "../bullet_train-incoming_webhooks"
+
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
