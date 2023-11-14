@@ -82,10 +82,11 @@ jobs:
         continue-on-error: true
 
       - run: echo "=${{ hashFiles('./test/dummy/db/schema.rb') }}="
+
       - run: echo "=${{ hashFiles('Gemfile') }}="
 
       - run: bin/rails db:setup
-        #if: ${{ hashFiles('./test/dummy/db/schema.rb') != '' }}
+        if: ${{ hashFiles(matrix.gem + '/test/dummy/db/schema.rb') != '' }}
         continue-on-error: true
 
       - name: Run Tests
