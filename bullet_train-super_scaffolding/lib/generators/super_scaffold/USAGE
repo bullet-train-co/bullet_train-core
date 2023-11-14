@@ -6,7 +6,7 @@ Description:
     rails g super_scaffold Site Team name:text_field url:text_area
 
   E.g. a Section belongs to a Page, which belongs to a Site, which belongs to a Team:
-    rails gsuper_scaffold Section Page,Site,Team title:text_field body:text_area
+    rails g super_scaffold Section Page,Site,Team title:text_field body:text_area
 
   E.g. an Image belongs to either a Page or a Site:
     Doable! See https://bit.ly/2NvO8El for a step by step guide.
