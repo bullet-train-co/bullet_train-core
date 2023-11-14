@@ -52,7 +52,7 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: postgres
       RAILS_ENV: test
-    
+
     defaults:
       run:
         working-directory: ${{ matrix.gem }}
@@ -75,6 +75,7 @@ jobs:
           working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
       - run: bin/rails db:setup
+        if: ${{ hashFiles('test/dummy/db/schema.rb') != '' }}
         continue-on-error: true
 
       - name: Run Tests
