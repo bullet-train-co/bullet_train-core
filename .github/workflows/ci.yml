@@ -66,15 +66,16 @@ jobs:
       # - name: "Use latest gems"
       #   run: rm Gemfile.lock
 
-      - name: Configure bundler
-        # We have to do this so that bundler doesn't complain about a frozen lockfile after we bump the gem versions
-        run: bundle config set --local deployment false
+      #- name: Configure bundler
+        ## We have to do this so that bundler doesn't complain about a frozen lockfile after we bump the gem versions
+        #run: bundle config set --local deployment false
 
       - uses: "ruby/setup-ruby@v1"
         with:
           rubygems: latest
           bundler: latest
-          bundler-cache: true
+          # If we use the cache ruby/setup always assumes our lockfile should be frozen, and it is not
+          bundler-cache: false
           ruby-version: ${{ matrix.ruby-version }}
           working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
