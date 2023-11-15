@@ -1,8 +1,8 @@
 require "test_helper"
-require "generators/bullet_train/oauth_provider/oauth_provider_generator"
+require "generators/super_scaffold/oauth_provider/oauth_provider_generator"
 
-class SuperScaffold::OauthProviderGeneratorTest < Rails::Generators::TestCase
-  tests SuperScaffold::OauthProviderGenerator
+class OauthProviderGeneratorTest < Rails::Generators::TestCase
+  tests OauthProviderGenerator
   destination Rails.root.join("tmp/generators")
   setup :prepare_destination
 

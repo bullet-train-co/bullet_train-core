@@ -1,8 +1,8 @@
 require "test_helper"
-require "generators/bullet_train/join_model/join_model_generator"
+require "generators/super_scaffold/join_model/join_model_generator"
 
-class SuperScaffold::JoinModelGeneratorTest < Rails::Generators::TestCase
-  tests SuperScaffold::JoinModelGenerator
+class JoinModelGeneratorTest < Rails::Generators::TestCase
+  tests JoinModelGenerator
   destination Rails.root.join("tmp/generators")
   setup :prepare_destination
 
