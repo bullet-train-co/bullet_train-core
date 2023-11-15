@@ -66,6 +66,10 @@ jobs:
       # - name: "Use latest gems"
       #   run: rm Gemfile.lock
 
+      - name: Configure bundler
+        # We have to do this so that bundler doesn't complain about a frozen lockfile after we bump the gem versions
+        run: bundle config set --local deployment false
+
       - uses: "ruby/setup-ruby@v1"
         with:
           rubygems: latest
