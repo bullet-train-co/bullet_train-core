@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-super_load_and_authorize_resource (1.6.13)
+    bullet_train-super_load_and_authorize_resource (1.6.14)
       cancancan
       rails (>= 6.0.0)
 
@@ -127,6 +127,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.15.4-x86_64-linux)
+      racc (~> 1.4)
     pry (0.14.2)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -184,6 +186,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     sqlite3 (1.6.8-arm64-darwin)
+    sqlite3 (1.6.8-x86_64-linux)
     stringio (3.0.9)
     thor (1.3.0)
     timeout (0.4.1)
@@ -197,6 +200,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   bullet_train-super_load_and_authorize_resource!
