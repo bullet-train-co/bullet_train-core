@@ -37,6 +37,7 @@ class CoreBumpCLI < Thor
 
     bump_top_level(bump_level)
     bump_ruby_gems(bump_level)
+    update_ruby_lockfiles
     bump_npm_packages
     write_to_github_output_file
   end
@@ -69,6 +70,16 @@ class CoreBumpCLI < Thor
         puts "bumping package: #{package}"
         Dir.chdir "./#{package}"
         puts output = `bump #{bump_level}`
+        Dir.chdir ".."
+      end
+    end
+
+    def update_ruby_lockfiles
+      # Now we go into each gem and do a `bundle install` to get the new versions that we just bumped to
+      ruby_gems.each do |package|
+        puts "updating lockfile for: #{package}"
+        Dir.chdir "./#{package}"
+        puts output = `bundle install`
         Dir.chdir ".."
       end
     end
