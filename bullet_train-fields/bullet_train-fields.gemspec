@@ -34,6 +34,6 @@ Gem::Specification.new do |spec|
 
   # Parse dates.
   spec.add_dependency "chronic"
-  spec.add_dependency "bullet_train"
-  spec.add_dependency "bullet_train-api"
+  #spec.add_dependency "bullet_train"
+  #spec.add_dependency "bullet_train-api"
 end

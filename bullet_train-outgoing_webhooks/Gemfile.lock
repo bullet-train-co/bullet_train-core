@@ -284,12 +284,20 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
+<<<<<<< HEAD
     nokogiri (1.15.4-x86_64-linux)
       racc (~> 1.4)
     omniauth (2.1.1)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
       rack-protection
+||||||| parent of dc3ea6f0 (clean up after rebase)
+=======
+    omniauth (2.1.1)
+      hashie (>= 3.4.6)
+      rack (>= 2.2.3)
+      rack-protection
+>>>>>>> dc3ea6f0 (clean up after rebase)
     orm_adapter (0.5.0)
     pagy (6.2.0)
     pagy_cursor (0.6.1)

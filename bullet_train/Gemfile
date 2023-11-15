@@ -22,18 +22,6 @@ gem "bullet_train-themes-light", path: "../bullet_train-themes-light"
 gem "bullet_train-has_uuid", path: "../bullet_train-has_uuid"
 gem "bullet_train-scope_validator", path: "../bullet_train-scope_validator"
 gem "bullet_train-themes", path: "../bullet_train-themes"
-# TODO: Is bullet_train-routes still a thing? Should it be part of core now?
-# gem "bullet_train-routes", path: "../bullet_train-routes"
-
-gem "bullet_train-api", path: "../bullet_train-api"
-gem "bullet_train-fields", path: "../bullet_train-fields"
-gem "bullet_train-roles", path: "../bullet_train-roles"
-gem "bullet_train-super_scaffolding", path: "../bullet_train-super_scaffolding"
-gem "bullet_train-super_load_and_authorize_resource", path: "../bullet_train-super_load_and_authorize_resource"
-gem "bullet_train-themes-light", path: "../bullet_train-themes-light"
-gem "bullet_train-has_uuid", path: "../bullet_train-has_uuid"
-gem "bullet_train-scope_validator", path: "../bullet_train-scope_validator"
-gem "bullet_train-themes", path: "../bullet_train-themes"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
