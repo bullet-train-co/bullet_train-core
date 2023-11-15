@@ -1,0 +1,16 @@
+Description:
+  Generate a handler for incoming webhooks from an outside source.
+
+Example:
+  E.g. prepare to receive system-level webhooks from ClickFunnels
+    rails g bullet_train:incoming_webhooks ClickFunnels
+
+  This will create:
+    app/models/webhooks/incoming/click_funnel_webhook.rb
+    app/controllers/webhooks/incoming/click_funnel_webhooks_controller.rb
+    test/controllers/webhooks/incoming/click_funnel_webhooks_controller_test.rb
+  And update:
+    config/routes.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.

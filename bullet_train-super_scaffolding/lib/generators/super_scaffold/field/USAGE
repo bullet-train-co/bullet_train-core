@@ -1,0 +1,15 @@
+Description:
+  Add a new field to an existing Super Scaffold. See the docs for more details:
+  https://bullettrain.co/docs/super-scaffolding
+
+Example:
+  bin/rails generate super_scaffold:field Project description:trix_editor
+
+  This will update:
+    app/models/project.rb
+    app/views/account/projects/_form.html.erb
+    app/views/account/projects/show.html.erb
+    config/locales/en/projects.en.yml
+    config/locales/en/projects.en.yml
+    app/controllers/account/projects_controller.rb
+    app/controllers/api/v1/projects_controller.rb
