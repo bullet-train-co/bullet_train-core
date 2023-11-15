@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-has_uuid (1.6.13)
+    bullet_train-has_uuid (1.6.14)
       rails (>= 6.0.0)
 
 GEM
@@ -123,6 +123,8 @@ GEM
     nio4r (2.5.9)
     nokogiri (1.15.4-arm64-darwin)
       racc (~> 1.4)
+    nokogiri (1.15.4-x86_64-linux)
+      racc (~> 1.4)
     psych (5.1.1.1)
       stringio
     racc (1.7.3)
@@ -177,6 +179,7 @@ GEM
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
     sqlite3 (1.6.8-arm64-darwin)
+    sqlite3 (1.6.8-x86_64-linux)
     stringio (3.0.9)
     thor (1.3.0)
     timeout (0.4.1)
@@ -190,6 +193,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  x86_64-linux
 
 DEPENDENCIES
   bullet_train-has_uuid!
