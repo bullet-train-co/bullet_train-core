@@ -6,6 +6,81 @@ GIT
       activesupport (>= 5.0.0)
 
 PATH
+  remote: ../bullet_train-api
+  specs:
+    bullet_train-api (1.6.13)
+      bullet_train
+      bullet_train-super_scaffolding
+      colorizer
+      doorkeeper
+      factory_bot
+      jbuilder-schema (= 2.6.2)
+      pagy
+      pagy_cursor
+      rack-cors
+      rails (>= 6.0.0)
+
+PATH
+  remote: ../bullet_train-fields
+  specs:
+    bullet_train-fields (1.6.13)
+      chronic
+      cloudinary
+      phonelib
+      rails (>= 6.0.0)
+
+PATH
+  remote: ../bullet_train-has_uuid
+  specs:
+    bullet_train-has_uuid (1.6.13)
+      rails (>= 6.0.0)
+
+PATH
+  remote: ../bullet_train-roles
+  specs:
+    bullet_train-roles (1.6.13)
+      active_hash
+      activesupport
+      cancancan
+
+PATH
+  remote: ../bullet_train-scope_validator
+  specs:
+    bullet_train-scope_validator (1.6.13)
+      rails
+
+PATH
+  remote: ../bullet_train-super_load_and_authorize_resource
+  specs:
+    bullet_train-super_load_and_authorize_resource (1.6.13)
+      cancancan
+      rails (>= 6.0.0)
+
+PATH
+  remote: ../bullet_train-super_scaffolding
+  specs:
+    bullet_train-super_scaffolding (1.6.13)
+      bullet_train
+      colorizer
+      indefinite_article
+      masamune-ast (~> 2.0.2)
+      rails (>= 6.0.0)
+
+PATH
+  remote: ../bullet_train-themes-light
+  specs:
+    bullet_train-themes-light (1.6.13)
+      bullet_train-themes-tailwind_css
+      masamune-ast (~> 2.0.2)
+      rails (>= 6.0.0)
+
+PATH
+  remote: ../bullet_train-themes
+  specs:
+    bullet_train-themes (1.6.13)
+      rails (>= 6.0.0)
+
+PATH
   remote: .
   specs:
     bullet_train (1.6.13)
@@ -19,6 +94,7 @@ PATH
       bullet_train-themes
       cable_ready (~> 5.0.0)
       cancancan
+      colorizer
       commonmarker
       devise
       devise-pwned_password
@@ -30,6 +106,7 @@ PATH
       image_processing
       microscope
       nice_partials (~> 0.9)
+      omniauth
       pagy
       possessive
       premailer-rails
@@ -119,24 +196,11 @@ GEM
     binding_of_caller (1.0.0)
       debug_inspector (>= 0.0.1)
     builder (3.2.4)
-    bullet_train-fields (1.5.1)
-      chronic
-      cloudinary
-      phonelib
-      rails (>= 6.0.0)
-    bullet_train-has_uuid (1.5.1)
-      rails (>= 6.0.0)
-    bullet_train-roles (1.5.1)
-      active_hash
-      activesupport
-      cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.5.1)
-    bullet_train-super_load_and_authorize_resource (1.5.1)
-      cancancan
-      rails (>= 6.0.0)
-    bullet_train-themes (1.5.1)
+    bullet_train-themes-tailwind_css (1.6.13)
+      bullet_train
+      bullet_train-themes
       rails (>= 6.0.0)
     cable_ready (5.0.1)
       actionpack (>= 5.2)
@@ -151,6 +215,7 @@ GEM
       aws_cf_signer
       rest-client (>= 2.0.0)
     coderay (1.1.3)
+    colorizer (0.0.2)
     commonmarker (1.0.0.pre10-arm64-darwin)
     commonmarker (1.0.0.pre10-x86_64-linux)
     concurrent-ruby (1.2.2)
@@ -171,6 +236,8 @@ GEM
       pwned (~> 2.0.0)
     domain_name (0.5.20190701)
       unf (>= 0.0.5, < 1.0.0)
+    doorkeeper (5.6.6)
+      railties (>= 5)
     email_reply_parser (0.5.11)
     erubi (1.12.0)
     extended_email_reply_parser (0.5.1)
@@ -178,6 +245,8 @@ GEM
       charlock_holmes
       email_reply_parser (~> 0.5.9)
       mail
+    factory_bot (6.3.0)
+      activesupport (>= 5.0.0)
     faraday (2.7.11)
       base64
       faraday-net_http (>= 2.0, < 3.1)
@@ -191,6 +260,7 @@ GEM
       thor (>= 0.14.0, < 2)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    hashie (5.0.0)
     hiredis (0.6.3)
     htmlentities (4.3.4)
     http-accept (1.7.0)
@@ -202,6 +272,15 @@ GEM
     image_processing (1.12.2)
       mini_magick (>= 4.9.5, < 5)
       ruby-vips (>= 2.0.17, < 3)
+    indefinite_article (0.2.5)
+      activesupport
+    jbuilder (2.11.5)
+      actionview (>= 5.0.0)
+      activesupport (>= 5.0.0)
+    jbuilder-schema (2.6.2)
+      jbuilder
+      method_source
+      rails (>= 5.0.0)
     json (2.6.3)
     language_server-protocol (3.17.0.2)
     loofah (2.20.0)
@@ -213,6 +292,9 @@ GEM
       net-pop
       net-smtp
     marcel (1.0.2)
+    masamune-ast (2.0.2)
+      activesupport
+      prism (>= 0.14.0)
     method_source (1.0.0)
     microscope (1.1.1)
       activerecord (>= 4.1.0)
@@ -245,8 +327,15 @@ GEM
       racc (~> 1.4)
     nokogiri (1.14.3-x86_64-linux)
       racc (~> 1.4)
+    omniauth (2.1.1)
+      hashie (>= 3.4.6)
+      rack (>= 2.2.3)
+      rack-protection
     orm_adapter (0.5.0)
     pagy (6.1.0)
+    pagy_cursor (0.6.1)
+      activerecord (>= 5)
+      pagy (>= 6, < 7)
     parallel (1.22.1)
     parser (3.1.3.0)
       ast (~> 2.4.1)
@@ -260,6 +349,7 @@ GEM
       actionmailer (>= 3)
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
+    prism (0.17.1)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
@@ -270,6 +360,10 @@ GEM
     pwned (2.0.2)
     racc (1.6.2)
     rack (2.2.6.4)
+    rack-cors (2.0.1)
+      rack (>= 2.0.0)
+    rack-protection (3.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-test (2.1.0)
       rack (>= 1.3)
     rails (7.0.3.1)
@@ -387,6 +481,15 @@ PLATFORMS
 DEPENDENCIES
   active_hash!
   bullet_train!
+  bullet_train-api!
+  bullet_train-fields!
+  bullet_train-has_uuid!
+  bullet_train-roles!
+  bullet_train-scope_validator!
+  bullet_train-super_load_and_authorize_resource!
+  bullet_train-super_scaffolding!
+  bullet_train-themes!
+  bullet_train-themes-light!
   commonmarker (>= 1.0.0.pre10)
   pry
   pry-stack_explorer

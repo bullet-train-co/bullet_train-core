@@ -8,8 +8,9 @@ gem "sqlite3"
 
 gem "sprockets-rails"
 
-gem "bullet_train"
-gem "bullet_train-api"
+gem "bullet_train", path: "../bullet_train"
+gem "bullet_train-api", path: "../bullet_train-api"
+gem "bullet_train-fields", path: "../bullet_train-fields"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
