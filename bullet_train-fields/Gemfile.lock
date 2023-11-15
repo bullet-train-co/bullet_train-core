@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.6.11)
+    bullet_train-fields (1.6.12)
       chronic
       cloudinary
       phonelib
@@ -85,8 +85,7 @@ GEM
     concurrent-ruby (1.1.10)
     crass (1.0.6)
     date (3.3.4)
-    domain_name (0.5.20190701)
-      unf (>= 0.0.5, < 1.0.0)
+    domain_name (0.6.20231109)
     erubi (1.10.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -200,9 +199,6 @@ GEM
     timeout (0.4.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.9)
     unicode-display_width (2.2.0)
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
