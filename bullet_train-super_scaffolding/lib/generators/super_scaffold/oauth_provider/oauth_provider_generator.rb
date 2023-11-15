@@ -1,4 +1,4 @@
-require_relative "super_scaffold_base"
+require_relative "../super_scaffold_base"
 
 class OauthProviderGenerator < Rails::Generators::Base
   include SuperScaffoldBase
