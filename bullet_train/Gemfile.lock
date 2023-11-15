@@ -8,7 +8,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train (1.6.11)
+    bullet_train (1.6.12)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
