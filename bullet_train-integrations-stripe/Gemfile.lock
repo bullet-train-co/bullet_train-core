@@ -36,6 +36,7 @@ PATH
   specs:
     bullet_train-super_scaffolding (1.6.13)
       bullet_train
+      colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
       rails (>= 6.0.0)
@@ -54,6 +55,7 @@ PATH
       bullet_train-themes
       cable_ready (~> 5.0.0)
       cancancan
+      colorizer
       commonmarker
       devise
       devise-pwned_password
@@ -65,6 +67,7 @@ PATH
       image_processing
       microscope
       nice_partials (~> 0.9)
+      omniauth
       pagy
       possessive
       premailer-rails
