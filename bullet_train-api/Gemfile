@@ -8,8 +8,10 @@ gem "sqlite3"
 
 gem "sprockets-rails"
 
-gem "bullet_train"
-gem "bullet_train-super_scaffolding"
+gem "bullet_train", path: "../bullet_train"
+gem "bullet_train-fields", path: "../bullet_train-fields"
+gem "bullet_train-super_scaffolding", path: "../bullet_train-super_scaffolding"
+gem "bullet_train-super_load_and_authorize_resource", path: "../bullet_train-super_load_and_authorize_resource"
 
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"

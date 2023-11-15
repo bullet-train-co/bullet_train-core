@@ -9,6 +9,5 @@
 /test/dummy/storage/
 /test/dummy/tmp/
 .ruby-version
-Gemfile.lock
 .idea
 /.idea/
