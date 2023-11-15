@@ -22,14 +22,6 @@ ActiveRecord::Schema[7.1].define(version: 2022_03_02_235730) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "documents", force: :cascade do |t|
-    t.bigint "membership_id", null: false
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["membership_id"], name: "index_documents_on_membership_id"
-  end
-
   create_table "memberships", force: :cascade do |t|
     t.jsonb "role_ids"
     t.bigint "user_id", null: false
@@ -39,25 +31,6 @@ ActiveRecord::Schema[7.1].define(version: 2022_03_02_235730) do
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_memberships_on_team_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
-  end
-
-  create_table "scaffolding_absolutely_abstract_creative_concepts", force: :cascade do |t|
-    t.string "name"
-    t.text "description"
-    t.bigint "team_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["team_id"], name: "index_scaffold_absolutely_abstract_creative_concept_on_team_id"
-  end
-
-  create_table "scaffolding_absolutely_abstract_creative_concepts_collaborators", force: :cascade do |t|
-    t.jsonb "role_ids"
-    t.bigint "creative_concept_id", null: false
-    t.bigint "membership_id", null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["creative_concept_id"], name: "index_creative_concepts_collaborators_on_creative_concept_id"
-    t.index ["membership_id"], name: "index_creative_concepts_collaborators_on_membership_id"
   end
 
   create_table "teams", force: :cascade do |t|
@@ -80,9 +53,6 @@ ActiveRecord::Schema[7.1].define(version: 2022_03_02_235730) do
     t.datetime "updated_at", null: false
   end
 
-  add_foreign_key "documents", "memberships"
   add_foreign_key "memberships", "teams"
   add_foreign_key "memberships", "users"
-  add_foreign_key "scaffolding_absolutely_abstract_creative_concepts", "teams"
-  add_foreign_key "scaffolding_absolutely_abstract_creative_concepts_collaborators", "scaffolding_absolutely_abstract_creative_concepts", column: "creative_concept_id"
 end
