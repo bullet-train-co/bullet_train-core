@@ -11,7 +11,7 @@ gem "sprockets-rails"
 # TODO Have to specify this dependency here until our changes are in the original package.
 gem "active_hash", github: "bullet-train-co/active_hash"
 
-#gem "commonmarker", ">= 1.0.0.pre10"
+# gem "commonmarker", ">= 1.0.0.pre10"
 
 gem "bullet_train-api", path: "../bullet_train-api"
 gem "bullet_train-fields", path: "../bullet_train-fields"
@@ -23,7 +23,7 @@ gem "bullet_train-has_uuid", path: "../bullet_train-has_uuid"
 gem "bullet_train-scope_validator", path: "../bullet_train-scope_validator"
 gem "bullet_train-themes", path: "../bullet_train-themes"
 # TODO: Is bullet_train-routes still a thing? Should it be part of core now?
-#gem "bullet_train-routes", path: "../bullet_train-routes"
+# gem "bullet_train-routes", path: "../bullet_train-routes"
 
 gem "bullet_train-api", path: "../bullet_train-api"
 gem "bullet_train-fields", path: "../bullet_train-fields"

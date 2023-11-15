@@ -7,7 +7,7 @@ FactoryBot.define do
     factory :onboarded_user do
       first_name { "First Name" }
       last_name { "Last Name" }
-      password{ "password1" }
+      password { "password1" }
 
       after(:create) do |user|
         user.create_default_team
