@@ -1,3 +1,5 @@
+# This file is just here to make tests pass when run from inside this gem directory.
+# Seems like maybe we need a better resolution method for this file?
 default:
   models:
     Team: read

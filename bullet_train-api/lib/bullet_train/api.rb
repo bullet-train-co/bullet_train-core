@@ -10,7 +10,6 @@ require "pagy"
 require "pagy_cursor"
 require "rack/cors"
 require "doorkeeper"
-
 require "scaffolding"
 require "scaffolding/block_manipulator"
 require "scaffolding/transformer"
