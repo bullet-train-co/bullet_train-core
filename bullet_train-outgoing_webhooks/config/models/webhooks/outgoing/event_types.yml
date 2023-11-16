@@ -1,3 +1,6 @@
+# This file is here just to allow tests to pass when run from inside this gem directory.
+# It wasn't found if I put the file in test/dummy/config/models/webhooks/outgoing, so
+# maybe we need a better resolution method?
 scaffolding/absolutely_abstract/creative_concept:
   # This automatically generates `created`, `updated`, and `deleted` webhook events.
   - crud
