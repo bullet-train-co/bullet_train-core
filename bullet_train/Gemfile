@@ -11,7 +11,7 @@ gem "sprockets-rails"
 # TODO Have to specify this dependency here until our changes are in the original package.
 gem "active_hash", github: "bullet-train-co/active_hash"
 
-# gem "commonmarker", ">= 1.0.0.pre10"
+gem "commonmarker", ">= 1.0.0.pre10"
 
 gem "bullet_train-api", path: "../bullet_train-api"
 gem "bullet_train-fields", path: "../bullet_train-fields"
