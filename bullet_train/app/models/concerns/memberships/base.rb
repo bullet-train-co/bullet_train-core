@@ -156,7 +156,7 @@ module Memberships::Base
   end
 
   def publish_changed_quantity
-    ActiveSupport::Notifications.instrument("quantity-changed", {team:})
+    ActiveSupport::Notifications.instrument("memberships.quantity-changed", {team:})
   end
 
   ActiveSupport.run_load_hooks :bullet_train_memberships_base, self
