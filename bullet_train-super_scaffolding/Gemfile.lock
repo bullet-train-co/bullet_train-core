@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.6.14)
+    bullet_train-api (1.6.15)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.6.14)
+    bullet_train-fields (1.6.15)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.6.14)
+    bullet_train (1.6.15)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -63,7 +63,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-super_scaffolding (1.6.14)
+    bullet_train-super_scaffolding (1.6.15)
       bullet_train
       colorizer
       indefinite_article
