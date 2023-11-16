@@ -1,5 +1,6 @@
 # This file is just here to make tests pass when run from inside this gem directory.
 # Seems like maybe we need a better resolution method for this file?
+# It wasn't found if I put this file in test/dummy/config/models/
 default:
   models:
     Team: read
