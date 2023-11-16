@@ -1,6 +1,4 @@
 class Account::Platform::AccessTokensController < Account::ApplicationController
-  #include Controllers::Base
-
   account_load_and_authorize_resource :access_token, through: :application, through_association: :access_tokens
 
   # GET /account/platform/applications/:application_id/access_tokens
