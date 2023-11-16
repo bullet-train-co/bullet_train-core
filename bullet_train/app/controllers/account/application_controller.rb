@@ -1,5 +1,4 @@
 class Account::ApplicationController < ApplicationController
-  include Controllers::Base
   include Account::Controllers::Base
 
   def ensure_onboarding_is_complete
