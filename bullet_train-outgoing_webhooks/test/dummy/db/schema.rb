@@ -46,6 +46,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
     t.string "name"
     t.string "slug"
     t.string "time_zone"
+    t.boolean "being_destroyed"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
