@@ -23,6 +23,43 @@ PATH
       rails (>= 6.0.0)
 
 PATH
+  remote: ../bullet_train
+  specs:
+    bullet_train (1.6.15)
+      awesome_print
+      bullet_train-has_uuid
+      bullet_train-roles
+      bullet_train-routes
+      bullet_train-scope_validator
+      bullet_train-super_load_and_authorize_resource
+      bullet_train-themes
+      cable_ready (~> 5.0.0)
+      cancancan
+      colorizer
+      commonmarker
+      devise
+      devise-pwned_password
+      extended_email_reply_parser
+      fastimage
+      figaro
+      hiredis
+      http_accept_language
+      image_processing
+      microscope
+      nice_partials (~> 0.9)
+      omniauth
+      pagy
+      possessive
+      premailer-rails
+      rails (>= 6.0.0)
+      ruby-openai
+      showcase-rails
+      sidekiq
+      unicode-emoji
+      valid_email
+      xxhash
+
+PATH
   remote: .
   specs:
     bullet_train-fields (1.6.15)
@@ -109,51 +146,20 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.19)
     builder (3.2.4)
-    bullet_train (1.6.13)
-      awesome_print
-      bullet_train-fields
-      bullet_train-has_uuid
-      bullet_train-roles
-      bullet_train-routes
-      bullet_train-scope_validator
-      bullet_train-super_load_and_authorize_resource
-      bullet_train-themes
-      cable_ready (~> 5.0.0)
-      cancancan
-      commonmarker
-      devise
-      devise-pwned_password
-      extended_email_reply_parser
-      fastimage
-      figaro
-      hiredis
-      http_accept_language
-      image_processing
-      microscope
-      nice_partials (~> 0.9)
-      pagy
-      possessive
-      premailer-rails
+    bullet_train-has_uuid (1.6.15)
       rails (>= 6.0.0)
-      ruby-openai
-      showcase-rails
-      sidekiq
-      unicode-emoji
-      valid_email
-      xxhash
-    bullet_train-has_uuid (1.6.13)
-      rails (>= 6.0.0)
-    bullet_train-roles (1.6.13)
+    bullet_train-roles (1.6.15)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.6.13)
-    bullet_train-super_load_and_authorize_resource (1.6.13)
+    bullet_train-scope_validator (1.6.15)
+      rails
+    bullet_train-super_load_and_authorize_resource (1.6.15)
       cancancan
       rails (>= 6.0.0)
-    bullet_train-themes (1.6.13)
+    bullet_train-themes (1.6.15)
       rails (>= 6.0.0)
     cable_ready (5.0.3)
       actionpack (>= 5.2)
@@ -210,6 +216,7 @@ GEM
       thor (>= 0.14.0, < 2)
     globalid (1.2.1)
       activesupport (>= 6.1)
+    hashie (5.0.0)
     hiredis (0.6.3)
     htmlentities (4.3.4)
     http-accept (1.7.0)
@@ -271,6 +278,10 @@ GEM
     nokogiri (1.13.7)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
+    omniauth (2.1.1)
+      hashie (>= 3.4.6)
+      rack (>= 2.2.3)
+      rack-protection
     orm_adapter (0.5.0)
     pagy (6.2.0)
     pagy_cursor (0.6.1)
@@ -296,6 +307,8 @@ GEM
     rack (2.2.4)
     rack-cors (2.0.1)
       rack (>= 2.0.0)
+    rack-protection (3.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-test (2.0.2)
       rack (>= 1.3)
     rails (7.0.3.1)
@@ -388,7 +401,7 @@ GEM
       concurrent-ruby (~> 1.0)
     unf (0.1.4)
       unf_ext
-    unf_ext (0.0.9)
+    unf_ext (0.0.9.1)
     unicode-display_width (2.2.0)
     unicode-emoji (3.4.0)
       unicode-version (~> 1.0)
@@ -415,6 +428,7 @@ PLATFORMS
   x86_64-linux
 
 DEPENDENCIES
+  bullet_train!
   bullet_train-api!
   bullet_train-fields!
   bullet_train-super_scaffolding!
