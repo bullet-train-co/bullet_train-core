@@ -1,4 +1,4 @@
-require "bullet_train"
+#require "bullet_train"
 
 require "bullet_train/api/version"
 require "bullet_train/api/engine"
@@ -16,7 +16,7 @@ require "doorkeeper"
 # We explicitly include bullet_train/super_scaffolding because it contains the
 # scaffolding* files that we try to require next. If we don't require the top
 # level of the gem then we don't have access to those files.
-require "bullet_train/super_scaffolding"
+#require "bullet_train/super_scaffolding"
 require "scaffolding"
 require "scaffolding/block_manipulator"
 require "scaffolding/transformer"
