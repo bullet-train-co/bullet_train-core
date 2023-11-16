@@ -11,6 +11,7 @@ form ||= current_fields_form
 options ||= {}
 other_options ||= {}
 
+# TODO: Remove this if it's unneeded.
 options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 %>
 
