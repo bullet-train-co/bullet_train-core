@@ -26,7 +26,6 @@ PATH
   remote: ../bullet_train-super_scaffolding
   specs:
     bullet_train-super_scaffolding (1.6.15)
-      bullet_train
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -37,7 +36,6 @@ PATH
   specs:
     bullet_train (1.6.15)
       awesome_print
-      bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
       bullet_train-routes
@@ -301,6 +299,7 @@ GEM
     parser (3.2.2.3)
       ast (~> 2.4.1)
       racc
+    pg (1.5.4)
     phonelib (0.8.5)
     possessive (1.0.1)
     premailer (1.21.0)
@@ -454,6 +453,7 @@ DEPENDENCIES
   bullet_train-outgoing_webhooks!
   bullet_train-super_scaffolding!
   jbuilder
+  pg (~> 1.3)
   sprockets-rails
   sqlite3
   standard

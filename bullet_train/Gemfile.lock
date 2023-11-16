@@ -60,7 +60,6 @@ PATH
   remote: ../bullet_train-super_scaffolding
   specs:
     bullet_train-super_scaffolding (1.6.15)
-      bullet_train
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -85,7 +84,6 @@ PATH
   specs:
     bullet_train (1.6.15)
       awesome_print
-      bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
       bullet_train-routes

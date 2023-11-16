@@ -17,7 +17,6 @@ PATH
   remote: ../bullet_train-super_scaffolding
   specs:
     bullet_train-super_scaffolding (1.6.15)
-      bullet_train
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
