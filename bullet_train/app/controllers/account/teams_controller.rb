@@ -1,5 +1,4 @@
 class Account::TeamsController < Account::ApplicationController
-  include Controllers::Base
   include Account::Teams::ControllerBase
 
   private

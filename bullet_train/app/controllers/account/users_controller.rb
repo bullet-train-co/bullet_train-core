@@ -1,5 +1,4 @@
 class Account::UsersController < Account::ApplicationController
-  include Controllers::Base
   include Account::Users::ControllerBase
 
   private
