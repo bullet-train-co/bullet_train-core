@@ -30,6 +30,10 @@ module Memberships::Base
       end
     end
 
+    after_create_commit :publish_changed_quantity
+    after_update_commit :publish_changed_quantity
+    after_destroy_commit :publish_changed_quantity
+
     after_validation :remove_user_profile_photo, if: :user_profile_photo_removal?
 
     scope :excluding_platform_agents, -> { where(platform_agent_of: nil) }
@@ -149,6 +153,10 @@ module Memberships::Base
 
   def remove_user_profile_photo
     user_profile_photo.purge
+  end
+
+  def publish_changed_quantity
+    ActiveSupport::Notifications.instrument("quantity-changed", {team:})
   end
 
   ActiveSupport.run_load_hooks :bullet_train_memberships_base, self
