@@ -4,6 +4,14 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
   setup do
     @controller = Api::V1::Webhooks::Outgoing::EndpointsController
 
+    5.times do |n|
+      Team.create! name: "Generic name #{n}"
+    end
+
+    5.times do |n|
+      Webhooks::Outgoing::Endpoint.create! team_id: Team.first.id, name: "Generic name #{n}", url: "http://example.com/webhook-#{n}"
+    end
+
     @team = Team.first
     @endpoint = @team.webhooks_outgoing_endpoints.first
   end
