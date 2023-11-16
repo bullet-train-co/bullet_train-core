@@ -71,7 +71,7 @@ jobs:
           rubygems: latest
           bundler: latest
           # If we use the cache ruby/setup always assumes our lockfile should be frozen, and it is not
-          bundler-cache: false
+          bundler-cache: true
           ruby-version: ${{ matrix.ruby-version }}
           working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
