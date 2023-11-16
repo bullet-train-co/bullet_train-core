@@ -1,5 +1,5 @@
 class Account::Platform::AccessTokensController < Account::ApplicationController
-  include Controllers::Base
+  #include Controllers::Base
 
   account_load_and_authorize_resource :access_token, through: :application, through_association: :access_tokens
 
