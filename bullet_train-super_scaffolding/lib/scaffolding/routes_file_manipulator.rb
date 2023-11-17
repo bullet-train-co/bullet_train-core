@@ -35,22 +35,6 @@ class Scaffolding::RoutesFileManipulator
     @common_namespaces
   end
 
-  # def divergent_namespaces
-  #   unless @divergent_namespaces
-  #     @divergent_namespaces ||= []
-  #     child_parts_copy = child_parts.dup
-  #     parent_parts_copy = parent_parts.dup
-  #     while child_parts_copy.first == parent_parts_copy.first
-  #       child_parts_copy.shift
-  #       parent_parts_copy.shift
-  #     end
-  #     child_parts_copy.pop
-  #     parent_parts_copy.pop
-  #     @divergent_namespaces = [child_parts_copy, parent_parts_copy]
-  #   end
-  #   @divergent_namespaces
-  # end
-
   def divergent_parts
     unless @divergent_namespaces
       @divergent_namespaces ||= []
