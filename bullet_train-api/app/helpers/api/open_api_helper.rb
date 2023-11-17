@@ -46,6 +46,10 @@ module Api
       path = "app/views/api/#{@version}"
       paths = [path, "app/views"] + gem_paths.product(%W[/#{path} /app/views]).map(&:join)
 
+      # Transform values the same way we do for Jbuilder templates
+      require "jbuilder/schema/template"
+      Jbuilder::Schema::Template.prepend ValuesTransformer
+
       jbuilder = Jbuilder::Schema.renderer(paths, locals: {
         # If we ever get to the point where we need a real model here, we should implement an example team in seeds that we can source it from.
         model.name.underscore.split("/").last.to_sym => model.new,
