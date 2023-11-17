@@ -30,9 +30,7 @@ module Memberships::Base
       end
     end
 
-    after_create_commit :publish_changed_quantity
-    after_update_commit :publish_changed_quantity
-    after_destroy_commit :publish_changed_quantity
+    after_commit :publish_changed_quantity
 
     after_validation :remove_user_profile_photo, if: :user_profile_photo_removal?
 
