@@ -6,7 +6,7 @@ ActiveRecord::Base.time_zone_aware_attributes = true
 # We declare a Team model here so that we can have it
 # include Webhooks::Outgoing::TeamSupport
 # which we don't ship enabled by default. Maybe we should?
-#class Team < ApplicationRecord
-  #include Teams::Base
-  #include Webhooks::Outgoing::TeamSupport
-#end
+class Team < ApplicationRecord
+  include Teams::Base
+  include Webhooks::Outgoing::TeamSupport
+end
