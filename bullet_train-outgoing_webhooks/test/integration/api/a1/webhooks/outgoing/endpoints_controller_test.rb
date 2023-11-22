@@ -3,6 +3,17 @@ require "test_helper"
 class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::IntegrationTest
   setup do
     @controller = Api::V1::Webhooks::Outgoing::EndpointsController
+
+    5.times do |n|
+      Team.create! name: "Generic name #{n}"
+    end
+
+    5.times do |n|
+      Webhooks::Outgoing::Endpoint.create! team_id: Team.first.id, name: "Generic name #{n}", url: "http://example.com/webhook-#{n}"
+    end
+
+    @team = Team.first
+    @endpoint = @team.webhooks_outgoing_endpoints.first
   end
 
   test "it returns list of endpoints" do
@@ -14,10 +25,10 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
   end
 
   test "it returns a single endpoint" do
-    get api_v1_webhooks_outgoing_endpoint_path(2), as: :json
+    get api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
 
     assert_response :success
-    assert_equal "Generic name 1", response.parsed_body["name"]
+    assert_equal "Generic name 0", response.parsed_body["name"]
   end
 
   test "creates endpoints" do
@@ -33,17 +44,17 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
   end
 
   test "updates an endpoint" do
-    patch api_v1_webhooks_outgoing_endpoint_path(3), params: {webhooks_outgoing_endpoint: {name: "Ahoy!", url: "http://example.com/updated-webhook"}}, as: :json
+    patch api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), params: {webhooks_outgoing_endpoint: {name: "Ahoy!", url: "http://example.com/updated-webhook"}}, as: :json
 
     assert_response :success
-    assert_equal "Ahoy!", Webhooks::Outgoing::Endpoint.find(3).name
+    assert_equal "Ahoy!", Webhooks::Outgoing::Endpoint.find(@endpoint.id).name
     assert_equal "Ahoy!", response.parsed_body["name"]
     assert_equal "http://example.com/updated-webhook", response.parsed_body["url"]
   end
 
   test "destroys an endpoint" do
     assert_difference -> { Webhooks::Outgoing::Endpoint.count }, -1 do
-      delete api_v1_webhooks_outgoing_endpoint_path(4), as: :json
+      delete api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
     end
 
     assert_response :success

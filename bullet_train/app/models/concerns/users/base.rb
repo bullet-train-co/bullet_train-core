@@ -2,6 +2,7 @@ module Users::Base
   extend ActiveSupport::Concern
 
   included do
+    extend Devise::Models
     attr_accessor :profile_photo_removal
 
     if two_factor_authentication_enabled?

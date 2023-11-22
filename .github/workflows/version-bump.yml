@@ -1,4 +1,4 @@
-name: "Create Version Bump PR For Ruby Gems & NPM Packages"
+name: " ↗️  Create Version Bump PR For Ruby Gems & NPM Packages"
 
 on:
   workflow_dispatch:
