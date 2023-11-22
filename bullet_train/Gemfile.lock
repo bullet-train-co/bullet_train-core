@@ -186,6 +186,7 @@ GEM
       tzinfo (~> 2.0)
     addressable (2.8.5)
       public_suffix (>= 2.0.2, < 6.0)
+    ansi (1.5.0)
     ast (2.4.2)
     awesome_print (1.9.2)
     aws_cf_signer (0.1.3)
@@ -304,6 +305,11 @@ GEM
     mini_mime (1.1.5)
     mini_portile2 (2.8.5)
     minitest (5.18.0)
+    minitest-reporters (1.6.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     multipart-post (2.3.0)
     net-imap (0.3.7)
       date
@@ -489,6 +495,7 @@ DEPENDENCIES
   bullet_train-themes!
   bullet_train-themes-light!
   commonmarker (>= 1.0.0.pre10)
+  minitest-reporters
   pry
   pry-stack_explorer
   sprockets-rails

@@ -1,4 +1,4 @@
-name: " 🚅  ~ Gem Tests"
+name: "🚅  CI"
 
 on:
   pull_request:
@@ -7,83 +7,11 @@ on:
     branches: [ "main" ]
 
 jobs:
-  test:
-    strategy:
-      fail-fast: false
-      matrix:
-        ruby-version:
-          - "3.2"
-        gem:
-          - "bullet_train"
-          - "bullet_train-api"
-          - "bullet_train-fields"
-          - "bullet_train-has_uuid"
-          - "bullet_train-incoming_webhooks"
-          - "bullet_train-integrations"
-          - "bullet_train-integrations-stripe"
-          - "bullet_train-obfuscates_id"
-          - "bullet_train-outgoing_webhooks"
-          - "bullet_train-roles"
-          - "bullet_train-scope_questions"
-          - "bullet_train-scope_validator"
-          - "bullet_train-sortable"
-          - "bullet_train-super_load_and_authorize_resource"
-          - "bullet_train-super_scaffolding"
-          - "bullet_train-themes"
-          - "bullet_train-themes-light"
-          - "bullet_train-themes-tailwind_css"
-
-    name: ${{ format('{0} / {1}', matrix.gem, matrix.ruby-version) }}
-    runs-on: "ubuntu-latest"
-
-    services:
-      postgres:
-        image: postgres
-        env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 2s
-          --health-timeout 2s
-          --health-retries 5
-        ports:
-          - 5432:5432
-
-    env:
-      PGHOST: localhost
-      PGUSER: postgres
-      PGPASSWORD: postgres
-      RAILS_ENV: test
-
-    defaults:
-      run:
-        working-directory: ${{ matrix.gem }}
-
-    steps:
-      - uses: "actions/checkout@v3"
-
-      - uses: "ruby/setup-ruby@v1"
-        with:
-          rubygems: latest
-          bundler: latest
-          bundler-cache: true
-          ruby-version: ${{ matrix.ruby-version }}
-          working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
-
-      # TODO: Sometimes the step above complains about the lockfile being fronzen.
-      # When that happens you can get things moving again by chaning the bundler-cache
-      # option above to false. Then _must_ uncomment the line for `bundle install` and
-      # you can also uncomment the following lines to find out what changed unexpectedly.
-      # I _think_ I've got things set up so that this shouldn't be an issue any more, but
-      # I'm leaving this stuff here in case it comes in handy in the near future.
-      #
-      #- run: bundle install
-      #- run: cat Gemfile.lock
-      #- run: git diff Gemfile.lock
-
-      - run: bin/rails db:setup
-        if: ${{ hashFiles(format('{0}/test/dummy/db/schema.rb', matrix.gem)) != '' }}
-
-      - name: Run Tests
-        run: bin/rails test
+  gem_tests:
+    name: 🧪 Gem Tests
+    uses: ./.github/workflows/_run_tests.yml
+    secrets: inherit
+  standardrb:
+    name: 🔬 Standardrb
+    uses: ./.github/workflows/_standardrb.yml
+    secrets: inherit

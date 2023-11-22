@@ -14,5 +14,9 @@ gem "bullet_train-api", path: "../bullet_train-api"
 gem "bullet_train-fields", path: "../bullet_train-fields"
 gem "bullet_train", path: "../bullet_train"
 
+group :test do
+  gem "minitest-reporters"
+end
+
 # Start debugger with binding.b [https://github.com/ruby/debug]
 # gem "debug", ">= 1.0.0"
