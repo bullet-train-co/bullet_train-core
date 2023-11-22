@@ -33,5 +33,3 @@ end
 reporters.push Minitest::Reporters::JUnitReporter.new if ENV["CI"]
 
 Minitest::Reporters.use! reporters
-
-
