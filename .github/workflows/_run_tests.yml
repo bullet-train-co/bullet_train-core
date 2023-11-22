@@ -92,5 +92,5 @@ jobs:
       - name: Test Summary
         uses: test-summary/action@v2
         with:
-          paths: "test/reports/**/TEST-*.xml"
+          paths: format("{0}/test/reports/**/TEST-*.xml", matrix.gem)
         if: always()
