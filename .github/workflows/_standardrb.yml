@@ -8,6 +8,7 @@ on:
 
 jobs:
   lint:
+    name: Standardrb
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test
