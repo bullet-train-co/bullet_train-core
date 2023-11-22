@@ -1,7 +1,10 @@
 name: " 🚅  ~ Gem Tests"
 
 on:
-  - "pull_request"
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches: [ "main" ]
 
 jobs:
   test:
