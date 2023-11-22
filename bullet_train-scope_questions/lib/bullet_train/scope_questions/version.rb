@@ -1,5 +1,5 @@
 module BulletTrain
   module ScopeQuestions
-    VERSION = "1.6.18"
+    VERSION = "1.6.19"
   end
 end
