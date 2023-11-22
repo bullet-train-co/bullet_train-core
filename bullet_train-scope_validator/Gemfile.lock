@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.6.18)
+    bullet_train-scope_validator (1.6.19)
       rails
 
 GEM
@@ -118,7 +118,7 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     mutex_m (0.2.0)
-    net-imap (0.4.5)
+    net-imap (0.4.6)
       date
       net-protocol
     net-pop (0.1.2)
