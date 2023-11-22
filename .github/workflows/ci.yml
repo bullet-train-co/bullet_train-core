@@ -8,10 +8,10 @@ on:
 
 jobs:
   gem_tests:
-    name: 🧪
+    name: 🧪 Gem Tests
     uses: ./.github/workflows/_run_tests.yml
     secrets: inherit
   standardrb:
-    name: 🔬
+    name: 🔬 Standardrb
     uses: ./.github/workflows/_standardrb.yml
     secrets: inherit

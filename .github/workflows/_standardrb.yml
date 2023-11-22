@@ -8,7 +8,7 @@ on:
 
 jobs:
   lint:
-    name: Standardrb
+    name: Lint
     runs-on: ubuntu-latest
     env:
       RAILS_ENV: test

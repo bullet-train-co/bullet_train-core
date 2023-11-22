@@ -34,7 +34,7 @@ jobs:
           - "bullet_train-themes-light"
           - "bullet_train-themes-tailwind_css"
 
-    name: ${{ format('{0} / {1}', matrix.gem, matrix.ruby-version) }} #'
+    name: ${{ format('{0}:{1}', matrix.gem, matrix.ruby-version) }}
 
     services:
       postgres:
