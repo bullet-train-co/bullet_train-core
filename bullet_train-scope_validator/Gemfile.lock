@@ -81,6 +81,7 @@ GEM
       minitest (>= 5.1)
       mutex_m
       tzinfo (~> 2.0)
+    ansi (1.5.0)
     ast (2.4.2)
     base64 (0.2.0)
     bigdecimal (3.1.4)
@@ -111,6 +112,11 @@ GEM
     marcel (1.0.2)
     mini_mime (1.1.5)
     minitest (5.15.0)
+    minitest-reporters (1.6.1)
+      ansi
+      builder
+      minitest (>= 5.0)
+      ruby-progressbar
     mutex_m (0.2.0)
     net-imap (0.4.5)
       date
@@ -217,6 +223,7 @@ PLATFORMS
 DEPENDENCIES
   bullet_train-scope_validator!
   minitest (~> 5.0)
+  minitest-reporters
   rake (~> 13.0)
   standard (~> 1.3)
 
