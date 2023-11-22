@@ -1,4 +1,4 @@
-name: "Push Ruby Gems & NPM Packages"
+name: " 🚅 ~ Push Ruby Gems & NPM Packages"
 
 on:
   workflow_call:

@@ -1,4 +1,4 @@
-name: "Gem Tests"
+name: " 🚅  ~ Gem Tests"
 
 on:
   - "pull_request"
