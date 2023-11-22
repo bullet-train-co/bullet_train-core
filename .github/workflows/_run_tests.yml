@@ -55,6 +55,7 @@ jobs:
       PGUSER: postgres
       PGPASSWORD: postgres
       RAILS_ENV: test
+      CI: 1
 
     defaults:
       run:
