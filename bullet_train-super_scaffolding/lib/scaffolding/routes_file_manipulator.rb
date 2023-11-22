@@ -52,28 +52,19 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_namespaces(namespaces, within = nil)
+    namespaces = namespaces.dup
     results = {}
-    reinstantiate_masamune_object
-    namespace_nodes = @msmn.method_calls(token_value: "namespace")
-    namespace_nodes.map do |node|
-      # Get the first argument (a Symbol) without the colon from the list of arguments.
-      name = node.arguments.child_nodes.first.unescaped
-
-      # TODO: For some reason we use both strings and symbols for namespaces.
-      # i.e. - ["account"] and [:v1].
-      if namespaces.include?(name.to_sym)
-        results[name.to_sym] = node.line_number - 1
-      elsif namespaces.include?(name)
-        results[name] = node.line_number - 1
+    block_end = Scaffolding::BlockManipulator.find_block_end(starting_from: within, lines: lines) if within
+    lines.each_with_index do |line, line_number|
+      if within
+        next unless line_number > within
+        return results if line_number >= block_end
       end
+      if line.include?("namespace :#{namespaces.first} do")
+        results[namespaces.shift] = line_number
+      end
+      return results unless namespaces.any?
     end
-
-    # `within` uses an Array index whereas Masamune nodes use the actual line number, so we write `within + 1` here.
-    if within
-      block_end = @msmn.method_calls.find { |node| node.line_number == within + 1 }.location.end_line
-      results.reject! { |name, line_number| line_number >= block_end }
-    end
-
     results
   end
 
@@ -426,11 +417,5 @@ class Scaffolding::RoutesFileManipulator
     else
       lines[line_number].gsub!(/resources :(.*)$/, "resources :\\1, concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]")
     end
-  end
-
-  # We have to do this because the `lines` object is constantly changing,
-  # so we reinstantiate this object wherever necessary.
-  def reinstantiate_masamune_object
-    @msmn = Masamune::AbstractSyntaxTree.new(lines.join)
   end
 end
