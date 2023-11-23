@@ -62,7 +62,7 @@ class Scaffolding::RoutesFileManipulator
 
     if within
       starting_block = blocks.find { |block| block.line_number - 1 == within }
-      block_range = (starting_block.location.start_line - 1)..(starting_block.location.end_line - 1)
+      block_range = (starting_block.location.start_line)..(starting_block.location.end_line)
       namespace_nodes.select! { |node| block_range.cover?(node.line_number) }
     end
 
