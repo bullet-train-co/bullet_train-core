@@ -57,13 +57,13 @@ class Scaffolding::RoutesFileManipulator
     reinstatiate_masamune_object
 
     # `within` can refer to either a `resources`, `namespace`, `scope`, or `shallow` block.
-    blocks = @msmn.method_calls.select {|node| node.token_value.match?(/resources|namespace|scope|shallow/)}
-    namespace_nodes = blocks.select{|node| node.token_value.match?(/namespace/)}
+    blocks = @msmn.method_calls.select { |node| node.token_value.match?(/resources|namespace|scope|shallow/) }
+    namespace_nodes = blocks.select { |node| node.token_value.match?(/namespace/) }
 
     if within
-      starting_block = blocks.find {|block| block.line_number - 1 == within}
+      starting_block = blocks.find { |block| block.line_number - 1 == within }
       block_range = (starting_block.location.start_line - 1)..(starting_block.location.end_line - 1)
-      namespace_nodes.select! {|node| block_range.cover?(node.line_number)}
+      namespace_nodes.select! { |node| block_range.cover?(node.line_number) }
     end
 
     namespace_nodes.each do |node|
@@ -230,7 +230,7 @@ class Scaffolding::RoutesFileManipulator
       if namespace_line_numbers.include?(line_index)
         # Grab the first symbol token on the same line as the namespace.
         reinstatiate_masamune_object
-        namespace_name = @msmn.symbols.find { |sym| (sym.line_number) == line_index }.token_value
+        namespace_name = @msmn.symbols.find { |sym| sym.line_number == line_index }.token_value
         local_namespace = find_namespaces([namespace_name], within)
         starting_line_number = local_namespace[namespace_name]
         local_namespace_block = ((starting_line_number + 1)..(Scaffolding::BlockManipulator.find_block_end(starting_from: starting_line_number, lines: lines) + 1))
