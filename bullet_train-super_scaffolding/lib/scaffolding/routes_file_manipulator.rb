@@ -54,7 +54,7 @@ class Scaffolding::RoutesFileManipulator
   def find_namespaces(namespaces, within = nil)
     namespaces = namespaces.dup
     results = {}
-    reinstatiate_masamune_object
+    reinstantiate_masamune_object
 
     # `within` can refer to either a `resources`, `namespace`, `scope`, or `shallow` block.
     blocks = @msmn.method_calls.select { |node| node.token_value.match?(/resources|namespace|scope|shallow/) }
@@ -229,7 +229,7 @@ class Scaffolding::RoutesFileManipulator
       # all other namespace blocks INSIDE the top-level namespace blocks are skipped
       if namespace_line_numbers.include?(line_index)
         # Grab the first symbol token on the same line as the namespace.
-        reinstatiate_masamune_object
+        reinstantiate_masamune_object
         namespace_name = @msmn.symbols.find { |sym| sym.line_number == line_index }.token_value
         local_namespace = find_namespaces([namespace_name], within)
         starting_line_number = local_namespace[namespace_name]
@@ -426,7 +426,7 @@ class Scaffolding::RoutesFileManipulator
     end
   end
 
-  def reinstatiate_masamune_object
+  def reinstantiate_masamune_object
     @msmn = Masamune::AbstractSyntaxTree.new(lines.join)
   end
 end
