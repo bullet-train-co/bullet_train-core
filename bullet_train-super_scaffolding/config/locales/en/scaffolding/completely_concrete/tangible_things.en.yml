@@ -99,6 +99,10 @@ en:
         _: &address_value Address Value
         label: *address_value
         heading: *address_value
+      sort_order:
+        _: &sort_order Sort Order
+        label: *sort_order
+        heading: *sort_order
       option_value:
         _: &option_value Option Value
         label: *option_value
