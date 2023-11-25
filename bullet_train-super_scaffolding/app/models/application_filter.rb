@@ -15,14 +15,6 @@ class ApplicationFilter < Refine::Filter
     super&.sort_by { _1[:display].to_s.downcase }
   end
 
-  def self.from_state(state, initial_query)
-    state[:type].constantize.new(state[:blueprint], initial_query)
-  end
-
-  def table
-    model.arel_table
-  end
-
   def empty_option
     [{id: "null", display: "Empty"}]
   end
