@@ -19,10 +19,12 @@
 
       <% box.table do %>
         <% if @refine_filter %>
-          <%= form_with method: :get, data: { controller: "starter_form", action: "filter-submit-success->starter_form#requestSubmit", turbo_frame: "tangible_things_table" } do |form| %>
-            <%= form.hidden_field :stable_id, value: @refine_stable_id %>
-            <%= render "refine/inline/filters/show" %>
-          <% end %>
+          <div class="px-8 py-2">
+            <%= form_with method: :get, data: { controller: "starter_form", action: "filter-submit-success->starter_form#requestSubmit", turbo_frame: "tangible_things_table" } do |form| %>
+              <%= form.hidden_field :stable_id, value: @refine_stable_id %>
+              <%= render "refine/inline/filters/show" %>
+            <% end %>
+          </div>
         <% end %>
 
         <%= turbo_frame_tag :tangible_things_table, target: "_top" do %>
@@ -46,8 +48,8 @@
                 <%= render partial: 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', collection: tangible_things %>
               </tbody>
             </table>
-          <% else %>
-            No tangible things found.
+          <% elsif @refine_filter %>
+            <div class="px-8 py-4">No tangible things found.</div>
           <% end %>
         <% end %>
       <% end %>
