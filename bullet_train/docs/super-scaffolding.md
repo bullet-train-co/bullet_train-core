@@ -33,6 +33,16 @@ The Super Scaffolding shell script provides its own documentation. If you're cur
 rails generate super_scaffold
 ```
 
+## Available Scaffolding Types
+
+| `rails generate` Command | Scaffolding Type |
+|--------------------------|------------------|
+| `rails generate super_scaffold` | Basic CRUD scaffolder |
+| `rails generate super_scaffold:field` | Adds a field to an existing model |
+| `rails generate super_scaffold:incoming_webhook` | Scaffolds an incoming webhook |
+| `rails generate super_scaffold:join_model` | Scaffolds a join model (must have two existing models to join before scaffolding) |
+| `rails generate super_scaffold:oauth_provider` | Scaffolds logic to use OAuth2 with the provider of your choice |
+
 ## Examples
 
 ### 1. Basic CRUD Scaffolding
