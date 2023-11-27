@@ -47,7 +47,6 @@ module Api
       paths = [path, "app/views"] + gem_paths.product(%W[/#{path} /app/views]).map(&:join)
 
       # Transform values the same way we do for Jbuilder templates
-      require "jbuilder/schema/template"
       Jbuilder::Schema::Template.prepend ValuesTransformer
 
       jbuilder = Jbuilder::Schema.renderer(paths, locals: {
