@@ -483,7 +483,7 @@ class Scaffolding::Transformer
 
   def add_ability_line_to_roles_yml(class_names = nil)
     model_names = class_names || [child]
-    role_file = "./config/models/roles.yml"
+    role_file = "#{Rails.root}/config/models/roles.yml"
     roles_hash = YAML.load_file(role_file)
     default_role_placements = [
       [:default, :models],
