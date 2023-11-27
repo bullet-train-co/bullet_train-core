@@ -149,7 +149,7 @@ For Cloudinary you should use `string`, and for ActiveStorage you should use `at
 ## A Note On Data Types
 When creating a `multiple` option attribute, Bullet Train generates these values as a `jsonb`.
 ```
-bin/super-scaffold crud Project Team multiple_buttons:buttons{multiple}
+rails generate super_scaffold Project Team multiple_buttons:buttons{multiple}
 ```
 
 This will run the following rails command.

@@ -44,7 +44,7 @@ In traditional Rails development, it can be so much work to bring your domain mo
 
 ### Focus on the structure and namespacing. Don't worry about every attribute.
 
-One of the unique features of Super Scaffolding is that it allows you to scaffold additional attributes with `bin/super-scaffold crud-field` after the initial scaffolding of a model with `bin/super-scaffold crud`. That means that you don't have to worry about figuring out every single attribute that might exist on a model before running Super Scaffolding. Instead, the really important piece is:
+One of the unique features of Super Scaffolding is that it allows you to scaffold additional attributes with `rails generate super_scaffold:field` after the initial scaffolding of a model with `rails generate super_scaffold`. That means that you don't have to worry about figuring out every single attribute that might exist on a model before running Super Scaffolding. Instead, the really important piece is:
 
 1. Naming the model.
 2. Determining which parent model it primarily belongs to.
@@ -68,7 +68,7 @@ Even if you know there's an attribute or model that you're going to want to poli
 
 ## A Systematic Approach
 
-### 1. Write `bin/super-scaffold` commands in a scratch file.
+### 1. Write `rails generate super_scaffold` commands in a scratch file.
 
 See the [Super Scaffolding documentation](/docs/super-scaffolding.md) for more specific guidance. Leave plenty of comments in your scratch file describing anything that isn't obvious and providing examples of values that might populate attributes.
 
