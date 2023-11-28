@@ -3,9 +3,9 @@ module Teams::Base
 
   included do
     # super scaffolding
-    #unless scaffolding_things_disabled?
-      has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_cable_ready_updates: true
-    #end
+    # unless scaffolding_things_disabled?
+    has_many :scaffolding_absolutely_abstract_creative_concepts, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcept", dependent: :destroy, enable_cable_ready_updates: true
+    # end
 
     # added_by_id is a foreign_key to other Memberships on the same team,
     # so we nullify this to remove the constraint to delete the team.
