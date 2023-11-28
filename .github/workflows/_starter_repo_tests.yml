@@ -50,6 +50,8 @@ jobs:
     steps:
       - name: Checkout This Repo
         uses: actions/checkout@v4
+        with:
+          path: tmp/core
 
       - name: Checkout Starter Repo
         uses: bullet-train-co/checkout-repo-with-matching-branch@v1
@@ -74,7 +76,7 @@ jobs:
         uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
-          core_dir: ./
+          core_dir: tmp/core
 
       - name: Set up database schema
         run: bin/rails db:schema:load
