@@ -7,90 +7,98 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  starter_repo:
     runs-on: ubuntu-latest
+    name: Bullet Train Starter Repo Minitest
     strategy:
       fail-fast: false
       matrix:
-        ruby-version:
-          - "3.2"
-        gem:
-          - "bullet_train"
-          - "bullet_train-api"
-          - "bullet_train-fields"
-          - "bullet_train-has_uuid"
-          - "bullet_train-incoming_webhooks"
-          - "bullet_train-integrations"
-          - "bullet_train-integrations-stripe"
-          - "bullet_train-obfuscates_id"
-          - "bullet_train-outgoing_webhooks"
-          - "bullet_train-roles"
-          - "bullet_train-scope_questions"
-          - "bullet_train-scope_validator"
-          - "bullet_train-sortable"
-          - "bullet_train-super_load_and_authorize_resource"
-          - "bullet_train-super_scaffolding"
-          - "bullet_train-themes"
-          - "bullet_train-themes-light"
-          - "bullet_train-themes-tailwind_css"
-
-    name: ${{ format('{0}:{1}', matrix.gem, matrix.ruby-version) }}
-
+        # Set identifiers for parallel jobs. These can be anything.
+        # For instance if you want a Three Amigos themed pipeline you could use:
+        # ci_node_index: [Dusty, Ned, Lucky]
+        ci_node_index: [1,2,3,4]
     services:
       postgres:
-        image: postgres
+        image: postgres:11-alpine
+        ports:
+          - "5432:5432"
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+        # Set health checks to wait until postgres has started
         options: >-
           --health-cmd pg_isready
-          --health-interval 2s
-          --health-timeout 2s
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
+      redis:
+        image: redis
         ports:
-          - 5432:5432
-
+          - "6379:6379"
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     env:
-      PGHOST: localhost
-      PGUSER: postgres
-      PGPASSWORD: postgres
       RAILS_ENV: test
-      CI: 1
-
-    defaults:
-      run:
-        working-directory: ${{ matrix.gem }}
-
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      BUNDLE_JOBS: 2
+      BUNDLE_RETRY: 3
     steps:
-      - uses: "actions/checkout@v4"
+      - name: Checkout This Repo
+        uses: actions/checkout@v4
 
-      - uses: "ruby/setup-ruby@v1"
+      - name: Checkout Starter Repo
+        uses: bullet-train-co/checkout-repo-with-matching-branch@v1
         with:
-          rubygems: latest
-          bundler: latest
+          target_dir: tmp/starter
+          repository: bullet-train-co/bullet_train
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: tmp/starter
           bundler-cache: true
-          ruby-version: ${{ matrix.ruby-version }}
-          working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
-      # TODO: Sometimes the step above complains about the lockfile being fronzen.
-      # When that happens you can get things moving again by chaning the bundler-cache
-      # option above to false. Then _must_ uncomment the line for `bundle install` and
-      # you can also uncomment the following lines to find out what changed unexpectedly.
-      # I _think_ I've got things set up so that this shouldn't be an issue any more, but
-      # I'm leaving this stuff here in case it comes in handy in the near future.
-      #
-      #- run: bundle install
-      #- run: cat Gemfile.lock
-      #- run: git diff Gemfile.lock
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: tmp/starter/.nvmrc
+          cache: 'yarn'
+          cache-dependency-path: tmp/starter/yarn.lock
 
-      - run: bin/rails db:setup
-        if: ${{ hashFiles(format('{0}/test/dummy/db/schema.rb', matrix.gem)) != '' }}
+      - name: Link Core Repo
+        uses: bullet-train-co/link-core-gems@v1
+        with:
+          application_dir: tmp/starter
+          core_dir: .
+
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+        working-directory: ./tmp/starter
 
       - name: Run Tests
-        run: bin/rails test
+        id: run-tests
+        env:
+          # Specifies how many jobs you would like to run in parallel,
+          # used for partitioning
+          CI_NODE_TOTAL: ${{ strategy.job-total }}
+          # Use the index from matrix as an environment variable
+          CI_NODE_INDEX: ${{ strategy.job-index }}
+        continue-on-error: false
+        run : bin/parallel-ci
+        working-directory: ./tmp/starter
 
       - name: Test Summary
         uses: test-summary/action@v2
         with:
-          paths: ${{ format('{0}/test/reports/**/TEST-*.xml', matrix.gem) }}
+          paths: "tmp/starter/test/reports/**/TEST-*.xml"
+          #output: test-summary.md
         if: always()
+
+
+
+
