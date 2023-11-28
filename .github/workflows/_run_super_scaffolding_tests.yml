@@ -78,25 +78,21 @@ jobs:
 
       - name: 'Setup Super Scaffolding System Test'
         run: bundle exec test/bin/setup-super-scaffolding-system-test
+        working-directory: tmp/starter
         env:
           CIRCLE_NODE_INDEX: ${{ strategy.job-index }}
-        with:
-          working-directory: tmp/starter
 
       - name: 'Run Super Scaffolding Test'
         run: bundle exec rails test test/system/super_scaffolding_test.rb
-        with:
-          working-directory: tmp/starter
+        working-directory: tmp/starter
 
       - name: 'Run Super Scaffolding Partial Test'
         run: bundle exec rails test test/system/super_scaffolding_partial_test.rb
-        with:
-          working-directory: tmp/starter
+        working-directory: tmp/starter
 
       - name: 'Run Super Scaffolding Incoming Webhooks Test'
         run: bundle exec rails test test/controllers/webhooks/incoming/some_provider_webhooks_controller_test.rb
-        with:
-          working-directory: tmp/starter
+        working-directory: tmp/starter
 
       - name: Test Summary
         uses: test-summary/action@v2
