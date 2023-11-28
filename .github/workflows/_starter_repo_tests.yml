@@ -74,7 +74,7 @@ jobs:
         uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
-          core_dir: .
+          core_dir: ../..
 
       - name: Set up database schema
         run: bin/rails db:schema:load
