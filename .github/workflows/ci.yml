@@ -7,6 +7,10 @@ on:
     branches: [ "main" ]
 
 jobs:
+  minitest:
+    name: 🧪 Starter Repo Tests
+    uses: ./.github/workflows/_starter_repo_tests.yml
+    secrets: inherit
   gem_tests:
     name: 🧪 Gem Tests
     uses: ./.github/workflows/_run_tests.yml
