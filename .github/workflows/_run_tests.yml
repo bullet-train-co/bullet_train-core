@@ -62,7 +62,8 @@ jobs:
         working-directory: ${{ matrix.gem }}
 
     steps:
-      - uses: "actions/checkout@v4"
+      - name: Checkout Core Repo
+        uses: "actions/checkout@v4"
 
       - uses: "ruby/setup-ruby@v1"
         with:
