@@ -55,6 +55,7 @@ jobs:
         delete-branch: true
         title: "Version bump: ${{ inputs.versionBump }} - ${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}"
         add-paths: "bullet_train*,lib*,CHANGELOG.md"
+        token: ${{ secrets.UPGRADE_PR_PAT }}
         body: |
           Version bump of the `core` ruby gems and npm packages with a step of\: `${{ inputs.versionBump }}`
 
