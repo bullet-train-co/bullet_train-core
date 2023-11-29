@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-obfuscates_id (1.6.19)
+    bullet_train-obfuscates_id (1.6.20)
       hashids
       rails (>= 6.0.0)
 
