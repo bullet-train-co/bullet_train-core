@@ -2,7 +2,7 @@
 
 There are different flags you can pass to the Super Scaffolding command which gives you more flexibility over creating your model. Add the flag of your choice to **the end** of the command for the option to take effect.
 ```
-bin/super-scaffold crud Project Team description:text_field --sortable
+rails generate super_scaffold Project Team description:text_field --sortable
 ```
 
 Most of these include skipping particular functionalities, so take a look at what's available here and pass the flag that applies to your use-case.
