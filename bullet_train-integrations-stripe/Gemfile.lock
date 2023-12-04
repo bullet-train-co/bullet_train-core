@@ -7,7 +7,7 @@ PATH
       colorizer
       doorkeeper
       factory_bot
-      jbuilder-schema (= 2.6.2)
+      jbuilder-schema (~> 2.6.6)
       pagy
       pagy_cursor
       rack-cors
@@ -267,7 +267,7 @@ GEM
     jbuilder (2.11.5)
       actionview (>= 5.0.0)
       activesupport (>= 5.0.0)
-    jbuilder-schema (2.6.2)
+    jbuilder-schema (2.6.6)
       jbuilder
       method_source
       rails (>= 5.0.0)
