@@ -22,7 +22,6 @@
           <% if can? :read, action %>
             <%= link_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.show"), build_action_model_path(action), class: 'button-secondary button-smaller' %>
           <% end %>
-          <% raise "do we even get here in tests?" %>
           <% if can?(:edit, action) && !action.started? %>
             <%= link_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.edit"), build_action_model_path(action, type: :edit), class: 'button-secondary button-smaller' %>
           <% end %>
