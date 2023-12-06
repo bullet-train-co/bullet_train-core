@@ -27,9 +27,20 @@ class ApplicationFilter < Refine::Filter
   private
 
   def condition(field, type)
-    CONDITIONS.fetch(type).new(field.to_s).with_display(heading(field)).then do
-      type == :option ? _1.with_options(options_for(field)) : _1
+    condition = CONDITIONS.fetch(type).new(field.to_s).with_display(heading(field))
+
+    # Reject set/not_set clause options in case the field can't be null in the database.
+    if column = column_for(field)
+      condition = condition.without_clauses([Clauses::SET, Clauses::NOT_SET]) if column.null == false
     end
+
+    # Derive options via I18n scope.
+    condition = condition.with_options(options_for(field)) if type == :option
+    condition
+  end
+
+  def column_for(field)
+    model.connection.columns(model.table_name).index_by(&:name)[field.to_s]
   end
 
 
