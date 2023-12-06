@@ -20,7 +20,7 @@
       <% box.table do %>
         <% if @refine_filter %>
           <div class="px-8 py-2">
-            <%= form_with method: :get, data: { controller: "starter_form", action: "filter-submit-success->starter_form#requestSubmit", turbo_frame: "tangible_things_table" } do |form| %>
+            <%= form_with method: :get, data: { controller: "refine-support--form", action: "filter-submit-success->refine-support--form#requestSubmit", turbo_frame: "tangible_things_table" } do |form| %>
               <%= form.hidden_field :stable_id, value: @refine_stable_id %>
               <%= render "refine/inline/filters/show" %>
             <% end %>
