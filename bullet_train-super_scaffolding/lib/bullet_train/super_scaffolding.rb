@@ -9,7 +9,7 @@ require "bullet_train/super_scaffolding/scaffolders/oauth_provider_scaffolder"
 
 require "indefinite_article"
 require "colorizer"
-require "refine-rails"
+require "refine/rails"
 
 module BulletTrain
   module SuperScaffolding
