@@ -1,5 +1,4 @@
 class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Account::ApplicationController
-  require "refine/filter_application_controller" # TODO: Figure out why autoloading doesn't catch this on CI.
   include Refine::FilterApplicationController
   account_load_and_authorize_resource :tangible_thing, through: :absolutely_abstract_creative_concept, through_association: :completely_concrete_tangible_things
 
