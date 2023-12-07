@@ -31,14 +31,6 @@ en:
         name: &description Description
         label: *description
         heading: *description
-      all_collaborators:
-        heading: Collaborators
-      admins:
-        heading: Administrators
-      editors:
-        heading: Editors
-      viewers:
-        heading: Viewers
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         name: &created_at Added

@@ -26,22 +26,6 @@ class Scaffolding::RoutesFileManipulatorTest < ActiveSupport::TestCase
     end
   end
 
-  # {
-  #   ['Scaffolding::Thing', 'Scaffolding::Widget'] =>
-  #     [[], []],
-
-  #   ['Scaffolding::SomethingTogether::Thing', 'Scaffolding::SomethingTogether::Widget'] =>
-  #     [[], []],
-
-  #   ['Scaffolding::SomethingTogether::Thing', 'Scaffolding::SomethingElse::Widget'] =>
-  #     [['something_together'], ['something_else']],
-  # }.each do |inputs, outputs|
-  #   test "divergent_namespaces returns #{outputs.to_s} for `#{inputs.first}` under `#{inputs.last}`" do
-  #     results = subject.new(example_file, *inputs).divergent_namespaces
-  #     assert_equal outputs, results
-  #   end
-  # end
-
   {
     ["Scaffolding::Thing", "Scaffolding::Widget"] =>
       [[], "things", [], "widgets"],

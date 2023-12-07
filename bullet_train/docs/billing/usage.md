@@ -34,7 +34,7 @@ Use the following two commands on your shell to copy the required migrations int
 
 ```
 cp `bundle show --paths | grep bullet_train-billing | sort | head -n 1`/db/migrate/* db/migrate
-cp `bundle show --paths | grep bullet_train-billing-stripe | sort | head -n 1`/db/migrate/* db/migrate
+cp `bundle show --paths | grep bullet_train-billing-usage | sort | head -n 1`/db/migrate/* db/migrate
 ```
 
 Note this is different than how many Rails engines ask you to install migrations. This is intentional, as we want to maintain the original timestamps associated with these migrations.

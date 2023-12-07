@@ -2,6 +2,7 @@ module Users::Base
   extend ActiveSupport::Concern
 
   included do
+    extend Devise::Models
     attr_accessor :profile_photo_removal
 
     if two_factor_authentication_enabled?
@@ -20,7 +21,6 @@ module Users::Base
 
     # teams
     has_many :memberships, dependent: :destroy
-    has_many :scaffolding_absolutely_abstract_creative_concepts_collaborators, through: :memberships
     has_many :teams, through: :memberships
     has_many :collaborating_users, through: :teams, source: :users
     belongs_to :current_team, class_name: "Team", optional: true
@@ -142,22 +142,6 @@ module Users::Base
     issuer = I18n.t("application.name")
     label = "#{issuer}:#{email}"
     RQRCode::QRCode.new(otp_provisioning_uri(label, issuer: issuer))
-  end
-
-  def scaffolding_absolutely_abstract_creative_concepts_collaborators
-    Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator.joins(:membership).where(membership: {user_id: id})
-  end
-
-  def admin_scaffolding_absolutely_abstract_creative_concepts_ids
-    scaffolding_absolutely_abstract_creative_concepts_collaborators.admins.pluck(:creative_concept_id)
-  end
-
-  def editor_scaffolding_absolutely_abstract_creative_concepts_ids
-    scaffolding_absolutely_abstract_creative_concepts_collaborators.editors.pluck(:creative_concept_id)
-  end
-
-  def viewer_scaffolding_absolutely_abstract_creative_concepts_ids
-    scaffolding_absolutely_abstract_creative_concepts_collaborators.viewers.pluck(:creative_concept_id)
   end
 
   def developer?

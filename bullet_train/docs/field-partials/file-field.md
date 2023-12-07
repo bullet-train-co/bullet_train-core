@@ -21,7 +21,7 @@ Note, no database migration is required as ActiveStorage uses its own tables to 
 Run the following command to generate the scaffolding for the `document` field on the `Post` model:
 
 ```bash
-./bin/super-scaffold crud-field Post document:file_field
+rails generate super_scaffold:field Post document:file_field
 ```
 
 ## Multiple Attachment Example
@@ -39,7 +39,7 @@ Note, no database migration is required as ActiveStorage uses its own tables to 
 Run the following command to generate the scaffolding for the `documents` field on the `Post` model:
 
 ```bash
-./bin/super-scaffold crud-field Post documents:file_field{multiple}
+rails generate super_scaffold:field Post documents:file_field{multiple}
 ```
 
 ## Generating a Model & Super Scaffold Example
@@ -47,5 +47,5 @@ Run the following command to generate the scaffolding for the `documents` field 
 If you're starting fresh, and don't have an existing model you can do something like this:
 
 ```
-bin/super-scaffold crud Project Team name:text_field specification:file_field documents:file_field{multiple}
+rails generate super_scaffold Project Team name:text_field specification:file_field documents:file_field{multiple}
 ```

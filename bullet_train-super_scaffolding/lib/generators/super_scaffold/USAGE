@@ -1,0 +1,36 @@
+Description:
+  Generate a production ready CRUD interface for a model. See the docs for more details:
+  https://bullettrain.co/docs/super-scaffolding
+
+  E.g. a Team has many Sites with some attributes:
+    rails g super_scaffold Site Team name:text_field url:text_area
+
+  E.g. a Section belongs to a Page, which belongs to a Site, which belongs to a Team:
+    rails g super_scaffold Section Page,Site,Team title:text_field body:text_area
+
+  E.g. an Image belongs to either a Page or a Site:
+    Doable! See https://bit.ly/2NvO8El for a step by step guide.
+
+  E.g. Pages belong to a Site and are sortable via drag-and-drop:
+    rails g super_scaffold Page Site,Team name:text_field path:text_area --sortable
+
+Example:
+  E.g. a Team has many Projects each having a name:
+  bin/rails generate super_scaffold Project Team name:text_field
+
+  This will create:
+      app/controllers/account/projects_controller.rb
+      app/controllers/api/v1/projects_controller.rb
+      app/models/project.rb
+      app/views/account/projects/
+      app/views/api/v1/projects/
+      config/locales/en/projects.en.yml
+      db/migrate/20231004190209_create_projects.rb
+      test/controllers/api/v1/projects_controller_test.rb
+      test/factories/projects.rb
+      test/models/project_test.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.
+
+Give it a shot! Let us know if you have any trouble with it! ✌️

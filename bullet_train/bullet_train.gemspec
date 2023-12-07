@@ -33,15 +33,16 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "standard"
 
   spec.add_dependency "rails", ">= 6.0.0"
-  spec.add_dependency "bullet_train-fields"
   spec.add_dependency "bullet_train-roles"
   spec.add_dependency "bullet_train-super_load_and_authorize_resource"
   spec.add_dependency "bullet_train-has_uuid"
   spec.add_dependency "bullet_train-scope_validator"
   spec.add_dependency "bullet_train-themes"
   spec.add_dependency "bullet_train-routes"
+  spec.add_dependency "colorizer"
   spec.add_dependency "devise"
   spec.add_dependency "xxhash"
+  spec.add_dependency "omniauth"
 
   spec.add_dependency "image_processing"
 

@@ -16,8 +16,6 @@ module Memberships::Base
     has_many :scaffolding_completely_concrete_tangible_things_assignments, class_name: "Scaffolding::CompletelyConcrete::TangibleThings::Assignment", dependent: :destroy
     has_many :scaffolding_completely_concrete_tangible_things, through: :scaffolding_completely_concrete_tangible_things_assignments, source: :tangible_thing
 
-    has_many :scaffolding_absolutely_abstract_creative_concepts_collaborators, class_name: "Scaffolding::AbsolutelyAbstract::CreativeConcepts::Collaborator", dependent: :destroy
-
     # Image uploading
     has_one_attached :user_profile_photo
 
@@ -31,6 +29,8 @@ module Memberships::Base
         user.save
       end
     end
+
+    after_commit :publish_changed_quantity
 
     after_validation :remove_user_profile_photo, if: :user_profile_photo_removal?
 
@@ -151,6 +151,10 @@ module Memberships::Base
 
   def remove_user_profile_photo
     user_profile_photo.purge
+  end
+
+  def publish_changed_quantity
+    ActiveSupport::Notifications.instrument("memberships.quantity-changed", {team:})
   end
 
   ActiveSupport.run_load_hooks :bullet_train_memberships_base, self

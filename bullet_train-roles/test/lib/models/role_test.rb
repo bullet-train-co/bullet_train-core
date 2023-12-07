@@ -238,13 +238,5 @@ class RoleTest < ActiveSupport::TestCase
 
       assert_equal ({id: [@admin_user.teams.first.id]}), ability_generator.condition
     end
-
-    test "possible_parent_associations returns all namespace possibilities" do
-      expected_output = %i[creative_concept absolutely_abstract_creative_concept scaffolding_absolutely_abstract_creative_concept]
-
-      ability_generator = Role::AbilityGenerator.new(@admin_role, "Scaffolding::AbsolutelyAbstract::CreativeConcept", @admin_user, :scaffolding_absolutely_abstract_creative_concepts_collaborators, :creative_concept)
-
-      assert_empty expected_output - ability_generator.possible_parent_associations
-    end
   end
 end

@@ -1,10 +1,10 @@
 # Super Scaffolding with the `--sortable` option
 
-When issuing a `bin/super-scaffold crud` command, you can pass the `--sortable` option like this:
+When issuing a `rails generate super_scaffold` command, you can pass the `--sortable` option like this:
 
 ```
 # E.g. Pages belong to a Site and are sortable via drag-and-drop:
-bin/super-scaffold crud Page Site,Team name:text_field path:text_area --sortable
+rails generate super_scaffold Page Site,Team name:text_field path:text_area --sortable
 ```
 
 The `--sortable` option:
