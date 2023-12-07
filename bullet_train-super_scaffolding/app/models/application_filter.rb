@@ -15,15 +15,6 @@ class ApplicationFilter < Refine::Filter
     super&.sort_by { _1[:display].to_s.downcase }
   end
 
-  def empty_option
-    [{id: "null", display: "Empty"}]
-  end
-
-  # Helper method used in certain applications of invalid filter checks. This will
-  def empty_query
-    model.where("1 = 0")
-  end
-
   private
 
   def condition(field, type)
