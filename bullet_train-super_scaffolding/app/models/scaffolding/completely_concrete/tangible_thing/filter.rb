@@ -1,4 +1,6 @@
 class Scaffolding::CompletelyConcrete::TangibleThing::Filter < ApplicationFilter
+  self.i18n_scope = "account.#{i18n_scope}"
+
   def conditions
     [
       condition(:text_field_value, :text),
@@ -28,9 +30,5 @@ class Scaffolding::CompletelyConcrete::TangibleThing::Filter < ApplicationFilter
 
   def model
     self.class.module_parent
-  end
-
-  def i18n_scope
-    @i18n_scope ||= "account.#{super}"
   end
 end

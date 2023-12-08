@@ -1,6 +1,13 @@
 class ApplicationFilter < Refine::Filter
   include Refine::Conditions
 
+  class_attribute :i18n_scope, instance_writer: false
+
+  def self.inherited(klass)
+    klass.i18n_scope = klass.name.sub(/(::)?Filter$/, "").pluralize.underscore.tr("/", ".")
+    super
+  end
+
   CONDITIONS = {
     option: OptionCondition,
     numeric: NumericCondition,
@@ -44,9 +51,5 @@ class ApplicationFilter < Refine::Filter
 
   def t(key, **)
     I18n.t("#{i18n_scope}.fields.#{key}", **)
-  end
-
-  def i18n_scope
-    @i18n_scope ||= self.class.name.chomp("::Filter").pluralize.underscore.tr("/", ".")
   end
 end
