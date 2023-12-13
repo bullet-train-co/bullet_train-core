@@ -29,6 +29,9 @@ module BulletTrain::LoadsAndAuthorizesResource
     #
     # to help you understand the code below, usually `through` is `team`
     # and `model` is something like `project`.
+    #
+    # For instance, if the call to this method looks like this:
+    # account_load_and_authorize_resource :project, through: :team, through_association: :projects
     def account_load_and_authorize_resource(model, options, old_options = {})
       # options are now required, because you have to have at least a 'through' setting.
 
@@ -53,14 +56,19 @@ module BulletTrain::LoadsAndAuthorizesResource
         options = old_options
       end
 
+      # Give the example call above, at this point the state of the variables at play is:
+      # model = :project
+      # through = :team
+      # options = {:through_association=>:projects}
+
       # fetch the namespace of the controller. this should generally match the namespace of the model, except for the
       # `account` part.
-      namespace = model_namespace_from_controller_namespace
+      namespace = model_namespace_from_controller_namespace # => []
 
       tried = []
       begin
         # check whether the parent exists in the model namespace.
-        model_class_name = (namespace + [model.to_s.classify]).join("::")
+        model_class_name = (namespace + [model.to_s.classify]).join("::") # => "Project"
         model_class_name.constantize
       rescue NameError
         tried << model_class_name
@@ -73,7 +81,7 @@ module BulletTrain::LoadsAndAuthorizesResource
       end
 
       # treat through as an array even if the user only specified one parent type.
-      through_as_symbols = through.is_a?(Array) ? through : [through]
+      through_as_symbols = through.is_a?(Array) ? through : [through] # => [:team]
 
       through = []
       through_class_names = []
@@ -89,7 +97,7 @@ module BulletTrain::LoadsAndAuthorizesResource
           raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
         end
 
-        through_class_name = association.klass.name
+        through_class_name = association.klass.name # => "Team"
 
         begin
           through << through_class_name.constantize
@@ -98,6 +106,11 @@ module BulletTrain::LoadsAndAuthorizesResource
           raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. We tried to load `#{through_class_name}}` (the class name defined for the `#{through_as_symbol}` association), but couldn't find it."
         end
       end
+
+      # Give the example call above, at this point the state of the variables at play is:
+      # through = [Team(...)]
+      # through_class_names = ["Team"]
+      # through_as_symbols = [:team]
 
       if through_as_symbols.count > 1 && !options[:polymorphic]
         raise "When a resource can be loaded through multiple parents, please specify the 'polymorphic' option to tell us what that controller calls the parent, e.g. `polymorphic: :imageable`."
@@ -128,47 +141,7 @@ module BulletTrain::LoadsAndAuthorizesResource
       options.delete(:collection_actions)
       options.delete(:member_actions)
 
-      # NOTE: because we're using prepend for all of these, these are written in backwards order
-      # of how they'll be executed during a request!
-
-      # 4. finally, load the team and parent resource if we can.
-      prepend_before_action :load_team
-
-      # x. this and the thing below it are only here to make a sortable concern possible.
-      prepend_before_action only: member_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        eval "@child_object = @#{model}"
-        eval "@parent_object = @#{instance_variable_name}"
-      end
-
-      prepend_before_action only: collection_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        eval "@parent_object = @#{instance_variable_name}"
-        if options[:through_association].present?
-          eval "@child_collection = :#{options[:through_association]}"
-        else
-          eval "@child_collection = :#{model.to_s.pluralize}"
-        end
-      end
-
-      prepend_before_action only: member_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        possible_sources_of_parent =
-          through_as_symbols.map { |tas| "@#{model}.#{tas}" }.join(" || ")
-        eval_string =
-          "@#{instance_variable_name} ||= " + possible_sources_of_parent
-        eval eval_string
-      end
-
-      if options[:polymorphic]
-        prepend_before_action only: collection_actions do
-          possible_sources_of_parent =
-            through_as_symbols.map { |tas| "@#{tas}" }.join(" || ")
-          eval "@#{options[:polymorphic]} ||= #{possible_sources_of_parent}"
-        end
-      end
-
-      # 3. on action resource, we have a specific id for the child resource, so load it directly.
+      # 1. on action resource, we have a specific id for the child resource, so load it directly.
       load_and_authorize_resource model,
         options.merge(
           class: model_class_name,
@@ -187,10 +160,9 @@ module BulletTrain::LoadsAndAuthorizesResource
           shallow: true
         )
 
-      # 1. load the parent resource for collection actions only. (we're using shallow routes.)
+      # 3. load the parent resource for collection actions only. (we're using shallow routes.)
       # since a controller can have multiple potential parents, we have to run this as a loop on every possible
       # parent. (the vast majority of controllers only have one parent.)
-
       through_class_names.each_with_index do |through_class_name, index|
         load_and_authorize_resource through_as_symbols[index],
           options.merge(
@@ -200,6 +172,45 @@ module BulletTrain::LoadsAndAuthorizesResource
             shallow: true
           )
       end
+
+      # 4. Do... some stuff for member actions
+      before_action only: member_actions do
+        instance_variable_name = options[:polymorphic] || through_as_symbols[0] # => :team
+        possible_sources_of_parent =
+          through_as_symbols.map { |tas| "@#{model}.#{tas}" }.join(" || ") # => "@project.team"
+        eval_string =
+          "@#{instance_variable_name} ||= " + possible_sources_of_parent # => "@team ||= @project.team"
+        eval eval_string
+      end
+
+      before_action only: member_actions do
+        instance_variable_name = options[:polymorphic] || through_as_symbols[0] # => :team
+        eval "@child_object = @#{model}" # => <Project:xxx ...>
+        eval "@parent_object = @#{instance_variable_name}" # => <Team:xxx ...>
+      end
+
+      # 5. this and the thing below it are only here to make a sortable concern possible.
+      if options[:polymorphic]
+        before_action only: collection_actions do
+          possible_sources_of_parent =
+            through_as_symbols.map { |tas| "@#{tas}" }.join(" || ")
+          eval "@#{options[:polymorphic]} ||= #{possible_sources_of_parent}"
+        end
+      end
+
+      before_action only: collection_actions do
+        instance_variable_name = options[:polymorphic] || through_as_symbols[0] # => :team
+        eval "@parent_object = @#{instance_variable_name}" # => <Team:xxx>
+        if options[:through_association].present?
+          eval "@child_collection = :#{options[:through_association]}" # => :projects
+        else
+          eval "@child_collection = :#{model.to_s.pluralize}"
+        end
+      end
+
+      # 6. finally, load the team and parent resource if we can.
+      before_action :load_team
+
     end
   end
 
