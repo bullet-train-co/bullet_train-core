@@ -210,7 +210,6 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       # 6. finally, load the team and parent resource if we can.
       before_action :load_team
-
     end
   end
 
