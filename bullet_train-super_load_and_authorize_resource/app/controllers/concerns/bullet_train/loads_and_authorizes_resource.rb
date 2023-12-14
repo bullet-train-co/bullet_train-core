@@ -29,7 +29,7 @@ module BulletTrain::LoadsAndAuthorizesResource
     #
     # to help you understand the code below, usually `through` is `team`
     # and `model` is something like `project`.
-    def account_load_and_authorize_resource(model, options, old_options = {})
+    def account_load_and_authorize_resource(model, positional_through = nil, through: positional_through, collection_actions: [], member_actions: [], except: [], **options)
       # options are now required, because you have to have at least a 'through' setting.
 
       # we used to support calling this method with a signature like this:
@@ -40,17 +40,6 @@ module BulletTrain::LoadsAndAuthorizesResource
       # signature as cancancan's original `load_and_authorize_resource` method.
       if model.is_a?(Array)
         raise "Bullet Train has depreciated this method of calling `account_load_and_authorize_resource`. Read the comments on this line of source for more details."
-      end
-
-      # this is providing backward compatibility for folks who are calling this method like this:
-      #   account_load_and_authorize_resource :thing, through: :team, through_association: :scaffolding_things
-      # i'm going to deprecate this at some point.
-      if options.is_a?(Hash)
-        through = options[:through]
-        options.delete(:through)
-      else
-        through = options
-        options = old_options
       end
 
       # fetch the namespace of the controller. this should generally match the namespace of the model, except for the
@@ -98,8 +87,8 @@ module BulletTrain::LoadsAndAuthorizesResource
         raise "When a resource can be loaded through multiple parents, please specify the 'polymorphic' option to tell us what that controller calls the parent, e.g. `polymorphic: :imageable`."
       end
 
-      # this provides the support we need for shallow nested resources, which
-      # helps keep our routes tidy even after many levels of nesting. most people
+      # `collection_actions:` and `member_actions:` provide support for shallow nested resources, which
+      # keep our routes tidy even after many levels of nesting. most people
       # i talk to don't actually know about this feature in rails, but it's
       # actually the recommended approach in the rails routing documentation.
       #
@@ -108,20 +97,11 @@ module BulletTrain::LoadsAndAuthorizesResource
       # separate calls to `load_and_authorize_resource` for member and collection
       # actions, we ask controllers to specify these actions separately, e.g.:
       #   `account_load_and_authorize_resource :invitation, :team, member_actions: [:accept, :promote]`
-      collection_actions = options[:collection_actions] || []
-      member_actions = options[:member_actions] || []
-
-      # this option is native to cancancan and allows you to skip account_load_and_authorize_resource
+      #
+      # `except:` is native to cancancan and allows you to skip account_load_and_authorize_resource
       # for a specific action that would otherwise run it (e.g. see invitations#show.)
-      except_actions = options[:except] || []
-
-      collection_actions =
-        (%i[index new create reorder] + collection_actions) - except_actions
-      member_actions =
-        (%i[show edit update destroy] + member_actions) - except_actions
-
-      options.delete(:collection_actions)
-      options.delete(:member_actions)
+      collection_actions = (%i[index new create reorder] + collection_actions) - except
+      member_actions = (%i[show edit update destroy] + member_actions) - except
 
       # NOTE: because we're using prepend for all of these, these are written in backwards order
       # of how they'll be executed during a request!
