@@ -106,7 +106,8 @@ module BulletTrain::LoadsAndAuthorizesResource
       end
 
       prepend_before_action only: member_actions do
-        if (model_instance = instance_variable_get("@#{model}")) && !instance_variable_defined?(instance_variable_name)
+        model_instance = instance_variable_get("@#{model}")
+        if model_instance && !instance_variable_defined?(instance_variable_name)
           parent = through_as_symbols.lazy.filter_map { model_instance.public_send(_1) }.first
           instance_variable_set instance_variable_name, parent
         end
