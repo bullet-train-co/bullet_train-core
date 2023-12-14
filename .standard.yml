@@ -1,15 +1,6 @@
 # For available configuration options, see:
 #   https://github.com/testdouble/standard
 ignore:
-  - '*/app/controllers/concerns/bullet_train/loads_and_authorizes_resource.rb':
-    - Security/Eval # TODO Requires an audit.
-    - Style/EvalWithLocation # TODO Requires an audit.
-  - '*/app/controllers/api/v1/loads_and_authorizes_api_resource.rb':
-    - Security/Eval # TODO Requires an audit.
-    - Style/EvalWithLocation # TODO Requires an audit.
-  - '*/app/controllers/concerns/loads_and_authorizes_resource.rb':
-    - Security/Eval # TODO Requires an audit.
-    - Style/EvalWithLocation # TODO Requires an audit.
   - '**/*':
     - Style/TrailingCommaInArguments
     - Style/TrailingCommaInArrayLiteral
