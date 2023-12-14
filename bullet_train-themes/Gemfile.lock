@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.6.22)
+    bullet_train-themes (1.6.23)
       rails (>= 6.0.0)
 
 GEM
@@ -103,7 +103,7 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    net-imap (0.4.7)
+    net-imap (0.4.8)
       date
       net-protocol
     net-pop (0.1.2)
