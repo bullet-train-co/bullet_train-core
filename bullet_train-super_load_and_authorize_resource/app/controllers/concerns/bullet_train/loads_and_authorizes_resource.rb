@@ -46,25 +46,19 @@ module BulletTrain::LoadsAndAuthorizesResource
       # `account` part.
       namespace = model_namespace_from_controller_namespace
 
-      tried = []
-      begin
-        # check whether the parent exists in the model namespace.
-        model_class_name = (namespace + [model.to_s.classify]).join("::")
-        model_class_name.constantize
-      rescue NameError
-        tried << model_class_name
-        if namespace.any?
-          namespace.pop
-          retry
-        else
-          raise "Your 'account_load_and_authorize_resource' is broken. We tried #{tried.join(" and ")}, but didn't find a valid class name."
-        end
+      model_class_names = namespace.size.downto(0).map do
+        [*namespace, model.to_s.classify].join("::").tap { namespace.pop }
+      end
+
+      model_class = model_class_names.find(&:safe_constantize)&.safe_constantize
+      unless model_class
+        raise "Your 'account_load_and_authorize_resource' is broken. We tried #{model_class_names.join(" and ")}, but didn't find a valid class name."
       end
 
       through_as_symbols = Array(through)
       through_class_names = through_as_symbols.map do |through_as_symbol|
         # reflect on the belongs_to association of the child model to figure out the class names of the parents.
-        association = model_class_name.constantize.reflect_on_association(through_as_symbol)
+        association = model_class.reflect_on_association(through_as_symbol)
         unless association
           raise "Your 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
         end
@@ -135,7 +129,7 @@ module BulletTrain::LoadsAndAuthorizesResource
       # 3. on action resource, we have a specific id for the child resource, so load it directly.
       load_and_authorize_resource model,
         options.merge(
-          class: model_class_name,
+          class: model_class.name,
           only: member_actions,
           prepend: true,
           shallow: true
@@ -144,7 +138,7 @@ module BulletTrain::LoadsAndAuthorizesResource
       # 2. only load the child resource through the parent resource for collection actions.
       load_and_authorize_resource model,
         options.merge(
-          class: model_class_name,
+          class: model_class.name,
           through: through_as_symbols,
           only: collection_actions,
           prepend: true,
