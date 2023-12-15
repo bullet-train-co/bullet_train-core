@@ -9,7 +9,11 @@
         <%= partial.icon %>
       </span>
     <% end %>
-    <%= label %>
+    <% if partial.label? %>
+      <%= partial.label %>
+    <% else %>
+      <%= label %>
+    <% end %>
   </div>
 <% end %>
 
