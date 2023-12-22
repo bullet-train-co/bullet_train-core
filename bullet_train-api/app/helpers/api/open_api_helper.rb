@@ -23,23 +23,50 @@ module Api
       @gem_paths ||= `bundle show --paths`.lines.map { |gem_path| gem_path.chomp }
     end
 
-    def automatic_paths_for(model, parent, except: [])
-      output = render("api/#{@version}/open_api/shared/paths", except: except)
+    def automatic_paths_for(model, parent, **options)
+      output = render("api/#{@version}/open_api/shared/paths", except: options[:except], overrides: options[:overrides])
       output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
 
       custom_actions_file_path = "api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"
-      output += render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
+      custom_output = render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
 
-      # There are some placeholders specific to this method that we still need to transform.
-      model_symbol = model.name.underscore.tr("/", "_").to_sym
+      output_hash = YAML.safe_load(output.encode('UTF-8'))
+      custom_output_hash = YAML.load(custom_output.encode('UTF-8'))
+
+      result = deep_merge(output_hash, custom_output_hash)
+      #
+      # ::Rails.logger.debug(">>>OUT #{output_hash}")
+      # ::Rails.logger.debug(">>>COUT #{custom_output_hash}")
+
+      # output += custom_output
+
+
+      ::Rails.logger.debug(">>>RES #{result}")
+
+      output = result.to_yaml.gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
 
       FactoryBot::ExampleBot::REST_METHODS.each do |method|
-        if (code = FactoryBot.send(method, model_symbol, version: @version))
+        if (code = FactoryBot.send(method, model.model_name.param_key.to_sym, version: @version))
           output.gsub!("🚅 #{method}", code)
         end
       end
 
       indent(output, 1)
+    end
+
+    def deep_merge(hash1, hash2)
+      hash1.merge(hash2) do |_, old_val, new_val|
+        ::Rails.logger.debug(">>>old_val #{old_val}")
+        ::Rails.logger.debug(">>>new_val #{new_val}")
+
+        if old_val.is_a?(Hash) && new_val.is_a?(Hash)
+          deep_merge(old_val, new_val)
+        elsif old_val.is_a?(Array) && new_val.is_a?(Array)
+          old_val += new_val
+        else
+          new_val
+        end
+      end
     end
 
     def automatic_components_for(model, locals: {})
