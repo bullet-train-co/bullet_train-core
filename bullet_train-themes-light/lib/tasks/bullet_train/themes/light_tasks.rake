@@ -3,6 +3,11 @@ require "tasks/application"
 namespace :bullet_train do
   namespace :themes do
     namespace :light do
+      desc "Allow local css overrides for the \"Light\" theme."
+      task :init_local_css => :environment do |task, args|
+        BulletTrain::Themes::Application.eject_theme_main_css(get_theme_name_from_task(task), args)
+      end
+      
       desc "Fork the \"Light\" theme into your local repository."
       task :eject, [:destination] => :environment do |task, args|
         BulletTrain::Themes::Application.eject_theme(get_theme_name_from_task(task), args[:destination])

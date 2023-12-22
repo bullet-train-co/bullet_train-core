@@ -3,6 +3,14 @@ require "masamune"
 module BulletTrain
   module Themes
     module Application
+      def self.eject_theme_main_css(theme_name, args)
+        theme_base_path = `bundle show --paths bullet_train-themes-#{theme_name}`.chomp
+
+        puts "Ejecting app/assets/stylesheets/#{theme_name}.tailwind.css."
+        `mkdir -p #{Rails.root}/app/assets/stylesheets`
+        `cp -R #{theme_base_path}/app/assets/stylesheets/#{theme_name}.tailwind.css #{Rails.root}/app/assets/stylesheets/#{theme_name}.tailwind.css`
+      end
+
       def self.eject_theme(theme_name, ejected_theme_name)
         theme_parts = theme_name.humanize.split.map { |str| str.capitalize }
         constantized_theme = theme_parts.join
@@ -19,7 +27,7 @@ module BulletTrain
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/tailwind.mailer.#{ejected_theme_name}.config.js)
 
         puts "Ejecting stylesheets into `./app/assets/stylesheets/#{ejected_theme_name}`."
-        `mkdir #{Rails.root}/app/assets/stylesheets`
+        `mkdir -p #{Rails.root}/app/assets/stylesheets`
         `cp -R #{theme_base_path}/app/assets/stylesheets/#{theme_name} #{Rails.root}/app/assets/stylesheets/#{ejected_theme_name}`
         `cp -R #{theme_base_path}/app/assets/stylesheets/#{theme_name}.tailwind.css #{Rails.root}/app/assets/stylesheets/#{ejected_theme_name}.tailwind.css`
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/light/#{ejected_theme_name}/g" #{Rails.root}/app/assets/stylesheets/#{ejected_theme_name}.tailwind.css)
