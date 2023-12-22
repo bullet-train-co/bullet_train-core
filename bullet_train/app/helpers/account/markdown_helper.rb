@@ -5,7 +5,7 @@ module Account::MarkdownHelper
         extensions: {header_ids: true},
         plugins: {syntax_highlighter: {theme: "InspiredGitHub"}},
         render: {width: 120, unsafe: true}
-      }).gsub("&lt;script","<script").html_safe # force script tags to be rendered
+      }).gsub("&lt;script", "<script").html_safe # force script tags to be rendered
     else
       CommonMarker.render_html(string, :UNSAFE, [:table]).html_safe
     end
