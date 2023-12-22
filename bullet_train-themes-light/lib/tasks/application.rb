@@ -3,7 +3,7 @@ require "masamune"
 module BulletTrain
   module Themes
     module Application
-      def self.eject_theme_main_css(theme_name, args)
+      def self.eject_theme_main_css(theme_name)
         theme_base_path = `bundle show --paths bullet_train-themes-#{theme_name}`.chomp
 
         puts "Ejecting app/assets/stylesheets/#{theme_name}.tailwind.css."
