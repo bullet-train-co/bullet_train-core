@@ -24,21 +24,23 @@ module Api
     end
 
     def automatic_paths_for(model, parent, except: [])
-      main_output = render("api/#{@version}/open_api/shared/paths", except: except)
-      main_output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(main_output).html_safe
+      output = render("api/#{@version}/open_api/shared/paths", except: except)
+      output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
 
       custom_actions_file_path = "api/#{@version}/open_api/#{model.model_name.collection}/paths"
       custom_output = render(custom_actions_file_path).html_safe if lookup_context.exists?(custom_actions_file_path, [], true)
 
       FactoryBot::ExampleBot::REST_METHODS.each do |method|
         if (code = FactoryBot.send(method, model.model_name.param_key.to_sym, version: @version))
-          main_output.gsub!("🚅 #{method}", code)
-          custom_output.gsub!("🚅 #{method}", code)
+          output.gsub!("🚅 #{method}", code)
+          custom_output&.gsub!("🚅 #{method}", code)
         end
       end
 
-      merge = deep_merge(YAML.load(main_output), YAML.load(custom_output)).to_yaml.html_safe
-      output = merge.gsub("---", "").gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
+      if custom_output
+        merge = deep_merge(YAML.load(output), YAML.load(custom_output)).to_yaml.html_safe
+        output = merge.gsub("---", "").gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
+      end
 
       indent(output, 1)
     end
@@ -154,7 +156,7 @@ module Api
         if old_val.is_a?(Hash) && new_val.is_a?(Hash)
           deep_merge(old_val, new_val)
         elsif old_val.is_a?(Array) && new_val.is_a?(Array)
-          old_val + new_val
+          (old_val + new_val).uniq
         else
           new_val
         end
