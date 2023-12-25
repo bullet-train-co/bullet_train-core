@@ -23,84 +23,24 @@ module Api
       @gem_paths ||= `bundle show --paths`.lines.map { |gem_path| gem_path.chomp }
     end
 
-    def automatic_paths_for(model, parent, **options)
-      output = render("api/#{@version}/open_api/shared/paths", except: options[:except], overrides: options[:overrides])
-      output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
+    def automatic_paths_for(model, parent, except: [])
+      main_output = render("api/#{@version}/open_api/shared/paths", except: except)
+      main_output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(main_output).html_safe
 
-      custom_actions_file_path = "api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"
-      custom_output = render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
-
-      output_hash = YAML.load(output)
-      custom_output_hash = YAML.load(custom_output)
-
-      result = deep_merge(output_hash, custom_output_hash)
-      #
-      # ::Rails.logger.debug(">>>OUT #{output_hash}")
-      # ::Rails.logger.debug(">>>COUT #{custom_output_hash}")
-
-      # output += custom_output
-
-
-      # ::Rails.logger.debug(">>>RESU #{result}")
-
-      # result = replace_unicode_sequences(result)
-
-
-      output = ActiveSupport::SafeBuffer.new(result.to_yaml.gsub("---", ""))
+      custom_actions_file_path = "api/#{@version}/open_api/#{model.model_name.collection}/paths"
+      custom_output = render(custom_actions_file_path).html_safe if lookup_context.exists?(custom_actions_file_path, [], true)
 
       FactoryBot::ExampleBot::REST_METHODS.each do |method|
         if (code = FactoryBot.send(method, model.model_name.param_key.to_sym, version: @version))
-
-          output.gsub!("\\U0001F685 #{method}", code)
+          main_output.gsub!("🚅 #{method}", code)
+          custom_output.gsub!("🚅 #{method}", code)
         end
       end
 
-      indent(output.to_yaml, 1)
-    end
+      merge = deep_merge(YAML.load(main_output), YAML.load(custom_output)).to_yaml.html_safe
+      output = merge.gsub("---", "").gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
 
-    # def replace_unicode_sequences(obj)
-    #   case obj
-    #   when Hash
-    #     obj.transform_values { |value| replace_unicode_sequences(value) }
-    #   when Array
-    #     obj.map { |value| replace_unicode_sequences(value) }
-    #   when String
-    #     obj.gsub(/\\u([\da-fA-F]{8})/) { |m| [m[2..-1].to_i(16)].pack('U') }
-    #     # obj.gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
-    #   else
-    #     obj
-    #   end
-    # end
-
-    # def replace_unicode_sequences(obj)
-    #   case obj
-    #   when Hash
-    #     obj.each_with_object({}) do |(k, v), memo|
-    #       memo[k] = replace_unicode_sequences(v)
-    #     end
-    #   when Array
-    #     obj.map { |e| replace_unicode_sequences(e) }
-    #   when String
-    #     obj.gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
-    #   else
-    #     obj
-    #   end
-    # end
-
-
-    def deep_merge(hash1, hash2)
-      hash1.merge(hash2) do |_, old_val, new_val|
-        ::Rails.logger.debug(">>>old_val #{old_val}")
-        ::Rails.logger.debug(">>>new_val #{new_val}")
-
-        if old_val.is_a?(Hash) && new_val.is_a?(Hash)
-          deep_merge(old_val, new_val)
-        elsif old_val.is_a?(Array) && new_val.is_a?(Array)
-          old_val += new_val
-        else
-          new_val
-        end
-      end
+      indent(output, 1)
     end
 
     def automatic_components_for(model, locals: {})
@@ -205,6 +145,18 @@ module Api
           value.each do |item|
             update_ref_values!(item) if item.is_a?(Hash)
           end
+        end
+      end
+    end
+
+    def deep_merge(hash1, hash2)
+      hash1.merge(hash2) do |_, old_val, new_val|
+        if old_val.is_a?(Hash) && new_val.is_a?(Hash)
+          deep_merge(old_val, new_val)
+        elsif old_val.is_a?(Array) && new_val.is_a?(Array)
+          old_val + new_val
+        else
+          new_val
         end
       end
     end
