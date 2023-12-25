@@ -30,8 +30,8 @@ module Api
       custom_actions_file_path = "api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"
       custom_output = render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
 
-      output_hash = YAML.safe_load(output.encode('UTF-8'))
-      custom_output_hash = YAML.load(custom_output.encode('UTF-8'))
+      output_hash = YAML.load(output)
+      custom_output_hash = YAML.load(custom_output)
 
       result = deep_merge(output_hash, custom_output_hash)
       #
@@ -41,18 +41,52 @@ module Api
       # output += custom_output
 
 
-      ::Rails.logger.debug(">>>RES #{result}")
+      # ::Rails.logger.debug(">>>RESU #{result}")
 
-      output = result.to_yaml.gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
+      # result = replace_unicode_sequences(result)
+
+
+      output = ActiveSupport::SafeBuffer.new(result.to_yaml.gsub("---", ""))
 
       FactoryBot::ExampleBot::REST_METHODS.each do |method|
         if (code = FactoryBot.send(method, model.model_name.param_key.to_sym, version: @version))
-          output.gsub!("🚅 #{method}", code)
+
+          output.gsub!("\\U0001F685 #{method}", code)
         end
       end
 
-      indent(output, 1)
+      indent(output.to_yaml, 1)
     end
+
+    # def replace_unicode_sequences(obj)
+    #   case obj
+    #   when Hash
+    #     obj.transform_values { |value| replace_unicode_sequences(value) }
+    #   when Array
+    #     obj.map { |value| replace_unicode_sequences(value) }
+    #   when String
+    #     obj.gsub(/\\u([\da-fA-F]{8})/) { |m| [m[2..-1].to_i(16)].pack('U') }
+    #     # obj.gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
+    #   else
+    #     obj
+    #   end
+    # end
+
+    # def replace_unicode_sequences(obj)
+    #   case obj
+    #   when Hash
+    #     obj.each_with_object({}) do |(k, v), memo|
+    #       memo[k] = replace_unicode_sequences(v)
+    #     end
+    #   when Array
+    #     obj.map { |e| replace_unicode_sequences(e) }
+    #   when String
+    #     obj.gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
+    #   else
+    #     obj
+    #   end
+    # end
+
 
     def deep_merge(hash1, hash2)
       hash1.merge(hash2) do |_, old_val, new_val|
