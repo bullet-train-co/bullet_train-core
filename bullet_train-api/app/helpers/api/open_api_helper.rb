@@ -27,16 +27,21 @@ module Api
       output = render("api/#{@version}/open_api/shared/paths", except: except)
       output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
 
-      custom_actions_file_path = "api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"
-      output += render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
-
-      # There are some placeholders specific to this method that we still need to transform.
-      model_symbol = model.name.underscore.tr("/", "_").to_sym
+      custom_actions_file_path = "api/#{@version}/open_api/#{model.model_name.collection}/paths"
+      custom_output = render(custom_actions_file_path).html_safe if lookup_context.exists?(custom_actions_file_path, [], true)
 
       FactoryBot::ExampleBot::REST_METHODS.each do |method|
-        if (code = FactoryBot.send(method, model_symbol, version: @version))
+        if (code = FactoryBot.send(method, model.model_name.param_key.to_sym, version: @version))
           output.gsub!("🚅 #{method}", code)
+          custom_output&.gsub!("🚅 #{method}", code)
         end
+      end
+
+      if custom_output
+        merge = deep_merge(YAML.load(output), YAML.load(custom_output)).to_yaml.html_safe
+        # YAML.load escapes emojis https://github.com/ruby/psych/issues/371
+        # Next line returns emojis back and removes yaml garbage
+        output = merge.gsub("---", "").gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
       end
 
       indent(output, 1)
@@ -144,6 +149,18 @@ module Api
           value.each do |item|
             update_ref_values!(item) if item.is_a?(Hash)
           end
+        end
+      end
+    end
+
+    def deep_merge(hash1, hash2)
+      hash1.merge(hash2) do |_, old_val, new_val|
+        if old_val.is_a?(Hash) && new_val.is_a?(Hash)
+          deep_merge(old_val, new_val)
+        elsif old_val.is_a?(Array) && new_val.is_a?(Array)
+          (old_val + new_val).uniq
+        else
+          new_val
         end
       end
     end
