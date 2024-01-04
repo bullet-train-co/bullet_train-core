@@ -36,7 +36,7 @@ PATH
       cable_ready (~> 5.0.0)
       cancancan
       colorizer
-      commonmarker
+      commonmarker (>= 1.0.0)
       devise
       devise-pwned_password
       extended_email_reply_parser

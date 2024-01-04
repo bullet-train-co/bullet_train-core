@@ -45,7 +45,7 @@ PATH
       cable_ready (~> 5.0.0)
       cancancan
       colorizer
-      commonmarker
+      commonmarker (>= 1.0.0)
       devise
       devise-pwned_password
       extended_email_reply_parser
@@ -181,7 +181,8 @@ GEM
       aws_cf_signer
       rest-client (>= 2.0.0)
     colorizer (0.0.2)
-    commonmarker (0.23.10)
+    commonmarker (1.0.4-arm64-darwin)
+    commonmarker (1.0.4-x86_64-linux)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
