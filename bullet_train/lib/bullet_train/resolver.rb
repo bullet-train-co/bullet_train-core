@@ -281,8 +281,8 @@ module BulletTrain
       asset_globs << "*.js"
 
       # Search for the file.
-      files = Dir.glob(asset_globs).reject{|file| file.match?("/builds/")}
-      absolute_file_path = files.find{|file| file.match?(/#{file_name}$/)}
+      files = Dir.glob(asset_globs).reject { |file| file.match?("/builds/") }
+      absolute_file_path = files.find { |file| file.match?(/#{file_name}$/) }
 
       if absolute_file_path.nil? # then search for it in its respective gem.
         gem_path = `bundle show bullet_train-themes-#{current_theme}`.chomp
@@ -299,10 +299,10 @@ module BulletTrain
 
         # Read the globs from the home directory.
         Dir.chdir
-        asset_globs.map! {|glob| "#{gem_path}/#{glob}".gsub("/#{Dir.home}", "")}
+        asset_globs.map! { |glob| "#{gem_path}/#{glob}".gsub("/#{Dir.home}", "") }
         files = Dir.glob(asset_globs)
 
-        absolute_file_path = files.find{|file| file.match?(/#{file_name}$/)}
+        absolute_file_path = files.find { |file| file.match?(/#{file_name}$/) }
       end
 
       absolute_file_path
@@ -314,8 +314,8 @@ module BulletTrain
 
     def current_theme
       msmn = Masamune::AbstractSyntaxTree.new(File.read("#{Rails.root}/app/helpers/application_helper.rb"))
-      current_theme_def = msmn.method_definitions.find{|node| node.token_value == "current_theme"}
-      msmn.symbols.find{|sym| sym.line_number == current_theme_def.line_number + 1}.token_value
+      current_theme_def = msmn.method_definitions.find { |node| node.token_value == "current_theme" }
+      msmn.symbols.find { |sym| sym.line_number == current_theme_def.line_number + 1 }.token_value
     end
   end
 end
