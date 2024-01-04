@@ -274,7 +274,7 @@ module BulletTrain
           end
           path += "#{current_theme}/"
         end
-        path += "**/*.#{extention}"
+        path + "**/*.#{extention}"
       end
 
       # Ensure we include JavaScript files that exist under the app's root directory.
