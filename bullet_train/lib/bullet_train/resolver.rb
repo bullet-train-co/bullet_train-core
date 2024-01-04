@@ -113,7 +113,7 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = file_path || class_path || locale_path || partial_path
+      result[:absolute_path] = file_path || class_path || locale_path || js_or_stylesheet_path || partial_path
 
       # If we get the partial resolver template itself, that means we couldn't find the file.
       if result[:absolute_path].match?("app/views/bullet_train/partial_resolver.html.erb") || result[:absolute_path].nil?
@@ -251,10 +251,71 @@ module BulletTrain
       nil
     end
 
+    # In this search, we prioritize files in local themes,
+    # and then look in theme gems if nothing is found.
+    def js_or_stylesheet_path
+      file_name = @needle.split("/").last
+
+      # Prioritize the current theme, and fall back to
+      # the default `light` theme if nothing is found locally.
+      puts "Searching under current theme: #{current_theme.blue}"
+
+      # If the file name doesn't include the theme name (i.e. - light.tailwind.css),
+      # we append the theme name to the path to match something like "app/assets/javascript/foo/".
+      append_theme_name = !file_name.match?("#{current_theme}.")
+      asset_globs = ["js", "css"].map do |extention|
+        path = "app/assets/"
+        if append_theme_name
+          path += case extention
+          when "js"
+            "javascript/"
+          when "css"
+            "stylesheets/"
+          end
+          path += "#{current_theme}/"
+        end
+        path += "**/*.#{extention}"
+      end
+
+      # Ensure we include JavaScript files that exist under the app's root directory.
+      asset_globs << "*.js"
+
+      # Search for the file.
+      files = Dir.glob(asset_globs).reject{|file| file.match?("/builds/")}
+      absolute_file_path = files.find{|file| file.match?(/#{file_name}$/)}
+
+      if absolute_file_path.nil? # then search for it in its respective gem.
+        gem_path = `bundle show bullet_train-themes-#{current_theme}`.chomp
+
+        # Fall back to `light` theme if no gem is available.
+        # (The developer might just be trying to find stylesheets that exist in `light`.)
+        if gem_path.empty?
+          gem_path = `bundle show bullet_train-themes-light`.chomp
+          return nil if gem_path.empty?
+        end
+
+        # At this point we can be more generic since we're inside the gem.
+        asset_globs = ["**/*.js", "**/*.css"]
+
+        # Read the globs from the home directory.
+        Dir.chdir
+        asset_globs.map! {|glob| "#{gem_path}/#{glob}".gsub("/#{Dir.home}", "")}
+        files = Dir.glob(asset_globs)
+
+        absolute_file_path = files.find{|file| file.match?(/#{file_name}$/)}
+      end
+
+      absolute_file_path
+    end
+
     def ejected_theme?
-      current_theme_symbol = File.read("#{Rails.root}/app/helpers/application_helper.rb").split("\n").find { |str| str.match?(/\s+:.*/) }
-      current_theme = current_theme_symbol.delete(":").strip
       current_theme != "light" && Dir.exist?("#{Rails.root}/app/assets/stylesheets/#{current_theme}")
+    end
+
+    def current_theme
+      msmn = Masamune::AbstractSyntaxTree.new(File.read("#{Rails.root}/app/helpers/application_helper.rb"))
+      current_theme_def = msmn.method_definitions.find{|node| node.token_value == "current_theme"}
+      msmn.symbols.find{|sym| sym.line_number == current_theme_def.line_number + 1}.token_value
     end
   end
 end
