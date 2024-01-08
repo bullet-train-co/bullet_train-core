@@ -895,6 +895,8 @@ class Scaffolding::Transformer
             _: &#{attribute.name} #{attribute.title_case}
             label: *#{attribute.name}
             heading: *#{attribute.name}
+            api_title: *#{attribute.name}
+            api_description: *#{attribute.name}
 
             <% if attribute.type == "super_select" %>
             <% if attribute.is_required? %>
