@@ -1,0 +1,30 @@
+Description:
+  Generate an action that targets on model.
+
+Example:
+  E.g. Perform a schedulable action named Publish for one Listing.
+    rails generate super_scaffold:action_models:targets_one Publish Listing Team
+
+  This will create:
+    app/avo/resources/listings_publish_action.rb
+    app/controllers/account/listings/
+    app/controllers/api/v1/listings/
+    app/controllers/avo/listings_publish_actions_controller.rb
+    app/models/listings.rb
+    app/models/listings/
+    app/views/account/listings/publish_actions/
+    app/views/api/v1/listings/publish_actions/
+    config/locales/en/listings/
+    db/migrate/20240109095227_create_listings_publish_actions.rb
+    test/controllers/api/v1/listings/
+    test/factories/listings/
+    test/models/listings/
+  And update:
+    app/models/listing.rb
+    app/views/account/listings/show.html.erb
+    config/models/roles.yml
+    config/routes.rb
+    config/routes/api/v1.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.

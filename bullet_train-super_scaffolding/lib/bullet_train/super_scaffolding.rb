@@ -18,7 +18,8 @@ module BulletTrain
       "crud-field" => "BulletTrain::SuperScaffolding::Scaffolders::CrudFieldScaffolder",
       "join-model" => "BulletTrain::SuperScaffolding::Scaffolders::JoinModelScaffolder",
       "oauth-provider" => "BulletTrain::SuperScaffolding::Scaffolders::OauthProviderScaffolder",
-      "action-models:targets-many" => "BulletTrain::ActionModels::Scaffolders::TargetsManyScaffolder"
+      "action-models:targets-many" => "BulletTrain::ActionModels::Scaffolders::TargetsManyScaffolder",
+      "action-models:targets-one" => "BulletTrain::ActionModels::Scaffolders::TargetsOneScaffolder"
     }
 
     class Runner
