@@ -201,6 +201,16 @@ module Api
           end
         end
       end
+
+      if custom.key?("only")
+        original["properties"].keys.each do |property|
+          unless Array(custom["only"]).include?(property)
+            original["properties"].delete(property)
+            original["required"].delete(property)
+            original["example"].delete(property)
+          end
+        end
+      end
     end
   end
 end
