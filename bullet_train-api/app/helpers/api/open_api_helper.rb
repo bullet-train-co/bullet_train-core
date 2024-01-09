@@ -177,22 +177,21 @@ module Api
       custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
 
       if custom.key?("add")
-        custom["add"].keys.each do |property|
-          if custom["add"][property]["required"]
+        custom["add"].each do |property, details|
+          if details["required"]
             original["required"] << property
-            custom["add"][property].delete("required")
+            details.delete("required")
           end
-          original["properties"][property] = custom["add"][property]
-          if custom["add"][property]["example"]
-            original["example"][property] = custom["add"][property]["example"]
-            custom["add"][property].delete("example")
+          original["properties"][property] = details
+          if details["example"]
+            original["example"][property] = details["example"]
+            details.delete("example")
           end
         end
       end
 
       if custom.key?("remove")
-        custom["remove"] = [custom["remove"]] unless custom["remove"].is_a?(Array)
-        custom["remove"].each do |property|
+        Array(custom["remove"]).each do |property|
           original["required"].delete(property)
           original["properties"].delete(property)
           original["example"].delete(property)
