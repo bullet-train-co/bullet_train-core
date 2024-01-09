@@ -19,7 +19,8 @@ module BulletTrain
       "join-model" => "BulletTrain::SuperScaffolding::Scaffolders::JoinModelScaffolder",
       "oauth-provider" => "BulletTrain::SuperScaffolding::Scaffolders::OauthProviderScaffolder",
       "action-models:targets-many" => "BulletTrain::ActionModels::Scaffolders::TargetsManyScaffolder",
-      "action-models:targets-one" => "BulletTrain::ActionModels::Scaffolders::TargetsOneScaffolder"
+      "action-models:targets-one" => "BulletTrain::ActionModels::Scaffolders::TargetsOneScaffolder",
+      "action-models:targets-one-parent" => "BulletTrain::ActionModels::Scaffolders::TargetsOneParentScaffolder"
     }
 
     class Runner
