@@ -20,38 +20,56 @@ en:
         destroy: Are you sure you want to remove %{access_token_name}? This will break any active integrations using this token and can't be undone.
     fields: &fields
       id:
-        heading: Access Token ID
+        heading: &id Access Token ID
+        api_title: *id
+        api_description: *id
       application_id:
-        heading: Application ID
+        heading: &application_id Application ID
+        api_title: *application_id
+        api_description: *application_id
       token:
         _: &token Token
         label: *token
         heading: *token
+        api_title: *token
+        api_description: *token
       expires_in:
         _: &expires_in Expires In
         label: *expires_in
         heading: *expires_in
+        api_title: *expires_in
+        api_description: *expires_in
       scopes:
         _: &scopes Scopes
         label: *scopes
         heading: *scopes
+        api_title: *scopes
+        api_description: *scopes
       last_used_at:
         _: &last_used_at Last Used At
         label: *last_used_at
         heading: *last_used_at
+        api_title: *last_used_at
+        api_description: *last_used_at
       description:
         _: &description Description
         label: *description
         heading: *description
+        api_title: *description
+        api_description: *description
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Created
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated
         label: *updated_at
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     api:
       collection_actions: "Collection Actions for Access Tokens"
       index: "List Access Tokens"

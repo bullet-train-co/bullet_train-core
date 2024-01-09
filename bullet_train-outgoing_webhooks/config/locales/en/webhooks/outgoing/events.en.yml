@@ -6,6 +6,8 @@ en:
         _: &id Event ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
 
       team_id:
         _: &team_id Team ID
@@ -58,3 +60,5 @@ en:
         _: &created_at Happened At
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at

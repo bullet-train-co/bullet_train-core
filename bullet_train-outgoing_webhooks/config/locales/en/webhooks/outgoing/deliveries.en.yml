@@ -24,11 +24,15 @@ en:
         _: &id Delivery ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
 
       event_id: &event
         _: &event_id Event
         label: *event_id
         heading: *event_id
+        api_title: *event_id
+        api_description: *event_id
         placeholder: Select a Event
       event: *event
 
@@ -36,24 +40,34 @@ en:
         _: &endpoint_url Endpoint URL
         label: *endpoint_url
         heading: *endpoint_url
+        api_title: *endpoint_url
+        api_description: *endpoint_url
 
       delivered_at:
         _: &delivered_at Delivered At
         label: *delivered_at
         heading: *delivered_at
+        api_title: *delivered_at
+        api_description: *delivered_at
 
       status:
-        heading: Status
+        heading: &status Status
+        api_title: *status
+        api_description: *status
 
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Issued At
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated
         label: *updated_at
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     api:
       endpoint_id: Absolutely Abstract Endpoint ID
       collection_actions: "Collection Actions for Deliveries"
