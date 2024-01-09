@@ -3,7 +3,7 @@ Description:
 
 Example:
   E.g. Perform an Archive action that targets many Projects on a Team.
-    rails g super_scaffold:action_models:targets_many Archive Project Team
+    rails generate super_scaffold:action_models:targets_many Archive Project Team
 
   This will create:
     app/avo/resources/projects_archive_action.rb

@@ -1,5 +1,5 @@
 Description:
-  Generate an action that targets on model.
+  Generate an action that targets one model.
 
 Example:
   E.g. Perform a schedulable action named Publish for one Listing.
