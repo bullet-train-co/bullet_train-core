@@ -5,7 +5,8 @@
   get:
     tags:
       - Scaffolding::CompletelyConcrete::TangibleThing
-    summary: "List Tangible Things"
+    summary: <%= I18n.t("#{model_name}.api.paths.index.summary", default: "List Tangible Things") %>
+    description: <%= I18n.t("#{model_name}.api.paths.index.description", default: "List Tangible Things") %>
     operationId: listScaffoldingCompletelyConcreteTangibleThings
     parameters:
       - name: absolutely_abstract_creative_concept_id
@@ -37,7 +38,8 @@
   post:
     tags:
       - Scaffolding::CompletelyConcrete::TangibleThing
-    summary: "Create Tangible Thing"
+    summary: <%= I18n.t("#{model_name}.api.paths.create.summary", default: "Create Tangible Thing") %>
+    description: <%= I18n.t("#{model_name}.api.paths.create.description", default: "Create Tangible Thing") %>
     operationId: createScaffoldingCompletelyConcreteTangibleThings
     parameters:
       - name: absolutely_abstract_creative_concept_id
@@ -77,7 +79,8 @@
   get:
     tags:
       - Scaffolding::CompletelyConcrete::TangibleThing
-    summary: "Fetch Tangible Thing"
+    summary: <%= I18n.t("#{model_name}.api.paths.show.summary", default: "Fetch Tangible Thing") %>
+    description: <%= I18n.t("#{model_name}.api.paths.show.description", default: "Fetch Tangible Thing") %>
     operationId: getScaffoldingCompletelyConcreteTangibleThings
     parameters:
       - $ref: "#/components/parameters/id"
@@ -97,7 +100,8 @@
   put:
     tags:
       - Scaffolding::CompletelyConcrete::TangibleThing
-    summary: "Update Tangible Thing"
+    summary: <%= I18n.t("#{model_name}.api.paths.update.summary", default: "Update Tangible Thing") %>
+    description: <%= I18n.t("#{model_name}.api.paths.update.description", default: "Update Tangible Thing") %>
     operationId: updateScaffoldingCompletelyConcreteTangibleThings
     parameters:
       - $ref: "#/components/parameters/id"
@@ -130,7 +134,8 @@
   delete:
     tags:
       - Scaffolding::CompletelyConcrete::TangibleThing
-    summary: "Remove Tangible Thing"
+    summary: <%= I18n.t("#{model_name}.api.paths.index.summary", default: "List Tangible Things") %>
+    description: <%= I18n.t("#{model_name}.api.paths.index.description", default: "List Tangible Things") %>
     operationId: removeScaffoldingCompletelyConcreteTangibleThings
     parameters:
       - $ref: "#/components/parameters/id"
