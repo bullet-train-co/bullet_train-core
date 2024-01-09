@@ -24,7 +24,7 @@ module Api
     end
 
     def automatic_paths_for(model, parent, except: [])
-      output = render("api/#{@version}/open_api/shared/paths", model_name: model.name.underscore.pluralize, except: except)
+      output = render("api/#{@version}/open_api/shared/paths", model_name: model.model_name.collection, except: except)
       output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
 
       custom_actions_file_path = "api/#{@version}/open_api/#{model.model_name.collection}/paths"
