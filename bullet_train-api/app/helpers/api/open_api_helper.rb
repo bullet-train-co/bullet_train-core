@@ -176,25 +176,29 @@ module Api
     def customize_component!(original, custom)
       custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
 
-      if custom.key?("add")
-        custom["add"].each do |property, details|
-          if details["required"]
-            original["required"] << property
-            details.delete("required")
-          end
-          original["properties"][property] = details
-          if details["example"]
-            original["example"][property] = details["example"]
-            details.delete("example")
+      %w[add include append].each do |add_key|
+        if custom.key?(add_key)
+          custom[add_key].each do |property, details|
+            if details["required"]
+              original["required"] << property
+              details.delete("required")
+            end
+            original["properties"][property] = details
+            if details["example"]
+              original["example"][property] = details["example"]
+              details.delete("example")
+            end
           end
         end
       end
 
-      if custom.key?("remove")
-        Array(custom["remove"]).each do |property|
-          original["required"].delete(property)
-          original["properties"].delete(property)
-          original["example"].delete(property)
+      %w[remove exclude except].each do |remove_key|
+        if custom.key?(remove_key)
+          Array(custom[remove_key]).each do |property|
+            original["required"].delete(property)
+            original["properties"].delete(property)
+            original["example"].delete(property)
+          end
         end
       end
     end
