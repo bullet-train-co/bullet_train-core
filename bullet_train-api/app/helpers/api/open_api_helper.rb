@@ -176,8 +176,8 @@ module Api
     def customize_component!(original, custom)
       custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
 
-      if custom.key?("add")
-        custom["add"].each do |property, details|
+      if custom.key?("include")
+        custom["include"].each do |property, details|
           if details["required"]
             original["required"] << property
             details.delete("required")
@@ -190,8 +190,8 @@ module Api
         end
       end
 
-      if custom.key?("remove")
-        Array(custom["remove"]).each do |property|
+      if custom.key?("except")
+        Array(custom["except"]).each do |property|
           original["required"].delete(property)
           original["properties"].delete(property)
           original["example"].delete(property)
