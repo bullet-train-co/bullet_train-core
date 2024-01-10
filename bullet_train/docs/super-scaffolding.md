@@ -43,6 +43,14 @@ rails generate super_scaffold
 | `rails generate super_scaffold:join_model` | Scaffolds a join model (must have two existing models to join before scaffolding) |
 | `rails generate super_scaffold:oauth_provider` | Scaffolds logic to use OAuth2 with the provider of your choice |
 
+The following commands are for use specifically with [Action Models](action-models).
+
+| `rails generate` Command | Scaffolding Type |
+|--------------------------|------------------|
+| `rails generate super_scaffold:action_models:targets_many` | Generates an action that targets many records |
+| `rails generate super_scaffold:action_models:targets_one` | Generates an action that targets one record |
+| `rails generate super_scaffold:action_models:targets_one_parent` | Generates an action that targets the parent of the specified model |
+
 ## Examples
 
 ### 1. Basic CRUD Scaffolding
