@@ -2,5 +2,5 @@
 @import "tailwindcss/components";
 @import "tailwindcss/utilities";
 
-@import "$THEMESTYLESHEETS/light/application.css"; /* alias used to support ejecting the file to local */
+@import "$ThemeStylesheetsDir/light/application.css"; /* alias used to support ejecting the file to local */
 
