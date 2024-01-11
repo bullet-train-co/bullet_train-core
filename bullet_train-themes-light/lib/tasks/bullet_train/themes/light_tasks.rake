@@ -3,8 +3,8 @@ require "tasks/application"
 namespace :bullet_train do
   namespace :themes do
     namespace :light do
-      desc "Allow local css overrides for the \"Light\" theme."
-      task :init_local_css do |task|
+      desc "Eject the \"Light\" theme's main CSS file."
+      task :eject_css do |task|
         BulletTrain::Themes::Application.eject_theme_main_css(get_theme_name_from_task(task))
       end
 

@@ -18,7 +18,7 @@ If you need to add your own custom CSS, override the custom non-tailwind classes
 You can use the following command to create a local version of the theme's main CSS file.
 
 ```
-> rake bullet_train:themes:light:init_local_css
+> rake bullet_train:themes:light:eject_css
 ```
 
 This will create a local version of `app/assets/stylesheets/light.tailwind.css` for modification. It imports `@tailwind` base styles, and the `light` theme files. You'll have full control by editing and modying this file, as it will take precedence over the version found in the theme's own gem.
