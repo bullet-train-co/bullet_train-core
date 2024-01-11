@@ -8,7 +8,6 @@ const themeStylesheetsDir = path.resolve(themeRoot, 'app/assets/stylesheets/');
 module.exports = {
   resolve: (id, basedir, importOptions) => {
     if (id.startsWith('$ThemeStylesheetsDir')) {
-      initial_id = id;
       id = id.replace('$ThemeStylesheetsDir', themeStylesheetsDir);
     } else if (id.startsWith('$ThemeStylesheet')) {
       id = id.replace('$ThemeStylesheet', themeStylesheet);
