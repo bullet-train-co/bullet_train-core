@@ -25,6 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "standard"
 
   spec.add_dependency "rails", ">= 6.0.0"
-  spec.add_dependency "bullet_train"
   spec.add_dependency "bullet_train-themes"
 end
