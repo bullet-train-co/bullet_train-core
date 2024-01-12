@@ -9,7 +9,7 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
     has_one :team, through: :delivery unless BulletTrain::OutgoingWebhooks.parent_class_specified?
     scope :successful, -> { where(response_code: SUCCESS_RESPONSE_CODES) }
 
-    before_create do
+    after_initialize do
       self.attempt_number = delivery.attempt_count + 1
     end
 
@@ -35,6 +35,7 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
       unless allowed_uri?(uri)
         self.response_code = 0
         self.error_message = "URI is not allowed: " + uri
+        save
         return false
       end
     end
