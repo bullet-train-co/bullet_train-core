@@ -275,14 +275,10 @@ module BulletTrain
       absolute_file_path = files.find { |file| file.match?(/#{file_name}$/) }
 
       if absolute_file_path.nil? # then search for it in its respective gem.
-        gem_path = `bundle show bullet_train-themes-#{current_theme}`.chomp
-
         # Fall back to `light` theme if no gem is available.
         # (The developer might just be trying to find stylesheets that exist in `light`.)
-        if gem_path.empty?
-          gem_path = `bundle show bullet_train-themes-light`.chomp
-          return nil if gem_path.empty?
-        end
+        gem_path = [`bundle show bullet_train-themes-#{current_theme}`, `bundle show bullet_train-themes-light`].map(&:chomp).find(&:present?)
+        return nil unless gem_path
 
         # At this point we can be more generic since we're inside the gem.
         asset_globs = ["**/*.js", "**/*.css"]
