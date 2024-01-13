@@ -262,23 +262,13 @@ module BulletTrain
 
       # If the file name doesn't include the theme name (i.e. - light.tailwind.css),
       # we append the theme name to the path to match something like "app/assets/javascript/foo/".
-      append_theme_name = !file_name.match?("#{current_theme}.")
-      asset_globs = ["js", "css"].map do |extention|
-        path = "app/assets/"
-        if append_theme_name
-          path += case extention
-          when "js"
-            "javascript/"
-          when "css"
-            "stylesheets/"
-          end
-          path += "#{current_theme}/"
-        end
-        path + "**/*.#{extention}"
-      end
-
-      # Ensure we include JavaScript files that exist under the app's root directory.
-      asset_globs << "*.js"
+      asset_globs = [
+        "*.js", # Include JavaScript files under the app's root directory.
+        "app/assets/javascript/**/*.#{current_theme}.js",
+        "app/assets/javascript/#{current_theme}/**/*.js",
+        "app/assets/stylesheets/**/*.#{current_theme}.css",
+        "app/assets/stylesheets/#{current_theme}/**/*.css",
+      ]
 
       # Search for the file.
       files = Dir.glob(asset_globs).reject { |file| file.match?("/builds/") }
