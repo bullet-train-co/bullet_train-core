@@ -251,12 +251,12 @@ module BulletTrain
       nil
     end
 
-    # In this search, we prioritize files in local themes,
+    # In this search, we prioritize files in local themes
     # and then look in theme gems if nothing is found.
     def js_or_stylesheet_path
       file_name = @needle.split("/").last
 
-      # Prioritize the current theme, and fall back to
+      # Prioritize the current theme and fall back to
       # the default `light` theme if nothing is found locally.
       puts "Searching under current theme: #{current_theme.blue}"
 
@@ -268,14 +268,13 @@ module BulletTrain
         "app/assets/stylesheets/#{current_theme}/**/*.css",
       ]
 
-      # Search for the file.
       files = Dir.glob(asset_globs).reject { |file| file.match?("/builds/") }
       absolute_file_path = files.find { |file| file.match?(/#{file_name}$/) }
 
       if absolute_file_path
         absolute_file_path
       else
-        # Search for the file in its respective gem. Fall back to `light` theme if no gem is available.
+        # Search for the file in its respective gem. Fall back to the `light` theme if no gem is available.
         gem_path = [`bundle show bullet_train-themes-#{current_theme}`, `bundle show bullet_train-themes-light`].map(&:chomp).find(&:present?)
         return nil unless gem_path
 
