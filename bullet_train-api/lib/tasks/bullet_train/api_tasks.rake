@@ -146,5 +146,96 @@ namespace :bullet_train do
         )
       end
     end
+
+    desc "Create `api_title` and `api_description`translations"
+    task create_translations: :environment do
+      # Define the root of the locales directory
+      locales_root = Rails.root.join('config', 'locales').to_s
+
+      # Define the temporary directory
+      tmp_dir = Rails.root.join('tmp', 'locales')
+      FileUtils.mkdir_p(tmp_dir) unless Dir.exist?(tmp_dir)
+
+      Dir.glob("#{locales_root}/**/*.yml").each do |file|
+        puts "Processing #{file}..."
+
+        lines = File.readlines(file)
+        new_content = []
+        inside_fields = false
+        current_field = nil
+        fields_indentation = 4
+        api_title_exists = false
+        api_description_exists = false
+
+        # Read the entire file as a string
+        lines.each_with_index do |line, index|
+          # fields are always under locale:model:
+          if line.start_with?("#{" " * fields_indentation}fields:")
+            inside_fields = true
+            new_content << line
+            next
+          end
+
+          if inside_fields
+            current_indentation = line.index(/\S/) || 0
+            if current_indentation <= fields_indentation
+              # We've exited the fields block
+              inside_fields = false
+              current_field = nil
+            elsif current_indentation == fields_indentation + 2
+              # We're on a line with a field name
+              current_field = line.strip.split(":").first
+
+              api_title_exists = false
+              api_description_exists = false
+
+              n = 1
+              until index + n >= lines.length || (lines[index + n].index(/\S/) || 0) <= fields_indentation
+                if lines[index + n].strip.start_with?('api_title:')
+                  api_title_exists = true
+                elsif lines[index + n].strip.start_with?('api_description:')
+                  api_description_exists = true
+                end
+                n += 1
+              end
+
+            elsif current_field && line.strip.start_with?("heading:")
+              heading_value = line.split(":").last&.strip
+              indent = ' ' * current_indentation
+
+              if heading_value&.start_with?("&", "*")
+                new_content << line
+              else
+                heading_value = "&#{current_field} #{heading_value}"
+                new_content << "#{indent}heading: #{heading_value}\n"
+              end
+
+              field_key = heading_value[1..]&.split(" ")&.first
+              new_content << "#{indent}api_title: *#{field_key}\n" unless api_title_exists
+              new_content << "#{indent}api_description: *#{field_key}\n" unless api_description_exists
+
+              next
+            end
+          end
+
+          new_content << line
+        end
+
+        # Write the updated data back to the file
+        # File.open(file, "w") { |f| f.write(new_content) }
+
+        # Compute the relative path manually
+        relative_path = file.sub(/^#{Regexp.escape(locales_root)}\/?/, '')
+
+        # Construct the new path within the temporary directory
+        new_full_path = File.join(tmp_dir, relative_path)
+
+        # Ensure the directory exists for the new file
+        FileUtils.mkdir_p(File.dirname(new_full_path))
+
+        # Write the updated content to the new file in tmp/locales
+        File.open(new_full_path, "w") { |f| f.write(new_content.join) }
+      end
+    end
   end
 end
