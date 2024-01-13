@@ -260,8 +260,6 @@ module BulletTrain
       # the default `light` theme if nothing is found locally.
       puts "Searching under current theme: #{current_theme.blue}"
 
-      # If the file name doesn't include the theme name (i.e. - light.tailwind.css),
-      # we append the theme name to the path to match something like "app/assets/javascript/foo/".
       asset_globs = [
         "*.js", # Include JavaScript files under the app's root directory.
         "app/assets/javascript/**/*.#{current_theme}.js",
@@ -274,18 +272,17 @@ module BulletTrain
       files = Dir.glob(asset_globs).reject { |file| file.match?("/builds/") }
       absolute_file_path = files.find { |file| file.match?(/#{file_name}$/) }
 
-      if absolute_file_path.nil? # then search for it in its respective gem.
-        # Fall back to `light` theme if no gem is available.
-        # (The developer might just be trying to find stylesheets that exist in `light`.)
+      if absolute_file_path
+        absolute_file_path
+      else
+        # Search for the file in its respective gem. Fall back to `light` theme if no gem is available.
         gem_path = [`bundle show bullet_train-themes-#{current_theme}`, `bundle show bullet_train-themes-light`].map(&:chomp).find(&:present?)
         return nil unless gem_path
 
         # At this point we can be more generic since we're inside the gem.
         files = Dir.glob(["#{gem_path}/**/*.js", "#{gem_path}/**/*.css"])
-        absolute_file_path = files.find { |file| file.end_with?(file_name) }
+        files.find { |file| file.end_with?(file_name) }
       end
-
-      absolute_file_path
     end
 
     def ejected_theme?
