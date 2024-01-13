@@ -150,10 +150,10 @@ namespace :bullet_train do
     desc "Create `api_title` and `api_description`translations"
     task create_translations: :environment do
       # Define the root of the locales directory
-      locales_root = Rails.root.join('config', 'locales').to_s
+      locales_root = Rails.root.join("config", "locales").to_s
 
       # Define the backup directory
-      backup_dir = Rails.root.join('tmp', 'locales_backup')
+      backup_dir = Rails.root.join("tmp", "locales_backup")
       FileUtils.mkdir_p(backup_dir) unless Dir.exist?(backup_dir)
 
       original_files = Dir.glob("#{locales_root}/**/*.yml")
@@ -194,9 +194,9 @@ namespace :bullet_train do
 
               n = 1
               until index + n >= lines.length || (lines[index + n].index(/\S/) || 0) <= fields_indentation
-                if lines[index + n].strip.start_with?('api_title:')
+                if lines[index + n].strip.start_with?("api_title:")
                   api_title_exists = true
-                elsif lines[index + n].strip.start_with?('api_description:')
+                elsif lines[index + n].strip.start_with?("api_description:")
                   api_description_exists = true
                 end
                 n += 1
@@ -204,7 +204,7 @@ namespace :bullet_train do
 
             elsif current_field && line.strip.start_with?("heading:")
               heading_value = line.split(":").last&.strip
-              indent = ' ' * current_indentation
+              indent = " " * current_indentation
 
               if heading_value&.start_with?("&", "*")
                 new_content << line
@@ -229,15 +229,15 @@ namespace :bullet_train do
           differing_files_count += 1
 
           # Compute the relative path manually
-          relative_path = file.sub(/^#{Regexp.escape(locales_root)}\/?/, '')
+          relative_path = file.sub(/^#{Regexp.escape(locales_root)}\/?/, "")
 
           backup_path = File.join(backup_dir, relative_path)
           FileUtils.mkdir_p(File.dirname(backup_path))
           FileUtils.cp(file, backup_path)
-          puts "↳ Backup created: #{backup_path}"
+          puts "↳ Updating, backup created: #{backup_path}"
 
           # Write the updated data back to the file
-          File.open(file, "w") { |f| f.write(new_content.join) }
+          File.write(file, new_content.join)
         end
       end
 
