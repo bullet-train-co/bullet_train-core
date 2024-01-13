@@ -152,11 +152,14 @@ namespace :bullet_train do
       # Define the root of the locales directory
       locales_root = Rails.root.join('config', 'locales').to_s
 
-      # Define the temporary directory
-      tmp_dir = Rails.root.join('tmp', 'locales')
-      FileUtils.mkdir_p(tmp_dir) unless Dir.exist?(tmp_dir)
+      # Define the backup directory
+      backup_dir = Rails.root.join('tmp', 'locales_backup')
+      FileUtils.mkdir_p(backup_dir) unless Dir.exist?(backup_dir)
 
-      Dir.glob("#{locales_root}/**/*.yml").each do |file|
+      original_files = Dir.glob("#{locales_root}/**/*.yml")
+      differing_files_count = 0
+
+      original_files.each do |file|
         puts "Processing #{file}..."
 
         lines = File.readlines(file)
@@ -221,21 +224,25 @@ namespace :bullet_train do
           new_content << line
         end
 
-        # Write the updated data back to the file
-        # File.open(file, "w") { |f| f.write(new_content) }
+        # Only write to file if there are changes
+        unless lines.join == new_content.join
+          differing_files_count += 1
 
-        # Compute the relative path manually
-        relative_path = file.sub(/^#{Regexp.escape(locales_root)}\/?/, '')
+          # Compute the relative path manually
+          relative_path = file.sub(/^#{Regexp.escape(locales_root)}\/?/, '')
 
-        # Construct the new path within the temporary directory
-        new_full_path = File.join(tmp_dir, relative_path)
+          backup_path = File.join(backup_dir, relative_path)
+          FileUtils.mkdir_p(File.dirname(backup_path))
+          FileUtils.cp(file, backup_path)
+          puts "↳ Backup created: #{backup_path}"
 
-        # Ensure the directory exists for the new file
-        FileUtils.mkdir_p(File.dirname(new_full_path))
-
-        # Write the updated content to the new file in tmp/locales
-        File.open(new_full_path, "w") { |f| f.write(new_content.join) }
+          # Write the updated data back to the file
+          File.open(file, "w") { |f| f.write(new_content.join) }
+        end
       end
+
+      puts "---"
+      puts "Total files updated: #{differing_files_count}/#{original_files.size}"
     end
   end
 end
