@@ -281,14 +281,8 @@ module BulletTrain
         return nil unless gem_path
 
         # At this point we can be more generic since we're inside the gem.
-        asset_globs = ["**/*.js", "**/*.css"]
-
-        # Read the globs from the home directory.
-        Dir.chdir
-        asset_globs.map! { |glob| "#{gem_path}/#{glob}".gsub("/#{Dir.home}", "") }
-        files = Dir.glob(asset_globs)
-
-        absolute_file_path = files.find { |file| file.match?(/#{file_name}$/) }
+        files = Dir.glob(["#{gem_path}/**/*.js", "#{gem_path}/**/*.css"])
+        absolute_file_path = files.find { |file| file.end_with?(file_name) }
       end
 
       absolute_file_path
