@@ -313,7 +313,7 @@ module BulletTrain
     end
 
     def current_theme
-      msmn = Masamune::AbstractSyntaxTree.new(File.read("#{Rails.root}/app/helpers/application_helper.rb"))
+      msmn = Masamune::AbstractSyntaxTree.new(Rails.root.join("app/helpers/application_helper.rb").read)
       current_theme_def = msmn.method_definitions.find { |node| node.token_value == "current_theme" }
       msmn.symbols.find { |sym| sym.line_number == current_theme_def.line_number + 1 }.token_value
     end
