@@ -14,3 +14,5 @@ You can eject only the theme files you wish to override or you can eject the who
 If you need to add your own custom CSS, override the custom non-tailwind classes found in the `light` theme (custom classes are still used sparingly), or to import CSS from a third-party component, simply add to the `app/assets/stylesheets/application.custom.css` file.
 
 You'll also have the ability to use Tailwind `@apply` directives.
+
+For further modifications to the theme's style sheet (for example, to change the order in which tailwind styles are included), you can eject the theme's css by using the command `rake bullet_train:themes:light:eject_css`.
