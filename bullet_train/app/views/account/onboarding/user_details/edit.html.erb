@@ -30,8 +30,7 @@
           <div class="sm:col-span-2">
             <%= render 'shared/fields/super_select', form: f, method: :time_zone,
               choices: time_zone_options_for_select(@user.time_zone, nil, ActiveSupport::TimeZone),
-              other_options: {search: true, required: true},
-              html_options: {use_browser_time_zone: true} %>
+              other_options: {search: true, required: true, use_browser_time_zone: true} %>
           </div>
         </div>
 
@@ -61,7 +60,7 @@
     // figure out the rails timezone value.
     var railsValue = jsTimezoneMapping[jstz.determine().name()];
 
-    var useBrowserTimeZone = $("#user_time_zone").attr('use_browser_time_zone');
+    var useBrowserTimeZone = $("#user_time_zone")[0].dataset.useBrowserTimeZone
 
     if (useBrowserTimeZone == "true") {
       // set the form accordingly.

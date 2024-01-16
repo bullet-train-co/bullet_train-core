@@ -21,6 +21,9 @@ else
   end
 end
 
+other_options[:use_browser_time_zone] = true if other_options[:use_browser_time_zone].nil?
+use_browser_time_zone = other_options[:use_browser_time_zone]
+
 wrapper_options ||= {}
 wrapper_options[:data] ||= {}
 wrapper_options[:data][:controller] ||= ""
@@ -37,6 +40,7 @@ end
 
 html_options[:data] ||= {}
 html_options[:data].merge!("#{stimulus_controller}-target": 'select')
+html_options[:data].merge!("use-browser-time-zone": use_browser_time_zone )
 
 %>
 
