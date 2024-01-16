@@ -269,7 +269,7 @@ module BulletTrain
       ]
 
       files = Dir.glob(asset_globs).reject { |file| file.match?("/builds/") }
-      absolute_file_path = files.find { |file| file.match?(/#{file_name}$/) }
+      absolute_file_path = files.find { |file| file.end_with?(file_name) }
 
       if absolute_file_path
         absolute_file_path
