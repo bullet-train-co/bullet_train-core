@@ -25,4 +25,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "standard"
 
   spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "nice_partials", "~> 0.9"
 end
