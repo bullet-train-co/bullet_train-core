@@ -147,7 +147,7 @@ namespace :bullet_train do
       end
     end
 
-    desc "Create `api_title` and `api_description`translations"
+    desc "Create `api_title` and `api_description` translations"
     task create_translations: :environment do
       # Define the root of the locales directory
       locales_root = Rails.root.join("config", "locales").to_s
