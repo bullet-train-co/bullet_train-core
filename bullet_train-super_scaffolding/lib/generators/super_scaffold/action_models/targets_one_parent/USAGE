@@ -1,0 +1,30 @@
+Description:
+  Generate an action that processes a model of choice for its parent.
+
+Example:
+  E.g. Generate a CSV Importer that creates many Listings on a Team.
+    rails generate super_scaffold:action_models:targets_one_parent CsvImport Listing Team
+
+  This will create:
+    app/avo/resources/listings_csv_import_action.rb
+    app/controllers/account/listings/
+    app/controllers/api/v1/listings/
+    app/controllers/avo/listings_csv_import_actions_controller.rb
+    app/models/listings.rb
+    app/models/listings/
+    app/views/account/listings/csv_import_actions/
+    app/views/api/v1/listings/csv_import_actions/
+    config/locales/en/listings/
+    db/migrate/20240109100805_create_listings_csv_import_actions.rb
+    test/controllers/api/v1/listings/
+    test/factories/listings/
+    test/models/listings/
+  And update:
+    app/models/team.rb
+    app/views/account/listings/_index.html.erb
+    config/models/roles.yml
+    config/routes.rb
+    config/routes/api/v1.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.
