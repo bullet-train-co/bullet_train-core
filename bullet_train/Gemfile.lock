@@ -93,7 +93,7 @@ PATH
       cable_ready (~> 5.0.0)
       cancancan
       colorizer
-      commonmarker
+      commonmarker (>= 1.0.0)
       devise
       devise-pwned_password
       extended_email_reply_parser
@@ -215,8 +215,10 @@ GEM
       rest-client (>= 2.0.0)
     coderay (1.1.3)
     colorizer (0.0.2)
-    commonmarker (1.0.0.pre10-arm64-darwin)
-    commonmarker (1.0.0.pre10-x86_64-linux)
+    commonmarker (1.0.4)
+      rb_sys (~> 0.9)
+    commonmarker (1.0.4-arm64-darwin)
+    commonmarker (1.0.4-x86_64-linux)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -398,6 +400,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.0.6)
+    rb_sys (0.9.86)
     redis-client (0.17.0)
       connection_pool
     regexp_parser (2.6.1)
@@ -494,7 +497,6 @@ DEPENDENCIES
   bullet_train-super_scaffolding!
   bullet_train-themes!
   bullet_train-themes-light!
-  commonmarker (>= 1.0.0.pre10)
   minitest-reporters
   pry
   pry-stack_explorer
