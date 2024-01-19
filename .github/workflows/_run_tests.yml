@@ -70,7 +70,7 @@ jobs:
           rubygems: latest
           bundler: latest
           bundler-cache: true
-          ruby-version: ${{ matrix.ruby-version }}
+          #ruby-version: ${{ matrix.ruby-version }}
           working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
       # TODO: Sometimes the step above complains about the lockfile being fronzen.
