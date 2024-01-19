@@ -92,7 +92,7 @@ namespace :bullet_train do
       puts "Finished bumping to #{new_version}"
     end
 
-    desc "Bump the current version of application's API"
+    desc "Push OpenAPI yaml file to Redocly"
     task push_to_redocly: :environment do
       include Rails.application.routes.url_helpers
 
