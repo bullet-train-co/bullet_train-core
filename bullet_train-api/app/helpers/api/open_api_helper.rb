@@ -47,7 +47,9 @@ module Api
       indent(output, 1)
     end
 
-    def automatic_components_for(model, locals: {})
+    def automatic_components_for(model, **options)
+      locals = options.delete(:locals) || {}
+
       path = "app/views/api/#{@version}"
       paths = [path, "app/views"] + gem_paths.product(%W[/#{path} /app/views]).map(&:join)
 
@@ -75,6 +77,9 @@ module Api
       )
 
       attributes_output = JSON.parse(schema_json)
+
+      # Allow customization of Attributes
+      customize_component!(attributes_output, options[:attributes]) if options[:attributes]
 
       # Add "Attributes" part to $ref's
       update_ref_values!(attributes_output)
@@ -105,6 +110,9 @@ module Api
         parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
         parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
         parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
+
+        # Allow customization of Parameters
+        customize_component!(parameters_output, options[:parameters]) if options[:parameters]
 
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
@@ -161,6 +169,42 @@ module Api
           (old_val + new_val).uniq
         else
           new_val
+        end
+      end
+    end
+
+    def customize_component!(original, custom)
+      custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
+
+      if custom.key?("add")
+        custom["add"].each do |property, details|
+          if details["required"]
+            original["required"] << property
+            details.delete("required")
+          end
+          original["properties"][property] = details
+          if details["example"]
+            original["example"][property] = details["example"]
+            details.delete("example")
+          end
+        end
+      end
+
+      if custom.key?("remove")
+        Array(custom["remove"]).each do |property|
+          original["required"].delete(property)
+          original["properties"].delete(property)
+          original["example"].delete(property)
+        end
+      end
+
+      if custom.key?("only")
+        original["properties"].keys.each do |property|
+          unless Array(custom["only"]).include?(property)
+            original["properties"].delete(property)
+            original["required"].delete(property)
+            original["example"].delete(property)
+          end
         end
       end
     end
