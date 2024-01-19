@@ -52,7 +52,7 @@ module Records::Base
   # identify them.
   def label_string
     if (label_attribute = self.class.label_attribute)
-      send("#{label_attribute}_was")
+      send(:"#{label_attribute}_was")
     else
       self.class.name.underscore.split("/").last.titleize
     end

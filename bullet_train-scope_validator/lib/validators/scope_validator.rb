@@ -1,7 +1,7 @@
 class ScopeValidator < ActiveModel::EachValidator
   def validate_each(record, attribute, value)
-    id_method = "#{attribute}_id".to_sym
-    valid_collection = "valid_#{attribute.to_s.pluralize}".to_sym
+    id_method = :"#{attribute}_id"
+    valid_collection = :"valid_#{attribute.to_s.pluralize}"
 
     if record.send(id_method).present?
       # Don't allow users to assign the IDs of other teams' or users' resources to this attribute.

@@ -42,7 +42,7 @@ module BulletTrain
       # end
 
       def report
-        @filters = send("#{@model.name.split("::").last.underscore}_params".to_sym)
+        @filters = send(:"#{@model.name.split("::").last.underscore}_params")
 
         # There's a reason I'm doing it this way.
         @filters
