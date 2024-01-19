@@ -10,7 +10,7 @@ Gem::Specification.new do |spec|
   spec.description = spec.summary
   spec.license = "MIT"
 
-  # TODO: Remove some time after 1.6.25
+  # TODO: Remove some time after 1.6.27
   spec.post_install_message = %q{
     Bullet Train is switching to separate translations for API documentation.
     To automatically update existing translations, run once:
