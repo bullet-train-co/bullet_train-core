@@ -1,5 +1,5 @@
 module BulletTrain
   module OutgoingWebhooks
-    VERSION = "1.6.26"
+    VERSION = "1.6.27"
   end
 end
