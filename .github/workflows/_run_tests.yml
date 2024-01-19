@@ -65,6 +65,9 @@ jobs:
       - name: Checkout Core Repo
         uses: "actions/checkout@v4"
 
+      - name: Copy .ruby-version
+        run: cp ../.ruby-version ./
+
       - uses: "ruby/setup-ruby@v1"
         with:
           rubygems: latest
