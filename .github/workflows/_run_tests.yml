@@ -13,7 +13,7 @@ jobs:
       fail-fast: false
       matrix:
         ruby-version:
-          - "3.2"
+          - "3.3"
         gem:
           - "bullet_train"
           - "bullet_train-api"
