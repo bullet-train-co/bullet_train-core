@@ -26,6 +26,11 @@ export default class extends Controller {
     })
   }
 
+  disconnect() {
+    if (this.picker === undefined) { return }
+    this.picker.unregister()
+  }
+
   toggle(event) {
     event.preventDefault()
     if (this.visible) {

@@ -24,7 +24,7 @@ module BulletTrain
       end
 
       def incoming_webhooks_parent_class_name
-        @@config&.incoming_webhooks_parent_class_name
+        @@config&.incoming_webhooks_parent_class_name || "ApplicationRecord"
       end
     end
   end

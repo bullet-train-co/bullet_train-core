@@ -30,7 +30,7 @@
           <div class="sm:col-span-2">
             <%= render 'shared/fields/super_select', form: f, method: :time_zone,
               choices: time_zone_options_for_select(@user.time_zone, nil, ActiveSupport::TimeZone),
-              other_options: {search: true, required: true} %>
+              other_options: {search: true, required: true, use_browser_time_zone: true} %>
           </div>
         </div>
 
@@ -60,14 +60,18 @@
     // figure out the rails timezone value.
     var railsValue = jsTimezoneMapping[jstz.determine().name()];
 
-    // set the form accordingly.
-    var $option = $("#user_time_zone option[value=\"" + railsValue + "\"]")
-    $option.prop('selected', true);
+    var useBrowserTimeZone = $("#user_time_zone")[0].dataset.useBrowserTimeZone
 
-    // update the select2 as well. is there a better way to handle this?
-    // why don't _they_ handle this for us?
-    $("#select2-user_time_zone-container").attr('title', $option.text());
-    $("#select2-user_time_zone-container").text($option.text());
+    if (useBrowserTimeZone == "true") {
+      // set the form accordingly.
+      var $option = $("#user_time_zone option[value=\"" + railsValue + "\"]")
+      $option.prop('selected', true);
+
+      // update the select2 as well. is there a better way to handle this?
+      // why don't _they_ handle this for us?
+      $("#select2-user_time_zone-container").attr('title', $option.text());
+      $("#select2-user_time_zone-container").text($option.text());
+    }
 
   });
 </script>

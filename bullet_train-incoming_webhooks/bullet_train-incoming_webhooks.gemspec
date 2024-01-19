@@ -24,4 +24,9 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "bullet_train-super_scaffolding"
+  spec.add_dependency "bullet_train-api"
+  spec.add_dependency "bullet_train"
+
+  spec.add_development_dependency "factory_bot_rails"
+  spec.add_development_dependency "pg", "~> 1.3"
 end

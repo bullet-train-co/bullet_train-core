@@ -8,18 +8,18 @@ Whether you want to build a new application with Bullet Train or contribute to B
 
 If you're using Bullet Train for the first time, begin by learning these five important techniques:
 
-1. Use `bin/super-scaffold crud` to scaffold a new model:
+1. Use `rails generate super_scaffold` to scaffold a new model:
 
     ```
-    bin/super-scaffold crud Project Team name:text_field
+    rails generate super_scaffold Project Team name:text_field
     ```
 
-    In this example, `Team` refers to the immediate parent of the `Project` resource. For more details, just run `bin/super-scaffold` or [read the documentation](/docs/super-scaffolding.md).
+    In this example, `Team` refers to the immediate parent of the `Project` resource. For more details, just run `rails generate super_scaffold` or [read the documentation](/docs/super-scaffolding.md).
 
-2. Use `bin/super-scaffold crud-field` to add a new field to a model you've already scaffolded:
+2. Use `rails generate super_scaffold:field` to add a new field to a model you've already scaffolded:
 
     ```
-    bin/super-scaffold crud-field Project description:trix_editor
+    rails generate super_scaffold:field Project description:trix_editor
     ```
 
     These first two points about Super Scaffolding are just the tip of the iceberg, so be sure to circle around and [read the full documentation](/docs/super-scaffolding.md).

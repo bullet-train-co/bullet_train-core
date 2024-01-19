@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_development_dependency "standard"
+  spec.add_development_dependency "pg", "~> 1.3"
 
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "public_suffix"

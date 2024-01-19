@@ -29,7 +29,7 @@ module BulletTrain::LoadsAndAuthorizesResource
     #
     # to help you understand the code below, usually `through` is `team`
     # and `model` is something like `project`.
-    def account_load_and_authorize_resource(model, options, old_options = {})
+    def account_load_and_authorize_resource(model, positional_through = nil, through: positional_through, collection_actions: [], member_actions: [], except: [], **options)
       # options are now required, because you have to have at least a 'through' setting.
 
       # we used to support calling this method with a signature like this:
@@ -42,69 +42,38 @@ module BulletTrain::LoadsAndAuthorizesResource
         raise "Bullet Train has depreciated this method of calling `account_load_and_authorize_resource`. Read the comments on this line of source for more details."
       end
 
-      # this is providing backward compatibility for folks who are calling this method like this:
-      #   account_load_and_authorize_resource :thing, through: :team, through_association: :scaffolding_things
-      # i'm going to deprecate this at some point.
-      if options.is_a?(Hash)
-        through = options[:through]
-        options.delete(:through)
-      else
-        through = options
-        options = old_options
-      end
-
       # fetch the namespace of the controller. this should generally match the namespace of the model, except for the
       # `account` part.
       namespace = model_namespace_from_controller_namespace
 
-      tried = []
-      begin
-        # check whether the parent exists in the model namespace.
-        model_class_name = (namespace + [model.to_s.classify]).join("::")
-        model_class_name.constantize
-      rescue NameError
-        tried << model_class_name
-        if namespace.any?
-          namespace.pop
-          retry
-        else
-          raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. We tried #{tried.join(" and ")}, but didn't find a valid class name."
-        end
+      model_class_names = namespace.size.downto(0).map do
+        [*namespace, model.to_s.classify].join("::").tap { namespace.pop }
       end
 
-      # treat through as an array even if the user only specified one parent type.
-      through_as_symbols = through.is_a?(Array) ? through : [through]
+      model_class = model_class_names.find(&:safe_constantize)&.safe_constantize
+      unless model_class
+        raise "Your 'account_load_and_authorize_resource' is broken. We tried #{model_class_names.join(" and ")}, but didn't find a valid class name."
+      end
 
-      through = []
-      through_class_names = []
-
-      through_as_symbols.each do |through_as_symbol|
+      through_as_symbols = Array(through)
+      through_class_names = through_as_symbols.map do |through_as_symbol|
         # reflect on the belongs_to association of the child model to figure out the class names of the parents.
-        unless (
-                 association =
-                   model_class_name.constantize.reflect_on_association(
-                     through_as_symbol
-                   )
-               )
-          raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
+        association = model_class.reflect_on_association(through_as_symbol)
+        unless association
+          raise "Your 'account_load_and_authorize_resource' is broken. Tried to reflect on the `#{through_as_symbol}` association of #{model_class_name}, but didn't find one."
         end
 
-        through_class_name = association.klass.name
-
-        begin
-          through << through_class_name.constantize
-          through_class_names << through_class_name
-        rescue NameError
-          raise "Oh no, it looks like your call to 'account_load_and_authorize_resource' is broken. We tried to load `#{through_class_name}}` (the class name defined for the `#{through_as_symbol}` association), but couldn't find it."
-        end
+        association.klass.name
       end
 
       if through_as_symbols.count > 1 && !options[:polymorphic]
         raise "When a resource can be loaded through multiple parents, please specify the 'polymorphic' option to tell us what that controller calls the parent, e.g. `polymorphic: :imageable`."
       end
 
-      # this provides the support we need for shallow nested resources, which
-      # helps keep our routes tidy even after many levels of nesting. most people
+      instance_variable_name = "@#{options[:polymorphic] || through_as_symbols.first}"
+
+      # `collection_actions:` and `member_actions:` provide support for shallow nested resources, which
+      # keep our routes tidy even after many levels of nesting. most people
       # i talk to don't actually know about this feature in rails, but it's
       # actually the recommended approach in the rails routing documentation.
       #
@@ -113,20 +82,11 @@ module BulletTrain::LoadsAndAuthorizesResource
       # separate calls to `load_and_authorize_resource` for member and collection
       # actions, we ask controllers to specify these actions separately, e.g.:
       #   `account_load_and_authorize_resource :invitation, :team, member_actions: [:accept, :promote]`
-      collection_actions = options[:collection_actions] || []
-      member_actions = options[:member_actions] || []
-
-      # this option is native to cancancan and allows you to skip account_load_and_authorize_resource
+      #
+      # `except:` is native to cancancan and allows you to skip account_load_and_authorize_resource
       # for a specific action that would otherwise run it (e.g. see invitations#show.)
-      except_actions = options[:except] || []
-
-      collection_actions =
-        (%i[index new create reorder] + collection_actions) - except_actions
-      member_actions =
-        (%i[show edit update destroy] + member_actions) - except_actions
-
-      options.delete(:collection_actions)
-      options.delete(:member_actions)
+      collection_actions = (%i[index new create reorder] + collection_actions) - except
+      member_actions = (%i[show edit update destroy] + member_actions) - except
 
       # NOTE: because we're using prepend for all of these, these are written in backwards order
       # of how they'll be executed during a request!
@@ -136,42 +96,36 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       # x. this and the thing below it are only here to make a sortable concern possible.
       prepend_before_action only: member_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        eval "@child_object = @#{model}"
-        eval "@parent_object = @#{instance_variable_name}"
+        @child_object = instance_variable_get("@#{model}")
+        @parent_object = instance_variable_get instance_variable_name
       end
 
       prepend_before_action only: collection_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        eval "@parent_object = @#{instance_variable_name}"
-        if options[:through_association].present?
-          eval "@child_collection = :#{options[:through_association]}"
-        else
-          eval "@child_collection = :#{model.to_s.pluralize}"
-        end
+        @parent_object = instance_variable_get instance_variable_name
+        @child_collection = options[:through_association].presence&.to_sym || model.to_s.pluralize.to_sym
       end
 
       prepend_before_action only: member_actions do
-        instance_variable_name = options[:polymorphic] || through_as_symbols[0]
-        possible_sources_of_parent =
-          through_as_symbols.map { |tas| "@#{model}.#{tas}" }.join(" || ")
-        eval_string =
-          "@#{instance_variable_name} ||= " + possible_sources_of_parent
-        eval eval_string
+        model_instance = instance_variable_get("@#{model}")
+        if model_instance && !instance_variable_defined?(instance_variable_name)
+          parent = through_as_symbols.lazy.filter_map { model_instance.public_send(_1) }.first
+          instance_variable_set instance_variable_name, parent
+        end
       end
 
       if options[:polymorphic]
         prepend_before_action only: collection_actions do
-          possible_sources_of_parent =
-            through_as_symbols.map { |tas| "@#{tas}" }.join(" || ")
-          eval "@#{options[:polymorphic]} ||= #{possible_sources_of_parent}"
+          unless instance_variable_defined?("@#{options[:polymorphic]}")
+            parent = through_as_symbols.lazy.filter_map { instance_variable_get "@#{_1}" }.first
+            instance_variable_set "@#{options[:polymorphic]}", parent
+          end
         end
       end
 
       # 3. on action resource, we have a specific id for the child resource, so load it directly.
       load_and_authorize_resource model,
         options.merge(
-          class: model_class_name,
+          class: model_class.name,
           only: member_actions,
           prepend: true,
           shallow: true
@@ -180,7 +134,7 @@ module BulletTrain::LoadsAndAuthorizesResource
       # 2. only load the child resource through the parent resource for collection actions.
       load_and_authorize_resource model,
         options.merge(
-          class: model_class_name,
+          class: model_class.name,
           through: through_as_symbols,
           only: collection_actions,
           prepend: true,

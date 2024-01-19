@@ -21,3 +21,5 @@ knapsack_pro_adapter = KnapsackPro::Adapters::MinitestAdapter.bind
 knapsack_pro_adapter.set_test_helper_path(__FILE__)
 
 require "factory_bot_rails"
+
+require_relative "../../test_support/minitest_reporters"

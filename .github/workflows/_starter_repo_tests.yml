@@ -1,0 +1,106 @@
+# This workflow runs the main test suite.
+#
+# This workflow is pimarily meant to be called by other workflows, but it can be run manually.
+name: "🧪 ~ Run gem tests"
+on:
+  workflow_call:
+  workflow_dispatch:
+
+jobs:
+  starter_repo:
+    runs-on: ubuntu-latest
+    name: Bullet Train Starter Repo Minitest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Set identifiers for parallel jobs. These can be anything.
+        # For instance if you want a Three Amigos themed pipeline you could use:
+        # ci_node_index: [Dusty, Ned, Lucky]
+        ci_node_index: [1,2,3,4]
+    services:
+      postgres:
+        image: postgres:11-alpine
+        ports:
+          - "5432:5432"
+        env:
+          POSTGRES_DB: rails_test
+          POSTGRES_USER: rails
+          POSTGRES_PASSWORD: password
+        # Set health checks to wait until postgres has started
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+      redis:
+        image: redis
+        ports:
+          - "6379:6379"
+        # Set health checks to wait until redis has started
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+    env:
+      RAILS_ENV: test
+      DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
+      BUNDLE_JOBS: 2
+      BUNDLE_RETRY: 3
+    steps:
+      - name: Checkout Core Repo
+        uses: actions/checkout@v4
+        with:
+          path: tmp/core
+
+      - name: Checkout Starter Repo
+        uses: bullet-train-co/checkout-repo-with-matching-branch@v1
+        with:
+          target_dir: tmp/starter
+          repository: bullet-train-co/bullet_train
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          working-directory: tmp/starter
+          bundler-cache: true
+
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version-file: tmp/starter/.nvmrc
+          cache: 'yarn'
+          cache-dependency-path: tmp/starter/yarn.lock
+
+      - name: Link Core Repo
+        uses: bullet-train-co/link-core-gems@v1
+        with:
+          application_dir: tmp/starter
+          core_dir: tmp/core
+
+      - name: Set up database schema
+        run: bin/rails db:schema:load
+        working-directory: ./tmp/starter
+
+      - name: Run Tests
+        id: run-tests
+        env:
+          # Specifies how many jobs you would like to run in parallel,
+          # used for partitioning
+          CI_NODE_TOTAL: ${{ strategy.job-total }}
+          # Use the index from matrix as an environment variable
+          CI_NODE_INDEX: ${{ strategy.job-index }}
+        continue-on-error: false
+        run : bin/parallel-ci
+        working-directory: ./tmp/starter
+
+      - name: Test Summary
+        uses: test-summary/action@v2
+        with:
+          paths: "tmp/starter/test/reports/**/TEST-*.xml"
+          #output: test-summary.md
+        if: always()
+
+
+
+

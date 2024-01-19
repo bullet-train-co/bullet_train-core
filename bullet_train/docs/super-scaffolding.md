@@ -30,20 +30,38 @@ Before getting started with Super Scaffolding, we recommend reading about [the p
 The Super Scaffolding shell script provides its own documentation. If you're curious about specific scaffolders or parameters, you can run the following in your shell:
 
 ```
-bin/super-scaffold
+rails generate super_scaffold
 ```
+
+## Available Scaffolding Types
+
+| `rails generate` Command | Scaffolding Type |
+|--------------------------|------------------|
+| `rails generate super_scaffold` | Basic CRUD scaffolder |
+| `rails generate super_scaffold:field` | Adds a field to an existing model |
+| `rails generate super_scaffold:incoming_webhook` | Scaffolds an incoming webhook |
+| `rails generate super_scaffold:join_model` | Scaffolds a join model (must have two existing models to join before scaffolding) |
+| `rails generate super_scaffold:oauth_provider` | Scaffolds logic to use OAuth2 with the provider of your choice |
+
+The following commands are for use specifically with [Action Models](action-models).
+
+| `rails generate` Command | Scaffolding Type |
+|--------------------------|------------------|
+| `rails generate super_scaffold:action_models:targets_many` | Generates an action that targets many records |
+| `rails generate super_scaffold:action_models:targets_one` | Generates an action that targets one record |
+| `rails generate super_scaffold:action_models:targets_one_parent` | Generates an action that targets the parent of the specified model |
 
 ## Examples
 
-### 1. Basic CRUD Scaffolding with `crud`
+### 1. Basic CRUD Scaffolding
 
 Let's implement the following feature:
 
 > An organization has many projects.
 
-First, run the `crud` scaffolder:
+First, run the scaffolder:
 ```
-bin/super-scaffold crud Project Team name:text_field
+rails generate super_scaffold Project Team name:text_field
 rake db:migrate
 ```
 
@@ -60,10 +78,10 @@ rails g model Project team:references name:string
 
 Then you can run the scaffolder with the flag:
 ```
-bin/super-scaffold crud Project Team name:text_field --skip-migration-generation
+rails generate super_scaffold Project Team name:text_field --skip-migration-generation
 ```
 
-### 2. Nested CRUD Scaffolding with `crud`
+### 2. Nested CRUD Scaffolding
 
 Building on that example, let's implement the following feature:
 
@@ -71,40 +89,40 @@ Building on that example, let's implement the following feature:
 A project has many goals.
 ```
 
-First, run the `crud` scaffolder:
+First, run the scaffolder:
 
 ```
-bin/super-scaffold crud Goal Project,Team description:text_field
+rails generate super_scaffold Goal Project,Team description:text_field
 rake db:migrate
 ```
 
 You can see in the example above how we've specified `Project,Team`, because we want to specify the entire chain of ownership back to the `Team`. This allows Super Scaffolding to automatically generate the required permissions. Take note that this generates a foreign key for `Project` and not for `Team`.
 
-### 3. Adding New Fields with `crud-field`
+### 3. Adding New Fields with `field`
 
-One of Bullet Train's most valuable features is the ability to add new fields to existing scaffolded models. When you add new fields with the `crud-field` scaffolder, you don't have to remember to add that same attribute to table views, show views, translation files, API endpoints, serializers, tests, documentation, etc.
+One of Bullet Train's most valuable features is the ability to add new fields to existing scaffolded models. When you add new fields with the `field` scaffolder, you don't have to remember to add that same attribute to table views, show views, translation files, API endpoints, serializers, tests, documentation, etc.
 
 Building on the earlier example, consider the following new requirement:
 
 > In addition to a name, a project can have a description.
 
-Use the `crud-field` scaffolder to add it throughout the application:
+Use the `field` scaffolder to add it throughout the application:
 
 ```
-bin/super-scaffold crud-field Project description:trix_editor
+rails generate super_scaffold:field Project description:trix_editor
 rake db:migrate
 ```
 
-As you can see, when we're using `crud-field`, we don't need to supply the chain of ownership back to `Team`.
+As you can see, when we're using `field`, we don't need to supply the chain of ownership back to `Team`.
 
 If you want to scaffold a new field to use for read-only purposes, add the following option to omit the field from the form and all other files that apply:
 ```
-bin/super-scaffold crud-field Project description:trix_editor{readonly}
+rails generate super_scaffold:field Project description:trix_editor{readonly}
 ```
 
 Again, if you would like to automatically generate the migration on your own, pass the `--skip-migration-generation` flag:
 ```
-bin/super-scaffold crud-field Project description:trix_editor --skip-migration-generation
+rails generate super_scaffold:field Project description:trix_editor --skip-migration-generation
 ```
 
 ### 4. Adding Option Fields with Fixed, Translatable Options
@@ -118,7 +136,7 @@ We have multiple [field partials](/docs/field-partials.md) that we could use for
 In this example, let's add a status attribute and present it as buttons:
 
 ```
-bin/super-scaffold crud-field Project status:buttons
+rails generate super_scaffold:field Project status:buttons
 ```
 
 By default, Super Scaffolding configures the buttons as "One", "Two", and "Three", but in this example you can edit those options in the `fields` section of `config/locales/en/projects.en.yml`. For example, you could specify the following options:
@@ -146,7 +164,7 @@ Although you might think this calls for a reference to `User`, we've learned the
 We can accomplish this like so:
 
 ```
-bin/super-scaffold crud-field Project lead_id:super_select{class_name=Membership}
+rails generate super_scaffold:field Project lead_id:super_select{class_name=Membership}
 rake db:migrate
 ```
 
@@ -166,7 +184,7 @@ end
 
 (The `current_and_invited` scope just filters out people that have already been removed from the team.)
 
-### 6. Scaffolding Has-Many-Through Associations with `join-model`
+### 6. Scaffolding Has-Many-Through Associations with `join_model`
 
 Finally, working from the same example, imagine the following requirement:
 
@@ -177,31 +195,31 @@ We can accomplish this with a new model, a new join model, and a `super_select` 
 First, let's create the tag model:
 
 ```
-bin/super-scaffold crud Projects::Tag Team name:text_field
+rails generate super_scaffold Projects::Tag Team name:text_field
 ```
 
 Note that project tags are specifically defined at the `Team` level. The same tag can be applied to multiple `Project` models.
 
 Now, let's create a join model for the has-many-through association.
 
-We're not going to scaffold this model with the typical `crud` scaffolder, but some preparation is needed before we can use it with the `crud-field` scaffolder, so we need to do the following:
+We're not going to scaffold this model with the typical `rails generate super_scaffold` scaffolder, but some preparation is needed before we can use it with the `field` scaffolder, so we need to do the following:
 
 ```
-bin/super-scaffold join-model Projects::AppliedTag project_id{class_name=Project} tag_id{class_name=Projects::Tag}
+rails generate super_scaffold:join_model Projects::AppliedTag project_id{class_name=Project} tag_id{class_name=Projects::Tag}
 ```
 
 All we're doing here is specifying the name of the join model, and the two attributes and class names of the models it joins. Note again that we specify the `_id` suffix on both of the attributes.
 
-Now that the join model has been prepared, we can use the `crud-field` scaffolder to create the multi-select field:
+Now that the join model has been prepared, we can use the `field` scaffolder to create the multi-select field:
 
 ```
-bin/super-scaffold crud-field Project tag_ids:super_select{class_name=Projects::Tag}
+rails generate super_scaffold:field Project tag_ids:super_select{class_name=Projects::Tag}
 rake db:migrate
 ```
 
 Just note that the suffix of the field is `_ids` plural, and this is an attribute provided by Rails to interact with the `has_many :tags, through: :applied_tags` association.
 
-The `crud-field` step will ask you to define the logic for the `valid_tags` method in `app/models/project.rb`. You can define it like so:
+The `field` step will ask you to define the logic for the `valid_tags` method in `app/models/project.rb`. You can define it like so:
 
 ```ruby
 def valid_tags
@@ -228,13 +246,13 @@ For instance to scaffold a `Project` model with a `logo` image upload.
 Use `image` as a field type for super scaffolding:
 
 ```
-bin/super-scaffold crud Project Team name:text_field logo:image
+rails generate super_scaffold Project Team name:text_field logo:image
 rake db:migrate
 ```
 
 Under the hood, Bullet Train will generate your model with the following command:
 ```
-bin/super-scaffold crud Project Team name:text_field
+rails generate super_scaffold Project Team name:text_field
 rake db:migrate
 ```
 
@@ -246,13 +264,13 @@ For instance to scaffold a `Project` model with a `logo` image upload.
 Use `image` as a field type for super scaffolding:
 
 ```
-bin/super-scaffold crud Project Team name:text_field logo:image
+rails generate super_scaffold Project Team name:text_field logo:image
 rake db:migrate
 ```
 
 Under the hood, Bullet Train will generate your model with the following command:
 ```
-bin/super-scaffold crud Project Team name:text_field
+rails generate super_scaffold Project Team name:text_field
 rake db:migrate
 ```
 

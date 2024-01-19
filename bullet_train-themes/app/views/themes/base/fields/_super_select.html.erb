@@ -23,6 +23,9 @@ else
   end
 end
 
+other_options[:use_browser_time_zone] = true if other_options[:use_browser_time_zone].nil?
+use_browser_time_zone = other_options[:use_browser_time_zone]
+
 # TODO: Change name for `wrapper_options`, maybe to simply `wrapper`.
 # This seems to be internal, so we shouldn't need to write docs or a deprecation message for it.
 wrapper_options ||= {}
@@ -41,6 +44,8 @@ end
 
 html_options[:data] ||= {}
 html_options[:data].merge!("#{stimulus_controller}-target": 'select')
+html_options[:data].merge!("use-browser-time-zone": use_browser_time_zone )
+
 %>
 
 <%= render 'shared/fields/field', form: form, method: method, options: html_options, other_options: other_options do %>
