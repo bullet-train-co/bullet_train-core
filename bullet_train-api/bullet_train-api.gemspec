@@ -11,13 +11,13 @@ Gem::Specification.new do |spec|
   spec.license = "MIT"
 
   # TODO: Remove some time after 1.6.27
-  spec.post_install_message = %q{
+  spec.post_install_message = "
     Bullet Train is switching to separate translations for API documentation.
     To automatically update existing translations, run once:
 
     bundle exec rake bullet_train:api:create_translations
 
-  }
+  "
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
   # to allow pushing to a single host or delete this section to allow pushing to any host.

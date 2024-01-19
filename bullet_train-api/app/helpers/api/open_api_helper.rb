@@ -38,8 +38,8 @@ module Api
       end
 
       if custom_output
-        merge = deep_merge(YAML.load(output), YAML.load(custom_output)).to_yaml.html_safe
-        # YAML.load escapes emojis https://github.com/ruby/psych/issues/371
+        merge = deep_merge(YAML.safe_load(output), YAML.safe_load(custom_output)).to_yaml.html_safe
+        # YAML.safe_load escapes emojis https://github.com/ruby/psych/issues/371
         # Next line returns emojis back and removes yaml garbage
         output = merge.gsub("---", "").gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
       end
