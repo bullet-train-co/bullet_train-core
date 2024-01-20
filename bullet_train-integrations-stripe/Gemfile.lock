@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.6.26)
+    bullet_train-api (1.6.27)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.6.26)
+    bullet_train-fields (1.6.27)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train-incoming_webhooks
   specs:
-    bullet_train-incoming_webhooks (1.6.26)
+    bullet_train-incoming_webhooks (1.6.27)
       bullet_train
       bullet_train-api
       bullet_train-super_scaffolding
@@ -34,7 +34,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.6.26)
+    bullet_train-super_scaffolding (1.6.27)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -43,7 +43,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.6.26)
+    bullet_train (1.6.27)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -80,7 +80,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-integrations-stripe (1.6.26)
+    bullet_train-integrations-stripe (1.6.27)
       omniauth
       omniauth-rails_csrf_protection
       omniauth-stripe-connect
@@ -316,9 +316,9 @@ GEM
     nice_partials (0.10.0)
       actionview (>= 4.2.6)
     nio4r (2.5.9)
-    nokogiri (1.15.4-arm64-darwin)
+    nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     oauth2 (2.0.9)
       faraday (>= 0.17.3, < 3.0)
@@ -441,8 +441,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.8-arm64-darwin)
-    sqlite3 (1.6.8-x86_64-linux)
+    sqlite3 (1.7.0-arm64-darwin)
+    sqlite3 (1.7.0-x86_64-linux)
     stringio (3.0.9)
     stripe (10.1.0)
     thor (1.3.0)

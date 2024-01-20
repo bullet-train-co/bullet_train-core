@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.6.26)
+    bullet_train-api (1.6.27)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.6.26)
+    bullet_train-fields (1.6.27)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.6.26)
+    bullet_train (1.6.27)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -62,7 +62,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-super_scaffolding (1.6.26)
+    bullet_train-super_scaffolding (1.6.27)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -282,9 +282,9 @@ GEM
     nice_partials (0.10.0)
       actionview (>= 4.2.6)
     nio4r (2.5.9)
-    nokogiri (1.15.4-arm64-darwin)
+    nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     omniauth (2.1.1)
       hashie (>= 3.4.6)
@@ -403,8 +403,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.6-arm64-darwin)
-    sqlite3 (1.6.6-x86_64-linux)
+    sqlite3 (1.7.0-arm64-darwin)
+    sqlite3 (1.7.0-x86_64-linux)
     standard (1.31.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)
