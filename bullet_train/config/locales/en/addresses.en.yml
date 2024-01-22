@@ -7,23 +7,33 @@ en:
         _: &address_one Address
         label: *address_one
         heading: *address_one
+        api_title: *address_one
+        api_description: *address_one
       address_two:
         _: &address_two Address cont.
         label: *address_two
         heading: *address_two
+        api_title: *address_two
+        api_description: *address_two
       city:
         _: &city City
         label: *city
         heading: *city
+        api_title: *city
+        api_description: *city
       region_id: &region
         _: &region_id State / Province / Region
         label: *region_id
         heading: *region_id
+        api_title: *region_id
+        api_description: *region_id
       region: *region
       region_name:
         _: &region_name Region name
         label: *region_name
         heading: *region_name
+        api_title: *region_name
+        api_description: *region_name
       admin_divisions:
         states: State
         provinces_territories: Province or Territory
@@ -40,12 +50,18 @@ en:
         _: &country_id Country
         label: *country_id
         heading: *country_id
+        api_title: *country_id
+        api_description: *country_id
       country: *country
       postal_code:
         _: &postal_code Postal code
         label: *postal_code
         heading: *postal_code
+        api_title: *postal_code
+        api_description: *postal_code
       zip_code:
         _: &zip_code Zip code
         label: *zip_code
         heading: *zip_code
+        api_title: *zip_code
+        api_description: *zip_code

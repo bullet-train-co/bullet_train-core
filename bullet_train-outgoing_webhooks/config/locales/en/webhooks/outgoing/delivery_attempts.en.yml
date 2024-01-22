@@ -24,44 +24,62 @@ en:
         _: &id Delivery Attempt ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
 
       response_code:
         _: &response_code Response Code
         label: *response_code
         heading: *response_code
+        api_title: *response_code
+        api_description: *response_code
 
       response_body:
         _: &response_body Response Body
         label: *response_body
         heading: *response_body
+        api_title: *response_body
+        api_description: *response_body
 
       response_message:
         _: &response_message Response Message
         label: *response_message
         heading: *response_message
+        api_title: *response_message
+        api_description: *response_message
 
       error_message:
         _: &error_message Error Message
         label: *error_message
         heading: *error_message
+        api_title: *error_message
+        api_description: *error_message
 
       attempt_number:
         _: &attempt_number Attempt Number
         label: *attempt_number
         heading: *attempt_number
+        api_title: *attempt_number
+        api_description: *attempt_number
 
       status:
-        heading: Status
+        heading: &status Status
+        api_title: *status
+        api_description: *status
 
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Attempted At
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated
         label: *updated_at
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     api:
       delivery_id: Absolutely Abstract Delivery ID
       collection_actions: "Collection Actions for Delivery Attempts"
