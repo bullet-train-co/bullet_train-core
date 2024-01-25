@@ -1,9 +1,8 @@
 const path = require('path');
 const { execSync } = require("child_process");
 
+const themeStylesheetsDir = execSync(`bundle exec bin/theme stylesheets-dir ${process.env.THEME} 2> /dev/null`).toString().trim()
 const themeStylesheet = execSync(`bundle exec bin/theme tailwind-stylesheet ${process.env.THEME} 2> /dev/null`).toString().trim()
-const themeRoot = execSync(`bundle show bullet_train-themes-${process.env.THEME} 2> /dev/null`).toString().trim()
-const themeStylesheetsDir = path.resolve(themeRoot, 'app/assets/stylesheets/');
 
 module.exports = {
   resolve: (id, basedir, importOptions) => {
