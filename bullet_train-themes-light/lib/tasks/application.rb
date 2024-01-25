@@ -7,7 +7,7 @@ module BulletTrain
         theme_base_path = `bundle show --paths bullet_train-themes-#{theme_name}`.chomp
 
         puts "Ejecting app/assets/stylesheets/#{theme_name}.tailwind.css."
-        `mkdir -p #{Rails.root}/app/assets/stylesheets`
+        Rails.root.join("app/assets/stylesheets").mkpath
         `cp -R #{theme_base_path}/app/assets/stylesheets/#{theme_name}.tailwind.css #{Rails.root}/app/assets/stylesheets/#{theme_name}.tailwind.css`
       end
 
