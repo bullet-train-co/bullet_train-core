@@ -35,6 +35,9 @@ module BulletTrain
         puts "Ejecting JavaScript into `./app/javascript/application.#{ejected_theme_name}.js`."
         `cp #{theme_base_path}/app/javascript/application.#{theme_name}.js #{Rails.root}/app/javascript/application.#{ejected_theme_name}.js`
 
+        puts "Ejecting postcss import aliases configuration into `./postcss-import-config.js`."
+        `cp #{theme_base_path}/postcss-import-config.js #{Rails.root}/postcss-import-config.js`
+
         `mkdir #{Rails.root}/app/views/themes`
 
         new_files = {}
