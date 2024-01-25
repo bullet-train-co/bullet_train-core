@@ -24,32 +24,46 @@ en:
       name:
         _: &name Name
         label: *name
-        heading: Application Name
+        heading: &application_name Application Name
+        api_title: *application_name
+        api_description: *application_name
 
       redirect_uri:
         _: &redirect_uri Redirect URI
         label: *redirect_uri
         heading: *redirect_uri
+        api_title: *redirect_uri
+        api_description: *redirect_uri
         help: This is only required if you're building an OAuth2-powered integration for other users.
 
       uid:
-        heading: Client UID
+        heading: &uid Client UID
+        api_title: *uid
+        api_description: *uid
 
       secret:
-        heading: Client Secret
+        heading: &secret Client Secret
+        api_title: *secret
+        api_description: *secret
 
       label_string:
-        heading: Application Name
+        heading: *application_name
+        api_title: *application_name
+        api_description: *application_name
 
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Added
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated
         label: *updated_at
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     index:
       section: "%{teams_possessive} Platform Applications"
       contexts:

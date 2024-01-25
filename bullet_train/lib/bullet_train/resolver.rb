@@ -113,7 +113,7 @@ module BulletTrain
         package_name: nil,
       }
 
-      result[:absolute_path] = file_path || class_path || locale_path || partial_path
+      result[:absolute_path] = file_path || class_path || locale_path || js_or_stylesheet_path || partial_path
 
       # If we get the partial resolver template itself, that means we couldn't find the file.
       if result[:absolute_path].match?("app/views/bullet_train/partial_resolver.html.erb") || result[:absolute_path].nil?
@@ -251,10 +251,47 @@ module BulletTrain
       nil
     end
 
+    # In this search, we prioritize files in local themes
+    # and then look in theme gems if nothing is found.
+    def js_or_stylesheet_path
+      file_name = @needle.split("/").last
+
+      # Prioritize the current theme and fall back to
+      # the default `light` theme if nothing is found locally.
+      puts "Searching under current theme: #{current_theme.blue}"
+
+      asset_globs = [
+        "*.js", # Include JavaScript files under the app's root directory.
+        "app/assets/javascript/**/*.#{current_theme}.js",
+        "app/assets/javascript/#{current_theme}/**/*.js",
+        "app/assets/stylesheets/**/*.#{current_theme}.css",
+        "app/assets/stylesheets/#{current_theme}/**/*.css",
+      ]
+
+      files = Dir.glob(asset_globs).reject { |file| file.match?("/builds/") }
+      absolute_file_path = files.find { |file| file.end_with?(file_name) }
+
+      if absolute_file_path
+        absolute_file_path
+      else
+        # Search for the file in its respective gem. Fall back to the `light` theme if no gem is available.
+        gem_path = [`bundle show bullet_train-themes-#{current_theme}`, `bundle show bullet_train-themes-light`].map(&:chomp).find(&:present?)
+        return nil unless gem_path
+
+        # At this point we can be more generic since we're inside the gem.
+        files = Dir.glob(["#{gem_path}/**/*.js", "#{gem_path}/**/*.css"])
+        files.find { |file| file.end_with?(file_name) }
+      end
+    end
+
     def ejected_theme?
-      current_theme_symbol = File.read("#{Rails.root}/app/helpers/application_helper.rb").split("\n").find { |str| str.match?(/\s+:.*/) }
-      current_theme = current_theme_symbol.delete(":").strip
       current_theme != "light" && Dir.exist?("#{Rails.root}/app/assets/stylesheets/#{current_theme}")
+    end
+
+    def current_theme
+      msmn = Masamune::AbstractSyntaxTree.new(Rails.root.join("app/helpers/application_helper.rb").read)
+      current_theme_def = msmn.method_definitions.find { |node| node.token_value == "current_theme" }
+      msmn.symbols.find { |sym| sym.line_number == current_theme_def.line_number + 1 }.token_value
     end
   end
 end

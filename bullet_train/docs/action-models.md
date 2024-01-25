@@ -63,9 +63,9 @@ Don't forget to run `bundle install` and `rails restart`.
 You can get detailed information about using Super Scaffolding to generate different types of Action Models like so:
 
 ```
-bin/super-scaffold action-model:targets-many
-bin/super-scaffold action-model:targets-one
-bin/super-scaffold action-model:targets-one-parent
+rails generate super_scaffold:action_model:targets_many
+rails generate super_scaffold:action_model:targets_one
+rails generate super_scaffold:action_model:targets_one_parent
 ```
 
 ## Basic Example
@@ -73,13 +73,13 @@ bin/super-scaffold action-model:targets-one-parent
 ### 1. Generate and scaffold an example `Project` model.
 
 ```
-bin/super-scaffold crud Project Team name:text_field
+rails generate super_scaffold Project Team name:text_field
 ```
 
 ### 2. Generate and scaffold an archive action for projects.
 
 ```
-bin/super-scaffold action-model:targets-many Archive Project Team
+rails generate super_scaffold:action_model:targets_many Archive Project Team
 ```
 
 ### 3. Implement the action logic.

@@ -38,32 +38,46 @@ en:
         _: &id Team ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
       name:
         heading: Name
       first_name:
         _: &first_name First Name
         label: *first_name
         heading: *first_name
+        api_title: *first_name
+        api_description: *first_name
       last_name:
         _: &last_name Last Name
         label: *last_name
         heading: *last_name
+        api_title: *last_name
+        api_description: *last_name
       email:
         _: &email Email Address
         label: *email
         heading: *email
+        api_title: *email
+        api_description: *email
       time_zone:
         _: &time_zone Your Time Zone
         label: *time_zone
         heading: *time_zone
+        api_title: *time_zone
+        api_description: *time_zone
       profile_photo_id:
         _: &profile_photo_id Profile Photo
         label: *profile_photo_id
         heading: *profile_photo_id
+        api_title: *profile_photo_id
+        api_description: *profile_photo_id
       profile_photo:
         _: &profile_photo Profile Photo
         label: *profile_photo
         heading: *profile_photo
+        api_title: *profile_photo
+        api_description: *profile_photo
       current_password:
         label: Current Password
       password:
@@ -76,18 +90,26 @@ en:
         _: &otp_attempt Your Verification Code
         label: *otp_attempt
         heading: *otp_attempt
+        api_title: *otp_attempt
+        api_description: *otp_attempt
       locale:
         _: &locale Language
         label: *locale
         heading: *locale
+        api_title: *locale
+        api_description: *locale
         help: By default the interface language will adjust based on each team's language setting, but you can set a global personal preference for your account here.
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Signed Up At
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated At
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     # this is how we define customizations to fields for a specific namespace.
     _: &self
       email:

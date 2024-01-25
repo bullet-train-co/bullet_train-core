@@ -17,34 +17,50 @@ en:
         _: &id Invitation ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
       email:
         _: &email Email Address
         label: *email
         heading: *email
+        api_title: *email
+        api_description: *email
       uuid:
         name: &uuid Invitation UUID
         label: *uuid
         heading: *uuid
+        api_title: *uuid
+        api_description: *uuid
       from_membership_id:
         name: &from_membership_id Who sent ID
         label: *from_membership_id
         heading: *from_membership_id
+        api_title: *from_membership_id
+        api_description: *from_membership_id
       team_id:
         name: &team_id Team ID
         label: *team_id
         heading: *team_id
+        api_title: *team_id
+        api_description: *team_id
       roles: &role_ids
         name: &roles Special Privileges
         label: *roles
         heading: *roles
+        api_title: *roles
+        api_description: *roles
       role_ids: *role_ids
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         name: &created_at Sent
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         name: &updated_at Updated
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     index:
       section: "Invitations for %{team_name}"
       header: Team Member Invitations

@@ -1,7 +1,7 @@
 module BulletTrain
   module Themes
     module TailwindCss
-      VERSION = "1.6.23"
+      VERSION = "1.6.28"
     end
   end
 end

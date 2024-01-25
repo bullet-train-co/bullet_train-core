@@ -6,16 +6,22 @@ en:
         _: &id Event ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
 
       team_id:
         _: &team_id Team ID
         label: *team_id
         heading: *team_id
+        api_title: *team_id
+        api_description: *team_id
 
       event_type_id: &event_type_id
         _: &event_type Event Type
         label: *event_type
         heading: *event_type
+        api_title: *event_type
+        api_description: *event_type
 
       event_type: *event_type_id
 
@@ -23,38 +29,54 @@ en:
         _: &subject_id Subject ID
         label: *subject_id
         heading: *subject_id
+        api_title: *subject_id
+        api_description: *subject_id
 
       subject_type:
         _: &subject_type Subject Type
         label: *subject_type
         heading: *subject_type
+        api_title: *subject_type
+        api_description: *subject_type
 
       payload:
         _: &payload Payload
         label: *payload
         heading: *payload
+        api_title: *payload
+        api_description: *payload
 
       uuid:
         _: &uuid UUID
         label: *uuid
         heading: *uuid
+        api_title: *uuid
+        api_description: *uuid
 
       short_uuid:
         _: &short_uuid Short UUID
         label: *short_uuid
         heading: *short_uuid
+        api_title: *short_uuid
+        api_description: *short_uuid
 
       event_type_name:
         _: &event_type_name Event Type Name
         label: *event_type_name
         heading: *event_type_name
+        api_title: *event_type_name
+        api_description: *event_type_name
 
       data:
         _: &data Object Data
         label: *data
         heading: *data
+        api_title: *data
+        api_description: *data
 
       created_at:
         _: &created_at Happened At
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
