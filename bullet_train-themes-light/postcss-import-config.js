@@ -1,4 +1,3 @@
-const path = require('path');
 const { execSync } = require("child_process");
 
 const themeStylesheetsDir = execSync(`bundle exec bin/theme stylesheets-dir ${process.env.THEME} 2> /dev/null`).toString().trim()
