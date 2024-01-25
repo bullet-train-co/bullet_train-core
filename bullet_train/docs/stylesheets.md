@@ -1,5 +1,5 @@
 # Style Sheets
-Bullet Train's stock UI theme, called “Light”, is built to use `tailwindcss` extensively.
+Bullet Train's stock UI theme, called “Light”, is built to use `tailwindcss` extensively, where most of the styling is defined within the `.html.erb` theme partials.
 
 As such, there are two ways to update the styling of your app: either by modifying theme partials, or by adding your own custom CSS.
 
