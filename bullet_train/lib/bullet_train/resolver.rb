@@ -151,6 +151,13 @@ module BulletTrain
               result[:package_name] = package_name
             end
           end
+
+          # If we can't find the package name, check if it's because the file path is in the root of the gem
+          # and not in a subdirectory like app, config or lib.
+          if result[:package_name].nil? && base_path.split("/").size == 3
+            result[:project_path] = "./#{base_path.split("/").last}"
+            result[:package_name] = base_path.split("/").second
+          end
         end
       end
       result
