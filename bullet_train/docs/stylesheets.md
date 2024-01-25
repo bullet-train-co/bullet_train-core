@@ -11,7 +11,7 @@ You can eject only the theme files you wish to override or you can eject the who
 
 ## Add custom CSS 
 
-If you need to add your own custom CSS, override the custom non-tailwind classes found in the `light` theme (custom classes are still used sparingly), or to import CSS from a third-party component, simply add to the `app/assets/stylesheets/application.custom.css` file.
+If you need to add your own custom CSS, override the custom non-tailwind classes found in the `light` theme (custom classes are still used sparingly), or to import CSS from a third-party component, simply add to the `app/assets/stylesheets/application.css` file.
 
 You'll also have the ability to use Tailwind `@apply` directives.
 
