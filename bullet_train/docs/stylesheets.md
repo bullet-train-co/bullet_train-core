@@ -5,7 +5,7 @@ As such, there are two ways to update the styling of your app: either by modifyi
 
 ## Modify Theme Partials
 
-Since `tailwindcss` is used, most style changes are done by ejecting theme partials into a local copy, and modifying the Tailwind classes within their HTML.
+Since `tailwindcss` is used, most style changes are done by ejecting theme partials into your app's `app/views` directory, and modifying the Tailwind classes within the `.html.erb` templates.
 
 You can eject only the theme files you wish to override or you can eject the whole UI theme for customization. You can find more information in the [indirection documentation](indirection) about using `bin/resolve` to find the theme partials to eject. Or see the [themes documentation](themes) for details on using the "Light" UI theme as a starting point for creating your own.
 
