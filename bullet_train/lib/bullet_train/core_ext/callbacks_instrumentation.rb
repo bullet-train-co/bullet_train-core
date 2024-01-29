@@ -25,7 +25,7 @@ require_relative "callbacks_instrumentation/backport"
 
     def initialize(callback:, callable:, options:)
       caller_locations = options.delete(:caller_locations)
-      @location  = Rails.backtrace_cleaner.clean(caller_locations).first if caller_locations
+      @location  = Rails.backtrace_cleaner.clean(caller_locations.map(&:to_s)).first if caller_locations
       @full_name = callback.name == :commit ? caller_locations.first.base_label : "#{callback.kind}_#{callback.name}"
       super
     end
