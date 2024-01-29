@@ -60,7 +60,7 @@ module ActiveSupport::Callbacks
 
       def call(env)
         target = env.target
-        value  = env.value
+        value = env.value
         halted = env.halted
 
         if !halted && user_conditions.all? { |c| c.call(target, value) }
@@ -89,7 +89,7 @@ module ActiveSupport::Callbacks
 
       def call(env)
         target = env.target
-        value  = env.value
+        value = env.value
         halted = env.halted
 
         if (!halted || !@halting) && user_conditions.all? { |c| c.call(target, value) }
