@@ -4,7 +4,13 @@ stimulus_controller = 'fields--date'
 form ||= current_fields_form
 options ||= {}
 user_tz = ActiveSupport::TimeZone.find_tzinfo(current_user.time_zone).name
-team_tz = ActiveSupport::TimeZone.find_tzinfo(current_user.current_team.time_zone).name
+
+current_team_time_zone = if current_user&.respond_to?(:current_team)
+  current_team_time_zone
+else
+  "UTC"
+end
+team_tz = ActiveSupport::TimeZone.find_tzinfo(current_team_time_zone)&.name
 
 # data options
 data_options ||= {}
@@ -16,7 +22,7 @@ data_options = data_options.merge({ data: {"#{stimulus_controller}-target": 'fie
 # localized display options
 options[:id] ||=  "#{form.field_id(method)}_display"
 options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{options[:class]}".strip
-raw_value = form.object.send(method)&.in_time_zone(current_user.time_zone || current_team.time_zone || "UTC")
+raw_value = form.object.send(method)&.in_time_zone(current_user.time_zone || current_team_time_zone || "UTC")
 options[:value] = raw_value && I18n.l(raw_value, format: :date_and_time_field)
 options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
 
@@ -33,7 +39,7 @@ other_options ||= {}
       data-<%= stimulus_controller %>-time-format-value="<%= I18n.t('time.formats.date_controller') %>"
       data-<%= stimulus_controller %>-is-am-pm-value="<%= am_pm? %>"
       data-<%= stimulus_controller %>-picker-locale-value="<%= I18n.t("daterangepicker").deep_transform_keys { |k| k.to_s.camelize(:lower) }.to_json %>"
-      data-<%= stimulus_controller %>-default-time-zones-value="<%= "[\"#{current_user.time_zone}\",\"#{current_user.current_team.time_zone}\"]" %>"
+      data-<%= stimulus_controller %>-default-time-zones-value="<%= "[\"#{current_user.time_zone}\",\"#{current_team_time_zone}\"]" %>"
       data-<%= stimulus_controller %>-current-time-zone-value="<%= current_time_zone %>"
     >
       <%= form.text_field method, options %>
@@ -46,15 +52,15 @@ other_options ||= {}
         <i class="leading-4 text-lg ti ti-trash dark:text-blue-500"></i>
       </button>
       <% end %>
-      <% if current_user.time_zone != current_user.current_team.time_zone %>
+      <% if current_user.time_zone != current_team_time_zone %>
         <div class="mt-1.5 text-xs text-slate-500">
           <input class="hidden" data-<%=stimulus_controller%>-target="timeZoneField" value="<%= current_time_zone %>">
           <div data-<%= stimulus_controller %>-target="currentTimeZoneWrapper">
-            <%= link_to (current_user.time_zone || current_user.current_team.time_zone || "UTC"), '#', class: 'button-secondary p-0', data: {action: "#{stimulus_controller}#showTimeZoneButtons"} %>
+            <%= link_to (current_user.time_zone || current_team_time_zone || "UTC"), '#', class: 'button-secondary p-0', data: {action: "#{stimulus_controller}#showTimeZoneButtons"} %>
           </div>
           <div class="space-x-1 hidden" data-<%= stimulus_controller %>-target="timeZoneButtons">
             <%= link_to '', '#', hidden: true, class: 'time-zone-button button-alternative button-smaller selected-option-time-zone-button hidden', data: {action: "#{stimulus_controller}#setTimeZone", value: ''} %>
-            <%= link_to current_user.current_team.time_zone, '#', class: 'time-zone-button button-alternative button-smaller', data: {action: "#{stimulus_controller}#setTimeZone", value: team_tz, label: current_user.current_team.time_zone } %>
+            <%= link_to current_team_time_zone, '#', class: 'time-zone-button button-alternative button-smaller', data: {action: "#{stimulus_controller}#setTimeZone", value: team_tz, label: current_team_time_zone } if current_team_time_zone%>
             <%= link_to current_user.time_zone, '#', class: 'time-zone-button button button-smaller', data: {action: "#{stimulus_controller}#setTimeZone", value: user_tz, label: current_user.time_zone  } %>
             <%= link_to t('global.buttons.other'), '#', class: 'button-alternative button-smaller', data: {action: "#{stimulus_controller}#showTimeZoneSelectWrapper"} %>
             <%= link_to t('global.buttons.cancel'), '#', class: 'button-secondary button-smaller', data: {action: "#{stimulus_controller}#resetTimeZoneUI"} %>
