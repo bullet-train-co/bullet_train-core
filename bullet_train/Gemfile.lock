@@ -86,11 +86,13 @@ PATH
   specs:
     bullet_train (1.6.34)
       awesome_print
+      bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
       bullet_train-routes
       bullet_train-scope_validator
       bullet_train-super_load_and_authorize_resource
+      bullet_train-super_scaffolding
       bullet_train-themes
       cable_ready (~> 5.0.0)
       cancancan
