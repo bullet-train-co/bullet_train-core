@@ -21,17 +21,13 @@ export default class extends Controller {
 
   connect() {
     this.initPluginInstance()
-    this.colorOptions = $(this.colorOptionsTarget)
-      .find('button')
-      .map(function (_, button) {
-        return $(button).attr('data-color').toLowerCase()
-      })
-      .get()
   }
 
   disconnect() {
     this.teardownPluginInstance()
   }
+
+
 
   pickColor(event) {
     event.preventDefault()
@@ -39,9 +35,9 @@ export default class extends Controller {
     const targetEl = event.target
     const color = targetEl.dataset.color
 
-    $(this.colorInputTarget).val(color)
-    $(this.colorPickerValueTarget).val(color)
-    $(this.userSelectedColorTarget).data('color', color)
+    this.colorInputTarget.value = color
+    this.colorPickerValueTarget.value = color
+    this.userSelectedColorTarget.dataset.color = color
 
     this.pickr.setColor(color)
   }
@@ -61,21 +57,20 @@ export default class extends Controller {
   }
 
   showUserSelectedColor(color) {
-    $(this.colorInputTarget).val(color)
-    $(this.colorPickerValueTarget).val(color)
+    this.colorInputTarget.value = color
+    this.colorPickerValueTarget.value = color
 
-    $(this.userSelectedColorTarget)
-      .css('background-color', color)
-      .css('--tw-ring-color', color)
-      .attr('data-color', color)
-      .show()
+    this.userSelectedColorTarget.style.backgroundColor = color
+    this.userSelectedColorTarget.style.setProperty('--tw-ring-color', color)
+    this.userSelectedColorTarget.setAttribute('data-color', color)
+    this.userSelectedColorTarget.classList.remove('hidden')
   }
 
   unpickColor(event) {
     event.preventDefault()
-    $(this.colorPickerValueTarget).val('')
-    $(this.colorInputTarget).val('')
-    $(this.userSelectedColorTarget).hide()
+    this.colorPickerValueTarget.value = ''
+    this.colorInputTarget.value = ''
+    this.userSelectedColorTarget.classList.add('hidden')
     this.dispatchChangeEvent()
   }
 
@@ -146,7 +141,12 @@ export default class extends Controller {
     this.pickr.destroy()
   }
 
+  get colorOptions () {
+    const colorButtons = this.colorOptionsTarget.querySelectorAll('button[data-color]')
+    return Array.prototype.slice.call(colorButtons).map((el) => { return el.dataset.color })
+  }
+
   get selectedColor() {
-    return $(this.colorInputTarget).val()
+    return this.colorInputTarget.value
   }
 }
