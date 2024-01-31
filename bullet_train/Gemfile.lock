@@ -201,6 +201,11 @@ GEM
     builder (3.2.4)
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
+    bullet_train-super_scaffolding (1.6.28)
+      colorizer
+      indefinite_article
+      masamune-ast (~> 2.0.2)
+      rails (>= 6.0.0)
     bullet_train-themes-tailwind_css (1.6.13)
       bullet_train
       bullet_train-themes
@@ -498,7 +503,6 @@ DEPENDENCIES
   bullet_train-roles!
   bullet_train-scope_validator!
   bullet_train-super_load_and_authorize_resource!
-  bullet_train-super_scaffolding!
   bullet_train-themes!
   bullet_train-themes-light!
   minitest-reporters
