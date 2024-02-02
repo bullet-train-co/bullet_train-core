@@ -23,7 +23,9 @@ Then, run `bundle` or install it manually using `gem install bullet_train-api`.
 ### API
 
 #### Views
-All API response templates are located in app/views/api/v1/ and are written using standard jbuilder syntax.
+All API response templates are located in `app/views/api/v1/` and are written using standard jbuilder syntax.
+
+#### Doorkeeper
 
 #### Versioning
 
@@ -34,7 +36,7 @@ This gem automatically generates OpenAPI 3.1 compatible documentation at:
     /api/v1/openapi.yaml
 
 
-## Index File
+#### Index File
 
     app/views/api/v1/open_api/index.yaml.erb
 
