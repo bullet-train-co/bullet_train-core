@@ -23,7 +23,11 @@ module ObfuscatesId
     end
 
     def find(*ids)
-      super(*ids.map { |id| decode_id(id) })
+      if self.respond_to?(:slug_attribute)
+        self.send("find_by_#{slug_attribute}".to_sym, ids.first)
+      else
+        super(*ids.map { |id| decode_id(id) })
+      end
     end
 
     def relation
@@ -46,6 +50,7 @@ module ObfuscatesId
   end
 
   def to_param
-    obfuscated_id
+    # Even if the `slug` column exists, it might be empty (i.e. - Team).
+    (defined?(slug) && slug.present?) ? slug : obfuscated_id
   end
 end
