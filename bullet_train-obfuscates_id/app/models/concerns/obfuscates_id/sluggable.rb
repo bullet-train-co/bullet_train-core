@@ -1,5 +1,4 @@
 module ObfuscatesId
-
   # We only want to ensure slugging is possible if a developer
   # can generate a `slug` field partial with our scaffolder.
   if defined?(BulletTrain::SuperScaffolding)
@@ -11,7 +10,7 @@ module ObfuscatesId
         # Alphanumeric downcased URL identifier
         before_validation :downcase_slug
 
-        validates self.slug_attribute,
+        validates slug_attribute,
           uniqueness: true,
           length: {minimum: 2, maximum: 30},
           format: {with: /\A[a-zA-Z0-9|-]+\Z/}
@@ -23,7 +22,7 @@ module ObfuscatesId
         def downcase_slug
           attribute_name = self.class.send(:slug_attribute)
           attribute_name_setter = "#{attribute_name}=".to_sym
-          self.send(attribute_name_setter, self.send(attribute_name).downcase)
+          send(attribute_name_setter, send(attribute_name).downcase)
         end
       end
     end

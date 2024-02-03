@@ -23,8 +23,8 @@ module ObfuscatesId
     end
 
     def find(*ids)
-      if self.respond_to?(:slug_attribute)
-        self.send("find_by_#{slug_attribute}".to_sym, ids.first)
+      if respond_to?(:slug_attribute)
+        send("find_by_#{slug_attribute}".to_sym, ids.first)
       else
         super(*ids.map { |id| decode_id(id) })
       end
