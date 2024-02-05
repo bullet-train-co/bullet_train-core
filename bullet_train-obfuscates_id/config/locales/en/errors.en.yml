@@ -1,4 +1,4 @@
 en:
   errors:
     messages:
-      restricted_path: "This slug is prohibited"
+      restricted_path: "is restricted, please try another path"
