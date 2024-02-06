@@ -1295,8 +1295,6 @@ class Scaffolding::Transformer
             scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
           end
         when "slug"
-          # TODO: We should really be including Sluggable at the top
-          # above the concerns hook, not here below the methods.
           slug_methods = <<~RUBY
             def slug
               #{attribute.name}
@@ -1306,15 +1304,21 @@ class Scaffolding::Transformer
               :#{attribute.name}
             end
 
+            # Define which paths you don't want to show up when defining slugs.
             def self.restricted_paths
               [
                 "admin",
                 "admins"
               ]
             end
-
-            include Sluggable
           RUBY
+
+          scaffold_add_line_to_file(
+            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+            "include Sluggable",
+            CONCERNS_HOOK,
+            prepend: true
+          )
 
           scaffold_add_line_to_file(
             "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
