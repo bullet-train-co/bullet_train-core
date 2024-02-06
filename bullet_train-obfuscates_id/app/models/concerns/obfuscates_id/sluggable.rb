@@ -7,7 +7,6 @@ module ObfuscatesId
       extend ActiveSupport::Concern
 
       included do
-        # Alphanumeric downcased URL identifier
         before_validation :downcase_slug
         after_validation :set_to_previous_value, on: :update
 
