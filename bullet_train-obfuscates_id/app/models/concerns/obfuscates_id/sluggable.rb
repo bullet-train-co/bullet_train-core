@@ -10,10 +10,12 @@ module ObfuscatesId
         before_validation :downcase_slug
         after_validation :set_to_previous_value, on: :update
 
-        validates slug_attribute,
-          uniqueness: true,
-          length: {minimum: 2, maximum: 30},
-          format: {with: /\A[a-zA-Z0-9|-]+\Z/}
+        if respond_to?(:slug_attribute)
+          validates slug_attribute,
+            uniqueness: true,
+            length: {minimum: 2, maximum: 30},
+            format: {with: /\A[a-zA-Z0-9|-]+\Z/}
+        end
 
         validates_with ::RestrictedPathsValidator
 
