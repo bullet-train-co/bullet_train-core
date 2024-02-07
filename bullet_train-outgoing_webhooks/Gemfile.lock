@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.6.23)
+    bullet_train-api (1.6.28)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.6.23)
+    bullet_train-fields (1.6.28)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.6.23)
+    bullet_train-super_scaffolding (1.6.28)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -34,7 +34,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.6.23)
+    bullet_train (1.6.28)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -45,7 +45,7 @@ PATH
       cable_ready (~> 5.0.0)
       cancancan
       colorizer
-      commonmarker
+      commonmarker (>= 1.0.0)
       devise
       devise-pwned_password
       extended_email_reply_parser
@@ -71,7 +71,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-outgoing_webhooks (1.6.23)
+    bullet_train-outgoing_webhooks (1.6.28)
       public_suffix
       rails (>= 6.0.0)
 
@@ -181,7 +181,8 @@ GEM
       aws_cf_signer
       rest-client (>= 2.0.0)
     colorizer (0.0.2)
-    commonmarker (0.23.10)
+    commonmarker (1.0.4-arm64-darwin)
+    commonmarker (1.0.4-x86_64-linux)
     concurrent-ruby (1.2.2)
     connection_pool (2.4.1)
     crass (1.0.6)
@@ -288,9 +289,9 @@ GEM
     nice_partials (0.10.0)
       actionview (>= 4.2.6)
     nio4r (2.5.9)
-    nokogiri (1.15.4-arm64-darwin)
+    nokogiri (1.16.0-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.15.4-x86_64-linux)
+    nokogiri (1.16.0-x86_64-linux)
       racc (~> 1.4)
     omniauth (2.1.1)
       hashie (>= 3.4.6)
@@ -410,8 +411,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.6.8-arm64-darwin)
-    sqlite3 (1.6.8-x86_64-linux)
+    sqlite3 (1.7.0-arm64-darwin)
+    sqlite3 (1.7.0-x86_64-linux)
     standard (1.31.1)
       language_server-protocol (~> 3.17.0.2)
       lint_roller (~> 1.0)

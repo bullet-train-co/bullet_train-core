@@ -111,6 +111,12 @@
                   <% end %>
                 <% end %>
 
+                <%= render 'account/shared/menu/item', url: '/docs/stylesheets', label: 'Style Sheets' do |p| %>
+                  <% p.icon do %>
+                    <i class="fa-brands fa-js ti ti-brush"></i>
+                  <% end %>
+                <% end %>
+
                 <%= render 'account/shared/menu/item', url: '/docs/i18n', label: 'Internationalization' do |p| %>
                   <% p.icon do %>
                   <i class="fa-brands fa-js ti ti-world"></i>
@@ -143,9 +149,14 @@
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/magic_test', label: 'Magic Test' do |p| %>
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/magic_test' do |p| %>
                   <% p.icon do %>
                     <i class="fal fa-check ti ti-video-camera"></i>
+                  <% end %>
+                  <% p.label do %>
+                    <span>
+                      Magic Test <i class="ti ti-new-window ml-1"></i>
+                    </span>
                   <% end %>
                 <% end %>
 
@@ -207,15 +218,25 @@
                   <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/nice_partials', label: 'Nice Partials' do |p| %>
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/nice_partials' do |p| %>
                   <% p.icon do %>
                     <i class="fal fa-swatchbook ti ti-widget"></i>
                   <% end %>
+                  <% p.label do %>
+                    <span>
+                      Nice Partials <i class="ti ti-new-window ml-1"></i>
+                    </span>
+                  <% end %>
                 <% end %>
 
-                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/showcase', label: 'Showcase' do |p| %>
+                <%= render 'account/shared/menu/item', url: 'https://github.com/bullet-train-co/showcase' do |p| %>
                   <% p.icon do %>
                     <i class="fal fa-swatchbook ti ti-panel"></i>
+                  <% end %>
+                  <% p.label do %>
+                    <span>
+                      Showcase <i class="ti ti-new-window ml-1"></i>
+                    </span>
                   <% end %>
                 <% end %>
               <% end %>

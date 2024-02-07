@@ -26,50 +26,78 @@ en:
         _: &id Membership ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
       user_id:
         name: &user_id User ID
         heading: *user_id
+        api_title: *user_id
+        api_description: *user_id
       team_id:
         name: &team_id Team ID
         heading: *team_id
+        api_title: *team_id
+        api_description: *team_id
       invitation_id:
         name: &invitation_id Invitation ID
         heading: *invitation_id
+        api_title: *invitation_id
+        api_description: *invitation_id
       name:
         name: &name Full Name
         heading: *name
+        api_title: *name
+        api_description: *name
       user_first_name:
         name: &user_first_name First Name
         label: *user_first_name
         heading: *user_first_name
+        api_title: *user_first_name
+        api_description: *user_first_name
       user_last_name:
         name: &user_last_name Last Name
         label: *user_last_name
         heading: *user_last_name
+        api_title: *user_last_name
+        api_description: *user_last_name
       user_profile_photo_id:
         name: &user_profile_photo_id Profile Photo
         label: *user_profile_photo_id
         heading: *user_profile_photo_id
+        api_title: *user_profile_photo_id
+        api_description: *user_profile_photo_id
       user_profile_photo:
         name: &user_profile_photo Profile Photo
         label: *user_profile_photo
-        heading: *user_profile_photo_id
+        heading: *user_profile_photo
+        api_title: *user_profile_photo
+        api_description: *user_profile_photo
       user_email:
         name: &user_email User Email
         heading: *user_email
+        api_title: *user_email
+        api_description: *user_email
       added_by_id:
         name: &added_by_id Added by User ID
         heading: *added_by_id
+        api_title: *added_by_id
+        api_description: *added_by_id
       platform_agent_of_id:
         name: &platform_agent_of_id Platform Agent of ID
         heading: *platform_agent_of_id
+        api_title: *platform_agent_of_id
+        api_description: *platform_agent_of_id
       platform_agent:
         name: &platform_agent Platform Agent
         heading: *platform_agent
+        api_title: *platform_agent
+        api_description: *platform_agent
       role_ids:
         name: &roles Special Privileges
         label: *roles
         heading: *roles
+        api_title: *roles
+        api_description: *roles
         options:
           default:
             label: Viewer
@@ -84,9 +112,13 @@ en:
       created_at:
         _: &created_at Created At
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated At
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     index:
       section: "%{team_name} Team Members"
       contexts:

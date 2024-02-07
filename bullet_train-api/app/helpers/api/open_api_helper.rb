@@ -24,25 +24,32 @@ module Api
     end
 
     def automatic_paths_for(model, parent, except: [])
-      output = render("api/#{@version}/open_api/shared/paths", except: except)
+      output = render("api/#{@version}/open_api/shared/paths", model_name: model.model_name.collection, except: except)
       output = Scaffolding::Transformer.new(model.name, [parent&.name]).transform_string(output).html_safe
 
-      custom_actions_file_path = "api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"
-      output += render(custom_actions_file_path) if lookup_context.exists?(custom_actions_file_path, [], true)
-
-      # There are some placeholders specific to this method that we still need to transform.
-      model_symbol = model.name.underscore.tr("/", "_").to_sym
+      custom_actions_file_path = "api/#{@version}/open_api/#{model.model_name.collection}/paths"
+      custom_output = render(custom_actions_file_path).html_safe if lookup_context.exists?(custom_actions_file_path, [], true)
 
       FactoryBot::ExampleBot::REST_METHODS.each do |method|
-        if (code = FactoryBot.send(method, model_symbol, version: @version))
+        if (code = FactoryBot.send(method, model.model_name.param_key.to_sym, version: @version))
           output.gsub!("🚅 #{method}", code)
+          custom_output&.gsub!("🚅 #{method}", code)
         end
+      end
+
+      if custom_output
+        merge = deep_merge(YAML.safe_load(output), YAML.safe_load(custom_output)).to_yaml.html_safe
+        # YAML.safe_load escapes emojis https://github.com/ruby/psych/issues/371
+        # Next line returns emojis back and removes yaml garbage
+        output = merge.gsub("---", "").gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
       end
 
       indent(output, 1)
     end
 
-    def automatic_components_for(model, locals: {})
+    def automatic_components_for(model, **options)
+      locals = options.delete(:locals) || {}
+
       path = "app/views/api/#{@version}"
       paths = [path, "app/views"] + gem_paths.product(%W[/#{path} /app/views]).map(&:join)
 
@@ -70,6 +77,9 @@ module Api
       )
 
       attributes_output = JSON.parse(schema_json)
+
+      # Allow customization of Attributes
+      customize_component!(attributes_output, options[:attributes]) if options[:attributes]
 
       # Add "Attributes" part to $ref's
       update_ref_values!(attributes_output)
@@ -100,6 +110,9 @@ module Api
         parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
         parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
         parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
+
+        # Allow customization of Parameters
+        customize_component!(parameters_output, options[:parameters]) if options[:parameters]
 
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
@@ -143,6 +156,54 @@ module Api
           # Recursively call the method for each hash in the array
           value.each do |item|
             update_ref_values!(item) if item.is_a?(Hash)
+          end
+        end
+      end
+    end
+
+    def deep_merge(hash1, hash2)
+      hash1.merge(hash2) do |_, old_val, new_val|
+        if old_val.is_a?(Hash) && new_val.is_a?(Hash)
+          deep_merge(old_val, new_val)
+        elsif old_val.is_a?(Array) && new_val.is_a?(Array)
+          (old_val + new_val).uniq
+        else
+          new_val
+        end
+      end
+    end
+
+    def customize_component!(original, custom)
+      custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
+
+      if custom.key?("add")
+        custom["add"].each do |property, details|
+          if details["required"]
+            original["required"] << property
+            details.delete("required")
+          end
+          original["properties"][property] = details
+          if details["example"]
+            original["example"][property] = details["example"]
+            details.delete("example")
+          end
+        end
+      end
+
+      if custom.key?("remove")
+        Array(custom["remove"]).each do |property|
+          original["required"].delete(property)
+          original["properties"].delete(property)
+          original["example"].delete(property)
+        end
+      end
+
+      if custom.key?("only")
+        original["properties"].keys.each do |property|
+          unless Array(custom["only"]).include?(property)
+            original["properties"].delete(property)
+            original["required"].delete(property)
+            original["example"].delete(property)
           end
         end
       end

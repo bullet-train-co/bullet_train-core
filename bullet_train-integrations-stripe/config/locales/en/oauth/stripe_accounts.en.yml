@@ -23,10 +23,14 @@ en:
         name: &name Name
         label: *name
         heading: *name
+        api_title: *name
+        api_description: *name
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         name: &created_at Connected
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
     index:
       section: '%{users_possessive} Stripe Accounts'
       contexts:

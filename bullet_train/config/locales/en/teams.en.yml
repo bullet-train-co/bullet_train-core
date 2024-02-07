@@ -53,25 +53,37 @@ en:
         _: &id Team ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
       name:
         _: &name Team Name
         label: *name
         heading: Team
+        api_title: *name
+        api_description: *name
       time_zone:
         _: &time_zone Primary Time Zone
         label: "Primary Time Zone"
         heading: *time_zone
+        api_title: *time_zone
+        api_description: *time_zone
       locale:
         _: &locale Language
         label: "Primary Language"
         heading: *locale
+        api_title: *locale
+        api_description: *locale
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Signed Up At
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated At
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     _: &self
       name:
         label: Your Team Name

@@ -61,6 +61,21 @@ Here is the same example, with search enabled:
   html_options: {multiple: true}, other_options: {search: true} %>
 </code></pre>
 
+## Overriding Browser Time Zone
+
+When using super-select with Time Zone options, passing `use_browser_time_zone:
+false` will override the automatic setting of the timezone value from the
+browser.
+
+
+Here is the an example setting the selected value to `@user.time_zone` which
+will not be overridden by the browser time zone.
+
+<pre><code><%= render 'shared/fields/super_select', form: f, method: :time_zone,
+    choices: time_zone_options_for_select(@user.time_zone, nil, ActiveSupport::TimeZone),
+    other_options: {search: true, required: true, use_browser_time_zone: false } %>
+</code></pre>
+
 ## Accepting New Entries
 
 Here is an example allowing a new option to be entered by the user:

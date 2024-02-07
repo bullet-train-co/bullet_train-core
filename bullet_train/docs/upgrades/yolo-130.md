@@ -281,7 +281,39 @@ git add -A
 git commit -m "Upgrading Bullet Train gems."
 ```
 
-### 5. Run Tests.
+### 5. Update `package.json``
+
+Likewise, we'll need to manually update the version of the `@bullet_train/*` JavaScript packages in
+`package.json`, by looking for these lines:
+
+```json
+    "@bullet-train/bullet-train": "1.3.0",
+    "@bullet-train/bullet-train-sortable": "1.3.0",
+    "@bullet-train/fields": "1.3.0",
+```
+
+And upgrading the version numbers like this:
+
+```json
+    "@bullet-train/bullet-train": "1.3.1",
+    "@bullet-train/bullet-train-sortable": "1.3.1",
+    "@bullet-train/fields": "1.3.1",
+```
+
+(As with the Gemfile, we have to do this since we didn't start explicitly tracking versions until 
+`1.4.0` and want to make sure that our gem versions match what the starter repo expects.)
+
+Then run `yarn install`
+
+Then go ahead and commit the changes.
+
+```
+git diff
+git add -A
+git commit -m "Upgrading Bullet Train js packages."
+```
+
+### 6. Run Tests.
 
 ```
 rails test
@@ -290,7 +322,7 @@ rails test:system
 
 If anything fails, investigate the failures and get things working again, and commit those changes.
 
-### 6. Merge into `main` and delete the branch.
+### 7. Merge into `main` and delete the branch.
 
 ```
 git checkout main
