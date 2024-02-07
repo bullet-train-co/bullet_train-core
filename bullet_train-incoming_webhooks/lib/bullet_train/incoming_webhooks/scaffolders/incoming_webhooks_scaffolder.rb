@@ -13,7 +13,8 @@ module BulletTrain
             puts "E.g. prepare to receive system-level webhooks from ClickFunnels"
             puts "  bin/super-scaffold incoming-webhooks ClickFunnels"
             puts ""
-            standard_protip
+            puts "🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes."
+            puts "If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f` ."
             puts ""
             return
           end
