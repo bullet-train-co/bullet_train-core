@@ -131,31 +131,20 @@ module Api
       end
     end
 
-    def markdown_description(filename)
-      # Extract the caller info to get file path and line number
-      caller_info = caller.first
-      caller_path, line_number = caller_info.split(":")
-      line_number = line_number.to_i
+    def external_doc(filename)
+      caller_path, line_number = caller.find { |line| line.include?('.yaml.erb:') }.split(":")
+      indentation = File.readlines(caller_path)[line_number.to_i - 1].match(/^(\s*)/)[1]
+      path = "app/views/api/#{@version}/open_api/docs/#{filename}.md"
 
-      # Read the ERB file and find the specific line
-      file_lines = File.readlines(caller_path)
-      caller_line = file_lines[line_number - 1] # Adjust for array index starting at 0
+      raise "Markdown file not found: #{path}" unless File.exist?(path)
 
-      # Determine indentation by counting leading spaces
-      indentation = caller_line.match(/^(\s*)/)[1]
+      File.read(path).lines.map { |line| "  #{indentation}#{line}".rstrip }.join("\n").prepend("|\n").html_safe
+    rescue Errno::ENOENT, Errno::EACCES, RuntimeError => e
+      "Error loading markdown description: #{e.message}"
+    end
 
-      path = Rails.root.join("app", "views", "api", @version, "open_api", "docs", filename)
-      if File.exist?(path)
-        # Read the Markdown file content
-        markdown_content = File.read(path)
-
-        # Apply the indentation to each line of the Markdown content
-        markdown_content.lines.map { |line| "  #{indentation}#{line}".rstrip }.join("\n").prepend("|\n").html_safe
-      else
-        "Markdown file not found: #{path}"
-      end
-    # rescue StandardError => e
-    #   "Error loading markdown description: #{e.message}"
+    def description_for(model)
+      external_doc "#{model.name.underscore}_description"
     end
 
     private
