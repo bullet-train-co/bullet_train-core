@@ -132,7 +132,7 @@ module Api
     end
 
     def external_doc(filename)
-      caller_path, line_number = caller.find { |line| line.include?('.yaml.erb:') }.split(":")
+      caller_path, line_number = caller.find { |line| line.include?(".yaml.erb:") }.split(":")
       indentation = File.readlines(caller_path)[line_number.to_i - 1].match(/^(\s*)/)[1]
       path = "app/views/api/#{@version}/open_api/docs/#{filename}.md"
 
