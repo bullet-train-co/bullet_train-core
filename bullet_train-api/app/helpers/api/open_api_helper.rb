@@ -131,6 +131,33 @@ module Api
       end
     end
 
+    def markdown_description(filename)
+      # Extract the caller info to get file path and line number
+      caller_info = caller.first
+      caller_path, line_number = caller_info.split(":")
+      line_number = line_number.to_i
+
+      # Read the ERB file and find the specific line
+      file_lines = File.readlines(caller_path)
+      caller_line = file_lines[line_number - 1] # Adjust for array index starting at 0
+
+      # Determine indentation by counting leading spaces
+      indentation = caller_line.match(/^(\s*)/)[1]
+
+      path = Rails.root.join("app", "views", "api", @version, "open_api", "docs", filename)
+      if File.exist?(path)
+        # Read the Markdown file content
+        markdown_content = File.read(path)
+
+        # Apply the indentation to each line of the Markdown content
+        markdown_content.lines.map { |line| "  #{indentation}#{line}".rstrip }.join("\n").prepend("|\n").html_safe
+      else
+        "Markdown file not found: #{path}"
+      end
+    # rescue StandardError => e
+    #   "Error loading markdown description: #{e.message}"
+    end
+
     private
 
     def has_strong_parameters?(controller)
