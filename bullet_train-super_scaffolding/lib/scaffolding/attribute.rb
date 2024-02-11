@@ -90,11 +90,11 @@ class Scaffolding::Attribute
   end
 
   def name_without_id
-    name.gsub(/_id$/, "")
+    name.delete_suffix('_id')
   end
 
   def name_without_ids
-    name.gsub(/_ids$/, "").pluralize
+    name.delete_suffix('_ids').pluralize
   end
 
   def name_without_id_suffix
