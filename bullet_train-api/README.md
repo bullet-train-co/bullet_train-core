@@ -13,9 +13,24 @@ Then, run `bundle` or install it manually using `gem install bullet_train-api`.
 
 ## Contents
 
-- [API]()
-- [Documentation]()
+- [API](#api)
+  - [Views](#views)
+  - [Doorkeeper](#doorkeeper)
+  - [Versioning](#versioning)
+- [Documentation](#documentation)
+  - [Index file](#index-file)
+  - [Automatic Components](#automatic-components)
+  - [Automatic Paths](#automatic-paths)
+  - [External Markdown files](#external-markdown-files)
+  - [Examples](#examples)
+  - [Example IDs](#example-ids)
+  - [Associations](#associations)
+  - [Localization](#localization)
 - [Rake Tasks](#rake-tasks)
+  - [Bump version](#bump-version)
+  - [Export OpenAPI document in file](#export-openapi-document-in-file)
+  - [Push OpenAPI document to Redocly](#push-openapi-document-to-redocly)
+  - [Create separate translations for API](#create-separate-translations-for-api)
 - [Contributing](#contributing)
 - [License](#license)
 - [Sponsor](#open-source-development-sponsored-by)
@@ -23,11 +38,28 @@ Then, run `bundle` or install it manually using `gem install bullet_train-api`.
 ### API
 
 #### Views
-All API response templates are located in `app/views/api/v1/` and are written using standard jbuilder syntax.
+All API response templates are located in `app/views/api/<version>/` and are written using standard jbuilder syntax.
 
 #### Doorkeeper
 
+BulletTrain::Api uses Bearer token as a default authentication method with the help of Doorkeeper gem:
+
+````yaml
+components:
+  securitySchemes:
+    BearerAuth:
+      type: http
+      scheme: bearer
+````
+
 #### Versioning
+
+Versions are being set automatically based on the location of the controller.
+
+Current version can also be checked with
+````ruby
+BulletTrain::Api.current_version
+````
 
 ### Documentation
 
@@ -43,15 +75,111 @@ This gem automatically generates OpenAPI 3.1 compatible documentation at:
 The index file is the central point for the API documentation. This consists of a number of sections,
 some that get pulled in and bundled at build time.
 
-The file is in YAML format, but includes erb code which generates additional YAML with the help of `jbuilder-schema` gem.
+The file is in YAML format, but includes erb code which generates additional YAML with the help of [`jbuilder-schema`](https://github.com/bullet-train-co/jbuilder-schema) gem.
 
 #### Automatic Components
+
+There are several helper methods available in Index file.
+One of them is `automatic_components_for`, which generates two schemas of a model, Attributes and Parameters, based on it's Jbuilder show file.
+Parameters are used in requests and Attributes are used in responses.
+
+For example this code:
+````yaml
+components:
+  schemas:
+    <%= automatic_components_for User %>
+````
+looks for the file `app/views/api/v1/users/_user.json.jbuilder`.
+Let's say it has this contents:
+````ruby
+json.extract! user,
+  :id,
+  :email,
+  :name
+````
+then the produced component will be:
+````yaml
+components:
+  schemas:
+    UserAttributes:
+      type: object
+      title: Users
+      description: Users
+      required:
+      - id
+      - email
+      properties:
+        id:
+          type: integer
+          description: Team ID
+        email:
+          type: string
+          description: Email Address
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name
+      example:
+        id: 42
+        email: generic-user-1@example.com
+        name: Example Name
+    UserParameters:
+      type: object
+      title: Users
+      description: Users
+      required:
+      - email
+      properties:
+        email:
+          type: string
+          description: Email Address
+        name:
+          type:
+          - string
+          - 'null'
+          description: Name
+      example:
+        email: generic-user-1@example.com
+        name: Example First Name
+````
+As you can see, it automatically sets required fields based on presence validators of the model,
+field types based on the value found in Jbuilder file, descriptions and examples.
+More on how it works and how you can customize the output in [`jbuilder-schema`](https://github.com/bullet-train-co/jbuilder-schema) documentation.
 
 #### Automatic Paths
 
 If the methods defined in the `automatic_paths_for` for the endpoints support
 a write action (i.e. create or update), then doc generation uses the `strong_parameters`
 defined in the corresponding controller to generate the Parameters section in the schema.
+
+#### External Markdown files
+
+External text files with Markdown markup can be added with `external_doc` method.
+It assumes that the file with `.md` extension can be found in `app/views/api/<version>/open_api/docs`.
+You can also use `description_for` method with a model, then there should be file `app/views/api/<version>/open_api/docs/<Model.name.underscore>_description.md`
+
+This allows including external markdown files in OpenAPI schema like in this example:
+
+````yaml
+openapi: 3.1.0
+info:
+  ...
+  description: <%= external_doc "info_description" %>
+  ...
+tags:
+  - name: Team
+    description: <%= description_for Team %>
+  - name: Addresses::Country
+    description: <%= description_for Addresses::Country %>
+  ...
+````
+supposing the following files exist:
+````
+app/views/api/v1/open_api/docs/info_description.md
+app/views/api/v1/open_api/docs/team_description.md
+app/views/api/v1/open_api/docs/addresses/country_description.md
+````
 
 #### Examples
 
@@ -113,7 +241,7 @@ Needs `REDOCLY_ORGANIZATION_ID` and `REDOCLY_API_KEY` to be set:
 
 #### Create separate translations for API
 
-Starting 1.6.27, Bullet Train Scaffolding generates separate translations for API documentation: `api_title` and `api_description`.
+Starting 1.6.28, Bullet Train Scaffolding generates separate translations for API documentation: `api_title` and `api_description`.
 This rake task will add those translations for the existing fields, based on their `heading` value:
 
     rake bullet_train:api:create_translations
