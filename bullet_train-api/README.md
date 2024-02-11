@@ -14,9 +14,9 @@ Then, run `bundle` or install it manually using `gem install bullet_train-api`.
 ## Contents
 
 - [API](#api)
-  - [Views](#views)
-  - [Doorkeeper](#doorkeeper)
+  - [Accessing](#accessing)
   - [Versioning](#versioning)
+  - [Views](#views)
 - [Documentation](#documentation)
   - [Index file](#index-file)
   - [Automatic Components](#automatic-components)
@@ -37,20 +37,14 @@ Then, run `bundle` or install it manually using `gem install bullet_train-api`.
 
 ### API
 
-#### Views
-All API response templates are located in `app/views/api/<version>/` and are written using standard jbuilder syntax.
+BulletTrain::Api defines basic REST actions for every model generated with super-scaffolding.
 
-#### Doorkeeper
+#### Accessing
 
-BulletTrain::Api uses Bearer token as a default authentication method with the help of Doorkeeper gem:
-
-````yaml
-components:
-  securitySchemes:
-    BearerAuth:
-      type: http
-      scheme: bearer
-````
+BulletTrain::Api uses Bearer token as a default authentication method with the help of [Doorkeeper](https://github.com/doorkeeper-gem/doorkeeper) gem.
+It uses the idea that in order to access the API, there should be a Platform Application object, which can have access to different parts of the application.
+In Bullet Train, each Team may have several Platform Applications (created in Developers > API menu). When a Platform Application is created,
+it automatically generates an Bearer Token needed to access the API, controlled by this Platform Application.
 
 #### Versioning
 
@@ -60,6 +54,9 @@ Current version can also be checked with
 ````ruby
 BulletTrain::Api.current_version
 ````
+
+#### Views
+All API response templates are located in `app/views/api/<version>/` and are written using standard jbuilder syntax.
 
 ### Documentation
 
@@ -149,9 +146,17 @@ More on how it works and how you can customize the output in [`jbuilder-schema`]
 
 #### Automatic Paths
 
+Method `automatic_paths_for` generates basic REST paths. It accepts model as it's argument.
+To generate paths for nested models, pass parent model as a second argument. It also accepts `except` as a third argument,
+where you can list actions which paths you don't want to be generated.
+
 If the methods defined in the `automatic_paths_for` for the endpoints support
 a write action (i.e. create or update), then doc generation uses the `strong_parameters`
 defined in the corresponding controller to generate the Parameters section in the schema.
+
+Automatic paths are generated for basic REST actions. You can customize those paths or add your own by creating a
+file at `app/views/api/<version>/open_api/<Model.underscore.plural>/_paths.yaml.erb`. For REST paths there's no need to 
+duplicate all the schema, you can specify only what differs from auto-generated code.
 
 #### External Markdown files
 
@@ -188,7 +193,7 @@ In order to generate example requests and responses for the documentation in the
 which uses FactoryBot to build an in-memory representation of the model,
 then generates the relevant OpenAPI schema for that model.
 
-ExampleBot will attempt to create a instance of the given model called `<model>_example`.
+ExampleBot will attempt to create an instance of the given model called `<model>_example`.
 For namespaced models, `<plural_namespaces>_<model>_example`
 
 For example, for the Order model, use `order_example` factory.
@@ -241,7 +246,7 @@ Needs `REDOCLY_ORGANIZATION_ID` and `REDOCLY_API_KEY` to be set:
 
 #### Create separate translations for API
 
-Starting 1.6.28, Bullet Train Scaffolding generates separate translations for API documentation: `api_title` and `api_description`.
+Starting in 1.6.28, Bullet Train Scaffolding generates separate translations for API documentation: `api_title` and `api_description`.
 This rake task will add those translations for the existing fields, based on their `heading` value:
 
     rake bullet_train:api:create_translations
