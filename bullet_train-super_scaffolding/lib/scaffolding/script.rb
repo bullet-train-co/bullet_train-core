@@ -130,9 +130,9 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       attribute_options ||= {}
       unless attribute_options[:vanilla]
         name_without_id = if name.match?(/_id$/)
-          name.delete_suffix('_id')
+          name.delete_suffix("_id")
         elsif name.match?(/_ids$/)
-          name.delete_suffix('_ids')
+          name.delete_suffix("_ids")
         end
 
         attribute_options[:class_name] ||= name_without_id.classify
