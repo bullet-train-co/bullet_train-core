@@ -45,7 +45,9 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.teardownPluginInstance()
+    if (this.isSelect2LoadedOnWindowJquery) {
+      this.teardownPluginInstance()
+    }
   }
 
   cleanupBeforeInit() {
