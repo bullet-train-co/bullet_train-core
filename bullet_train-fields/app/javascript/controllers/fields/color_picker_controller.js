@@ -143,7 +143,7 @@ export default class extends Controller {
 
   get colorOptions () {
     const colorButtons = this.colorOptionsTarget.querySelectorAll('button[data-color]')
-    return Array.prototype.slice.call(colorButtons).map((el) => { return el.dataset.color })
+    return Array.from(colorButtons).map(button => button.getAttribute('data-color').toLowerCase());
   }
 
   get selectedColor() {
