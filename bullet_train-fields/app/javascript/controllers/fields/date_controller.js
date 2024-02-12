@@ -112,7 +112,9 @@ export default class extends Controller {
     // don't follow the anchor
     event.preventDefault()
     const currentTimeZoneEl = this.currentTimeZoneWrapperTarget.querySelector('a')
-    this.timeZoneFieldTarget.value = event.target.dataset.value
+    if (this.hasTimeZoneFieldTarget) {
+      this.timeZoneFieldTarget.value = event.target.dataset.value
+    }
     currentTimeZoneEl.textContent = event.target.dataset.label
     this.element.querySelectorAll('.time-zone-button').forEach(el => {
       el.classList.remove('button');
@@ -191,29 +193,33 @@ export default class extends Controller {
         const currentTimeZoneEl = self.currentTimeZoneWrapperTarget.querySelector('a')
         const {value} = event.target
 
-        this.timeZoneFieldTarget.value = value
-        this.currentTimeZoneEl.textContent = value
+        const selectedTimeZoneOption = event.target.options[event.target.options.selectedIndex]
 
-        const selectedOptionTimeZoneButton = this.element.querySelector('.selected-option-time-zone-button')
+        if (self.hasTimeZoneFieldTarget) {
+          self.timeZoneFieldTarget.value = value
+        }
+        currentTimeZoneEl.textContent = selectedTimeZoneOption.textContent
 
-        if (self.defaultTimeZonesValue.includes(value)) {
-          this.element.querySelectorAll('.time-zone-button').forEach(el => {
+        const selectedOptionTimeZoneButton = self.element.querySelector('.selected-option-time-zone-button')
+
+        if (self.defaultTimeZonesValue.includes(selectedTimeZoneOption.textContent)) {
+          self.element.querySelectorAll('.time-zone-button').forEach(el => {
             el.classList.remove('button');
             el.classList.add('button-alternative');
           })
           selectedOptionTimeZoneButton.classList.add('hidden')
           selectedOptionTimeZoneButton.hidden = true
-          this.element.querySelectorAll(`a[data-value="${value}"`).forEach(el => {
+          self.element.querySelectorAll(`a[data-value="${value}"`).forEach(el => {
             el.classList.remove('button-alternative')
             el.classList.add('button')
           })
         } else {
           // deselect any selected button
-          this.element.querySelectorAll('.time-zone-button').forEach(el => {
+          self.element.querySelectorAll('.time-zone-button').forEach(el => {
             el.classList.remove('button');
             el.classList.add('button-alternative');
           })
-          selectedOptionTimeZoneButton.textContent = value
+          selectedOptionTimeZoneButton.textContent = selectedTimeZoneOption.textContent
           selectedOptionTimeZoneButton.setAttribute('data-value', value)
           selectedOptionTimeZoneButton.hidden = false
           selectedOptionTimeZoneButton.classList.remove('hidden')
@@ -233,8 +239,8 @@ export default class extends Controller {
     // revert to original markup, remove any event listeners
     this.plugin.remove()
 
-    if (this.includeTimeValue) {
-      jQuery(this.timeZoneSelect).select2('destroy');
+    if (this.includeTimeValue && this.hasTimeZoneSelectWrapperTarget) {
+      jQuery(this.timeZoneSelectTarget).select2('destroy');
     }
   }
 }
