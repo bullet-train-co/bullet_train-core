@@ -32,8 +32,7 @@ export default class extends Controller {
   pickColor(event) {
     event.preventDefault()
 
-    const targetEl = event.target
-    const color = targetEl.dataset.color
+    const color = event.target.dataset.color
 
     this.colorInputTarget.value = color
     this.colorPickerValueTarget.value = color
