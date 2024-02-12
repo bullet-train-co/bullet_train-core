@@ -3,7 +3,6 @@
 
 <script>
   const BulletTrain = {}
-  let templateRendered = false
 
   class ___theme {
     start() {
@@ -35,17 +34,12 @@
   BulletTrain.theme.start()
 
   function placeThemeSelector() {
-    if(!templateRendered) {
-      console.log("not rendered")
-      const node = document.getElementById("bullet_train_theme_selects").content.cloneNode(true)
-      document.querySelector("main").appendChild(node)
-      const selectorNode = document.getElementById("bt-theme-selector")
-      document.querySelector("main").style.paddingBottom = selectorNode.offsetHeight + "px"
-      templateRendered = true
-    }
+    const node = document.getElementById("bullet_train_theme_selects").content.cloneNode(true)
+    document.querySelector("main").appendChild(node)
+    const selectorNode = document.getElementById("bt-theme-selector")
+    document.querySelector("main").style.paddingBottom = selectorNode.offsetHeight + "px"
   }
 
-  document.addEventListener("DOMContentLoaded", placeThemeSelector);
   document.addEventListener("turbo:load", placeThemeSelector);
 </script>
 
