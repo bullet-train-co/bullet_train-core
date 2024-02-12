@@ -148,7 +148,7 @@ export default class extends Controller {
 
   // https://stackoverflow.com/questions/29290389/select2-add-image-icon-to-option-dynamically
   formatState(opt) {
-    var imageUrl = opt.element.dataset.image
+    var imageUrl = opt.element?.dataset.image
     var imageHtml = "";
     if (imageUrl) {
       imageHtml = '<img src="' + imageUrl + '" /> ';
