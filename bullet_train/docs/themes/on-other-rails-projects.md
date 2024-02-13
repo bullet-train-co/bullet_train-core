@@ -6,7 +6,15 @@ Our main theme, called `Light`, uses `erb` partials to give you native Rails vie
 
 Note: we have [special instructions for installing themes on Jumpstart PRO projects](on-jumpstart-pro-projects.md).
 
-## Installation Instructions
+**Contents:**
+
+1. Installation Instructions
+2. Optional Configurations for switching colors, theme gems
+3. Using Locales for fields on new models
+4. Partials that require special instructions, exclusions
+5. Modifying ejected partials
+
+## 1. Installation Instructions
 
 ### Ensure your Rails Project uses `esbuild` and `tailwindcss` with `postcss`
 
@@ -334,4 +342,80 @@ Add these to your `config/locales/en.yml` under `en:`
       cancel: Cancel
     bulk_select:
       all: All
+```
+
+## 2. Optional Configurations for switching colors, theme gems
+
+### For Setting the Active Color
+
+Add `initializers/theme.rb`:
+
+```ruby
+# Bullet Train theme configuration.
+
+# The application's main color scheme.
+BulletTrain::Themes::Light.color = :blue
+
+# The orientation of the navbar.
+# BulletTrain::Themes::Light.navigation = :left
+#
+# The logo shown in the navbar. To tweak further, run `bin/resolve shared/menu/logo --eject`
+# BulletTrain::Themes::Light.show_logo_in_account = true
+```
+
+Add the following classes to your `html` tag for your layout:
+
+```erb
+<html class="theme-<%= BulletTrain::Themes::Light.color %> <%= "theme-secondary-#{BulletTrain::Themes::Light.secondary_color}" if BulletTrain::Themes::Light.secondary_color %>"
+```
+
+### For Switching Between Installed Themes
+
+Define `current_theme` in `application_helper`
+
+## 3. Using Locales for fields on new models
+
+
+## 4. Partials that require special instructions, exclusions
+
+### For using boolean-type fields (options, buttons)
+
+In `ApplicationController`, add this:
+
+```ruby
+include Fields::ControllerSupport
+```
+
+### For the file_field partial
+
+```ruby
+# in the model
+has_one_attached :file_field_value
+after_validation :remove_file_field_value, if: :file_field_value_removal?
+attr_accessor :file_field_value_removal
+def file_field_value_removal?
+def remove_file_field_value
+```
+
+```ruby
+# in the controller's strong_params
+:file_field_value,
+:file_field_value_removal,
+```
+
+### For `image`, `active_storage_image`
+
+See `account/users_helper` in BT core for implementing `photo_url_for_active_storage_attachment`
+
+## 5. Modifying ejected partials
+
+### For ejecting a theme partial and modifying it
+
+Add `bin/resolve`
+
+```ruby
+#!/usr/bin/env ruby
+
+# We redirect this script to a rake task because I don't know a better way to boot the Rails environment for this script.
+exec "rake \"bullet_train:resolve[#{ARGV.join(" ").gsub(",", "\\,")}]\""
 ```

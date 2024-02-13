@@ -8,7 +8,15 @@ To get a quick sense of the UI components, we encourage you to spin up a Bullet 
 
 Note: we also have [instructions for installing themes on other Rails projects](on-other-rails-projects.md).
 
-## Installation Instructions
+**Contents:**
+
+1. Installation Instructions
+2. Optional Configurations for switching colors, theme gems
+3. Using Locales for fields on new models
+4. Partials that require special instructions, exclusions
+5. Modifying ejected partials
+
+## 1. Installation Instructions
 
 ### Add the theme gem
 
@@ -334,3 +342,11 @@ And remove the `block` token:
 ```css
 @apply text-sm font-medium leading-5 text-gray-700 mb-1;
 ```
+
+## 2. Optional Configurations for switching colors, theme gems
+
+## 3. Using Locales for fields on new models
+
+## 4. Partials that require special instructions, exclusions
+
+## 5. Modifying ejected partials
