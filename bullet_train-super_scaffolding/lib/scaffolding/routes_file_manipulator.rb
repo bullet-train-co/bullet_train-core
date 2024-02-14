@@ -373,7 +373,7 @@ class Scaffolding::RoutesFileManipulator
         namespace_line_within = find_or_create_namespaces(child_namespaces, parent_block_start)
         routing_options = "except: collection_actions"
         routing_options += ", #{formatted_concerns}" if formatted_concerns
-        find_or_create_resource([child_resource], options: formatted_concerns, within: namespace_line_within)
+        find_or_create_resource([child_resource], options: routing_options, within: namespace_line_within)
         unless find_namespaces(child_namespaces, within)[child_namespaces.last]
           raise "tried to insert `namespace :#{child_namespaces.last}` but it seems we failed"
         end
