@@ -417,9 +417,4 @@ See [`account/users_helper` in BT core repo](https://github.com/bullet-train-co/
 
 ### For ejecting a theme partial and modifying it
 
-```
-curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/resolve" -o bin/resolve
-chmod +x bin/resolve
-```
-
-(TODO: move bin/resolve rake tasks over into bullet_train-themes)
+We recommend firing up a Bullet-Train project and using its `bin/resolve` (see docs on [Indirection](indirection)) to get a copy of the partial field locally to modify.
