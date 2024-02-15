@@ -210,7 +210,7 @@ end
 
 ## 3. Using Locales for fields on new models
 
-(TODO: Should have an example here of a tangible thing and concrete concept)
+(TODO: Should have an example here of a tangible thing and creative concept)
 
 ## 4. Partials that require special instructions, exclusions
 
