@@ -56,19 +56,17 @@ application.load(bulletTrainControllers)
 application.load(bulletTrainFieldControllers)
 ```
 
-**(This should be automated by a rake task)**
-
 ### Add `bin/theme` and `bin/link` bin stubs
 
-**(This should be automated by a rake task)**
+```
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/theme" -o bin/theme
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/link" -o bin/link
+chmod +x bin/theme bin/link
+```
 
 ### Update `tailwind.config.js`
 
 Replace with these contents:
-
-**(This should be automated via a rake task, merged with AI if there's an existing esbuild file)**
-
-**(This is a merged tailwind config we'll need to manually maintain from this point on)**
 
 ```js
 const path = require('path');
@@ -127,31 +125,39 @@ module.exports = themeConfig
 
 In `package.json`, add or replace the `build:css` entry under `scripts` with:
 
-**(This should be automated via a rake task)**
-
 ```json
 "build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.light.css",
 ```
 
 ### Import the Theme Style Sheet
 
-**(This should be automated by a rake task)**
-
-To your application.tailwind.css file, add the following line:
+To your `application.tailwind.css` file, add the following line:
 
 ```css
 @import "$ThemeStylesheetsDir/light/application.css";
 ```
 
-### Add Themify Icons
+### Add Themify Icons and jQuery (for now)
 
-(This should be imported via the npm package automatically)
+Note: jQuery is needed for some of our components, but defining `window.$` won't be required soon. See PR https://github.com/bullet-train-co/bullet_train-core/pull/765
+
+```
+yarn add @icon/themify-icons jquery
+```
+
+To your `application.js`, add the following line:
+
+```js
+import "jquery" from jquery
+window.jQuery = jquery
+window.$ = jquery
+
+require("@icon/themify-icons/themify-icons.css")
+```
 
 ### Update `esbuild.config.js`
 
 Replace it with these contents.
-
-**(This should be automated via a rake task, merged with AI if there's an existing esbuild file)**
 
 ```js
 #!/usr/bin/env node
@@ -345,8 +351,75 @@ And remove the `block` token:
 
 ## 2. Optional Configurations for switching colors, theme gems
 
+### For Setting the Active Color
+
+```
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/initializers/theme.rb" -o initializers/theme.rb
+```
+
+Add the following classes to your `html` tag for your layout:
+
+```erb
+<html class="theme-<%= BulletTrain::Themes::Light.color %> <%= "theme-secondary-#{BulletTrain::Themes::Light.secondary_color}" if BulletTrain::Themes::Light.secondary_color %>"
+```
+
+### For Switching Between Installed Themes
+
+If you'd like to create your own theme but would still like to build on top of `:light`, you'll need to have both gems installed and you'll be able to switch the current theme this way.
+
+Define `current_theme` in `app/helpers/application_helper.rb`
+
+```
+module ApplicationHelper
+  def current_theme
+    :light
+  end
+end
+
+```
+
 ## 3. Using Locales for fields on new models
+
+(TODO: Should have an example here of a tangible thing and concrete concept)
 
 ## 4. Partials that require special instructions, exclusions
 
+### For using boolean-type fields (options, buttons)
+
+In `ApplicationController`, add this:
+
+```ruby
+include Fields::ControllerSupport
+```
+
+### For the file_field partial
+
+```ruby
+# in the model
+has_one_attached :file_field_value
+after_validation :remove_file_field_value, if: :file_field_value_removal?
+attr_accessor :file_field_value_removal
+def file_field_value_removal?
+def remove_file_field_value
+```
+
+```ruby
+# in the controller's strong_params
+:file_field_value,
+:file_field_value_removal,
+```
+
+### For `image`, `active_storage_image`
+
+See [`account/users_helper` in BT core repo](https://github.com/bullet-train-co/bullet_train-core/blob/main/bullet_train/app/helpers/account/users_helper.rb) for implementing `photo_url_for_active_storage_attachment`
+
 ## 5. Modifying ejected partials
+
+### For ejecting a theme partial and modifying it
+
+```
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/resolve" -o bin/resolve
+chmod +x bin/resolve
+```
+
+(TODO: move bin/resolve rake tasks over into bullet_train-themes)
