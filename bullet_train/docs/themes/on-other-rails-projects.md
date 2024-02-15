@@ -64,74 +64,21 @@ application.load(bulletTrainControllers)
 application.load(bulletTrainFieldControllers)
 ```
 
-**(This should be automated by a rake task)**
+### Overwrite tailwind and esbuild config files, add bin stubs from Bullet Train
 
-### Add `bin/theme` and `bin/link` bin stubs
-
-**(This should be automated by a rake task)**
-
-### Update `tailwind.config.js`
-
-Replace with these contents:
-
-**(This should be automated via a rake task, merged with AI if there's an existing esbuild file)**
-
-```js
-const path = require('path');
-const { execSync } = require("child_process");
-const glob  = require('glob').sync
-
-if (!process.env.THEME) {
-  throw "tailwind.config.js: missing process.env.THEME"
-  process.exit(1)
-}
-  
-const themeConfigFile = execSync(`bundle exec bin/theme tailwind-config ${process.env.THEME}`).toString().trim()
-let themeConfig = require(themeConfigFile)
-
-// *** Uncomment these if required for your overrides ***
-
-// const defaultTheme = require('tailwindcss/defaultTheme')
-// const colors = require('tailwindcss/colors')
-
-// *** Add your own overrides here ***
-
-// themeConfig.theme.extend.fontFamily.sans = ['Custom Font Name', ...themeConfig.theme.extend.fontFamily.sans]
-// themeConfig.theme.extend.fontSize['2xs'] = '.75rem'
-// themeConfig.content.push('./app/additional/path')
-// themeConfig.plugins.push(require('additional-tailwind-plugin'))
-
-module.exports = themeConfig
 ```
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/tailwind.config.js" -o tailwind.config.js
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/postcss.config.js" -o postcss.config.js
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/esbuild.config.js" -o esbuild.config.js
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/theme" -o bin/theme
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/link" -o bin/link
+chmod +x bin/theme bin/link
 
-### Update `postcss.config.js`
-
-Replace with these contents:
-
-**(This should be automated via a rake task, merged with AI if there's an existing esbuild file)**
-
-```js
-const { execSync } = require("child_process");
-
-const postcssImportConfigFile = execSync(`bundle exec bin/theme postcss-import-config ${process.env.THEME}`).toString().trim()
-const postcssImportConfig = require(postcssImportConfigFile)
-
-module.exports = {
-  plugins: [
-    require('postcss-import')(postcssImportConfig),
-    require('postcss-extend-rule'),
-    require('tailwindcss/nesting'),
-    require('tailwindcss'),
-    require('autoprefixer')
-  ]
-}
 ```
 
 ### Update `build:css` in `package.json`
 
 In `package.json`, add or replace the `build:css` entry under `scripts` with:
-
-**(This should be automated via a rake task)**
 
 ```json
 "build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.light.css"
@@ -144,142 +91,28 @@ In `package.json`, add or replace the `build:css` entry under `scripts` with:
 
 ### Import the Theme Style Sheet
 
-**(This should be automated by a rake task)**
-
-To your application.tailwind.css file, add the following line:
+To your `application.tailwind.css` file, add the following line:
 
 ```css
 @import "$ThemeStylesheetsDir/light/application.css";
 ```
 
-### Add Themify Icons
+### Add Themify Icons and jQuery (for now)
 
-(This should be imported via the npm package automatically)
+Note: jQuery is needed for some of our components, but defining `window.$` won't be required soon. See PR https://github.com/bullet-train-co/bullet_train-core/pull/765
 
-### Update `esbuild.config.js`
+```
+yarn add @icon/themify-icons jquery
+```
 
-Replace it with these contents.
-
-**(This should be automated via a rake task, merged with AI if there's an existing esbuild file)**
+To your `application.js`, add the following line:
 
 ```js
-const path = require('path');
-const { execSync } = require("child_process");
-const glob = require('glob').sync
+import "jquery" from jquery
+window.jQuery = jquery
+window.$ = jquery
 
-// Glob plugin derived from:
-// https://github.com/thomaschaaf/esbuild-plugin-import-glob
-// https://github.com/xiaohui-zhangxh/jsbundling-rails/commit/b15025dcc20f664b2b0eb238915991afdbc7cb58
-const ImportGlobPlugin = () => ({
-  name: 'require-context',
-  setup: (build) => {
-    build.onResolve({ filter: /\*/ }, async (args) => {
-      console.log('resolveDir', args.resolveDir)
-      if (args.resolveDir === '') {
-        return; // Ignore unresolvable paths
-      }
-      console.log('path', args.path)
-      return {
-        path: args.path,
-        namespace: 'import-glob',
-        pluginData: {
-          resolveDir: args.resolveDir,
-        },
-      };
-    });
-
-    build.onLoad({ filter: /.*/, namespace: 'import-glob' }, async (args) => {
-      const files = (
-        glob(args.path, {
-          cwd: args.pluginData.resolveDir,
-        })
-      ).sort();
-
-      let importerCode = `
-        ${files
-          .map((module, index) => `import * as module${index} from './${module}'`)
-          .join(';')}
-        export default [${files
-          .map((module, index) => `module${index}.default`)
-          .join(',')}];
-        export const context = {
-          ${files.map((module, index) => `'${module}': module${index}.default`).join(',')}
-        }
-      `;
-
-      return { contents: importerCode, resolveDir: args.pluginData.resolveDir };
-    });
-  },
-});
-
-let themeFile = ""
-if (process.env.THEME) {
-  themeFile = execSync(`bundle exec bin/theme javascript ${process.env.THEME}`).toString().trim()
-}
-
-// Could also swap to packs?
-const otherEntrypoints = {}
-glob("app/javascript/entrypoints/**/*.*")
-  .forEach((file) => {
-    // strips app/javascript/entrypoints from the key.
-    const key = path.join(path.dirname(file), path.parse(file).name).split(path.sep + "entrypoints" + path.sep)[1]
-    const value = "." + path.sep + path.join(path.dirname(file), path.basename(file))
-    otherEntrypoints[key] = value
-  });
-
-const themeEntrypoints = {}
-if (process.env.THEME) {
-  themeEntrypoints[`application.${process.env.THEME}`] = themeFile
-}
-
-let build_details = {
-  entryPoints: {
-    ...otherEntrypoints,
-    "application": path.join(process.cwd(), "app/javascript/application.js"),
-    ...themeEntrypoints,
-  },
-  define: {
-    global: "window"
-  },
-  bundle: true,
-  // ESM + Splitting will only work if the script is type="module"
-  // splitting: true,
-  // format: "esm",
-  format: "iife",
-  sourcemap: true,
-  outdir: path.join(process.cwd(), "app/assets/builds"),
-  loader: {
-    ".png": "file",
-    ".jpg": "file",
-    ".svg": "file",
-    ".woff": "file",
-    ".woff2": "file",
-    ".ttf": "file",
-    ".eot": "file",
-  },
-  plugins: [
-    ImportGlobPlugin()
-  ],
-  // TODO: Silencing warnings until the charset warning is fixed.
-  logLevel: 'error'
-}
-
-async function serve_with_esbuild() {
-  let ctx = await require("esbuild").context(build_details)
-
-  await ctx.watch()
-
-  let { host, port } = await ctx.serve({
-    servedir: path.join(process.cwd(), "app/assets/builds")
-  })
-}
-
-if(process.argv.includes("--watch")) {
-  serve_with_esbuild()
-} else {
-  require("esbuild").build(build_details)
-}
-
+require("@icon/themify-icons/themify-icons.css")
 ```
 
 ### Add Locale Strings
@@ -348,19 +181,8 @@ Add these to your `config/locales/en.yml` under `en:`
 
 ### For Setting the Active Color
 
-Add `initializers/theme.rb`:
-
-```ruby
-# Bullet Train theme configuration.
-
-# The application's main color scheme.
-BulletTrain::Themes::Light.color = :blue
-
-# The orientation of the navbar.
-# BulletTrain::Themes::Light.navigation = :left
-#
-# The logo shown in the navbar. To tweak further, run `bin/resolve shared/menu/logo --eject`
-# BulletTrain::Themes::Light.show_logo_in_account = true
+```
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/initializers/theme.rb" -o initializers/theme.rb
 ```
 
 Add the following classes to your `html` tag for your layout:
@@ -371,10 +193,22 @@ Add the following classes to your `html` tag for your layout:
 
 ### For Switching Between Installed Themes
 
-Define `current_theme` in `application_helper`
+If you'd like to create your own theme but would still like to build on top of `:light`, you'll need to have both gems installed and you'll be able to switch the current theme this way.
+
+Define `current_theme` in `app/helpers/application_helper.rb`
+
+```
+module ApplicationHelper
+  def current_theme
+    :light
+  end
+end
+
+```
 
 ## 3. Using Locales for fields on new models
 
+(TODO: Should have an example here of a tangible thing and concrete concept)
 
 ## 4. Partials that require special instructions, exclusions
 
@@ -405,17 +239,15 @@ def remove_file_field_value
 
 ### For `image`, `active_storage_image`
 
-See `account/users_helper` in BT core for implementing `photo_url_for_active_storage_attachment`
+See [`account/users_helper` in BT core repo](https://github.com/bullet-train-co/bullet_train-core/blob/main/bullet_train/app/helpers/account/users_helper.rb) for implementing `photo_url_for_active_storage_attachment`
 
 ## 5. Modifying ejected partials
 
 ### For ejecting a theme partial and modifying it
 
-Add `bin/resolve`
-
-```ruby
-#!/usr/bin/env ruby
-
-# We redirect this script to a rake task because I don't know a better way to boot the Rails environment for this script.
-exec "rake \"bullet_train:resolve[#{ARGV.join(" ").gsub(",", "\\,")}]\""
 ```
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/resolve" -o bin/resolve
+chmod +x bin/resolve
+```
+
+(TODO: move bin/resolve rake tasks over into bullet_train-themes)
