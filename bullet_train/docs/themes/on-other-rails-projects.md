@@ -4,6 +4,8 @@ Bullet Train themes can be installed on Vanilla Rails projects.
 
 Our main theme, called `Light`, uses `erb` partials to give you native Rails views with Hotwire-powered components. It's built on `tailwindcss`, uses `postcss` to allow for local CSS overrides and uses `esbuild` for fast javascript compilation and to support javascript-side CSS imports.
 
+In addition to providing a nice set of UI components, you'll get access to [`nice_partials`](https://github.com/bullet-train-co/nice_partials), Bullet-Train's own lightweight answer for creating `erb` partials with ad-hoc named content areas, which we think is just the right amount of magic for making `erb`-based components.
+
 Note: we have [special instructions for installing themes on Jumpstart PRO projects](on-jumpstart-pro-projects.md).
 
 **Contents:**

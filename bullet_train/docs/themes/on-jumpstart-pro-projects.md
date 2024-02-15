@@ -6,6 +6,8 @@ Like Jumpstart PRO, Bullet Train themes are built using `tailwindcss` and use `e
 
 To get a quick sense of the UI components, we encourage you to spin up a Bullet Train project and navigate through the screens to create a "Creative Concept" and "Tangible Thing" resources.
 
+In addition to providing a nice set of UI components, you'll get access to [`nice_partials`](https://github.com/bullet-train-co/nice_partials), Bullet-Train's own lightweight answer for creating `erb` partials with ad-hoc named content areas, which we think is just the right amount of magic for making `erb`-based components.
+
 Note: we also have [instructions for installing themes on other Rails projects](on-other-rails-projects.md).
 
 **Contents:**
