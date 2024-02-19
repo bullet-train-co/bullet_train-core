@@ -59,18 +59,19 @@ module BulletTrain
             end
 
             if @options["skip-migration-generation"]
-              transformed_data.each do |klass, _|
-                if klass.safe_constantize.nil?
-                  puts ""
-                  puts "We could not find `#{klass}`.".red
-                  puts "🚨 Before doing the actual Super Scaffolding, you'll need to generate the models like so:".red
-                  puts ""
-                  transformed_data.each {|_, migration| puts "  #{migration}".red}
-                  puts ""
-                  puts "However, don't do the `rake db:migrate` until after you re-run Super Scaffolding, as it will need to update some settings in those migrations.".red
-                  puts ""
-                  return
-                end
+              undefined_models = transformed_data.keys.each {|key| key.safe_constantize.nil?}
+              if undefined_models.any?
+                puts ""
+                puts "We could not find the following models:".red
+                undefined_models.each {|model| puts "  #{model}".red}
+                puts ""
+                puts "🚨 Before doing the actual Super Scaffolding, you'll need to generate the models like so:".red
+                puts ""
+                transformed_data.each { |_, migration| puts "  #{migration}".red }
+                puts ""
+                puts "However, don't do the `rake db:migrate` until after you re-run Super Scaffolding, as it will need to update some settings in those migrations.".red
+                puts ""
+                return
               end
             else
               transformed_data.each do |klass, generation_command|
