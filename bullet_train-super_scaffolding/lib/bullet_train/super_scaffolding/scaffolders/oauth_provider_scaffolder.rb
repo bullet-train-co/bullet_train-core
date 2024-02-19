@@ -59,11 +59,11 @@ module BulletTrain
             end
 
             if @options["skip-migration-generation"]
-              undefined_models = transformed_data.keys.each {|key| key.safe_constantize.nil?}
+              undefined_models = transformed_data.keys.each { |key| key.safe_constantize.nil? }
               if undefined_models.any?
                 puts ""
                 puts "We could not find the following models:".red
-                undefined_models.each {|model| puts "  #{model}".red}
+                undefined_models.each { |model| puts "  #{model}".red }
                 puts ""
                 puts "🚨 Before doing the actual Super Scaffolding, you'll need to generate the models like so:".red
                 puts ""
