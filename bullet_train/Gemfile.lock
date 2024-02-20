@@ -77,6 +77,8 @@ PATH
   remote: ../bullet_train-themes
   specs:
     bullet_train-themes (1.6.30)
+      bullet_train-fields
+      nice_partials (~> 0.9)
       rails (>= 6.0.0)
 
 PATH
