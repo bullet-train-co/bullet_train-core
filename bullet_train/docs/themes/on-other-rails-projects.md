@@ -222,7 +222,17 @@ end
 
 ## 3. Using Locales for fields on new models
 
-(TODO: Should have an example here of a tangible thing and creative concept)
+The theme's field partials work best with locale strings that are defined for the model you're creating.
+
+Example: you've created a Project model. Here we'll create a `projects.en.yml`
+
+1. Run `curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train-core/main/bullet_train-super_scaffolding/config/locales/en/scaffolding/completely_concrete/tangible_things.en.yml" -o config/locales/projects.en.yml`
+2. Search and replace `projects.en.yml` for `Tangible Things`, `Tangible Thing`, `tangible_things` and `tangible_thing`.
+3. Remove strings you won't be using. In particular, look for comments with "skip" or "scaffolding".
+
+Some fields use locale strings to drive their `options`. In the `tangible_things.en.yml` template file, look for `super_select_value`, `multiple_option_values` and others.
+
+To learn more about how these locales are generated in Bullet Train, see the documentation on [Bullet Train's Super Scaffolding](/docs/super-scaffolding.md)
 
 ## 4. Partials that require special instructions, exclusions
 
