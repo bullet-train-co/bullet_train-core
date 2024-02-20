@@ -94,6 +94,15 @@ Remove the following line from `app/assets/config/manifest.js`
 //= link_directory ../stylesheets .css
 ```
 
+### Add `stylesheet_link_tag` to `<head>`
+
+Make sure you have the following two lines in your `<head>`:
+
+```erb
+<%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "application.light", media: "all", "data-turbo-track": "reload" %>
+```
+
 ### Import the Theme Style Sheet
 
 To your `application.tailwind.css` file, add the following line:
