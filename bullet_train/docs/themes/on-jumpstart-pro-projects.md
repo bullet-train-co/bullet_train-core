@@ -12,11 +12,11 @@ Note: we also have [instructions for installing themes on other Rails projects](
 
 **Contents:**
 
-1. [Installation Instructions](#1-installation-instructions)
-2. [Optional Configurations for switching colors, theme gems](#2-optional-configurations-for-switching-colors-theme-gems)
-3. [Using Locales for fields on new models](#3-using-locales-for-fields-on-new-models)
-4. [Partials that require special instructions, exclusions](#4-partials-that-require-special-instructions-exclusions)
-5. [Modifying ejected partials](#5-modifying-ejected-partials)
+1. Installation Instructions
+2. Optional Configurations for switching colors, theme gems
+3. Using Locales for fields on new models
+4. Partials that require special instructions, exclusions
+5. Modifying ejected partials
 
 ## 1. Installation Instructions
 
