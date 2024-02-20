@@ -72,7 +72,6 @@ PATH
   remote: .
   specs:
     bullet_train-themes-tailwind_css (1.6.30)
-      bullet_train
       bullet_train-themes
       rails (>= 6.0.0)
 
@@ -481,6 +480,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
