@@ -86,18 +86,17 @@ In `package.json`, replace the `build` and `build:css` entries under `scripts` w
 "build": "THEME=\"light\" node esbuild.config.js",
 "build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css"
 ```
+### Update esbuild.config.js
 
-### Update manifest.js
+Remove or comment out the following line from `esbuild.config.js`:
 
-Remove the following line from `app/assets/config/manifest.js`
-
-```
-//= link_directory ../stylesheets .css
+```js
+"intl-tel-input-utils": path.join(process.cwd(), "app/javascript/intl-tel-input-utils.js"),
 ```
 
 ### Add `stylesheet_link_tag` to `<head>`
 
-Make sure you have the following two lines in your `<head>`:
+Make sure you have the following two lines in your `<head>`, which should be defined in `app/views/layouts/application.html.erb`:
 
 ```erb
 <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
