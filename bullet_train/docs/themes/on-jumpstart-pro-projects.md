@@ -379,8 +379,12 @@ module ApplicationHelper
     :light
   end
 end
-
 ```
+
+To change to use a different theme:
+
+1. Change the value returned by `current_theme` to the new theme name
+2. Change the name of the `THEME` env var defined in `build:css` in `package.json`
 
 ## 3. Using Locales for fields on new models
 
