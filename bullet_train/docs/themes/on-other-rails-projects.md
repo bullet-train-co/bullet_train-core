@@ -108,7 +108,7 @@ Make sure you have the following two lines in your `<head>`:
 To your `application.tailwind.css` file, add the following line:
 
 ```css
-@import "$ThemeStylesheetsDir/light/application.css";
+@import "$ThemeStylesheetsDir/application.css";
 ```
 
 ### Add Themify Icons and jQuery (for now)
@@ -223,7 +223,6 @@ To change to use a different theme:
 
 1. Change the value returned by `current_theme` to the new theme name
 2. Change the name of the `THEME` env var defined in `build:css` in `package.json`
-3. Change the subdir path of the `$ThemeStylesheetsDir` in `application.tailwind.css`
 
 ## 3. Using Locales for fields on new models
 
