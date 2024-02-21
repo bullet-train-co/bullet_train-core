@@ -83,7 +83,7 @@ chmod +x bin/theme bin/link
 In `package.json`, add or replace the `build:css` entry under `scripts` with:
 
 ```json
-"build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.light.css"
+"build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css"
 ```
 
 ### Update manifest.js
@@ -100,7 +100,7 @@ Make sure you have the following two lines in your `<head>`:
 
 ```erb
 <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
-<%= stylesheet_link_tag "application.light", media: "all", "data-turbo-track": "reload" %>
+<%= stylesheet_link_tag "application.tailwind", media: "all", "data-turbo-track": "reload" %>
 ```
 
 ### Import the Theme Style Sheet
