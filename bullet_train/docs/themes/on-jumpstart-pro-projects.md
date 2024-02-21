@@ -25,7 +25,7 @@ Note: we also have [instructions for installing themes on other Rails projects](
 These instructions assume you're installing the `Light` theme bundled with Bullet Train.
 
 ```
-$ bundle add bullet_train-themes-light
+bundle add bullet_train-themes-light
 ```
 
 Or add the following to your `Gemfile`:
@@ -37,7 +37,7 @@ gem "bullet_train-themes-light"
 And then run:
 
 ```
-$ bundle install
+bundle install
 ```
 
 ### Add `npm` packages
@@ -45,7 +45,7 @@ $ bundle install
 The `Light` theme requires the following npm packages to be installed
 
 ```
-$ yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext
+yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext
 ```
 
 Update your `app/javascript/controllers/index.js` with the following lines:

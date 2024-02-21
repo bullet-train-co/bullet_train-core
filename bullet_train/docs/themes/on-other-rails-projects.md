@@ -25,7 +25,7 @@ You'll need to make sure your Rails project is set up to use `esbuild`, `tailwin
 The easiest way to see what your project should include is to create a separate project, for reference, generated via this command:
 
 ```
-$ rails new rails-new-esbuild-tailwind-postcss --css tailwind --javascript esbuild
+rails new rails-new-esbuild-tailwind-postcss --css tailwind --javascript esbuild
 ```
 
 ### Add the theme gem
@@ -33,7 +33,7 @@ $ rails new rails-new-esbuild-tailwind-postcss --css tailwind --javascript esbui
 These instructions assume you're installing the `Light` theme bundled with Bullet Train.
 
 ```
-$ bundle add bullet_train-themes-light
+bundle add bullet_train-themes-light
 ```
 
 Or add the following to your `Gemfile`:
@@ -45,7 +45,7 @@ gem "bullet_train-themes-light"
 And then run:
 
 ```
-$ bundle install
+bundle install
 ```
 
 ### Add `npm` packages
@@ -53,7 +53,7 @@ $ bundle install
 The `Light` theme requires the following npm packages to be installed
 
 ```
-$ yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext
+yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext
 ```
 
 Update your `app/javascript/controllers/index.js` with the following lines:
