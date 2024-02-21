@@ -122,7 +122,7 @@ yarn add @icon/themify-icons jquery
 To your `application.js`, add the following line:
 
 ```js
-import "jquery" from jquery
+import jquery from "jquery"
 window.jQuery = jquery
 window.$ = jquery
 

@@ -300,7 +300,7 @@ yarn add @icon/themify-icons jquery
 To your `application.js`, add the following line:
 
 ```js
-import "jquery" from jquery
+import jquery from "jquery"
 window.jQuery = jquery
 window.$ = jquery
 
@@ -371,7 +371,7 @@ Add these to your `config/locales/en.yml` under `en:`
 
 ### Disable `display: block` on `label` elements
 
-In `app/assets/stylesheets/components/forms.css`, find the line:
+In `app/assets/stylesheets/components/forms.css`, find the line under `label {`:
 
 ```css
 @apply block text-sm font-medium leading-5 text-gray-700 mb-1;
