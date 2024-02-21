@@ -111,7 +111,7 @@ To your `application.tailwind.css` file, add the following line:
 @import "$ThemeStylesheetsDir/application.css";
 ```
 
-### Add Themify Icons and jQuery (for now)
+### Add Themify Icons, jQuery (for now) and trix editor support
 
 Note: jQuery is needed for some of our components, but defining `window.$` won't be required soon. See PR https://github.com/bullet-train-co/bullet_train-core/pull/765
 
@@ -127,6 +127,9 @@ window.jQuery = jquery
 window.$ = jquery
 
 require("@icon/themify-icons/themify-icons.css")
+
+import { trixEditor } from "@bullet-train/fields"
+trixEditor()
 ```
 
 ### Add Locale Strings
