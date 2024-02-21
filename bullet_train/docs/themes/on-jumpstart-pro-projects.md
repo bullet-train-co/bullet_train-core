@@ -186,7 +186,7 @@ if (process.argv.includes("--reload")) {
 
 ### Update `tailwind.config.js`
 
-Replace with these contents:
+Replace with these contents, which merge the Bullet Train-specific tailwind configs with those of Jumpstart PRO:
 
 ```js
 const path = require('path');
