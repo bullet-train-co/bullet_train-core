@@ -53,7 +53,7 @@ bundle install
 The `Light` theme requires the following npm packages to be installed
 
 ```
-yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext postcss-extend-rule
+yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext postcss-extend-rule postcss-import
 ```
 
 Update your `app/javascript/controllers/index.js` with the following lines:
