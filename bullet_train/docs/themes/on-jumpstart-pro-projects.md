@@ -245,9 +245,10 @@ module.exports = themeConfig
 
 ### Update `build:css` in `package.json`
 
-In `package.json`, add or replace the `build:css` entry under `scripts` with:
+In `package.json`, replace the `build` and `build:css` entries under `scripts` with:
 
 ```json
+"build": "THEME=\"light\" node esbuild.config.mjs",
 "build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css",
 ```
 

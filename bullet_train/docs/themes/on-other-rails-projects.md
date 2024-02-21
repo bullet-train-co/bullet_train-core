@@ -80,9 +80,10 @@ chmod +x bin/theme bin/link
 
 ### Update `build:css` in `package.json`
 
-In `package.json`, add or replace the `build:css` entry under `scripts` with:
+In `package.json`, replace the `build` and `build:css` entries under `scripts` with:
 
 ```json
+"build": "THEME=\"light\" node esbuild.config.js",
 "build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css"
 ```
 
@@ -225,7 +226,7 @@ end
 To change to use a different theme:
 
 1. Change the value returned by `current_theme` to the new theme name
-2. Change the name of the `THEME` env var defined in `build:css` in `package.json`
+2. Change the name of the `THEME` env var defined in `build` and `build:css` in `package.json`
 
 ## 3. Using Locales for fields on new models
 
