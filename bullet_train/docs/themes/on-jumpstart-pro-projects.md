@@ -66,7 +66,7 @@ curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin
 chmod +x bin/theme bin/link
 ```
 
-### Update `esbuild.config.js`
+### Update `esbuild.config.mjs`
 
 Replace it with these contents.
 
