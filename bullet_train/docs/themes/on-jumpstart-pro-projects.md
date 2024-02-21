@@ -186,7 +186,9 @@ if (process.argv.includes("--reload")) {
 
 ### Update `tailwind.config.js`
 
-Replace with these contents, which merge the Bullet Train-specific tailwind configs with those of Jumpstart PRO:
+Replace with these contents, which merge the Bullet Train-specific tailwind configs with those of Jumpstart PRO.
+
+_Note: After this step, you might get an error on build about a missing `process.env.THEME`. Follow with the next step to fix this error._
 
 ```js
 const path = require('path');
