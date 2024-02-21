@@ -66,97 +66,6 @@ curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin
 chmod +x bin/theme bin/link
 ```
 
-### Update `tailwind.config.js`
-
-Replace with these contents:
-
-```js
-const path = require('path');
-const { execSync } = require("child_process");
-const glob  = require('glob').sync
-
-if (!process.env.THEME) {
-  throw "tailwind.config.js: missing process.env.THEME"
-  process.exit(1)
-}
-  
-const themeConfigFile = execSync(`bundle exec bin/theme tailwind-config ${process.env.THEME}`).toString().trim()
-let themeConfig = require(themeConfigFile)
-
-const colors = require('tailwindcss/colors')
-const defaultTheme = require('tailwindcss/defaultTheme')
-
-themeConfig.darkMode = 'class'
-
-themeConfig.plugins.push(require('@tailwindcss/aspect-ratio'))
-
-themeConfig.content = [
-  ...new Set([
-    ...themeConfig.content,
-    './app/components/**/*.rb',
-    './app/helpers/**/*.rb',
-    './app/javascript/**/*.js',
-    './app/views/**/*.erb',
-    './app/views/**/*.haml',
-    './app/views/**/*.slim',
-    './lib/jumpstart/app/views/**/*.erb',
-    './lib/jumpstart/app/helpers/**/*.rb'
-  ])
-]
-
-themeConfig.theme.extend.colors = {
-  ...themeConfig.theme.extend.colors,
-  primary: colors.blue,
-  secondary: colors.emerald,
-  tertiary: colors.gray,
-  danger: colors.red,
-  gray: colors.neutral,
-  "code-400": "#fefcf9",
-  "code-600": "#3c455b",
-}
-
-themeConfig.theme.extend.fontFamily = {
-  ...themeConfig.theme.extend.fontFamily,
-  sans: ['Inter', ...defaultTheme.fontFamily.sans],
-}
-
-module.exports = themeConfig
-```
-
-### Update `build:css` in `package.json`
-
-In `package.json`, add or replace the `build:css` entry under `scripts` with:
-
-```json
-"build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.light.css",
-```
-
-### Import the Theme Style Sheet
-
-To your `application.tailwind.css` file, add the following line:
-
-```css
-@import "$ThemeStylesheetsDir/light/application.css";
-```
-
-### Add Themify Icons and jQuery (for now)
-
-Note: jQuery is needed for some of our components, but defining `window.$` won't be required soon. See PR https://github.com/bullet-train-co/bullet_train-core/pull/765
-
-```
-yarn add @icon/themify-icons jquery
-```
-
-To your `application.js`, add the following line:
-
-```js
-import "jquery" from jquery
-window.jQuery = jquery
-window.$ = jquery
-
-require("@icon/themify-icons/themify-icons.css")
-```
-
 ### Update `esbuild.config.js`
 
 Replace it with these contents.
@@ -273,6 +182,97 @@ if (process.argv.includes("--reload")) {
 } else {
   esbuild.build(config)
 }
+```
+
+### Update `tailwind.config.js`
+
+Replace with these contents:
+
+```js
+const path = require('path');
+const { execSync } = require("child_process");
+const glob  = require('glob').sync
+
+if (!process.env.THEME) {
+  throw "tailwind.config.js: missing process.env.THEME"
+  process.exit(1)
+}
+  
+const themeConfigFile = execSync(`bundle exec bin/theme tailwind-config ${process.env.THEME}`).toString().trim()
+let themeConfig = require(themeConfigFile)
+
+const colors = require('tailwindcss/colors')
+const defaultTheme = require('tailwindcss/defaultTheme')
+
+themeConfig.darkMode = 'class'
+
+themeConfig.plugins.push(require('@tailwindcss/aspect-ratio'))
+
+themeConfig.content = [
+  ...new Set([
+    ...themeConfig.content,
+    './app/components/**/*.rb',
+    './app/helpers/**/*.rb',
+    './app/javascript/**/*.js',
+    './app/views/**/*.erb',
+    './app/views/**/*.haml',
+    './app/views/**/*.slim',
+    './lib/jumpstart/app/views/**/*.erb',
+    './lib/jumpstart/app/helpers/**/*.rb'
+  ])
+]
+
+themeConfig.theme.extend.colors = {
+  ...themeConfig.theme.extend.colors,
+  primary: colors.blue,
+  secondary: colors.emerald,
+  tertiary: colors.gray,
+  danger: colors.red,
+  gray: colors.neutral,
+  "code-400": "#fefcf9",
+  "code-600": "#3c455b",
+}
+
+themeConfig.theme.extend.fontFamily = {
+  ...themeConfig.theme.extend.fontFamily,
+  sans: ['Inter', ...defaultTheme.fontFamily.sans],
+}
+
+module.exports = themeConfig
+```
+
+### Update `build:css` in `package.json`
+
+In `package.json`, add or replace the `build:css` entry under `scripts` with:
+
+```json
+"build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.light.css",
+```
+
+### Import the Theme Style Sheet
+
+To your `application.tailwind.css` file, add the following line:
+
+```css
+@import "$ThemeStylesheetsDir/light/application.css";
+```
+
+### Add Themify Icons and jQuery (for now)
+
+Note: jQuery is needed for some of our components, but defining `window.$` won't be required soon. See PR https://github.com/bullet-train-co/bullet_train-core/pull/765
+
+```
+yarn add @icon/themify-icons jquery
+```
+
+To your `application.js`, add the following line:
+
+```js
+import "jquery" from jquery
+window.jQuery = jquery
+window.$ = jquery
+
+require("@icon/themify-icons/themify-icons.css")
 ```
 
 ### Add Locale Strings

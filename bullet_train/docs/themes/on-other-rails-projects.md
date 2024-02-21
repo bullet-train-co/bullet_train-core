@@ -69,9 +69,9 @@ application.load(bulletTrainFieldControllers)
 ### Overwrite tailwind and esbuild config files, add bin stubs from Bullet Train
 
 ```
-curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/tailwind.config.js" -o tailwind.config.js
-curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/postcss.config.js" -o postcss.config.js
 curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/esbuild.config.js" -o esbuild.config.js
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/postcss.config.js" -o postcss.config.js
+curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/tailwind.config.js" -o tailwind.config.js
 curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/theme" -o bin/theme
 curl -L "https://raw.githubusercontent.com/bullet-train-co/bullet_train/main/bin/link" -o bin/link
 chmod +x bin/theme bin/link
