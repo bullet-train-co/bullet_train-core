@@ -45,7 +45,7 @@ bundle install
 The `Light` theme requires the following npm packages to be installed
 
 ```
-yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext
+yarn add @bullet-train/bullet-train @bullet-train/fields autoprefixer @rails/actiontext postcss-extend-rule
 ```
 
 Update your `app/javascript/controllers/index.js` with the following lines:
@@ -258,6 +258,27 @@ Make sure you have the following two lines in your `<head>`, which should be def
 ```erb
 <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
 <%= stylesheet_link_tag "application.tailwind", media: "all", "data-turbo-track": "reload" %>
+```
+
+### Update `postcss.config.js`
+
+Replace with these contents:
+
+```js
+const { execSync } = require("child_process");
+
+const postcssImportConfigFile = execSync(`bundle exec bin/theme postcss-import-config ${process.env.THEME}`).toString().trim()
+const postcssImportConfig = require(postcssImportConfigFile)
+
+module.exports = {
+  plugins: [
+    require('postcss-import')(postcssImportConfig),
+    require('postcss-extend-rule'),
+    require('tailwindcss/nesting'),
+    require('tailwindcss'),
+    require('autoprefixer')
+  ]
+}
 ```
 
 ### Import the Theme Style Sheet
