@@ -111,6 +111,24 @@ To your `application.tailwind.css` file, add the following line:
 @import "$ThemeStylesheetsDir/application.css";
 ```
 
+Also be sure to replace the following lines:
+
+```css
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+```
+
+To the following lines:
+
+```css
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+```
+
+Unless this is done, `postcss-import` doesn't work correctly.
+
 ### Add Themify Icons, jQuery (for now) and trix editor support
 
 Note: jQuery is needed for some of our components, but defining `window.$` won't be required soon. See PR https://github.com/bullet-train-co/bullet_train-core/pull/765
