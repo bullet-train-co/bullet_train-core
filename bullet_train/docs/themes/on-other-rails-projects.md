@@ -96,11 +96,12 @@ Remove or comment out the following line from `esbuild.config.js`:
 
 ### Add `stylesheet_link_tag` to `<head>`
 
-Make sure you have the following two lines in your `<head>`, which should be defined in `app/views/layouts/application.html.erb`:
+Make sure you have the following three lines in your `<head>`, which should be defined in `app/views/layouts/application.html.erb`:
 
 ```erb
 <%= stylesheet_link_tag "application", media: "all", "data-turbo-track": "reload" %>
 <%= stylesheet_link_tag "application.tailwind", media: "all", "data-turbo-track": "reload" %>
+<%= javascript_include_tag 'application.light', 'data-turbo-track': 'reload' %>
 ```
 
 ### Import the Theme Style Sheet
@@ -244,6 +245,7 @@ To change to use a different theme:
 
 1. Change the value returned by `current_theme` to the new theme name
 2. Change the name of the `THEME` env var defined in `build` and `build:css` in `package.json`
+3. Change the name of the theme in the `javascript_include_tag` in the `<head>`.
 
 ## 3. Using Locales for fields on new models
 
