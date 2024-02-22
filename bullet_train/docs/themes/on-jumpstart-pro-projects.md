@@ -84,16 +84,28 @@ Replace it with these contents.
 
 import * as esbuild from "esbuild"
 import path from "path"
+import { execSync } from "child_process"
 import rails from "esbuild-rails"
 import chokidar from "chokidar"
 import http from "http"
 import { setTimeout } from "timers/promises"
 
+let themeFile = ""
+if (process.env.THEME) {
+  themeFile = execSync(`bundle exec bin/theme javascript ${process.env.THEME}`).toString().trim()
+}
+
+const themeEntrypoints = {}
+if (process.env.THEME) {
+  themeEntrypoints[`application.${process.env.THEME}`] = themeFile
+}
+
 const clients = []
-const entryPoints = [
-  "application.js",
-  "administrate.js"
-]
+const entryPoints = {
+  "application": path.join(process.cwd(), "app/javascript/application.js"),
+  "administrate": path.join(process.cwd(), "app/javascript/administrate.js"),
+  ...themeEntrypoints,
+}
 const watchDirectories = [
   "./app/javascript/**/*.js",
   "./app/views/**/*.html.erb",
