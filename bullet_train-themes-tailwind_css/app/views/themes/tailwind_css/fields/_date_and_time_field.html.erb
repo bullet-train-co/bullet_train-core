@@ -6,7 +6,7 @@ options ||= {}
 user_tz = ActiveSupport::TimeZone.find_tzinfo(current_user.time_zone).name
 
 current_team_time_zone = if current_user&.respond_to?(:current_team)
-  current_team_time_zone
+  current_team.time_zone
 else
   "UTC"
 end
