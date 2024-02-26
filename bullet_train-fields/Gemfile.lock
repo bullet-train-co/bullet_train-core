@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.6.30)
+    bullet_train-api (1.6.31)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.6.30)
+    bullet_train-super_scaffolding (1.6.31)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.6.30)
+    bullet_train (1.6.31)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -62,7 +62,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.6.30)
+    bullet_train-fields (1.6.31)
       chronic
       cloudinary
       phonelib
@@ -147,20 +147,20 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     builder (3.2.4)
-    bullet_train-has_uuid (1.6.29)
+    bullet_train-has_uuid (1.6.30)
       rails (>= 6.0.0)
-    bullet_train-roles (1.6.29)
+    bullet_train-roles (1.6.30)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.6.29)
+    bullet_train-scope_validator (1.6.30)
       rails
-    bullet_train-super_load_and_authorize_resource (1.6.29)
+    bullet_train-super_load_and_authorize_resource (1.6.30)
       cancancan
       rails (>= 6.0.0)
-    bullet_train-themes (1.6.29)
+    bullet_train-themes (1.6.30)
       rails (>= 6.0.0)
     cable_ready (5.0.3)
       actionpack (>= 5.2)
@@ -196,7 +196,7 @@ GEM
       devise (~> 4)
       pwned (~> 2.0.0)
     domain_name (0.6.20240107)
-    doorkeeper (5.6.8)
+    doorkeeper (5.6.9)
       railties (>= 5)
     email_reply_parser (0.5.11)
     erubi (1.10.0)
@@ -294,7 +294,7 @@ GEM
       rack (>= 2.2.3)
       rack-protection
     orm_adapter (0.5.0)
-    pagy (6.4.3)
+    pagy (6.5.0)
     pagy_cursor (0.6.1)
       activerecord (>= 5)
       pagy (>= 6, < 7)
@@ -311,7 +311,7 @@ GEM
       actionmailer (>= 3)
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
-    prism (0.22.0)
+    prism (0.24.0)
     public_suffix (5.0.4)
     pwned (2.0.2)
     racc (1.6.0)
@@ -351,8 +351,8 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.1.0)
-    rb_sys (0.9.87)
-    redis-client (0.19.1)
+    rb_sys (0.9.89)
+    redis-client (0.20.0)
       connection_pool
     regexp_parser (2.5.0)
     responders (3.1.1)
@@ -384,11 +384,11 @@ GEM
       faraday (>= 1)
       faraday-multipart (>= 1)
     ruby-progressbar (1.11.0)
-    ruby-vips (2.2.0)
+    ruby-vips (2.2.1)
       ffi (~> 1.12)
     showcase-rails (0.4.6)
       rails (>= 6.1.0)
-    sidekiq (7.2.1)
+    sidekiq (7.2.2)
       concurrent-ruby (< 2)
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
