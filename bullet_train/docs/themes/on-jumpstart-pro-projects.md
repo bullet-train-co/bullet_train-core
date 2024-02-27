@@ -1,4 +1,4 @@
-# Installing Bullet-Train Themes on Jumpstart PRO Projects
+# Installing Bullet Train Themes on Jumpstart PRO Projects
 
 Bullet Train themes can be installed on Jumpstart PRO projects, giving you native `erb` partials and Hotwire-powered UI components.
 
@@ -6,7 +6,7 @@ Like Jumpstart PRO, Bullet Train themes are built using `tailwindcss` and use `e
 
 To get a quick sense of the UI components, we encourage you to spin up a Bullet Train project and navigate through the screens to create a "Creative Concept" and "Tangible Thing" resources.
 
-In addition to providing a nice set of UI components, you'll get access to [`nice_partials`](https://github.com/bullet-train-co/nice_partials), Bullet-Train's own lightweight answer for creating `erb` partials with ad-hoc named content areas, which we think is just the right amount of magic for making `erb`-based components.
+In addition to providing a nice set of UI components, you'll get access to [`nice_partials`](https://github.com/bullet-train-co/nice_partials), Bullet Train's own lightweight answer for creating `erb` partials with ad-hoc named content areas, which we think is just the right amount of magic for making `erb`-based components.
 
 Note: we also have [instructions for installing themes on other Rails projects](on-other-rails-projects.md).
 
@@ -485,4 +485,4 @@ See [`account/users_helper` in BT core repo](https://github.com/bullet-train-co/
 
 ### For ejecting a theme partial and modifying it
 
-We recommend firing up a Bullet-Train project and using its `bin/resolve` (see docs on [Indirection](indirection)) to get a copy of the partial field locally to modify.
+We recommend firing up a Bullet Train project and using its `bin/resolve` (see docs on [Indirection](indirection)) to get a copy of the partial field locally to modify.
