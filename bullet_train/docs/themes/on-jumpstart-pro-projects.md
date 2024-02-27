@@ -1,8 +1,8 @@
-# Installing Bullet Train Themes on Jumpstart PRO Projects
+# Installing Bullet Train Themes on Jumpstart Pro Projects
 
-Bullet Train themes can be installed on Jumpstart PRO projects, giving you native `erb` partials and Hotwire-powered UI components.
+Bullet Train themes can be installed on Jumpstart Pro projects, giving you native `erb` partials and Hotwire-powered UI components.
 
-Like Jumpstart PRO, Bullet Train themes are built using `tailwindcss` and use `esbuild` and `postcss` for JavaScript and style sheets.
+Like Jumpstart Pro, Bullet Train themes are built using `tailwindcss` and use `esbuild` and `postcss` for JavaScript and style sheets.
 
 To get a quick sense of the UI components, we encourage you to spin up a Bullet Train project and navigate through the screens to create a "Creative Concept" and "Tangible Thing" resources.
 
@@ -198,7 +198,7 @@ if (process.argv.includes("--reload")) {
 
 ### Update `tailwind.config.js`
 
-Replace with these contents, which merge the Bullet Train-specific tailwind configs with those of Jumpstart PRO.
+Replace with these contents, which merge the Bullet Train-specific tailwind configs with those of Jumpstart Pro.
 
 _Note: After this step, you might get an error on build about a missing `process.env.THEME`. Follow with the next step to fix this error._
 

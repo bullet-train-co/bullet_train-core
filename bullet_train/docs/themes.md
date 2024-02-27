@@ -83,4 +83,4 @@ You're going to have to call your theme something and there are practical reason
 ## Additional Themes Documentation
 
 * [Installing Bullet Train Themes on Other Rails Projects](/docs/themes/on-other-rails-projects.md)
-* [Installing Bullet Train Themes on Jumpstart PRO Projects](/docs/themes/on-jumpstart-pro-projects.md)
+* [Installing Bullet Train Themes on Jumpstart Pro Projects](/docs/themes/on-jumpstart-pro-projects.md)
