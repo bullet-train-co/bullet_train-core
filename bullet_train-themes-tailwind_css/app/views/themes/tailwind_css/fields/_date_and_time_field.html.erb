@@ -61,7 +61,7 @@ other_options ||= {}
           <div class="space-x-1 hidden" data-<%= stimulus_controller %>-target="timeZoneButtons">
             <%= link_to '', '#', hidden: true, class: 'time-zone-button button-alternative button-smaller selected-option-time-zone-button hidden', data: {action: "#{stimulus_controller}#setTimeZone", value: ''} %>
             <%= link_to current_team_time_zone, '#', class: 'time-zone-button button-alternative button-smaller', data: {action: "#{stimulus_controller}#setTimeZone", value: team_tz, label: current_team_time_zone } if current_team_time_zone%>
-            <%= link_to current_user&.time_zone, '#', class: 'time-zone-button button button-smaller', data: {action: "#{stimulus_controller}#setTimeZone", value: user_tz, label: current_user&.time_zone  } %>
+            <%= link_to current_user&.time_zone, '#', class: 'time-zone-button button button-smaller', data: {action: "#{stimulus_controller}#setTimeZone", value: user_tz, label: current_user&.time_zone  } if current_user %>
             <%= link_to t('global.buttons.other'), '#', class: 'button-alternative button-smaller', data: {action: "#{stimulus_controller}#showTimeZoneSelectWrapper"} %>
             <%= link_to t('global.buttons.cancel'), '#', class: 'button-secondary button-smaller', data: {action: "#{stimulus_controller}#resetTimeZoneUI"} %>
           </div>
