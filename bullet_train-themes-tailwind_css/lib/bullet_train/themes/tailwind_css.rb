@@ -1,7 +1,6 @@
 require "bullet_train/themes/tailwind_css/version"
 require "bullet_train/themes/tailwind_css/engine"
 require "bullet_train/themes"
-require "bullet_train"
 
 module BulletTrain
   module Themes

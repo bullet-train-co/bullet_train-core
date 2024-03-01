@@ -3,6 +3,6 @@
 <% url ||= nil %>
 
 <%= render 'shared/attributes/base', strategy: strategy, url: url do |p| %>
-  <% p.heading t("#{object.class.name.pluralize.underscore}.fields.#{attribute}.heading") %>
+  <% p.heading t("#{object.class.name.pluralize.underscore}.fields.#{attribute}.heading", default: object.class.human_attribute_name(attribute)) %>
   <% p.body yield %>
 <% end %>
