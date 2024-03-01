@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.6.34)
+    bullet_train-scope_validator (1.6.35)
       rails
 
 GEM
@@ -90,8 +90,7 @@ GEM
     connection_pool (2.4.1)
     crass (1.0.6)
     date (3.3.4)
-    drb (2.2.0)
-      ruby2_keywords
+    drb (2.2.1)
     erubi (1.12.0)
     globalid (1.2.1)
       activesupport (>= 6.1)
@@ -109,7 +108,7 @@ GEM
       net-imap
       net-pop
       net-smtp
-    marcel (1.0.2)
+    marcel (1.0.4)
     mini_mime (1.1.5)
     minitest (5.15.0)
     minitest-reporters (1.6.1)
@@ -198,7 +197,6 @@ GEM
       rubocop (>= 1.7.0, < 2.0)
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.11.0)
-    ruby2_keywords (0.0.5)
     standard (1.6.0)
       rubocop (= 1.24.1)
       rubocop-performance (= 1.13.1)
