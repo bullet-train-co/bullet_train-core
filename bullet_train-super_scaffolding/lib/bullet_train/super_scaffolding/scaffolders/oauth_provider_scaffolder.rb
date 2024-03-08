@@ -45,16 +45,41 @@ module BulletTrain
           unless File.exist?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/integrations/stripe_installation.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb", options))
-            puts ""
-            puts oauth_transform_string("🚨 Before doing the actual Super Scaffolding, you'll need to generate the models like so:", options).red
-            puts ""
-            puts oauth_transform_string("  rails g model Oauth::StripeAccount uid:string data:jsonb user:references", options).red
-            puts oauth_transform_string("  rails g model Integrations::StripeInstallation team:references oauth_stripe_account:references name:string", options).red
-            puts oauth_transform_string("  rails g model Webhooks::Incoming::Oauth::StripeAccountWebhook data:jsonb processed_at:datetime verified_at:datetime oauth_stripe_account:references", options).red
-            puts ""
-            puts "However, don't do the `rake db:migrate` until after you re-run Super Scaffolding, as it will need to update some settings in those migrations.".red
-            puts ""
-            return
+
+            oauth_model_data = {
+              "Oauth::StripeAccount": "rails generate model Oauth::StripeAccount uid:string data:jsonb user:references",
+              "Integrations::StripeInstallation": "rails generate model Integrations::StripeInstallation team:references oauth_stripe_account:references name:string",
+              "Webhooks::Incoming::Oauth::StripeAccountWebhook": "rails generate model Webhooks::Incoming::Oauth::StripeAccountWebhook data:jsonb processed_at:datetime verified_at:datetime oauth_stripe_account:references"
+            }
+
+            # Transform class names and model migrations.
+            transformed_data = {}
+            oauth_model_data.each do |key, value|
+              transformed_data[oauth_transform_string(key.to_s, options)] = oauth_transform_string(value, options)
+            end
+
+            if @options["skip-migration-generation"]
+              undefined_models = transformed_data.keys.each { |key| key.safe_constantize.nil? }
+              if undefined_models.any?
+                puts ""
+                puts "We could not find the following models:".red
+                undefined_models.each { |model| puts "  #{model}".red }
+                puts ""
+                puts "🚨 Before doing the actual Super Scaffolding, you'll need to generate the models like so:".red
+                puts ""
+                transformed_data.each { |_, migration| puts "  #{migration}".red }
+                puts ""
+                puts "However, don't do the `rake db:migrate` until after you re-run Super Scaffolding, as it will need to update some settings in those migrations.".red
+                puts ""
+                return
+              end
+            else
+              transformed_data.each do |klass, generation_command|
+                puts "Generating #{klass} model with '#{generation_command}'".green
+                generation_thread = Thread.new { `#{generation_command}` }
+                generation_thread.join # Wait for the process to finish.
+              end
+            end
           end
 
           icon_name = nil

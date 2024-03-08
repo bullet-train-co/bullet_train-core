@@ -110,8 +110,7 @@ module Account::Controllers::Base
         end
       end
 
-      # TODO Maybe in this context we should check whether `Billing::ControllerSupport` is included instead of just defined?
-      if defined?(Billing::ControllerSupport)
+      if billing_enabled?
         enforce_billing_requirements
         # See `app/controllers/concerns/billing_support.rb` for details.
       end

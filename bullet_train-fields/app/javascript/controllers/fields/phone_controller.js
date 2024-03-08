@@ -16,13 +16,8 @@ export default class extends Controller {
   initPluginInstance() {
     let options = {
       hiddenInput: this.fieldTarget.dataset.method,
-      customContainer: "w-full"
-    }
-
-    // TODO: add instructions on how to copy this asset into the application's assets path and write the meta tag into the head (via the engine?)
-    const utilsScriptPath = metaContent("intl_tel_input_utils_path")
-    if (utilsScriptPath) {
-      options['utilsScript'] = utilsScriptPath
+      customContainer: "w-full",
+      utilsScript: metaContent("intl_tel_input_utils_path") || `https://cdn.jsdelivr.net/npm/intl-tel-input@${window.intlTelInputGlobals.version}/build/js/utils.js`
     }
 
     this.plugin = intlTelInput(this.fieldTarget, options);

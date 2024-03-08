@@ -51,7 +51,7 @@
 
           <%# 🚅 super scaffolding will insert new targets one parent action model buttons above this line. %>
           <%# 🚅 super scaffolding will insert new bulk action model buttons above this line. %>
-          <%= render "shared/bulk_action_select" if tangible_things.many? %>
+          <%= render "shared/bulk_action_select" if tangible_things.any? %>
 
           <% unless hide_back %>
             <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary(:completely_concrete_tangible_thing)} back" %>
