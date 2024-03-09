@@ -79,8 +79,3 @@ This allows the theme engine to resolve which theme in the inheritance chain wil
 ### Let your designer name their theme.
 
 You're going to have to call your theme something and there are practical reasons to not call it something generic. If you're pursuing a heavily customized design, consider allowing the designer or designers who are creating the look-and-feel of your application to name their own masterpiece. Giving it a distinct name will really help differentiate things when you're ready to start introducing additional facets to your application or a totally new look-and-feel down the road.
-
-## Additional Themes Documentation
-
-* [Installing Bullet Train Themes on Other Rails Projects](/docs/themes/on-other-rails-projects.md)
-* [Installing Bullet Train Themes on Jumpstart Pro Projects](/docs/themes/on-jumpstart-pro-projects.md)

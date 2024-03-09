@@ -316,9 +316,6 @@ class Scaffolding::RoutesFileManipulator
 
     within = find_or_create_namespaces(base_namespaces)
 
-    # Add any concerns passed as options.
-    add_concern(:sortable) if transformer_options["sortable"]
-
     # e.g. Project and Projects::Deliverable
     if parent_namespaces.empty? && child_namespaces.any? && parent_resource == child_namespaces.first
 
@@ -355,13 +352,9 @@ class Scaffolding::RoutesFileManipulator
         child_namespaces_without_parent = child_namespaces.dup
         child_namespaces_without_parent.shift
         deeply_nested_within = find_or_create_namespaces(child_namespaces_without_parent, scope_within)
-        routing_options = "shallow: false"
-        routing_options += ", #{formatted_concerns}" if formatted_concerns
-        find_or_create_resource([child_resource], options: routing_options, within: deeply_nested_within)
+        find_or_create_resource([child_resource], options: "shallow: false", within: deeply_nested_within)
       else
-        routing_options = "only: collection_actions"
-        routing_options += ", #{formatted_concerns}" if formatted_concerns
-        find_or_create_resource([child_resource], options: routing_options, within: scope_within)
+        find_or_create_resource([child_resource], options: "only: collection_actions", within: scope_within)
 
         # namespace :projects do
         #   resources :deliverables, except: collection_actions
@@ -371,9 +364,7 @@ class Scaffolding::RoutesFileManipulator
         # because namespaces with the same name as the resource can exist on the same level.
         parent_block_start = Scaffolding::BlockManipulator.find_block_parent(parent_within, lines)
         namespace_line_within = find_or_create_namespaces(child_namespaces, parent_block_start)
-        routing_options = "except: collection_actions"
-        routing_options += ", #{formatted_concerns}" if formatted_concerns
-        find_or_create_resource([child_resource], options: routing_options, within: namespace_line_within)
+        find_or_create_resource([child_resource], options: "except: collection_actions", within: namespace_line_within)
         unless find_namespaces(child_namespaces, within)[child_namespaces.last]
           raise "tried to insert `namespace :#{child_namespaces.last}` but it seems we failed"
         end
@@ -386,7 +377,7 @@ class Scaffolding::RoutesFileManipulator
       #   resources :deliverables
       # end
       top_parent_namespace = find_namespaces(parent_namespaces, within)[parent_namespaces.first]
-      find_or_create_resource(child_namespaces + [child_resource], options: formatted_concerns, within: top_parent_namespace)
+      find_or_create_resource(child_namespaces + [child_resource], within: top_parent_namespace)
 
       # resources :projects_deliverables, path: 'projects/deliverables' do
       #   resources :objectives
@@ -403,6 +394,7 @@ class Scaffolding::RoutesFileManipulator
         within = find_or_convert_resource_block(parent_resource, options: "except: collection_actions", within: within)
       end
 
+      add_concern(:sortable) if transformer_options["sortable"]
       find_or_create_resource(child_namespaces + [child_resource], options: formatted_concerns, within: within)
 
     end

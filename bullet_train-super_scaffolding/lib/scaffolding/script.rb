@@ -45,6 +45,11 @@ ARGV.each do |arg|
   end
 end
 
+def standard_protip
+  puts "🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes."
+  puts "If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f` ."
+end
+
 def get_untracked_files
   `git ls-files --other --exclude-standard`.split("\n")
 end
@@ -174,8 +179,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
   # Generate the models/migrations with the attributes passed.
   if attributes_to_generate.any?
     case scaffolding_type
-    # "join-model" and "oauth-provider" are not here because the
-    # `rails g` command is written inline in their own respective scaffolders.
+    # "join-model" is not here because the `rails g` command is written inline in its own scaffolder.
     when "crud"
       puts "Generating #{child} model with '#{generation_command}'".green
     when "crud-field"
@@ -204,10 +208,58 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
   end
 end
 
+def show_usage
+  puts ""
+  puts "🚅  usage: bin/super-scaffold [type] (... | --help | --field-partials)"
+  puts ""
+  puts "Supported types of scaffolding:"
+  puts ""
+  BulletTrain::SuperScaffolding.scaffolders.each do |key, _|
+    puts "  #{key}"
+  end
+  puts ""
+  puts "Try `bin/super-scaffold [type]` for usage examples.".blue
+  puts ""
+end
+
 # grab the _type_ of scaffold we're doing.
 scaffolding_type = argv.shift
 
 if BulletTrain::SuperScaffolding.scaffolders.include?(scaffolding_type)
   scaffolder = BulletTrain::SuperScaffolding.scaffolders[scaffolding_type].constantize
   scaffolder.new(argv, @options).run
+elsif argv.empty? || !BulletTrain::SuperScaffolding.scaffolders.include?(scaffolding_type)
+  show_usage
+elsif argv.count > 1
+  puts ""
+  puts "👋"
+  puts "The command line options for Super Scaffolding have changed slightly:".yellow
+  puts "To use the original Super Scaffolding that you know and love, use the `crud` option.".yellow
+
+  show_usage
+elsif ARGV.first.present?
+  case ARGV.first
+  when "--field-partials"
+    puts "Bullet Train uses the following field partials for Super Scaffolding".blue
+    puts ""
+
+    max_name_length = 0
+    FIELD_PARTIALS.each do |key, value|
+      if key.to_s.length > max_name_length
+        max_name_length = key.to_s.length
+      end
+    end
+
+    printf "\t%#{max_name_length}s:Data Type\n".bold, "Field Partial Name"
+    FIELD_PARTIALS.each { |key, value| printf "\t%#{max_name_length}s:#{value}\n", key }
+
+    puts ""
+    puts "For more details, check out the documentation:"
+    puts "https://bullettrain.co/docs/field-partials"
+  when "--help"
+    show_usage
+  else
+    puts "Invalid scaffolding type \"#{ARGV.first}\".".red
+    show_usage
+  end
 end

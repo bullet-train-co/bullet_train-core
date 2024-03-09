@@ -3,11 +3,6 @@ require "tasks/application"
 namespace :bullet_train do
   namespace :themes do
     namespace :light do
-      desc "Eject the \"Light\" theme's main CSS file."
-      task :eject_css do |task|
-        BulletTrain::Themes::Application.eject_theme_main_css(get_theme_name_from_task(task))
-      end
-
       desc "Fork the \"Light\" theme into your local repository."
       task :eject, [:destination] => :environment do |task, args|
         BulletTrain::Themes::Application.eject_theme(get_theme_name_from_task(task), args[:destination])

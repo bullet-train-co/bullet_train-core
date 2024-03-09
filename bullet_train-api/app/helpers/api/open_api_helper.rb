@@ -131,22 +131,6 @@ module Api
       end
     end
 
-    def external_doc(filename)
-      caller_path, line_number = caller.find { |line| line.include?(".yaml.erb:") }.split(":")
-      indentation = File.readlines(caller_path)[line_number.to_i - 1].match(/^(\s*)/)[1]
-      path = "app/views/api/#{@version}/open_api/docs/#{filename}.md"
-
-      raise "Markdown file not found: #{path}" unless File.exist?(path)
-
-      File.read(path).lines.map { |line| "  #{indentation}#{line}".rstrip }.join("\n").prepend("|\n").html_safe
-    rescue Errno::ENOENT, Errno::EACCES, RuntimeError => e
-      "Error loading markdown description: #{e.message}"
-    end
-
-    def description_for(model)
-      external_doc "#{model.name.underscore}_description"
-    end
-
     private
 
     def has_strong_parameters?(controller)

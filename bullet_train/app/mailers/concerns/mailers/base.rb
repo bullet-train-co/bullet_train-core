@@ -12,6 +12,6 @@ module Mailers::Base
     helper "account/users"
     helper "account/locale"
     helper "fields/trix_editor"
-    helper "current_theme"
+    helper "theme"
   end
 end

@@ -37,19 +37,6 @@ class Scaffolding::ClassNamesTransformer
     parts.last
   end
 
-  # "In context" here means all of the parts in a namespace
-  # without reference to the parts that overlap.
-  #
-  # For example:
-  # Returns everything because there is no overlap.
-  #   Parent: Team
-  #   Child: Projects::Site
-  #   Return value: [["Projects", "Site"], ["Team"]]
-  #
-  # Returns the namespaces/classes without the parts that overlap.
-  #   Parent: Projects::Site
-  #   Child:  Projects::Sites::Url
-  #   Return value: [["Url"], ["Site"]]
   def all_parts_in_context
     working_parts = parts
     working_parent_parts = parent_parts

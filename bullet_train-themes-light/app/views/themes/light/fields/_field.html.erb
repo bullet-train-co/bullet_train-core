@@ -30,8 +30,7 @@ end
 errors = [method, method.to_s.delete_suffix("_id").to_sym].uniq.map { |attribute| form.object.errors.full_messages_for(attribute) }.flatten
 has_errors = errors.any? || partial.error? || other_options[:error].present?
 
-options[:class] = "#{options[:class]} block w-full rounded-md shadow-sm font-light dark:bg-slate-800 dark:text-slate-300"
-options[:class] += " text-base md:text-sm" # default to 16px on mobile to prevent zooming
+options[:class] = "#{options[:class]} block w-full rounded-md shadow-sm font-light text-sm dark:bg-slate-800 dark:text-slate-300"
 
 options[:class] += if has_errors
   " pr-10 border-red-500 text-red-900 placeholder-red-500 outline-none focus:ring-red-500 focus:border-red-500 dark:text-slate-300"

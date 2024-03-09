@@ -1,4 +1,4 @@
-module CurrentThemeHelper
+module ThemeHelper
   def current_theme_object
     @current_theme_object ||= "BulletTrain::Themes::#{current_theme.to_s.classify}::Theme".constantize.new
   end

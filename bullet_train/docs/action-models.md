@@ -63,9 +63,9 @@ Don't forget to run `bundle install` and `rails restart`.
 You can get detailed information about using Super Scaffolding to generate different types of Action Models like so:
 
 ```
-rails generate super_scaffold:action_models:targets_many
-rails generate super_scaffold:action_models:targets_one
-rails generate super_scaffold:action_models:targets_one_parent
+rails generate super_scaffold:action_model:targets_many
+rails generate super_scaffold:action_model:targets_one
+rails generate super_scaffold:action_model:targets_one_parent
 ```
 
 ## Basic Example
@@ -79,7 +79,7 @@ rails generate super_scaffold Project Team name:text_field
 ### 2. Generate and scaffold an archive action for projects.
 
 ```
-rails generate super_scaffold:action_models:targets_many Archive Project Team
+rails generate super_scaffold:action_model:targets_many Archive Project Team
 ```
 
 ### 3. Implement the action logic.
