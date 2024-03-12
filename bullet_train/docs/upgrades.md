@@ -2,7 +2,7 @@
 
 <div class="rounded-md border bg-amber-100 border-amber-200 py-4 px-5 mb-3 not-prose">
   <h3 class="text-sm text-amber-800 font-light mb-2">
-    Note: These ugrade steps have recently changed.
+    Note: These upgrade steps have recently changed.
   </h3>
   <p class="text-sm text-amber-800 font-light mb-2">
     These instructions assume that you're doing a stepwise upgrade on an app that's already on version <code>1.4.0</code> or later.
