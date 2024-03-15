@@ -79,7 +79,12 @@ module Api
       attributes_output = JSON.parse(schema_json)
 
       # Allow customization of Attributes
-      customize_component!(attributes_output, options[:attributes]) if options[:attributes]
+      # customize_component!(attributes_output, options[:attributes]) if options[:attributes]
+      method_type = "create"
+      attributes_custom = options[:attributes][method_type] if options[:attributes].is_a?(Hash) && options[:attributes].key?(method_type)
+      attributes_custom ||= options[:attributes]
+      customize_component!(attributes_output, attributes_custom, method_type) if attributes_custom
+
 
       # Add "Attributes" part to $ref's
       update_ref_values!(attributes_output)
@@ -100,29 +105,42 @@ module Api
       end
 
       if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
-        strong_params_module = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
-        strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module).report
-        if strong_parameter_keys.last.is_a?(Hash)
-          strong_parameter_keys += strong_parameter_keys.pop.keys
-        end
+        strong_params_module_name = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
+        strong_params_module = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module_name)
 
-        parameters_output = JSON.parse(schema_json)
-        parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
-        parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
-        parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
-
-        # Allow customization of Parameters
-        customize_component!(parameters_output, options[:parameters]) if options[:parameters]
+        create_parameters_output = process_strong_parameters(strong_params_module, schema_json, "create", **options)
+        update_parameters_output = process_strong_parameters(strong_params_module, schema_json, "update", **options)
 
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
-            indent("    " + parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Parameters:"), 3)
+            indent("    " + create_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersCreate:"), 3) +
+            indent("    " + update_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersUpdate:"), 3)
         ).html_safe
       else
 
         indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
           .html_safe
       end
+    end
+
+    def process_strong_parameters(strong_params_module, schema_json, method_type, **options)
+      strong_parameter_keys = strong_params_module.report(method_type)
+      strong_parameter_keys += strong_parameter_keys.pop.keys if strong_parameter_keys.last.is_a?(Hash)
+
+      parameters_output = JSON.parse(schema_json)
+      parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
+      parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
+      parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
+
+      # Allow customization of Parameters
+      # customize_component!(parameters_output, options[:parameters]) if options[:parameters]
+      # customize_component!(parameters_output, options[:parameters], method_type) if options[:parameters]
+
+      parameters_custom = options[:parameters][method_type] if options[:parameters].is_a?(Hash) && options[:parameters].key?(method_type)
+      parameters_custom ||= options[:parameters]
+      customize_component!(parameters_output, parameters_custom, method_type) if parameters_custom
+
+      parameters_output
     end
 
     def paths_for(model)
@@ -189,8 +207,37 @@ module Api
       end
     end
 
-    def customize_component!(original, custom)
+    # This method allows customization of the attributes and parameters components.
+    # e.g. automatic_components_for Team, attributes: {add: {password: {type: :string, description: "Test", required: true, example: "password-ABC"}}, remove: :time_zone}, parameters: {add: {password: {type: :string, description: "Test", required: true, example: "password-ABC"}}, remove: :time_zone}
+    #  automatic_components_for User, attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}
+    #  automatic_components_for Membership, attributes: {remove: :team_id}, parameters: {remove: :user_first_name}
+    #  automatic_components_for Webhooks::Outgoing::Endpoint, attributes: {only: [:id, :team_id]}, parameters: {only: :url}
+    # def customize_component!(original, custom)
+    #   custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
+
+    #   automatic_components_for User,
+    #     create: {attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}},
+    #     update: {attributes: {add: {password: {type: :string, description: "Test", required: true, example: "password-ABC"}}, remove: :time_zone}}
+    # or
+      # automatic_components_for User, attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}
+
+
+      # Specific customizations for create and update methods:
+      # automatic_components_for User,
+      #   create: {attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}},
+      #   update: {attributes: {add: {password: {type: :string, description: "Test", required: true, example: "password-ABC"}}, remove: :time_zone}}
+
+      # General customizations for both methods:
+      # automatic_components_for User,
+      #   attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}
+
+    def customize_component!(original, custom, method_type)
       custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
+
+      # Check if customizations are provided for specific HTTP methods
+      if custom.key?(method_type.to_s)
+        custom = custom[method_type.to_s]
+      end
 
       if custom.key?("add")
         custom["add"].each do |property, details|

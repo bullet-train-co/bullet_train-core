@@ -41,12 +41,34 @@ module BulletTrain
       #   end
       # end
 
-      def report
-        @filters = send("#{@model.name.split("::").last.underscore}_params".to_sym)
+      def report(method_type = nil)
+        method_type = ['create', 'update'].include?(method_type) ? method_type : nil
+        base_method_name = "#{@model.name.split('::').last.underscore}"
+
+        # method_name = method_type == 'create' ? "#{base_method_name}_params" : "#{base_method_name}_#{method_type}_params"
+
+        @filters = if method_type == 'update' && respond_to?("#{base_method_name}_#{method_type}_params".to_sym, true)
+          send("#{base_method_name}_#{method_type}_params".to_sym)
+        else
+          send("#{base_method_name}_params".to_sym)
+        end
+
+        # @filters = if method_type && respond_to?("#{base_method_name}_#{method_type}_params".to_sym, true)
+        #   send("#{base_method_name}_#{method_type}_params".to_sym)
+        # else
+        #   send("#{base_method_name}_params".to_sym)
+        # end
 
         # There's a reason I'm doing it this way.
         @filters
       end
+
+      # def report(method_type = nil)
+      #   @filters = send("#{@model.name.split("::").last.underscore}_params".to_sym)
+
+      #   # There's a reason I'm doing it this way.
+      #   @filters
+      # end
     end
   end
 end
