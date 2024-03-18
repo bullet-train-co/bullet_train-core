@@ -81,11 +81,11 @@ module Api
       # update_attributes_output = attributes_output
 
       # Allow customization of Attributes
-      # customize_component!(attributes_output, options[:attributes]) if options[:attributes]
-      method_type = "create"
-      create_attributes_custom = options[:attributes]["create"] if options[:attributes].is_a?(Hash) && options[:attributes].key?("create")
-      create_attributes_custom ||= options[:attributes]
-      customize_component!(create_attributes_output, create_attributes_custom, "create", model.name.underscore) if create_attributes_custom
+      customize_component!(attributes_output, options[:attributes], "create", model.name.underscore) if options[:attributes]
+      # method_type = "create"
+      # create_attributes_custom = options[:attributes]["create"] if options[:attributes].is_a?(Hash) && options[:attributes].key?("create")
+      # create_attributes_custom ||= options[:attributes]
+      # customize_component!(create_attributes_output, create_attributes_custom, "create", model.name.underscore) if create_attributes_custom
 
       # update_attributes_custom = options[:attributes]["update"] if options[:attributes].is_a?(Hash) && options[:attributes].key?("update")
       # update_attributes_custom ||= options[:attributes]
@@ -120,8 +120,8 @@ module Api
         create_parameters_output = process_strong_parameters(strong_params_module, schema_json, "create", **options)
         update_parameters_output = process_strong_parameters(strong_params_module, schema_json, "update", **options)
 
-        puts "create_parameters_output: #{create_parameters_output}"
-
+        # puts "CREATE PARAMETERS OUTPUT: #{create_parameters_output}"
+        # puts "UPDATE PARAMETERS OUTPUT: #{update_parameters_output}"
 
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
@@ -146,7 +146,8 @@ module Api
       parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
 
       # HERE'S WHERE IT"S WRONG FOR THE COMPONENTS - it needs the 'wrapper' key and to strip it for the right request type
-      parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
+      # parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
+      parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) }
 
       # tmp fix for the examples wrapper: - but it also needs to do the same for the params added via the customize_component method
       # if parameters_output["example"]
@@ -162,13 +163,23 @@ module Api
 
       parameters_custom = options[:parameters][method_type] if options[:parameters].is_a?(Hash) && options[:parameters].key?(method_type)
       parameters_custom ||= options[:parameters]
-      puts "XXXXX"
+      puts "XXXXXXXXXX"
+      puts "module = #{strong_params_module.model_name.underscore}"
+      puts "method_type: #{method_type}"
+      puts "parameters_custom: #{parameters_custom}"
+      # puts "XXXXX"
       # puts "parameters_output: #{parameters_output}"
       # puts "~~~~~~"
       # puts "parameters_custom: #{parameters_custom}"
       customize_component!(parameters_output, parameters_custom, method_type, strong_params_module.model_name.underscore) if parameters_custom
-      puts "parameters_output: #{parameters_output}"
-      puts "~~~~~~"
+      # puts "parameters_output: #{parameters_output}"
+      # puts "~~~~~~"
+
+      # if parameters_output["example"]
+      #   parameters_output["example"] = { strong_params_module.model_name.underscore.split("/").last => parameters_output["example"] }
+      # else
+      #   parameters_output["example"] = { strong_params_module.model_name.underscore.split("/").last => {} }
+      # end
 
       parameters_output
     end
