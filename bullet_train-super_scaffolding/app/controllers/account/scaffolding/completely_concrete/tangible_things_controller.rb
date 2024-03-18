@@ -1,9 +1,12 @@
 class Account::Scaffolding::CompletelyConcrete::TangibleThingsController < Account::ApplicationController
+  include Refine::FilterApplicationController
   account_load_and_authorize_resource :tangible_thing, through: :absolutely_abstract_creative_concept, through_association: :completely_concrete_tangible_things
 
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things
   # GET /account/scaffolding/absolutely_abstract/creative_concepts/:absolutely_abstract_creative_concept_id/completely_concrete/tangible_things.json
   def index
+    apply_inline_filter Scaffolding::CompletelyConcrete::TangibleThing::Filter, initial_query: @tangible_things
+    @tangible_things = @refine_filter.get_query
     delegate_json_to_api
   end
 

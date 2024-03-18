@@ -1,0 +1,682 @@
+/*
+  *********************************************
+  Inline
+  *********************************************
+*/
+
+/* buttons and popups */
+.refine--inline-popup {
+  position: absolute;
+  z-index: 100;
+  margin-top: 0.5rem;
+  width: 100vw;
+  border-radius: 0.25rem;
+  background-color: white;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  max-width: max-content;
+  max-height: 66vh;
+  overflow: visible;
+  display: block;
+}
+
+/* groups and filter pills */
+.refine--filter-wrapper {
+  font-size: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.refine--filter-row {
+  display: flex;
+  gap: 10px;
+  row-gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.refine--groups-wrapper {
+  display: flex;
+  gap: 10px;
+  row-gap: 15px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.refine--group-join,
+.refine--condition-join {
+  position: relative;
+  padding: 5px 0;
+  width: 35px;
+  text-align: center;
+  border-radius: 6px;
+  cursor: default;
+  &:hover {
+    background-color: #f8f8f8;
+  }
+}
+
+.refine--group {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  position: relative;
+  flex-wrap: wrap;
+}
+
+.refine--group-conditions-wrapper {
+  display: flex;
+  gap: 5px;
+  position: relative;
+  padding: 0 10px;
+  &:before,
+  &:after {
+    content: "";
+    position: absolute;
+    top: -2px;
+    bottom: -2px;
+    border: 2px solid #eee;
+    width: 3px;
+  }
+  &:hover {
+    &:before,
+    &:after {
+      border-color: #aaa;
+    }
+  }
+  &:before {
+    border-radius: 6px 0 0 6px;
+    left: 0;
+    border-right: none;
+  }
+  &:after {
+    border-radius: 0 6px 6px 0;
+    right: 0;
+    border-left: none;
+  }
+}
+
+.refine--group-conditions {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+}
+
+/* Condition List  */
+.refine--condition-list {
+  margin-top: 5px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.refine--condition-list-item {
+  color: black;
+  display: block;
+  padding: 3px 5px;
+  color: #111;
+  border-radius: 6px;
+  line-height: 1.15;
+}
+
+.refine--condition-list-item:hover {
+  background-color: #eee;
+  color: #111;
+  text-decoration: none;
+}
+
+.refine--condition-pill-wrapper-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  position: relative;
+}
+
+.refine--condition-pill {
+  background-color: #fff;
+  border: 1px solid #bbb;
+  border-bottom-color: #999;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  font-size: 14px;
+  cursor: pointer;
+  position: relative;
+  white-space: nowrap;
+  &:hover {
+    border-color: #999;
+    .refine--remove-condition {
+      display: block;
+    }
+  }
+  &:not(:hover) {
+    .refine--condition-value-wrapper {
+      display: none;
+    }
+  }
+}
+
+.refine--filter-condition {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  position: relative;
+  background-color: #efeff2;
+  border-radius: 6px;
+  padding: 4px;
+}
+
+.refine--condition-pill-name {
+  padding: 4px 8px;
+  display: block;
+}
+
+.refine--remove-condition {
+  display: none;
+  border: 2px solid #fff;
+  padding: 6px 4px;
+  border-radius: 50%;
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #aaa;
+  z-index: 999;
+  &:hover {
+    background-color: #ee3f3f;
+  }
+  &:before {
+    display: block;
+    content: "";
+    width: 6px;
+    height: 2px;
+    background-color: #fff;
+  }
+}
+&:hover {
+  border-color: #999;
+  .remove-applied-condition {
+    display: block;
+  }
+}
+
+.refine--condition-value-wrapper {
+  position: absolute;
+  top: 100%;
+  background-color: #000;
+  box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  color: #fff;
+  padding: 5px 10px;
+  display: flex;
+  gap: 5px;
+  font-size: 12px;
+  z-index: 9999;
+  left: 50%;
+  transform: translate3d(-50%, 4px, 0);
+  animation: 0.25s cubic-bezier(0.45, 1.1, 0.7, 1) 0s pillValueTooltip;
+  animation-fill-mode: both;
+}
+
+.refine--condition-value-clause {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* Form widgets */
+.refine--select {
+  line-height: 1.125;
+  color: #111;
+  border: 1px solid #ddd;
+  border-bottom-color: #aaa;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+  border-radius: 6px;
+  padding: 3px 3px 3px 6px;
+  background-color: #fff;
+}
+
+.refine--clause-select {
+  flex: 1;
+  margin-left: 10px;
+}
+
+.refine--criterion-fields {
+  width: 100%;
+  padding: 0.5rem 0;
+}
+
+/*  _date_condition.html.erb */
+.refine--date-condition-days-text {
+  margin-top: 0.75rem;
+}
+
+.refine--date-condition-days-modifier-container {
+  margin-top: 0.75rem;
+}
+
+.refine--date-picker-input {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(183, 198, 206, 1);
+}
+
+.refine--date-picker-container {
+  position: relative;
+}
+
+.refine--date-picker-input {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  border-radius: 4px;
+  border-width: 1px;
+  border-style: solid;
+  border-color: rgba(183, 198, 206, 1);
+}
+
+.refine-date-condition-first-date-container-btwn {
+  margin-top: 0px;
+  padding-top: 0;
+  margin-right: 6px;
+  margin-top: 0;
+  flex: 1;
+}
+
+.refine--date-condition-and {
+  margin-top: 0.75rem;
+}
+
+.refine--date-condition-second-date-container {
+  margin-top: 0.75rem;
+}
+
+.refine--date-condition-days-modifier-select {
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  width: 100%;
+  border-radius: 0.375rem;
+  border-color: rgba(209, 213, 219, 1);
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  padding-left: 0.75rem;
+  padding-right: 2.5rem;
+  font-size: 1rem;
+  line-height: 1.5rem;
+}
+
+/* _numeric_condition_html.erb */
+.refine--numeric-condition-container {
+  margin-top: 0.75rem;
+  flex-grow: 0;
+}
+
+.refine--numeric-condition-container-btwn {
+  margin-top: 0.75rem;
+  flex-grow: 0;
+}
+
+.refine--numeric-condition-and {
+  margin-top: 0.75rem;
+}
+
+.refine--numeric-condition-second-container {
+  margin-top: 0.75rem;
+  flex-grow: 0;
+}
+
+@media (min-width: 640px) {
+  .refine--numeric-condition-second-container {
+    margin-right: 0.75rem;
+  }
+}
+
+.refine--numeric-condition-second-input {
+  display: block;
+  width: 100%;
+  border-radius: 0.375rem;
+  border-color: rgba(209, 213, 219, 1);
+}
+
+.refine--numeric-condition-second-input:focus {
+  border-color: rgba(99, 102, 241, 1);
+}
+
+@media (min-width: 640px) {
+  .refine--numeric-condition-second-input {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+/* _option_condition.html.erb */
+.refine--option-condition-container {
+  /* keep it because the dropdown select uses it */
+  display: flex;
+  width: 100%;
+}
+
+@media (min-width: 640px) {
+  .refine--option-condition-container {
+    margin-right: 0.75rem;
+    width: auto;
+    flex-shrink: 0;
+  }
+}
+
+.refine--option-select {
+  width: 100%;
+}
+
+.refine--option-condition-select:focus {
+  border-color: rgba(99, 102, 241, 1);
+  outline: 2px solid transparent;
+  outline-offset: 2px;
+}
+
+@media (min-width: 640px) {
+  .refine--option-condition-select {
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+}
+
+.refine--option-condition-postfix {
+  flex-shrink: 0;
+  border-radius: 0.375rem;
+  border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+  border-width: 1px;
+  border-color: rgba(209, 213, 219, 1);
+  background-color: rgba(249, 250, 251, 1);
+  padding: 0.5rem;
+}
+
+/* _text_condition.html.erb */
+input.refine--input {
+  width: 100%;
+  font-size: 14px;
+  display: block;
+  /* TODO 25px L for icon */
+  padding: 5px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  outline: 0;
+  line-height: 1.125;
+}
+
+input.refine--input::placeholder {
+  color: #aaa;
+}
+
+input.refine--text-condition-input:focus {
+  border-color: rgba(59, 130, 246, 1);
+}
+
+/* stored filters */
+.refine--stored-filter-list {
+  padding: 10px;
+  max-height: 180px;
+  overflow: auto;
+}
+
+.refine--stored-filter-list-item {
+  color: black;
+  display: block;
+  padding: 3px 5px;
+  color: #111;
+  border-radius: 6px;
+  line-height: 1.15;
+}
+
+.refine--stored-filter-list-item:hover {
+  background-color: #eee;
+  color: #111;
+  text-decoration: none;
+}
+
+.refine--save-filter-link-label {
+  border-bottom: 1px dotted #111;
+}
+/*
+  *********************************************
+  Inline Final Styles
+  *********************************************
+*/
+.refine--filter-label {
+  white-space: nowrap;
+  color: #767676;
+}
+
+.refine--add-condition-button.refine--add-first-condition-button,
+.refine--add-condition-group-button.refine--add-first-condition-button {
+  border: 1px dotted #aaa;
+  padding-right: 8px;
+  line-height: 16px;
+  &:hover {
+    background-color: #fff;
+    border-style: solid;
+    color: #111;
+  }
+}
+
+.refine--add-condition-button,
+.refine--add-group-button {
+  display: flex;
+  gap: 5px;
+  color: #767676;
+  font-size: 14px;
+  border-radius: 6px;
+  padding: 5px;
+  align-items: center;
+  background-color: #fff;
+  &:hover {
+    color: #111;
+    background-color: #f8f8f8;
+  }
+}
+
+.refine--has-many-groups .refine--add-button-label {
+  display: none;
+}
+
+.refine--has-many-groups
+  .refine--add-condition-button
+  .refine--add-button-icon {
+  position: relative;
+  top: 0;
+}
+
+.refine--inline-popup-container {
+  display: block;
+  width: auto;
+  position: relative;
+}
+
+.refine--inline-popup {
+  animation: 0.15s cubic-bezier(0.45, 1.1, 0.7, 1) 0s up10;
+  animation-fill-mode: both;
+  box-shadow:
+    0 2px 4px -1px rgba(0, 0, 0, 0.3),
+    0 8px 30px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  z-index: 9999;
+  background-color: #ffffff;
+  position: absolute;
+
+  /* TODO see if these are still needed */
+  margin-top: 3px;
+  width: 100vw;
+  padding: 0 0.5rem;
+  max-width: max-content;
+  max-height: 66vh;
+  overflow: visible;
+  display: block;
+}
+
+.refine--stored-filter-list-popup {
+  animation: 0.15s cubic-bezier(0.45, 1.1, 0.7, 1) 0s up10;
+  animation-fill-mode: both;
+  box-shadow:
+    0 2px 4px -1px rgba(0, 0, 0, 0.3),
+    0 8px 30px -3px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  z-index: 9999;
+  background-color: #ffffff;
+  position: absolute;
+  top: -8px;
+  left: 100%;
+
+  /* TODO see if these are still needed */
+  margin-top: 3px;
+  width: 100vw;
+  padding: 0 0.5rem;
+  max-width: max-content;
+  max-height: 66vh;
+  display: block;
+}
+
+.refine--separator {
+  height: 1px;
+  background-color: #eee;
+  margin: 5px 0;
+}
+
+.refine--separator-m0 {
+  height: 1px;
+  background-color: #eee;
+}
+
+button.refine--apply-button {
+  padding: 4px 6px;
+  cursor: pointer;
+  border: 1px solid #ddd;
+  font-weight: 500;
+  box-shadow:
+    0 2px 2px rgba(0, 0, 0, 0.08),
+    0 1px 5px -2px rgba(0, 0, 0, 0.04);
+  font-size: 14px;
+  border-radius: 6px;
+  margin-left: 4px;
+  background-color: #0c5cef;
+  color: #fff;
+  border-color: #0c5cef;
+}
+
+.refine--stored-filters-link {
+  color: black;
+  display: flex;
+  align-items: center;
+  padding: 3px 5px;
+  color: #111;
+  border-radius: 6px;
+  line-height: 1.15;
+  margin-bottom: 5px;
+  &:hover {
+    background-color: #eee;
+    color: #111;
+    text-decoration: none;
+  }
+  &:before {
+    content: "chevron_right";
+    font-family: "Material Icons";
+    font-size: 14px;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.refine--save-filter-link {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 14px;
+  padding: 3px 0;
+  border: 1px solid transparent;
+  border-radius: 6px;
+}
+
+.refine--save-filter-input-wrapper {
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  color: #111;
+  position: relative;
+}
+
+input.refine--save-filter-input {
+  border: none;
+  padding: 0;
+  font-size: 14px;
+  &:focus {
+    outline: unset;
+    border: none;
+    box-shadow: none;
+  }
+}
+
+.refine--save-filter-input-wrapper .refine--tooltip {
+  display: block;
+  transform: translate3d(-50%, -4px, 0);
+  position: absolute;
+  left: 50%;
+  bottom: 100%;
+  white-space: nowrap;
+  background-color: #000;
+  color: #fff;
+  border-radius: 6px;
+  box-shadow: 0 2px 12px -2px rgba(0, 0, 0, 0.15);
+  padding: 4px 8px;
+  font-size: 12px;
+  z-index: 9999;
+}
+
+.refine--hotkey {
+  border-radius: 4px;
+  background-color: rgba(255, 255, 255, 0.3);
+  display: inline-block;
+  padding: 0 4px;
+}
+
+.refine--condition-list .refine--list-icon,
+.refine--stored-filters-link .refine--list-icon {
+  width: 16px;
+  text-align: center;
+  margin-right: 10px;
+  font-size: 16px;
+}
+
+.material-icons-outlined.refine--icon-sm,
+.material-icons.refine--icon-sm,
+.icon.refine--icon-sm {
+  font-size: 14px;
+}
+
+.refine--search-box {
+  position: relative;
+  padding: 10px;
+  margin-left: -6px;
+  margin-right: 6px;
+}
+
+input.refine--search-trigger[type="text"] {
+  width: 100%;
+  font-size: 14px;
+  display: block;
+  padding: 5px 5px 5px 25px;
+  border: 1px solid #bbb;
+  border-radius: 6px;
+  outline: 0;
+  line-height: 1.15;
+}
+
+.material-icons.refine--icon-search {
+  position: absolute;
+  top: 50%;
+  left: 16px;
+  font-size: 16px;
+  color: #999;
+  transform: translateY(-50%);
+  line-height: 18px;
+}
