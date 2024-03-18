@@ -77,17 +77,26 @@ module Api
       )
 
       attributes_output = JSON.parse(schema_json)
+      # create_attributes_output = attributes_output
+      # update_attributes_output = attributes_output
 
       # Allow customization of Attributes
       # customize_component!(attributes_output, options[:attributes]) if options[:attributes]
       method_type = "create"
-      attributes_custom = options[:attributes][method_type] if options[:attributes].is_a?(Hash) && options[:attributes].key?(method_type)
-      attributes_custom ||= options[:attributes]
-      customize_component!(attributes_output, attributes_custom, method_type) if attributes_custom
+      create_attributes_custom = options[:attributes]["create"] if options[:attributes].is_a?(Hash) && options[:attributes].key?("create")
+      create_attributes_custom ||= options[:attributes]
+      customize_component!(create_attributes_output, create_attributes_custom, "create", model.name.underscore) if create_attributes_custom
 
+      # update_attributes_custom = options[:attributes]["update"] if options[:attributes].is_a?(Hash) && options[:attributes].key?("update")
+      # update_attributes_custom ||= options[:attributes]
+      # customize_component!(update_attributes_output, update_attributes_custom, "update") if update_attributes_custom
+
+      # attributes_custom = create_attributes_output
 
       # Add "Attributes" part to $ref's
       update_ref_values!(attributes_output)
+      # update_ref_values!(create_attributes_output, "create")
+      # update_ref_values!(update_attributes_output, "update")
 
       # Rails attachments aren't technically attributes in a model,
       # so we add the attributes manually to make them available in the API.
@@ -111,8 +120,13 @@ module Api
         create_parameters_output = process_strong_parameters(strong_params_module, schema_json, "create", **options)
         update_parameters_output = process_strong_parameters(strong_params_module, schema_json, "update", **options)
 
+        puts "create_parameters_output: #{create_parameters_output}"
+
+
         (
           indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
+            # indent("    " + create_attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}AttributesCreate:"), 3) +
+            # indent("    " + update_attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}AttributesUpdate:"), 3) +
             indent("    " + create_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersCreate:"), 3) +
             indent("    " + update_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersUpdate:"), 3)
         ).html_safe
@@ -130,15 +144,31 @@ module Api
       parameters_output = JSON.parse(schema_json)
       parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
       parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
+
+      # HERE'S WHERE IT"S WRONG FOR THE COMPONENTS - it needs the 'wrapper' key and to strip it for the right request type
       parameters_output["example"]&.select! { |key, value| strong_parameter_keys.include?(key.to_sym) && value.present? }
 
+      # tmp fix for the examples wrapper: - but it also needs to do the same for the params added via the customize_component method
+      # if parameters_output["example"]
+      #   parameters_output["example"] = { strong_params_module.model_name.underscore => parameters_output["example"] }
+      # else
+      #   parameters_output["example"] = { strong_params_module.model_name.underscore => {} }
+      # end
+
+      # BUT WHY IS IT WRONG FOR THE post_examples in the _path replacement
+
       # Allow customization of Parameters
-      # customize_component!(parameters_output, options[:parameters]) if options[:parameters]
-      # customize_component!(parameters_output, options[:parameters], method_type) if options[:parameters]
+      # customize_component!(parameters_output, options[:parameters], strong_params_module.model_name.underscore) if options[:parameters]
 
       parameters_custom = options[:parameters][method_type] if options[:parameters].is_a?(Hash) && options[:parameters].key?(method_type)
       parameters_custom ||= options[:parameters]
-      customize_component!(parameters_output, parameters_custom, method_type) if parameters_custom
+      puts "XXXXX"
+      # puts "parameters_output: #{parameters_output}"
+      # puts "~~~~~~"
+      # puts "parameters_custom: #{parameters_custom}"
+      customize_component!(parameters_output, parameters_custom, method_type, strong_params_module.model_name.underscore) if parameters_custom
+      puts "parameters_output: #{parameters_output}"
+      puts "~~~~~~"
 
       parameters_output
     end
@@ -172,9 +202,9 @@ module Api
       methods.include?("create") || methods.include?("update")
     end
 
-    def update_ref_values!(hash)
+    def update_ref_values!(hash, method_type = nil)
       hash.each do |key, value|
-        if key == "$ref" && value.is_a?(String) && !value.include?("Attributes")
+        if key == "$ref" && value.is_a?(String) && !value.include?("Attributes#{method_type.to_s.camelize}")
           # Extract the part after "#/components/schemas/"
           schema_part = value.split("#/components/schemas/").last
 
@@ -182,14 +212,14 @@ module Api
           camelized_schema = schema_part.split("/").map(&:camelize).join
 
           # Update the value
-          hash[key] = "#/components/schemas/#{camelized_schema}Attributes"
+          hash[key] = "#/components/schemas/#{camelized_schema}Attributes#{method_type.to_s.camelize}"
         elsif value.is_a?(Hash)
           # Recursively call the method for nested hashes
-          update_ref_values!(value)
+          update_ref_values!(value, method_type)
         elsif value.is_a?(Array)
           # Recursively call the method for each hash in the array
           value.each do |item|
-            update_ref_values!(item) if item.is_a?(Hash)
+            update_ref_values!(item, method_type) if item.is_a?(Hash)
           end
         end
       end
@@ -230,8 +260,11 @@ module Api
       # General customizations for both methods:
       # automatic_components_for User,
       #   attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}
+      # automatic_components_for User,
+      #   attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}
 
-    def customize_component!(original, custom, method_type)
+
+    def customize_component!(original, custom, method_type, class_name)
       custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
 
       # Check if customizations are provided for specific HTTP methods
@@ -250,6 +283,13 @@ module Api
             original["example"][property] = details["example"]
             details.delete("example")
           end
+          # original["properties"][property] = details
+          # if details["example"]
+          #   original["example"] ||= {}
+          #   original["example"][class_name] ||= {}
+          #   original["example"][class_name][property] = details["example"]
+          #   details.delete("example")
+          # end
         end
       end
 
@@ -258,6 +298,7 @@ module Api
           original["required"].delete(property)
           original["properties"].delete(property)
           original["example"].delete(property)
+          # original.dig("example", class_name)&.delete(property)
         end
       end
 

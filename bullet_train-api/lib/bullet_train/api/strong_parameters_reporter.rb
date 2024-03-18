@@ -32,6 +32,10 @@ module BulletTrain
       def process_params(params)
       end
 
+      def model_name
+        @model.name
+      end
+
       # def method_missing(method_name, *args)
       #   if method_name.match?(/^assign_/)
       #     # It's typically the second argument that represents the parameter that would be set.

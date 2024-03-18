@@ -59,7 +59,7 @@
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParametersCreate"
           example:
-            🚅 post_parameters
+            $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParametersCreate/example"
     responses:
       "404":
         description: "Not Found"
@@ -68,7 +68,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributesCreate"
             example:
               🚅 post_example
   <% end %>
@@ -117,7 +117,7 @@
                 type: object
                 $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParametersUpdate"
           example:
-            🚅 put_parameters
+            $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingParametersUpdate/example"
     responses:
       "404":
         description: "Not Found"
@@ -126,7 +126,7 @@
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributes"
+              $ref: "#/components/schemas/ScaffoldingCompletelyConcreteTangibleThingAttributesUpdate"
             example:
               🚅 put_example
   <% end %>
