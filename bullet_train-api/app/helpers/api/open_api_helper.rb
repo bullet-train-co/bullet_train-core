@@ -135,7 +135,7 @@ module Api
 
       # We need to wrap the example parameters with the model name as expected by the API controllers
       if parameters_output["example"]
-        parameters_output["example"] = { strong_params_module.model_name.underscore.gsub("/", "_") => parameters_output["example"] }
+        parameters_output["example"] = {strong_params_module.model_name.underscore.tr("/", "_") => parameters_output["example"]}
       end
 
       parameters_output

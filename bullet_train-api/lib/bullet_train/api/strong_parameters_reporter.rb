@@ -46,11 +46,11 @@ module BulletTrain
       # end
 
       def report(method_type = nil)
-        method_type = ['create', 'update'].include?(method_type) ? method_type : nil
-        base_method_name = "#{@model.name.split('::').last.underscore}"
+        method_type = ["create", "update"].include?(method_type) ? method_type : nil
+        base_method_name = @model.name.split("::").last.underscore
 
         # if available in the controller, it will use the 'update' strong params instead of the default strong params.
-        @filters = if method_type == 'update' && respond_to?("#{base_method_name}_#{method_type}_params".to_sym, true)
+        @filters = if method_type == "update" && respond_to?("#{base_method_name}_#{method_type}_params".to_sym, true)
           send("#{base_method_name}_#{method_type}_params".to_sym)
         else
           send("#{base_method_name}_params".to_sym)
