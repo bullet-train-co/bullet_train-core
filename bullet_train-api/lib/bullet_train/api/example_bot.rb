@@ -43,37 +43,6 @@ module FactoryBot
 
         if method.end_with?("parameters")
           if has_strong_parameters?("::Api::#{version.upcase}::#{class_name.pluralize}Controller".constantize)
-            # strong_params_module_name = "::Api::#{version.upcase}::#{class_name.pluralize}Controller::StrongParameters".constantize
-            # strong_params_module = BulletTrain::Api::StrongParametersReporter.new(class_name.constantize, strong_params_module_name)
-
-            # if method.start_with?("post")
-            #   strong_parameter_keys = strong_params_module.report("create")
-            #   strong_parameter_keys += strong_parameter_keys.pop.keys if strong_parameter_keys.last.is_a?(Hash)
-
-            #   output = _json_output(template, version, class_name, var_name, values)
-
-            #   parameters_output = JSON.parse(output)
-            #   parameters_output&.select! { |key| strong_parameter_keys.include?(key.to_sym) }
-
-            #   # Wrapping the example as parameters should be wrapped with the model name:
-            #   parameters_output = {model.to_s => parameters_output}
-
-            #   return indent(parameters_output.to_yaml.delete_prefix("---\n"), 6).html_safe
-            # else
-            #   strong_parameter_keys = strong_params_module.report("update")
-            #   strong_parameter_keys += strong_parameter_keys.pop.keys if strong_parameter_keys.last.is_a?(Hash)
-
-            #   output = _json_output(template, version, class_name, var_name, values)
-
-            #   parameters_output = JSON.parse(output)
-            #   parameters_output&.select! { |key| strong_parameter_keys.include?(key.to_sym) }
-
-            #   # Wrapping the example as parameters should be wrapped with the model name:
-            #   parameters_output = {model.to_s => parameters_output}
-
-            #   return indent(parameters_output.to_yaml.delete_prefix("---\n"), 6).html_safe
-            # end
-
             strong_params_module = "::Api::#{version.upcase}::#{class_name.pluralize}Controller::StrongParameters".constantize
             strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(class_name.constantize, strong_params_module).report
             if strong_parameter_keys.last.is_a?(Hash)
