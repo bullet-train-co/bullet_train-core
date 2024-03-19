@@ -222,7 +222,8 @@ create records in your database.
 
 #### Localization
 
-The documentation requires that several localisation values are defined.
+The documentation requires that `"#{model.name.underscore.pluralize}.label"` localisation value is defined,
+which will be used to set model title and description.
 
 ### Rake Tasks
 
