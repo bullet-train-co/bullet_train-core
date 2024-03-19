@@ -209,7 +209,7 @@ module Api
     #
     # General customizations for all methods:
     #   automatic_components_for User,
-    #     attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}
+    #     attributes: {remove: [:email, :time_zone]}, parameters: {add: {email: {type: :string, required: true, example: "fred@example.com"}}
     #   automatic_components_for User,
     #     attributes: {remove: [:email, :time_zone]}, parameters: {remove: [:email, :time_zone, :locale]}
     # Or specific customizations to parameters for create and update methods:
