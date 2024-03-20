@@ -7,7 +7,7 @@ Gem::Specification.new do |spec|
   spec.email = ["andrew.culver@gmail.com"]
   spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-api"
   spec.summary = "Bullet Train API"
-  spec.description = spec.summary
+  spec.description = "API capabilities for apps built with Bullet Train framework"
   spec.license = "MIT"
 
   # TODO: Remove some time after 1.6.27
