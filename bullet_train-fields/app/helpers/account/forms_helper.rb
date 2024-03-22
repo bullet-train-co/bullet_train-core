@@ -33,13 +33,13 @@ module Account::FormsHelper
 
   def labels_for(form, method)
     keys = [:placeholder, :label, :help, :options_help]
-    path = [model_key(form), (current_fields_namespace || :fields), method].compact
+    path = [model_key(form), current_fields_namespace || :fields, method].compact
     Struct.new(*keys).new(*keys.map { |key| t((path + [key]).join("."), default: "").presence })
   end
 
   def options_for(form, method)
     # e.g. "scaffolding/completely_concrete/tangible_things.fields.text_area_value.options"
-    path = [model_key(form), (current_fields_namespace || :fields), method, :options]
+    path = [model_key(form), current_fields_namespace || :fields, method, :options]
     options = t(path.compact.join("."))
     return options unless options.is_a?(Hash)
     options.stringify_keys

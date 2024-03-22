@@ -3,9 +3,9 @@ stimulus_controller = 'fields--phone'
 
 form ||= current_fields_form
 options ||= {}
-options = options.merge({type: 'tel', data: {method: method, "#{stimulus_controller}-target": 'field' }})
 other_options ||= {}
 
+options = options.merge({type: 'tel', data: {method: method, "#{stimulus_controller}-target": 'field' }})
 %>
 
 <div data-controller="<%= stimulus_controller %>">

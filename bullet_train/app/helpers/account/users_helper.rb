@@ -81,7 +81,7 @@ module Account::UsersHelper
     end
 
     if cloudinary_enabled?
-      resource.send("#{photo_method}_id".to_sym)
+      resource.send(:"#{photo_method}_id")
     elsif resource.send(photo_method).attached?
       url_for(resource.send(photo_method))
     end

@@ -2,8 +2,10 @@
 
 <%
 form ||= current_fields_form
-options ||= {}
-other_options ||= {}
+
+# TODO: All options and other_options below are written inline. Do we need these?
+# options ||= {}
+# other_options ||= {}
 %>
 
 <%= form.fields_for(method) do |address_form| %>

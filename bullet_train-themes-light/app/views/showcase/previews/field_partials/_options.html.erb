@@ -4,7 +4,7 @@
   <% end %>
 
   <% showcase.sample "Multiple Option" do %>
-    <%= render 'shared/fields/options', form: form, method: :multiple_option_values, multiple: true, show_select_all_top: true %>
+    <%= render 'shared/fields/options', form: form, method: :multiple_option_values, options: {multiple: true}, show_select_all_top: true %>
   <% end %>
 <% end %>
 
