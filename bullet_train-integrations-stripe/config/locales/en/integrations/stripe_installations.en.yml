@@ -24,16 +24,22 @@ en:
         _: &name Name
         label: *name
         heading: *name
+        api_title: *name
+        api_description: *name
 
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Added
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated
         label: *updated_at
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     list:
       section: "Stripe Installations"
       contexts:

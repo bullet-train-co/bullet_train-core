@@ -23,26 +23,36 @@ en:
         _: &id Endpoint ID
         label: *id
         heading: *id
+        api_title: *id
+        api_description: *id
 
       team_id:
         _: &team_id Team ID
         label: *team_id
         heading: *team_id
+        api_title: *team_id
+        api_description: *team_id
 
       name:
         _: &name Name
         label: *name
         heading: *name
+        api_title: *name
+        api_description: *name
 
       url:
         _: &url URL
         label: *url
         heading: *url
+        api_title: *url
+        api_description: *url
 
       api_version:
         _: &api_version API Version
         label: *api_version
         heading: *api_version
+        api_title: *api_version
+        api_description: *api_version
         options:
           1: V1
 
@@ -50,6 +60,8 @@ en:
         _: &event_type_ids Event Types
         label: *event_type_ids
         heading: *event_type_ids
+        api_title: *event_type_ids
+        api_description: *event_type_ids
         all: All Events
       event_types: *event_types
 
@@ -57,6 +69,8 @@ en:
         _: &scaffolding_absolutely_abstract_creative_concept_id Within Creative Concept
         label: *scaffolding_absolutely_abstract_creative_concept_id
         heading: *scaffolding_absolutely_abstract_creative_concept_id
+        api_title: *scaffolding_absolutely_abstract_creative_concept_id
+        api_description: *scaffolding_absolutely_abstract_creative_concept_id
 
       scaffolding_absolutely_abstract_creative_concept: *scaffolding_absolutely_abstract_creative_concept
 
@@ -65,10 +79,14 @@ en:
         _: &created_at Added
         label: *created_at
         heading: *created_at
+        api_title: *created_at
+        api_description: *created_at
       updated_at:
         _: &updated_at Updated
         label: *updated_at
         heading: *updated_at
+        api_title: *updated_at
+        api_description: *updated_at
     api:
       team_id: Absolutely Abstract Team ID
       collection_actions: "Collection Actions for Endpoints"

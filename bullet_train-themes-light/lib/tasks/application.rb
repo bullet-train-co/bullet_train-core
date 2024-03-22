@@ -3,6 +3,14 @@ require "masamune"
 module BulletTrain
   module Themes
     module Application
+      def self.eject_theme_main_css(theme_name)
+        theme_base_path = `bundle show --paths bullet_train-themes-#{theme_name}`.chomp
+
+        puts "Ejecting app/assets/stylesheets/#{theme_name}.tailwind.css."
+        Rails.root.join("app/assets/stylesheets").mkpath
+        `cp -R #{theme_base_path}/app/assets/stylesheets/#{theme_name}.tailwind.css #{Rails.root}/app/assets/stylesheets/#{theme_name}.tailwind.css`
+      end
+
       def self.eject_theme(theme_name, ejected_theme_name)
         theme_parts = theme_name.humanize.split.map { |str| str.capitalize }
         constantized_theme = theme_parts.join
@@ -19,13 +27,16 @@ module BulletTrain
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/#{theme_name}/#{ejected_theme_name}/g" #{Rails.root}/tailwind.mailer.#{ejected_theme_name}.config.js)
 
         puts "Ejecting stylesheets into `./app/assets/stylesheets/#{ejected_theme_name}`."
-        `mkdir #{Rails.root}/app/assets/stylesheets`
+        Rails.root.join("app/assets/stylesheets").mkpath
         `cp -R #{theme_base_path}/app/assets/stylesheets/#{theme_name} #{Rails.root}/app/assets/stylesheets/#{ejected_theme_name}`
         `cp -R #{theme_base_path}/app/assets/stylesheets/#{theme_name}.tailwind.css #{Rails.root}/app/assets/stylesheets/#{ejected_theme_name}.tailwind.css`
         %x(sed -i #{'""' if `echo $OSTYPE`.include?("darwin")} "s/light/#{ejected_theme_name}/g" #{Rails.root}/app/assets/stylesheets/#{ejected_theme_name}.tailwind.css)
 
         puts "Ejecting JavaScript into `./app/javascript/application.#{ejected_theme_name}.js`."
         `cp #{theme_base_path}/app/javascript/application.#{theme_name}.js #{Rails.root}/app/javascript/application.#{ejected_theme_name}.js`
+
+        puts "Ejecting postcss import aliases configuration into `./postcss-import-config.js`."
+        `cp #{theme_base_path}/postcss-import-config.js #{Rails.root}/postcss-import-config.js`
 
         `mkdir #{Rails.root}/app/views/themes`
 

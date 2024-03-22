@@ -1,6 +1,8 @@
 require "bullet_train/themes/version"
 require "bullet_train/themes/engine"
 # require "bullet_train/themes/base/theme"
+require "nice_partials"
+require "bullet_train/fields"
 
 module BulletTrain
   module Themes

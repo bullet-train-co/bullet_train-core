@@ -7,8 +7,17 @@ Gem::Specification.new do |spec|
   spec.email = ["andrew.culver@gmail.com"]
   spec.homepage = "https://github.com/bullet-train-co/bullet_train-core/tree/main/bullet_train-api"
   spec.summary = "Bullet Train API"
-  spec.description = spec.summary
+  spec.description = "API capabilities for apps built with Bullet Train framework"
   spec.license = "MIT"
+
+  # TODO: Remove some time after 1.6.27
+  spec.post_install_message = "
+    Bullet Train is switching to separate translations for API documentation.
+    To automatically update existing translations, run once:
+
+    bundle exec rake bullet_train:api:create_translations
+
+  "
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
   # to allow pushing to a single host or delete this section to allow pushing to any host.

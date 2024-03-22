@@ -13,6 +13,7 @@
  - [Overriding the Framework](/docs/overriding.md)
  - [Tunneling](/docs/tunneling.md)
  - [JavaScript](/docs/javascript.md)
+ - [Style Sheets](/docs/stylesheets.md)
  - [Internationalization](/docs/i18n.md)
 
 ## Developer Tools

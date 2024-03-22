@@ -18,6 +18,7 @@ module Users::Base
     devise :rememberable
     devise :trackable
     devise :validatable
+    devise :lockable
 
     # teams
     has_many :memberships, dependent: :destroy

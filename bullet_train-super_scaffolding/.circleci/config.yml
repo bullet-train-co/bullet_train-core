@@ -176,7 +176,7 @@ jobs:
           command: "cd tmp/starter && bundle exec test/bin/setup-super-scaffolding-system-test"
       - run:
           name: 'Run Super Scaffolding Test'
-          command: "cd tmp/starter && bundle exec rails test test/system/super_scaffolding_test.rb"
+          command: "cd tmp/starter && bundle exec rails test test/system/super_scaffolding/super_scaffolding_test.rb"
 
 workflows:
   version: 2

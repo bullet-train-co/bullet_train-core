@@ -110,15 +110,19 @@ text_field_value:
   name: &text_field_value Text Field Value
   label: *text_field_value
   heading: *text_field_value
+  api_title: *text_field_value
+  api_description: *text_field_value
 ```
 
-This might look redundant at first glance, as you can see that by default the same label ("Text Field Value") is being used for both the form field label (`label`) and the heading (`heading`) of the show view and table view. It's also used when the field is referred to in a validation error message. However, having these three values defined separately gives us the flexibility of defining much more user-friendly labels in the context of a form field. In my own applications, I'll frequently configure these form field labels to be much more verbose questions (in an attempt to improve the UX), but still use the shorter label as a column header on the table view and the show view:
+This might look redundant at first glance, as you can see that by default the same label ("Text Field Value") is being used for both the form field label (`label`) and the heading (`heading`) of the show view and table view, and in API `api_title` and `api_descriptions` are used for documentation purposes. It's also used when the field is referred to in a validation error message. However, having these three values defined separately gives us the flexibility of defining much more user-friendly labels in the context of a form field. In my own applications, I'll frequently configure these form field labels to be much more verbose questions (in an attempt to improve the UX), but still use the shorter label as a column header on the table view and the show view:
 
 ```yaml
 text_field_value:
   name: &text_field_value Text Field Value
   label: "What should the value of this text field be?"
   heading: *text_field_value
+  api_title: *text_field_value
+  api_description: *text_field_value
 ```
 
 You can also configure some placeholder text (displayed in the field when in an empty state) or some inline help text (to be presented to users under the form field) like so:
@@ -128,6 +132,8 @@ text_field_value:
   name: &text_field_value Text Field Value
   label: "What should the value of this text field be?"
   heading: *text_field_value
+  api_title: *text_field_value
+  api_description: *text_field_value
   placeholder: "Type your response here"
   help: "The value can be anything you want it to be!"
 ```

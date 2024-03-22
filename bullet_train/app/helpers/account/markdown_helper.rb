@@ -4,6 +4,6 @@ module Account::MarkdownHelper
       extensions: {header_ids: true},
       plugins: {syntax_highlighter: {theme: "InspiredGitHub"}},
       render: {width: 120, unsafe: true}
-    }).html_safe
+    }).gsub(/&lt;(\/)?script/, '<\\1script').html_safe
   end
 end

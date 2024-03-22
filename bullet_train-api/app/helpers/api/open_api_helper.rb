@@ -38,8 +38,8 @@ module Api
       end
 
       if custom_output
-        merge = deep_merge(YAML.load(output), YAML.load(custom_output)).to_yaml.html_safe
-        # YAML.load escapes emojis https://github.com/ruby/psych/issues/371
+        merge = deep_merge(YAML.safe_load(output), YAML.safe_load(custom_output)).to_yaml.html_safe
+        # YAML.safe_load escapes emojis https://github.com/ruby/psych/issues/371
         # Next line returns emojis back and removes yaml garbage
         output = merge.gsub("---", "").gsub(/\\u[\da-f]{8}/i) { |m| [m[-8..].to_i(16)].pack("U") }
       end
@@ -129,6 +129,22 @@ module Api
       for_model model do
         indent(render("api/#{@version}/open_api/#{model.name.underscore.pluralize}/paths"), 1)
       end
+    end
+
+    def external_doc(filename)
+      caller_path, line_number = caller.find { |line| line.include?(".yaml.erb:") }.split(":")
+      indentation = File.readlines(caller_path)[line_number.to_i - 1].match(/^(\s*)/)[1]
+      path = "app/views/api/#{@version}/open_api/docs/#{filename}.md"
+
+      raise "Markdown file not found: #{path}" unless File.exist?(path)
+
+      File.read(path).lines.map { |line| "  #{indentation}#{line}".rstrip }.join("\n").prepend("|\n").html_safe
+    rescue Errno::ENOENT, Errno::EACCES, RuntimeError => e
+      "Error loading markdown description: #{e.message}"
+    end
+
+    def description_for(model)
+      external_doc "#{model.name.underscore}_description"
     end
 
     private
