@@ -264,6 +264,16 @@ In `package.json`, replace the `build` and `build:css` entries under `scripts` w
 "build:css": "bin/link; THEME=\"light\" tailwindcss --postcss --minify -c ./tailwind.config.js -i ./app/assets/stylesheets/application.tailwind.css -o ./app/assets/builds/application.tailwind.css",
 ```
 
+### Define `current_theme` helper
+
+In your `app/helpers/application_helper.rb`, define:
+
+```
+def current_theme
+  :light
+end
+```
+
 ### Add `stylesheet_link_tag` to `<head>`
 
 Make sure you have the following three lines in your `<head>`, which should be defined in `app/views/layouts/application.html.erb`:
@@ -418,13 +428,11 @@ Add the following classes to your `html` tag for your layout:
 
 If you'd like to create your own theme but would still like to build on top of `:light`, you'll need to have both gems installed and you'll be able to switch the current theme this way.
 
-Define `current_theme` in `app/helpers/application_helper.rb`
+Change the `current_theme` value in `app/helpers/application_helper.rb`
 
 ```
-module ApplicationHelper
-  def current_theme
-    :light
-  end
+def current_theme
+  :super_custom_theme
 end
 ```
 
