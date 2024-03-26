@@ -2,6 +2,12 @@
 
 The address field partial adds a block of fields to your form. It creates and stores an instance of the `Address` model and associates it to your record.
 
+To add an address to a model, add the following to your model file:
+```ruby
+has_one :address_value, class_name: "Address", as: :addressable
+accepts_nested_attributes_for :address_value
+```
+
 ## Sub-Fields Included in the Partial
 
 | Field Label               | Name          | Data Type               | Notes                                                                                                                                                                                                                |
