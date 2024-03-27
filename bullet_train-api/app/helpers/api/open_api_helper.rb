@@ -107,11 +107,18 @@ module Api
         create_parameters_output = process_strong_parameters(strong_params_module, schema_json, "create", **options)
         update_parameters_output = process_strong_parameters(strong_params_module, schema_json, "update", **options)
 
-        (
-          indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3) +
-            indent("    " + create_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersCreate:"), 3) +
-            indent("    " + update_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersUpdate:"), 3)
-        ).html_safe
+        # We need to skip TeamParametersCreate, UserParametersCreate & InvitationParametersUpdate as they are not present in
+        # the bullet train api schema
+        if model.name == "Team" || model.name == "User"
+          create_parameters_output = nil
+        elsif model.name == "Invitation"
+          update_parameters_output = nil
+        end
+
+        output = indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
+        output += indent("    " + create_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersCreate:"), 3) if create_parameters_output
+        output += indent("    " + update_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersUpdate:"), 3) if update_parameters_output
+        output.html_safe
       else
 
         indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
