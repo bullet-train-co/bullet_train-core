@@ -63,7 +63,7 @@
             properties:
               user:
                 type: object
-                $ref: "#/components/schemas/UserParameters"
+                $ref: "#/components/schemas/UserParametersUpdate"
           example:
             <%= FactoryBot.put_parameters(:user, version: @version) %>
     responses:

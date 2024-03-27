@@ -32,6 +32,10 @@ module BulletTrain
       def process_params(params)
       end
 
+      def model_name
+        @model.name
+      end
+
       # def method_missing(method_name, *args)
       #   if method_name.match?(/^assign_/)
       #     # It's typically the second argument that represents the parameter that would be set.
@@ -41,8 +45,16 @@ module BulletTrain
       #   end
       # end
 
-      def report
-        @filters = send("#{@model.name.split("::").last.underscore}_params".to_sym)
+      def report(method_type = nil)
+        method_type = ["create", "update"].include?(method_type) ? method_type : nil
+        base_method_name = @model.name.split("::").last.underscore
+
+        # if available in the controller, it will use the 'update' strong params instead of the default strong params.
+        @filters = if method_type == "update" && respond_to?("#{base_method_name}_#{method_type}_params".to_sym, true)
+          send("#{base_method_name}_#{method_type}_params".to_sym)
+        else
+          send("#{base_method_name}_params".to_sym)
+        end
 
         # There's a reason I'm doing it this way.
         @filters

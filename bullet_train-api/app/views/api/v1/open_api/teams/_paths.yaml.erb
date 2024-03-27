@@ -64,7 +64,7 @@
             properties:
               team:
                 type: object
-                $ref: "#/components/schemas/TeamParameters"
+                $ref: "#/components/schemas/TeamParametersUpdate"
           example:
             <%= FactoryBot.put_parameters(:team, version: @version) %>
     responses:
