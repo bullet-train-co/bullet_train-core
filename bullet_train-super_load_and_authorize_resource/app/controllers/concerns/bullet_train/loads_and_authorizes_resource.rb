@@ -96,7 +96,7 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       # x. this and the thing below it are only here to make a sortable concern possible.
       prepend_before_action only: member_actions do
-        @child_object = instance_variable_get("@#{model}")
+        @child_object = instance_variable_get(:"@#{model}")
         @parent_object = instance_variable_get instance_variable_name
       end
 
@@ -106,7 +106,7 @@ module BulletTrain::LoadsAndAuthorizesResource
       end
 
       prepend_before_action only: member_actions do
-        model_instance = instance_variable_get("@#{model}")
+        model_instance = instance_variable_get(:"@#{model}")
         if model_instance && !instance_variable_defined?(instance_variable_name)
           parent = through_as_symbols.lazy.filter_map { model_instance.public_send(_1) }.first
           instance_variable_set instance_variable_name, parent
@@ -115,9 +115,9 @@ module BulletTrain::LoadsAndAuthorizesResource
 
       if options[:polymorphic]
         prepend_before_action only: collection_actions do
-          unless instance_variable_defined?("@#{options[:polymorphic]}")
-            parent = through_as_symbols.lazy.filter_map { instance_variable_get "@#{_1}" }.first
-            instance_variable_set "@#{options[:polymorphic]}", parent
+          unless instance_variable_defined?(:"@#{options[:polymorphic]}")
+            parent = through_as_symbols.lazy.filter_map { instance_variable_get :"@#{_1}" }.first
+            instance_variable_set :"@#{options[:polymorphic]}", parent
           end
         end
       end

@@ -32,7 +32,7 @@ module BulletTrain
     end
 
     def self.all_versions
-      (initial_version_numeric..current_version_numeric).map { |version| "v#{version}".to_sym }
+      (initial_version_numeric..current_version_numeric).map { |version| :"v#{version}" }
     end
 
     def self.set_configuration(application_class)

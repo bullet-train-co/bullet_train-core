@@ -732,19 +732,7 @@ class Scaffolding::Transformer
           # add_additional_step :yellow, transform_string("We've added a reference to a `placeholder` to the form for the select or super_select field, but unfortunately earlier versions of the scaffolded locales Yaml don't include a reference to `fields: *fields` under `form`. Please add it, otherwise your form won't be able to locate the appropriate placeholder label.")
         end
 
-        if attribute.type == "color_picker"
-          field_options[:color_picker_options] = "t('#{child.pluralize.underscore}.fields.#{attribute.name}.options')"
-        end
-
-        # When rendering a super_select element we need to use `html_options: {multiple: true}`,
-        # but all other fields simply use `multiple: true` to work.
-        if attribute.is_multiple?
-          if attribute.type == "super_select"
-            field_options[:multiple] = "true"
-          else
-            field_attributes[:multiple] = "true"
-          end
-        end
+        field_options[:multiple] = "true" if attribute.is_multiple?
 
         valid_values = if attribute.is_id?
           "valid_#{attribute.name_without_id.pluralize}"
@@ -754,7 +742,7 @@ class Scaffolding::Transformer
 
         # https://stackoverflow.com/questions/21582464/is-there-a-ruby-hashto-s-equivalent-for-the-new-hash-syntax
         if field_options.any? || options.any?
-          field_options_key = if ["buttons", "super_select", "options"].include?(attribute.type)
+          field_options_key = if attribute.type == "super_select"
             if options.any?
               field_attributes[:options] = "{" + field_options.map { |key, value| "#{key}: #{value}" }.join(", ") + "}"
             end
@@ -777,6 +765,10 @@ class Scaffolding::Transformer
           when "super_select"
             field_attributes["\n  choices"] = "@tangible_thing.#{valid_values}.map { |#{short}| [#{short}.#{attribute.options[:label]}, #{short}.id] }"
           end
+        end
+
+        if attribute.type == "color_picker"
+          field_attributes[:color_picker_field_options] = "t('#{child.pluralize.underscore}.fields.#{attribute.name}.options')"
         end
 
         field_content = "<%= render 'shared/fields/#{attribute.type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"

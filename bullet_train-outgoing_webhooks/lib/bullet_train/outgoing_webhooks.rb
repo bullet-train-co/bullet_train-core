@@ -29,7 +29,7 @@ module BulletTrain
     end
 
     def self.parent_association_id
-      "#{parent_association}_id".to_sym
+      :"#{parent_association}_id"
     end
   end
 end

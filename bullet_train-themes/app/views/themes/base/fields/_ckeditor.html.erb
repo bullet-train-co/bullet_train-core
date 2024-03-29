@@ -9,9 +9,10 @@ stimulus_controller = 'fields--ckeditor'
 
 form ||= current_fields_form
 options ||= {}
-options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 other_options ||= {}
 
+# TODO: Remove this if it's unneeded.
+options = options.merge({ data: {"#{stimulus_controller}-target": 'field' }})
 %>
 
 <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
