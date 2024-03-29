@@ -6,10 +6,10 @@
   </ul>
 <% end %>
 
-<% if defined?(Membership.all) %>
+<% if defined?(Membership) %>
   <% showcase.sample "With Memberships" do %>
     <ol>
-      <%= render "shared/team", memberships: Membership.all do |cell| %>
+      <%= render "shared/team", memberships: Membership.limit(10) do |cell| %>
         <% cell.name "Title" %>
       <% end %>
     </ol>
