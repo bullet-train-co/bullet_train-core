@@ -5,7 +5,7 @@ form ||= current_fields_form
 if defined?(options) && options.is_a?(Array)
   color_picker_field_options = options
   options = defined?(html_options) ? html_options : {}
-  ActiveSupport::Deprecation.warn(
+  ActiveSupport::Deprecation.new.warn(
     "`options` will be replaced with `color_picker_field_options` in a later version. " \
     "Please pass all of the colors you want as strings to `color_picker_field_options`."
   )
@@ -16,7 +16,7 @@ color_picker_field_options ||= options_for(form, method)
 options.delete(:color_picker_options)
 
 if defined?(html_options)
-  ActiveSupport::Deprecation.warn(
+  ActiveSupport::Deprecation.new.warn(
     "The `html_options` attribute for color pickers will be removed in a later version. " \
     "Pass all of your html options like `class` to `options` instead."
   )
@@ -31,7 +31,7 @@ options[:id] ||= form.field_id(method)
 options[:multiple] ||= false
 if defined?(multiple)
   options[:multiple] = multiple
-  ActiveSupport::Deprecation.warn(
+  ActiveSupport::Deprecation.new.warn(
     "The `multiple` attribute will be removed in a later version. " \
     "Please pass `options: {multiple: true}` to `render` instead."
   )

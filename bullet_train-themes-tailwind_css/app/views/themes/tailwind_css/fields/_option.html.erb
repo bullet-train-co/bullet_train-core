@@ -9,7 +9,7 @@ options ||= {}
 options[:multiple] ||= false
 if defined?(multiple)
   options[:multiple] = multiple
-  ActiveSupport::Deprecation.warn(
+  ActiveSupport::Deprecation.new.warn(
     "The `multiple` attribute will be removed in a later version. " \
     "Please pass `options: {multiple: true}` to `render` instead."
   )

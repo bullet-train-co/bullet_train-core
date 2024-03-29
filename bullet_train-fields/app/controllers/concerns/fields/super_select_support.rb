@@ -11,7 +11,7 @@ module Fields::SuperSelectSupport
   end
 
   def create_model_if_new(id)
-    ActiveSupport::Deprecation.warn(
+    ActiveSupport::Deprecation.new.warn(
       "#create_model_if_new is deprecated. " \
       "Use #ensure_backing_models_on instead. See examples at https://bullettrain.co/docs/field-partials/super-select#accepting-new-entries"
     )
@@ -24,7 +24,7 @@ module Fields::SuperSelectSupport
   end
 
   def create_models_if_new(ids)
-    ActiveSupport::Deprecation.warn(
+    ActiveSupport::Deprecation.new.warn(
       "#create_models_if_new is deprecated. " \
       "Use #ensure_backing_models_on instead. See examples at https://bullettrain.co/docs/field-partials/super-select#accepting-new-entries"
     )

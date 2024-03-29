@@ -13,7 +13,7 @@ form ||= current_fields_form
 if defined?(options) && options.is_a?(Array)
   option_field_options = options
   options = defined?(html_options) ? html_options : {}
-  ActiveSupport::Deprecation.warn(
+  ActiveSupport::Deprecation.new.warn(
     "`options` will be replaced with `option_field_options` in a later version. " \
     "Please pass all of the options you want as strings to ``."
   )
@@ -24,7 +24,7 @@ option_field_options ||= options_for(form, method)
 other_options ||= {}
 
 if defined?(html_options)
-  ActiveSupport::Deprecation.warn(
+  ActiveSupport::Deprecation.new.warn(
     "The `html_options` attribute for checkboxes and radio buttons will be removed in a later version " \
     "Pass all of your html options like `class` to `options` instead."
   )
@@ -33,7 +33,7 @@ end
 options[:multiple] ||= false
 if defined?(multiple)
   options[:multiple] = multiple
-  ActiveSupport::Deprecation.warn(
+  ActiveSupport::Deprecation.new.warn(
     "The `multiple` attribute will be removed in a later version. " \
     "Please pass `options: {multiple: true}` to `render` instead."
   )
