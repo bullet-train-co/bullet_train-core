@@ -1,4 +1,18 @@
 <%
+# This is the main partial which all of our other field partials
+# invoke in `bullet_train-themes/app/views/base/fields/`.
+# `options`, `html_options` and `other_options`
+# each serve their own specific purpose, so please read the
+# Field Partial documentation to get more familiar with how these work.
+# https://bullettrain.co/docs/field-partials
+#
+# Even though not all form helpers are invoked in this partial,
+# all instances of `options` must be passed here because
+# We add the `for` attribute for labels with `options[:id]`,
+# and this isn't always as simple as `form.field_id(method)`.
+%>
+
+<%
 %i[label field error help after_help].each do |key|
   if (content = content_for(key).presence)
     flush_content_for key
@@ -11,12 +25,18 @@ end
 form ||= current_fields_form
 # returns a struct with `label`, `placeholder`, and `help` methods.
 labels = labels_for(form, method)
+
+# Initialize options.
 options ||= {}
+other_options ||= {}
+
 options[:id] ||= form.field_id(method)
-# options[:disabled] ||= !field_editable?(form.object, method) if user_signed_in?
 options[:placeholder] ||= labels.placeholder if labels.placeholder
 
-other_options ||= {}
+# TODO: Why is this commented out, and where is `field_editable?`?
+# Delete this and finish https://github.com/bullet-train-co/bullet_train-core/pull/587.
+# options[:disabled] ||= !field_editable?(form.object, method) if user_signed_in?
+
 other_options[:help] = [other_options[:help], labels.help].compact.join(" ")
 
 if !other_options.key?(:required)
@@ -30,6 +50,8 @@ end
 errors = [method, method.to_s.delete_suffix("_id").to_sym].uniq.map { |attribute| form.object.errors.full_messages_for(attribute) }.flatten
 has_errors = errors.any? || partial.error? || other_options[:error].present?
 
+# TODO: Partials which invoke form helpers inline aren't using
+# these classes, although we have the `has_errors` conditional with some style below.
 options[:class] = "#{options[:class]} block w-full rounded-md shadow-sm font-light dark:bg-slate-800 dark:text-slate-300"
 options[:class] += " text-base md:text-sm" # default to 16px on mobile to prevent zooming
 
@@ -38,7 +60,6 @@ options[:class] += if has_errors
 else
   " focus:ring-primary-500 focus:border-primary-500 border-slate-300 dark:border-slate-900"
 end
-
 %>
 
 <div class="<%= 'required' if other_options[:required] %>">
@@ -54,8 +75,12 @@ end
     <% end %>
   <% end %>
 
+  <%# Here, we prioritize yielding the partial's field markup if it already exists. %>
+  <%# `form.send` below calls the original Rails Form helpers, such as %>
+  <%# `form.text_field(method, options)`. Refer to the form helpers for more details: %>
+  <%# https://github.com/rails/rails/blob/main/actionview/lib/action_view/helpers/form_helper.rb %>
   <div class="mt-1.5">
-    <% # the actual field. %>
+    <% # The actual field. %>
     <% if partial.field? %>
       <%= partial.field %>
     <% else %>
@@ -85,7 +110,7 @@ end
   <% end %>
 
   <% if other_options[:icon] %>
-  <div class="pre-icon os-icon <%= other_options[:icon] %>"></div>
+    <div class="pre-icon os-icon <%= other_options[:icon] %>"></div>
   <% end %>
 
 </div>

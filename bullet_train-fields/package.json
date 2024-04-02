@@ -1,6 +1,6 @@
 {
   "name": "@bullet-train/fields",
-  "version": "1.6.37",
+  "version": "1.7.1",
   "description": "Bullet Train Fields",
   "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/fields.esm.js",
@@ -60,6 +60,7 @@
     "emoji-mart": "^5.1.0",
     "i18n-js": "^3.8.0",
     "intl-tel-input": "^17.0.8",
+    "jquery": "^3.7.1",
     "select2": "^4.0.13",
     "tributejs": "^5.1.3",
     "trix": "^2.0.1",

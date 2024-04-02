@@ -1,6 +1,7 @@
 import { Controller } from "@hotwired/stimulus"
 require("select2/dist/css/select2.min.css");
 import select2 from "select2";
+import jquery from "jquery";
 
 const select2SelectedPreviewSelector = ".select2-selection--single"
 const select2SearchInputFieldSelector = ".select2-search__field"
@@ -20,13 +21,16 @@ export default class extends Controller {
 
   initialize() {
     this.dispatchNativeEvent = this.dispatchNativeEvent.bind(this)
+    if (window.jQuery === undefined) {
+      window.jQuery = jquery
+    }
     if (!this.isSelect2LoadedOnWindowJquery) {
       select2()
     }
   }
 
   get isSelect2LoadedOnWindowJquery() {
-    return window?.$?.fn?.select2 !== undefined
+    return window?.jQuery?.fn?.select2 !== undefined
   }
 
   get optionsOverride() {
@@ -41,16 +45,18 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.teardownPluginInstance()
+    if (this.isSelect2LoadedOnWindowJquery) {
+      this.teardownPluginInstance()
+    }
   }
 
   cleanupBeforeInit() {
-    $(this.element).find('.select2-container--default').remove()
+    this.element.querySelectorAll('.select2-container--default').forEach(el => el.remove());
   }
 
   initPluginInstance() {
     let options = {
-      dropdownParent: $(this.element)
+      dropdownParent: jQuery(this.element)
     };
 
     if (!this.enableSearchValue) {
@@ -84,7 +90,7 @@ export default class extends Controller {
 
     this.cleanupBeforeInit() // in case improperly torn down
     this.pluginMainEl = this.selectTarget // required because this.selectTarget is unavailable on disconnect()
-    $(this.pluginMainEl).select2(options);
+    jQuery(this.pluginMainEl).select2(options);
 
     this.initReissuePluginEventsAsNativeEvents()
   }
@@ -96,11 +102,11 @@ export default class extends Controller {
     this.teardownPluginEventsAsNativeEvents()
     
     // revert to original markup, remove any event listeners
-    $(this.pluginMainEl).select2('destroy');
+    jQuery(this.pluginMainEl).select2('destroy');
   }
   
   open() {
-    $(this.pluginMainEl).select2('open')
+    jQuery(this.pluginMainEl).select2('open')
   }
   
   focusOnTextField(event) {
@@ -127,13 +133,13 @@ export default class extends Controller {
 
   initReissuePluginEventsAsNativeEvents() {
     this.constructor.jQueryEventsToReissue.forEach((eventName) => {
-      $(this.pluginMainEl).on(eventName, this.dispatchNativeEvent)
+      jQuery(this.pluginMainEl).on(eventName, this.dispatchNativeEvent)
     })
   }
   
   teardownPluginEventsAsNativeEvents() {
     this.constructor.jQueryEventsToReissue.forEach((eventName) => {
-      $(this.pluginMainEl).off(eventName)
+      jQuery(this.pluginMainEl).off(eventName)
     })
   }
   
@@ -144,12 +150,12 @@ export default class extends Controller {
 
   // https://stackoverflow.com/questions/29290389/select2-add-image-icon-to-option-dynamically
   formatState(opt) {
-    var imageUrl = $(opt.element).attr('data-image');
+    var imageUrl = opt.element?.dataset.image
     var imageHtml = "";
     if (imageUrl) {
       imageHtml = '<img src="' + imageUrl + '" /> ';
     }
-    return $('<span>' + imageHtml + sanitizeHTML(opt.text) + '</span>');
+    return jQuery('<span>' + imageHtml + sanitizeHTML(opt.text) + '</span>');
   }
 }
 

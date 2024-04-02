@@ -46,15 +46,29 @@ The 1:1 relationship between these field partials and their underlying Rails for
 
 Individual field partials might have additional options available based on the underlying Rails form field helper. Links to the documentation for individual form field partials are listed at the end of this page.
 
+## `options` vs. `html_options`
+
+Most of the native form helpers use `options` to define html attributes like so:
+
+```ruby
+def text_field(object, method, options = {})
+  ...
+end
+```
+
+However, the `super_select` partial uses `html_options` to define them. This is the same as the native Rails [select form helper](https://api.rubyonrails.org/classes/ActionView/Helpers/FormBuilder.html#method-i-select). Each field partial has its own set of arguments that can be passed to it depending on the underlying form helper, so please refer to the [field partial options](/docs/field-partials/options.md) documentation for more details.
+
 ## `options` vs. `other_options`
 
-Because Bullet Train field partials have more responsibilities than the underlying Rails form field helpers, there are also additional options for things like hiding labels, displaying specific error messages, etc. For these options, we pass them separately as `other_options`. This keeps them separate from the options in `options` that will be passed directly to the underlying Rails form field helper.
+Because Bullet Train field partials have more responsibilities than the underlying Rails form field helpers, there are also additional options for things like hiding labels, displaying specific error messages, and more. For these options, we pass them separately as `other_options`. This keeps them separate from the options in `options` that will be passed directly to the underlying Rails form field helper.
 
 For example, to suppress a label on any field, we can use the `hide_label` option like so:
 
 ```erb
 <%= render 'shared/fields/text_field', form: form, method: :text_field_value, other_options: {hide_label: true} %>
 ```
+
+Please refer to the [field partial options](/docs/field-partials/options.md) documentation for more details.
 
 ### Globally-Available `other_options` Options
 

@@ -51,9 +51,9 @@ module BulletTrain
 
         # if available in the controller, it will use the 'update' strong params instead of the default strong params.
         @filters = if method_type == "update" && respond_to?("#{base_method_name}_#{method_type}_params".to_sym, true)
-          send("#{base_method_name}_#{method_type}_params".to_sym)
+          send(:"#{base_method_name}_#{method_type}_params")
         else
-          send("#{base_method_name}_params".to_sym)
+          send(:"#{base_method_name}_params")
         end
 
         # There's a reason I'm doing it this way.
