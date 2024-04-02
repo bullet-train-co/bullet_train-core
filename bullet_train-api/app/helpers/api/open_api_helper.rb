@@ -79,7 +79,7 @@ module Api
       attributes_output = JSON.parse(schema_json)
 
       # Allow customization of Attributes
-      customize_component!(attributes_output, options[:attributes], model.name.underscore) if options[:attributes]
+      customize_component!(attributes_output, options[:attributes], model.name.collection) if options[:attributes]
 
       # Add "Attributes" part to $ref's
       update_ref_values!(attributes_output)
@@ -100,12 +100,11 @@ module Api
       end
 
       if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
-        strong_params_module_name = "Api::#{@version.upcase}::#{model.name.pluralize}Controller::StrongParameters".constantize
-        strong_params_module = BulletTrain::Api::StrongParametersReporter.new(model, strong_params_module_name)
+        strong_parameter_keys = strong_parameter_keys_for(model.name, @version)
 
         # Create separate parameter schema for create and update methods
-        create_parameters_output = process_strong_parameters(strong_params_module, schema_json, "create", **options)
-        update_parameters_output = process_strong_parameters(strong_params_module, schema_json, "update", **options)
+        create_parameters_output = process_strong_parameters(model, strong_parameter_keys, schema_json, "create", **options)
+        update_parameters_output = process_strong_parameters(model, strong_parameter_keys, schema_json, "update", **options)
 
         # We need to skip TeamParametersCreate, UserParametersCreate & InvitationParametersUpdate as they are not present in
         # the bullet train api schema
@@ -116,7 +115,7 @@ module Api
         end
 
         output = indent(attributes_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Attributes:"), 3)
-        output += indent("    " + create_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersCreate:"), 3) if create_parameters_output
+        output += indent("    " + create_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}Parameters:"), 3) if create_parameters_output
         output += indent("    " + update_parameters_output.to_yaml.gsub("---", "#{model.name.gsub("::", "")}ParametersUpdate:"), 3) if update_parameters_output
         output.html_safe
       else
@@ -126,10 +125,7 @@ module Api
       end
     end
 
-    def process_strong_parameters(strong_params_module, schema_json, method_type, **options)
-      strong_parameter_keys = strong_params_module.report(method_type)
-      strong_parameter_keys += strong_parameter_keys.pop.keys if strong_parameter_keys.last.is_a?(Hash)
-
+    def process_strong_parameters(model, strong_parameter_keys, schema_json, method_type, **options)
       parameters_output = JSON.parse(schema_json)
       parameters_output["required"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
       parameters_output["properties"].select! { |key| strong_parameter_keys.include?(key.to_sym) }
@@ -138,14 +134,26 @@ module Api
       # Allow customization of Parameters
       parameters_custom = options[:parameters][method_type] if options[:parameters].is_a?(Hash) && options[:parameters].key?(method_type)
       parameters_custom ||= options[:parameters]
-      customize_component!(parameters_output, parameters_custom, strong_params_module.model_name.underscore, method_type) if parameters_custom
+      customize_component!(parameters_output, parameters_custom, model.name.underscore, method_type) if parameters_custom
 
       # We need to wrap the example parameters with the model name as expected by the API controllers
       if parameters_output["example"]
-        parameters_output["example"] = {strong_params_module.model_name.underscore.tr("/", "_") => parameters_output["example"]}
+        parameters_output["example"] = {model.model_name.param_key => parameters_output["example"]}
       end
 
       parameters_output
+    end
+
+    def strong_parameter_keys_for(model_name, version)
+      strong_params_module = "::Api::#{version.upcase}::#{model_name.pluralize}Controller::StrongParameters".constantize
+      strong_params_reporter = BulletTrain::Api::StrongParametersReporter.new(model_name.constantize, strong_params_module)
+      strong_parameter_keys = strong_params_reporter.report
+
+      if strong_parameter_keys.last.is_a?(Hash)
+        strong_parameter_keys += strong_parameter_keys.pop.keys
+      end
+
+      strong_parameter_keys
     end
 
     def paths_for(model)

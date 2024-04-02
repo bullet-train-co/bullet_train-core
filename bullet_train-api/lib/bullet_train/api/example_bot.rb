@@ -43,11 +43,7 @@ module FactoryBot
 
         if method.end_with?("parameters")
           if has_strong_parameters?("::Api::#{version.upcase}::#{class_name.pluralize}Controller".constantize)
-            strong_params_module = "::Api::#{version.upcase}::#{class_name.pluralize}Controller::StrongParameters".constantize
-            strong_parameter_keys = BulletTrain::Api::StrongParametersReporter.new(class_name.constantize, strong_params_module).report
-            if strong_parameter_keys.last.is_a?(Hash)
-              strong_parameter_keys += strong_parameter_keys.pop.keys
-            end
+            strong_parameter_keys = strong_parameter_keys_for(class_name, version)
 
             output = _json_output(template, version, class_name, var_name, values)
 
