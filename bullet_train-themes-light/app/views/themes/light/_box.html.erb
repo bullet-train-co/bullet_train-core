@@ -36,7 +36,7 @@
       </div>
     <% end %>
 
-    <% if partial.actions? || pagy %>
+    <% if partial.actions? || (pagy && pagy.pages > 1) %>
       <div class="pb-7 px-8 space-y-7">
         <div class="sm:flex">
           <div class="flex-1 space-x">
