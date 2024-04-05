@@ -1,5 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
 import { post } from '@rails/request.js'
+import jquery from "jquery";
 require("dragula/dist/dragula.min.css")
 
 import dragula from 'dragula';
@@ -12,6 +13,12 @@ export default class extends Controller {
   
   // will be reissued as native dom events name prepended with 'sortable:' e.g. 'sortable:drag', 'sortable:drop', etc
   static pluginEventsToReissue = [ "drag", "dragend", "drop", "cancel", "remove", "shadow", "over", "out", "cloned" ]
+
+  initialize() {
+    if (window.jQuery === undefined) {
+      window.jQuery = jquery // required for select2 used for time zone select, but we also use global jQuery throughout below
+    }
+  }
 
   connect() {
     if (!this.hasReorderPathValue) { return }
@@ -26,11 +33,11 @@ export default class extends Controller {
     const self = this
     this.plugin = dragula([this.element], {
       moves: function(el, container, handle) {
-        var $handles = $(el).find('.reorder-handle')
+        var $handles = jQuery(el).find('.reorder-handle')
         if ($handles.length) {
-          return !!$(handle).closest('.reorder-handle').length
+          return !!jQuery(handle).closest('.reorder-handle').length
         } else {
-          if (!$(handle).closest('.undraggable').length) {
+          if (!jQuery(handle).closest('.undraggable').length) {
             return self.element === container
           } else {
             return false
@@ -38,7 +45,7 @@ export default class extends Controller {
         }
       },
       accepts: function (el, target, source, sibling) {
-        if ($(sibling).hasClass('undraggable') && $(sibling).prev().hasClass('undraggable')) {
+        if (jQuery(sibling).hasClass('undraggable') && jQuery(sibling).prev().hasClass('undraggable')) {
           return false
         } else {
           return true
@@ -51,7 +58,7 @@ export default class extends Controller {
       }
     }).on('over', function (el, container) {
       // deselect any text fields, or else things go slow!
-      $(document.activeElement).blur()
+      jQuery(document.activeElement).blur()
     })
     
     this.initReissuePluginEventsAsNativeEvents()
