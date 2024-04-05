@@ -21,7 +21,7 @@ form ||= current_fields_form
         data: {
           'controller': "dependable",
           'action': '$change->dependable#updateDependents',
-          'dependable-dependents-selector-value': "##{form.field_id(:country, :dependent_fields)}"
+          'dependable-dependents-selector-value': "##{address_form.field_id(:country, :dependent_fields)}"
         }
       }
     %>
@@ -37,7 +37,7 @@ form ||= current_fields_form
       </div>
       <div class="sm:col-span-2">
         <%= render "shared/fields/dependent_fields_frame", 
-          id: form.field_id(:country, :dependent_fields),
+          id: address_form.field_id(:country, :dependent_fields),
           form: address_form,
           dependable_fields: [:country_id],
           html_options: { class: "block space-y-5" } do |dependent_fields_controller_name|
