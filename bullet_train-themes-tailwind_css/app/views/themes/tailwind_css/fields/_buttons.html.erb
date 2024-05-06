@@ -26,7 +26,7 @@ if defined?(html_options)
   )
 end
 
-button_field_options = options_for(form, method) if button_field_options.empty?
+button_field_options ||= options_for(form, method)
 
 options[:data] ||= {}
 options[:data]["#{stimulus_controller}-target"] = 'shadowField'
