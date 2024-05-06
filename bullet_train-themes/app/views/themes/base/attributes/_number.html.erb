@@ -2,12 +2,16 @@
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
 <% format ||= nil %>
+<% format_helper ||= nil %>
+<% format_helper_args ||= {} %>
 <% options ||= {} %>
 
 <% if object.public_send(attribute).present? %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy do %>
     <% if format %>
       <%= sprintf(format, object.public_send(attribute)) %>
+    <% elsif format_helper %>
+      <%= ActiveSupport::NumberHelper.send(format_helper, object.public_send(attribute), **format_helper_args) %>
     <% else %>
       <%= object.public_send(attribute) %>
     <% end %>
