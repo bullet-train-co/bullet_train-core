@@ -5,16 +5,15 @@ form ||= current_fields_form
 # TODO: We need to do this because `options` is currently an array of strings.
 # i.e. - ["One", "Two", "Three"]
 if defined?(options) && options.is_a?(Array)
-  button_field_buttons = options
+  button_field_options = options
   options = defined?(html_options) ? html_options : {}
   ActiveSupport::Deprecation.new.warn(
     "`options` will be replaced with `button_field_options` in a later version. " \
-    "Please pass all of the strings you want to appear in your buttons to `button_field_buttons`."
+    "Please pass all of the strings you want to appear in your buttons to `button_field_options`."
   )
 end
 
 options ||= {}
-button_field_buttons ||= {}
 other_options ||= {}
 
 if defined?(html_options)
@@ -27,7 +26,7 @@ if defined?(html_options)
   )
 end
 
-button_field_options = options_for(form, method) if button_field_buttons.empty?
+button_field_options ||= options_for(form, method)
 
 options[:data] ||= {}
 options[:data]["#{stimulus_controller}-target"] = 'shadowField'
