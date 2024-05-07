@@ -1351,7 +1351,7 @@ class Scaffolding::Transformer
       unless migration_file_name.present?
         raise "No migration file seems to exist for creating the table `#{class_names_transformer.table_name}`.\n" \
           "Please run the following command first and try Super Scaffolding again:\n" \
-          "rails generate model #{child} #{parent.downcase!}:references #{attributes.join(" ")}"
+          "rails generate model #{child} #{parent.underscore!}:references #{attributes.join(" ")}"
       end
 
       # if needed, update the reference to the parent class name in the create_table migration
@@ -1458,7 +1458,7 @@ class Scaffolding::Transformer
 
         migration = Dir.glob("db/migrate/*").last
         migration_lines = File.open(migration).readlines
-        parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.downcase}")
+        parent_line_idx = Scaffolding::FileManipulator.find(migration_lines, "t.references :#{parent.underscore}")
         new_lines = Scaffolding::BlockManipulator.insert_line("t.integer :sort_order", parent_line_idx, migration_lines, false)
         Scaffolding::FileManipulator.write(migration, new_lines)
       end
