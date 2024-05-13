@@ -9,7 +9,7 @@ you merge in version 1.5.0. Doing this should reduce the chances for merge confl
 To use the helper to modify your tests run this in a console (after updating to v1.4.11):
 
 ```
-bin/update/system_tests/use_device_test
+bin/updates/system_tests/use_device_test
 ```
 
 Then you should:
