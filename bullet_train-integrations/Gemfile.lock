@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-integrations (1.7.4)
+    bullet_train-integrations (1.7.5)
       rails (>= 6.0.0)
 
 GEM
