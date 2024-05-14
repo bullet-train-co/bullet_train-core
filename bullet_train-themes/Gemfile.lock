@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.7.4)
+    bullet_train-api (1.7.5)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.7.4)
+    bullet_train-fields (1.7.5)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.7.4)
+    bullet_train-super_scaffolding (1.7.5)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -34,7 +34,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.7.4)
+    bullet_train (1.7.5)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -71,7 +71,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.7.4)
+    bullet_train-themes (1.7.5)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -154,23 +154,24 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     builder (3.2.4)
-    bullet_train-has_uuid (1.7.3)
+    bullet_train-has_uuid (1.7.4)
       rails (>= 6.0.0)
-    bullet_train-roles (1.7.3)
+    bullet_train-roles (1.7.4)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.7.3)
+    bullet_train-scope_validator (1.7.4)
       rails
-    bullet_train-super_load_and_authorize_resource (1.7.3)
+    bullet_train-super_load_and_authorize_resource (1.7.4)
       cancancan
       rails (>= 6.0.0)
-    cable_ready (5.0.3)
+    cable_ready (5.0.5)
       actionpack (>= 5.2)
       actionview (>= 5.2)
       activesupport (>= 5.2)
+      observer (~> 0.1)
       railties (>= 5.2)
       thread-local (>= 1.1.0)
     cancancan (3.5.0)
@@ -273,7 +274,7 @@ GEM
     multipart-post (2.4.1)
     net-http (0.4.1)
       uri
-    net-imap (0.4.10)
+    net-imap (0.4.11)
       date
       net-protocol
     net-pop (0.1.2)
@@ -284,10 +285,11 @@ GEM
       net-protocol
     nice_partials (0.10.0)
       actionview (>= 4.2.6)
-    nio4r (2.7.2)
+    nio4r (2.7.3)
     nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
+    observer (0.1.2)
     omniauth (2.1.2)
       hashie (>= 3.4.6)
       rack (>= 2.2.3)
@@ -310,7 +312,7 @@ GEM
       actionmailer (>= 3)
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
-    prism (0.28.0)
+    prism (0.29.0)
     public_suffix (5.0.5)
     pwned (2.4.1)
     racc (1.6.2)
@@ -425,7 +427,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xxhash (0.5.0)
-    zeitwerk (2.6.13)
+    zeitwerk (2.6.14)
 
 PLATFORMS
   arm64-darwin-20
