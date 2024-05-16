@@ -18,26 +18,39 @@
       <% end %>
 
       <% box.table do %>
-        <% if tangible_things.any? %>
-          <table class="table">
-            <thead>
-              <tr>
-                <%= render "shared/tables/select_all" %>
-                <%# 🚅 skip this section when scaffolding. %>
-                <th><%= t('.fields.text_field_value.heading') %></th>
-                <th><%= t('.fields.boolean_button_value.heading') %></th>
-                <th><%= t('.fields.button_value.heading') %></th>
-                <th><%= t('.fields.multiple_button_values.heading') %></th>
-                <%# 🚅 stop any skipping we're doing now. %>
-                <%# 🚅 super scaffolding will insert new field headers above this line. %>
-                <th><%= t('.fields.created_at.heading') %></th>
-                <th class="text-right"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <%= render partial: 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', collection: tangible_things %>
-            </tbody>
-          </table>
+        <% if @refine_filter %>
+          <div class="px-8 py-2">
+            <%= form_with method: :get, data: { controller: "refine-support--form", action: "filter-submit-success->refine-support--form#requestSubmit", turbo_frame: "tangible_things_table" } do |form| %>
+              <%= form.hidden_field :stable_id, value: @refine_stable_id %>
+              <%= render "refine/inline/filters/show" %>
+            <% end %>
+          </div>
+        <% end %>
+
+        <%= turbo_frame_tag :tangible_things_table, target: "_top" do %>
+          <% if tangible_things.any? %>
+            <table class="table">
+              <thead>
+                <tr>
+                  <%= render "shared/tables/select_all" %>
+                  <%# 🚅 skip this section when scaffolding. %>
+                  <th><%= t('.fields.text_field_value.heading') %></th>
+                  <th><%= t('.fields.boolean_button_value.heading') %></th>
+                  <th><%= t('.fields.button_value.heading') %></th>
+                  <th><%= t('.fields.multiple_button_values.heading') %></th>
+                  <%# 🚅 stop any skipping we're doing now. %>
+                  <%# 🚅 super scaffolding will insert new field headers above this line. %>
+                  <th><%= t('.fields.created_at.heading') %></th>
+                  <th class="text-right"></th>
+                </tr>
+              </thead>
+              <tbody>
+                <%= render partial: 'account/scaffolding/completely_concrete/tangible_things/tangible_thing', collection: tangible_things %>
+              </tbody>
+            </table>
+          <% elsif @refine_filter %>
+            <div class="px-8 py-4">No tangible things found.</div>
+          <% end %>
         <% end %>
       <% end %>
 
