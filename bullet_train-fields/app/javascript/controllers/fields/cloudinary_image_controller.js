@@ -1,4 +1,6 @@
 import { Controller } from "@hotwired/stimulus"
+import jQuery from "jquery"
+import { get } from "@rails/request.js"
 
 export default class extends Controller {
   static targets = [ "uploadButton", "hiddenField", "thumbnail" ]
@@ -56,16 +58,43 @@ export default class extends Controller {
     this.removeThumbnail()
   }
   
-  getCloudinarySignature(callback, paramsToSign) {
-    $.ajax({
-      url: this.signaturesUrlValue,
-      type: "GET",
-      dataType: "text",
-      data: {data: paramsToSign},
-      complete: function() { console.log("complete") },
-      success: function(signature, textStatus, xhr) { callback(signature) },
-      error: function(xhr, status, error) { console.log(xhr, status, error) }
-    })
+  // getCloudinarySignature(callback, paramsToSign) {
+  //   jQuery.ajax({
+  //     url: this.signaturesUrlValue,
+  //     type: "GET",
+  //     dataType: "text",
+  //     data: {data: paramsToSign},
+  //     complete: function() { console.log("complete") },
+  //     success: function(signature, textStatus, xhr) { callback(signature) },
+  //     error: function(xhr, status, error) { console.log(xhr, status, error) }
+  //   })
+  // }
+
+  async getCloudinarySignature(callback, paramsToSign) {
+    const queryData = new URLSearchParams();
+  
+    for (const key in paramsToSign) {
+      queryData.append(`data[${key}]`, paramsToSign[key]);
+    }
+  
+    try {
+      const response = await get(this.signaturesUrlValue, {
+        responseKind: 'text',
+        query: queryData
+      });
+  
+      if (response.ok) {
+        const signature = await response.text;
+        console.log('signature', signature)
+        callback(signature);
+      } else {
+        console.log('Request failed:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Request error:', error);
+    } finally {
+      console.log('complete');
+    }
   }
   
   handleWidgetResponse(error, response) {
@@ -85,8 +114,13 @@ export default class extends Controller {
   }
   
   addThumbnail(url) {
-    var $imageElement = $(`<img src="${url}" width="${this.widthValue}" height="${this.heightValue}" data-${this.identifier}-target="thumbnail" />`)
-    $(this.uploadButtonTarget).prepend($imageElement)
+    const imageElement = document.createElement('img');
+    imageElement.src = url;
+    imageElement.width = this.widthValue;
+    imageElement.height = this.heightValue;
+    imageElement.setAttribute(`data-${this.identifier}-target`, 'thumbnail');
+
+    this.uploadButtonTarget.prepend(imageElement);
 
     // mark the image as present.
     this.uploadButtonTarget.classList.add(this.thumbnailShownClass)
