@@ -1351,7 +1351,7 @@ class Scaffolding::Transformer
       unless migration_file_name.present?
         raise "No migration file seems to exist for creating the table `#{class_names_transformer.table_name}`.\n" \
           "Please run the following command first and try Super Scaffolding again:\n" \
-          "rails generate model #{child} #{parent.underscore!}:references #{attributes.join(" ")}"
+          "rails generate model #{child} #{parent.underscore}:references #{attributes.join(" ")}"
       end
 
       # if needed, update the reference to the parent class name in the create_table migration
