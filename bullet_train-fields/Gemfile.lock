@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.7.6)
+    bullet_train-api (1.7.7)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.7.6)
+    bullet_train-super_scaffolding (1.7.7)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.7.6)
+    bullet_train (1.7.7)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -62,7 +62,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.7.6)
+    bullet_train-fields (1.7.7)
       chronic
       cloudinary
       phonelib
@@ -146,20 +146,20 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     builder (3.2.4)
-    bullet_train-has_uuid (1.7.5)
+    bullet_train-has_uuid (1.7.6)
       rails (>= 6.0.0)
-    bullet_train-roles (1.7.5)
+    bullet_train-roles (1.7.6)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.7.5)
+    bullet_train-scope_validator (1.7.6)
       rails
-    bullet_train-super_load_and_authorize_resource (1.7.5)
+    bullet_train-super_load_and_authorize_resource (1.7.6)
       cancancan
       rails (>= 6.0.0)
-    bullet_train-themes (1.7.5)
+    bullet_train-themes (1.7.6)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -170,7 +170,7 @@ GEM
       observer (~> 0.1)
       railties (>= 5.2)
       thread-local (>= 1.1.0)
-    cancancan (3.5.0)
+    cancancan (3.6.0)
     charlock_holmes (0.7.7)
     chronic (0.10.2)
     cloudinary (2.0.2)
@@ -350,7 +350,7 @@ GEM
     rainbow (3.1.1)
     rake (13.1.0)
     rb_sys (0.9.97)
-    redis-client (0.22.1)
+    redis-client (0.22.2)
       connection_pool
     regexp_parser (2.5.0)
     responders (3.1.1)
@@ -386,8 +386,7 @@ GEM
       connection_pool (>= 2.3.0)
       rack (>= 2.2.4)
       redis-client (>= 0.19.0)
-    simpleidn (0.2.2)
-      unf (~> 0.1.4)
+    simpleidn (0.2.3)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -404,9 +403,6 @@ GEM
     timeout (0.4.1)
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
-    unf (0.1.4)
-      unf_ext
-    unf_ext (0.0.9.1)
     unicode-display_width (2.2.0)
     unicode-emoji (3.4.0)
       unicode-version (~> 1.0)
