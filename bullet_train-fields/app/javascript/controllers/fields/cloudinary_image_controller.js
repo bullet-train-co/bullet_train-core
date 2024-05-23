@@ -1,5 +1,4 @@
 import { Controller } from "@hotwired/stimulus"
-import jQuery from "jquery"
 import { get } from "@rails/request.js"
 
 export default class extends Controller {
@@ -58,18 +57,6 @@ export default class extends Controller {
     this.removeThumbnail()
   }
   
-  // getCloudinarySignature(callback, paramsToSign) {
-  //   jQuery.ajax({
-  //     url: this.signaturesUrlValue,
-  //     type: "GET",
-  //     dataType: "text",
-  //     data: {data: paramsToSign},
-  //     complete: function() { console.log("complete") },
-  //     success: function(signature, textStatus, xhr) { callback(signature) },
-  //     error: function(xhr, status, error) { console.log(xhr, status, error) }
-  //   })
-  // }
-
   async getCloudinarySignature(callback, paramsToSign) {
     const queryData = new URLSearchParams();
   
