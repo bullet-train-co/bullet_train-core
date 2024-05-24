@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.7.7)
+    bullet_train-scope_validator (1.7.8)
       rails
 
 GEM
