@@ -79,7 +79,7 @@ module Api
       attributes_output = JSON.parse(schema_json)
 
       # Allow customization of Attributes
-      customize_component!(attributes_output, options[:attributes], model.name.collection) if options[:attributes]
+      customize_component!(attributes_output, options[:attributes], model.name.underscore) if options[:attributes]
 
       # Add "Attributes" part to $ref's
       update_ref_values!(attributes_output)
@@ -106,7 +106,7 @@ module Api
         create_parameters_output = process_strong_parameters(model, strong_parameter_keys, schema_json, "create", **options)
         update_parameters_output = process_strong_parameters(model, strong_parameter_keys, schema_json, "update", **options)
 
-        # We need to skip TeamParametersCreate, UserParametersCreate & InvitationParametersUpdate as they are not present in
+        # We need to skip TeamParameters, UserParameters & InvitationParametersUpdate as they are not present in
         # the bullet train api schema
         if model.name == "Team" || model.name == "User"
           create_parameters_output = nil
