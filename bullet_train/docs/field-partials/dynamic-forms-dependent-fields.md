@@ -53,11 +53,13 @@ To let our `:heard_from_other` field handle the `dependable:updated` event, we'l
 <%= render 'shared/fields/text_field',
     method: :heard_from_other,
     id: form.field_id(:heard_from_other),
-    options: {disabled: true},
-    data: {
-      controller: "field-availability",
-      action: "dependable:updated->field-availability#toggle",
-      field_availability_expected_value: "other"
+    options: {
+      disabled: true,
+      data: {
+        controller: "field-availability",
+        action: "dependable:updated->field-availability#toggle",
+        field_availability_expected_value: "other"
+      }
     }
 %>
 ```
@@ -114,8 +116,10 @@ We'll move the conditional on the `disabled` property. And we'll also let the `d
 
   <%= render 'shared/fields/text_field',
     method: :heard_from_other,
-    options: {disabled: form.object&.heard_from != "other"},
-    data: {"#{dependent_fields_controller_name}-target": "field"}
+    options: {
+      disabled: form.object&.heard_from != "other",
+      data: {"#{dependent_fields_controller_name}-target": "field"}
+    }
   %>
 <% end %>
 ```
