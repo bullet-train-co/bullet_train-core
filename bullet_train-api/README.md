@@ -144,6 +144,59 @@ As you can see, it automatically sets required fields based on presence validato
 field types based on the value found in Jbuilder file, descriptions and examples.
 More on how it works and how you can customize the output in [`jbuilder-schema`](https://github.com/bullet-train-co/jbuilder-schema) documentation.
 
+#### Manually Extending Automatic Components
+
+While `automatic_components_for` automatically adds parameters and attributes from your application, sometimes it is
+necessary to manually specify parameters and attributes in addition to the automatic ones, due to custom code in
+your app.
+
+`automatic_components_for` allows to you add or remove parameters and attributes. You can also specify that
+parameters that are only available for create or update methods.
+
+##### Adding or Removing Specific Attributes for a Component
+
+To add or remove specific attributes for a component:
+
+    automatic_components_for User,
+      parameters: {
+        add: {
+          tag_ids: {
+            type: :array,
+            items: {type: :integer},
+            description: "Array of Tag IDs for the User."
+          }
+        }
+      },
+      attributes: {
+        remove: [:email, :time_zone],
+        add: {
+          url: {
+            type: :string,
+            description: "The URL of the User's image."
+          }
+        }
+      }
+
+##### Specifying Parameters for Create or Update Methods
+
+To specify parameters that only exist for the create or update methods, use the following format:
+
+    automatic_components_for Enrollment,
+      parameters: {
+        create: {
+          add: {
+            user_id: {
+              type: :integer,
+              description: "ID of the User who enrolled.",
+              example: 42
+            }
+          }
+        },
+        update: {
+          remove: [:time_zone]
+        }
+      }
+
 #### Automatic Paths
 
 Method `automatic_paths_for` generates basic REST paths. It accepts model as it's argument.
@@ -155,7 +208,7 @@ a write action (i.e. create or update), then doc generation uses the `strong_par
 defined in the corresponding controller to generate the Parameters section in the schema.
 
 Automatic paths are generated for basic REST actions. You can customize those paths or add your own by creating a
-file at `app/views/api/<version>/open_api/<Model.underscore.plural>/_paths.yaml.erb`. For REST paths there's no need to 
+file at `app/views/api/<version>/open_api/<Model.underscore.plural>/_paths.yaml.erb`. For REST paths there's no need to
 duplicate all the schema, you can specify only what differs from auto-generated code.
 
 #### External Markdown files
