@@ -79,7 +79,7 @@ module Api
       attributes_output = JSON.parse(schema_json)
 
       # Allow customization of Attributes
-      customize_component!(attributes_output, options[:attributes], model.name.underscore) if options[:attributes]
+      customize_component!(attributes_output, options[:attributes]) if options[:attributes]
 
       # Add "Attributes" part to $ref's
       update_ref_values!(attributes_output)
@@ -134,7 +134,7 @@ module Api
       # Allow customization of Parameters
       parameters_custom = options[:parameters][method_type] if options[:parameters].is_a?(Hash) && options[:parameters].key?(method_type)
       parameters_custom ||= options[:parameters]
-      customize_component!(parameters_output, parameters_custom, model.name.underscore, method_type) if parameters_custom
+      customize_component!(parameters_output, parameters_custom, method_type) if parameters_custom
 
       # We need to wrap the example parameters with the model name as expected by the API controllers
       if parameters_output["example"]
@@ -231,7 +231,7 @@ module Api
     #   automatic_components_for User,
     #     parameters: {update: {remove: [:email]}, create: {remove: [:time_zone]}},
     #     attributes: {remove: [:email, :time_zone]}
-    def customize_component!(original, custom, class_name, method_type = nil)
+    def customize_component!(original, custom, method_type = nil)
       custom = custom.deep_stringify_keys.deep_transform_values { |v| v.is_a?(Symbol) ? v.to_s : v }
 
       # Check if customizations are provided for specific HTTP methods
