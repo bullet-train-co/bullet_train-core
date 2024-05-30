@@ -20,6 +20,7 @@ Then, run `bundle` or install it manually using `gem install bullet_train-api`.
 - [Documentation](#documentation)
   - [Index file](#index-file)
   - [Automatic Components](#automatic-components)
+  - [Manually Extending Component Schemas](#manually-extending-component-schemas)
   - [Automatic Paths](#automatic-paths)
   - [External Markdown files](#external-markdown-files)
   - [Examples](#examples)
@@ -144,7 +145,7 @@ As you can see, it automatically sets required fields based on presence validato
 field types based on the value found in Jbuilder file, descriptions and examples.
 More on how it works and how you can customize the output in [`jbuilder-schema`](https://github.com/bullet-train-co/jbuilder-schema) documentation.
 
-#### Manually Extending Automatic Components
+#### Manually Extending Component Schemas
 
 While `automatic_components_for` automatically adds parameters and attributes from your application, sometimes it is
 necessary to manually specify parameters and attributes in addition to the automatic ones, due to custom code in
