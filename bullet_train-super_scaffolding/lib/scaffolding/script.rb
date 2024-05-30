@@ -139,11 +139,34 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
 
         file_name = Dir.glob("app/models/**/*.rb").find { |model| model.match?(/#{attribute_options[:class_name].underscore}\.rb/) } || ""
 
+        begin
+          class_name_constant = attribute_options[:class_name].constantize
+        rescue NameError
+          if attribute_options[:class_name] == child
+            puts ""
+            puts "You appear to be tryingo scaffold a model that references itself. Unfotunately this needs to be a two-step process.".red
+            puts "First you should generate the model without the reference, and then add the reference as a new field. For instance:".red
+            puts ""
+            puts "  rails generate super_scaffold #{child}#{" " + parent if parent.present?}".red
+            puts "  rails generate super_scaffold:field #{child} #{name}:#{type}".red
+            puts ""
+            puts "If `#{name}` is just a regular field and isn't backed by an ActiveRecord association, you can skip all this with the `{vanilla}` option, e.g.:".red
+            puts ""
+            puts "  rails generate super_scaffold #{child}#{" " + parent if parent.present?} #{name}:#{type}{vanilla}".red
+            puts ""
+            exit
+          else
+            # We don't do anything special here because we'll end up triggering the error message below. A self-referential model
+            # is kind of a special case that's worth calling out specifically. If we just can't find the model the messaging below
+            # should be sufficient to get folks on the right track.
+          end
+        end
+
         # If a model is namespaced, the parent's model file might exist under
         # `app/models/`, but sometimes these files are modules that resolve
         # table names by providing a prefix as opposed to an actual ApplicationRecord.
         # This check ensures that the _id attribute really is a model.
-        is_active_record_class = attribute_options[:class_name].constantize.ancestors.include?(ActiveRecord::Base)
+        is_active_record_class = class_name_constant&.ancestors&.include?(ActiveRecord::Base)
         unless File.exist?(file_name) && is_active_record_class
           puts ""
           puts "Attributes that end with `_id` or `_ids` trigger awesome, powerful magic in Super Scaffolding. However, because no `#{attribute_options[:class_name]}` class was found defined in `#{file_name}`, you'll need to specify a `class_name` that exists to let us know what model class is on the other side of the association, like so:".red
