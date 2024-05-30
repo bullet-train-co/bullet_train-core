@@ -1,6 +1,6 @@
 {
   "name": "@bullet-train/bullet-train-sortable",
-  "version": "1.7.1",
+  "version": "1.7.8",
   "description": "Bullet Train - Sortable",
   "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/bullet-train.esm.js",
@@ -54,6 +54,7 @@
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",
     "@rails/request.js": "^0.0.6",
-    "dragula": "^3.7.3"
+    "dragula": "^3.7.3",
+    "jquery": "^3.7.1"
   }
 }

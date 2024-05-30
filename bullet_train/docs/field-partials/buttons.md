@@ -25,11 +25,11 @@ en:
 
 ## Generate Buttons Programmatically
 
-You can generate the available buttons using a collection of database objects by passing the `options` option like so:
+You can generate the available buttons using a collection of database objects by passing the `button_field_options` option like so:
 
 ```erb
 <%= render 'shared/fields/buttons', form: form, method: :category_id,
-  options: Category.all.map { |category| [category.id, category.label_string] } %>
+  button_field_options: Category.all.map { |category| [category.id, category.label_string] } %>
 ```
 
 ## Allow Multiple Button Selections
@@ -38,7 +38,7 @@ You can allow multiple buttons to be selected using the `multiple` option, like 
 
 ```erb
 <%= render 'shared/fields/buttons', form: form, method: :category_ids,
-  options: Category.all.map { |category| [category.id, category.label_string] }, options: {multiple: true} %>
+  button_field_options: Category.all.map { |category| [category.id, category.label_string] }, options: {multiple: true} %>
 ```
 
 ## Dynamically Updating Form Fields
