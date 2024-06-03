@@ -48,7 +48,7 @@
 <% end %>
 
 <script type="text/javascript">
-  $(document).on('turbo:load', function() {
+  document.addEventListener('turbo:load', function() {
 
     // generate a mapping of js timezones compared to rails timezones.
     var jsTimezoneMapping = {
@@ -60,17 +60,16 @@
     // figure out the rails timezone value.
     var railsValue = jsTimezoneMapping[jstz.determine().name()];
 
-    var useBrowserTimeZone = $("#user_time_zone")[0].dataset.useBrowserTimeZone
+    var useBrowserTimeZone = document.querySelector("#user_time_zone").dataset.useBrowserTimeZone
 
     if (useBrowserTimeZone == "true") {
-      // set the form accordingly.
-      var $option = $("#user_time_zone option[value=\"" + railsValue + "\"]")
-      $option.prop('selected', true);
-
-      // update the select2 as well. is there a better way to handle this?
-      // why don't _they_ handle this for us?
-      $("#select2-user_time_zone-container").attr('title', $option.text());
-      $("#select2-user_time_zone-container").text($option.text());
+      // set the form accordingly if we can find a matching option in the dropdown
+      var option = document.querySelector("#user_time_zone option[value=\"" + railsValue + "\"]")
+      if(option){
+        document.querySelector("#user_time_zone").value = railsValue;
+      }else{
+        console.log('We were unable to find a timezone matching the rails detected value of ', railsValue);
+      }
     }
 
   });
