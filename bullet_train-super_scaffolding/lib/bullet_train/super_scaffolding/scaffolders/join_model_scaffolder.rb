@@ -33,35 +33,56 @@ module BulletTrain
           check_class_name_for_namespace_conflict(child)
 
           primary_parent = argv[1].split("class_name=").last.split(",").first.split("}").first
+          primary_parent_attribute_name = argv[1].split("{").first.delete_suffix("_id")
+
           secondary_parent = argv[2].split("class_name=").last.split(",").first.split("}").first
+          secondary_parent_attribute_name = argv[2].split("{").first.delete_suffix("_id")
 
           # There should only be two attributes.
           attributes = [argv[1], argv[2]]
 
-          unless @options["skip-migration-generation"]
-            attributes_without_options = attributes.map { |attribute| attribute.gsub(/{.*}$/, "") }
-            attributes_without_id = attributes_without_options.map { |attribute| attribute.delete_suffix("_id") }
-            attributes_with_references = attributes_without_id.map { |attribute| attribute + ":references" }
+          attributes_without_options = attributes.map { |attribute| attribute.gsub(/{.*}$/, "") }
+          attributes_without_id = attributes_without_options.map { |attribute| attribute.delete_suffix("_id") }
+          attributes_with_references = attributes_without_id.map { |attribute| attribute + ":references" }
 
+          unless @options["skip-migration-generation"]
             generation_command = "bin/rails generate model #{child} #{attributes_with_references.join(" ")}"
             puts "Generating model with '#{generation_command}'".green
             `#{generation_command}`
+
+            string_to_replace = "t.references :#{primary_parent_attribute_name}, null: false, foreign_key: true"
+            string_to_replace_with = "t.references :#{primary_parent_attribute_name}, null: false, foreign_key: { to_table: #{primary_parent.tableize} }"
+
+            puts "need to replace"
+            puts string_to_replace
+            puts "with"
+            puts string_to_replace_with
+
+            string_to_replace = "t.references :#{secondary_parent_attribute_name}, null: false, foreign_key: true"
+            string_to_replace_with = "t.references :#{secondary_parent_attribute_name}, null: false, foreign_key: { to_table: #{secondary_parent.tableize} }"
+
+            puts "need to replace"
+            puts string_to_replace
+            puts "with"
+            puts string_to_replace_with
           end
 
           # Pretend we're doing a `super_select` scaffolding because it will do the correct thing.
           attributes = attributes.map { |attribute| attribute.gsub("{", ":super_select{") }
           attributes = attributes.map { |attribute| attribute.gsub("}", ",required}") }
 
-          transformer = Scaffolding::Transformer.new(child, [primary_parent], @options)
+          transformer = Scaffolding::Transformer.new(child, [primary_parent], @options, primary_parent_attribute_name)
 
           # We need this transformer to reflect on the class names _just_ between e.g. `Project` and `Projects::Tag`, without the join model.
-          has_many_through_transformer = Scaffolding::Transformer.new(secondary_parent, [primary_parent], @options)
+          has_many_through_transformer = Scaffolding::Transformer.new(secondary_parent, [primary_parent], @options, primary_parent_attribute_name)
 
           # We need this transformer to reflect on the association between `Projects::Tag` and `Projects::AppliedTag` backwards.
-          inverse_transformer = Scaffolding::Transformer.new(child, [secondary_parent], @options)
+          inverse_transformer = Scaffolding::Transformer.new(child, [secondary_parent], @options, secondary_parent_attribute_name)
 
           # We need this transformer to reflect on the class names _just_ between e.g. `Projects::Tag` and `Project`, without the join model.
-          inverse_has_many_through_transformer = Scaffolding::Transformer.new(primary_parent, [secondary_parent], @options)
+          inverse_has_many_through_transformer = Scaffolding::Transformer.new(primary_parent, [secondary_parent], @options, secondary_parent_attribute_name)
+
+          debugger
 
           # However, for the first attribute, we actually don't need the scope validator (and can't really implement it).
           attributes[0] = attributes[0].gsub("}", ",unscoped}")

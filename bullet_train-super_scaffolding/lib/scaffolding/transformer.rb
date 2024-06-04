@@ -5,7 +5,7 @@ require "scaffolding/class_names_transformer"
 require "scaffolding/attribute"
 
 class Scaffolding::Transformer
-  attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find
+  attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find, :attribute_name
 
   def update_models_abstract_class
   end
@@ -37,7 +37,7 @@ class Scaffolding::Transformer
   def update_action_models_abstract_class(targets_n)
   end
 
-  def initialize(child, parents, cli_options = {})
+  def initialize(child, parents, cli_options = {}, attribute_name = parents.first.underscore)
     self.child = child
     self.parent = parents.first
     self.parents = parents
@@ -45,6 +45,7 @@ class Scaffolding::Transformer
     self.class_names_transformer = Scaffolding::ClassNamesTransformer.new(child, parent, namespace)
     self.cli_options = cli_options
     self.additional_steps = []
+    self.attribute_name = attribute_name
   end
 
   RUBY_NEW_FIELDS_PROCESSING_HOOK = "# 🚅 super scaffolding will insert processing for new fields above this line."
