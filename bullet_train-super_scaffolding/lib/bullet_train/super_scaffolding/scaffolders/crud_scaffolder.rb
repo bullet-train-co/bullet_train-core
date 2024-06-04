@@ -28,6 +28,8 @@ module BulletTrain
           end
 
           child = argv[0]
+          check_class_name_for_namespace_conflict(child)
+
           parents = argv[1] ? argv[1].split(",") : []
 
           # Raise an error if the developer skipped adding the parent and went straight to the attributes.
