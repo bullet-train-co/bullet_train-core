@@ -57,7 +57,7 @@ def check_class_name_for_namespace_conflict(class_name)
   if class_name.include?("::")
     parts = class_name.split("::") # ["Task", "Widget"]
     # We drop the last segment because that's tne new model we're trying to create
-    parts.pop() # ["Task"]
+    parts.pop # ["Task"]
     possible_conflicted_class_name = ""
     parts.each do |part|
       possible_conflicted_class_name += "::#{part}"
@@ -66,7 +66,7 @@ def check_class_name_for_namespace_conflict(class_name)
         is_active_record_class = klass&.ancestors&.include?(ActiveRecord::Base)
         is_aactive_hash_class = klass&.ancestors&.include?(ActiveHash::Base)
         if klass && (is_active_record_class || is_aactive_hash_class)
-          problematic_namespace = possible_conflicted_class_name[2..-1]
+          problematic_namespace = possible_conflicted_class_name[2..]
           puts "It looks like the namespace you gave for this model conflicts with an existing class: #{klass.name}".red
           puts "You should use a namespace that doesn't clobber an existing class.".red
           puts ""
@@ -74,7 +74,6 @@ def check_class_name_for_namespace_conflict(class_name)
           puts ""
           puts "For instance instead of #{problematic_namespace} use #{problematic_namespace.pluralize}".red
           exit
-          return problematic_namespace;
         end
       rescue NameError
         # this is good actually, it means we don't already have a class that will be clobbered
