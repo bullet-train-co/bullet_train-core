@@ -55,8 +55,7 @@ class Scaffolding::Attribute
     if options[:class_name].present?
       return options[:class_name].underscore.split("/").last
     end
-    class_underscored = name.split("_id").first
-    return class_underscored
+    name.split("_id").first
   end
 
   def is_association?
