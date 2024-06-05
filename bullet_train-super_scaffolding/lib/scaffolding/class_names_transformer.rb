@@ -1,7 +1,7 @@
 class Scaffolding::ClassNamesTransformer
   attr_accessor :child, :parent, :namespace, :child_attribute_name, :parent_attribute_name
 
-  def initialize(child, parent, namespace = "account", child_attribute_name, parent_attribute_name)
+  def initialize(child, parent, namespace = "account", child_attribute_name = nil, parent_attribute_name = nil)
     self.child = child
     self.parent = parent
     self.namespace = namespace
