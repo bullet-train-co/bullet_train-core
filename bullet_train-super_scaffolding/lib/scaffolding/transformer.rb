@@ -758,7 +758,7 @@ class Scaffolding::Transformer
         end
 
         if attribute.is_association?
-          short = attribute.options[:class_name].underscore.split("/").last
+          short = attribute.association_class_name
           case attribute.type
           when "buttons", "options"
             field_attributes["\n  options"] = "@tangible_thing.#{valid_values}.map { |#{short}| [#{short}.id, #{short}.#{attribute.options[:label]}] }"

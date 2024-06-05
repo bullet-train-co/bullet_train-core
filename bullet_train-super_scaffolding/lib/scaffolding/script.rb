@@ -169,7 +169,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
         is_active_record_class = class_name_constant&.ancestors&.include?(ActiveRecord::Base)
         unless File.exist?(file_name) && is_active_record_class
           puts ""
-          puts "Attributes that end with `_id` or `_ids` trigger awesome, powerful magic in Super Scaffolding. However, because no `#{attribute_options[:class_name]}` class was found defined in `#{file_name}`, you'll need to specify a `class_name` that exists to let us know what model class is on the other side of the association, like so:".red
+          puts "Attributes that end with `_id` or `_ids` trigger awesome, powerful magic in Super Scaffolding. However, because no `#{attribute_options[:class_name]}` class was found defined in your app, you'll need to specify a `class_name` that exists to let us know what model class is on the other side of the association, like so:".red
           puts ""
           puts "  bin/super-scaffold #{scaffolding_type} #{child}#{" " + parent if parent.present?} #{name}:#{type}{class_name=#{name.gsub(/_ids?$/, "").classify}}".red
           puts ""

@@ -51,6 +51,13 @@ class Scaffolding::Attribute
     options[:required] || is_first_attribute?
   end
 
+  def association_class_name
+    if options[:class_name].present?
+      return options[:class_name].underscore.split("/").last
+    end
+    name.split("_id").first
+  end
+
   def is_association?
     is_belongs_to? || is_has_many?
   end
