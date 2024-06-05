@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.7.10)
+    bullet_train-api (1.7.11)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.7.10)
+    bullet_train-fields (1.7.11)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train-incoming_webhooks
   specs:
-    bullet_train-incoming_webhooks (1.7.10)
+    bullet_train-incoming_webhooks (1.7.11)
       bullet_train
       bullet_train-api
       bullet_train-super_scaffolding
@@ -34,7 +34,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.7.10)
+    bullet_train-super_scaffolding (1.7.11)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -43,7 +43,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.7.10)
+    bullet_train (1.7.11)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -80,7 +80,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-integrations-stripe (1.7.10)
+    bullet_train-integrations-stripe (1.7.11)
       omniauth
       omniauth-rails_csrf_protection
       omniauth-stripe-connect
