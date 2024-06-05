@@ -43,33 +43,14 @@ module BulletTrain
           # There should only be two attributes.
           attributes = [argv[1], argv[2]]
 
-          attributes_without_options = attributes.map { |attribute| attribute.gsub(/{.*}$/, "") }
-          attributes_without_id = attributes_without_options.map { |attribute| attribute.delete_suffix("_id") }
-          attributes_with_references = attributes_without_id.map { |attribute| attribute + ":references" }
-
           unless @options["skip-migration-generation"]
+            attributes_without_options = attributes.map { |attribute| attribute.gsub(/{.*}$/, "") }
+            attributes_without_id = attributes_without_options.map { |attribute| attribute.delete_suffix("_id") }
+            attributes_with_references = attributes_without_id.map { |attribute| attribute + ":references" }
+
             generation_command = "bin/rails generate model #{child} #{attributes_with_references.join(" ")}"
             puts "Generating model with '#{generation_command}'".green
             `#{generation_command}`
-
-            # TODO: Maybe this should go in a transformer
-            # TODO: Actually manipulate the migration
-
-            string_to_replace = "t.references :#{primary_parent_attribute_name}, null: false, foreign_key: true"
-            string_to_replace_with = "t.references :#{primary_parent_attribute_name}, null: false, foreign_key: { to_table: #{primary_parent.tableize} }"
-
-            puts "need to replace"
-            puts string_to_replace
-            puts "with"
-            puts string_to_replace_with
-
-            string_to_replace = "t.references :#{secondary_parent_attribute_name}, null: false, foreign_key: true"
-            string_to_replace_with = "t.references :#{secondary_parent_attribute_name}, null: false, foreign_key: { to_table: #{secondary_parent.tableize} }"
-
-            puts "need to replace"
-            puts string_to_replace
-            puts "with"
-            puts string_to_replace_with
           end
 
           # Pretend we're doing a `super_select` scaffolding because it will do the correct thing.
