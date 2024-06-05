@@ -49,6 +49,39 @@ def get_untracked_files
   `git ls-files --other --exclude-standard`.split("\n")
 end
 
+# class_name is a potentially namespaced class like
+# "Tasks::Widget" or "Task::Widget". Here we ensure that
+# the namespace doesn't clobber an existing model. If it does
+# we suggest that the namespace could be pluralized.
+def check_class_name_for_namespace_conflict(class_name)
+  if class_name.include?("::")
+    parts = class_name.split("::") # ["Task", "Widget"]
+    # We drop the last segment because that's tne new model we're trying to create
+    parts.pop # ["Task"]
+    possible_conflicted_class_name = ""
+    parts.each do |part|
+      possible_conflicted_class_name += "::#{part}"
+      begin
+        klass = possible_conflicted_class_name.constantize
+        is_active_record_class = klass&.ancestors&.include?(ActiveRecord::Base)
+        is_aactive_hash_class = klass&.ancestors&.include?(ActiveHash::Base)
+        if klass && (is_active_record_class || is_aactive_hash_class)
+          problematic_namespace = possible_conflicted_class_name[2..]
+          puts "It looks like the namespace you gave for this model conflicts with an existing class: #{klass.name}".red
+          puts "You should use a namespace that doesn't clobber an existing class.".red
+          puts ""
+          puts "We reccomend using the pluralized version of the existing class.".red
+          puts ""
+          puts "For instance instead of #{problematic_namespace} use #{problematic_namespace.pluralize}".red
+          exit
+        end
+      rescue NameError
+        # this is good actually, it means we don't already have a class that will be clobbered
+      end
+    end
+  end
+end
+
 def check_required_options_for_attributes(scaffolding_type, attributes, child, parent = nil)
   tableized_parent = nil
 

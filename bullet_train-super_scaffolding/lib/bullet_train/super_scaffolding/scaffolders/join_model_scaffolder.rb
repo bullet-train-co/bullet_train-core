@@ -30,6 +30,8 @@ module BulletTrain
           end
 
           child = argv[0]
+          check_class_name_for_namespace_conflict(child)
+
           primary_parent = argv[1].split("class_name=").last.split(",").first.split("}").first
           secondary_parent = argv[2].split("class_name=").last.split(",").first.split("}").first
 
