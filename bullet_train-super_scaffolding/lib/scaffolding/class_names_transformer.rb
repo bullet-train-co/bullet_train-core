@@ -1,10 +1,12 @@
 class Scaffolding::ClassNamesTransformer
-  attr_accessor :child, :parent, :namespace
+  attr_accessor :child, :parent, :namespace, :child_attribute_name, :parent_attribute_name
 
-  def initialize(child, parent, namespace = "account")
+  def initialize(child, parent, namespace = "account", child_attribute_name, parent_attribute_name)
     self.child = child
     self.parent = parent
     self.namespace = namespace
+    self.child_attribute_name = child_attribute_name
+    self.parent_attribute_name = parent_attribute_name
   end
 
   def belongs_to_needs_class_definition?
@@ -171,7 +173,7 @@ class Scaffolding::ClassNamesTransformer
     when "absolutely_abstract_creative_concepts"
       parent_class_name_in_context.underscore.tr("/", "_").pluralize
     when "completely_concrete_tangible_things"
-      class_name_in_parent_context.underscore.tr("/", "_").pluralize
+      parent_attribute_name&.pluralize || class_name_in_parent_context.underscore.tr("/", "_").pluralize
     when "absolutely_abstract/creative_concepts"
       parent_class_name_in_context.underscore.pluralize
     when "completely_concrete/tangible_things"

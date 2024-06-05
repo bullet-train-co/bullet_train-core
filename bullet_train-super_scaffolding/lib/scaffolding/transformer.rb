@@ -5,7 +5,7 @@ require "scaffolding/class_names_transformer"
 require "scaffolding/attribute"
 
 class Scaffolding::Transformer
-  attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find, :attribute_name
+  attr_accessor :child, :parent, :parents, :class_names_transformer, :cli_options, :additional_steps, :namespace, :suppress_could_not_find, :child_attribute_name, :parent_attribute_name
 
   def update_models_abstract_class
   end
@@ -37,15 +37,16 @@ class Scaffolding::Transformer
   def update_action_models_abstract_class(targets_n)
   end
 
-  def initialize(child, parents, cli_options = {}, attribute_name = parents.first.underscore)
+  def initialize(child, parents, cli_options = {}, child_attribute_name = nil, parent_attribute_name = nil)
     self.child = child
     self.parent = parents.first
     self.parents = parents
     self.namespace = cli_options["namespace"] || "account"
-    self.class_names_transformer = Scaffolding::ClassNamesTransformer.new(child, parent, namespace)
+    self.class_names_transformer = Scaffolding::ClassNamesTransformer.new(child, parent, namespace, child_attribute_name, parent_attribute_name)
     self.cli_options = cli_options
     self.additional_steps = []
-    self.attribute_name = attribute_name
+    self.child_attribute_name = child_attribute_name
+    self.parent_attribute_name = parent_attribute_name
   end
 
   RUBY_NEW_FIELDS_PROCESSING_HOOK = "# 🚅 super scaffolding will insert processing for new fields above this line."
@@ -606,7 +607,14 @@ class Scaffolding::Transformer
 
   def add_has_many_through_associations(has_many_through_transformer)
     has_many_association = add_has_many_association
-    has_many_through_string = has_many_through_transformer.transform_string("has_many :completely_concrete_tangible_things, through: :$HAS_MANY_ASSOCIATION")
+    has_many_through_parts = [
+      "has_many :completely_concrete_tangible_things",
+      "through: :$HAS_MANY_ASSOCIATION"
+    ]
+    if has_many_through_transformer.parent_attribute_name.present?
+      has_many_through_parts << "class_name: \"Scaffolding::CompletelyConcrete::TangibleThing\""
+    end
+    has_many_through_string = has_many_through_transformer.transform_string(has_many_through_parts.join(", "))
     has_many_through_string.gsub!("$HAS_MANY_ASSOCIATION", has_many_association)
     add_line_to_file(transform_string("./app/models/scaffolding/absolutely_abstract/creative_concept.rb"), has_many_through_string, HAS_MANY_HOOK, prepend: true)
   end
