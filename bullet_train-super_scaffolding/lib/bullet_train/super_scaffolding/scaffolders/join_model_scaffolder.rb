@@ -30,17 +30,10 @@ module BulletTrain
           end
 
           child = argv[0]
-          child_attribute_name = child.underscore.tr("/", "_")
 
           check_class_name_for_namespace_conflict(child)
-
           primary_parent = argv[1].split("class_name=").last.split(",").first.split("}").first
-          primary_parent_attribute_name = argv[1].split("{").first.delete_suffix("_id")
-          primary_parent_attribute = argv[1]
-
           secondary_parent = argv[2].split("class_name=").last.split(",").first.split("}").first
-          secondary_parent_attribute_name = argv[2].split("{").first.delete_suffix("_id")
-          secondary_parent_attribute = argv[2]
 
           # There should only be two attributes.
           attributes = [argv[1], argv[2]]
@@ -62,13 +55,13 @@ module BulletTrain
           transformer = Scaffolding::Transformer.new(child, [primary_parent], @options)
 
           # We need this transformer to reflect on the class names _just_ between e.g. `Project` and `Projects::Tag`, without the join model.
-          has_many_through_transformer = Scaffolding::Transformer.new(secondary_parent, [primary_parent], @options, child_attribute_name, secondary_parent_attribute_name)
+          has_many_through_transformer = Scaffolding::Transformer.new(secondary_parent, [primary_parent], @options)
 
           # We need this transformer to reflect on the association between `Projects::Tag` and `Projects::AppliedTag` backwards.
           inverse_transformer = Scaffolding::Transformer.new(child, [secondary_parent], @options)
 
           # We need this transformer to reflect on the class names _just_ between e.g. `Projects::Tag` and `Project`, without the join model.
-          inverse_has_many_through_transformer = Scaffolding::Transformer.new(primary_parent, [secondary_parent], @options, child_attribute_name, primary_parent_attribute_name)
+          inverse_has_many_through_transformer = Scaffolding::Transformer.new(primary_parent, [secondary_parent], @options)
 
           # However, for the first attribute, we actually don't need the scope validator (and can't really implement it).
           attributes[0] = attributes[0].gsub("}", ",unscoped}")
@@ -89,6 +82,8 @@ module BulletTrain
           transformer.suppress_could_not_find = false
 
           # Add the `has_many ... through:` association in both directions.
+          # We pass the "opposing" attribute so that both the association name and the
+          # class name get wired up correctly
           transformer.add_has_many_through_associations(has_many_through_transformer, attributes[1])
           inverse_transformer.add_has_many_through_associations(inverse_has_many_through_transformer, attributes[0])
 

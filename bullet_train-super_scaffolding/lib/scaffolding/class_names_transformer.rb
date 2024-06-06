@@ -1,12 +1,10 @@
 class Scaffolding::ClassNamesTransformer
-  attr_accessor :child, :parent, :namespace, :child_attribute_name, :parent_attribute_name
+  attr_accessor :child, :parent, :namespace
 
-  def initialize(child, parent, namespace = "account", child_attribute_name = nil, parent_attribute_name = nil)
+  def initialize(child, parent, namespace = "account")
     self.child = child
     self.parent = parent
     self.namespace = namespace
-    self.child_attribute_name = child_attribute_name
-    self.parent_attribute_name = parent_attribute_name
   end
 
   def belongs_to_needs_class_definition?
