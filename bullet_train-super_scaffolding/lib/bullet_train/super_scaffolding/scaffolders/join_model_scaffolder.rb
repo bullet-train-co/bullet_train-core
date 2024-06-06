@@ -30,8 +30,8 @@ module BulletTrain
           end
 
           child = argv[0]
-
           check_class_name_for_namespace_conflict(child)
+
           primary_parent = argv[1].split("class_name=").last.split(",").first.split("}").first
           secondary_parent = argv[2].split("class_name=").last.split(",").first.split("}").first
 
@@ -83,7 +83,8 @@ module BulletTrain
 
           # Add the `has_many ... through:` association in both directions.
           # We pass the "opposing" attribute so that both the association name and the
-          # class name get wired up correctly
+          # class name get wired up correctly in cases where they don't match. For instance
+          # if you want an `assigned_to_membership` relationship to the `memberships` table.
           transformer.add_has_many_through_associations(has_many_through_transformer, attributes[1])
           inverse_transformer.add_has_many_through_associations(inverse_has_many_through_transformer, attributes[0])
 

@@ -63,6 +63,12 @@ class Scaffolding::Attribute
   end
 
   def class_name_matches?
+    # if namespaces are involved, just don't...
+    # TODO: I'm not entirely sure that extracting this conditional was the right thing to do.
+    # Are there scenarios where we want to assume a match even when namespaces are involved?
+    if self.options[:class_name].include?("::")
+      return false
+    end
     self.name_without_id.tableize == self.options[:class_name].tableize.tr("/", "_")
   end
 

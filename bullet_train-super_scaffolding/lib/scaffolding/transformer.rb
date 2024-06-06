@@ -1162,16 +1162,8 @@ class Scaffolding::Transformer
 
           end
 
-          class_name_matches = attribute.class_name_matches?
-
-          # but also, if namespaces are involved, just don't...
-          # TODO: Should this also be extracted to the attribute.class_name_matches? method?
-          if attribute.options[:class_name].include?("::")
-            class_name_matches = false
-          end
-
           # unless the table name matches the association name.
-          unless class_name_matches
+          unless attribute.class_name_matches?
             if migration_file_name
               # There are two forms this association creation can take.
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute.options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{attribute.name_without_id}/)
@@ -1188,7 +1180,7 @@ class Scaffolding::Transformer
           # if the `belongs_to` is already there from `rails g model`..
           scaffold_replace_line_in_file(
             "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-            class_name_matches ?
+            attribute.class_name_matches? ?
               "belongs_to :#{attribute.name_without_id}#{optional_line}" :
               "belongs_to :#{attribute.name_without_id}, class_name: \"#{attribute.options[:class_name]}\"#{optional_line}",
             "belongs_to :#{attribute.name_without_id}"
@@ -1198,7 +1190,7 @@ class Scaffolding::Transformer
           # however, this won't do anything if the association is already there.
           scaffold_add_line_to_file(
             "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-            class_name_matches ?
+            attribute.class_name_matches? ?
               "belongs_to :#{attribute.name_without_id}#{optional_line}" :
               "belongs_to :#{attribute.name_without_id}, class_name: \"#{attribute.options[:class_name]}\"#{optional_line}",
             BELONGS_TO_HOOK,
