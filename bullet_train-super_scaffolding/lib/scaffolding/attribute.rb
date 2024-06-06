@@ -58,7 +58,7 @@ class Scaffolding::Attribute
     name.split("_id").first
   end
 
-  def association_table_name
+  def association_name
     association_class_name.tableize
   end
 

@@ -624,7 +624,7 @@ class Scaffolding::Transformer
       # has_many :memberships, through: :assignments, class_name: "Membership"
       # into something like this:
       # has_many :assigned_to_memberships, through: :assignments, class_name: "Membership"
-      has_many_through_string.gsub!("has_many :#{attribute.association_table_name}"  ,"has_many :#{attribute.name_without_id.tableize}")
+      has_many_through_string.gsub!("has_many :#{attribute.association_name}"  ,"has_many :#{attribute.name_without_id.tableize}")
     end
     add_line_to_file(transform_string("./app/models/scaffolding/absolutely_abstract/creative_concept.rb"), has_many_through_string, HAS_MANY_HOOK, prepend: true)
   end
@@ -649,7 +649,6 @@ class Scaffolding::Transformer
 
     # add attributes to various views.
     attributes.each_with_index do |attribute_definition, index|
-      #debugger
       attribute = Scaffolding::Attribute.new(attribute_definition, scaffolding_options[:type], index)
 
       if attribute.is_first_attribute? && ["trix_editor", "ckeditor", "text_area"].include?(attribute.type)
