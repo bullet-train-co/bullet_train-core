@@ -58,6 +58,14 @@ class Scaffolding::Attribute
     name.split("_id").first
   end
 
+  def association_table_name
+    association_class_name.tableize
+  end
+
+  def class_name_matches?
+    self.name_without_id.tableize == self.options[:class_name].tableize.tr("/", "_")
+  end
+
   def is_association?
     is_belongs_to? || is_has_many?
   end

@@ -173,7 +173,7 @@ class Scaffolding::ClassNamesTransformer
     when "absolutely_abstract_creative_concepts"
       parent_class_name_in_context.underscore.tr("/", "_").pluralize
     when "completely_concrete_tangible_things"
-      parent_attribute_name&.pluralize || class_name_in_parent_context.underscore.tr("/", "_").pluralize
+      class_name_in_parent_context.underscore.tr("/", "_").pluralize
     when "absolutely_abstract/creative_concepts"
       parent_class_name_in_context.underscore.pluralize
     when "completely_concrete/tangible_things"

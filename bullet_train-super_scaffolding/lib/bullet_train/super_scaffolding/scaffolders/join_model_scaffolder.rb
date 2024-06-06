@@ -36,9 +36,11 @@ module BulletTrain
 
           primary_parent = argv[1].split("class_name=").last.split(",").first.split("}").first
           primary_parent_attribute_name = argv[1].split("{").first.delete_suffix("_id")
+          primary_parent_attribute = argv[1]
 
           secondary_parent = argv[2].split("class_name=").last.split(",").first.split("}").first
           secondary_parent_attribute_name = argv[2].split("{").first.delete_suffix("_id")
+          secondary_parent_attribute = argv[2]
 
           # There should only be two attributes.
           attributes = [argv[1], argv[2]]
@@ -87,8 +89,8 @@ module BulletTrain
           transformer.suppress_could_not_find = false
 
           # Add the `has_many ... through:` association in both directions.
-          transformer.add_has_many_through_associations(has_many_through_transformer)
-          inverse_transformer.add_has_many_through_associations(inverse_has_many_through_transformer)
+          transformer.add_has_many_through_associations(has_many_through_transformer, attributes[1])
+          inverse_transformer.add_has_many_through_associations(inverse_has_many_through_transformer, attributes[0])
 
           additional_steps = (transformer.additional_steps + has_many_through_transformer.additional_steps + inverse_transformer.additional_steps + inverse_has_many_through_transformer.additional_steps).uniq
 

@@ -605,17 +605,25 @@ class Scaffolding::Transformer
     has_many_string.split(",").first.split(":").last
   end
 
-  def add_has_many_through_associations(has_many_through_transformer)
+  def add_has_many_through_associations(has_many_through_transformer, attribute_definition)
+
+    # TODO: Do we need a real index here, instead of 0?
+    attribute = Scaffolding::Attribute.new(attribute_definition, :crud_field, 0)
     has_many_association = add_has_many_association
     has_many_through_parts = [
       "has_many :completely_concrete_tangible_things",
       "through: :$HAS_MANY_ASSOCIATION"
     ]
-    if has_many_through_transformer.parent_attribute_name.present?
+
+    unless attribute.class_name_matches?
       has_many_through_parts << "class_name: \"Scaffolding::CompletelyConcrete::TangibleThing\""
     end
     has_many_through_string = has_many_through_transformer.transform_string(has_many_through_parts.join(", "))
     has_many_through_string.gsub!("$HAS_MANY_ASSOCIATION", has_many_association)
+    unless attribute.class_name_matches?
+      #debugger
+      has_many_through_string.gsub!("has_many :#{attribute.association_table_name}"  ,"has_many :#{attribute.name_without_id.tableize}")
+    end
     add_line_to_file(transform_string("./app/models/scaffolding/absolutely_abstract/creative_concept.rb"), has_many_through_string, HAS_MANY_HOOK, prepend: true)
   end
 
@@ -639,6 +647,7 @@ class Scaffolding::Transformer
 
     # add attributes to various views.
     attributes.each_with_index do |attribute_definition, index|
+      #debugger
       attribute = Scaffolding::Attribute.new(attribute_definition, scaffolding_options[:type], index)
 
       if attribute.is_first_attribute? && ["trix_editor", "ckeditor", "text_area"].include?(attribute.type)
@@ -1151,9 +1160,10 @@ class Scaffolding::Transformer
 
           end
 
-          class_name_matches = attribute.name_without_id.tableize == attribute.options[:class_name].tableize.tr("/", "_")
+          class_name_matches = attribute.class_name_matches?
 
           # but also, if namespaces are involved, just don't...
+          # TODO: Should this also be extracted to the attribute.class_name_matches? method?
           if attribute.options[:class_name].include?("::")
             class_name_matches = false
           end
