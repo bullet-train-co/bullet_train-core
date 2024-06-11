@@ -70,7 +70,7 @@ module FactoryBot
 
       if count > 1
         cache_key = [:example_list, model_name.param_key, File.ctime(factory_path)]
-        value = if model_class.singleton_methods.any?
+        values = if model_class.singleton_methods.any?
           FactoryBot.example_list(model, count)
         else
           Rails.cache.fetch(cache_key) { FactoryBot.example_list(model, count) }
