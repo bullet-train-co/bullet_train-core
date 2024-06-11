@@ -65,8 +65,10 @@ module Api
 
       factory_path = "test/factories/#{model.model_name.collection}.rb"
       cache_key = [:example, model.model_name.param_key, File.ctime(factory_path)]
-      example = Rails.cache.fetch(cache_key) do
+      example = if model.name.constantize.singleton_methods.any?
         FactoryBot.example(model.model_name.param_key.to_sym)
+      else
+        Rails.cache.fetch(cache_key) { FactoryBot.example(model.model_name.param_key.to_sym) }
       end
 
       schema_json = jbuilder.json(
