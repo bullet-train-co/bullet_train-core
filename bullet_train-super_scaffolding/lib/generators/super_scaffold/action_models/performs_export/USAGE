@@ -1,0 +1,27 @@
+Description:
+  Generate an action to export a list of model records.
+
+Example:
+  E.g. Generate an Export action that exports many Posts from a Team.
+    rails generate super_scaffold:action_models:performs_export Export Post Team
+
+  This will create:
+    app/avo/resources/posts_export_action.rb
+    app/controllers/account/posts/
+    app/controllers/avo/posts_export_actions_controller.rb
+    app/models/posts.rb
+    app/models/posts/
+    app/views/account/posts/export_actions/
+    config/locales/en/posts/
+    db/migrate/20240612185709_create_posts_export_actions.rb
+    test/factories/posts/
+    test/models/posts/
+  And update:
+    app/models/team.rb
+    app/views/account/posts/_index.html.erb
+    config/models/roles.yml
+    config/routes.rb
+    config/routes/api/v1.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.

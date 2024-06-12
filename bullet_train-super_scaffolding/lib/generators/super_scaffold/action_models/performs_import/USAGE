@@ -1,0 +1,26 @@
+Description:
+  Generate an action that imports a list of records to its parent.
+
+Example:
+  E.g. Generate a CSV Importer that creates many Posts on a Team.
+    rails generate super_scaffold:action_models:performs_import CsvImport Post Team
+
+  This will create:
+    app/avo/resources/posts_import_action.rb
+    app/controllers/account/posts/import_actions_controller.rb
+    app/controllers/avo/posts_import_actions_controller.rb
+    app/models/posts/import_action.rb
+    app/views/account/posts/import_actions/
+    config/locales/en/posts/import_actions.en.yml
+    db/migrate/20240612185843_create_posts_import_actions.rb
+    test/factories/posts/import_actions.rb
+    test/models/posts/import_action_test.rb
+  And update:
+    app/models/team.rb
+    app/views/account/posts/_index.html.erb
+    config/models/roles.yml
+    config/routes.rb
+    config/routes/api/v1.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.
