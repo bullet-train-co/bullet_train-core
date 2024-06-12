@@ -8,7 +8,7 @@ This button leverages the configuration found in `app.json`, including sensible 
 
 The resources provisioned will cost about **$22/month**.
 
-**Please note:** The resources provisionede via `app.json` are intended to be used for quickly launching your brand new app so that you can demo it easily. When you're ready to go into production you'll want to make some changes to these resources. See the section at the bottom of this page.
+**Please note:** The resources provisioned via `app.json` are intended to be used for quickly launching your brand new app so that you can demo it easily. When you're ready to go into production you'll want to make some changes to these resources. See the section at the bottom of this page.
 
 ## What's Included?
 
