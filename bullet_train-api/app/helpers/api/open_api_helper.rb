@@ -101,10 +101,11 @@ module Api
 
       if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
         strong_parameter_keys = strong_parameter_keys_for(model.name, @version)
+        strong_parameter_keys_for_update = strong_parameter_keys_for(model.name, @version, "update")
 
         # Create separate parameter schema for create and update methods
         create_parameters_output = process_strong_parameters(model, strong_parameter_keys, schema_json, "create", **options)
-        update_parameters_output = process_strong_parameters(model, strong_parameter_keys, schema_json, "update", **options)
+        update_parameters_output = process_strong_parameters(model, strong_parameter_keys_for_update, schema_json, "update", **options)
 
         # We need to skip TeamParameters, UserParameters & InvitationParametersUpdate as they are not present in
         # the bullet train api schema
@@ -144,10 +145,10 @@ module Api
       parameters_output
     end
 
-    def strong_parameter_keys_for(model_name, version)
+    def strong_parameter_keys_for(model_name, version, method_type = "create")
       strong_params_module = "::Api::#{version.upcase}::#{model_name.pluralize}Controller::StrongParameters".constantize
       strong_params_reporter = BulletTrain::Api::StrongParametersReporter.new(model_name.constantize, strong_params_module)
-      strong_parameter_keys = strong_params_reporter.report
+      strong_parameter_keys = strong_params_reporter.report(method_type)
 
       if strong_parameter_keys.last.is_a?(Hash)
         strong_parameter_keys += strong_parameter_keys.pop.keys

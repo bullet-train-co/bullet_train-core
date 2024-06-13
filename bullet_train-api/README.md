@@ -208,6 +208,10 @@ If the methods defined in the `automatic_paths_for` for the endpoints support
 a write action (i.e. create or update), then doc generation uses the `strong_parameters`
 defined in the corresponding controller to generate the Parameters section in the schema.
 
+If your endpoint accepts different parameters for the create and update actions, if you define `<model>_update_params` in the
+corresponding controller to define the update parameters, these will be used to generate the Parameter for the
+update method in the schema.
+
 Automatic paths are generated for basic REST actions. You can customize those paths or add your own by creating a
 file at `app/views/api/<version>/open_api/<Model.underscore.plural>/_paths.yaml.erb`. For REST paths there's no need to
 duplicate all the schema, you can specify only what differs from auto-generated code.
