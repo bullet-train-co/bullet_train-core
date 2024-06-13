@@ -60,7 +60,7 @@ class Scaffolding::Attribute
 
   def association_name
     plural_association_name = association_class_name.tableize
-    is_has_many? plural_association_name : plural_association_name.singularize
+    is_has_many? ? plural_association_name : plural_association_name.singularize
   end
 
   def class_name_matches?
