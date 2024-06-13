@@ -603,10 +603,27 @@ class Scaffolding::Transformer
     has_many_string.split(",").first.split(":").last
   end
 
-  def add_has_many_through_associations(has_many_through_transformer)
+  def add_has_many_through_associations(has_many_through_transformer, attribute_definition)
+    attribute = Scaffolding::Attribute.new(attribute_definition, :crud_field, 0)
     has_many_association = add_has_many_association
-    has_many_through_string = has_many_through_transformer.transform_string("has_many :completely_concrete_tangible_things, through: :$HAS_MANY_ASSOCIATION")
+    has_many_through_parts = [
+      "has_many :completely_concrete_tangible_things",
+      "through: :$HAS_MANY_ASSOCIATION"
+    ]
+
+    unless attribute.class_name_matches?
+      has_many_through_parts << "class_name: \"Scaffolding::CompletelyConcrete::TangibleThing\""
+    end
+    has_many_through_string = has_many_through_transformer.transform_string(has_many_through_parts.join(", "))
     has_many_through_string.gsub!("$HAS_MANY_ASSOCIATION", has_many_association)
+    unless attribute.class_name_matches?
+      # This handles the case where you're generating a join model where you want association names
+      # to be different than the class name, so it'll transform something like this:
+      # has_many :memberships, through: :assignments, class_name: "Membership"
+      # into something like this:
+      # has_many :assigned_to_memberships, through: :assignments, class_name: "Membership"
+      has_many_through_string.gsub!("has_many :#{attribute.plural_association_name}", "has_many :#{attribute.name_without_id.tableize}")
+    end
     add_line_to_file(transform_string("./app/models/scaffolding/absolutely_abstract/creative_concept.rb"), has_many_through_string, HAS_MANY_HOOK, prepend: true)
   end
 
@@ -1142,15 +1159,8 @@ class Scaffolding::Transformer
 
           end
 
-          class_name_matches = attribute.name_without_id.tableize == attribute.options[:class_name].tableize.tr("/", "_")
-
-          # but also, if namespaces are involved, just don't...
-          if attribute.options[:class_name].include?("::")
-            class_name_matches = false
-          end
-
           # unless the table name matches the association name.
-          unless class_name_matches
+          unless attribute.class_name_matches?
             if migration_file_name
               # There are two forms this association creation can take.
               replace_in_file(migration_file_name, "foreign_key: true", "foreign_key: {to_table: \"#{attribute.options[:class_name].tableize.tr("/", "_")}\"}", /t\.references :#{attribute.name_without_id}/)
@@ -1167,7 +1177,7 @@ class Scaffolding::Transformer
           # if the `belongs_to` is already there from `rails g model`..
           scaffold_replace_line_in_file(
             "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-            class_name_matches ?
+            attribute.class_name_matches? ?
               "belongs_to :#{attribute.name_without_id}#{optional_line}" :
               "belongs_to :#{attribute.name_without_id}, class_name: \"#{attribute.options[:class_name]}\"#{optional_line}",
             "belongs_to :#{attribute.name_without_id}"
@@ -1177,7 +1187,7 @@ class Scaffolding::Transformer
           # however, this won't do anything if the association is already there.
           scaffold_add_line_to_file(
             "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
-            class_name_matches ?
+            attribute.class_name_matches? ?
               "belongs_to :#{attribute.name_without_id}#{optional_line}" :
               "belongs_to :#{attribute.name_without_id}, class_name: \"#{attribute.options[:class_name]}\"#{optional_line}",
             BELONGS_TO_HOOK,

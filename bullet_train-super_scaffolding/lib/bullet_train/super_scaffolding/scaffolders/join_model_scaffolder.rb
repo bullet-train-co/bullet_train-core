@@ -82,8 +82,11 @@ module BulletTrain
           transformer.suppress_could_not_find = false
 
           # Add the `has_many ... through:` association in both directions.
-          transformer.add_has_many_through_associations(has_many_through_transformer)
-          inverse_transformer.add_has_many_through_associations(inverse_has_many_through_transformer)
+          # We pass the "opposing" attribute so that both the association name and the
+          # class name get wired up correctly in cases where they don't match. For instance
+          # if you want an `assigned_to_membership` relationship to the `memberships` table.
+          transformer.add_has_many_through_associations(has_many_through_transformer, attributes[1])
+          inverse_transformer.add_has_many_through_associations(inverse_has_many_through_transformer, attributes[0])
 
           additional_steps = (transformer.additional_steps + has_many_through_transformer.additional_steps + inverse_transformer.additional_steps + inverse_has_many_through_transformer.additional_steps).uniq
 
