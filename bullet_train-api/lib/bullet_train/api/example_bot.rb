@@ -66,13 +66,23 @@ module FactoryBot
       model_name = ActiveRecord::Base.descendants.find { |klass| klass.model_name.param_key == model.to_s }&.model_name
       factory_path = "test/factories/#{model_name.collection}.rb"
 
+      model_class = model_name.name.constantize
+
       if count > 1
         cache_key = [:example_list, model_name.param_key, File.ctime(factory_path)]
-        values = Rails.cache.fetch(cache_key) { FactoryBot.example_list(model, count) }
+        values = if model_class.singleton_methods.any?
+          FactoryBot.example_list(model, count)
+        else
+          Rails.cache.fetch(cache_key) { FactoryBot.example_list(model, count) }
+        end
         var_name = model_name.element.pluralize
       else
         cache_key = [:example, model_name.param_key, File.ctime(factory_path)]
-        values = Rails.cache.fetch(cache_key) { FactoryBot.example(model) }
+        values = if model_class.singleton_methods.any?
+          FactoryBot.example(model)
+        else
+          Rails.cache.fetch(cache_key) { FactoryBot.example(model) }
+        end
         var_name = model_name.element
       end
 
