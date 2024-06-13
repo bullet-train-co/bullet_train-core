@@ -622,7 +622,7 @@ class Scaffolding::Transformer
       # has_many :memberships, through: :assignments, class_name: "Membership"
       # into something like this:
       # has_many :assigned_to_memberships, through: :assignments, class_name: "Membership"
-      has_many_through_string.gsub!("has_many :#{attribute.association_name}", "has_many :#{attribute.name_without_id.tableize}")
+      has_many_through_string.gsub!("has_many :#{attribute.plural_association_name}", "has_many :#{attribute.name_without_id.tableize}")
     end
     add_line_to_file(transform_string("./app/models/scaffolding/absolutely_abstract/creative_concept.rb"), has_many_through_string, HAS_MANY_HOOK, prepend: true)
   end

@@ -58,9 +58,8 @@ class Scaffolding::Attribute
     name.split("_id").first
   end
 
-  def association_name
-    plural_association_name = association_class_name.tableize
-    is_has_many? ? plural_association_name : plural_association_name.singularize
+  def plural_association_name
+    association_class_name.tableize
   end
 
   def class_name_matches?
