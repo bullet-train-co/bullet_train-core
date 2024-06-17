@@ -66,12 +66,14 @@ module BulletTrain
           # However, for the first attribute, we actually don't need the scope validator (and can't really implement it).
           attributes[0] = attributes[0].gsub("}", ",unscoped}")
 
+          debugger
+
           has_many_through_association = has_many_through_transformer.transform_string("completely_concrete_tangible_things")
-          source = transformer.transform_string("absolutely_abstract_creative_concept.valid_$HAS_MANY_THROUGH_ASSOCIATION")
-          source.gsub!("$HAS_MANY_THROUGH_ASSOCIATION", has_many_through_association)
+          source_string = transformer.transform_string("absolutely_abstract_creative_concept.valid_$HAS_MANY_THROUGH_ASSOCIATION")
+          source_string.gsub!("$HAS_MANY_THROUGH_ASSOCIATION", has_many_through_association)
 
           # For the second one, we don't want users to have to define the list of valid options in the join model, so we do this:
-          attributes[1] = attributes[1].gsub("}", ",source=#{source}}")
+          attributes[1] = attributes[1].gsub("}", ",source=#{source_string}}")
 
           # This model hasn't been crud scaffolded, so a bunch of views are skipped here, but that's OK!
           # It does what we need on the files that exist.
