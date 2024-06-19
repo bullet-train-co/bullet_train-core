@@ -66,6 +66,8 @@ You can get detailed information about using Super Scaffolding to generate diffe
 rails generate super_scaffold:action_models:targets_many
 rails generate super_scaffold:action_models:targets_one
 rails generate super_scaffold:action_models:targets_one_parent
+rails generate super_scaffold:action_models:performs_import
+rails generate super_scaffold:action_models:performs_export
 ```
 
 ## Basic Example
@@ -104,7 +106,7 @@ For example:
 
 ```
 # side quest: update the generated migration with `default: false` on the new boolean field.
-bin/super-scaffold crud-field Projects::ArchiveAction notify_users:boolean
+rails g super_scaffold:crud_field Projects::ArchiveAction notify_users:boolean
 ```
 
 Now users will be prompted with that option when they perform this action, and you can update your logic to take action based on it, or at least pass on the information to another method that takes action based on it:
@@ -117,11 +119,13 @@ end
 
 ## Action Types
 
-Action Models can be generated in three flavors:
+Action Models can be generated in five flavors:
 
- - `action-model:targets-many`
- - `action-model:targets-one`
- - `action-model:targets-one-parent`
+ - `rails g super_scaffold:action_models:targets_many`
+ - `rails g super_scaffold:action_models:targets_one`
+ - `rails g super_scaffold:action_models:targets_one_parent`
+ - `rails g super_scaffold:action_models:performs_import`
+ - `rails g super_scaffold:action_models:performs_export`
 
 ### Targets Many
 
@@ -137,7 +141,15 @@ When deciding between "targets many" and "targets one", our recommendation is th
 
 ### Targets One Parent
 
-This final type of action is available for things like importers that don't necessarily target specific existing objects by ID, but instead create many new or affect many existing objects under a specific parent based on the configuration of the action (like an attached CSV file.) These objects don't "target many" per se, but they live at the same level (and belong to the same parent) as the models they end up creating or affecting.
+This type of action is available for things like custom/complex importers that don't necessarily target specific existing objects by ID, but instead create many new or affect many existing objects under a specific parent based on the configuration of the action (like an attached CSV file.) These objects don't "target many" per se, but they live at the same level (and belong to the same parent) as the models they end up creating or affecting.
+
+### Performs Import
+
+This action is useful for allowing users to upload a CSV representing a list of models that they'd like to have created in the system. It handles mapping columns in the CSV to attributes on the model you're creating.
+
+### Performs Export
+
+This action will allow users to export a CSV from a list of models in the application.
 
 ## Frequently Asked Questions
 
