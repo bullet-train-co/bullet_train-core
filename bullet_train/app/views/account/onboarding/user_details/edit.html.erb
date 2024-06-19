@@ -48,7 +48,7 @@
 <% end %>
 
 <script type="text/javascript">
-  document.addEventListener('turbo:load', function() {
+  function btSetUserTimeZone(){
 
     // generate a mapping of js timezones compared to rails timezones.
     var jsTimezoneMapping = {
@@ -67,10 +67,17 @@
       var option = document.querySelector("#user_time_zone option[value=\"" + railsValue + "\"]")
       if(option){
         document.querySelector("#user_time_zone").value = railsValue;
+
+        // update the select2 as well. is there a better way to handle this?
+        // why don't _they_ handle this for us?
+        var select2 = document.querySelector("#select2-user_time_zone-container");
+        select2.attributes.title = option.text;
+        select2.textContent = option.text;
       }else{
         console.log('We were unable to find a timezone matching the rails detected value of ', railsValue);
       }
     }
 
-  });
+  }
+  document.addEventListener('turbo:load', btSetUserTimeZone, { once: true });
 </script>
