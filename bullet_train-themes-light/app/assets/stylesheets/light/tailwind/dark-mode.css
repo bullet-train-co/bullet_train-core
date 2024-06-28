@@ -137,7 +137,7 @@
         @apply bg-slate-800 border-slate-900 shadow-lg shadow-slate-900 !important;
 
         .trix-button--dialog {
-          @apply text-white ;
+          @apply text-white;
         }
 
         .trix-input--dialog {
