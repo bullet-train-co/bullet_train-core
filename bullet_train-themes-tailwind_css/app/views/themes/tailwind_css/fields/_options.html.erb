@@ -76,7 +76,7 @@ end
       } do %>
         <label class="relative flex items-start">
           <div class="flex items-center h-5">
-            <%= check_box_tag "#{html_options[:id]}-select_all", 'select-all', false, data: {
+            <%= check_box_tag "#{options[:id]}-select_all", 'select-all', false, data: {
               "select-all-target": 'toggleCheckbox',
               'action': "select-all#selectAllOrNone"
             }, class: "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 rounded" %>
