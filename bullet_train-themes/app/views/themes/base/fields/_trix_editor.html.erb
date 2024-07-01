@@ -7,7 +7,7 @@ other_options ||= {}
 options[:class] = "formatted_content trix-content #{options[:class]}"
 options[:placeholder] ||= labels.placeholder if labels.placeholder
 options[:data] ||= {}
-if defined?(current_team)
+if defined?(current_team) && current_team.present?
   options[:data][:mentions] ||= ([current_team].map { |team|
     {key: team.name, value: team.id, protocol: 'bullettrain', model: 'teams', id: team.id, label: team.name, photo: photo_for(team)}
   } + current_team.memberships.current_and_invited.map { |membership|
