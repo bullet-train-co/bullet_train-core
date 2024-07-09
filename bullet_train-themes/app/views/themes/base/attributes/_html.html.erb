@@ -4,9 +4,8 @@
 
 <% if object.public_send(attribute).present? %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-    <% # Here we manually add a trix-content class since sanitizing the body removes the Rails default. %>
     <% if object.send(attribute).is_a?(ActionText::RichText) %>
-      <%= tag.div(html_sanitize(object.public_send(attribute).body.to_s).html_safe, class:"trix-content") %>
+      <%= html_sanitize(object.public_send(attribute).body.to_s).html_safe %>
     <% else %>
       <% # `.to_s` is for action text. %>
       <%= html_sanitize(object.public_send(attribute).to_s).html_safe %>
