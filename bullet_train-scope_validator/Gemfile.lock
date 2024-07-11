@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.7.16)
+    bullet_train-scope_validator (1.7.17)
       rails
 
 GEM
@@ -136,7 +136,7 @@ GEM
     psych (5.1.2)
       stringio
     racc (1.8.0)
-    rack (3.1.6)
+    rack (3.1.7)
     rack-session (2.0.0)
       rack (>= 3.0.0)
     rack-test (2.1.0)
