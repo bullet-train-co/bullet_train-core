@@ -969,7 +969,7 @@ class Scaffolding::Transformer
         ].each do |file|
           if attribute.is_ids? || attribute.is_multiple?
             scaffold_add_line_to_file(file, "#{attribute.name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
-            if attribute.type == "file_field"
+            if attribute.file_field? || attribute.active_storage_image?
               scaffold_add_line_to_file(file, "#{attribute.name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
             end
           elsif attribute.type == "address_field"
@@ -988,7 +988,7 @@ class Scaffolding::Transformer
             scaffold_add_line_to_file(file, address_strong_params, RUBY_NEW_ARRAYS_HOOK, prepend: true)
           else
             scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
-            if attribute.type == "file_field"
+            if attribute.file_field? || attribute.active_storage_image?
               scaffold_add_line_to_file(file, ":#{attribute.name}_removal,", RUBY_NEW_FIELDS_HOOK, prepend: true)
             end
           end
@@ -1234,7 +1234,7 @@ class Scaffolding::Transformer
         end
 
         case attribute.type
-        when "file_field"
+        when "file_field", "image"
           remove_file_methods = if attribute.is_multiple?
             <<~RUBY
               def #{attribute.name}_removal?
@@ -1247,7 +1247,7 @@ class Scaffolding::Transformer
 
               def #{attribute.name}=(attachables)
                 attachables = Array(attachables).compact_blank
-            
+
                 if attachables.any?
                   attachment_changes["#{attribute.name}"] =
                     ActiveStorage::Attached::Changes::CreateMany.new("#{attribute.name}", self, #{attribute.name}.blobs + attachables)
@@ -1264,6 +1264,7 @@ class Scaffolding::Transformer
               def remove_#{attribute.name}
                 #{attribute.name}.purge
               end
+
             RUBY
           end
 
@@ -1280,13 +1281,16 @@ class Scaffolding::Transformer
             model_without_attached_hook.each { |line| f.write(line) }
           end
 
-          hook_type = attribute.is_multiple? ? HAS_MANY_HOOK : HAS_ONE_HOOK
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", reflection_declaration, hook_type, prepend: true)
+          # Cloudinary images don't need all of the removal boilerplate since that's handled by the cloudinary JS
+          unless attribute.cloudinary_image?
+            hook_type = attribute.is_multiple? ? HAS_MANY_HOOK : HAS_ONE_HOOK
+            scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", reflection_declaration, hook_type, prepend: true)
 
-          # TODO: We may need to edit these depending on how we save multiple files.
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "attr_accessor :#{attribute.name}_removal", ATTR_ACCESSORS_HOOK, prepend: true)
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", remove_file_methods, METHODS_HOOK, prepend: true)
-          scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "after_validation :remove_#{attribute.name}, if: :#{attribute.name}_removal?", CALLBACKS_HOOK, prepend: true)
+            # TODO: We may need to edit these depending on how we save multiple files.
+            scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "attr_accessor :#{attribute.name}_removal", ATTR_ACCESSORS_HOOK, prepend: true)
+            scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", remove_file_methods, METHODS_HOOK, prepend: true)
+            scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "after_validation :remove_#{attribute.name}, if: :#{attribute.name}_removal?", CALLBACKS_HOOK, prepend: true)
+          end
         when "trix_editor"
           scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "has_rich_text :#{attribute.name}", HAS_ONE_HOOK, prepend: true)
         when "address_field"
