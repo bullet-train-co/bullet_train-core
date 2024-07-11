@@ -96,6 +96,22 @@ class Scaffolding::Attribute
     original_type == "boolean"
   end
 
+  def file_field?
+    type == "file_field"
+  end
+
+  def image?
+    type == "image"
+  end
+
+  def cloudinary_image?
+    image? && cloudinary_enabled?
+  end
+
+  def active_storage_image?
+    image? && !cloudinary_enabled?
+  end
+
   # Sometimes we need all the magic of a `*_id` field, but without the scoping stuff.
   # Possibly only ever used internally by `join-model`.
   def is_unscoped?
