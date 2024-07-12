@@ -12,7 +12,6 @@ export default class extends Controller {
   static values = { id: Number }
 
   removeFile() {
-    console.log('running removeFile 2')
     if (this.hasDownloadFileButtonTarget) {
       this.downloadFileButtonTarget.classList.add("hidden");
     }
@@ -24,7 +23,6 @@ export default class extends Controller {
   }
 
   cancelRemoveFile(){
-    console.log('running cancelRemoveFile')
     if (this.hasDownloadFileButtonTarget) {
       this.downloadFileButtonTarget.classList.remove("hidden");
     }
