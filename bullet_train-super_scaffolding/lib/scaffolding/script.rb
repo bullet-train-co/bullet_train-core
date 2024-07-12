@@ -158,7 +158,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
       "string"
     elsif attribute_options[:multiple]
       case type
-      when "file"
+      when "file_field"
         "attachments"
       when "image"
         "attachments"
