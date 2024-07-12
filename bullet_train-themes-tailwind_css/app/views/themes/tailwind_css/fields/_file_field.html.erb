@@ -29,9 +29,9 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
         <% if form.object.send(method).attached? %>
           <div class="divide-y-2 divide-dashed">
             <% persisted_files.each do |file| %>
-              <div data-controller="fields--file-item" data-fields--file-item-id-value="<%= file.id %>">
+              <div data-controller="fields--file-item" data-fields--file-item-id-value="<%= file.id %>" class="py-1 flex flex-wrap items-center">
                 <%= form.hidden_field "#{method}_removal".to_sym, multiple: options[:multiple], value: nil, data: {'fields--file-item-target': 'removeFileFlag'} %>
-                <span data-fields--file-item-target="fileName" %>
+                <span data-fields--file-item-target="fileName" class="mr-auto"%>
                   <%= file.blob.filename %>
                 </span>
                 <%= link_to url_for(file), class: 'button download-file mr-3', data: {'fields--file-item-target': 'downloadFileButton'} do %>
@@ -42,12 +42,23 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
                   <i class="leading-none mr-2 text-base ti ti-trash"></i>
                   <span><%= t('fields.remove_document') %></span>
                 </div>
+                <div class="button-alternative cursor-pointer mr-3 hidden" data-action="click->fields--file-item#cancelRemoveFile" data-fields--file-item-target="cancelRemoveFileButton">
+                  <i class="leading-none mr-2 text-base ti ti-na"></i>
+                  <span><%= t('fields.cancel_remove_document') %></span>
+                </div>
               </div>
             <% end %>
           </div>
         <% end %>
       </div>
       <div class="mt-2">
+        <div data-fields--file-field-target="selectedFileListContainer" class="hidden mb-2">
+          <div class="dark:text-white mb-1">
+            To upload:
+          </div>
+          <div data-fields--file-field-target="selectedFileList" class="divide-y-2 divide-dashed">
+          </div>
+        </div>
         <div class="button-alternative cursor-pointer" data-action="click->fields--file-field#uploadFile" data-fields--file-field-target="selectFileButton">
           <i class="leading-none mr-2 text-base ti ti-upload dark:text-white"></i>
           <span class="dark:text-white">

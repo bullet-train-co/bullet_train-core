@@ -7,11 +7,16 @@ export default class extends Controller {
     "downloadFileButton",
     "removeFileButton",
     "selectFileButton",
+    "selectedFileListContainer",
+    "selectedFileList",
     "progressBar",
     "progressLabel",
   ];
 
   connect() {
+    const statusText = this.selectFileButtonTarget.querySelector("span");
+    this.originalStatusText = statusText.innerText;
+
     // Add upload event listeners
     const initializeListener = document.addEventListener(
       "direct-upload:initialize",
@@ -77,16 +82,61 @@ export default class extends Controller {
     this.removeFileFlagTarget.value = true;
   }
 
-  handleFileSelected() {
-    const statusText = this.selectFileButtonTarget.querySelector("span");
-    const icon = this.selectFileButtonTarget.querySelector("i");
-
+  handleFileSelected(event) {
     if (this.hasDownloadFileButtonTarget) {
       this.downloadFileButtonTarget.remove();
     }
 
-    statusText.innerText = "Select Another File";
-    icon.classList.remove("ti-upload");
-    icon.classList.add("ti-check");
+    const files = event.target.files;
+    this.updateSelectedFileList(files);
   }
+
+  cancelFileUpload(event){
+    const fileInput = this.fileFieldTarget;
+    const files = fileInput.files;
+    const fileToCancel = event.target.dataset.filename;
+
+    const dt = new DataTransfer();
+    for (const file of files) {
+      if(file.name != fileToCancel){
+        dt.items.add(file);
+      }
+    }
+    fileInput.files = dt.files;
+    this.updateSelectedFileList(dt.files);
+  }
+
+  updateSelectedFileList(files){
+    const statusText = this.selectFileButtonTarget.querySelector("span");
+    const icon = this.selectFileButtonTarget.querySelector("i");
+
+    this.selectedFileListTarget.innerHTML = "";
+
+    if(files.length){
+      for (const file of files) {
+        let fileElement = document.createElement('div');
+        fileElement.classList.add('py-1', 'flex', 'flex-wrap', 'items-center');
+        let nameElement = document.createElement('div');
+        nameElement.innerText = file.name;
+        let removeElement = document.createElement('span');
+        removeElement.innerText = "Cancel"
+        removeElement.dataset.action = "click->fields--file-field#cancelFileUpload"
+        removeElement.dataset.filename = file.name;
+        removeElement.classList.add('button-alternative','cursor-pointer', 'ml-auto');
+        fileElement.appendChild(nameElement);
+        fileElement.appendChild(removeElement);
+        this.selectedFileListTarget.appendChild(fileElement);
+      }
+      statusText.innerText = "Select A Different File";
+      icon.classList.remove("ti-upload");
+      icon.classList.add("ti-check");
+      this.selectedFileListContainerTarget.classList.remove('hidden')
+    }else{
+      statusText.innerText = this.originalStatusText;
+      icon.classList.add("ti-upload");
+      icon.classList.remove("ti-check");
+      this.selectedFileListContainerTarget.classList.add('hidden')
+    }
+  }
+
 }
