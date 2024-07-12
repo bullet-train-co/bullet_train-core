@@ -149,7 +149,7 @@ def check_required_options_for_attributes(scaffolding_type, attributes, child, p
     if type == "image" && cloudinary_enabled? && attribute_options[:multiple]
       puts "You have Cloudinary enabled and tried to scaffold an image field with the `multiple` option. " \
         "At this time we do not support multiple images in a single Cloudinary image attribute. " \
-        "We hope to add support for it in the near future. " \
+        "We hope to add support for it in the future. " \
         "For now you could use individual named image attributes, or you might try disabling Cloudinary and using ActiveStorage.".red
       exit
     end
