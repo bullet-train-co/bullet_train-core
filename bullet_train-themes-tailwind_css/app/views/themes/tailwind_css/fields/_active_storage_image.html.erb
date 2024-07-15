@@ -27,7 +27,7 @@ options[:height] ||= 100
 
 <%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do %>
   <% content_for :field do %>
-    <div class="file-field" data-controller="fields--file-field">
+    <div class="file-field" data-controller="fields--file-field" data-fields--file-field-select-different-file-value="<%= t('fields.select_different_file') %>">
       <%= form.file_field method, class: 'file-upload hidden', multiple: options[:multiple], direct_upload: true, data: {'fields--file-field-target': 'fileField', action: 'change->fields--file-field#handleFileSelected'} %>
       <div>
         <% if form.object.send(method).attached? %>
@@ -61,14 +61,24 @@ options[:height] ||= 100
           </div>
           <div data-fields--file-field-target="selectedFileList" class="divide-y-2 divide-dashed">
           </div>
+          <template data-fields--file-field-target="selectedFileRowTemplate">
+            <div class="py-1 flex flex-wrap items-center">
+              <div>@FILENAME@</div>
+              <span data-action="click->fields--file-field#cancelFileUpload" data-filename="@FILENAME@" class="button-alternative cursor-pointer ml-auto">
+                <%= t('global.buttons.cancel') %>
+              </span>
+            </div>
+          </template>
         </div>
         <div class="button-alternative cursor-pointer" data-action="click->fields--file-field#uploadFile" data-fields--file-field-target="selectFileButton">
-          <i class="leading-none mr-2 text-base ti ti-upload dark:text-white"></i>
-          <span class="dark:text-white">
+          <i class="leading-none mr-2 text-base ti ti-upload dark:text-white" data-fields--file-field-target="selectFileButtonIcon"></i>
+          <span class="dark:text-white" data-fields--file-field-target="selectFileButtonText">
             <% if form.object.send(method).attached? && !options[:multiple] %>
               <%= t('fields.replace_image') %>
             <% elsif form.object.send(method).attached? && options[:multiple] %>
               <%= t('fields.add_another_image') %>
+            <% elsif options[:multiple] %>
+              <%= t('fields.upload_images') %>
             <% else %>
               <%= t('fields.upload_image') %>
             <% end %>
