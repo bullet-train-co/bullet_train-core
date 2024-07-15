@@ -9,6 +9,7 @@ export default class extends Controller {
     "selectFileButton",
     "selectedFileListContainer",
     "selectedFileList",
+    "selectedFileRowTemplate",
     "progressBar",
     "progressLabel",
   ];
@@ -129,18 +130,9 @@ export default class extends Controller {
   }
 
   addSelectedFile(file){
-    let fileElement = document.createElement('div');
-    fileElement.classList.add('py-1', 'flex', 'flex-wrap', 'items-center');
-    let nameElement = document.createElement('div');
-    nameElement.innerText = file.name;
-    let removeElement = document.createElement('span');
-    removeElement.innerText = "Cancel"
-    removeElement.dataset.action = "click->fields--file-field#cancelFileUpload"
-    removeElement.dataset.filename = file.name;
-    removeElement.classList.add('button-alternative','cursor-pointer', 'ml-auto');
-    fileElement.appendChild(nameElement);
-    fileElement.appendChild(removeElement);
-    this.selectedFileListTarget.appendChild(fileElement);
+    let template = this.selectedFileRowTemplateTarget.innerHTML;
+    template = template.replaceAll("@FILENAME@", file.name);
+    this.selectedFileListTarget.insertAdjacentHTML('beforeend', template);
   }
 
 }

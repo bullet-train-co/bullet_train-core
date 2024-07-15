@@ -58,6 +58,14 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
           </div>
           <div data-fields--file-field-target="selectedFileList" class="divide-y-2 divide-dashed">
           </div>
+          <template data-fields--file-field-target="selectedFileRowTemplate">
+            <div class="py-1 flex flex-wrap items-center">
+              <div>@FILENAME@</div>
+              <span data-action="click->fields--file-field#cancelFileUpload" data-filename="@FILENAME@" class="button-alternative cursor-pointer ml-auto">
+                <%= t('global.buttons.cancel') %>
+              </span>
+            </div>
+          </template>
         </div>
         <div class="button-alternative cursor-pointer" data-action="click->fields--file-field#uploadFile" data-fields--file-field-target="selectFileButton">
           <i class="leading-none mr-2 text-base ti ti-upload dark:text-white"></i>
