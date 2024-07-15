@@ -1,0 +1,16 @@
+<% object ||= current_attributes_object %>
+<% strategy ||= current_attributes_strategy || :none %>
+<% url ||= nil %>
+<% options ||= {} %>
+<% options[:height] ||= 200 %>
+
+<% if cloudinary_enabled? %>
+  <%# TODO: How do we attach mutliple cloundinary images? %>
+  <%= cloudinary_image_tag object.public_send(attribute), options %>
+<% else %>
+  <% if object.public_send(attribute).attached? %>
+    <% object.send(attribute).each do |image| %>
+      <%= image_tag photo_url_for_active_storage_attachment(image, options) %>
+    <% end %>
+  <% end %>
+<% end %>

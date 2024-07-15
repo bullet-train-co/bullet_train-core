@@ -178,10 +178,10 @@ class Scaffolding::Attribute
       # TODO: We're preserving cloudinary_image here for backwards compatibility.
       # Remove it in a future major release.
       options[:height] = 200
-      "image"
+      "image#{"s" if is_multiple?}"
     when "image"
       options[:height] = 200
-      "image"
+      "image#{"s" if is_multiple?}"
     when "phone_field"
       "phone_number"
     when "date_field"
