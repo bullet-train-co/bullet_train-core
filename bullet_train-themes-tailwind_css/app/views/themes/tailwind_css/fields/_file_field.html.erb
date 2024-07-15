@@ -23,7 +23,7 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
 
 <%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do %>
   <% content_for :field do %>
-    <div class="file-field" data-controller="fields--file-field">
+    <div class="file-field" data-controller="fields--file-field" data-fields--file-field-select-different-file-value="<%= t('fields.select_different_file') %>">
       <%= form.file_field method, options %>
       <div>
         <% if form.object.send(method).attached? %>

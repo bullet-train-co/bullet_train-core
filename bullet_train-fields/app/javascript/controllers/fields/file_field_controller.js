@@ -14,6 +14,10 @@ export default class extends Controller {
     "progressLabel",
   ];
 
+  static values = {
+    selectDifferentFile: String
+  }
+
   connect() {
     const statusText = this.selectFileButtonTarget.querySelector("span");
     this.originalStatusText = statusText.innerText;
@@ -117,7 +121,7 @@ export default class extends Controller {
       for (const file of files) {
         this.addSelectedFile(file);
       }
-      statusText.innerText = "Select A Different File";
+      statusText.innerText = this.selectDifferentFileValue;
       icon.classList.remove("ti-upload");
       icon.classList.add("ti-check");
       this.selectedFileListContainerTarget.classList.remove('hidden')
