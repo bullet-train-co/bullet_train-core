@@ -66,6 +66,8 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
               <%= t('fields.replace_document') %>
             <% elsif form.object.send(method).attached? && options[:multiple] %>
               <%= t('fields.add_another_document') %>
+            <% elsif options[:multiple] %>
+              <%= t('fields.upload_documents') %>
             <% else %>
               <%= t('fields.upload_document') %>
             <% end %>

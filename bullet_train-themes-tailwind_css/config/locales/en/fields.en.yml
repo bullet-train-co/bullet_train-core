@@ -2,12 +2,14 @@ en:
   fields:
     download_document: Download Current Document
     upload_document: Upload New Document
+    upload_documents: Upload New Documents
     add_another_document: Add Another Document
     replace_document: Replace Document
     remove_document: Remove Current Document
     cancel_remove_document: Cancel Removal
     download_image: Download Current Image
     upload_image: Upload New Image
+    upload_images: Upload New Images
     add_another_image: Add Another Image
     replace_image: Replace Image
     remove_image: Remove Current Image
