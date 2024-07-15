@@ -68,8 +68,8 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
           </template>
         </div>
         <div class="button-alternative cursor-pointer" data-action="click->fields--file-field#uploadFile" data-fields--file-field-target="selectFileButton">
-          <i class="leading-none mr-2 text-base ti ti-upload dark:text-white"></i>
-          <span class="dark:text-white">
+          <i class="leading-none mr-2 text-base ti ti-upload dark:text-white" data-fields--file-field-target="selectFileButtonIcon"></i>
+          <span class="dark:text-white" data-fields--file-field-target="selectFileButtonText">
             <% if form.object.send(method).attached? && !options[:multiple] %>
               <%= t('fields.replace_document') %>
             <% elsif form.object.send(method).attached? && options[:multiple] %>

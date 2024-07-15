@@ -7,6 +7,8 @@ export default class extends Controller {
     "downloadFileButton",
     "removeFileButton",
     "selectFileButton",
+    "selectFileButtonText",
+    "selectFileButtonIcon",
     "selectedFileListContainer",
     "selectedFileList",
     "selectedFileRowTemplate",
@@ -19,7 +21,7 @@ export default class extends Controller {
   }
 
   connect() {
-    const statusText = this.selectFileButtonTarget.querySelector("span");
+    const statusText = this.selectFileButtonTextTarget;
     this.originalStatusText = statusText.innerText;
 
     // Add upload event listeners
@@ -112,8 +114,8 @@ export default class extends Controller {
   }
 
   updateSelectedFileList(files){
-    const statusText = this.selectFileButtonTarget.querySelector("span");
-    const icon = this.selectFileButtonTarget.querySelector("i");
+    const statusText = this.selectFileButtonTextTarget;
+    const icon = this.selectFileButtonIconTarget;
 
     this.selectedFileListTarget.innerHTML = "";
 
