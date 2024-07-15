@@ -30,7 +30,7 @@ export default class extends Controller {
     this.removeFileButtonTarget.classList.remove("hidden");
     this.cancelRemoveFileButtonTarget.classList.add("hidden");
     this.removeFileFlagTarget.value = null;
-    this.element.classList.remove("bg-red-100", "dark:bg-red-700");
+    this.element.classList.remove("bg-red-100", "dark:bg-red-700/40");
   }
 
 }
