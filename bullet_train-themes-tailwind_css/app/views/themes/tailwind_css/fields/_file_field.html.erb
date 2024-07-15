@@ -23,15 +23,15 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
 
 <%= render 'shared/fields/field', form: form, method: method, helper: :file_field, options: options, other_options: other_options do %>
   <% content_for :field do %>
-    <div class="file-field" data-controller="fields--file-field">
+    <div class="file-field" data-controller="fields--file-field" data-fields--file-field-select-different-file-value="<%= t('fields.select_different_file') %>">
       <%= form.file_field method, options %>
       <div>
         <% if form.object.send(method).attached? %>
           <div class="divide-y-2 divide-dashed">
             <% persisted_files.each do |file| %>
-              <div data-controller="fields--file-item" data-fields--file-item-id-value="<%= file.id %>">
+              <div data-controller="fields--file-item" data-fields--file-item-id-value="<%= file.id %>" class="py-1 flex flex-wrap items-center">
                 <%= form.hidden_field "#{method}_removal".to_sym, multiple: options[:multiple], value: nil, data: {'fields--file-item-target': 'removeFileFlag'} %>
-                <span data-fields--file-item-target="fileName" %>
+                <span data-fields--file-item-target="fileName" class="mr-auto"%>
                   <%= file.blob.filename %>
                 </span>
                 <%= link_to url_for(file), class: 'button download-file mr-3', data: {'fields--file-item-target': 'downloadFileButton'} do %>
@@ -42,15 +42,44 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
                   <i class="leading-none mr-2 text-base ti ti-trash"></i>
                   <span><%= t('fields.remove_document') %></span>
                 </div>
+                <div class="button-alternative cursor-pointer mr-3 hidden" data-action="click->fields--file-item#cancelRemoveFile" data-fields--file-item-target="cancelRemoveFileButton">
+                  <i class="leading-none mr-2 text-base ti ti-na"></i>
+                  <span><%= t('fields.cancel_remove_document') %></span>
+                </div>
               </div>
             <% end %>
           </div>
         <% end %>
       </div>
       <div class="mt-2">
+        <div data-fields--file-field-target="selectedFileListContainer" class="hidden mb-2">
+          <div class="dark:text-white mb-1">
+            To upload:
+          </div>
+          <div data-fields--file-field-target="selectedFileList" class="divide-y-2 divide-dashed">
+          </div>
+          <template data-fields--file-field-target="selectedFileRowTemplate">
+            <div class="py-1 flex flex-wrap items-center">
+              <div>@FILENAME@</div>
+              <span data-action="click->fields--file-field#cancelFileUpload" data-filename="@FILENAME@" class="button-alternative cursor-pointer ml-auto">
+                <%= t('global.buttons.cancel') %>
+              </span>
+            </div>
+          </template>
+        </div>
         <div class="button-alternative cursor-pointer" data-action="click->fields--file-field#uploadFile" data-fields--file-field-target="selectFileButton">
-          <i class="leading-none mr-2 text-base ti ti-upload dark:text-white"></i>
-          <span class="dark:text-white"><%= t('fields.upload_document') %></span>
+          <i class="leading-none mr-2 text-base ti ti-upload dark:text-white" data-fields--file-field-target="selectFileButtonIcon"></i>
+          <span class="dark:text-white" data-fields--file-field-target="selectFileButtonText">
+            <% if form.object.send(method).attached? && !options[:multiple] %>
+              <%= t('fields.replace_document') %>
+            <% elsif form.object.send(method).attached? && options[:multiple] %>
+              <%= t('fields.add_another_document') %>
+            <% elsif options[:multiple] %>
+              <%= t('fields.upload_documents') %>
+            <% else %>
+              <%= t('fields.upload_document') %>
+            <% end %>
+          </span>
         </div>
         <div class="mt-2 hidden overflow-hidden text-xs rounded bg-slate-100 shadow-inner relative">
           <div data-fields--file-field-target="progressBar" aria-valuemax="100" aria-valuemin="0" aria-valuenow="0" class="absolute top-0 left-0 whitespace-nowrap overflow-hidden animate-pulse bg-primary-500 dark:bg-slate-800 rounded" role="progressbar" style="width: 0%;">&nbsp;</div>

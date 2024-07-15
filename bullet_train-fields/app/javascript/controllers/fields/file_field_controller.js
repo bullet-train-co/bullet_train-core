@@ -7,11 +7,23 @@ export default class extends Controller {
     "downloadFileButton",
     "removeFileButton",
     "selectFileButton",
+    "selectFileButtonText",
+    "selectFileButtonIcon",
+    "selectedFileListContainer",
+    "selectedFileList",
+    "selectedFileRowTemplate",
     "progressBar",
     "progressLabel",
   ];
 
+  static values = {
+    selectDifferentFile: String
+  }
+
   connect() {
+    const statusText = this.selectFileButtonTextTarget;
+    this.originalStatusText = statusText.innerText;
+
     // Add upload event listeners
     const initializeListener = document.addEventListener(
       "direct-upload:initialize",
@@ -77,16 +89,56 @@ export default class extends Controller {
     this.removeFileFlagTarget.value = true;
   }
 
-  handleFileSelected() {
-    const statusText = this.selectFileButtonTarget.querySelector("span");
-    const icon = this.selectFileButtonTarget.querySelector("i");
-
+  handleFileSelected(event) {
     if (this.hasDownloadFileButtonTarget) {
       this.downloadFileButtonTarget.remove();
     }
 
-    statusText.innerText = "Select Another File";
-    icon.classList.remove("ti-upload");
-    icon.classList.add("ti-check");
+    const files = event.target.files;
+    this.updateSelectedFileList(files);
   }
+
+  cancelFileUpload(event){
+    const fileInput = this.fileFieldTarget;
+    const files = fileInput.files;
+    const fileToCancel = event.target.dataset.filename;
+
+    const dt = new DataTransfer();
+    for (const file of files) {
+      if(file.name != fileToCancel){
+        dt.items.add(file);
+      }
+    }
+    fileInput.files = dt.files;
+    this.updateSelectedFileList(dt.files);
+  }
+
+  updateSelectedFileList(files){
+    const statusText = this.selectFileButtonTextTarget;
+    const icon = this.selectFileButtonIconTarget;
+
+    this.selectedFileListTarget.innerHTML = "";
+
+    if(files.length){
+      for (const file of files) {
+        this.addSelectedFile(file);
+      }
+      statusText.innerText = this.selectDifferentFileValue;
+      icon.classList.remove("ti-upload");
+      icon.classList.add("ti-check");
+      this.selectedFileListContainerTarget.classList.remove('hidden')
+    }else{
+      statusText.innerText = this.originalStatusText;
+      icon.classList.add("ti-upload");
+      icon.classList.remove("ti-check");
+      this.selectedFileListContainerTarget.classList.add('hidden')
+    }
+  }
+
+  addSelectedFile(file){
+    let template = this.selectedFileRowTemplateTarget.innerHTML;
+    template = template.replaceAll("@FILENAME@", file.name);
+    this.selectedFileListTarget.insertAdjacentHTML('beforeend', template);
+  }
+
 }

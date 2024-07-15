@@ -6,7 +6,7 @@
     <% object.send(attribute).each do |file| %>
       <%= link_to url_for(file), class: 'button download-file' do %>
         <i class="leading-none mr-2 text-base ti ti-download"></i>
-        <span>Download File</span>
+        <span><%= t("global.file_fields.download") %> - <%= file.filename %></span>
       <% end %>
     <% end %>
   <% end %>
