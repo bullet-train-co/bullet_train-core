@@ -1,0 +1,17 @@
+Description:
+  Generate files needed to add conversations to a model.
+
+Example:
+  E.g. Add conversations to Posts from a Team.
+    rails generate super_scaffold:conversations Post Team
+
+  This will create:
+    db/migrate/20240716162627_add_project_to_conversations.rb
+  And update:
+    app/models/ability.rb
+    app/models/conversation.rb
+    app/models/project.rb
+    app/views/account/projects/show.html.erb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.
