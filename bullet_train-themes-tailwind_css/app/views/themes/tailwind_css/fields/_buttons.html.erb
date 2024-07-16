@@ -41,6 +41,13 @@ if defined?(multiple)
 end
 %>
 
+<%
+  button_classes = "button-alternative mb-1.5 mr-1"
+  if options[:disabled]
+    button_classes += " bg-slate-200 dark:bg-slate-700 hover:bg-slate-200 hover:dark:bg-slate-700"
+  end
+%>
+
 <% content = render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
   <% content_for :field do %>
     <div>
@@ -52,7 +59,7 @@ end
           <% else %>
             <%= form.radio_button method, value, options %>
           <% end %>
-          <button type="button" class="button-alternative mb-1.5 mr-1" data-action="<%= stimulus_controller %>#clickShadowField">
+          <button type="button" class="<%= button_classes %>" data-action="<%= stimulus_controller %>#clickShadowField">
             <%= label %>
           </button>
         </label>
