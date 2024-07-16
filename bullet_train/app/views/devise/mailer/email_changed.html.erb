@@ -1,0 +1,3 @@
+<p><%= t('.hello', email: @resource.email) %></p>
+
+<p><%= t('.description', email: @resource.try(:unconfirmed_email?) ? @resource.unconfirmed_email : @resource.email) %></p>
