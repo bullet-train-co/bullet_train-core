@@ -73,6 +73,11 @@ en:
         subject: "Password Changed"
         hello: Hello %{email}!
         description: We're contacting you to notify you that your password has been changed.
+      email_changed:
+        subject: "Email Changed"
+        hello: Hello %{email}!
+        description: We're contacting you to notify you that your email has been changed to %{email}
+
     omniauth_callbacks:
       failure: "Could not authenticate you from %{kind} because \"%{reason}\"."
       success: "Successfully authenticated from %{kind} account."
