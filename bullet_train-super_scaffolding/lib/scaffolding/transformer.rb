@@ -717,8 +717,6 @@ class Scaffolding::Transformer
           if attribute.is_belongs_to?
             scaffold_add_line_to_file(file_name, "validates :#{attribute.name_without_id}, scope: true", VALIDATIONS_HOOK, prepend: true)
           end
-
-          # TODO we need to add a multitenancy check for has many associations.
         end
 
       end
