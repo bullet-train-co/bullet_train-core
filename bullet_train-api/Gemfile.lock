@@ -49,7 +49,7 @@ PATH
       microscope
       nice_partials (~> 0.9)
       omniauth
-      pagy
+      pagy (< 7)
       possessive
       premailer-rails
       rails (>= 6.0.0)
