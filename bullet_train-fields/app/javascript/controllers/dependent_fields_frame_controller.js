@@ -32,7 +32,7 @@ export default class extends Controller {
   }
 
   constructNewUrlUpdatingField(fieldName, fieldValue) {
-    const url = new URL(window.location.href)
+    const url = new URL(this.element.src || window.location.href)
     url.searchParams.set(fieldName, fieldValue)
 
     return url.href
