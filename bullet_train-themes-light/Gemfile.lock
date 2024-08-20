@@ -8,7 +8,7 @@ PATH
       doorkeeper
       factory_bot
       jbuilder-schema (~> 2.6.6)
-      pagy
+      pagy (< 7)
       pagy_cursor
       rack-cors
       rails (>= 6.0.0)
@@ -57,7 +57,7 @@ PATH
       microscope
       nice_partials (~> 0.9)
       omniauth
-      pagy
+      pagy (< 7)
       possessive
       premailer-rails
       rails (>= 6.0.0)
@@ -485,6 +485,7 @@ GEM
 
 PLATFORMS
   arm64-darwin-22
+  arm64-darwin-23
   x86_64-linux
 
 DEPENDENCIES
