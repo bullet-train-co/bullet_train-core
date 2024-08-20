@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train"
 
   spec.add_dependency "rails", ">= 6.0.0"
-  spec.add_dependency "pagy"
+  spec.add_dependency "pagy", "< 7"
   spec.add_dependency "pagy_cursor"
   spec.add_dependency "rack-cors"
   spec.add_dependency "doorkeeper"
