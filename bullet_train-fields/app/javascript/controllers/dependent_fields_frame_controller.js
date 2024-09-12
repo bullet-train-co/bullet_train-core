@@ -50,7 +50,7 @@ export default class extends Controller {
   storeFieldValues() {
     this.fieldTargets.forEach(field => {
       let storeUpdate = {}
-      storeUpdate[field.name] = getValueForField(field)
+      storeUpdate[field.name] = this.getValueForField(field)
       this.valuesStoreValue = Object.assign(this.valuesStoreValue, storeUpdate)
     })
   }
