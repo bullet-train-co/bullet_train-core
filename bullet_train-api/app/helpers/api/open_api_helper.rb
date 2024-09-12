@@ -97,7 +97,10 @@ module Api
             "description" => attribute_name.titleize.to_s
           }
 
-          attributes_output["example"].merge!({attribute_name.to_s => nil})
+          attributes_output["examples"] = [{
+            "summary" => "default",
+            "value" => nil
+          }]
         end
       end
 
