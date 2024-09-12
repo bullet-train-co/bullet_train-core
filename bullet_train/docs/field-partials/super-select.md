@@ -133,40 +133,7 @@ All events dispatched from the `super_select` partial are [Select2's jQuery even
 | select2:clearing    | $select2:clearing    |
 | select2:clear       | $select2:clear       |
 
-For example, the view template for catching the `$change` events in a parent `dependent-form-fields` using a Stimulus controller with a single `updateDependentFields` method would look like this:
-
-<pre><code>&lt;div data-controller="dependent-form-fields"&gt;
-  &lt;div data-action="$change->dependent-form-fields#updateDependentFields"&gt;
-    <%= render 'shared/fields/super_select', form: form, method: :category_id,
-      choices: Category.all.map { |category| [category.label_string, category.id] } %>
-  &lt;/div&gt;
-  &lt;div&gt;
-    &lt;!-- This is the dependent field that would get updated when the previous one changes --&gt;
-    <%= render 'shared/fields/super_select', form: form, method: :category_id,
-      choices: Category.all.map { |category| [category.label_string, category.id] },
-      html_options: { data: { 'dependent-form-fields-target': 'dependentField' }} %>
-  &lt;/div&gt;
-&lt;/div&gt;</code></pre>
-
-And this is an example of what the `dependent-form-fields` Stimulus controller would look like.
-
-<pre><code>
-// dependent_form_fields_controller.js
-import { Controller } from "stimulus"
-
-export default class extends Controller {
-  static targets = [ "dependentField" ]
-
-  updateDependentFields(event) {
-    const originalSelect2Event = event.detail.event
-    console.log(`catching event ${event.type}`, originalSelect2Event)
-
-    this.dependentFieldTargets.forEach((dependentField) => {
-      // update dependentField based on value found in originalSelect2Event.target.value
-    })
-  }
-}
-</code></pre>
+For an example of catching the `$change` event to update a dependent field, look at the [Dynamic Forms and Dependent Fields](/docs/field-partials/dynamic-forms-dependent-fields.md) doc.
 
 [select2]: https://select2.org
 [select2_events]: https://select2.org/programmatic-control/events
