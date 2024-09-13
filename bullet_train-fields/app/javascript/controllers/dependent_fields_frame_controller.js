@@ -21,7 +21,7 @@ export default class extends Controller {
     this.disableFieldInputWhileRefreshing()
 
     const frame = this.element
-    frame.src = this.constructNewUrlUpdatingField(field.name, field.value)
+    frame.src = this.constructNewUrlUpdatingField(field.name, this.getValueForField(field))
   }
 
   finishFrameUpdate(event) {
@@ -32,7 +32,7 @@ export default class extends Controller {
   }
 
   constructNewUrlUpdatingField(fieldName, fieldValue) {
-    const url = new URL(this.element.src || window.location.href)
+    const url = new URL(window.location.href)
     url.searchParams.set(fieldName, fieldValue)
 
     return url.href
@@ -50,7 +50,7 @@ export default class extends Controller {
   storeFieldValues() {
     this.fieldTargets.forEach(field => {
       let storeUpdate = {}
-      storeUpdate[field.name] = field.value
+      storeUpdate[field.name] = this.getValueForField(field)
       this.valuesStoreValue = Object.assign(this.valuesStoreValue, storeUpdate)
     })
   }
@@ -59,10 +59,26 @@ export default class extends Controller {
     this.fieldTargets.forEach(field => {
       const storedValue = this.valuesStoreValue[field.name]
       if (storedValue === undefined) { return }
-      field.value = storedValue
+      this.setValueForField(field, storedValue)
       field.dispatchEvent(new Event('change')) // ensures cascading effects, including super-select validating against valid options
     })
 
     this.valuesStoreValue = {}
+  }
+
+  getValueForField(field) {
+    if (field.type === "checkbox") {
+      return field.checked
+    }
+
+    return field.value
+  }
+
+  setValueForField(field, value) {
+    if (field.type === "checkbox") {
+      field.checked = value
+    }
+
+    field.value = value
   }
 }
