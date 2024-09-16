@@ -33,6 +33,22 @@ module BulletTrain
         end
 
         def resolved_partial_path_for(lookup_context, path, locals)
+          # Skip caching procedure if path is a hash (for example), as the hash will occur the error:
+          # TypeError: no implicit conversion of nil into Integer 
+          #
+          # This situation happens by rendering of partials in jbuilder templates like:
+          #
+          #   ```
+          #     json.array! @records do |record|
+          #       json.partial!('show', record: record) # <--
+          #     end
+          #   ```
+          #
+          # It's especially hard if this happens, from an embedded gem/engine, which uses those calls alot, 
+          # and you don't have control over the code.
+          return unless path.is_a?(String)
+          
+          
           # We disable partial path caching in development so new templates are taken into account without restarting the server.
           partial_paths = {}
 
