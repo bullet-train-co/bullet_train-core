@@ -66,7 +66,7 @@ end
 <div class="<%= 'required' if other_options[:required] %>">
 
   <% # the label. %>
-  <% unless other_options[:hide_label] == true %>
+  <div class="<%= "sr-only" if other_options[:hide_label] == true %>">
     <% if partial.label? %>
       <%= partial.label %>
     <% else %>
@@ -74,7 +74,7 @@ end
       <% label = (other_options[:label].presence || labels.label || legacy_label_for(form, method)) %>
       <%= form.label method, label&.html_safe, class: 'block', for: options[:id] %>
     <% end %>
-  <% end %>
+  </div>
 
   <%# Here, we prioritize yielding the partial's field markup if it already exists. %>
   <%# `form.send` below calls the original Rails Form helpers, such as %>
