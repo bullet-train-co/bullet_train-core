@@ -2,7 +2,7 @@
 <% memberships ||= [] %>
 
 <li class="bg-white shadow overflow-hidden sm:rounded-md dark:bg-slate-700">
-  <%= link_to link_url, class: "group block hover:bg-slate-50 dark:hover:bg-slate-400 dark:text-slate-800" do %>
+  <%= link_to link_url, class: "group block hover:bg-slate-50 dark:hover:bg-slate-400 dark:text-slate-800", data: { turbo_prefetch: false } do %>
     <div class="px-4 py-4 flex items-center sm:pl-8 sm:pr-6">
       <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
         <div>
