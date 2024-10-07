@@ -51,7 +51,7 @@ module Webhooks::Outgoing::DeliverySupport
 
   def still_attempting?
     return false if delivered?
-    attempt_count < max_attempts
+    attempt_count <= max_attempts
   end
 
   def failed?
