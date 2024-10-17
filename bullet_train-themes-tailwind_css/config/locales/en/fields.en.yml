@@ -2,7 +2,7 @@ en:
   fields:
     download_file: Download Current File
     upload_file: Upload New File
-    upload_file: Upload New Files
+    upload_files: Upload New Files
     add_another_file: Add Another File
     replace_file: Replace File
     remove_file: Remove Current File
