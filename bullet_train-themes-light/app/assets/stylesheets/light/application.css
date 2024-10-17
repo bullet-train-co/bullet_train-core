@@ -28,3 +28,11 @@ ol.breadcrumb li:first-child svg { display: none; }
   height: 5px;
   @apply bg-primary-500;
 }
+
+/*
+  When dragging a sortable table row, only show the first column, usually containing the element's label.
+  Can be customize on a per-table basis.
+*/
+tr.gu-mirror > *:not(:first-child) {
+  display: none;
+}
