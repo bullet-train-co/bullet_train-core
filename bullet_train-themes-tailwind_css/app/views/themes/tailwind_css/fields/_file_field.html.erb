@@ -36,15 +36,15 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
                 </span>
                 <%= link_to url_for(file), class: 'button download-file mr-3', data: {'fields--file-item-target': 'downloadFileButton'} do %>
                   <i class="leading-none mr-2 text-base ti ti-download"></i>
-                  <span><%= t('fields.download_document') %></span>
+                  <span><%= t('fields.download_file') %></span>
                 <% end %>
                 <div class="button-alternative cursor-pointer mr-3" data-action="click->fields--file-item#removeFile" data-fields--file-item-target="removeFileButton">
                   <i class="leading-none mr-2 text-base ti ti-trash"></i>
-                  <span><%= t('fields.remove_document') %></span>
+                  <span><%= t('fields.remove_file') %></span>
                 </div>
                 <div class="button-alternative cursor-pointer mr-3 hidden" data-action="click->fields--file-item#cancelRemoveFile" data-fields--file-item-target="cancelRemoveFileButton">
                   <i class="leading-none mr-2 text-base ti ti-na"></i>
-                  <span><%= t('fields.cancel_remove_document') %></span>
+                  <span><%= t('fields.cancel_remove_file') %></span>
                 </div>
               </div>
             <% end %>
@@ -71,13 +71,13 @@ persisted_files = options[:multiple] ? form.object.send(method) : [form.object.s
           <i class="leading-none mr-2 text-base ti ti-upload dark:text-white" data-fields--file-field-target="selectFileButtonIcon"></i>
           <span class="dark:text-white" data-fields--file-field-target="selectFileButtonText">
             <% if form.object.send(method).attached? && !options[:multiple] %>
-              <%= t('fields.replace_document') %>
+              <%= t('fields.replace_file') %>
             <% elsif form.object.send(method).attached? && options[:multiple] %>
-              <%= t('fields.add_another_document') %>
+              <%= t('fields.add_another_file') %>
             <% elsif options[:multiple] %>
-              <%= t('fields.upload_documents') %>
+              <%= t('fields.upload_file') %>
             <% else %>
-              <%= t('fields.upload_document') %>
+              <%= t('fields.upload_file') %>
             <% end %>
           </span>
         </div>

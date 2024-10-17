@@ -84,9 +84,9 @@ en:
       date_and_time: '%m/%d/%Y %l:%M %p'
     file_fields:
       download: Download File
-      download_current: Download Current Document
-      remove: Remove Current Document
-      upload: Upload New Document
+      download_current: Download Current File
+      remove: Remove Current File
+      upload: Upload New File
     bulk_select:
       all: All
 
