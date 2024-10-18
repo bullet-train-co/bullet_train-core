@@ -73,7 +73,7 @@ def default_url_options_from_base_url
 end
 
 def heroku?
-  ENV["PATH"]&.include?("/app/.heroku/")
+  ENV['HEROKU_APP_NAME'].present?
 end
 
 def inbound_email_enabled?
