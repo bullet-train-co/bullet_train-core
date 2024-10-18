@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module Roles
-  VERSION = "1.7.23"
+  VERSION = "1.8.0"
 end
