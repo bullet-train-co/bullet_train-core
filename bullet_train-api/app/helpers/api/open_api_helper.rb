@@ -184,12 +184,10 @@ module Api
     private
 
     def has_strong_parameters?(controller_name)
-      begin
-        "#{controller_name}::StrongParameters".constantize
-        return true
-      rescue NameError
-        return false
-      end
+      "#{controller_name}::StrongParameters".constantize
+      true
+    rescue NameError
+      false
     end
 
     def update_ref_values!(hash, method_type = nil)
