@@ -34,6 +34,7 @@ class BulletTrain::Platform::ConnectionWorkflow
             faux_membership = team.memberships.create(
               user: faux_user,
               platform_agent: true,
+              user_email: faux_user.email,
               platform_agent_of: @application,
               added_by: team.memberships.find_by(user: current_user)
             )
