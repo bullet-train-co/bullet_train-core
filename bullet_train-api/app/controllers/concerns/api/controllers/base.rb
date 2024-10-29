@@ -119,14 +119,6 @@ module Api::Controllers::Base
     raise "dummy edit action on api controller"
   end
 
-  #def create
-    #raise "dummy create action on api controller"
-  #end
-
-  #def update
-    #raise "dummy update action on api controller"
-  #end
-
   class_methods do
     def controller_namespace
       name.split("::").first(2).join("::")
