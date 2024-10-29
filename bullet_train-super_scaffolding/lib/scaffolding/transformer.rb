@@ -385,6 +385,7 @@ class Scaffolding::Transformer
 
   def scaffold_add_line_to_file(file, content, hook, options = {})
     file = resolve_target_path(transform_string(file))
+    file.gsub!(parent.tableize, child.tableize) if cli_options["namespace"]
     content = transform_string(content)
     hook = transform_string(hook)
     add_line_to_file(file, content, hook, options)
@@ -963,7 +964,7 @@ class Scaffolding::Transformer
         # add attributes to strong params.
         [
           "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
-          "./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb"
+          "./app/controllers/api/v1/#{cli_options["namespace"] + "/" if cli_options["namespace"]}scaffolding/completely_concrete/tangible_things_controller.rb"
         ].each do |file|
           if attribute.is_ids? || attribute.is_multiple?
             scaffold_add_line_to_file(file, "#{attribute.name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
@@ -1324,7 +1325,6 @@ class Scaffolding::Transformer
     end
 
     if cli_options["namespace"]
-      cli_options["skip-api"] = true
       cli_options["skip-model"] = true
       cli_options["skip-locales"] = true
     end
@@ -1355,6 +1355,28 @@ class Scaffolding::Transformer
       else
         scaffold_file(name)
       end
+    end
+
+    # Ensure the the API controller is namespaced properly.
+    if cli_options["namespace"]
+      Dir.mkdir("./app/controllers/api/v1/#{cli_options["namespace"]}") unless Dir.exist?("./app/controllers/api/v1/#{cli_options["namespace"]}")
+      original_file_name = transform_string("./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb")
+      namespaced_file_name = transform_string("./app/controllers/api/v1/#{cli_options["namespace"]}/scaffolding/completely_concrete/tangible_things_controller.rb")
+      FileUtils.move(original_file_name, namespaced_file_name)
+
+      controller_file = transform_string("./app/controllers/#{cli_options["namespace"]}/scaffolding/completely_concrete/tangible_things_controller.rb")
+      controller_lines = File.open(controller_file).readlines
+      new_controller_lines = controller_lines.each do |line|
+        line.gsub!("Account::#{child.camelize}", "Account::#{cli_options["namespace"].camelize}::#{child.camelize}")
+      end
+      Scaffolding::FileManipulator.write(controller_file, new_controller_lines)
+
+      controller_file = transform_string("./app/controllers/api/v1/#{cli_options["namespace"]}/scaffolding/completely_concrete/tangible_things_controller.rb")
+      controller_lines = File.open(controller_file).readlines
+      new_controller_lines = controller_lines.each do |line|
+        line.gsub!("Api::V1::#{child.camelize}", "Api::V1::#{cli_options["namespace"].camelize}::#{child.camelize}")
+      end
+      Scaffolding::FileManipulator.write(controller_file, new_controller_lines)
     end
 
     unless cli_options["skip-model"]
@@ -1519,7 +1541,7 @@ class Scaffolding::Transformer
         routes_manipulator.apply([routes_namespace])
         Scaffolding::FileManipulator.write(routes_path, routes_manipulator.lines)
       rescue => _
-        add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
+        add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Discord, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/."
       end
 
       # If we're using a custom namespace, we have to make sure the newly
@@ -1535,7 +1557,6 @@ class Scaffolding::Transformer
 
           # Define which line we want to place the draw line under in the original routes files.
           insert_line = if routes_file.match?("api")
-            draw_line = "  #{draw_line}" # Add necessary indentation.
             "namespace :v1 do"
           else
             "draw \"sidekiq\""
