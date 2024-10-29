@@ -127,5 +127,21 @@ module Account::Controllers::Base
     raise "dummy reorder action on account controller"
   end
 
+  def new
+    raise "dummy new action on account controller"
+  end
+
+  def edit
+    raise "dummy edit action on account controller"
+  end
+
+  def create
+    raise "dummy create action on account controller"
+  end
+
+  def update
+    raise "dummy update action on account controller"
+  end
+
   ActiveSupport.run_load_hooks :bullet_train_account_controllers_base, self
 end

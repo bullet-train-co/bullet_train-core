@@ -107,17 +107,25 @@ module Api::Controllers::Base
     request.format = :json
   end
 
-  def new
-    raise "dummy new action on api controller"
-  end
-
   def reorder
     raise "dummy reorder action on api controller"
+  end
+
+  def new
+    raise "dummy new action on api controller"
   end
 
   def edit
     raise "dummy edit action on api controller"
   end
+
+  #def create
+    #raise "dummy create action on api controller"
+  #end
+
+  #def update
+    #raise "dummy update action on api controller"
+  #end
 
   class_methods do
     def controller_namespace
