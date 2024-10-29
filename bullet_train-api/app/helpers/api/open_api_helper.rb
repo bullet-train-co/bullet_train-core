@@ -101,7 +101,7 @@ module Api
         end
       end
 
-      if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller".constantize)
+      if has_strong_parameters?("Api::#{@version.upcase}::#{model.name.pluralize}Controller")
         strong_parameter_keys = strong_parameter_keys_for(model.name, @version)
         strong_parameter_keys_for_update = strong_parameter_keys_for(model.name, @version, "update")
 
@@ -183,9 +183,13 @@ module Api
 
     private
 
-    def has_strong_parameters?(controller)
-      methods = controller.action_methods
-      methods.include?("create") || methods.include?("update")
+    def has_strong_parameters?(controller_name)
+      begin
+        "#{controller_name}::StrongParameters".constantize
+        return true
+      rescue NameError
+        return false
+      end
     end
 
     def update_ref_values!(hash, method_type = nil)

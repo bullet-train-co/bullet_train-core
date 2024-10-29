@@ -173,4 +173,31 @@ module BulletTrain::LoadsAndAuthorizesResource
       end
     end
   end
+
+  # These are methods that `account_load_and_authorize_resource` assumes will be present on any controllers
+  # that call that method. In order to use the new Rails default for `config.raise_on_missing_callback_actions = true`
+  # we need to have these methods defined on any controller that includes this module. We define them here so
+  # that they will exist at the time that `account_load_and_authorize_resource` is called. We assume that controllers
+  # will implement real versions of these methods (if needed) to override these dummy methods. We raise, instead of
+  # just defining empty methods, so that if these methods are ever reached it will be more obvious what's happening
+  # that it would be if an empty method were called and it appears that nothing happens.
+  def reorder
+    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+  end
+
+  def new
+    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+  end
+
+  def edit
+    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+  end
+
+  def create
+    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+  end
+
+  def update
+    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+  end
 end
