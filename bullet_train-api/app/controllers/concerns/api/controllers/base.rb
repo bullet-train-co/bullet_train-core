@@ -53,6 +53,18 @@ module Api::Controllers::Base
     before_action :apply_pagination, only: [:index]
   end
 
+  def reorder
+    raise "dummy reorder action on api controller"
+  end
+
+  def new
+    raise "dummy new action on api controller"
+  end
+
+  def edit
+    raise "dummy edit action on api controller"
+  end
+
   def permitted_fields
     []
   end
@@ -105,18 +117,6 @@ module Api::Controllers::Base
 
   def set_default_response_format
     request.format = :json
-  end
-
-  def reorder
-    raise "dummy reorder action on api controller"
-  end
-
-  def new
-    raise "dummy new action on api controller"
-  end
-
-  def edit
-    raise "dummy edit action on api controller"
   end
 
   class_methods do
