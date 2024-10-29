@@ -30,7 +30,6 @@ module BulletTrain::LoadsAndAuthorizesResource
     # to help you understand the code below, usually `through` is `team`
     # and `model` is something like `project`.
     def account_load_and_authorize_resource(model, positional_through = nil, through: positional_through, collection_actions: [], member_actions: [], except: [], **options)
-      raise "we made it here"
       # options are now required, because you have to have at least a 'through' setting.
 
       # we used to support calling this method with a signature like this:
