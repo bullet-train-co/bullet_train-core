@@ -81,9 +81,6 @@ jobs:
           application_dir: tmp/starter
           core_dir: tmp/core
 
-      - name: Debug Starter Repo Gemfile.lock
-        run: cat tmp/starter/Gemfile.lock
-
       - name: Set up database schema
         run: bin/rails db:schema:load
         working-directory: ./tmp/starter
