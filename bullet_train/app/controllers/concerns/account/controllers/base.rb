@@ -123,6 +123,8 @@ module Account::Controllers::Base
     current_user.update_attribute(:last_seen_at, Time.current)
   end
 
+  raise 'wat'
+
   def reorder
     raise "dummy reorder action on account controller"
   end
