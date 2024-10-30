@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.8.0)
+    bullet_train-api (1.8.1)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.8.0)
+    bullet_train-fields (1.8.1)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.8.0)
+    bullet_train-super_scaffolding (1.8.1)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -34,7 +34,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.8.0)
+    bullet_train (1.8.1)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -71,7 +71,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.8.0)
+    bullet_train-themes (1.8.1)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -154,17 +154,17 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     builder (3.2.4)
-    bullet_train-has_uuid (1.7.23)
+    bullet_train-has_uuid (1.8.0)
       rails (>= 6.0.0)
-    bullet_train-roles (1.7.23)
+    bullet_train-roles (1.8.0)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.7.23)
+    bullet_train-scope_validator (1.8.0)
       rails
-    bullet_train-super_load_and_authorize_resource (1.7.23)
+    bullet_train-super_load_and_authorize_resource (1.8.0)
       cancancan
       rails (>= 6.0.0)
     cable_ready (5.0.5)
@@ -290,7 +290,7 @@ GEM
       net-protocol
     nice_partials (0.10.1)
       actionview (>= 4.2.6)
-    nio4r (2.7.3)
+    nio4r (2.7.4)
     nokogiri (1.13.10)
       mini_portile2 (~> 2.8.0)
       racc (~> 1.4)
@@ -308,7 +308,7 @@ GEM
     parallel (1.22.1)
     parser (3.1.3.0)
       ast (~> 2.4.1)
-    phonelib (0.9.2)
+    phonelib (0.9.3)
     possessive (1.0.1)
     premailer (1.27.0)
       addressable
@@ -391,8 +391,7 @@ GEM
       logger
     showcase-rails (0.4.6)
       rails (>= 6.1.0)
-    sidekiq (7.3.2)
-      concurrent-ruby (< 2)
+    sidekiq (7.3.4)
       connection_pool (>= 2.3.0)
       logger
       rack (>= 2.2.4)
@@ -417,7 +416,7 @@ GEM
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.3.0)
-    unicode-emoji (3.7.0)
+    unicode-emoji (3.8.0)
       unicode-version (~> 1.0)
     unicode-version (1.4.0)
     uri (0.13.1)
@@ -431,7 +430,7 @@ GEM
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
     xxhash (0.5.0)
-    zeitwerk (2.7.0)
+    zeitwerk (2.7.1)
 
 PLATFORMS
   arm64-darwin-20
