@@ -5,7 +5,7 @@ Description:
 
 Example:
   E.g. what we actually did to start Shopify off:
-    bin/rails generate bullet_train:oauth_provider omniauth-shopify-oauth2 shopify Oauth::ShopifyAccount SHOPIFY_API_KEY SHOPIFY_API_SECRET_KEY --icon=ti-shopping-cart
+    bin/rails generate super_scaffold:oauth_provider omniauth-shopify-oauth2 shopify Oauth::ShopifyAccount SHOPIFY_API_KEY SHOPIFY_API_SECRET_KEY --icon=ti-shopping-cart
     (Please note here that the SHOPIFY_API_KEY and SHOPIFY_API_SECRET_KEY strings are not the actual values, just the names we give to the environment variables.)
 
   This will create:
