@@ -8,6 +8,44 @@ To reduce duplication of code across themes, Bullet Train implements the followi
 
 This is where all of Bullet Train's standard views are contained.
 
+## Adding a New Theme (CSS only)
+
+The easiest way to get started customizing Bullet Train is by definiing a custom set of primary and secondary colors for your own theme.
+
+Open `app/assets/stylesheets/application.css` then define a new set of colors with a custom theme name. Something like this:
+
+```css
+.theme-foo {
+  --primary-50: #fff6e0;
+  --primary-100: #ffebb3;
+  --primary-200: #ffdf80;
+  --primary-300: #ffd24d;
+  --primary-400: #ffc71f;
+  --primary-500: #F2B705;
+  --primary-600: #d99804;
+  --primary-700: #b07803;
+  --primary-800: #865802;
+  --primary-900: #5c3901;
+
+  --secondary-50: #fde8ea;
+  --secondary-100: #fac9ce;
+  --secondary-200: #f19aa2;
+  --secondary-300: #e76b76;
+  --secondary-400: #dc3e4c;
+  --secondary-500: #BF2431;
+  --secondary-600: #9b1c28;
+  --secondary-700: #77151f;
+  --secondary-800: #530e15;
+  --secondary-900: #32080d;
+}
+```
+
+Then open `config/initializers/theme.rb` and change the theme name like this:
+
+```ruby
+BulletTrain::Themes::Light.color = :foo
+```
+
 ## Adding a New Theme (ejecting standard views)
 
 If you want to add a new theme, you can use the following command. For example, let's make a new theme called "foo":
