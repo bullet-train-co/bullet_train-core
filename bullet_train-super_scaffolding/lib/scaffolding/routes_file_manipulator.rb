@@ -231,7 +231,6 @@ class Scaffolding::RoutesFileManipulator
     parts = parts.dup
     resource = parts.pop
     # TODO this doesn't take into account any options like we do in `find_resource`.
-    debugger
 
     puts ""
 
@@ -346,7 +345,6 @@ class Scaffolding::RoutesFileManipulator
     resource_statement_line = find_resource([parent_resource], options)
     puts "resource_statement_line = #{resource_statement_line}"
     if resource_statement_line
-      debugger
       resource_statement = lines[resource_statement_line]
       puts "resource_statement = #{resource_statement}"
       if resource_statement.match?(/ do(\s.*)?$/)
@@ -415,8 +413,8 @@ class Scaffolding::RoutesFileManipulator
       #   end
       # end
 
-      last_parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
       parent_within = find_or_convert_resource_block(parent_resource, within: within)
+      last_parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
 
       puts "-------------------------"
       puts "within = #{within}"
