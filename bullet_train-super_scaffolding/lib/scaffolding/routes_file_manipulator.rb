@@ -231,6 +231,10 @@ class Scaffolding::RoutesFileManipulator
     parts = parts.dup
     resource = parts.pop
     # TODO this doesn't take into account any options like we do in `find_resource`.
+    debugger
+
+    puts ""
+
     if options[:find_last]
       find_last_in_namespace(/resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/, parts, within)
     else
@@ -336,17 +340,39 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_or_convert_resource_block(parent_resource, options = {})
-    puts "   find_or_convert_resource_block(#{parent_resource}, #{options})"
+    puts "--- find_or_convert_resource_block(#{parent_resource}, #{options})"
     puts "       called from #{caller.first.split("/").last}"
-    unless find_resource_block([parent_resource], options)
-      if (resource_line_number = find_resource([parent_resource], options))
-        # convert it.
-        lines[resource_line_number].gsub!("\n", " do\n")
-        insert_after(["end"], resource_line_number)
+
+    resource_statement_line = find_resource([parent_resource], options)
+    puts "resource_statement_line = #{resource_statement_line}"
+    if resource_statement_line
+      debugger
+      resource_statement = lines[resource_statement_line]
+      puts "resource_statement = #{resource_statement}"
+      if resource_statement.match?(/ do(\s.*)?$/)
+        puts " the statement is a block"
       else
-        raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
+        puts " the statement is not a block - converting"
+        lines[resource_statement_line].gsub!("\n", " do\n")
+        insert_after(["end"], resource_statement_line)
       end
+    else
+      raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
     end
+
+    #unless find_resource_block([parent_resource], options)
+      #puts " - in the body of the unless"
+      #if (resource_line_number = find_resource([parent_resource], options))
+        #puts " - about to convert #{resource_line_number}"
+        ## convert it.
+        #lines[resource_line_number].gsub!("\n", " do\n")
+        #insert_after(["end"], resource_line_number)
+      #else
+        #raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
+      #end
+    #else
+      #puts " - in the else of the unless"
+    #end
 
     # update the block of code we're working within.
     unless (within = find_resource_block([parent_resource], options))
@@ -389,13 +415,20 @@ class Scaffolding::RoutesFileManipulator
       #   end
       # end
 
-      parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
+      last_parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
+      parent_within = find_or_convert_resource_block(parent_resource, within: within)
+
+      puts "-------------------------"
+      puts "within = #{within}"
+      puts "last_parent_within = #{last_parent_within}"
+      puts "parent_within = #{parent_within}"
+      puts "-------------------------"
 
       # add the new resource within that namespace.
       line = "scope module: '#{parent_resource}' do"
       # TODO you haven't tested this yet.
-      unless (scope_within = Scaffolding::FileManipulator.find(lines, /#{line}/, parent_within))
-        scope_within = insert([line, "end"], parent_within)
+      unless (scope_within = Scaffolding::FileManipulator.find(lines, /#{line}/, last_parent_within))
+        scope_within = insert([line, "end"], last_parent_within)
       end
 
       puts "=== scope_within = #{scope_within}"
