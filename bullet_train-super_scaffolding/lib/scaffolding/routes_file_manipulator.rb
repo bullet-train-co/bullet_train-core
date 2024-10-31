@@ -413,13 +413,14 @@ class Scaffolding::RoutesFileManipulator
       #   end
       # end
 
-      parent_within = find_or_convert_resource_block(parent_resource, within: within)
+      #parent_within = find_or_convert_resource_block(parent_resource, within: within)
+      parent_within = find_resource([parent_resource], within: within)
       last_parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
 
       puts "-------------------------"
       puts "within = #{within}"
-      puts "last_parent_within = #{last_parent_within}"
       puts "parent_within = #{parent_within}"
+      puts "last_parent_within = #{last_parent_within}"
       puts "-------------------------"
 
       # add the new resource within that namespace.
