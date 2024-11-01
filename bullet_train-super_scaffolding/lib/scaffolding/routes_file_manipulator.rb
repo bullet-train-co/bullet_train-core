@@ -52,8 +52,6 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_namespaces(namespaces, within = nil)
-    #puts "find_namespaces(#{namespaces})"
-    #puts "    called from #{caller.first.split("/").last}"
     namespaces = namespaces.dup
     results = {}
     reinstantiate_masamune_object
@@ -106,10 +104,6 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_or_create_namespaces(namespaces, within = nil)
-    #debugger
-    #puts "find_or_create_namespaces(#{namespaces}, within: #{within})"
-    #puts "    called from #{caller.first.split("/").last}"
-
     namespaces = namespaces.dup
     created_namespaces = []
     current_namespace = nil
@@ -165,9 +159,6 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_last_in_namespace(needle, namespaces, within = nil, ignore = nil)
-    puts "   ^^^"
-    puts "   find_last_in_namespace(#{needle}, #{namespaces}, #{within}, #{ignore})"
-    puts "       called from #{caller.first.split("/").last}"
     if namespaces.any?
       namespace_lines = find_namespaces(namespaces, within)
       within = namespace_lines[namespaces.last]
@@ -176,7 +167,6 @@ class Scaffolding::RoutesFileManipulator
     lines_within = Scaffolding::FileManipulator.lines_within(lines, within)
     lines_within.reverse.each_with_index do |line, line_number|
       reversed_line_number = lines_within.count - line_number - 1
-      #puts "** #{reversed_line_number} - #{line}"
       # + 2 because line_number starts from 0, and within starts one line after
       actual_line_number = (within + reversed_line_number + 2)
 
@@ -196,9 +186,6 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_in_namespace(needle, namespaces, within = nil, ignore = nil)
-    puts "   ***"
-    puts "   find_in_namespace(#{needle}, #{namespaces}, #{within}, #{ignore})"
-    puts "       called from #{caller.first.split("/").last}"
     if namespaces.any?
       namespace_lines = find_namespaces(namespaces, within)
       within = namespace_lines[namespaces.last]
@@ -224,16 +211,11 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_resource_block(parts, options = {})
-    puts "---"
-    puts "find_resource_block(#{parts}, #{options})"
-    puts "    called from #{caller.first.split("/").last}"
     within = options[:within]
     parts = parts.dup
     resource = parts.pop
+
     # TODO this doesn't take into account any options like we do in `find_resource`.
-
-    puts ""
-
     if options[:find_last]
       find_last_in_namespace(/resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/, parts, within)
     else
@@ -242,9 +224,6 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_resource(parts, options = {})
-    puts "---"
-    puts "find_resource(#{parts}, #{options})"
-    puts "    called from #{caller.first.split("/").last}"
     parts = parts.dup
     resource = parts.pop
     needle = /resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)?$/
@@ -257,9 +236,6 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_or_create_resource(parts, options = {})
-    #puts "find_or_create_resource(#{parts}, #{options})"
-    #puts "    called from #{caller.first.split("/").last}"
-    #debugger
     parts = parts.dup
     resource = parts.pop
     namespaces = parts
@@ -339,18 +315,10 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_or_convert_resource_block(parent_resource, options = {})
-    puts "--- find_or_convert_resource_block(#{parent_resource}, #{options})"
-    puts "       called from #{caller.first.split("/").last}"
-
     resource_statement_line = find_resource([parent_resource], options)
-    puts "resource_statement_line = #{resource_statement_line}"
     if resource_statement_line
       resource_statement = lines[resource_statement_line]
-      puts "resource_statement = #{resource_statement}"
-      if resource_statement.match?(/ do(\s.*)?$/)
-        puts " the statement is a block"
-      else
-        puts " the statement is not a block - converting"
+      if !resource_statement.match?(/ do(\s.*)?$/)
         lines[resource_statement_line].gsub!("\n", " do\n")
         insert_after(["end"], resource_statement_line)
       end
@@ -358,21 +326,7 @@ class Scaffolding::RoutesFileManipulator
       raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
     end
 
-    #unless find_resource_block([parent_resource], options)
-      #puts " - in the body of the unless"
-      #if (resource_line_number = find_resource([parent_resource], options))
-        #puts " - about to convert #{resource_line_number}"
-        ## convert it.
-        #lines[resource_line_number].gsub!("\n", " do\n")
-        #insert_after(["end"], resource_line_number)
-      #else
-        #raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
-      #end
-    #else
-      #puts " - in the else of the unless"
-    #end
-
-    # update the block of code we're working within.
+    # capture the line number of the block of code we're working within.
     unless (within = find_resource_block([parent_resource], options))
       raise "tried to convert the parent resource to a block, but failed?"
     end
@@ -396,7 +350,6 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def apply(base_namespaces)
-    puts "*" * 200
     child_namespaces, child_resource, parent_namespaces, parent_resource = divergent_parts
 
     within = find_or_create_namespaces(base_namespaces)
@@ -413,15 +366,12 @@ class Scaffolding::RoutesFileManipulator
       #   end
       # end
 
-      #parent_within = find_or_convert_resource_block(parent_resource, within: within)
       parent_within = find_resource([parent_resource], within: within)
-      last_parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
 
-      puts "-------------------------"
-      puts "within = #{within}"
-      puts "parent_within = #{parent_within}"
-      puts "last_parent_within = #{last_parent_within}"
-      puts "-------------------------"
+      # With deeply nested namespaces we end up with mutliple resource blocks and some things need
+      # to go into the last block. See this issue for details:
+      # https://github.com/bullet-train-co/bullet_train/issues/1655
+      last_parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
 
       # add the new resource within that namespace.
       line = "scope module: '#{parent_resource}' do"
@@ -429,8 +379,6 @@ class Scaffolding::RoutesFileManipulator
       unless (scope_within = Scaffolding::FileManipulator.find(lines, /#{line}/, last_parent_within))
         scope_within = insert([line, "end"], last_parent_within)
       end
-
-      puts "=== scope_within = #{scope_within}"
 
       if child_namespaces.size > 1
         # If a model has multiple namespaces, we have to account for that here.
@@ -458,7 +406,6 @@ class Scaffolding::RoutesFileManipulator
         routing_options += ", #{formatted_concerns}" if formatted_concerns
         # We find last here for this reason:
         # https://github.com/bullet-train-co/bullet_train/issues/1655
-        puts "++++++++++++++++++++++++++++++++++++++++++++++ going to find last"
         find_or_create_resource([child_resource], options: routing_options, within: scope_within, find_last: true)
 
         # namespace :projects do
