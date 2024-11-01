@@ -4,7 +4,7 @@ require "test_helper"
 
 class RoleTest < ActiveSupport::TestCase
   class ClassMethodsTest < ActiveSupport::TestCase
-    def setup
+    setup do
       @admin_user = FactoryBot.create :onboarded_user
       @membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: [Role.admin.id]
       @document = FactoryBot.create :document, membership: @membership
@@ -42,7 +42,7 @@ class RoleTest < ActiveSupport::TestCase
   end
 
   class InstanceMethodsTest < ActiveSupport::TestCase
-    def setup
+    setup do
       @admin_user = FactoryBot.create :onboarded_user
       @membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: [Role.admin.id]
       @non_admin_user = FactoryBot.create :onboarded_user
@@ -162,7 +162,7 @@ class RoleTest < ActiveSupport::TestCase
   end
 
   class Role::AbilityGeneratorTest < ActiveSupport::TestCase
-    def setup
+    setup do
       @admin_user = FactoryBot.create :onboarded_user
       @membership = FactoryBot.create :membership, user: @admin_user, team: @admin_user.current_team, role_ids: [Role.admin.id]
       @admin_ability = Ability.new(@admin_user)
