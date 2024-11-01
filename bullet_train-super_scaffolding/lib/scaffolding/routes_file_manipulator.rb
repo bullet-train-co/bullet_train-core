@@ -214,12 +214,13 @@ class Scaffolding::RoutesFileManipulator
     within = options[:within]
     parts = parts.dup
     resource = parts.pop
+    needle = /resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/
 
     # TODO this doesn't take into account any options like we do in `find_resource`.
     if options[:find_last]
-      find_last_in_namespace(/resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/, parts, within)
+      find_last_in_namespace(needle, parts, within)
     else
-      find_in_namespace(/resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/, parts, within)
+      find_in_namespace(needle, parts, within)
     end
   end
 
