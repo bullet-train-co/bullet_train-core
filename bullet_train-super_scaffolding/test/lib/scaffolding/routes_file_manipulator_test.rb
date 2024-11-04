@@ -145,7 +145,7 @@ class Scaffolding::RoutesFileManipulatorTest < ActiveSupport::TestCase
     manipulator.apply(["account"])
     Scaffolding::FileManipulator.write(test_file, manipulator.lines)
 
-    manipulator = subject.new(test_file, "Projects::Milestones::IncludedTask","Projects::Milestone", {"sortable" => true})
+    manipulator = subject.new(test_file, "Projects::Milestones::IncludedTask", "Projects::Milestone", {"sortable" => true})
     manipulator.apply(["account"])
     Scaffolding::FileManipulator.write(test_file, manipulator.lines)
 
