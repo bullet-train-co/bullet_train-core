@@ -3,8 +3,7 @@ require "test_helper"
 class Webhooks::Incoming::BulletTrainWebhooksControllerTest < ActionDispatch::IntegrationTest
   include Devise::Test::IntegrationHelpers
 
-  def setup
-    super
+  setup do
     @user = FactoryBot.create(:onboarded_user)
     @membership = @user.memberships.first
     @team = @user.current_team

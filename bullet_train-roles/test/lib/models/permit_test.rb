@@ -4,7 +4,7 @@ require "test_helper"
 
 class PermitTest < ActiveSupport::TestCase
   class ClassMethodsTest < ActiveSupport::TestCase
-    def setup
+    setup do
       @admin_user = FactoryBot.create :onboarded_user
       @admin_ability = Ability.new(@admin_user)
     end
