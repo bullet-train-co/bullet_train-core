@@ -5,7 +5,7 @@ module DependentFieldsFrameHelper
     new_value = new_value_from_query_string(field_name)
     return if new_value.nil?
 
-    form.object[method] = new_value
+    form.object.send(:"#{method}=", new_value)
   end
 
   private
