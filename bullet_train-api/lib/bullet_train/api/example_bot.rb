@@ -42,7 +42,7 @@ module FactoryBot
         template, class_name, var_name, values = _set_values("get_example", model)
 
         if method.end_with?("parameters")
-          if has_strong_parameters?("::Api::#{version.upcase}::#{class_name.pluralize}Controller".constantize)
+          if has_strong_parameters?("::Api::#{version.upcase}::#{class_name.pluralize}Controller")
             strong_parameter_keys = strong_parameter_keys_for(class_name, version)
 
             output = _json_output(template, version, class_name, var_name, values)
