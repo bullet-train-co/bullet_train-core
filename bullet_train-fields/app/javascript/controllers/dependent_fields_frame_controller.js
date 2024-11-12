@@ -32,7 +32,7 @@ export default class extends Controller {
   }
 
   constructNewUrlUpdatingField(fieldName, fieldValue) {
-    const url = new URL(window.location.href)
+    const url = new URL(this.currentUrl)
     url.searchParams.set(fieldName, fieldValue)
 
     return url.href
@@ -80,5 +80,10 @@ export default class extends Controller {
     }
 
     field.value = value
+  }
+
+  get currentUrl() {
+    const turboFrameWithUrl = this.element.closest("turbo-frame[src]")
+    return turboFrameWithUrl ? turboFrameWithUrl.src : window.location.href
   }
 }
