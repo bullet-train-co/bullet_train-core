@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.8.1)
+    bullet_train-api (1.8.2)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.8.1)
+    bullet_train-fields (1.8.2)
       chronic
       cloudinary
       phonelib
@@ -25,7 +25,7 @@ PATH
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.8.1)
+    bullet_train-super_scaffolding (1.8.2)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -34,7 +34,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.8.1)
+    bullet_train (1.8.2)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -71,7 +71,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.8.1)
+    bullet_train-themes (1.8.2)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -154,17 +154,17 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     builder (3.2.4)
-    bullet_train-has_uuid (1.8.0)
+    bullet_train-has_uuid (1.8.1)
       rails (>= 6.0.0)
-    bullet_train-roles (1.8.0)
+    bullet_train-roles (1.8.1)
       active_hash
       activesupport
       cancancan
     bullet_train-routes (1.0.0)
       rails (>= 6.0.0)
-    bullet_train-scope_validator (1.8.0)
+    bullet_train-scope_validator (1.8.1)
       rails
-    bullet_train-super_load_and_authorize_resource (1.8.0)
+    bullet_train-super_load_and_authorize_resource (1.8.1)
       cancancan
       rails (>= 6.0.0)
     cable_ready (5.0.5)
@@ -191,7 +191,7 @@ GEM
     crass (1.0.6)
     css_parser (1.19.1)
       addressable
-    date (3.3.4)
+    date (3.4.0)
     devise (4.9.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -201,7 +201,7 @@ GEM
     devise-pwned_password (0.1.12)
       devise (~> 4)
       pwned (~> 2.4)
-    doorkeeper (5.7.1)
+    doorkeeper (5.8.0)
       railties (>= 5)
     email_reply_parser (0.5.11)
     erubi (1.12.0)
@@ -277,9 +277,9 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     multipart-post (2.4.1)
-    net-http (0.4.1)
+    net-http (0.5.0)
       uri
-    net-imap (0.5.0)
+    net-imap (0.5.1)
       date
       net-protocol
     net-pop (0.1.2)
@@ -300,7 +300,7 @@ GEM
       rack (>= 2.2.3)
       rack-protection
     orm_adapter (0.5.0)
-    ostruct (0.6.0)
+    ostruct (0.6.1)
     pagy (6.5.0)
     pagy_cursor (0.8.0)
       activerecord (>= 5)
@@ -391,7 +391,7 @@ GEM
       logger
     showcase-rails (0.4.6)
       rails (>= 6.1.0)
-    sidekiq (7.3.4)
+    sidekiq (7.3.5)
       connection_pool (>= 2.3.0)
       logger
       rack (>= 2.2.4)
@@ -412,14 +412,14 @@ GEM
       rubocop-performance (= 1.15.1)
     thor (1.3.2)
     thread-local (1.1.0)
-    timeout (0.4.1)
+    timeout (0.4.2)
     tzinfo (2.0.5)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.3.0)
-    unicode-emoji (3.8.0)
+    unicode-emoji (4.0.0)
       unicode-version (~> 1.0)
     unicode-version (1.4.0)
-    uri (0.13.1)
+    uri (1.0.1)
     valid_email (0.2.1)
       activemodel
       mail (>= 2.6.1)
