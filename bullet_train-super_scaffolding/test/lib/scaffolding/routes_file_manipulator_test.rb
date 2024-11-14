@@ -6,6 +6,14 @@ class Scaffolding::RoutesFileManipulatorTest < ActiveSupport::TestCase
 
   def example_file = "test/lib/scaffolding/examples/example._rb"
 
+  def test_file = "tmp/test_routes._rb"
+
+  setup do
+    if File.exist?(test_file)
+      FileUtils.rm(test_file)
+    end
+  end
+
   test "initializes" do
     subject.new(example_file, "CuriousKid", ["ProtectiveParent", "Team"])
   end
@@ -122,6 +130,28 @@ class Scaffolding::RoutesFileManipulatorTest < ActiveSupport::TestCase
     manipulator = subject.new(example_file, "Example", "Team", {"sortable" => true})
     manipulator.apply(["account"])
     assert_equal File.readlines("test/lib/scaffolding/examples/result_7._rb"), manipulator.lines
+  end
+
+  test "apply gets nested models and namespaces correct" do
+    # TODO: Is there a better way to test this? I couldn't figure out how to make multiple calls to `apply` do the right thing.
+    # Writing the results of each `apply` to a file and then proceeding is the only thing that seems to work.
+    FileUtils.cp example_file, test_file
+
+    manipulator = subject.new(test_file, "Project", "Team", {})
+    manipulator.apply(["account"])
+    Scaffolding::FileManipulator.write(test_file, manipulator.lines)
+
+    manipulator = subject.new(test_file, "Projects::Milestone", "Project", {})
+    manipulator.apply(["account"])
+    Scaffolding::FileManipulator.write(test_file, manipulator.lines)
+
+    manipulator = subject.new(test_file, "Projects::Milestones::IncludedTask", "Projects::Milestone", {"sortable" => true})
+    manipulator.apply(["account"])
+    Scaffolding::FileManipulator.write(test_file, manipulator.lines)
+
+    assert_equal File.readlines("test/lib/scaffolding/examples/result_8._rb"), manipulator.lines
+
+    FileUtils.rm(test_file)
   end
 
   test "apply adds the activity concern to a new resource" do

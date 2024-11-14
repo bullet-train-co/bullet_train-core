@@ -158,6 +158,33 @@ class Scaffolding::RoutesFileManipulator
     namespace_block_start.present? ? {namespace => namespace_block_start} : {}
   end
 
+  def find_last_in_namespace(needle, namespaces, within = nil, ignore = nil)
+    if namespaces.any?
+      namespace_lines = find_namespaces(namespaces, within)
+      within = namespace_lines[namespaces.last]
+    end
+
+    lines_within = Scaffolding::FileManipulator.lines_within(lines, within)
+    lines_within.reverse.each_with_index do |line, line_number|
+      reversed_line_number = lines_within.count - line_number - 1
+      # + 2 because line_number starts from 0, and within starts one line after
+      actual_line_number = (within + reversed_line_number + 2)
+
+      # The lines we want to ignore may be a a series of blocks, so we check each Range here.
+      ignore_line = false
+      if ignore.present?
+        ignore.each do |lines_to_ignore|
+          ignore_line = true if lines_to_ignore.include?(actual_line_number)
+        end
+      end
+
+      next if ignore_line
+      return (within + (within ? 1 : 0) + reversed_line_number) if line.match?(needle)
+    end
+
+    nil
+  end
+
   def find_in_namespace(needle, namespaces, within = nil, ignore = nil)
     if namespaces.any?
       namespace_lines = find_namespaces(namespaces, within)
@@ -187,15 +214,26 @@ class Scaffolding::RoutesFileManipulator
     within = options[:within]
     parts = parts.dup
     resource = parts.pop
+    needle = /resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/
+
     # TODO this doesn't take into account any options like we do in `find_resource`.
-    find_in_namespace(/resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/, parts, within)
+    if options[:find_last]
+      find_last_in_namespace(needle, parts, within)
+    else
+      find_in_namespace(needle, parts, within)
+    end
   end
 
   def find_resource(parts, options = {})
     parts = parts.dup
     resource = parts.pop
     needle = /resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)?$/
-    find_in_namespace(needle, parts, options[:within], options[:ignore])
+
+    if options[:find_last]
+      find_last_in_namespace(needle, parts, options[:within], options[:ignore])
+    else
+      find_in_namespace(needle, parts, options[:within], options[:ignore])
+    end
   end
 
   def find_or_create_resource(parts, options = {})
@@ -278,17 +316,18 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_or_convert_resource_block(parent_resource, options = {})
-    unless find_resource_block([parent_resource], options)
-      if (resource_line_number = find_resource([parent_resource], options))
-        # convert it.
-        lines[resource_line_number].gsub!("\n", " do\n")
-        insert_after(["end"], resource_line_number)
-      else
-        raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
+    resource_statement_line = find_resource([parent_resource], options)
+    if resource_statement_line
+      resource_statement = lines[resource_statement_line]
+      if !resource_statement.match?(/ do(\s.*)?$/)
+        lines[resource_statement_line].gsub!("\n", " do\n")
+        insert_after(["end"], resource_statement_line)
       end
+    else
+      raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
     end
 
-    # update the block of code we're working within.
+    # capture the line number of the block of code we're working within.
     unless (within = find_resource_block([parent_resource], options))
       raise "tried to convert the parent resource to a block, but failed?"
     end
@@ -328,13 +367,18 @@ class Scaffolding::RoutesFileManipulator
       #   end
       # end
 
-      parent_within = find_or_convert_resource_block(parent_resource, within: within)
+      parent_within = find_resource([parent_resource], within: within)
+
+      # With deeply nested namespaces we end up with mutliple resource blocks and some things need
+      # to go into the last block. See this issue for details:
+      # https://github.com/bullet-train-co/bullet_train/issues/1655
+      last_parent_within = find_or_convert_resource_block(parent_resource, within: within, find_last: true)
 
       # add the new resource within that namespace.
       line = "scope module: '#{parent_resource}' do"
       # TODO you haven't tested this yet.
-      unless (scope_within = Scaffolding::FileManipulator.find(lines, /#{line}/, parent_within))
-        scope_within = insert([line, "end"], parent_within)
+      unless (scope_within = Scaffolding::FileManipulator.find(lines, /#{line}/, last_parent_within))
+        scope_within = insert([line, "end"], last_parent_within)
       end
 
       if child_namespaces.size > 1
@@ -361,7 +405,9 @@ class Scaffolding::RoutesFileManipulator
       else
         routing_options = "only: collection_actions"
         routing_options += ", #{formatted_concerns}" if formatted_concerns
-        find_or_create_resource([child_resource], options: routing_options, within: scope_within)
+        # We find last here for this reason:
+        # https://github.com/bullet-train-co/bullet_train/issues/1655
+        find_or_create_resource([child_resource], options: routing_options, within: scope_within, find_last: true)
 
         # namespace :projects do
         #   resources :deliverables, except: collection_actions
