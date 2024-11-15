@@ -1,0 +1,22 @@
+Description:
+  Generate files needed to add an audit log to a model.
+
+Example:
+  E.g. Add audit logs to Posts from a Team.
+    rails generate super_scaffold:audit_logs Post Team name:text_field
+
+  The attributes you specify will be added to the _version partial and used to show different versions of the model.
+
+  This will create:
+    db/migrate/20241115152914_add_project_to_activity_versions.rb
+    app/views/account/projects/_version.html.erb'.
+  And update:
+    app/models/project.rb
+    app/models/activity/version.rb
+    app/views/account/projects/show.html.erb
+    app/models/activity/version.rb
+    config/routes.rb
+    app/controllers/account/projects_controller.rb
+
+🏆 Protip: Commit your other changes before running Super Scaffolding so it's easy to undo if you (or we) make any mistakes.
+If you do that, you can reset to your last commit state by using `git checkout .` and `git clean -d -f`.

@@ -22,7 +22,8 @@ module BulletTrain
       "action-models:targets-one" => "BulletTrain::ActionModels::Scaffolders::TargetsOneScaffolder",
       "action-models:targets-one-parent" => "BulletTrain::ActionModels::Scaffolders::TargetsOneParentScaffolder",
       "action-models:performs-export" => "BulletTrain::ActionModels::Scaffolders::PerformsExportScaffolder",
-      "action-models:performs-import" => "BulletTrain::ActionModels::Scaffolders::PerformsImportScaffolder"
+      "action-models:performs-import" => "BulletTrain::ActionModels::Scaffolders::PerformsImportScaffolder",
+      "audit-logs" => "BulletTrain::AuditLogs::Scaffolders::AuditLogScaffolder"
     }
 
     class Runner
