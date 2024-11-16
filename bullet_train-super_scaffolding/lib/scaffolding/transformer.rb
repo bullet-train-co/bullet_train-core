@@ -1519,7 +1519,7 @@ class Scaffolding::Transformer
         routes_manipulator.apply([routes_namespace])
         Scaffolding::FileManipulator.write(routes_path, routes_manipulator.lines)
       rescue => _
-        add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
+        add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Discord, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
       end
 
       # If we're using a custom namespace, we have to make sure the newly
@@ -1552,7 +1552,7 @@ class Scaffolding::Transformer
           api_routes_manipulator.apply([BulletTrain::Api.current_version.to_sym])
           Scaffolding::FileManipulator.write("config/routes/api/#{BulletTrain::Api.current_version}.rb", api_routes_manipulator.lines)
         rescue => _
-          add_additional_step :red, "We weren't able to automatically add your `api/#{BulletTrain::Api.current_version}` routes for you. In theory this should be very rare, so if you could reach out on Slack, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
+          add_additional_step :red, "We weren't able to automatically add your `api/#{BulletTrain::Api.current_version}` routes for you. In theory this should be very rare, so if you could reach out on Discord, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
         end
       end
     end
