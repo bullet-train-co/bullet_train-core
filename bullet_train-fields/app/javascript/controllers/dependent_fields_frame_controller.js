@@ -36,16 +36,12 @@ export default class extends Controller {
     const form = field.form
     const formData = form ? new FormData(form) : {}
     
-    if (field.type === "checkbox" && field.name.endsWith("[]")) {
-      // Remove any existing values for this field
+    if ((field.type === "checkbox" || field.type === "select-multiple") && field.name.endsWith("[]")) {
       url.searchParams.delete(field.name)
-      
-      // Add all values from formData for this field
       formData.getAll(field.name).forEach(value => {
         url.searchParams.append(field.name, value)
       })
     } else {
-      // Handle single value fields
       url.searchParams.set(field.name, this.getValueForField(field))
     }
 
