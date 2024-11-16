@@ -41,6 +41,7 @@ export default class extends Controller {
   }
   
   updateToggle() {
+    if (!this.hasToggleCheckboxTarget) { return }
     let checkbox = this.toggleCheckboxTarget
     let useAlternateLabel = false
     
