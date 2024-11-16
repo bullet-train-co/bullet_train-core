@@ -34,7 +34,7 @@ export default class extends Controller {
   constructNewUrlUpdatingField(field) {
     const url = new URL(this.currentUrl)
     const form = field.form
-    const formData = new FormData(form)
+    const formData = form ? new FormData(form) : {}
     
     if (field.type === "checkbox" && field.name.endsWith("[]")) {
       // Remove any existing values for this field
