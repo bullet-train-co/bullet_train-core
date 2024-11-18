@@ -30,7 +30,9 @@
 
     <% unless hide_actions %>
       <% box.actions do %>
-        <%= link_to t('invitations.buttons.new'), new_account_team_invitation_path(@team, cancel_path: account_team_memberships_path(@team)), class: "#{first_button_primary}" %>
+        <% if can? :create, Invitation.new(team: @team) %>
+          <%= link_to t('invitations.buttons.new'), new_account_team_invitation_path(@team, cancel_path: account_team_memberships_path(@team)), class: "#{first_button_primary}" %>
+        <% end %>
         <%= link_to t('global.buttons.back'), [:account, context], class: "#{first_button_primary} back" unless hide_back %>
       <% end %>
     <% end %>
