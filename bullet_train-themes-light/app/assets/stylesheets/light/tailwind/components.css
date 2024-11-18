@@ -177,16 +177,15 @@
   .pagy {
     @apply flex space-x-1;
 
-    .page.prev.disabled,
-    .page.next.disabled {
-      @apply hidden;
-    }
-
     a:not(.gap) {
       @apply button-alternative;
 
       &:not([href]) { /* disabled links (aka: the current page) */
         @apply button;
+
+        &:not([aria-current]){ /* the prev link when on first page, next link when on last page */
+          @apply hidden;
+        }
       }
     }
   }
