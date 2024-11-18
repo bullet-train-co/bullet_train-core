@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_questions (1.8.4)
+    bullet_train-scope_questions (1.8.5)
       rails (>= 6.0.0)
 
 GEM
