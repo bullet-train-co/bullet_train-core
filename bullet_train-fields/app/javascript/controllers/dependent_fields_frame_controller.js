@@ -21,7 +21,7 @@ export default class extends Controller {
     this.disableFieldInputWhileRefreshing()
 
     const frame = this.element
-    frame.src = this.constructNewUrlUpdatingField(field.name, this.getValueForField(field))
+    frame.src = this.constructNewUrlUpdatingField(field)
   }
 
   finishFrameUpdate(event) {
@@ -31,9 +31,19 @@ export default class extends Controller {
     this.loadingValue = false
   }
 
-  constructNewUrlUpdatingField(fieldName, fieldValue) {
+  constructNewUrlUpdatingField(field) {
     const url = new URL(this.currentUrl)
-    url.searchParams.set(fieldName, fieldValue)
+    const form = field.form
+    const formData = form ? new FormData(form) : {}
+    
+    if ((field.type === "checkbox" || field.type === "select-multiple") && field.name.endsWith("[]")) {
+      url.searchParams.delete(field.name)
+      formData.getAll(field.name).forEach(value => {
+        url.searchParams.append(field.name, value)
+      })
+    } else {
+      url.searchParams.set(field.name, this.getValueForField(field))
+    }
 
     return url.href
   }
