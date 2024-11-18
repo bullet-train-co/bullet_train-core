@@ -421,8 +421,8 @@ GEM
       actionpack (>= 5.2)
       activesupport (>= 5.2)
       sprockets (>= 3.0.0)
-    sqlite3 (1.7.0-arm64-darwin)
-    sqlite3 (1.7.0-x86_64-linux)
+    sqlite3 (1.7.3-arm64-darwin)
+    sqlite3 (1.7.3-x86_64-linux)
     stringio (3.0.9)
     thor (1.3.0)
     thread-local (1.1.0)
@@ -464,7 +464,7 @@ DEPENDENCIES
   minitest-reporters
   pg (~> 1.3)
   sprockets-rails
-  sqlite3
+  sqlite3 (< 2)
 
 BUNDLED WITH
    2.4.20
