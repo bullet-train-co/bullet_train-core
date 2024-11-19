@@ -8,7 +8,7 @@ PATH
       doorkeeper
       factory_bot
       jbuilder-schema (~> 2.6.6)
-      pagy (< 7)
+      pagy (~> 8)
       pagy_cursor
       rack-cors
       rails (>= 6.0.0)
@@ -66,7 +66,7 @@ PATH
       microscope
       nice_partials (~> 0.9)
       omniauth
-      pagy (< 7)
+      pagy (~> 8)
       possessive
       premailer-rails
       rails (>= 6.0.0)
@@ -340,10 +340,10 @@ GEM
       omniauth (~> 1.3)
       omniauth-oauth2 (~> 1.4)
     orm_adapter (0.5.0)
-    pagy (6.2.0)
-    pagy_cursor (0.6.1)
+    pagy (8.6.3)
+    pagy_cursor (0.8.0)
       activerecord (>= 5)
-      pagy (>= 6, < 7)
+      pagy (>= 6, < 9)
     phonelib (0.8.5)
     possessive (1.0.1)
     premailer (1.21.0)

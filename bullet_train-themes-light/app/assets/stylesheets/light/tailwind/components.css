@@ -174,21 +174,22 @@
     }
   }
 
-  .pagy-nav .page a,
-  .pagy-nav .page.active {
-    @apply button-alternative;
+  .pagy {
+    @apply flex space-x-1;
+
+    a:not(.gap) {
+      @apply button-alternative;
+
+      &:not([href]) { /* disabled links (aka: the current page) */
+        @apply button;
+
+        &:not([aria-current]){ /* the prev link when on first page, next link when on last page */
+          @apply hidden;
+        }
+      }
+    }
   }
 
-  .pagy-nav .page.prev.disabled,
-  .pagy-nav .page.next.disabled {
-    @apply hidden;
-  }
-
-  .pagy-nav .page.active,
-  .pagy-nav-js .page.active {
-    @apply button;
-  }
-  
   /* Fix Safari issue related to <summary> / <details> arrow */
   details > summary.list-none::-webkit-details-marker,
   details > summary.list-none::marker {
