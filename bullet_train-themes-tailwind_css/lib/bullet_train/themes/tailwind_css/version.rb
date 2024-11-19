@@ -1,7 +1,7 @@
 module BulletTrain
   module Themes
     module TailwindCss
-      VERSION = "1.8.5"
+      VERSION = "1.9.0"
     end
   end
 end

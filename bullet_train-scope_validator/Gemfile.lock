@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.8.5)
+    bullet_train-scope_validator (1.9.0)
       rails
 
 GEM
@@ -173,7 +173,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.0.6)
-    rdoc (6.7.0)
+    rdoc (6.8.1)
       psych (>= 4.0.0)
     regexp_parser (2.2.0)
     reline (0.5.11)
