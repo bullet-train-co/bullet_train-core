@@ -30,6 +30,11 @@ module Teams::Base
     self.time_zone = "UTC" if time_zone.blank?
   end
 
+  def set_time_zone_from_user(user)
+    self.time_zone = user.time_zone if user.time_zone.present?
+    save
+  end
+
   def platform_agent_access_tokens
     Platform::AccessToken.joins(:application).where(resource_owner_id: users.where.not(platform_agent_of_id: nil), application: {team: nil})
   end

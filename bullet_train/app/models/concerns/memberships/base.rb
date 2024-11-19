@@ -32,6 +32,8 @@ module Memberships::Base
 
     after_commit :publish_changed_quantity
 
+    after_create :set_team_time_zone, if: :is_first_membership?
+
     after_validation :remove_user_profile_photo, if: :user_profile_photo_removal?
 
     scope :excluding_platform_agents, -> { where(platform_agent_of: nil) }
@@ -155,6 +157,14 @@ module Memberships::Base
 
   def publish_changed_quantity
     ActiveSupport::Notifications.instrument("memberships.quantity-changed", {team:})
+  end
+
+  def set_team_time_zone
+    team.set_time_zone_from_user(user)
+  end
+
+  def is_first_membership?
+    team.memberships.count == 1 && team.memberships.first.id == id
   end
 
   ActiveSupport.run_load_hooks :bullet_train_memberships_base, self
