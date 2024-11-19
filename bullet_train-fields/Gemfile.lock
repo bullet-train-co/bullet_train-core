@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.8.5)
+    bullet_train-api (1.9.0)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,13 +16,13 @@ PATH
 PATH
   remote: ../bullet_train-has_uuid
   specs:
-    bullet_train-has_uuid (1.8.5)
+    bullet_train-has_uuid (1.9.0)
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-roles
   specs:
-    bullet_train-roles (1.8.5)
+    bullet_train-roles (1.9.0)
       active_hash
       activesupport
       cancancan
@@ -30,20 +30,20 @@ PATH
 PATH
   remote: ../bullet_train-scope_validator
   specs:
-    bullet_train-scope_validator (1.8.5)
+    bullet_train-scope_validator (1.9.0)
       rails
 
 PATH
   remote: ../bullet_train-super_load_and_authorize_resource
   specs:
-    bullet_train-super_load_and_authorize_resource (1.8.5)
+    bullet_train-super_load_and_authorize_resource (1.9.0)
       cancancan
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.8.5)
+    bullet_train-super_scaffolding (1.9.0)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -52,7 +52,7 @@ PATH
 PATH
   remote: ../bullet_train-themes
   specs:
-    bullet_train-themes (1.8.5)
+    bullet_train-themes (1.9.0)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -60,7 +60,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.8.5)
+    bullet_train (1.9.0)
       awesome_print
       bullet_train-has_uuid
       bullet_train-roles
@@ -97,7 +97,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.8.5)
+    bullet_train-fields (1.9.0)
       chronic
       cloudinary
       phonelib
@@ -377,7 +377,7 @@ GEM
       zeitwerk (~> 2.5)
     rainbow (3.1.1)
     rake (13.1.0)
-    rb_sys (0.9.102)
+    rb_sys (0.9.103)
     redis-client (0.22.2)
       connection_pool
     regexp_parser (2.5.0)
@@ -437,7 +437,7 @@ GEM
     tzinfo (2.0.4)
       concurrent-ruby (~> 1.0)
     unicode-display_width (2.2.0)
-    unicode-emoji (4.0.3)
+    unicode-emoji (4.0.4)
     uri (1.0.2)
     valid_email (0.2.1)
       activemodel
