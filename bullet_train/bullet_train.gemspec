@@ -104,6 +104,7 @@ Gem::Specification.new do |spec|
   # We don't want to develop in a world where we don't have `binding.pry` or `object.pry` for debugging.
   spec.add_development_dependency "pry"
   spec.add_development_dependency "pry-stack_explorer"
+  spec.add_development_dependency "pg", "~> 1.3"
 
   # Password strength.
   spec.add_dependency "devise-pwned_password"
