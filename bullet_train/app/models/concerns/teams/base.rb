@@ -25,6 +25,11 @@ module Teams::Base
     validates :time_zone, inclusion: {in: ActiveSupport::TimeZone.all.map(&:name)}, allow_nil: true
   end
 
+  def initialize(attributes = nil)
+    super
+    self.time_zone = "UTC" if time_zone.blank?
+  end
+
   def platform_agent_access_tokens
     Platform::AccessToken.joins(:application).where(resource_owner_id: users.where.not(platform_agent_of_id: nil), application: {team: nil})
   end
