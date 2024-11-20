@@ -31,9 +31,10 @@ module Teams::Base
   end
 
   def set_time_zone_from_user(user)
-    return if time_zone != "UTC"
-    self.time_zone = user.time_zone if user.time_zone.present?
-    save
+    if time_zone.blank? || time_zone == "UTC"
+      self.time_zone = user.time_zone if user.time_zone.present?
+      save
+    end
   end
 
   def platform_agent_access_tokens

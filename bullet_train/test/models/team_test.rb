@@ -22,6 +22,19 @@ class TeamTest < ActiveSupport::TestCase
     assert_equal "Central Time (US & Canada)", team.time_zone
   end
 
+  test "a team with a nil time_zone gets the time_zone of the first user when they join" do
+    team = Team.create!(name: "new test team")
+    team.time_zone = nil
+    team.save
+    team.reload
+    assert_equal nil, team.time_zone
+
+    user = User.create!(email: "test@test.com", password: "password", password_confirmation: "password", time_zone: "Central Time (US & Canada)")
+    Membership.create!(team: team, user: user)
+    team.reload
+    assert_equal "Central Time (US & Canada)", team.time_zone
+  end
+
   test "default UTC time_zone is not clobbered if first user doesn't have a time zone set" do
     team = Team.create!(name: "new test team")
     user = User.create!(email: "test@test.com", password: "password", password_confirmation: "password", time_zone: nil)
