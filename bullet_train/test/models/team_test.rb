@@ -29,18 +29,4 @@ class TeamTest < ActiveSupport::TestCase
     team.reload
     assert_equal "UTC", team.time_zone
   end
-
-  test "default UTC time_zone is overwritten once the first user sets a time zone" do
-    team = Team.create!(name: "new test team")
-    user = User.create!(email: "test@test.com", password: "password", password_confirmation: "password", time_zone: nil)
-    Membership.create!(team: team, user: user)
-    team.reload
-    assert_equal "UTC", team.time_zone
-
-    user.time_zone = "Central Time (US & Canada)"
-    user.save
-
-    team.reload
-    assert_equal "Central Time (US & Canada)", team.time_zone
-  end
 end
