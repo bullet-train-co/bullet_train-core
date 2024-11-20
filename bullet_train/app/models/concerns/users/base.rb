@@ -153,7 +153,7 @@ module Users::Base
   end
 
   def set_teams_time_zone
-    teams.where(time_zone: nil).each do |team|
+    teams.where(time_zone: [nil, "UTC"]).each do |team|
       team.update(time_zone: time_zone) if team.users.count == 1
     end
   end
