@@ -48,6 +48,7 @@ en:
     creator: Bullet Train, Inc.
     time_ago: "%{time} ago"
     never: Never
+    not_set: Not Set
     buttons:
       other: Other
       debug: Debug

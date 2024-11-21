@@ -1,9 +1,15 @@
 <% object ||= current_attributes_object %>
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
+<% default_message = local_assigns[:default_message] || t("global.not_set") %>
+<% display_when_blank = local_assigns[:display_when_blank] || false %>
 
-<%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-  <% unless object[attribute].nil? %>
-    <%= t("#{object.class.name.underscore.pluralize}.fields.#{attribute}.options.#{object.public_send(attribute)}") %>
+<% if !object[attribute].nil? || display_when_blank %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
+    <% unless object[attribute].nil? %>
+      <%= t("#{object.class.name.underscore.pluralize}.fields.#{attribute}.options.#{object.public_send(attribute)}") %>
+    <% else %>
+      <%= default_message %>
+    <% end %>
   <% end %>
 <% end %>
