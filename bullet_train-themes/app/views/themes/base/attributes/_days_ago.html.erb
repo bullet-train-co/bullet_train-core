@@ -2,11 +2,14 @@
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
 <% default_message = local_assigns[:default_message] || t("global.never") %>
+<% display_when_blank = local_assigns[:display_when_blank] || false %>
 
-<%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-  <% if object.public_send(attribute) %>
-    <%= t("global.time_ago", time: time_ago_in_words(object.send(attribute))) %>
-  <% else %>
-    <%= default_message %>
+<% if object.public_send(attribute) || display_when_blank %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
+    <% if object.public_send(attribute).present? %>
+      <%= t("global.time_ago", time: time_ago_in_words(object.send(attribute))) %>
+    <% else %>
+      <%= default_message %>
+    <% end %>
   <% end %>
 <% end %>

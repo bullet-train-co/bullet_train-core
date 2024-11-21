@@ -2,11 +2,14 @@
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
 <% default_message = local_assigns[:default_message] || t('global.formats.timestamp_unavailable') %>
+<% display_when_blank = local_assigns[:display_when_blank] || false %>
 
-<% if object.public_send(attribute).present? %>
+<% if object.public_send(attribute).present? || display_when_blank %>
   <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
-    <%= display_date(object.public_send(attribute), **local_assigns.slice(:format), **local_assigns.slice(:date_format)) %>
+    <% if object.public_send(attribute).present? %>
+      <%= display_date(object.public_send(attribute), **local_assigns.slice(:format), **local_assigns.slice(:date_format)) %>
+    <% else %>
+      <%= default_message %>
+    <% end %>
   <% end %>
-<% else %>
-  <%= default_message %>
 <% end %>
