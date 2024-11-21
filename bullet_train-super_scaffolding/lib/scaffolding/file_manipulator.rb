@@ -50,7 +50,7 @@ module Scaffolding::FileManipulator
     insert_after = 1
     lines.each_with_index do |line, index|
       break if current_needle.nil?
-      if line.strip == current_needle + ":"
+      if line.split("#").first.strip == current_needle + ":"
         current_needle = location_array.shift.to_s
         insert_after = index
         current_space = line.match(/\s+/).to_s
