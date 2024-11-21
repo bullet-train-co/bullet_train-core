@@ -14,8 +14,49 @@
 
 ## The Stepwise Upgrade Method
 
-This method will ensure that the version of the Bullet Train gems that your app uses will stay in sync with the application framework provided by the starter repo.
-If you've ever upgraded a Rails app from version to version this process should feel fairly similar.
+This method will ensure that the version of the Bullet Train gems that your app uses will stay in sync
+with the application framework provided by the starter repo. If you've ever upgraded a Rails app from
+version to version this process should feel fairly similar.
+
+We recommend gradually upgrading one version at a time. This makes it relatively easy to pinpoint any
+specific changes that may cause problems with your app. Trying to jump a bunch of versions at once can
+make it hard to figure out exactly where problems are coming from.
+
+The basic idea is that if you're on `1.4.0` you should upgrade next to `1.4.1`, run your tests, deploy
+those changes and make sure things are working well. Then upgrade to `1.4.2` etc... If you update regularly
+then each individual update should be relatively small.
+
+For performing the upgrade you have two options:
+
+* [Use the GitHub Action we provide to create an upgrade Pull Request](./upgrades#github-action)
+* [Performa a manual upgrade via git](./upgrades#manual-upgrade)
+
+## GitHub Action
+
+First go to the "Actions" tab on your project and then click on the "↗️  Create Bullet Train Upgrade PR" link on the left.
+
+![Find the GitHub Action](/assets/upgrade-images/1-find-action.png)
+
+Then on the right side of the page click the "Run workflow" button and enter the target version. `1.4.1` for instance.
+If you don't enter a version number then the action will target the latest version available on GitHub.
+
+![Run the GitHub Action](/assets/upgrade-images/2-run-action.png)
+
+A few seconds after you click the green "Run workflow" button you should see a new action running.
+
+![Running Action](/assets/upgrade-images/3-running-action.png)
+
+Once the action has completed you should have a new Pull Request that will perform the upgrade.
+
+![Upgrade PR](/assets/upgrade-images/4-upgrade-pr.png)
+
+You should review the contents of the pull request, run the tests, and pull down the branch to run it locally.
+
+[Here's a sample of the kind of Pull Request that you'll get. This is from a recent upgrade of the Bullet Train demo site.](https://github.com/bullet-train-co/bullet_train-demo_site/pull/47)
+
+The GitHub action is basically an automated version of the manual upgrade process described below.
+
+## Manual Upgrade
 
 ## Pulling Updates from the Starter Repository
 
