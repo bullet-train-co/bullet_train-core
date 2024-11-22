@@ -74,7 +74,6 @@ PATH
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
-      bullet_train-routes
       bullet_train-scope_validator
       bullet_train-super_load_and_authorize_resource
       bullet_train-themes
@@ -199,8 +198,6 @@ GEM
     bcrypt (3.1.19)
     bigdecimal (3.1.4)
     builder (3.2.4)
-    bullet_train-routes (1.0.0)
-      rails (>= 6.0.0)
     cable_ready (5.0.3)
       actionpack (>= 5.2)
       actionview (>= 5.2)
