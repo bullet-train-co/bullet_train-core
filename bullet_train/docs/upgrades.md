@@ -35,20 +35,20 @@ For performing the upgrade you have two options:
 
 First go to the "Actions" tab on your project and then click on the "↗️  Create Bullet Train Upgrade PR" link on the left.
 
-![Find the GitHub Action](https://bullettrain.co/assets/upgrade-images/1-find-action.png)
+![Find the GitHub Action](https://bullettrain.co/upgrade-images/1-find-action.png)
 
 Then on the right side of the page click the "Run workflow" button and enter the target version. `1.4.1` for instance.
 If you don't enter a version number then the action will target the latest version available on GitHub.
 
-![Run the GitHub Action](https://bullettrain.co/assets/upgrade-images/2-run-action.png)
+![Run the GitHub Action](https://bullettrain.co/upgrade-images/2-run-action.png)
 
 A few seconds after you click the green "Run workflow" button you should see a new action running.
 
-![Running Action](https://bullettrain.co/assets/upgrade-images/3-running-action.png)
+![Running Action](https://bullettrain.co/upgrade-images/3-running-action.png)
 
 Once the action has completed you should have a new Pull Request that will perform the upgrade.
 
-![Upgrade PR](https://bullettrain.co/assets/upgrade-images/4-upgrade-pr.png)
+![Upgrade PR](https://bullettrain.co/upgrade-images/4-upgrade-pr.png)
 
 You should review the contents of the pull request, run the tests, and pull down the branch to run it locally.
 
