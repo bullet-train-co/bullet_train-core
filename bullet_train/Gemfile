@@ -20,6 +20,7 @@ gem "bullet_train-themes-light", path: "../bullet_train-themes-light"
 gem "bullet_train-has_uuid", path: "../bullet_train-has_uuid"
 gem "bullet_train-scope_validator", path: "../bullet_train-scope_validator"
 gem "bullet_train-themes", path: "../bullet_train-themes"
+gem "bullet_train-themes-tailwind_css", path: "../bullet_train-themes-tailwind_css"
 
 group :test do
   gem "minitest-reporters"
