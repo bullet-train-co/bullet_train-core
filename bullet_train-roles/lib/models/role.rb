@@ -4,7 +4,7 @@ require "active_hash"
 
 class Role < ActiveYaml::Base
   include ActiveYaml::Aliases
-  set_root_path "#{Rails.root}/config/models"
+  set_root_path "config/models"
   set_filename "roles"
 
   field :includes, default: []
