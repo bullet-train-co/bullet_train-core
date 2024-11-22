@@ -4,6 +4,8 @@ module BulletTrain
       config.eager_load_paths << Role.full_path
 
       initializer "bullet_train-roles.config" do |app|
+        Role.set_root_path("#{Rails.root}/config/models")
+
         role_reloader = ActiveSupport::FileUpdateChecker.new([Role.full_path]) do
           Role.reload(true)
         end

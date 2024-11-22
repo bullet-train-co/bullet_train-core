@@ -21,8 +21,5 @@ module Dummy
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
-
-    Role.set_root_path("#{Rails.root}/config/models")
-    Role.set_filename("roles")
   end
 end
