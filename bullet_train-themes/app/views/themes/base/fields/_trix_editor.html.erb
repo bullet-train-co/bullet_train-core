@@ -32,8 +32,6 @@ options[:data][:topics] ||= []
 <% if options[:disabled] %>
   <script charset="utf-8">
     document.addEventListener("trix-initialize", function() {
-      console.log("element");
-      console.log(document.getElementById("<%= field_id(form.object, method) %>"));
       document.getElementById("<%= field_id(form.object, method) %>").editor.element.setAttribute('contentEditable', false)
     });
   </script>
