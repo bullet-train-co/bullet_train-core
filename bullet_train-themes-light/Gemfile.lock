@@ -78,6 +78,7 @@ PATH
   specs:
     bullet_train (1.10.0)
       awesome_print
+      bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
       bullet_train-routes
