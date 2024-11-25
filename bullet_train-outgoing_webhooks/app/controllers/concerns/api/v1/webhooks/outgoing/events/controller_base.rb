@@ -1,12 +1,6 @@
 module Api::V1::Webhooks::Outgoing::Events::ControllerBase
   extend ActiveSupport::Concern
 
-  module StrongParameters
-    def event_params
-      []
-    end
-  end
-
   included do
     account_load_and_authorize_resource :event,
       through: BulletTrain::OutgoingWebhooks.parent_association,
