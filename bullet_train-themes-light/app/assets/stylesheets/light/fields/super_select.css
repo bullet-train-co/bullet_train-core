@@ -91,6 +91,10 @@
     }
   }
 
+  .select2-container--default.select2-container--disabled .select2-selection--single{
+    @apply bg-slate-200 dark:bg-slate-700 hover:bg-slate-200 hover:dark:bg-slate-700
+  }
+
   .select2-container .select2-dropdown {
     @apply border-2 border-slate-300 shadow-sm overflow-hidden !important;
     @apply border-primary-500 !important;

@@ -4,8 +4,18 @@
 form ||= current_fields_form
 
 # TODO: All options and other_options below are written inline. Do we need these?
-# options ||= {}
+options ||= {}
 # other_options ||= {}
+
+country_html_options ||= {}
+country_html_options[:data] ||= {}
+
+postal_code_options ||= {}
+
+if options[:disabled].present?
+  country_html_options[:disabled] = options[:disabled]
+  postal_code_options[:disabled] = options[:disabled]
+end
 %>
 
 <%= form.fields_for(method) do |address_form| %>
@@ -16,7 +26,7 @@ form ||= current_fields_form
       choices: populate_country_options,
       options: {include_blank: true},
       other_options: {search: true, wrapper_class: "col-span-2"},
-      html_options: {data: {}},
+      html_options: country_html_options,
       wrapper_options: {
         data: {
           'controller': "dependable",
@@ -26,12 +36,13 @@ form ||= current_fields_form
       }
     %>
 
-    <%= render 'shared/fields/text_field', method: :address_one %>
-    <%= render 'shared/fields/text_field', method: :address_two %>
+    <%= render 'shared/fields/text_field', method: :address_one, options: options %>
+    <%= render 'shared/fields/text_field', method: :address_two, options: options %>
 
     <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-3">
       <div class="sm:col-span-1">
         <%= render 'shared/fields/text_field', method: :city,
+          options: options,
           other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
         %>
       </div>
@@ -42,7 +53,9 @@ form ||= current_fields_form
           dependable_fields: [:country_id],
           html_options: { class: "block space-y-5" } do |dependent_fields_controller_name|
         %>
-
+          <%
+            postal_code_options[:data] ||= { "#{dependent_fields_controller_name}-target": "field" }
+          %>
           <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
             <div class="sm:col-span-1">
               <%= render 'shared/fields/super_select',
@@ -65,11 +78,7 @@ form ||= current_fields_form
 
             <div class="sm:col-span-1">
               <%= render 'shared/fields/text_field', method: :postal_code,
-                options: {
-                  data: {
-                    "#{dependent_fields_controller_name}-target": "field"
-                  }
-                },
+                options: postal_code_options,
                 other_options: {
                   wrapper_class: "col-span-2 lg:col-span-1",
                   label: postal_code_label_for(address_form)
