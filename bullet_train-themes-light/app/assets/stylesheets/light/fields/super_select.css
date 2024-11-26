@@ -5,7 +5,8 @@
   }
 }
 
-.select2-selection.select2-selection--single {
+.select2-selection.select2-selection--single,
+.select2-selection.select2-selection--multiple {
   min-height: 37px;
   .select2-selection__rendered {
     padding-left: 12px;
@@ -53,8 +54,9 @@
     box-shadow: inset 0 0 0 1px var(--primary-500) !important;
     outline: 0 !important;
   }
-  
-  .select2-selection--single {
+
+  .select2-selection--single,
+  .select2-selection--multiple {
     height: 38px !important;
   }
 
