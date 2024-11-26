@@ -15,11 +15,6 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActiveSupport::TestCase.fixtures :all
 end
 
-require "knapsack_pro"
-
-knapsack_pro_adapter = KnapsackPro::Adapters::MinitestAdapter.bind
-knapsack_pro_adapter.set_test_helper_path(__FILE__)
-
 require "factory_bot_rails"
 
 require_relative "../../test_support/minitest_reporters"
