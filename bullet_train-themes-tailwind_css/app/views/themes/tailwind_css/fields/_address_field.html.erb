@@ -9,8 +9,10 @@ options ||= {}
 
 country_html_options ||= {}
 country_html_options[:data] ||= {}
-
 postal_code_options ||= {}
+postal_code_options[:data] ||= {}
+region_html_options ||= {}
+region_html_options[:data] ||= {}
 
 if options[:disabled].present?
   country_html_options[:disabled] = options[:disabled]
@@ -54,7 +56,14 @@ end
           html_options: { class: "block space-y-5" } do |dependent_fields_controller_name|
         %>
           <%
-            postal_code_options[:data] ||= { "#{dependent_fields_controller_name}-target": "field" }
+            # These have to be here instead of at the top of the file so that we have access
+            # to the address_form and dependent_fields_controller_name variables.
+            postal_code_options[:data]["#{dependent_fields_controller_name}-target"] ||= "field"
+            region_html_options[:data]["#{dependent_fields_controller_name}-target"] ||= "field"
+            region_html_options[:disabled] ||= address_form.object.country_id.nil?
+            if options[:disabled].present?
+              region_html_options[:disabled] = options[:disabled]
+            end
           %>
           <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
             <div class="sm:col-span-1">
@@ -67,12 +76,7 @@ end
                   wrapper_class: "col-span-2 lg:col-span-1",
                   label: admin_division_label_for(address_form)
                 },
-                html_options: {
-                  disabled: address_form.object.country_id.nil?,
-                  data: {
-                    "#{dependent_fields_controller_name}-target": "field"
-                  }
-                }
+                html_options: region_html_options
               %>
             </div>
 
