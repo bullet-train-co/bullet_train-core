@@ -9,6 +9,9 @@ options ||= {}
 
 country_html_options ||= {}
 country_html_options[:data] ||= {}
+address_one_options ||= {}
+address_two_options ||= {}
+city_options ||= {}
 postal_code_options ||= {}
 postal_code_options[:data] ||= {}
 region_html_options ||= {}
@@ -16,6 +19,9 @@ region_html_options[:data] ||= {}
 
 if options[:disabled].present?
   country_html_options[:disabled] = options[:disabled]
+  address_one_options[:disabled] = options[:disabled]
+  address_two_options[:disabled] = options[:disabled]
+  city_options[:disabled] = options[:disabled]
   postal_code_options[:disabled] = options[:disabled]
 end
 %>
@@ -38,13 +44,13 @@ end
       }
     %>
 
-    <%= render 'shared/fields/text_field', method: :address_one, options: options %>
-    <%= render 'shared/fields/text_field', method: :address_two, options: options %>
+    <%= render 'shared/fields/text_field', method: :address_one, options: address_one_options %>
+    <%= render 'shared/fields/text_field', method: :address_two, options: address_two_options %>
 
     <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-3">
       <div class="sm:col-span-1">
         <%= render 'shared/fields/text_field', method: :city,
-          options: options,
+          options: city_options,
           other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
         %>
       </div>
@@ -61,7 +67,10 @@ end
             postal_code_options[:data]["#{dependent_fields_controller_name}-target"] ||= "field"
             region_html_options[:data]["#{dependent_fields_controller_name}-target"] ||= "field"
             region_html_options[:disabled] ||= address_form.object.country_id.nil?
-            if options[:disabled].present?
+            # If the entire address field is disabled, we clobber the :disabled value that we
+            # calculate based on the country field. This makes it so that region will still be
+            # disabled even if the address field had been filled out previously.
+            if options[:disabled].present? && options[:disabled]
               region_html_options[:disabled] = options[:disabled]
             end
           %>
