@@ -7,22 +7,15 @@ on:
   workflow_dispatch:
 
 jobs:
+  # NOTE: This is here just to make the workflow visualization layout better.
+  # Without it the layout is really bad and confusing.
   calculate_matrix:
-    name: 🧮 Calculate Dynamic Matrix
+    name: 🧮 Fake Matrix
     runs-on: ubuntu-latest
-    outputs:
-      matrix: ${{ steps.dynamic-matrix.outputs.matrix }}
-      totalRunners: ${{ steps.dynamic-matrix.outputs.totalRunners }}
-      testRunnersPerNode: ${{ steps.dynamic-matrix.outputs.testRunnersPerNode }}
     steps:
-      - name: Dynamic Matrix
-        id: dynamic-matrix
-        uses: bullet-train-co/parallel-test-dynamic-matrix@v1
-        with:
-          # You can explicitly set the number of test nodes, or it will default to 4
-          numberOfTestNodes: 4
-          # You can explicitly set the number of runners per node, or it will default to 4 for public repos and 2 for private
-          # testRunnersPerNode: 2
+      - name: Do Nothing
+        run: echo "This is a useless step that just helps things look nicer..."
+        shell: bash
   test:
     name: "🏗️"
     runs-on: ubuntu-latest
