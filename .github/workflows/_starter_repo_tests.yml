@@ -10,10 +10,10 @@ on:
         type: string
       totalRunners:
         required: true
-        type: number
+        type: string
       testRunnersPerNode:
         required: true
-        type: number
+        type: string
   workflow_dispatch:
 
 jobs:
@@ -107,7 +107,7 @@ jobs:
         working-directory: tmp/starter
 
       - name: Set up database schema
-        run: bin/rake parallel:setup[${{ inputs.testRunnersPerNode }}]
+        run: bin/rake parallel:setup[${{ fromJson(inputs.testRunnersPerNode) }}]
         working-directory: tmp/starter
 
       # We touch this file so that parallel_tests doesn't complain about it not being there.
@@ -129,7 +129,7 @@ jobs:
         continue-on-error: false
         run: |
           bundle exec parallel_test test \
-          -n ${{ inputs.totalRunners }} \
+          -n ${{ fromJson(inputs.totalRunners) }} \
           --only-group ${{ matrix.parallel_test_groups }} \
           --group-by runtime \
           --allowed-missing 100 \
