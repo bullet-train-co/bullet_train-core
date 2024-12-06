@@ -81,6 +81,11 @@ jobs:
 
       - name: Enable corepack
         run: corepack enable
+        working-directory: tmp/starter
+
+      - name: Enable corepack
+        run: corepack enable
+        working-directory: tmp/starter/local/bullet_train-core
 
       - name: Set up Node
         uses: actions/setup-node@v4
