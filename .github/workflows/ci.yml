@@ -32,10 +32,10 @@ jobs:
     name: 🫣 SimpleCov
     uses: ./.github/workflows/_combine_coverage_data.yml
     secrets: inherit
-    needs: [minitest]
+    needs: [minitest,super_scaffolding,gem_tests]
   combine_summary_logs:
     name: 📊 Test Results
     uses: ./.github/workflows/_combine_summary_logs.yml
     secrets: inherit
-    needs: [minitest]
+    needs: [minitest,super_scaffolding,gem_tests]
     if: ${{ always() }}
