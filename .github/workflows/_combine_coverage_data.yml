@@ -28,7 +28,7 @@ jobs:
       - name: Checkout Core Repo
         uses: actions/checkout@v4
         with:
-          path: tmp/starter/core
+          path: tmp/starter/local-core
 
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
@@ -53,7 +53,7 @@ jobs:
 
       - name: Combine Coverage Data With Groups
         working-directory: tmp/starter
-        run: "bundle exec rake coverage:report_with_groups[coverage_artifacts/**/.resultset.json]"
+        run: "bundle exec rake coverage:report_with_gem_groups[coverage_artifacts/**/.resultset.json]"
         shell: bash
 
       - name: Copy coverage.json to coverage_with_groups.json
