@@ -51,6 +51,16 @@ jobs:
         run: cat tmp/starter/coverage_artifacts/test_coverage_*.log/.resultset.json
         shell: bash
 
+      - name: Combine Coverage Data
+        working-directory: tmp/starter
+        run: "bundle exec rake coverage:report[coverage_artifacts/**/.resultset.json]"
+        shell: bash
+
+      - name: Copy coverage.json to coverage_with_stats.json
+        run: cp tmp/starter/coverage/coverage.json tmp/starter/coverage/coverage_with_stats.json
+        continue-on-error: true
+        shell: bash
+
       - name: Combine Coverage Data With Groups
         working-directory: tmp/starter
         run: "bundle exec rake coverage:report_with_gem_groups[coverage_artifacts/**/.resultset.json]"
@@ -59,11 +69,6 @@ jobs:
       - name: Copy coverage.json to coverage_with_groups.json
         run: cp tmp/starter/coverage/coverage.json tmp/starter/coverage/coverage_with_groups.json
         continue-on-error: true
-        shell: bash
-
-      - name: Combine Coverage Data
-        working-directory: tmp/starter
-        run: "bundle exec rake coverage:report[coverage_artifacts/**/.resultset.json]"
         shell: bash
 
       - name: List coverage dir
@@ -89,7 +94,7 @@ jobs:
           script: |
             try {
               const fs = require('fs')
-              const jsonString = fs.readFileSync('tmp/starter/coverage/coverage.json')
+              const jsonString = fs.readFileSync('tmp/starter/coverage/coverage_with_stats.json')
               var coverageData = JSON.parse(jsonString)
 
               const groupJsonString = fs.readFileSync('tmp/starter/coverage/coverage_with_groups.json')
