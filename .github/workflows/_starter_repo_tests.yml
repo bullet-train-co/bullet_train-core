@@ -71,7 +71,7 @@ jobs:
       - name: Checkout Core Repo
         uses: actions/checkout@v4
         with:
-          path: tmp/starter/local/bullet_train-core
+          path: tmp/starter/core
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -81,11 +81,6 @@ jobs:
 
       - name: Enable corepack
         run: corepack enable
-        working-directory: tmp/starter
-
-      #- name: Enable corepack
-        #run: corepack enable
-        #working-directory: tmp/starter/local/bullet_train-core
 
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -98,7 +93,7 @@ jobs:
         uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
-          core_dir: tmp/starter/local/bullet_train-core
+          core_dir: tmp/starter/core
 
       - name: runtime log cache
         uses: actions/cache/restore@v4
