@@ -23,6 +23,8 @@ jobs:
           target_dir: tmp/starter
           repository: bullet-train-co/bullet_train
 
+      # We have to put the core code into place so that simplecov will recognize
+      # it as being part of the probject when it collates all the coverage data.
       - name: Checkout Core Repo
         uses: actions/checkout@v4
         with:
