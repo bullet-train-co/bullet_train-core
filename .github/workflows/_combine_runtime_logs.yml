@@ -12,10 +12,11 @@ jobs:
     name: "🪵"
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Starter Repo
+        uses: bullet-train-co/checkout-repo-with-matching-branch@v1
         with:
-          path: tmp/starter
+          target_dir: tmp/starter
+          repository: bullet-train-co/bullet_train
 
       - name: runtime log cache
         uses: actions/cache@v4

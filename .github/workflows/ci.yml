@@ -8,7 +8,7 @@ on:
 
 jobs:
   minitest:
-    name: 🧪 Starter Repo Tests
+    name: 🧪 Starter Repo Minitest
     uses: ./.github/workflows/_starter_repo_tests.yml
     secrets: inherit
   super_scaffolding:

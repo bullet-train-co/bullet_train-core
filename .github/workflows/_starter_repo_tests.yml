@@ -26,7 +26,7 @@ jobs:
 
   starter_repo:
     runs-on: ubuntu-latest
-    name: Bullet Train Starter Repo Minitest
+    name: "🧪"
     needs: calculate_matrix
     strategy:
       fail-fast: false

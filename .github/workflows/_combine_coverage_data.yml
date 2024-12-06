@@ -17,10 +17,11 @@ jobs:
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
+      - name: Checkout Starter Repo
+        uses: bullet-train-co/checkout-repo-with-matching-branch@v1
         with:
-          path: tmp/starter
+          target_dir: tmp/starter
+          repository: bullet-train-co/bullet_train
 
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
