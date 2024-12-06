@@ -98,7 +98,7 @@ jobs:
       #- run: git diff Gemfile.lock
 
       - run: bin/rails db:setup
-        if: ${{ hashFiles(format('{0}/test/dummy/db/schema.rb', matrix.gem)) != '' }}
+        if: ${{ hashFiles(format('tmp/starter/core/{0}/test/dummy/db/schema.rb', matrix.gem)) != '' }}
 
       - name: Run Tests
         run: bin/rails test
