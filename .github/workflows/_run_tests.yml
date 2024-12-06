@@ -8,21 +8,24 @@ on:
 
 jobs:
   calculate_matrix:
-    name: 🧮 Calculate Dynamic Matrix
+    name: 🧮 Generate Gem List
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.dynamic-matrix.outputs.matrix }}
-      totalRunners: ${{ steps.dynamic-matrix.outputs.totalRunners }}
-      testRunnersPerNode: ${{ steps.dynamic-matrix.outputs.testRunnersPerNode }}
+      gems: ${{ steps.generate-gem-list.outputs.result }}
     steps:
-      - name: Dynamic Matrix
-        id: dynamic-matrix
-        uses: bullet-train-co/parallel-test-dynamic-matrix@v1
+      - name: Checkout Core Repo
+        uses: "actions/checkout@v4"
+
+      - uses: actions/github-script@v7
+        id: generate-gem-list
+        name: Generate Gem List
         with:
-          # You can explicitly set the number of test nodes, or it will default to 4
-          numberOfTestNodes: 4
-          # You can explicitly set the number of runners per node, or it will default to 4 for public repos and 2 for private
-          # testRunnersPerNode: 2
+          script: |
+            const globber = await glob.create('*/*.gemspec')
+            for await (const file of globber.globGenerator()) {
+              console.log(file)
+            }
+
   test:
     runs-on: ubuntu-latest
     needs: calculate_matrix
