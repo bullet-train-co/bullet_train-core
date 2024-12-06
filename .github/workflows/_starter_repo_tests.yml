@@ -79,9 +79,9 @@ jobs:
           working-directory: tmp/starter
           bundler-cache: true
 
-      #- name: Enable corepack
-        #run: corepack enable
-        #working-directory: tmp/starter
+      - name: Enable corepack
+        run: corepack enable
+        working-directory: tmp/starter
 
       #- name: Enable corepack
         #run: corepack enable
