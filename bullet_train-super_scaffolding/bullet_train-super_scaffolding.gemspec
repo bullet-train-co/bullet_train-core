@@ -23,6 +23,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_development_dependency "standard"
+  spec.add_development_dependency "simplecov"
 
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "masamune-ast", "~> 2.0.2"

@@ -217,6 +217,7 @@ GEM
     devise-pwned_password (0.1.12)
       devise (~> 4)
       pwned (~> 2.4)
+    docile (1.4.1)
     doorkeeper (5.8.0)
       railties (>= 5)
     email_reply_parser (0.5.11)
@@ -413,6 +414,12 @@ GEM
       logger
       rack (>= 2.2.4)
       redis-client (>= 0.22.2)
+    simplecov (0.22.0)
+      docile (~> 1.1)
+      simplecov-html (~> 0.11)
+      simplecov_json_formatter (~> 0.1)
+    simplecov-html (0.13.1)
+    simplecov_json_formatter (0.1.4)
     simpleidn (0.2.3)
     sprockets (4.1.1)
       concurrent-ruby (~> 1.0)
@@ -469,6 +476,7 @@ DEPENDENCIES
   bullet_train-super_scaffolding!
   bullet_train-themes!
   minitest-reporters
+  simplecov
   sprockets-rails
   sqlite3 (< 2)
   standard

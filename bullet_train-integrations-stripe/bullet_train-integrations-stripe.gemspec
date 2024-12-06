@@ -30,4 +30,6 @@ Gem::Specification.new do |spec|
   # TODO Remove when we're able to properly upgrade Omniauth.
   # https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284
   spec.add_dependency "omniauth-rails_csrf_protection"
+
+  spec.add_development_dependency "simplecov"
 end
