@@ -17,15 +17,13 @@ on:
   workflow_dispatch:
 
 jobs:
-
-
   starter_repo:
     runs-on: ubuntu-latest
     name: "🧪"
     strategy:
       fail-fast: false
       matrix:
-        parallel_test_groups: ${{ inputs.matrix }}
+        parallel_test_groups: ${{ fromJson(inputs.matrix) }}
     services:
       postgres:
         image: postgres:11-alpine
