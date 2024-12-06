@@ -8,7 +8,7 @@ on:
 
 jobs:
   calculate_matrix:
-    name: 🧮 Generate Gem List
+    name: 💎 Generate Gem List
     runs-on: ubuntu-latest
     outputs:
       gems: ${{ steps.generate-gem-list.outputs.result }}
