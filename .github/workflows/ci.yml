@@ -27,7 +27,9 @@ jobs:
     name: 🪵 Combine Runtime Logs
     uses: ./.github/workflows/_combine_runtime_logs.yml
     secrets: inherit
-    needs: [minitest]
+    # NOTE: This one really only _needs_ minitest, but we include the others
+    # so that the workflow visualization layous out a little better.
+    needs: [minitest,super_scaffolding,gem_tests]
   combine_coverage_data:
     name: 🫣 SimpleCov
     uses: ./.github/workflows/_combine_coverage_data.yml
