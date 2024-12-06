@@ -94,5 +94,11 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: test_summary_${{ matrix.gem }}.log
-          path: test/reports*/**/TEST-*.xml
+          path: ${{ format('{0}/test/reports/**/TEST-*.xml', matrix.gem) }}
         if: always()
+
+      #- name: Test Summary
+        #uses: test-summary/action@v2
+        #with:
+          #paths: ${{ format('{0}/test/reports/**/TEST-*.xml', matrix.gem) }}
+        #if: always()
