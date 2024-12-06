@@ -22,9 +22,16 @@ jobs:
         with:
           script: |
             const globber = await glob.create('*/*.gemspec')
+            const gems = []
             for await (const file of globber.globGenerator()) {
               console.log(file)
+              var fileParts = file.split("/")
+              var gemspecFileName = fileParts[fileParts.length];
+              var gemname = fileParts[fileParts.length - 1];
+              console.log("gemname =", gemname)
+              gems.push(gemname)
             }
+            return gems
 
   test:
     runs-on: ubuntu-latest
