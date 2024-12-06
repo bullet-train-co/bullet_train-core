@@ -7,10 +7,13 @@ on:
     inputs:
       matrix:
         required: true
+        type: string
       totalRunners:
         required: true
+        type: number
       testRunnersPerNode:
         required: true
+        type: number
   workflow_dispatch:
 
 jobs:
