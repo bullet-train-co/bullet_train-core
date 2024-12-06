@@ -99,6 +99,13 @@ jobs:
       - name: Run Tests
         run: bin/rails test
 
+      - name: Upload Test Coverage Data
+        uses: actions/upload-artifact@v4
+        with:
+          name: test_coverage_${{ matrix.gem }}.log
+          path: ${{ matrix.gem }}/coverage/.resultset.json
+          include-hidden-files: true
+
       - name: Upload Test Summary Logs
         uses: actions/upload-artifact@v4
         with:
