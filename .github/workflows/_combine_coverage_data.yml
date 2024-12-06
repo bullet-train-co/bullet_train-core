@@ -23,6 +23,11 @@ jobs:
           target_dir: tmp/starter
           repository: bullet-train-co/bullet_train
 
+      - name: Checkout Core Repo
+        uses: actions/checkout@v4
+        with:
+          path: tmp/starter/core
+
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1
         with:
