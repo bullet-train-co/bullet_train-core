@@ -28,11 +28,11 @@ jobs:
     runs-on: ubuntu-latest
     needs: calculate_matrix
     steps:
-      - run: echo "${{ fromJson(needs.calculate_matrix.outputs.matrix) }}"
+      - run: echo "${{ needs.calculate_matrix.outputs.matrix }}"
         shell: bash
-      - run: echo "${{ fromJson(needs.calculate_matrix.outputs.totalRunners) }}"
+      - run: echo "${{ needs.calculate_matrix.outputs.totalRunners }}"
         shell: bash
-      - run: echo "${{ fromJson(needs.calculate_matrix.outputs.testRunnersPerNode) }}"
+      - run: echo "${{ needs.calculate_matrix.outputs.testRunnersPerNode }}"
         shell: bash
   minitest:
     name: 🧪 Starter Repo Minitest
