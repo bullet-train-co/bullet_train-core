@@ -62,16 +62,16 @@ jobs:
       POSTGRES_USER: rails
       POSTGRES_PASSWORD: password
     steps:
-      - name: Checkout Core Repo
-        uses: actions/checkout@v4
-        with:
-          path: tmp/core
-
       - name: Checkout Starter Repo
         uses: bullet-train-co/checkout-repo-with-matching-branch@v1
         with:
           target_dir: tmp/starter
           repository: bullet-train-co/bullet_train
+
+      - name: Checkout Core Repo
+        uses: actions/checkout@v4
+        with:
+          path: tmp/starter/core
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -93,7 +93,7 @@ jobs:
         uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
-          core_dir: tmp/core
+          core_dir: tmp/starter/core
 
       - name: runtime log cache
         uses: actions/cache/restore@v4
