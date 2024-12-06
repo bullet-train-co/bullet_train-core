@@ -23,3 +23,19 @@ jobs:
     name: 🔬 Standardrb
     uses: ./.github/workflows/_standardrb.yml
     secrets: inherit
+  combine_runtime_logs:
+    name: 🪵 Combine Runtime Logs
+    uses: ./.github/workflows/_combine_runtime_logs.yml
+    secrets: inherit
+    needs: [minitest]
+  combine_coverage_data:
+    name: 🫣 SimpleCov
+    uses: ./.github/workflows/_combine_coverage_data.yml
+    secrets: inherit
+    needs: [minitest]
+  combine_summary_logs:
+    name: 📊 Test Results
+    uses: ./.github/workflows/_combine_summary_logs.yml
+    secrets: inherit
+    needs: [minitest]
+    if: ${{ always() }}
