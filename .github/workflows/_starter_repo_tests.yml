@@ -116,7 +116,7 @@ jobs:
 
       - name: Set up database schema
         run: bin/rake parallel:setup[${{ fromJson(needs.calculate_matrix.outputs.testRunnersPerNode) }}]
-        working-directory: ./tmp/starter
+        working-directory: tmp/starter
 
       # We touch this file so that parallel_tests doesn't complain about it not being there.
       # Without doing this it's hard to get tests running in a new repo without some hoop jumping.
@@ -144,13 +144,6 @@ jobs:
           --verbose \
           --verbose-command
         working-directory: ./tmp/starter
-
-      - name: Test Summary
-        uses: test-summary/action@v2
-        with:
-          paths: "tmp/starter/test/reports/**/TEST-*.xml"
-          #output: test-summary.md
-        if: always()
 
       - name: Upload Parallel Test Runtime Log
         uses: actions/upload-artifact@v4

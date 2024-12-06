@@ -102,12 +102,6 @@ jobs:
         run: bin/rails test test/controllers/webhooks/incoming/some_provider_webhooks_controller_test.rb
         if: ${{ strategy.job-index == 5 }}
 
-      - name: Test Summary
-        uses: test-summary/action@v2
-        with:
-          paths: "tmp/starter/test/reports/**/TEST-*.xml"
-        if: always()
-
       - name: Upload Test Summary Logs
         uses: actions/upload-artifact@v4
         with:
