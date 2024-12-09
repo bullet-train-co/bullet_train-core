@@ -105,6 +105,7 @@ jobs:
 
       - name: Upload Test Coverage Data
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: test_coverage_${{ matrix.gem }}.log
           path: tmp/starter/local/bullet_train-core/${{ matrix.gem }}/coverage/.resultset.json
@@ -112,10 +113,10 @@ jobs:
 
       - name: Upload Test Summary Logs
         uses: actions/upload-artifact@v4
+        if: always()
         with:
           name: test_summary_${{ matrix.gem }}.log
           path: ${{ format('tmp/starter/local/bullet_train-core/{0}/test/reports/**/TEST-*.xml', matrix.gem) }}
-        if: always()
 
       #- name: Test Summary
         #uses: test-summary/action@v2
