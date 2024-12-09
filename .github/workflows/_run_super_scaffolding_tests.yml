@@ -87,7 +87,7 @@ jobs:
           cache-dependency-path: tmp/starter/yarn.lock
 
       - name: Link Core Repo
-        uses: bullet-train-co/link-core-gems@beta
+        uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
           core_dir: tmp/starter/local/bullet_train-core
