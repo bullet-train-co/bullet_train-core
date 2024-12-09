@@ -28,7 +28,7 @@ jobs:
       - name: Checkout Core Repo
         uses: actions/checkout@v4
         with:
-          path: tmp/starter/local-core
+          path: tmp/starter/local/bullet_train-core
 
       - name: Install Ruby and gems
         uses: ruby/setup-ruby@v1

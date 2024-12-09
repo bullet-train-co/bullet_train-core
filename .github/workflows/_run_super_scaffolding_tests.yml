@@ -57,16 +57,16 @@ jobs:
       BUNDLE_RETRY: 3
       MINITEST_JUNIT_REPORTER: yes
     steps:
-      - name: Checkout Core Repo
-        uses: actions/checkout@v4
-        with:
-          path: tmp/core
-
       - name: Checkout Starter Repo
         uses: bullet-train-co/checkout-repo-with-matching-branch@v1
         with:
           target_dir: tmp/starter
           repository: bullet-train-co/bullet_train
+
+      - name: Checkout Core Repo
+        uses: actions/checkout@v4
+        with:
+          path: tmp/starter/local/bullet_train-core
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -88,7 +88,7 @@ jobs:
         uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
-          core_dir: tmp/core
+          core_dir: tmp/starter/local/bullet_train-core
 
       # TODO: This might be a bad idea. Maybe we should just have spring in the Gemfile all the time.
       - name: Allow adding of spring
