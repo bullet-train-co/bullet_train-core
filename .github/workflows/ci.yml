@@ -12,11 +12,11 @@ jobs:
     uses: ./.github/workflows/_starter_repo_tests.yml
     secrets: inherit
   super_scaffolding:
-    name: 🧪 Starter Repo Super Scaffolding Tests
+    name: 🏗️ Starter Repo Super Scaffolding Tests
     uses: ./.github/workflows/_run_super_scaffolding_tests.yml
     secrets: inherit
   gem_tests:
-    name: 🧪 Gem Tests
+    name: 💎 Gem Tests
     uses: ./.github/workflows/_run_tests.yml
     secrets: inherit
   standardrb:
