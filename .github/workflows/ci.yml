@@ -30,28 +30,16 @@ jobs:
     # NOTE: This one really only _needs_ minitest, but we include the others
     # so that the workflow visualization layous out a little better.
     needs: [minitest,super_scaffolding,gem_tests]
+    if: ${{ always() }}
   combine_coverage_data:
     name: 🫣 SimpleCov
     uses: ./.github/workflows/_combine_coverage_data.yml
     secrets: inherit
     needs: [minitest,super_scaffolding,gem_tests]
+    if: ${{ always() }}
   combine_summary_logs:
     name: 📊 Test Results
     uses: ./.github/workflows/_combine_summary_logs.yml
     secrets: inherit
     needs: [minitest,super_scaffolding,gem_tests]
     if: ${{ always() }}
-  cleanup:
-    name: 🧹 Clean Up
-    runs-on: ubuntu-latest
-    needs: [combine_runtime_logs, combine_coverage_data, combine_summary_logs]
-    if: ${{ always() }}
-    steps:
-      - name: Delete artifacts
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: |
-            test_coverage_*.log
-            parallel_runtime_test_*.log
-            test_summary_*.log
-          failOnError: false
