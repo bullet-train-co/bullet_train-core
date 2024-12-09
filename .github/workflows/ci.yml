@@ -8,18 +8,38 @@ on:
 
 jobs:
   minitest:
-    name: 🧪 Starter Repo Tests
+    name: 🧪 Starter Repo Minitest
     uses: ./.github/workflows/_starter_repo_tests.yml
     secrets: inherit
   super_scaffolding:
-    name: 🧪 Starter Repo Super Scaffolding Tests
+    name: 🏗️ Starter Repo Super Scaffolding Tests
     uses: ./.github/workflows/_run_super_scaffolding_tests.yml
     secrets: inherit
   gem_tests:
-    name: 🧪 Gem Tests
+    name: 💎 Gem Tests
     uses: ./.github/workflows/_run_tests.yml
     secrets: inherit
   standardrb:
     name: 🔬 Standardrb
     uses: ./.github/workflows/_standardrb.yml
     secrets: inherit
+  combine_runtime_logs:
+    name: 🪵 Combine Runtime Logs
+    uses: ./.github/workflows/_combine_runtime_logs.yml
+    secrets: inherit
+    # NOTE: This one really only _needs_ minitest, but we include the others
+    # so that the workflow visualization layous out a little better.
+    needs: [minitest,super_scaffolding,gem_tests]
+    if: ${{ always() }}
+  combine_coverage_data:
+    name: ♻️  SimpleCov
+    uses: ./.github/workflows/_combine_coverage_data.yml
+    secrets: inherit
+    needs: [minitest,super_scaffolding,gem_tests]
+    if: ${{ always() }}
+  combine_summary_logs:
+    name: 📊 Test Results
+    uses: ./.github/workflows/_combine_summary_logs.yml
+    secrets: inherit
+    needs: [minitest,super_scaffolding,gem_tests]
+    if: ${{ always() }}
