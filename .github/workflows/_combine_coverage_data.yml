@@ -156,13 +156,13 @@ jobs:
             }
             core.summary.write()
 
-  remove_coverage_data:
-    name: "Cleanup"
-    runs-on: ubuntu-latest
-    needs: combine_coverage_data
-    steps:
-      - name: Delete artifacts
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: test_coverage_*.log
-          failOnError: false
+  #remove_coverage_data:
+    #name: "Cleanup"
+    #runs-on: ubuntu-latest
+    #needs: combine_coverage_data
+    #steps:
+      #- name: Delete artifacts
+        #uses: geekyeggo/delete-artifact@v5
+        #with:
+          #name: test_coverage_*.log
+          #failOnError: false
