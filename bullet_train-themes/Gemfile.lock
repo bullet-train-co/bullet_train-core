@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.11.0)
+    bullet_train-api (1.12.0)
       bullet_train
       bullet_train-super_scaffolding
       colorizer
@@ -16,7 +16,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.11.0)
+    bullet_train-fields (1.12.0)
       chronic
       cloudinary
       phonelib
@@ -25,13 +25,13 @@ PATH
 PATH
   remote: ../bullet_train-has_uuid
   specs:
-    bullet_train-has_uuid (1.11.0)
+    bullet_train-has_uuid (1.12.0)
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-roles
   specs:
-    bullet_train-roles (1.11.0)
+    bullet_train-roles (1.12.0)
       active_hash
       activesupport
       cancancan
@@ -39,20 +39,20 @@ PATH
 PATH
   remote: ../bullet_train-scope_validator
   specs:
-    bullet_train-scope_validator (1.11.0)
+    bullet_train-scope_validator (1.12.0)
       rails
 
 PATH
   remote: ../bullet_train-super_load_and_authorize_resource
   specs:
-    bullet_train-super_load_and_authorize_resource (1.11.0)
+    bullet_train-super_load_and_authorize_resource (1.12.0)
       cancancan
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.11.0)
+    bullet_train-super_scaffolding (1.12.0)
       colorizer
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -61,7 +61,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.11.0)
+    bullet_train (1.12.0)
       awesome_print
       bullet_train-fields
       bullet_train-has_uuid
@@ -98,7 +98,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-themes (1.11.0)
+    bullet_train-themes (1.12.0)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -197,15 +197,15 @@ GEM
       faraday-multipart (~> 1.0, >= 1.0.4)
       ostruct
     colorizer (0.0.2)
-    commonmarker (1.1.5)
+    commonmarker (2.0.1)
       rb_sys (~> 0.9)
-    commonmarker (1.1.5-arm64-darwin)
+    commonmarker (2.0.1-arm64-darwin)
     concurrent-ruby (1.1.10)
     connection_pool (2.4.1)
     crass (1.0.6)
     css_parser (1.19.1)
       addressable
-    date (3.4.0)
+    date (3.4.1)
     devise (4.9.4)
       bcrypt (~> 3.0)
       orm_adapter (~> 0.1)
@@ -216,7 +216,7 @@ GEM
       devise (~> 4)
       pwned (~> 2.4)
     docile (1.4.1)
-    doorkeeper (5.8.0)
+    doorkeeper (5.8.1)
       railties (>= 5)
     email_reply_parser (0.5.11)
     erubi (1.12.0)
@@ -228,7 +228,7 @@ GEM
       mail
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
-    faraday (2.12.1)
+    faraday (2.12.2)
       faraday-net_http (>= 2.0, < 3.5)
       json
       logger
@@ -265,7 +265,7 @@ GEM
       rails (>= 5.0.0)
     json (2.6.3)
     language_server-protocol (3.17.0.2)
-    logger (1.6.1)
+    logger (1.6.2)
     loofah (2.19.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -292,7 +292,7 @@ GEM
       minitest (>= 5.0)
       ruby-progressbar
     multipart-post (2.4.1)
-    net-http (0.5.0)
+    net-http (0.6.0)
       uri
     net-imap (0.5.1)
       date

@@ -9,7 +9,7 @@ GIT
 PATH
   remote: .
   specs:
-    bullet_train-roles (1.11.0)
+    bullet_train-roles (1.12.0)
       active_hash
       activesupport
       cancancan
