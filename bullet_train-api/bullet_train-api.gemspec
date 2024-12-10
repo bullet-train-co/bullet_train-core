@@ -32,6 +32,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_development_dependency "standard"
+  spec.add_development_dependency "simplecov"
 
   spec.add_dependency "bullet_train-super_scaffolding"
   spec.add_dependency "bullet_train"

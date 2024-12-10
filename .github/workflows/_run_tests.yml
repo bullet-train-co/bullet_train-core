@@ -7,30 +7,41 @@ on:
   workflow_dispatch:
 
 jobs:
+  calculate_matrix:
+    name: 💎 Generate Gem List
+    runs-on: ubuntu-latest
+    outputs:
+      gems: ${{ steps.generate-gem-list.outputs.result }}
+    steps:
+      - name: Checkout Core Repo
+        uses: "actions/checkout@v4"
+        with:
+          path: tmp/starter/local/bullet_train-core
+
+      - uses: actions/github-script@v7
+        id: generate-gem-list
+        name: Generate Gem List
+        with:
+          script: |
+            const globber = await glob.create('tmp/starter/local/bullet_train-core/*/*.gemspec')
+            const gems = []
+            for await (const file of globber.globGenerator()) {
+              console.log(file)
+              var fileParts = file.split("/")
+              var gemspecFileName = fileParts[fileParts.length];
+              var gemname = fileParts[fileParts.length - 2];
+              console.log("gemname =", gemname)
+              gems.push(gemname)
+            }
+            return gems
+
   test:
     runs-on: ubuntu-latest
+    needs: calculate_matrix
     strategy:
       fail-fast: false
       matrix:
-        gem:
-          - "bullet_train"
-          - "bullet_train-api"
-          - "bullet_train-fields"
-          - "bullet_train-has_uuid"
-          - "bullet_train-incoming_webhooks"
-          - "bullet_train-integrations"
-          - "bullet_train-integrations-stripe"
-          - "bullet_train-obfuscates_id"
-          - "bullet_train-outgoing_webhooks"
-          - "bullet_train-roles"
-          - "bullet_train-scope_questions"
-          - "bullet_train-scope_validator"
-          - "bullet_train-sortable"
-          - "bullet_train-super_load_and_authorize_resource"
-          - "bullet_train-super_scaffolding"
-          - "bullet_train-themes"
-          - "bullet_train-themes-light"
-          - "bullet_train-themes-tailwind_css"
+        gem: ${{ fromJson(needs.calculate_matrix.outputs.gems) }}
 
     name: ${{ format('{0}', matrix.gem) }}
 
@@ -57,11 +68,13 @@ jobs:
 
     defaults:
       run:
-        working-directory: ${{ matrix.gem }}
+        working-directory: tmp/starter/local/bullet_train-core/${{ matrix.gem }}
 
     steps:
       - name: Checkout Core Repo
         uses: "actions/checkout@v4"
+        with:
+          path: tmp/starter/local/bullet_train-core
 
       - name: Copy .ruby-version
         run: cp ../.ruby-version ./
@@ -71,11 +84,11 @@ jobs:
           rubygems: latest
           bundler: latest
           bundler-cache: true
-          working-directory: ${{ matrix.gem }} # setup-ruby does't pick up the job default.
+          working-directory: tmp/starter/local/bullet_train-core/${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
       # TODO: Sometimes the step above complains about the lockfile being fronzen.
-      # When that happens you can get things moving again by chaning the bundler-cache
-      # option above to false. Then _must_ uncomment the line for `bundle install` and
+      # When that happens you can get things moving again by changing the bundler-cache
+      # option above to false. Then you _must_ uncomment the line for `bundle install` and
       # you can also uncomment the following lines to find out what changed unexpectedly.
       # I _think_ I've got things set up so that this shouldn't be an issue any more, but
       # I'm leaving this stuff here in case it comes in handy in the near future.
@@ -85,13 +98,22 @@ jobs:
       #- run: git diff Gemfile.lock
 
       - run: bin/rails db:setup
-        if: ${{ hashFiles(format('{0}/test/dummy/db/schema.rb', matrix.gem)) != '' }}
+        if: ${{ hashFiles(format('tmp/starter/local/bullet_train-core/{0}/test/dummy/db/schema.rb', matrix.gem)) != '' }}
 
       - name: Run Tests
         run: bin/rails test
 
-      - name: Test Summary
-        uses: test-summary/action@v2
-        with:
-          paths: ${{ format('{0}/test/reports/**/TEST-*.xml', matrix.gem) }}
+      - name: Upload Test Coverage Data
+        uses: actions/upload-artifact@v4
         if: always()
+        with:
+          name: test_coverage_${{ matrix.gem }}.log
+          path: tmp/starter/local/bullet_train-core/${{ matrix.gem }}/coverage/.resultset.json
+          include-hidden-files: true
+
+      - name: Upload Test Summary Logs
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test_summary_${{ matrix.gem }}.log
+          path: ${{ format('tmp/starter/local/bullet_train-core/{0}/test/reports/**/TEST-*.xml', matrix.gem) }}

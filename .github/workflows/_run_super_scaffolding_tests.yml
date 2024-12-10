@@ -7,9 +7,19 @@ on:
   workflow_dispatch:
 
 jobs:
+  # NOTE: This is here just to make the workflow visualization layout better.
+  # Without it the layout is really bad and confusing.
+  calculate_matrix:
+    name: 🤷 Fake Matrix
+    runs-on: ubuntu-latest
+    steps:
+      - name: Do Nothing
+        run: echo "This is a useless step that just helps things look nicer..."
+        shell: bash
   test:
     name: "🏗️"
     runs-on: ubuntu-latest
+    needs: calculate_matrix
     strategy:
       fail-fast: false
       matrix:
@@ -46,16 +56,16 @@ jobs:
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
     steps:
-      - name: Checkout Core Repo
-        uses: actions/checkout@v4
-        with:
-          path: tmp/core
-
       - name: Checkout Starter Repo
         uses: bullet-train-co/checkout-repo-with-matching-branch@v1
         with:
           target_dir: tmp/starter
           repository: bullet-train-co/bullet_train
+
+      - name: Checkout Core Repo
+        uses: actions/checkout@v4
+        with:
+          path: tmp/starter/local/bullet_train-core
 
       - name: Set up Ruby
         uses: ruby/setup-ruby@v1
@@ -77,7 +87,7 @@ jobs:
         uses: bullet-train-co/link-core-gems@v1
         with:
           application_dir: tmp/starter
-          core_dir: tmp/core
+          core_dir: tmp/starter/local/bullet_train-core
 
       # TODO: This might be a bad idea. Maybe we should just have spring in the Gemfile all the time.
       - name: Allow adding of spring
@@ -102,8 +112,17 @@ jobs:
         run: bin/rails test test/controllers/webhooks/incoming/some_provider_webhooks_controller_test.rb
         if: ${{ strategy.job-index == 5 }}
 
-      - name: Test Summary
-        uses: test-summary/action@v2
-        with:
-          paths: "tmp/starter/test/reports/**/TEST-*.xml"
+      - name: Upload Test Summary Logs
+        uses: actions/upload-artifact@v4
         if: always()
+        with:
+          name: test_summary_super_scaffolding_${{ strategy.job-index }}_${{ inputs.use-core-repo }}.log
+          path: tmp/starter/test/reports/**/TEST-*.xml
+
+      - name: Upload Test Coverage Data
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test_coverage_super_scaffolding_${{ strategy.job-index }}_${{ inputs.use-core-repo }}.log
+          path: tmp/starter/coverage/.resultset.json
+          include-hidden-files: true
