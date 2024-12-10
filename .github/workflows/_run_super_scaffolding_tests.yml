@@ -56,7 +56,7 @@ jobs:
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
       MINITEST_JUNIT_REPORTER: yes
-      CAPTURE_SIMPLECOV_AT_RUNTIME: true
+      #CAPTURE_SIMPLECOV_AT_RUNTIME: true
       SIMPLECOV_RUNTIME_COMMAND_NAME: super-scaffold-${{ strategy.job-index }}
     steps:
       - name: Checkout Starter Repo
