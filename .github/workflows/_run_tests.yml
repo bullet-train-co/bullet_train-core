@@ -87,7 +87,7 @@ jobs:
           working-directory: tmp/starter/local/bullet_train-core/${{ matrix.gem }} # setup-ruby does't pick up the job default.
 
       # TODO: Sometimes the step above complains about the lockfile being fronzen.
-      # When that happens you can get things moving again by chaning the bundler-cache
+      # When that happens you can get things moving again by changing the bundler-cache
       # option above to false. Then you _must_ uncomment the line for `bundle install` and
       # you can also uncomment the following lines to find out what changed unexpectedly.
       # I _think_ I've got things set up so that this shouldn't be an issue any more, but
