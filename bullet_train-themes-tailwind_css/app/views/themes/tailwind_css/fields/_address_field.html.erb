@@ -4,19 +4,37 @@
 form ||= current_fields_form
 
 # TODO: All options and other_options below are written inline. Do we need these?
-# options ||= {}
+options ||= {}
 # other_options ||= {}
+
+country_html_options ||= {}
+country_html_options[:data] ||= {}
+address_one_options ||= {}
+address_two_options ||= {}
+city_options ||= {}
+postal_code_options ||= {}
+postal_code_options[:data] ||= {}
+region_html_options ||= {}
+region_html_options[:data] ||= {}
+
+if options[:disabled].present?
+  country_html_options[:disabled] = options[:disabled]
+  address_one_options[:disabled] = options[:disabled]
+  address_two_options[:disabled] = options[:disabled]
+  city_options[:disabled] = options[:disabled]
+  postal_code_options[:disabled] = options[:disabled]
+end
 %>
 
 <%= form.fields_for(method) do |address_form| %>
   <% with_field_settings form: address_form do %>
-  
+
     <%= render 'shared/fields/super_select',
       method: :country_id,
       choices: populate_country_options,
-      options: {include_blank: true}, 
+      options: {include_blank: true},
       other_options: {search: true, wrapper_class: "col-span-2"},
-      html_options: {data: {}},
+      html_options: country_html_options,
       wrapper_options: {
         data: {
           'controller': "dependable",
@@ -25,24 +43,37 @@ form ||= current_fields_form
         }
       }
     %>
-    
-    <%= render 'shared/fields/text_field', method: :address_one %>
-    <%= render 'shared/fields/text_field', method: :address_two %>
-    
+
+    <%= render 'shared/fields/text_field', method: :address_one, options: address_one_options %>
+    <%= render 'shared/fields/text_field', method: :address_two, options: address_two_options %>
+
     <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-3">
       <div class="sm:col-span-1">
         <%= render 'shared/fields/text_field', method: :city,
+          options: city_options,
           other_options: {wrapper_class: "col-span-2 lg:col-span-1"}
         %>
       </div>
       <div class="sm:col-span-2">
-        <%= render "shared/fields/dependent_fields_frame", 
+        <%= render "shared/fields/dependent_fields_frame",
           id: address_form.field_id(:country, :dependent_fields),
           form: address_form,
           dependable_fields: [:country_id],
           html_options: { class: "block space-y-5" } do |dependent_fields_controller_name|
         %>
-        
+          <%
+            # These have to be here instead of at the top of the file so that we have access
+            # to the address_form and dependent_fields_controller_name variables.
+            postal_code_options[:data]["#{dependent_fields_controller_name}-target"] ||= "field"
+            region_html_options[:data]["#{dependent_fields_controller_name}-target"] ||= "field"
+            region_html_options[:disabled] ||= address_form.object.country_id.nil?
+            # If the entire address field is disabled, we clobber the :disabled value that we
+            # calculate based on the country field. This makes it so that region will still be
+            # disabled even if the address field had been filled out previously.
+            if options[:disabled].present? && options[:disabled]
+              region_html_options[:disabled] = options[:disabled]
+            end
+          %>
           <div class="grid grid-cols-1 gap-y gap-x sm:grid-cols-2">
             <div class="sm:col-span-1">
               <%= render 'shared/fields/super_select',
@@ -54,22 +85,13 @@ form ||= current_fields_form
                   wrapper_class: "col-span-2 lg:col-span-1",
                   label: admin_division_label_for(address_form)
                 },
-                html_options: {
-                  disabled: address_form.object.country_id.nil?,
-                  data: {
-                    "#{dependent_fields_controller_name}-target": "field"
-                  }
-                }
+                html_options: region_html_options
               %>
             </div>
-            
+
             <div class="sm:col-span-1">
               <%= render 'shared/fields/text_field', method: :postal_code,
-                options: {
-                  data: {
-                    "#{dependent_fields_controller_name}-target": "field"
-                  }
-                },
+                options: postal_code_options,
                 other_options: {
                   wrapper_class: "col-span-2 lg:col-span-1",
                   label: postal_code_label_for(address_form)
@@ -77,7 +99,7 @@ form ||= current_fields_form
               %>
             </div>
           </div>
-        
+
         <% end %>
       </div>
     </div>
