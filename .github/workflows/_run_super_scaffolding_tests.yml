@@ -55,9 +55,6 @@ jobs:
       DATABASE_URL: "postgres://rails:password@localhost:5432/rails_test"
       BUNDLE_JOBS: 2
       BUNDLE_RETRY: 3
-      MINITEST_JUNIT_REPORTER: yes
-      #CAPTURE_SIMPLECOV_AT_RUNTIME: true
-      SIMPLECOV_RUNTIME_COMMAND_NAME: super-scaffold-${{ strategy.job-index }}
     steps:
       - name: Checkout Starter Repo
         uses: bullet-train-co/checkout-repo-with-matching-branch@v1
@@ -106,7 +103,6 @@ jobs:
         working-directory: tmp/starter
         env:
           CIRCLE_NODE_INDEX: ${{ strategy.job-index }}
-          SIMPLECOV_RUNTIME_COMMAND_NAME: super-scaffold-${{ strategy.job-index }}
 
       - name: 'Run Super Scaffolding Test'
         run: bin/rails test test/system/super_scaffolding/

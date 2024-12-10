@@ -132,7 +132,6 @@ jobs:
         id: run-tests
         env:
           PARALLEL_TESTS_RECORD_RUNTIME: true
-          MINITEST_JUNIT_REPORTER: yes
         continue-on-error: false
         run: |
           bundle exec parallel_test test \
