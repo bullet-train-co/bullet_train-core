@@ -19,6 +19,7 @@ class PermitTest < ActiveSupport::TestCase
       can_count = @admin_ability.permissions[:can].count
       @admin_ability.assign_permissions(permissions)
       assert_equal @admin_ability.permissions[:can].count, can_count + 1
+      assert_equal @admin_ability.permissions[:can].count, 10
     end
 
     test "Permit#build_permissions returns an array of Hashes" do
