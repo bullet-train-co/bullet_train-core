@@ -34,7 +34,7 @@ class BulletTrain::Platform::ConnectionWorkflowTest < ActiveSupport::TestCase
     nil
   end
 
-  test "calling the proc creates a User and a Membership" do
+  test "calling the workflow creates a User and a Membership" do
     params = {}
     assert_difference('User.count', +1) do
       assert_difference('Membership.count', +1) do
@@ -43,7 +43,7 @@ class BulletTrain::Platform::ConnectionWorkflowTest < ActiveSupport::TestCase
     end
   end
 
-  test "calling the proc twice creates only one User and Membership" do
+  test "calling the workflow twice creates only one User and Membership" do
     params = {}
     # We call it once, for the intial connection
     instance_eval(&@workflow)
