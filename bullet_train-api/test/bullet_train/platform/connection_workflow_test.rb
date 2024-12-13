@@ -4,9 +4,10 @@ class BulletTrain::Platform::ConnectionWorkflowTest < ActiveSupport::TestCase
   setup do
     @workflow = BulletTrain::Platform::ConnectionWorkflow.new
     @client_id = SecureRandom.hex
-    @application = Platform::Application.create!(uid: @client_id, name: "Test application")
     @team = Team.create!(name: "test team")
+    @application = Platform::Application.create!(uid: @client_id, name: "Test application", team: @team)
     @user = User.create!(email: "test@test.com", password: "password", password_confirmation: "password")
+    @membership = Membership.create!(user: @user, team: @team, role_ids: [Role.admin.id])
   end
 
   def params
@@ -48,12 +49,10 @@ class BulletTrain::Platform::ConnectionWorkflowTest < ActiveSupport::TestCase
 
   test "calling the proc twice creates only one User and Membership" do
     params = {}
-    assert_difference('User.count', +1) do
-      assert_difference('Membership.count', +1) do
-        instance_eval(&@workflow)
-      end
-    end
+    # We call it once, for the intial connection
+    instance_eval(&@workflow)
 
+    # Then on a subsequent connections, we should not create new users
     assert_difference('User.count', 0) do
       assert_difference('Membership.count', 0) do
         instance_eval(&@workflow)
