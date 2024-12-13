@@ -11,7 +11,7 @@ class BulletTrain::Platform::ConnectionWorkflowTest < ActiveSupport::TestCase
   end
 
   def params
-    { client_id: @client_id, team_id: @team.id, new_installation: true }
+    {client_id: @client_id, team_id: @team.id, new_installation: true}
   end
 
   def current_user
@@ -35,22 +35,20 @@ class BulletTrain::Platform::ConnectionWorkflowTest < ActiveSupport::TestCase
   end
 
   test "calling the workflow creates a User and a Membership" do
-    params = {}
-    assert_difference('User.count', +1) do
-      assert_difference('Membership.count', +1) do
+    assert_difference("User.count", +1) do
+      assert_difference("Membership.count", +1) do
         instance_eval(&@workflow)
       end
     end
   end
 
   test "calling the workflow twice creates only one User and Membership" do
-    params = {}
     # We call it once, for the intial connection
     instance_eval(&@workflow)
 
     # Then on a subsequent connections, we should not create new users
-    assert_difference('User.count', 0) do
-      assert_difference('Membership.count', 0) do
+    assert_difference("User.count", 0) do
+      assert_difference("Membership.count", 0) do
         instance_eval(&@workflow)
       end
     end
