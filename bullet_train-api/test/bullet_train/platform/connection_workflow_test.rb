@@ -34,10 +34,6 @@ class BulletTrain::Platform::ConnectionWorkflowTest < ActiveSupport::TestCase
     nil
   end
 
-  #test "to_proc returns a proc" do
-    #assert_equal "Proc", @workflow.to_proc.class.name
-  #end
-
   test "calling the proc creates a User and a Membership" do
     params = {}
     assert_difference('User.count', +1) do
