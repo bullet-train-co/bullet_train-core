@@ -25,13 +25,13 @@ class BulletTrain::Platform::ConnectionWorkflow
             faux_password = SecureRandom.hex
 
             # This is the original block, that causes a bunch of duplication users
-            #faux_user = User.create(
-              #email: "noreply+#{SecureRandom.hex}@bullettrain.co",
-              #password: faux_password,
-              #password_confirmation: faux_password,
-              #platform_agent_of: @application,
-              #first_name: @application.name
-            #)
+            # faux_user = User.create(
+            #   email: "noreply+#{SecureRandom.hex}@bullettrain.co",
+            #   password: faux_password,
+            #   password_confirmation: faux_password,
+            #   platform_agent_of: @application,
+            #   first_name: @application.name
+            # )
 
             # This is the next block, that ends up _never_ creating a new user because
             # the Platform::Application automatically creates one when it's created, and
@@ -47,13 +47,13 @@ class BulletTrain::Platform::ConnectionWorkflow
             end
 
             # This is the original block, which ends up creating a new membership everytime.
-            #faux_membership = team.memberships.create(
-              #user: faux_user,
-              #platform_agent: true,
-              #user_email: faux_user.email,
-              #platform_agent_of: @application,
-              #added_by: team.memberships.find_by(user: current_user)
-            #)
+            # faux_membership = team.memberships.create(
+            #   user: faux_user,
+            #   platform_agent: true,
+            #   user_email: faux_user.email,
+            #   platform_agent_of: @application,
+            #   added_by: team.memberships.find_by(user: current_user)
+            # )
 
             # This new block is effectively equal to:
             # faux_membership = faux_user.memberships.first
