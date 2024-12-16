@@ -20,7 +20,9 @@ jobs:
         uses: bullet-train-co/parallel-test-dynamic-matrix@v1
         with:
           # You can explicitly set the number of test nodes, or it will default to 4
-          numberOfTestNodes: 4
+          # We're using a smaller number in core because the Super Scaffolding tests run slower, and we wait on them
+          # anyway to report status and coverage.
+          numberOfTestNodes: 2
           # You can explicitly set the number of runners per node, or it will default to 4 for public repos and 2 for private
           # testRunnersPerNode: 2
   starter_repo:
