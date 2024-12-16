@@ -34,7 +34,7 @@ module Webhooks::Outgoing::EndpointSupport
   end
 
   def event_types
-    event_type_ids.map { |id| Webhooks::Outgoing::EventType.find(id) }
+    Webhooks::Outgoing::EventType.where(id: event_type_ids)
   end
 
   def touch_parent
