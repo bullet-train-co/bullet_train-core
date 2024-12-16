@@ -73,7 +73,33 @@ def default_url_options_from_base_url
 end
 
 def heroku?
-  ENV["HEROKU_APP_NAME"].present?
+  # This is a value we set in `app.json` so anyone using the "Deploy to Heroku" button
+  # should have it. This is kind of a brute force method that should be future-proofed
+  # against changes that Heroku might make to their runtime environment. We'll fallback
+  # to some additional checks if this isn't here, to maintain backwards compatibility
+  # for existing apps.
+  if ENV["BT_IS_IN_HEROKU"].present?
+    ENV["BT_IS_IN_HEROKU"] == "true"
+  else
+    # This requires the app to run `heroku labs:enable runtime-dyno-metadata` and then
+    # deploy at least once before the ENV var is set. Many existing BT apps have enabled
+    # this feature, and this used to be the only detection method that we had. We're
+    # keeping it for backwards compability reasons because it's probably more stable
+    # than the following fallbacks.
+    ENV["HEROKU_APP_NAME"].present? ||
+      # And finally we fallback to checking for some artifacts that Heroku happens to leave
+      # lying around. These may change in the future, so who knows how long they'll be good.
+      #
+      # If there's a `DYNO` ENV var, then we're probably on Heroku. Will they _always_ set
+      # this variable?
+      ENV["DYNO"].present? ||
+      # Finally we look for the the existence of the `/app/.heroku` directory.
+      # This should make detection work for apps that don't have any of the above ENV vars, for
+      # whatever reasons. But, in the future Heroku could decide to remove `/app/.heroku`
+      # which will break this fallback method and then we'll have to come up with something else.
+      # This is currently our last line of defense.
+      File.directory?("/app/.heroku")
+  end
 end
 
 def inbound_email_enabled?
