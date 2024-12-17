@@ -53,6 +53,13 @@ en:
         options:
           true: "Yes"
           false: "No"
+      boolean_checkbox_value:
+        _: &boolean_checkbox_value Boolean Checkbox Value
+        label: *boolean_checkbox_value
+        heading: *boolean_checkbox_value
+        options:
+          true: "Yes"
+          false: "No"
       color_picker_value:
         _: &color_picker_value Color Picker Value
         label: *color_picker_value
