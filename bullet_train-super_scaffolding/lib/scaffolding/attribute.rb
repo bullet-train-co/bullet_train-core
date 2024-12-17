@@ -93,7 +93,7 @@ class Scaffolding::Attribute
   end
 
   def is_boolean?
-    original_type == "boolean"
+    original_type == "boolean" || original_type == "checkbox"
   end
 
   def file_field?
@@ -166,7 +166,7 @@ class Scaffolding::Attribute
     case type
     when "trix_editor", "ckeditor"
       "html"
-    when "buttons", "super_select", "options", "boolean"
+    when "buttons", "super_select", "options", "boolean", "checkbox"
       if is_ids?
         "has_many"
       elsif is_id?
