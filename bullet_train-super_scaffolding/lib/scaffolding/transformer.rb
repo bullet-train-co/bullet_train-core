@@ -837,6 +837,10 @@ class Scaffolding::Transformer
         show_page_doesnt_exist = child == "User"
         scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/show.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: show_page_doesnt_exist)
 
+        if child == "Membership"
+          scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_attributes.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: show_page_doesnt_exist)
+        end
+
       end
 
       #
