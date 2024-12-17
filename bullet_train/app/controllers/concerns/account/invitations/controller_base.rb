@@ -124,6 +124,10 @@ module Account::Invitations::ControllerBase
     raise "It looks like you've removed `permitted_fields` from your controller. This will break Super Scaffolding."
   end
 
+  def permitted_membership_fields
+    raise "It looks like you've removed `permitted_membership_fields` from your controller. This will break Super Scaffolding."
+  end
+
   def permitted_arrays
     raise "It looks like you've removed `permitted_arrays` from your controller. This will break Super Scaffolding."
   end
@@ -145,6 +149,7 @@ module Account::Invitations::ControllerBase
       # 🚅 super scaffolding will insert new fields above this line.
       # 🚅 super scaffolding will insert new arrays above this line.
       membership_attributes: [
+        *permitted_membership_fields,
         :user_first_name,
         :user_last_name,
         role_ids: []
