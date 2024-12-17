@@ -33,6 +33,10 @@
               </div>
             <% end %>
           <% end %>
+
+          <% with_field_settings form: fields do %>
+            <%= render "account/memberships/fields", membership: fields.object, form: fields %>
+          <% end %>
         </div>
       <% end %>
     <% end %>
