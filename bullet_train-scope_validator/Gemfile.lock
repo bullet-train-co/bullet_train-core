@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.12.1)
+    bullet_train-scope_validator (1.12.2)
       rails
 
 GEM
@@ -96,7 +96,7 @@ GEM
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
-    irb (1.14.2)
+    irb (1.14.3)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
     logger (1.6.3)
@@ -133,7 +133,7 @@ GEM
     parallel (1.21.0)
     parser (3.1.0.0)
       ast (~> 2.4.1)
-    psych (5.2.1)
+    psych (5.2.2)
       date
       stringio
     racc (1.8.1)
@@ -175,7 +175,7 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.0.6)
-    rdoc (6.9.1)
+    rdoc (6.10.0)
       psych (>= 4.0.0)
     regexp_parser (2.2.0)
     reline (0.6.0)
