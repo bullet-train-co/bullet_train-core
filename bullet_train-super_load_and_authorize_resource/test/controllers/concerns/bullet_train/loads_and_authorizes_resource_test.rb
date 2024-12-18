@@ -2,6 +2,7 @@ require "test_helper"
 
 # Has to be required here because these tests get run in the context of another application in another repo.
 require "minitest/mock"
+require 'ostruct'
 class BulletTrain::LoadsAndAuthorizeResourceTest < ActiveSupport::TestCase
   class TestControllerClass < ActionController::Base
     include BulletTrain::LoadsAndAuthorizesResource
