@@ -835,8 +835,10 @@ class Scaffolding::Transformer
         end
 
         show_page_doesnt_exist = child == "User"
-        scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/show.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: show_page_doesnt_exist)
-
+        show_page_target = (child == "Membership") ?
+          "./app/views/account/scaffolding/completely_concrete/tangible_things/_attributes.html.erb" :
+          "./app/views/account/scaffolding/completely_concrete/tangible_things/show.html.erb"
+        scaffold_add_line_to_file(show_page_target, field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find: show_page_doesnt_exist)
       end
 
       #
@@ -848,7 +850,7 @@ class Scaffolding::Transformer
         # table header.
         field_content = "<th#{cell_attributes.present? ? " " + cell_attributes : ""}><%= t('.fields.#{attribute.is_vanilla? ? attribute.name : attribute.name_without_id_suffix}.heading') %></th>"
 
-        unless ["Team", "User"].include?(child)
+        unless ["Team", "User", "Membership"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", field_content, "<%# 🚅 super scaffolding will insert new field headers above this line. %>", prepend: true)
         end
 
@@ -884,7 +886,7 @@ class Scaffolding::Transformer
           field_content.gsub!(/\s%>/, ", one_line: true %>")
         end
 
-        unless ["Team", "User"].include?(child)
+        unless ["Team", "User", "Membership"].include?(child)
           scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.html.erb", field_content.strip, ERB_NEW_FIELDS_HOOK, prepend: true)
         end
 
