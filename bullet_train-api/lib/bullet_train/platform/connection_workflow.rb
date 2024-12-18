@@ -23,21 +23,48 @@ class BulletTrain::Platform::ConnectionWorkflow
             # Create a faux membership and user that represent this connection.
             # We have to do this because all our permissions are based on users, so team-level connections need a user.
             faux_password = SecureRandom.hex
-            faux_user = User.create(
-              email: "noreply+#{SecureRandom.hex}@bullettrain.co",
-              password: faux_password,
-              password_confirmation: faux_password,
+
+            # This is the original block, that causes a bunch of duplication users
+            # faux_user = User.create(
+            #   email: "noreply+#{SecureRandom.hex}@bullettrain.co",
+            #   password: faux_password,
+            #   password_confirmation: faux_password,
+            #   platform_agent_of: @application,
+            #   first_name: @application.name
+            # )
+
+            # This is the next block, that ends up _never_ creating a new user because
+            # the Platform::Application automatically creates one when it's created, and
+            # so this block is effectively equal to:
+            # faux_user = @application.user
+            faux_user = User.find_or_create_by(
               platform_agent_of: @application,
               first_name: @application.name
-            )
+            ) do |user|
+              user.email = "noreply+#{SecureRandom.hex}@bullettrain.co"
+              user.password = faux_password
+              user.password_confirmation = faux_password
+            end
 
-            faux_membership = team.memberships.create(
+            # This is the original block, which ends up creating a new membership everytime.
+            # faux_membership = team.memberships.create(
+            #   user: faux_user,
+            #   platform_agent: true,
+            #   user_email: faux_user.email,
+            #   platform_agent_of: @application,
+            #   added_by: team.memberships.find_by(user: current_user)
+            # )
+
+            # This new block is effectively equal to:
+            # faux_membership = faux_user.memberships.first
+            faux_membership = team.memberships.find_or_create_by(
               user: faux_user,
               platform_agent: true,
               user_email: faux_user.email,
               platform_agent_of: @application,
-              added_by: team.memberships.find_by(user: current_user)
-            )
+            ) do |membership|
+              membership.added_by = team.memberships.find_by(user: current_user)
+            end
 
             faux_membership.roles << Role.admin
 
