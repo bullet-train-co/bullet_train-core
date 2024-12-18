@@ -48,6 +48,7 @@ if defined?(Api::V1::ApplicationController)
           :text_field_value,
           :action_text_value,
           :boolean_button_value,
+          :boolean_checkbox_value,
           :button_value,
           :color_picker_value,
           :cloudinary_image_value,

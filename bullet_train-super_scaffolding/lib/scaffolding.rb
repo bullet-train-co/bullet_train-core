@@ -10,6 +10,7 @@ module Scaffolding
       "address_field",
       "boolean",
       "buttons",
+      "checkbox",
       # TODO: We're leaving cloudinary_image here for now for backwards compatibility.
       # We should remove it in a future major update.
       "cloudinary_image",

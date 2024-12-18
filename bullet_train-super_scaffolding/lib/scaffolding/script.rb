@@ -11,6 +11,7 @@ FIELD_PARTIALS = {
   address_field: nil,
   boolean: "boolean",
   buttons: "string",
+  checkbox: "boolean",
   cloudinary_image: "string",
   color_picker: "string",
   date_and_time_field: "datetime",

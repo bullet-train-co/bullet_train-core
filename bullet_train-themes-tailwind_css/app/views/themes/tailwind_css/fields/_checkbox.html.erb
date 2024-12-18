@@ -1,0 +1,17 @@
+<%
+form ||= current_fields_form
+options ||= {}
+other_options ||= {}
+
+# We supress the lable from the main field partial so that it doesn't show up at all.
+# We use supress_label instead of hide_label, becase we don't even want it ther for
+# screen readers. The `option` partial will already include a clickable lable next to
+# the checkbox and there's no need to have a double label for screen readers.
+other_options[:supress_label] = true
+%>
+
+<%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
+  <% content_for :field do %>
+    <%= render 'shared/fields/option', method: method, single_check_box: true %>
+  <% end %>
+<% end %>
