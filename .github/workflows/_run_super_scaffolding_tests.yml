@@ -13,8 +13,11 @@ jobs:
     outputs:
       tests: ${{ steps.generate-test-list.outputs.result }}
     steps:
-      - name: Checkout Repo
-        uses: "actions/checkout@v4"
+      - name: Checkout Starter Repo
+        uses: bullet-train-co/checkout-repo-with-matching-branch@v1
+        with:
+          #target_dir: tmp/starter
+          repository: bullet-train-co/bullet_train
 
       - uses: actions/github-script@v7
         id: generate-test-list
