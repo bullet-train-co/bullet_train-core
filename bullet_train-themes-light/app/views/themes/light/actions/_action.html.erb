@@ -49,7 +49,7 @@
 
       <% elsif action.is_a?(Actions::SupportsScheduling) && action.scheduled_for && !action.started? %>
         <div class="uppercase text-xs text-slate-400">
-          <%= t('action_models.scheduled_for', at: display_date_and_time(action.scheduled_for)) %>
+          <%= t('action_models.scheduled_for', for: display_date_and_time(action.scheduled_for)) %>
         </div>
 
       <% elsif action.is_a?(Actions::HasProgress) && action.started? %>
