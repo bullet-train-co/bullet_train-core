@@ -184,6 +184,20 @@ end
 
 (The `current_and_invited` scope just filters out people that have already been removed from the team.)
 
+**NOTE:** It's possible to define the source for `valid_leads` in your super scaffolding command.
+You need to wrap the bits inside the curly brackets with double qoutes, and then add
+`,source=team.memberships.current_and_invited` inside the quotes:
+
+```
+{"class_name=Membership,source=team.memberships.current_and_invited"}
+```
+
+So the whole command would be:
+
+```
+rails generate super_scaffold:field Project lead_id:super_select{"class_name=Membership,source=team.memberships.current_and_invited"}
+```
+
 ### 6. Scaffolding Has-Many-Through Associations with `join_model`
 
 Finally, working from the same example, imagine the following requirement:
