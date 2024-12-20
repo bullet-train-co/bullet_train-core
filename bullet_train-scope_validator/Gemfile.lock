@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-scope_validator (1.12.2)
+    bullet_train-scope_validator (1.12.3)
       rails
 
 GEM
@@ -90,7 +90,7 @@ GEM
     date (3.4.1)
     docile (1.4.1)
     drb (2.2.1)
-    erubi (1.13.0)
+    erubi (1.13.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.6)
@@ -102,7 +102,7 @@ GEM
     json (2.9.1)
     language_server-protocol (3.17.0.3)
     lint_roller (1.1.0)
-    logger (1.6.3)
+    logger (1.6.4)
     loofah (2.23.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -119,7 +119,7 @@ GEM
       builder
       minitest (>= 5.0)
       ruby-progressbar
-    net-imap (0.5.2)
+    net-imap (0.5.3)
       date
       net-protocol
     net-pop (0.1.2)
