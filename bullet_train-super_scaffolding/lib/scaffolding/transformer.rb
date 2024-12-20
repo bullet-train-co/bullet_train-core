@@ -327,7 +327,17 @@ class Scaffolding::Transformer
 
     if target_file_content.include?(transformed_content) && !content_matches_model_name
       puts "No need to update '#{transformed_file_name}'. It already has '#{transformed_content}'." unless silence_logs?
+    elsif !target_file_content.include?(transform_hook)
+      unless options[:suppress_could_not_find_hook]
+        puts
+        puts "Heads up! We weren't able to find a super scaffolding hook where we expected it to be.".yellow
+        puts "In #{transformed_file_name}".yellow
+        puts "We expected to find a line like this:".yellow
+        puts transform_hook.yellow
+        puts
+      end
 
+      return false
     else
 
       new_target_file_content = []
@@ -967,10 +977,16 @@ class Scaffolding::Transformer
           "./app/controllers/account/scaffolding/completely_concrete/tangible_things_controller.rb",
           "./app/controllers/api/v1/scaffolding/completely_concrete/tangible_things_controller.rb"
         ].each do |file|
+          # We usually do StrongParams stuff in the API controller and the Account controller inherits it from there.
+          # We _used_ to do StrongParams stuff directly in the Account controller. So for backwards compatibility we
+          # need to try to make updates in the Account controller, but if we can't find the target hook there's no need
+          # to show an error and make the developer think that they've broken something.
+          suppress_could_not_find_hook = file.match("/account/")
+
           if attribute.is_ids? || attribute.is_multiple?
-            scaffold_add_line_to_file(file, "#{attribute.name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            scaffold_add_line_to_file(file, "#{attribute.name}: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true, suppress_could_not_find_hook: suppress_could_not_find_hook)
             if attribute.file_field? || attribute.active_storage_image?
-              scaffold_add_line_to_file(file, "#{attribute.name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true)
+              scaffold_add_line_to_file(file, "#{attribute.name}_removal: [],", RUBY_NEW_ARRAYS_HOOK, prepend: true, suppress_could_not_find_hook: suppress_could_not_find_hook)
             end
           elsif attribute.type == "address_field"
             address_strong_params = <<~RUBY
@@ -985,11 +1001,11 @@ class Scaffolding::Transformer
                 :postal_code
               ],
             RUBY
-            scaffold_add_line_to_file(file, address_strong_params, RUBY_NEW_ARRAYS_HOOK, prepend: true)
+            scaffold_add_line_to_file(file, address_strong_params, RUBY_NEW_ARRAYS_HOOK, prepend: true, suppress_could_not_find_hook: suppress_could_not_find_hook)
           else
-            scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true)
+            scaffold_add_line_to_file(file, ":#{attribute.name},", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find_hook: suppress_could_not_find_hook)
             if attribute.file_field? || attribute.active_storage_image?
-              scaffold_add_line_to_file(file, ":#{attribute.name}_removal,", RUBY_NEW_FIELDS_HOOK, prepend: true)
+              scaffold_add_line_to_file(file, ":#{attribute.name}_removal,", RUBY_NEW_FIELDS_HOOK, prepend: true, suppress_could_not_find_hook: suppress_could_not_find_hook)
             end
           end
         end
