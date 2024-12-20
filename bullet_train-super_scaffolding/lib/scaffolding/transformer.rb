@@ -340,8 +340,6 @@ class Scaffolding::Transformer
         puts "-------------------------------".yellow
         puts
       end
-
-      return false
     else
 
       new_target_file_content = []
