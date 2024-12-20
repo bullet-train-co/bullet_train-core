@@ -330,10 +330,14 @@ class Scaffolding::Transformer
     elsif !target_file_content.include?(transform_hook)
       unless options[:suppress_could_not_find_hook]
         puts
+        puts "-------------------------------".yellow
         puts "Heads up! We weren't able to find a super scaffolding hook where we expected it to be.".yellow
         puts "In #{transformed_file_name}".yellow
         puts "We expected to find a line like this:".yellow
         puts transform_hook.yellow
+        puts
+        puts "See https://bullettrain.co/docs/super-scaffolding/targets for more details.".yellow
+        puts "-------------------------------".yellow
         puts
       end
 

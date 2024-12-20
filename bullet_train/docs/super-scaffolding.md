@@ -299,3 +299,7 @@ HIDE_THINGS: true
  - [Super Scaffolding Options](/docs/super-scaffolding/options.md)
  - [Super Scaffolding with Delegated Types](/docs/super-scaffolding/delegated-types.md)
  - [Super Scaffolding with the `--sortable` option](/docs/super-scaffolding/sortable.md)
+
+## Additional Info
+
+ - [Targets for Super Scaffolding](/docs/super-scaffolding/targets.md)
