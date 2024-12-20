@@ -17,6 +17,8 @@ Here’s a list of what Super Scaffolding takes care of for you each time you ad
 
 When adding just one model, Super Scaffolding generates ~30 different files on your behalf.
 
+**NOTE** Super Scaffolding generates code that contains special "magic comments" that we use as targets for later Super Scaffolding operations. You shouldn't remove those comments. See [Targets for Super Scaffolding](/docs/super-scaffolding/targets.md) for more details.
+
 ## Living Templates
 
 Bullet Train's Super Scaffolding engine is a unique approach to code generation, based on template files that are functional code instead of obscure DSLs that are difficult to customize and maintain. Super Scaffolding automates the most repetitive and mundane aspects of building out your application's basic structure. Furthermore, it does this without leaning on the magic of libraries that force too high a level of abstraction. Instead, it generates standard Rails code that is both ready for prime time, but is also easy to customize and modify.
