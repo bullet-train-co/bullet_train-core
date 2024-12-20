@@ -99,4 +99,10 @@ See https://bullettrain.co/docs/super-scaffolding/targets for more details.
 -------------------------------
 ```
 
+## How to Replace Missing Targets
 
+If you've removed some targets and need to get them back you have a few options:
+
+1. If the removal of the targets hasn't been committed to source control yet, you can use `git checkout` to restore the files to their previous state.
+2. If the removal has been committed you could revert the commit that removed them.
+3. You could use Super Scaffolding to generate a new resource and then copy &amp; paste the targets from your new resource into the existing one.
