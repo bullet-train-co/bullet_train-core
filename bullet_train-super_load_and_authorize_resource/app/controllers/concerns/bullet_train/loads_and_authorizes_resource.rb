@@ -205,4 +205,3 @@ module BulletTrain::LoadsAndAuthorizesResource
     raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
   end
 end
-
