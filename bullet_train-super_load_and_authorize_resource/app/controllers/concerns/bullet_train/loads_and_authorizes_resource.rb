@@ -200,4 +200,9 @@ module BulletTrain::LoadsAndAuthorizesResource
   def update
     raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
   end
+
+  def destroy
+    raise "This is a template method that needs to be implemented by controllers including LoadsAndAuthorizesResource."
+  end
 end
+
