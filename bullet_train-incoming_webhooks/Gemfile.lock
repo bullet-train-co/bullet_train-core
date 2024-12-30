@@ -195,7 +195,7 @@ GEM
     base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark (0.4.0)
-    bigdecimal (3.1.8)
+    bigdecimal (3.1.9)
     builder (3.3.0)
     cable_ready (5.0.6)
       actionpack (>= 5.2)
@@ -235,7 +235,7 @@ GEM
       railties (>= 5)
     drb (2.2.1)
     email_reply_parser (0.5.11)
-    erubi (1.13.0)
+    erubi (1.13.1)
     event_stream_parser (1.0.0)
     extended_email_reply_parser (0.5.1)
       activesupport
@@ -286,7 +286,7 @@ GEM
       method_source
       rails (>= 5.0.0)
     json (2.9.1)
-    logger (1.6.3)
+    logger (1.6.4)
     loofah (2.23.1)
       crass (~> 1.0.2)
       nokogiri (>= 1.12.0)
@@ -314,7 +314,7 @@ GEM
     multipart-post (2.4.1)
     net-http (0.6.0)
       uri
-    net-imap (0.5.2)
+    net-imap (0.5.4)
       date
       net-protocol
     net-pop (0.1.2)
@@ -322,7 +322,6 @@ GEM
     net-protocol (0.2.2)
       timeout
     net-smtp (0.5.0)
-      net-protocol
     nice_partials (0.10.1)
       actionview (>= 4.2.6)
     nio4r (2.7.4)
@@ -352,7 +351,7 @@ GEM
       actionmailer (>= 3)
       net-smtp
       premailer (~> 1.7, >= 1.7.9)
-    prism (1.2.0)
+    prism (1.3.0)
     psych (5.2.2)
       date
       stringio
@@ -368,7 +367,7 @@ GEM
       rack (>= 3.0.0, < 4)
     rack-session (2.0.0)
       rack (>= 3.0.0)
-    rack-test (2.1.0)
+    rack-test (2.2.0)
       rack (>= 1.3)
     rackup (2.2.1)
       rack (>= 3)
@@ -461,7 +460,7 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    xxhash (0.5.0)
+    xxhash (0.6.0)
     zeitwerk (2.7.1)
 
 PLATFORMS
@@ -488,4 +487,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   2.4.20
+   2.6.2
