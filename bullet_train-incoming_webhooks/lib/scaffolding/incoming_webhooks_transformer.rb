@@ -28,7 +28,7 @@ class Scaffolding::IncomingWebhooksTransformer < Scaffolding::Transformer
     new_model_file_name, _ = files.map { |file| file.gsub(file_name_hook, replacement_for(file_name_hook)) }
 
     # Set up the model's `verify_authenticity` method to return `true`.
-    model_file_lines = File.readlines(new_model_file_name)
+    File.readlines(new_model_file_name)
     comment_lines = [
       "# You can implement your authenticity verification logic in either\n",
       "# the newly scaffolded model or controller for your incoming webhooks.\n"
