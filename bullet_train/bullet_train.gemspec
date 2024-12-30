@@ -90,9 +90,6 @@ Gem::Specification.new do |spec|
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
   spec.add_dependency "commonmarker", ">= 1.0.0"
 
-  # Extract the body from emails received using action inbox.
-  spec.add_dependency "extended_email_reply_parser" # TODO ➡️ `bullet_train-conversations`
-
   # OpenAI
   spec.add_dependency "ruby-openai"
 
