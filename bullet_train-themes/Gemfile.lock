@@ -75,7 +75,6 @@ PATH
       commonmarker (>= 1.0.0)
       devise
       devise-pwned_password
-      extended_email_reply_parser
       fastimage
       figaro
       hiredis
@@ -197,7 +196,6 @@ GEM
       railties (>= 5.2)
       thread-local (>= 1.1.0)
     cancancan (3.6.1)
-    charlock_holmes (0.7.9)
     chronic (0.10.2)
     cloudinary (2.2.0)
       faraday (>= 2.0.1, < 3.0.0)
@@ -227,14 +225,8 @@ GEM
     doorkeeper (5.8.1)
       railties (>= 5)
     drb (2.2.1)
-    email_reply_parser (0.5.11)
     erubi (1.13.1)
     event_stream_parser (1.0.0)
-    extended_email_reply_parser (0.5.1)
-      activesupport
-      charlock_holmes
-      email_reply_parser (~> 0.5.9)
-      mail
     factory_bot (6.5.0)
       activesupport (>= 5.0.0)
     faraday (2.12.2)
