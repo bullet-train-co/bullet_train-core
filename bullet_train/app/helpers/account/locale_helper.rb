@@ -57,7 +57,7 @@ module Account::LocaleHelper
       options = models_locales(@child_object, @parent_object).merge(options)
     end
 
-    result = super(key, options)
+    result = super
 
     unless Rails.env.production?
       if params.present?

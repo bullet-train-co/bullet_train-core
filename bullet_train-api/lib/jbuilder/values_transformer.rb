@@ -6,7 +6,7 @@ module ValuesTransformer
   def _set_value(key, value)
     value = value.body if value.is_a?(ActionText::RichText)
 
-    super(key, value)
+    super
   end
 end
 

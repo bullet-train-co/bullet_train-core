@@ -1580,7 +1580,6 @@ class Scaffolding::Transformer
     unless cli_options["skip-parent"]
 
       if top_level_model?
-        icon_name = nil
         if cli_options["navbar"].present?
           icon_name = if cli_options["navbar"].match?(/^ti/)
             "ti #{cli_options["navbar"]}"

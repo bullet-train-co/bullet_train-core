@@ -62,7 +62,7 @@ module Memberships::Base
       end
     end
 
-    super(ids)
+    super
   end
 
   def unclaimed?
