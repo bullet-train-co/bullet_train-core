@@ -3,6 +3,14 @@ import { Controller } from "@hotwired/stimulus";
 export default class extends Controller {
   static targets = [ "menuItemHeader", "menuItemGroup", "menuItemLink" ];
 
+  connect() {
+    document.addEventListener('click', this.handleClickOutside.bind(this))
+  }
+
+  disconnect() {
+    document.removeEventListener('click', this.handleClickOutside.bind(this))
+  }
+
   showSubmenu() {
     this.menuItemGroupTarget.classList.remove('invisible');
   }
@@ -22,5 +30,11 @@ export default class extends Controller {
     }
 
     if(hideMenu) { this.menuItemGroupTarget.classList.add('invisible'); }
+  }
+
+  handleClickOutside(event) {
+    if (!this.element.contains(event.target)) {
+      this.menuItemGroupTarget.classList.add('invisible')
+    }
   }
 }
