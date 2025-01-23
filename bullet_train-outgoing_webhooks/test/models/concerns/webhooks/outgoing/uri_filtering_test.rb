@@ -28,8 +28,20 @@ class Webhooks::Outgoing::UriFilteringTest < ActiveSupport::TestCase
   end
 
   test "allowed_uri?" do
-    assert_allowed_uri("http://www.example.com")
-    assert_allowed_uri("https://www.example.com")
+    # TODO: Can we switch back to www.example.com at some point?
+    # It seems like something changed in late 2024 or early 2025 about
+    # the example.com domain. When using www.example.com this test is failing with this error:
+    #
+    # Resolv::ResolvError: DNS result has no information for www.example.com
+    # /Users/jgreen/.asdf/installs/ruby/3.4.1/lib/ruby/3.4.0/resolv.rb:502:in 'Resolv::DNS#getresource'
+    # app/models/concerns/webhooks/outgoing/uri_filtering.rb:81:in 'Webhooks::Outgoing::UriFiltering#resolve_ip_from_authoritative'
+    #
+    # So, for now, instead of using www.example.com we're using bullettrain.co
+    #
+    # assert_allowed_uri("http://www.example.com")
+    # assert_allowed_uri("https://www.example.com")
+    assert_allowed_uri("http://bullettrain.co")
+    assert_allowed_uri("https://bullettrain.co")
     assert_allowed_uri("http://104.16.16.194")
 
     refute_allowed_uri("http://localhost")
