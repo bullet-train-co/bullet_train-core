@@ -1,6 +1,10 @@
 class Api::V1::Platform::AccessTokensController < Api::V1::ApplicationController
   account_load_and_authorize_resource :access_token, through: :application, through_association: :access_tokens
 
+  # GET /api/v1/platform/access_tokens
+  def index
+  end
+
   # GET /api/v1/platform/access_tokens/:id
   def show
   end
