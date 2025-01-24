@@ -51,4 +51,4 @@ If you experience slow Turbo interactions, check for script tags in the body of 
 
 ### Dynamic Forms
 
-For creating dynamically-updated forms, Bullet Train introduces two powerful new patterns: the [_Dependent Fields Pattern_ and _Dependent Fields Frame_](/docs/field-partials/dynamic-forms-dependent-fields.md).
+For creating dynamically-updated forms, Bullet Train introduces two powerful new patterns: the [_Dependent Fields Pattern_ and the _Dependent Fields Frame_](/docs/field-partials/dynamic-forms-dependent-fields.md).
