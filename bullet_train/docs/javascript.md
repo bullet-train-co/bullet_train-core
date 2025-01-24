@@ -23,13 +23,19 @@ For more complex screen interactions, we do recommend using features of Hotwire'
 
 Here are some important considerations:
 
-### Avoid Turbo Morph, but Rely on CableReady::Updatable
+### Avoid Morphing for Page Refreshes (It Breaks Form Fields)
 
-While Turbo Morph can be useful for simple UI updates, we don't recommend using it for screens containing forms. That's because Turbo Morph works by modifying and comparing the DOM in a way that breaks JavaScript-created page elements, and therefore expects server-side rendered elements exclusively. Bullet Train's form field partials, however, use third-party librairies that create JavaScript elements, like those created by our super_select, our date fields, even the Trix editor.
+We don't recommend using [Turbo's Morphing](https://turbo.hotwired.dev/handbook/page_refreshes) for refreshing whole screens, especially not when the screen contains form fields. That's because Turbo's Morphing works by comparing and modifying the DOM in a way that breaks JavaScript-created elements. Bullet Train's field partials, however, use third-party librairies, like those created by our `super_select`, our `date_field`, and even the Trix rich-text editor, which create their own elements via JavaScript. Use Turbo's Morphing sparingly.
 
-[CableReady::Updatable](https://cableready.stimulusreflex.com/guide/updatable.html) is Bullet Train's answer to reactive page updates. It's a lightweight but powerful default that replaces the need for Turbo Streams in most cases, and offers updating the UI across browsers and users when changes to models are made. It works by defining page areas that wait for instructions to "update yourself" coming over an ActionCable channel. Look throughout your scaffolded views for `cable_ready_updates_for` and in your models for the `enable_cable_ready_updates: true` option on `has_many` associations.
+### Reactive Page Updates with CableReady::Updatable
 
-### Avoid Scripts in the Body
+Bullet Train's answer to reactive page updates is a lightweight library called [CableReady::Updatable](https://cableready.stimulusreflex.com/guide/updatable.html). Rather than refreshing whole pages, it defines specific page regions that update themselves on model changes, across browser sessions. Look throughout your scaffolded `index` and `show` views for `cable_ready_updates_for` and in your models for the `enable_cable_ready_updates: true` option on `has_many` associations. By default, forms are not defined as updatable regions using CableReady::Updatable, for the same reasons explained above.
+
+### Dynamic Forms
+
+For creating dynamically-updated forms, Bullet Train introduces two powerful new patterns: the [_Dependent Fields Pattern_ and the _Dependent Fields Frame_](/docs/field-partials/dynamic-forms-dependent-fields.md). If you use the `address_field` partial, you'll see the pattern in action: changing the country will update the state and zip code fields. You can use these patterns to create complex, dynamically-updated forms.
+
+## Avoid Scripts in the Body
 
 If you experience slow Turbo interactions, check for script tags in the body of your pages. Following [Turbo's documentation](https://turbo.hotwired.dev/handbook/building#working-with-script-elements):
 
@@ -48,7 +54,3 @@ If you experience slow Turbo interactions, check for script tags in the body of 
 <script src="third-party-tracker.js" defer></script>
 </head>
 ```
-
-### Dynamic Forms
-
-For creating dynamically-updated forms, Bullet Train introduces two powerful new patterns: the [_Dependent Fields Pattern_ and the _Dependent Fields Frame_](/docs/field-partials/dynamic-forms-dependent-fields.md).
