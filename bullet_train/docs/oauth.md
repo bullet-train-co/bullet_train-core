@@ -10,6 +10,8 @@ rails generate super_scaffold:oauth_provider
 ## Stripe Connect Example
 Similar to the "Tangible Things" template for [Super Scaffolding CRUD workflows](/docs/super-scaffolding.md), Bullet Train includes a Stripe Connect integration by default and this example also serves as a template for Super Scaffolding to implement other providers you might want to add.
 
+See [the docs about Stripe Connect](/docs/stripe-connect.md) for more info about setting up Stripe Connect in your app.
+
 ## Dealing with Last Mile Issues
 
 You should be able to add many third-party OAuth providers with Super Scaffolding without any manual effort. However, there are sometimes quirks from provider to provider, so if you need to dig in to get things working on a specific provider, here are the files you'll probably be looking for:
