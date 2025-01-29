@@ -4,7 +4,16 @@ Rails.application.routes.draw do
   end
 
   scope module: "public" do
-    root to: "home#index"
+    begin
+      root to: "home#index"
+    rescue ArgumentError => argument_error
+      if argument_error.message.match?("Invalid route name, already in use: 'root'")
+        # This means that a public root route has been declared by the application.
+      else
+        raise
+      end
+    end
+
     get "invitation" => "home#invitation", :as => "invitation"
 
     if Rails.env.development?
@@ -15,8 +24,16 @@ Rails.application.routes.draw do
 
   namespace :account do
     shallow do
-      # TODO we need to either implement a dashboard or deprecate this.
-      root to: "dashboard#index", as: "dashboard"
+      begin
+        # TODO we need to either implement a dashboard or deprecate this.
+        root to: "dashboard#index", as: "dashboard"
+      rescue ArgumentError => argument_error
+        if argument_error.message.match?("Invalid route name, already in use: 'account_dashboard'")
+          # This means that an account scoped root/dashboard route has been declared by the application.
+        else
+          raise
+        end
+      end
 
       resource :two_factor, only: [:create, :destroy] do
         post :verify
