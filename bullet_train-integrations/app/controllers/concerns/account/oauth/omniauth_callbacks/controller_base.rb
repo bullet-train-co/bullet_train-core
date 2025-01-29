@@ -6,6 +6,8 @@ module Account::Oauth::OmniauthCallbacks::ControllerBase
   end
 
   def failure
+    Rails.logger.error "OmniAuth Failure -------------------------------------"
+    Rails.logger.error request.env["omniauth.error"]
     flash[:danger] = "Failed to sign in"
     redirect_to root_path
   end
