@@ -90,7 +90,7 @@ PATH
       image_processing
       microscope
       nice_partials (~> 0.9)
-      omniauth
+      omniauth (~> 2.0)
       pagy (~> 8)
       possessive
       premailer-rails

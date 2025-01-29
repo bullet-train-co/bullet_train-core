@@ -3,11 +3,11 @@ require "bullet_train/integrations/stripe/engine"
 
 require "stripe"
 require "omniauth"
-require "omniauth-stripe-connect"
+require "omniauth-stripe-connect-v2"
 
 # TODO Remove when we're able to properly upgrade Omniauth.
 # https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284
-require "omniauth/rails_csrf_protection"
+#require "omniauth/rails_csrf_protection"
 
 module BulletTrain
   module Integrations

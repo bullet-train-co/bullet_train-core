@@ -115,9 +115,9 @@ PATH
   remote: .
   specs:
     bullet_train-integrations-stripe (1.14.2)
-      omniauth
-      omniauth-rails_csrf_protection
-      omniauth-stripe-connect
+      omniauth (~> 2.0)
+      omniauth-rails_csrf_protection (~> 1.0)
+      omniauth-stripe-connect-v2
       rails (>= 6.0.0)
       stripe
 
@@ -340,17 +340,18 @@ GEM
       snaky_hash (~> 2.0)
       version_gem (~> 1.1)
     observer (0.1.2)
-    omniauth (1.9.2)
+    omniauth (2.1.2)
       hashie (>= 3.4.6)
-      rack (>= 1.6.2, < 3)
-    omniauth-oauth2 (1.7.3)
+      rack (>= 2.2.3)
+      rack-protection
+    omniauth-oauth2 (1.8.0)
       oauth2 (>= 1.4, < 3)
-      omniauth (>= 1.9, < 3)
-    omniauth-rails_csrf_protection (0.1.2)
+      omniauth (~> 2.0)
+    omniauth-rails_csrf_protection (1.0.2)
       actionpack (>= 4.2)
-      omniauth (>= 1.3.1)
-    omniauth-stripe-connect (2.10.1)
-      omniauth (~> 1.3)
+      omniauth (~> 2.0)
+    omniauth-stripe-connect-v2 (1.0.4)
+      omniauth (~> 2.0)
       omniauth-oauth2 (~> 1.4)
     orm_adapter (0.5.0)
     ostruct (0.6.1)
@@ -378,6 +379,9 @@ GEM
     rack (2.2.10)
     rack-cors (2.0.2)
       rack (>= 2.0.0)
+    rack-protection (3.2.0)
+      base64 (>= 0.1.0)
+      rack (~> 2.2, >= 2.2.4)
     rack-session (1.0.2)
       rack (< 3)
     rack-test (2.2.0)

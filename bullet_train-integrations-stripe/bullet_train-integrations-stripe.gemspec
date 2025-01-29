@@ -24,12 +24,12 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 6.0.0"
   spec.add_dependency "stripe"
-  spec.add_dependency "omniauth"
-  spec.add_dependency "omniauth-stripe-connect"
+  spec.add_dependency "omniauth", "~> 2.0"
+  spec.add_dependency "omniauth-stripe-connect-v2"
 
   # TODO Remove when we're able to properly upgrade Omniauth.
   # https://github.com/omniauth/omniauth/wiki/Resolving-CVE-2015-9284
-  spec.add_dependency "omniauth-rails_csrf_protection"
+  spec.add_dependency "omniauth-rails_csrf_protection", "~> 1.0"
 
   spec.add_development_dependency "simplecov"
 end
