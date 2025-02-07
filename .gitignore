@@ -3,3 +3,10 @@
 
 */test/reports
 */coverage
+
+# This is a gem that used to be in the core repo but that never contained any real code.
+# We're including it here so that if someone has a local copy of the core repo containing
+# files that had previously been ignored by bullet_train-scope_questions/.gitignore that
+# those files won't show up for them as needing to be committed. This should reduce confusion
+# and prevent those files from being accidentally added to a PR.
+bullet_train-scope_questions/
