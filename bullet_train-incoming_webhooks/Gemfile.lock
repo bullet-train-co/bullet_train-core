@@ -32,7 +32,7 @@ PATH
   remote: ../bullet_train-roles
   specs:
     bullet_train-roles (1.15.0)
-      active_hash
+      active_hash (>= 3.3.1)
       activesupport
       cancancan
 
