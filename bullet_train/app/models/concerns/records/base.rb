@@ -38,7 +38,7 @@ module Records::Base
 
     # Microscope adds useful scopes targeting ActiveRecord `boolean`, `date` and `datetime` attributes.
     # https://github.com/mirego/microscope
-    acts_as_microscope
+    # acts_as_microscope
   end
 
   class_methods do
