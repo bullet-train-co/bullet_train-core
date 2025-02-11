@@ -58,9 +58,6 @@ Gem::Specification.new do |spec|
   # We use this to detect the size of the logo assets.
   spec.add_dependency "fastimage"
 
-  # We don't want to develop in a world where we can't `ap` our objects for a clean presentation of them.
-  spec.add_dependency "awesome_print"
-
   # Serving language based on browser settings.
   spec.add_dependency "http_accept_language"
 
