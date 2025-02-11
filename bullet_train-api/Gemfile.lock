@@ -73,7 +73,6 @@ PATH
       hiredis
       http_accept_language
       image_processing
-      microscope
       nice_partials (~> 0.9)
       omniauth (~> 2.0)
       pagy (~> 8)
@@ -283,9 +282,6 @@ GEM
       activesupport
       prism (>= 0.14.0)
     method_source (1.1.0)
-    microscope (1.1.1)
-      activerecord (>= 4.1.0)
-      activesupport (>= 4.1.0)
     mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.25.4)
