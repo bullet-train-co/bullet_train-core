@@ -1,4 +1,5 @@
 require "io/wait"
+require "awesome_print"
 
 namespace :bullet_train do
   desc "Figure out where something is coming from."
