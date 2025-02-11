@@ -87,9 +87,6 @@ Gem::Specification.new do |spec|
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
   spec.add_dependency "commonmarker", ">= 1.0.0"
 
-  # OpenAI
-  spec.add_dependency "ruby-openai"
-
   # Conversations.
   spec.add_runtime_dependency "unicode-emoji"
 
