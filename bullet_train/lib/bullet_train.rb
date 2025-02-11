@@ -33,7 +33,6 @@ require "valid_email"
 require "commonmarker"
 require "pagy"
 require "devise/pwned_password"
-require "openai"
 
 module BulletTrain
   mattr_accessor :routing_concerns, default: []
