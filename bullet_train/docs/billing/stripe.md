@@ -39,7 +39,7 @@ gem "bullet_train-billing", git: "https://github.com/bullet-train-pro/bullet_tra
 gem "bullet_train-billing-stripe", git: "https://github.com/bullet-train-pro/bullet_train-billing-stripe.git"
 ```
 
-### B.3. Bundle Install
+### B.2. Bundle Install
 
 ```
 bundle install
