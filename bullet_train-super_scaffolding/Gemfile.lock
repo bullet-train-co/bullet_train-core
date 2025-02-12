@@ -78,7 +78,6 @@ PATH
       figaro
       hiredis
       http_accept_language
-      image_processing
       nice_partials (~> 0.9)
       omniauth (~> 2.0)
       pagy (~> 8)
@@ -236,7 +235,6 @@ GEM
     faraday-net_http (3.4.0)
       net-http (>= 0.5.0)
     fastimage (2.3.1)
-    ffi (1.17.0)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
     globalid (1.2.1)
@@ -247,9 +245,6 @@ GEM
     http_accept_language (2.1.1)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
-    image_processing (1.13.0)
-      mini_magick (>= 4.9.5, < 5)
-      ruby-vips (>= 2.0.17, < 3)
     indefinite_article (0.2.5)
       activesupport
     io-console (0.8.0)
@@ -280,7 +275,6 @@ GEM
       activesupport
       prism (>= 0.14.0)
     method_source (1.1.0)
-    mini_magick (4.13.2)
     mini_mime (1.1.5)
     minitest (5.25.4)
     minitest-reporters (1.7.1)
@@ -409,9 +403,6 @@ GEM
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
     ruby-progressbar (1.13.0)
-    ruby-vips (2.2.2)
-      ffi (~> 1.12)
-      logger
     securerandom (0.4.1)
     showcase-rails (0.4.6)
       rails (>= 6.1.0)

@@ -45,8 +45,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "xxhash"
   spec.add_dependency "omniauth", "~> 2.0"
 
-  spec.add_dependency "image_processing"
-
   spec.add_dependency "cancancan"
 
   # We use this to add "'s" as appropriate in certain headings.
