@@ -27,7 +27,7 @@ end
 bundle install
 ```
 
-**Proceed to the [Installation Instructions](#installation-instructions) section below
+**Proceed to the [Installation Instructions](#installation-instructions) section below**
 
 ## Option B: Using the Open Source version of Bullet Train Billing via git
 
@@ -39,14 +39,12 @@ history of each project and identify an appropriate git reference.
 - [Git history for bullet_train-billing](https://github.com/bullet-train-pro/bullet_train-billing/commits/main/)
 - [Git history for bullet_train-billing-stripe](https://github.com/bullet-train-pro/bullet_train-billing-stripe/commits/main/)
 
-For this example we will be using `bullet_train-billing` version 1.0.12 and `bullet_train-billing-stripe` version 1.0.4.
-
 ### B.2. Add the Git Repositories
 
 ```
 # Below the comment labelled YOUR GEMS in your Gemfile
-gem "bullet_train-billing", git: "https://github.com/bullet-train-pro/bullet_train-billing.git", ref: "dd05d76"
-gem "bullet_train-billing-stripe", git: "https://github.com/bullet-train-pro/bullet_train-billing-stripe.git", ref: "b1e3c2e"
+gem "bullet_train-billing", git: "https://github.com/bullet-train-pro/bullet_train-billing.git", ref: "The git reference you selected"
+gem "bullet_train-billing-stripe", git: "https://github.com/bullet-train-pro/bullet_train-billing-stripe.git", ref: "The git reference you selected"
 ```
 
 ### B.3. Bundle Install
@@ -64,7 +62,7 @@ Fetching gem metadata from https://rubygems.org/........
 <all of your normal gems>
 ```
 
-**Proceed to the [Installation Instructions](#installation-instructions) section below
+**Proceed to the [Installation Instructions](#installation-instructions) section below**
 
 ## Installation Instructions
 
@@ -86,9 +84,6 @@ cp `bundle show --paths | grep bullet_train-billing-stripe | sort | head -n 1`/d
 Note this is different than how many Rails engines ask you to install migrations. This is intentional, as we want to maintain the original timestamps associated with these migrations.
 
 <aside><small>TODO Let's create a `rake bullet_train:billing:stripe:install` task.</small></aside>
-
-### 2.4. Run Migrations
-
 
 ### 2. Run Migrations
 
@@ -151,18 +146,14 @@ Ensure you've completed the steps from [HTTP Tunneling with ngrok](/docs/tunneli
 
 #### 5.2. Enable Stripe Webhooks
 
-  - Visit [https://dashboard.stripe.com/test/workbench/webhooks](https://dashboard.stripe.com/test/workbench/webhooks).
-  - Click the "+ Add destination" button
-  - In the "Select events" section choose the following:
-    - Events from: "Your account"
-    - API version: Your current version
-    - Events: Click the checkbox "Select all events"
-      - **This raises a warning about latency and performance. To discuss during documentation review to determine if this can be trimmed down to more specific events**
-  - Click "Continue ->"
-  - Select the "Webhook endpoint" option and click "Continue ->"
-  - Set the "Endpoint URL" to `https://YOUR-SUBDOMAIN.ngrok.io/webhooks/incoming/stripe_webhooks`
-  - Set the Description to "Bullet Train Development Webhook Endpoint"
-  - Click "Create destination"
+  - Visit [https://dashboard.stripe.com/test/webhooks/create](https://dashboard.stripe.com/test/webhooks/create).
+  - Use the default "add an endpoint" form.
+  - Set "endpoint URL" to `https://YOUR-SUBDOMAIN.ngrok.io/webhooks/incoming/stripe_webhooks`.
+  - Under "select events to listen to" choose "select all events" and click "add events".
+  - Finalize the creation of the endpoint by clicking "add endpoint".
+
+*Note:* Depending on your region and when your Stripe account was created, you may be presented with a different admin interface.
+For more details on creating webhooks, please refer to the [Stripe Workbench documentation](https://docs.stripe.com/workbench#webhooks)
 
 #### 5.3. Configure Stripe Webhooks Signing Secret
 
@@ -243,7 +234,7 @@ basic:
 
 Each root level entry (i.e. `free` and `basic`) are the types of subscriptions that will be available to your customers. Each subscription has the following:
 
-  - `price`: The product price key **discuss during PR to get a better understanding of what this means here**
+  - `price`: A unique identifer for this price
   - `image`: The product image from `assets/images/products` that is presented to the buyer from the new subscription page
   - `limits`: The resource constraints on what a user can do on this subscription. To learn more, refer to [Bullet Train Usage Limits](/docs/billing/usage.md)
   - `prices`: The list of pricing options for this product, where each price will have the following:
@@ -253,19 +244,27 @@ Each root level entry (i.e. `free` and `basic`) are the types of subscriptions t
     - `interval`: The unit of time of the subscription (i.e. day, month, year)
     - `quantity`: The relation used to determine how many of this product are being ordered.
       - If your pricing model charges per seat, this should be set to `memberships`
-      - If you are charging a fix rate, this field should be omitted
+      - If you are charging a fixed rate, this field should be `1`
     - `highlight`: When set to true, this product will *pop out* from the other product options that are presented to the user
+
+There exists a relationship between `duration` and `interval` that is used to determine how often a customers card is billed. For example, if you wanted to bill a
+customer once every three months you'd have the following configuration:
+
+```yaml
+duration: 3
+interval: month
+```
 
 For full details on product pricing, please refer to the [Product and Prices Overview Documentation on Stripe](https://docs.stripe.com/products-prices/overview)
 
 #### 8.2 Replacing Test Products with your own
 
   - Before making any changes, be sure to cancel any subscriptions
-    - **NOTE FOR THE REVIEWER**: Is this the right approach? How should people approach removing old products with still-active (even if cancelled) subscriptions? 
   - Go to https://dashboard.stripe.com/test/products and find the test products that were added
   - Click on the "..." menu to the right and click "Archive product"
   - Remove the product keys from `config/application.yml`
   - Replace the boilerplate product entries in `config/models/billing/products.yml`
+    - A `free` plan **must exist** in order for your application to continue to work without issue
 
 #### 8.3 Customizing the Pricing Page content
 
@@ -278,12 +277,6 @@ bin/resolve bullet_train-billing/app/views/account/billing/subscriptions/new.htm
 ```
 
 **Ejecting the subscriptions translations**
-
-**NOTE FOR THE REVIEWER**: I am not certain on how to eject the translations files from the gem, the following does not work
-
-```
-bin/resolve en.account.billing.subscriptions.new.pricing.header --eject
-```
 
 Subscription translations can be retrieved directly [from github](https://github.com/bullet-train-pro/bullet_train-billing/blob/main/config/locales/en/billing/subscriptions.en.yml) and copied into `config/locales/en/billing`
 
