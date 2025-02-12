@@ -31,10 +31,7 @@ bundle install
 
 ## Option B: Using the Open Source version of Bullet Train Billing via git
 
-- [Git history for bullet_train-billing](https://github.com/bullet-train-pro/bullet_train-billing/commits/main/)
-- [Git history for bullet_train-billing-stripe](https://github.com/bullet-train-pro/bullet_train-billing-stripe/commits/main/)
-
-### B.2. Add the Git Repositories
+### B.1. Add the Git Repositories
 
 ```
 # Below the comment labelled YOUR GEMS in your Gemfile
