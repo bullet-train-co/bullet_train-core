@@ -170,7 +170,7 @@ STRIPE_WEBHOOKS_ENDPOINT_SECRET: whsec_aBunchOfRandomCharacters
 
 ### 6. Test Creating a Subscription
 
-Bullet Train comes preconfigured with a "freemium" plan, which will keep new and existing account working as normal. A new **billing** menu item will appear in the **Team** menu.
+Bullet Train comes preconfigured with a "freemium" plan, which will keep new and existing accounts working as normal. A new **billing** menu item will appear in the **Team** menu.
 
 From the Subscriptions page, click the "Upgrade" button and select one of the two plans presented.
 
