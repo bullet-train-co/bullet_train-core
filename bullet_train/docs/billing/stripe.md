@@ -158,7 +158,7 @@ STRIPE_WEBHOOKS_ENDPOINT_SECRET: whsec_aBunchOfRandomCharacters
 #### 5.4. Test Sample Webhook Delivery
 
  - Restart your Rails server with `rails restart`.
- - Trigger a test webhook using the Stripe CLI. Such as `stripe trigger payment_intent.succeeded`
+ - Trigger a test webhook using the Stripe CLI (for instance `stripe trigger payment_intent.succeeded`). You just want to make sure that it results in an HTTP status code of 201.
 
 ### 6. Test Creating a Subscription
 
