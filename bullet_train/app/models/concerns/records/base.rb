@@ -35,10 +35,6 @@ module Records::Base
     scope :oldest_created, -> { order("created_at ASC") }
     scope :newest_updated, -> { order("updated_at DESC") }
     scope :oldest_updated, -> { order("updated_at ASC") }
-
-    # Microscope adds useful scopes targeting ActiveRecord `boolean`, `date` and `datetime` attributes.
-    # https://github.com/mirego/microscope
-    acts_as_microscope
   end
 
   class_methods do

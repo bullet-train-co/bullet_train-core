@@ -61,9 +61,6 @@ Gem::Specification.new do |spec|
   # We don't want to develop in a world where we can't `ap` our objects for a clean presentation of them.
   spec.add_dependency "awesome_print"
 
-  # Add helpful scopes automatically on booleans and date/time attributes.
-  spec.add_dependency "microscope"
-
   # Serving language based on browser settings.
   spec.add_dependency "http_accept_language"
 
