@@ -31,11 +31,6 @@ bundle install
 
 ## Option B: Using the Open Source version of Bullet Train Billing via git
 
-### B.1. Find a Compatible Version
-
-It is possible you will need to find a release that is compatible with your version of BulletTrain. As of the time of writing,
-`bullet_train-billing` and `bullet_train-billing-stripe` do not have versions tagged in git. You will need to go through the commit
-history of each project and identify an appropriate git reference.
 - [Git history for bullet_train-billing](https://github.com/bullet-train-pro/bullet_train-billing/commits/main/)
 - [Git history for bullet_train-billing-stripe](https://github.com/bullet-train-pro/bullet_train-billing-stripe/commits/main/)
 
