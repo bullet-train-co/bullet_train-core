@@ -11,8 +11,8 @@ require "bullet_train/scope_validator"
 
 require "exceptions"
 
-# TODO: Do we really need to require this here?
-require "colorize"
+# NOTE: This is requiring the `colorizer.rb` file that lives in the same directory as this file. It looks like it's requiring a gem, but it's not.
+require "colorizer"
 require "bullet_train/core_ext/string_emoji_helper"
 
 require "devise"
