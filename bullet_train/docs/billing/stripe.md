@@ -35,8 +35,8 @@ bundle install
 
 ```
 # Below the comment labelled YOUR GEMS in your Gemfile
-gem "bullet_train-billing", git: "https://github.com/bullet-train-pro/bullet_train-billing.git", ref: "The git reference you selected"
-gem "bullet_train-billing-stripe", git: "https://github.com/bullet-train-pro/bullet_train-billing-stripe.git", ref: "The git reference you selected"
+gem "bullet_train-billing", git: "https://github.com/bullet-train-pro/bullet_train-billing.git"
+gem "bullet_train-billing-stripe", git: "https://github.com/bullet-train-pro/bullet_train-billing-stripe.git"
 ```
 
 ### B.3. Bundle Install
