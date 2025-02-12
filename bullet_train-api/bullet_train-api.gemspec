@@ -43,6 +43,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "rack-cors"
   spec.add_dependency "doorkeeper"
   spec.add_dependency "jbuilder-schema", "~> 2.6.6"
-  spec.add_dependency "colorizer"
   spec.add_dependency "factory_bot"
 end

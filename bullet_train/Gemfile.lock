@@ -4,7 +4,6 @@ PATH
     bullet_train-api (1.16.0)
       bullet_train
       bullet_train-super_scaffolding
-      colorizer
       doorkeeper
       factory_bot
       jbuilder-schema (~> 2.6.6)
@@ -53,7 +52,7 @@ PATH
   remote: ../bullet_train-super_scaffolding
   specs:
     bullet_train-super_scaffolding (1.16.0)
-      colorizer
+      colorize
       indefinite_article
       masamune-ast (~> 2.0.2)
       rails (>= 6.0.0)
@@ -93,7 +92,7 @@ PATH
       bullet_train-themes
       cable_ready (~> 5.0.0)
       cancancan
-      colorizer
+      colorize
       commonmarker (>= 1.0.0)
       devise
       devise-pwned_password
@@ -215,7 +214,7 @@ GEM
       faraday-multipart (~> 1.0, >= 1.0.4)
       ostruct
     coderay (1.1.3)
-    colorizer (0.0.2)
+    colorize (1.1.0)
     commonmarker (2.0.2)
       rb_sys (~> 0.9)
     commonmarker (2.0.2-arm64-darwin)

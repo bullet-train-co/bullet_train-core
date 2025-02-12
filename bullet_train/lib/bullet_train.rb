@@ -11,7 +11,8 @@ require "bullet_train/scope_validator"
 
 require "exceptions"
 
-require "colorizer"
+# TODO: Do we really need to require this here?
+require "colorize"
 require "bullet_train/core_ext/string_emoji_helper"
 
 require "devise"
