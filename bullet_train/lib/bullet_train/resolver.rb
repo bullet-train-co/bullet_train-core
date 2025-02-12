@@ -1,4 +1,5 @@
 require "io/wait"
+require "colorize"
 
 module BulletTrain
   class Resolver

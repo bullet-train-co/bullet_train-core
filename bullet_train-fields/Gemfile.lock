@@ -61,7 +61,6 @@ PATH
   remote: ../bullet_train
   specs:
     bullet_train (1.16.0)
-      awesome_print
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
@@ -179,7 +178,6 @@ GEM
       public_suffix (>= 2.0.2, < 7.0)
     ansi (1.5.0)
     ast (2.4.2)
-    awesome_print (1.9.2)
     base64 (0.2.0)
     bcrypt (3.1.20)
     benchmark (0.4.0)
