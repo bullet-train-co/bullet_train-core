@@ -87,7 +87,6 @@ PATH
       sidekiq
       unicode-emoji
       valid_email
-      xxhash
 
 PATH
   remote: .
@@ -461,7 +460,6 @@ GEM
     websocket-driver (0.7.6)
       websocket-extensions (>= 0.1.0)
     websocket-extensions (0.1.5)
-    xxhash (0.6.0)
     zeitwerk (2.7.1)
 
 PLATFORMS
