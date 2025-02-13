@@ -99,7 +99,6 @@ PATH
       rails (>= 6.0.0)
       showcase-rails
       sidekiq
-      unicode-emoji
 
 PATH
   remote: .

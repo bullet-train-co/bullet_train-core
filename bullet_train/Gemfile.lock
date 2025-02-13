@@ -107,7 +107,6 @@ PATH
       rails (>= 6.0.0)
       showcase-rails
       sidekiq
-      unicode-emoji
 
 GEM
   remote: https://rubygems.org/
@@ -509,6 +508,7 @@ DEPENDENCIES
   sprockets-rails
   sqlite3
   standard
+  unicode-emoji
 
 BUNDLED WITH
    2.6.2

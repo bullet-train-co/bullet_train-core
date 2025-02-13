@@ -19,6 +19,11 @@ gem "bullet_train-scope_validator", path: "../bullet_train-scope_validator"
 gem "bullet_train-themes", path: "../bullet_train-themes"
 gem "bullet_train-themes-tailwind_css", path: "../bullet_train-themes-tailwind_css"
 
+# NOTE: This is an optional dependency in the starter repo. We only use it in one method that we don't
+# actually ever call, either in the starter repo or in any of the core gems. We list it here so that it's
+# available for tests/CI
+gem "unicode-emoji", group: :test
+
 group :test do
   gem "minitest-reporters"
 end

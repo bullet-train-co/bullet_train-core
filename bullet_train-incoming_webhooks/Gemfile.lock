@@ -92,7 +92,6 @@ PATH
       rails (>= 6.0.0)
       showcase-rails
       sidekiq
-      unicode-emoji
 
 PATH
   remote: .
@@ -414,7 +413,6 @@ GEM
     timeout (0.4.3)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
-    unicode-emoji (4.0.4)
     uri (1.0.2)
     useragent (0.16.11)
     warden (1.2.9)
