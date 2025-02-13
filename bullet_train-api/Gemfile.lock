@@ -69,7 +69,6 @@ PATH
       devise-pwned_password
       fastimage
       figaro
-      hiredis
       http_accept_language
       nice_partials (~> 0.9)
       omniauth (~> 2.0)
@@ -236,7 +235,6 @@ GEM
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
-    hiredis (0.6.3)
     htmlentities (4.3.4)
     http_accept_language (2.1.1)
     i18n (1.14.6)
