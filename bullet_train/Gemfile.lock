@@ -107,7 +107,6 @@ PATH
       rails (>= 6.0.0)
       showcase-rails
       sidekiq
-      unicode-emoji
 
 GEM
   remote: https://rubygems.org/
