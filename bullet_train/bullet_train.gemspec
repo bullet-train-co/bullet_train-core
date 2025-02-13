@@ -61,7 +61,6 @@ Gem::Specification.new do |spec|
   # Reactive view magic.
   # The `cable_ready_updates_for` feature replaces Bullet Train's earlier "Cable Collections" feature.
   spec.add_dependency "cable_ready", "~> 5.0.0"
-  spec.add_dependency "hiredis"
 
   # Add named slots to regular Rails partials.
   spec.add_dependency "nice_partials", "~> 0.9"
