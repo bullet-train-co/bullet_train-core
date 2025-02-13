@@ -42,7 +42,6 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-fields"
   spec.add_dependency "colorize"
   spec.add_dependency "devise"
-  spec.add_dependency "xxhash"
   spec.add_dependency "omniauth", "~> 2.0"
 
   spec.add_dependency "cancancan"

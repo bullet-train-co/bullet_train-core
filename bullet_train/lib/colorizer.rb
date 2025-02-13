@@ -11,7 +11,17 @@ module Colorizer
   end
 
   def colorize_similarly(object, saturation, lightness)
-    rnd = ((XXhash.xxh64(object) * 7) % 100) * 0.01
+    # NOTE: We used to default to using XXhash and had it listed as a hard dependency for this gem.
+    # In an effort to slim down our dependencies we're making it so that this can work without XXhash.
+    # But since changing the way we calculate the seed _also_ changes the color that comes out the
+    # other end, we're making it so that people can add `gem "xxhash"` to their `Gemfile` to preserve
+    # the colors that were previously being generated.
+    seed = if Object.const_defined?(:XXhash)
+      XXhash.xxh64(object)
+    else
+      Digest::MD5.hexdigest(object).to_i(16)
+    end
+    rnd = ((seed * 7) % 100) * 0.01
     hsl_to_rgb(rnd, saturation, lightness)
   end
 
