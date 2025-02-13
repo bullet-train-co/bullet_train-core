@@ -508,6 +508,7 @@ DEPENDENCIES
   sprockets-rails
   sqlite3
   standard
+  unicode-emoji
 
 BUNDLED WITH
    2.6.2
