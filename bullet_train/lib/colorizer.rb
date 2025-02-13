@@ -16,11 +16,11 @@ module Colorizer
     # But since changing the way we calculate the seed _also_ changes the color that comes out the
     # other end, we're making it so that people can add `gem "xxhash"` to their `Gemfile` to preserve
     # the colors that were previously being generated.
-    seed = if Object.const_defined?("XXhash")
-             XXhash.xxh64(object)
-           else
-             Digest::MD5.hexdigest(object).to_i(16)
-           end
+    seed = if Object.const_defined?(:XXhash)
+      XXhash.xxh64(object)
+    else
+      Digest::MD5.hexdigest(object).to_i(16)
+    end
     rnd = ((seed * 7) % 100) * 0.01
     hsl_to_rgb(rnd, saturation, lightness)
   end
