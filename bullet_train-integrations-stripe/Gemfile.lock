@@ -102,7 +102,6 @@ PATH
       showcase-rails
       sidekiq
       unicode-emoji
-      valid_email
 
 PATH
   remote: .
@@ -426,7 +425,6 @@ GEM
       simplecov_json_formatter (~> 0.1)
     simplecov-html (0.13.1)
     simplecov_json_formatter (0.1.4)
-    simpleidn (0.2.3)
     snaky_hash (2.0.1)
       hashie
       version_gem (~> 1.1, >= 1.1.1)
@@ -449,10 +447,6 @@ GEM
     unicode-emoji (4.0.4)
     uri (1.0.2)
     useragent (0.16.11)
-    valid_email (0.2.1)
-      activemodel
-      mail (>= 2.6.1)
-      simpleidn
     version_gem (1.1.4)
     warden (1.2.9)
       rack (>= 2.0.9)

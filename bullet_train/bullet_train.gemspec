@@ -74,9 +74,6 @@ Gem::Specification.new do |spec|
   # Define ENV values in `config/application.yml`.
   spec.add_dependency "figaro"
 
-  # Validate email addresses.
-  spec.add_dependency "valid_email"
-
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
   spec.add_dependency "commonmarker", ">= 1.0.0"
 
