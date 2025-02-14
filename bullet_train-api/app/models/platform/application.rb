@@ -32,8 +32,9 @@ class Platform::Application < BulletTrain::Api.base_class.constantize
   end
 
   def create_user_and_membership
-    faux_password = SecureRandom.hex
-    create_user(email: "noreply+#{SecureRandom.hex}@bullettrain.co", password: faux_password, password_confirmation: faux_password, first_name: label_string)
+    faux_password = BulletTrain::Api.configuration.nonce_generator.call
+    nonce = BulletTrain::Api.configuration.nonce_generator.call
+    create_user(email: "noreply+#{nonce}@bullettrain.co", password: faux_password, password_confirmation: faux_password, first_name: label_string)
     create_membership(team: team, user: user, user_email: user.email, platform_agent: true)
     membership.roles << Role.admin
   end

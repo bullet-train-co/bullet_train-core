@@ -22,9 +22,9 @@ class BulletTrain::Platform::ConnectionWorkflow
 
             # Create a faux membership and user that represent this connection.
             # We have to do this because all our permissions are based on users, so team-level connections need a user.
-            faux_password = SecureRandom.hex
+            faux_password = BulletTrain::Api.configuration.nonce_generator.call
             faux_user = User.create(
-              email: "noreply+#{SecureRandom.hex}@bullettrain.co",
+              email: "noreply+#{BulletTrain::Api.configuration.nonce_generator.call}@bullettrain.co",
               password: faux_password,
               password_confirmation: faux_password,
               platform_agent_of: @application,

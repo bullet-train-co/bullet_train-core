@@ -23,9 +23,10 @@ class Account::Platform::ApplicationsController < Account::ApplicationController
 
   def provision
     if ENV["TESTING_PROVISION_KEY"].present? && params[:key] == ENV["TESTING_PROVISION_KEY"]
-      user = User.create(email: "test@#{SecureRandom.hex}.example.com", password: (password = SecureRandom.hex), password_confirmation: password)
-      provision_team = current_user.teams.create(name: "provision-team-#{SecureRandom.hex}", time_zone: user.time_zone)
-      test_application = Platform::Application.new(name: "test-application-#{SecureRandom.hex}", team: provision_team)
+      faux_password = BulletTrain::Api.configuration.nonce_generator.call
+      user = User.create(email: "test@#{BulletTrain::Api.configuration.nonce_generator.call}.example.com", password: faux_password, password_confirmation: faux_password)
+      provision_team = current_user.teams.create(name: "provision-team-#{BulletTrain::Api.configuration.nonce_generator.call}", time_zone: user.time_zone)
+      test_application = Platform::Application.new(name: "test-application-#{BulletTrain::Api.configuration.nonce_generator.call}", team: provision_team)
 
       if test_application.save
         access_token = test_application.create_access_token
