@@ -1,5 +1,4 @@
 require "pagy"
-require "rack/cors"
 
 module BulletTrain
   module Api
