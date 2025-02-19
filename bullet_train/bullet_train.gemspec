@@ -65,9 +65,6 @@ Gem::Specification.new do |spec|
   # Allow users to document and showcase their partials, components, view helpers, etc.
   spec.add_dependency "showcase-rails"
 
-  # Inline all CSS for emails.
-  spec.add_dependency "premailer-rails"
-
   # Define ENV values in `config/application.yml`.
   spec.add_dependency "figaro"
 
