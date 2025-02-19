@@ -100,7 +100,6 @@ PATH
       premailer-rails
       rails (>= 6.0.0)
       showcase-rails
-      sidekiq
 
 PATH
   remote: .
@@ -402,8 +401,6 @@ GEM
     rake (13.2.1)
     rdoc (6.10.0)
       psych (>= 4.0.0)
-    redis-client (0.23.0)
-      connection_pool
     reline (0.6.0)
       io-console (~> 0.5)
     responders (3.1.1)
@@ -413,11 +410,6 @@ GEM
     securerandom (0.4.1)
     showcase-rails (0.4.6)
       rails (>= 6.1.0)
-    sidekiq (7.3.7)
-      connection_pool (>= 2.3.0)
-      logger
-      rack (>= 2.2.4)
-      redis-client (>= 0.22.2)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
