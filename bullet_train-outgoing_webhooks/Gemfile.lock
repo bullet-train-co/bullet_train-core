@@ -9,7 +9,6 @@ PATH
       jbuilder-schema (~> 2.6.6)
       pagy (~> 8)
       pagy_cursor
-      rack-cors
       rails (>= 6.0.0)
 
 PATH
@@ -333,8 +332,6 @@ GEM
     pwned (2.4.1)
     racc (1.8.1)
     rack (3.1.8)
-    rack-cors (2.0.2)
-      rack (>= 2.0.0)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
