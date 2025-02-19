@@ -49,9 +49,6 @@ Gem::Specification.new do |spec|
   # We use this to add "'s" as appropriate in certain headings.
   spec.add_dependency "possessive"
 
-  # We've standardized on Sidekiq for background job processing.
-  spec.add_dependency "sidekiq"
-
   # We use this to detect the size of the logo assets.
   spec.add_dependency "fastimage"
 
