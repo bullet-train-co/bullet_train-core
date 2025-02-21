@@ -24,7 +24,7 @@ module ObfuscatesId
         decode_single_id(id)
       end
     end
-    
+
     def decode_single_id(id)
       return id if id.to_i > 0
       hashids.decode(id).first
