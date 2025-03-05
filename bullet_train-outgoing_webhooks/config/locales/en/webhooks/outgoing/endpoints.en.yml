@@ -47,6 +47,11 @@ en:
         api_title: *url
         api_description: *url
 
+      error_rate:
+        _: &error_rate ERROR RATE
+        label: *error_rate
+        heading: *error_rate
+
       api_version:
         _: &api_version API Version
         label: *api_version
