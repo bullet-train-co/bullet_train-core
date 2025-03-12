@@ -11,6 +11,10 @@ module Account::Onboarding::UserDetails::ControllerBase
     end
   end
 
+  def show
+    redirect_to root_path
+  end
+
   # GET /users/1/edit
   def edit
     flash[:notice] = nil
