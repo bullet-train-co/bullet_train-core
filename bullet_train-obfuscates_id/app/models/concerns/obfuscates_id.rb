@@ -18,6 +18,14 @@ module ObfuscatesId
     end
 
     def decode_id(id)
+      if id.is_a?(Array)
+        id.map { |single_id| decode_single_id(single_id) }
+      else
+        decode_single_id(id)
+      end
+    end
+
+    def decode_single_id(id)
       return id if id.to_i > 0
       hashids.decode(id).first
     end
