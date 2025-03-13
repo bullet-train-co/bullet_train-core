@@ -1,6 +1,6 @@
 <% cancel_path ||= tangible_thing.persisted? ? [:account, tangible_thing] : [:account, @absolutely_abstract_creative_concept, :completely_concrete_tangible_things] %>
 
-<%= form_with model: tangible_thing, url: (tangible_thing.persisted? ? [:account, tangible_thing] : [:account, @absolutely_abstract_creative_concept, :completely_concrete_tangible_things]), local: true, class: 'form' do |form| %>
+<%= form_with model: tangible_thing, url: (tangible_thing.persisted? ? [:account, tangible_thing] : [:account, @absolutely_abstract_creative_concept, :completely_concrete_tangible_things]), class: 'form' do |form| %>
   <%= render "shared/limits/form", form: form, cancel_path: cancel_path do %>
     <%= render 'account/shared/forms/errors', form: form %>
 

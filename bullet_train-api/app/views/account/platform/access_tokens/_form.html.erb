@@ -1,4 +1,4 @@
-<%= form_with model: access_token, url: (access_token.persisted? ? [:account, access_token] : [:account, @application, :access_tokens]), local: true, class: 'form' do |form| %>
+<%= form_with model: access_token, url: (access_token.persisted? ? [:account, access_token] : [:account, @application, :access_tokens]), class: 'form' do |form| %>
   <%= render 'account/shared/forms/errors', form: form %>
 
   <% with_field_settings form: form do %>

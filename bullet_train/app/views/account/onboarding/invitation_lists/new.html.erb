@@ -4,7 +4,7 @@
   <% box.title @title %>
   <% box.body do %>
     <% within_fields_namespace(:self) do %>
-      <%= form_with(model: @account_onboarding_invitation_list, class: 'form', local: true) do |f| %>
+      <%= form_with(model: @account_onboarding_invitation_list, class: 'form') do |f| %>
         <% f.object.errors.each do |error| %>
           <%= render 'account/shared/forms/errors', form: f, attributes: [error.attribute], resource: @account_onboarding_invitation_list %>
         <% end %>

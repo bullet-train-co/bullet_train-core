@@ -9,7 +9,7 @@ end
 <%= render 'account/shared/workflow/box' do |box| %>
   <% box.title @title %>
   <% box.body do %>
-    <%= form_with model: @team, url: [:account, @team], local: true, class: 'form' do |form| %>
+    <%= form_with model: @team, url: [:account, @team], class: 'form' do |form| %>
       <%= render 'account/shared/notices' %>
       <%= render 'account/shared/forms/errors', form: form %>
 
