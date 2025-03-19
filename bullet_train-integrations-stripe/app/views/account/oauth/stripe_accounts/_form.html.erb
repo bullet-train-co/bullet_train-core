@@ -1,4 +1,4 @@
-<%= form_with model: [:account, (@user unless stripe_account.persisted?), stripe_account], local: true, class: 'form' do |form| %>
+<%= form_with model: [:account, (@user unless stripe_account.persisted?), stripe_account], class: 'form' do |form| %>
   <%= render 'account/shared/forms/errors', form: form %>
 
   <%= render 'account/shared/alert' do %>

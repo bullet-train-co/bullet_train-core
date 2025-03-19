@@ -107,7 +107,7 @@ The first of these two forms is actually not shared between `new.html.erb` and `
 <% if @entry.entryable_type %>
   <%= render 'form', entry: @entry %>
 <% else %>
-  <%= form_with model: @entry, url: [:new, :account, @team, :entry], method: :get, local: true, class: 'form' do |form| %>
+  <%= form_with model: @entry, url: [:new, :account, @team, :entry], method: :get, class: 'form' do |form| %>
     <%= render 'account/shared/forms/errors', form: form %>
     <% with_field_settings form: form do %>
       <%= render 'shared/fields/buttons', method: :entryable_type, html_options: {autofocus: true} %>
