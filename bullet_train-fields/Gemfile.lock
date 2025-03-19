@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.19.0)
+    bullet_train-api (1.19.1)
       bullet_train
       bullet_train-super_scaffolding
       doorkeeper
@@ -14,13 +14,13 @@ PATH
 PATH
   remote: ../bullet_train-has_uuid
   specs:
-    bullet_train-has_uuid (1.19.0)
+    bullet_train-has_uuid (1.19.1)
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-roles
   specs:
-    bullet_train-roles (1.19.0)
+    bullet_train-roles (1.19.1)
       active_hash (>= 3.3.1)
       activesupport
       cancancan
@@ -28,20 +28,20 @@ PATH
 PATH
   remote: ../bullet_train-scope_validator
   specs:
-    bullet_train-scope_validator (1.19.0)
+    bullet_train-scope_validator (1.19.1)
       rails
 
 PATH
   remote: ../bullet_train-super_load_and_authorize_resource
   specs:
-    bullet_train-super_load_and_authorize_resource (1.19.0)
+    bullet_train-super_load_and_authorize_resource (1.19.1)
       cancancan
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.19.0)
+    bullet_train-super_scaffolding (1.19.1)
       colorize
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -50,7 +50,7 @@ PATH
 PATH
   remote: ../bullet_train-themes
   specs:
-    bullet_train-themes (1.19.0)
+    bullet_train-themes (1.19.1)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -58,7 +58,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.19.0)
+    bullet_train (1.19.1)
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
@@ -84,7 +84,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-fields (1.19.0)
+    bullet_train-fields (1.19.1)
       chronic
       cloudinary
       phonelib
