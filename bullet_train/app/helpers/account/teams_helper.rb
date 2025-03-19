@@ -26,11 +26,16 @@ module Account::TeamsHelper
 
   def photo_for(object)
     background_color = Colorizer.colorize_similarly((object.name.to_s + object.created_at.to_s).to_s, 0.5, 0.6).delete("#")
+    avatar_name = if object.name.present?
+      "#{object.name.first}#{object.name.split.one? ? "" : object.name.split.first(2).last.first}"
+    else
+      "??"
+    end
     "https://ui-avatars.com/api/?" + {
       color: "ffffff",
       background: background_color,
       bold: true,
-      name: "#{object.name.first}#{object.name.split.one? ? "" : object.name.split.first(2).last.first}",
+      name: avatar_name,
       size: 200,
     }.to_param
   end
