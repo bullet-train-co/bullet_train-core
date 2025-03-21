@@ -7,7 +7,7 @@ other_options ||= {}
 language ||= "javascript"
 monaco_config ||= {}
 theme_light ||= "vs"
-theme_dark ||= "vs"
+theme_dark ||= "vs-dark"
 
 wrapper_options ||= {}
 wrapper_options[:class] ||= ""
@@ -21,7 +21,7 @@ wrapper_options[:data]["#{stimulus_controller}-theme-dark-value"] = theme_dark
 wrapper_options[:data]["#{stimulus_controller}-monaco-config-value"] = monaco_config if monaco_config.present?
 
 field_class = "min-h-32 w-full text-base md:text-[0.75rem] font-mono text-input px-0 "
-field_class += " bg-[color:--code-editor-background] [--code-editor-background:theme('colors.white')] dark:[--code-editor-background:theme('colors.slate.800')]"
+field_class += " bg-[color:--code-editor-background] [--code-editor-background:theme('colors.slate.50')] dark:[--code-editor-background:theme('colors.slate.800')]"
 field_class += " block rounded-md shadow-sm font-light dark:text-slate-300"
 field_class += " disabled:[--code-editor-background:theme('colors.slate.200')] disabled:dark:[--code-editor-background:theme('colors.slate.700')]"
 field_class += " focus:ring-primary-500 focus:border-primary-500 border-slate-300 dark:border-slate-900"
