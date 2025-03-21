@@ -1,0 +1,54 @@
+<%
+stimulus_controller = "fields--code-editor"
+form ||= current_fields_form
+options ||= {}
+other_options ||= {}
+
+language ||= "javascript"
+monaco_config ||= {}
+theme_light ||= "vs"
+theme_dark ||= "vs"
+
+wrapper_options ||= {}
+wrapper_options[:class] ||= ""
+wrapper_options[:class] += " code-editor"
+wrapper_options[:data] ||= {}
+wrapper_options[:data][:controller] ||= ""
+wrapper_options[:data][:controller] += " #{stimulus_controller}"
+wrapper_options[:data]["#{stimulus_controller}-language-value"] = language
+wrapper_options[:data]["#{stimulus_controller}-theme-light-value"] = theme_light
+wrapper_options[:data]["#{stimulus_controller}-theme-dark-value"] = theme_dark
+wrapper_options[:data]["#{stimulus_controller}-monaco-config-value"] = monaco_config if monaco_config.present?
+
+field_class = "min-h-32 w-full text-base md:text-[0.75rem] font-mono text-input px-0 "
+field_class += " bg-[color:--code-editor-background] [--code-editor-background:theme('colors.white')] dark:[--code-editor-background:theme('colors.slate.800')]"
+field_class += " block rounded-md shadow-sm font-light dark:text-slate-300"
+field_class += " disabled:[--code-editor-background:theme('colors.slate.200')] disabled:dark:[--code-editor-background:theme('colors.slate.700')]"
+field_class += " focus:ring-primary-500 focus:border-primary-500 border-slate-300 dark:border-slate-900"
+
+plain_field_options ||= {}
+plain_field_options[:class] ||= ""
+plain_field_options[:class] += "hidden #{field_class} p-0 pl-3"
+plain_field_options[:data] ||= {}
+plain_field_options[:data]["#{stimulus_controller}-target"] = "plainField"
+plain_field_options[:spellcheck] = :false
+plain_field_options[:autocomplete] = :off
+plain_field_options[:autocorrect] = :off
+plain_field_options[:autocapitalize] = :off
+
+code_field_options ||= {}
+code_field_options[:class] ||= ""
+code_field_options[:class] += " #{field_class}"
+code_field_options[:data] ||= {}
+code_field_options[:data]["#{stimulus_controller}-target"] = "codeField"
+code_field_options[:data][:action] ||= ""
+%>
+
+<%= tag.div(**wrapper_options) do %>
+  <%= render 'shared/fields/field', form: form, method: method, options: options, other_options: other_options do %>
+    <% content_for :field do %>
+      <%= form.text_area method, plain_field_options %>
+      <%= tag.div(**code_field_options) %>
+    <% end %>
+  <% end %>
+<% end %>
