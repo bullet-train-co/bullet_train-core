@@ -2,15 +2,15 @@
 
 module Roles
   module Permit
-    def permit(user, through:, parent:, debug: false, intermediary: nil, rails_cache_key: nil)
+    def permit(user, through:, parent:, debug: false, intermediary: nil, rails_cache_key: nil, included_roles: [])
       # When changing permissions during development, you may also want to do this on each request:
       # User.update_all ability_cache: nil if Rails.env.development?
       permissions = if rails_cache_key
         Rails.cache.fetch(rails_cache_key) do
-          build_permissions(user, through, parent, intermediary)
+          build_permissions(user, through, parent, intermediary, included_roles)
         end
       else
-        build_permissions(user, through, parent, intermediary)
+        build_permissions(user, through, parent, intermediary, included_roles)
       end
 
       begin
@@ -47,10 +47,13 @@ module Roles
       end
     end
 
-    def build_permissions(user, through, parent, intermediary)
+    def build_permissions(user, through, parent, intermediary, included_roles)
       added_roles = Set.new
       permissions = []
-      user.send(through).map(&:roles).flatten.uniq.each do |role|
+      user_roles = user.send(through).map(&:roles).flatten.uniq
+      user_roles &= included_roles if included_roles.any?
+
+      user_roles.each do |role|
         unless added_roles.include?(role)
           permissions << {is_debug: true, info: "########### ROLE: #{role.key}"}
           permissions += add_abilities_for(role, user, through, parent, intermediary)
