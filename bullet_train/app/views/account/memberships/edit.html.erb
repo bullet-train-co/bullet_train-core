@@ -9,7 +9,7 @@
     <% if can? :destroy, @membership %>
       <%= render 'account/shared/box', divider: true do |box| %>
         <% box.t title: '.remove_header', description: '.remove_description' %>
-        <% box.body.button_to t('.buttons.destroy'), [:account, @membership], method: :delete, data: { confirm: t('.buttons.confirmations.destroy') }, class: 'button' %>
+        <% box.body.button_to t('.buttons.destroy'), [:account, @membership], method: :delete, data: { turbo_confirm: t('.buttons.confirmations.destroy') }, class: 'button' %>
       <% end %>
     <% end %>
   <% end %>
