@@ -4,6 +4,31 @@ Bullet Train leans into the use of [Stimulus](https://stimulus.hotwired.dev) for
 ## Writing Custom JavaScript
 The happy path for writing new custom JavaScript is to [write it as a Stimulus controller](https://stimulus.hotwired.dev/handbook/building-something-real) in `app/javascript/controllers` and invoke it by augmenting the HTML in your views. If you name the file `*_controller.js`, it will be automatically picked up and compiled as part of your application's JavaScript bundle. Be careful to [avoid adding scripts to the body of your pages (see below)](#avoid-scripts-in-the-body).
 
+## Overriding BulletTrain Stimulus Controllers
+
+If you need to slightly tweak the behavior of the built-in Bullet Train Stimulus controllers you can do it easily.
+
+Let's say you want to alter the SuperSelectController.
+
+First create a file at: `app/javascript/controllers/fields/super_select_controller.js`
+
+And then update that controller to first `import` the BT controller that you want to override,
+and then `export` a class that `extends` the controller that you just imported.
+
+For example, this will make it so that the BT Super Select controller will log a line to the console
+every time that `connect` is called:
+
+```javascript
+import { SuperSelectController } from '@bullet-train/fields'
+
+export default class extends SuperSelectController {
+  connect() {
+    console.log('super_select_controller connected')
+    super.connect()
+  }
+}
+```
+
 ## npm Packages
 npm packages are managed by [Yarn](https://yarnpkg.com) and any required importing can be done in `app/javascript/application.js`.
 
