@@ -249,6 +249,9 @@ module Api
           if details["required"]
             original["required"] << property
             details.delete("required")
+          elsif details["required"] == false
+            original["required"].delete(property)
+            details.delete("required")
           end
           original["properties"][property] = details
           if details["example"]
