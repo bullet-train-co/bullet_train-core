@@ -26,7 +26,7 @@
             <%= link_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.edit"), build_action_model_path(action, type: :edit), class: 'button-secondary button-smaller' %>
           <% end %>
           <% if can? :destroy, action %>
-            <%= button_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.destroy"), build_action_model_path(action), method: :delete, data: { confirm: t("#{action.class.name.pluralize.underscore}.buttons.confirmations.destroy", model_locales(action)) }, class: 'button-secondary button-smaller' %>
+            <%= button_to t("#{action.class.name.pluralize.underscore}.buttons.shorthand.destroy"), build_action_model_path(action), method: :delete, data: { turbo_confirm: t("#{action.class.name.pluralize.underscore}.buttons.confirmations.destroy", model_locales(action)) }, class: 'button-secondary button-smaller' %>
           <% end %>
         </div>
       </div>
