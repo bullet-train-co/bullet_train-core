@@ -165,6 +165,12 @@ To access the array of all roles available for a particular model, use the `assi
 <% end %>
 ```
 
+You may want to restrict the roles considered at runtime too. To do this you can use the `included_roles` keyword of `permit`:
+
+```ruby
+permit user, through: :memberships, parent: :team, included_roles: Membership.assignable_roles
+```
+
 ## Checking user permissions
 
 Generally the CanCanCan helper method (`account_load_and_authorize_resource`) at the top of each controller will handle checking user permissions and will only load resources appropriate for the current user.
