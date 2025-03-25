@@ -16,7 +16,7 @@ And then update that controller to first `import` the BT controller that you wan
 and then `export` a class that `extends` the controller that you just imported.
 
 For example, this will make it so that the BT Super Select controller will log a line to the console
-every time that `connect` is calle:
+every time that `connect` is called:
 
 ```javascript
 import { SuperSelectController } from '@bullet-train/fields'
