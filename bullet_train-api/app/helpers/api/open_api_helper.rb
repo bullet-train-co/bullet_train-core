@@ -248,8 +248,12 @@ module Api
         custom["add"].each do |property, details|
           if details["required"]
             original["required"] << property
-            details.delete("required")
+          else
+            original["required"].delete(property)
           end
+          # Always delete required because this attribute should only go
+          # into the required array according to OpenAPI 3.1.
+          details.delete("required")
           original["properties"][property] = details
           if details["example"]
             original["example"][property] = details["example"]
