@@ -25,6 +25,7 @@ module Scaffolding
       "options",
       "password_field",
       "phone_field",
+      "slug",
       "super_select",
       "text_area",
       "text_field",
