@@ -1,0 +1,21 @@
+<%= render "showcase/previews/field_partials/attribute_partials/about_attribute_partials", showcase: showcase do |partial| %>
+  <% partial.body do |object| %>
+    <% showcase.sample "CSS example" do %>
+      <%
+        object.text_area_value = <<~CSS
+          h1 {
+            font-size: 3em;
+            color: red;
+            text-transform: uppercase;
+            font-family: Futura, sans-serif;
+            margin-bottom: 3em;
+            line-height: 1;
+            max-inline-size: 50ch;
+            text-wrap: balance;
+          }
+        CSS
+      %>
+      <%= render 'shared/attributes/code_snippet', object: object, strategy: :label, attribute: :text_area_value %>
+    <% end %>
+  <% end %>
+<% end %>

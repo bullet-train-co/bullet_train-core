@@ -199,7 +199,7 @@ class Scaffolding::Attribute
     when "text_area"
       "text"
     when "code_editor"
-      "text"
+      "code_snippet"
     when "file_field"
       "file#{"s" if is_multiple?}"
     when "password_field"
