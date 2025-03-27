@@ -52,3 +52,4 @@ Most of the field partials have a native Rails form helper working underneath. P
 | `text_field` | [text_field](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-text_field) |
 | `number_field` | [number_field](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-number_field) |
 | `trix_editor` | [rich_text_editor](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-rich_text_area) |
+| `code_editor` | [text_area](https://api.rubyonrails.org/classes/ActionView/Helpers/FormHelper.html#method-i-text_area) |
