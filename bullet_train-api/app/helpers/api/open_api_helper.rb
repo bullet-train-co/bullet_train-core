@@ -50,8 +50,10 @@ module Api
     def automatic_components_for(model, **options)
       locals = options.delete(:locals) || {}
 
-      path = "app/views/api/#{@version}"
-      paths = [path, "app/views"] + gem_paths.product(%W[/#{path} /app/views]).map(&:join)
+      view_path = "app/views"
+      api_path = "#{view_path}/api/#{@version || "v1"}"
+      paths = [Rails.root.join(api_path).to_s, Rails.root.join(view_path).to_s]
+      paths += gem_paths.product(%W[/#{api_path} /#{view_path}]).map(&:join)
 
       # Transform values the same way we do for Jbuilder templates
       Jbuilder::Schema::Template.prepend ValuesTransformer
@@ -248,8 +250,12 @@ module Api
         custom["add"].each do |property, details|
           if details["required"]
             original["required"] << property
-            details.delete("required")
+          else
+            original["required"].delete(property)
           end
+          # Always delete required because this attribute should only go
+          # into the required array according to OpenAPI 3.1.
+          details.delete("required")
           original["properties"][property] = details
           if details["example"]
             original["example"][property] = details["example"]

@@ -425,6 +425,7 @@ GEM
 PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
@@ -437,6 +438,7 @@ DEPENDENCIES
   bullet_train-super_load_and_authorize_resource!
   bullet_train-super_scaffolding!
   bullet_train-themes!
+  factory_bot
   minitest-reporters
   simplecov
   sprockets-rails

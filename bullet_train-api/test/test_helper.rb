@@ -17,3 +17,12 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
 end
 
 require_relative "../../test_support/minitest_reporters"
+
+ActiveSupport::TestCase.include FactoryBot::Syntax::Methods
+FactoryBot.find_definitions
+
+# Copied from ClickFunnels
+Jbuilder::Schema.configure do |config|
+  config.title_name = ["api_title", "title"]
+  config.description_name = ["api_description", "heading"]
+end
