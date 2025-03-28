@@ -18,7 +18,7 @@ end
 
 require_relative "../../test_support/minitest_reporters"
 
-include FactoryBot::Syntax::Methods
+ActiveSupport::TestCase.include FactoryBot::Syntax::Methods
 FactoryBot.find_definitions
 
 # Copied from ClickFunnels
