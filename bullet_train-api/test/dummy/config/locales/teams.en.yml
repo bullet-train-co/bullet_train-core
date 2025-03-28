@@ -1,0 +1,23 @@
+en:
+  teams:
+    label: Teams
+    fields:
+      id:
+        label: Team ID
+        api_description: Team ID description
+      name:
+        label: Business name
+      slug:
+        label: Slug
+        api_description: URL param to point to a team
+      time_zone:
+        label: "Primary time zone"
+        api_description: |
+          The human-readable time zone set manually by a user or dynamically by the app.
+          Read more about time zones and how to map them back to the TZ standard in [our Time Zones guide.](https://google.com/).
+      created_at:
+        label: Created
+        api_description: Created description
+      updated_at:
+        label: Updated
+        api_description: Updated description
