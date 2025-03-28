@@ -22,4 +22,5 @@ gem "bullet_train-themes", path: "../bullet_train-themes"
 
 group :test do
   gem "minitest-reporters"
+  gem "factory_bot"
 end
