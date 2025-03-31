@@ -18,7 +18,7 @@
   <div class="buttons">
     <%= form.submit (form.object.persisted? ? t('.buttons.update') : t('.buttons.create')), class: "button" %>
     <% if controller.action_name == "edit" %>
-      <%= link_to t('account.teams.buttons.destroy'), [:account, team], method: :delete, data: { turbo_confirm: t('account.teams.buttons.confirmations.destroy') } %>
+      <%= button_to t('account.teams.buttons.destroy'), [:account, team], method: :delete, data: { turbo_confirm: t('account.teams.buttons.confirmations.destroy') } %>
     <% end %>
     <%= link_to t('global.buttons.cancel'), form.object.persisted? ? [:account, team] : [:account, :teams], class: "button-secondary" %>
   </div>

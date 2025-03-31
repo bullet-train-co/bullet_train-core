@@ -34,16 +34,16 @@
 
       <% box.actions do %>
         <% if @membership.tombstone? %>
-          <%= link_to t('.buttons.reinvite'), [:reinvite, :account, @membership], class: first_button_primary, method: :post, data: {turbo_confirm: t('.buttons.confirmations.reinvite', membership_name: @membership.name)} if can? :edit, @membership %>
+          <%= button_to t('.buttons.reinvite'), [:reinvite, :account, @membership], class: first_button_primary, method: :post, data: {turbo_confirm: t('.buttons.confirmations.reinvite', membership_name: @membership.name)} if can? :edit, @membership %>
         <% end %>
 
         <%= link_to t('.buttons.edit'), [:edit, :account, @membership], class: first_button_primary if can? :edit, @membership %>
 
         <% unless @membership.tombstone? %>
           <% if @membership.admin? %>
-            <%= link_to t('.buttons.demote'), [:demote, :account, @membership], method: :post, data: { turbo_confirm: t('global.confirm_message') }, class: first_button_primary if can? :demote, @membership %>
+            <%= button_to t('.buttons.demote'), [:demote, :account, @membership], method: :post, data: { turbo_confirm: t('global.confirm_message') }, class: first_button_primary if can? :demote, @membership %>
           <% else %>
-            <%= link_to t('.buttons.promote'), [:promote, :account, @membership], method: :post, data: { turbo_confirm: t('global.confirm_message') }, class: first_button_primary if can? :promote, @membership %>
+            <%= button_to t('.buttons.promote'), [:promote, :account, @membership], method: :post, data: { turbo_confirm: t('global.confirm_message') }, class: first_button_primary if can? :promote, @membership %>
           <% end %>
           <% if (can? :destroy, @membership) && (!@membership.platform_agent) %>
             <%= button_to t(".buttons.#{membership_destroy_locale_key(@membership)}"), [:account, @membership], method: :delete, data: { turbo_confirm: t(".buttons.confirmations.#{membership_destroy_locale_key(@membership)}", model_locales(@membership)) }, class: first_button_primary %>

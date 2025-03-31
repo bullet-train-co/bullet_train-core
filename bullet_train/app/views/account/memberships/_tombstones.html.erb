@@ -47,7 +47,7 @@
                 <% end %>
               </td>
               <td class="text-right">
-                <%= link_to t('.buttons.reinvite'), [:reinvite, :account, membership], class: 'button-secondary button-smaller', method: :post, data: {turbo_confirm: t('.buttons.confirmations.reinvite', membership_name: membership.name)} if can? :edit, membership %>
+                <%= button_to t('.buttons.reinvite'), [:reinvite, :account, membership], class: 'button-secondary button-smaller', method: :post, data: {turbo_confirm: t('.buttons.confirmations.reinvite', membership_name: membership.name)} if can? :edit, membership %>
                 <%= link_to t('.buttons.show'), [:account, membership], class: 'button-secondary button-smaller' %>
               </td>
             </tr>
