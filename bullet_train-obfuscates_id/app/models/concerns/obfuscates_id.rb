@@ -15,7 +15,7 @@ module ObfuscatesId
     end
 
     def encode_id(id)
-      sqids.encode([ id ])
+      sqids.encode([id])
     end
 
     def decode_id(id)
