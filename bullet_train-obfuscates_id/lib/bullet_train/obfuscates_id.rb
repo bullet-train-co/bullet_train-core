@@ -1,7 +1,7 @@
 require "bullet_train/obfuscates_id/version"
 require "bullet_train/obfuscates_id/engine"
 
-require "hashids"
+require "sqids"
 
 module BulletTrain
   module ObfuscatesId
