@@ -9,6 +9,13 @@ class Api::OpenApiHelperTest < ActiveSupport::TestCase
     end
   end
 
+  # TODO: In the future, we can solve this more elegantly than providing
+  # a comment here and doing individual asserts. For example, by having a
+  # team_attributes.yml fixture and then doing one assert_equal against a
+  # string or a `expected_hash.to_yml`.
+  #
+  # An example of the resulting OpenAPI schema:
+  #
   # TeamAttributes:
   #   type: object
   #   title: Teams
