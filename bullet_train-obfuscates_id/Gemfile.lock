@@ -4,6 +4,7 @@ PATH
     bullet_train-obfuscates_id (1.19.2)
       hashids
       rails (>= 6.0.0)
+      sqids
 
 GEM
   remote: https://rubygems.org/
@@ -93,7 +94,6 @@ GEM
     erubi (1.13.1)
     globalid (1.2.1)
       activesupport (>= 6.1)
-    hashids (1.0.6)
     i18n (1.14.6)
       concurrent-ruby (~> 1.0)
     io-console (0.8.0)
@@ -191,6 +191,7 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
+    sqids (0.2.1)
     sqlite3 (2.5.0-arm64-darwin)
     sqlite3 (2.5.0-x86_64-linux-gnu)
     stringio (3.1.2)
@@ -208,6 +209,7 @@ GEM
 PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
+  arm64-darwin-24
   x86_64-linux
 
 DEPENDENCIES
