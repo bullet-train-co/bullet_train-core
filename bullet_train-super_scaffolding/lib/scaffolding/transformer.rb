@@ -813,6 +813,8 @@ class Scaffolding::Transformer
 
       unless cli_options["skip-show"]
 
+        # TODO: Seems like this block of code is useless?
+        # standard:disable Lint/Void
         if attribute.is_id?
           <<~ERB
             <% if @tangible_thing.#{attribute.name_without_id} %>
@@ -836,6 +838,7 @@ class Scaffolding::Transformer
             <% end %>
           ERB
         end
+        # standard:enable Lint/Void
 
         # this gets stripped and is one line, so indentation isn't a problem.
         field_content = <<-ERB
