@@ -20,9 +20,7 @@
     "clean": "rimraf app/assets/javascripts",
     "prewatch": "$npm_execpath run update-local-installs",
     "watch": "npm-watch",
-    "update-local-installs": "$npm_execpath run build; yalc push",
-    "prerelease": "$npm_execpath run build",
-    "release": "np --any-branch"
+    "update-local-installs": "$npm_execpath run build; yalc push"
   },
   "keywords": [
     "bullet-train",
@@ -48,7 +46,6 @@
     "emoji-mart": "^5.1.0",
     "microbundle": "^0.13.0",
     "moment-timezone": "^0.5.43",
-    "np": "^7.6.0",
     "npm-watch": "^0.11.0",
     "rimraf": "^3.0.2",
     "yalc": "^1.0.0-pre.53"
