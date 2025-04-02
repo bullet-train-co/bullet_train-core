@@ -3,6 +3,7 @@
 @import './phone_field';
 @import './super_select';
 @import './trix_editor';
+@import './code_editor';
 
 .required > label::after {
   @apply text-red-500 pl-1 text-base leading-none inline-block;

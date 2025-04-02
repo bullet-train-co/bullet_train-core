@@ -28,7 +28,8 @@ module Scaffolding
       "super_select",
       "text_area",
       "text_field",
-      "trix_editor"
+      "trix_editor",
+      "code_editor"
     ].include?(type.gsub(/{.*}/, "")) # Pop off curly brackets such as `super_select{class_name=Membership}`
   end
 end

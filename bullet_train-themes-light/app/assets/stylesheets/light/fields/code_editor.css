@@ -1,0 +1,10 @@
+.code-editor {
+  .monaco-editor, .monaco-editor .overflow-guard {
+    border-radius: inherit;
+  }
+  
+  .monaco-editor, .monaco-editor-background,
+  .monaco-editor .margin {
+    background-color: var(--code-editor-background);
+  }
+}
