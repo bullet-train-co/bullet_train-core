@@ -53,7 +53,7 @@ module BulletTrain
             else
               `mkdir -p #{source_file[:project_path].split("/")[0...-1].join("/")}`
               puts "Ejecting `#{source_file[:absolute_path]}` to `#{source_file[:project_path]}`".green
-              File.open((source_file[:project_path]).to_s, "w+") do |file|
+              File.open(source_file[:project_path].to_s, "w+") do |file|
                 case source_file[:project_path].split(".").last
                 when "rb", "yml"
                   file.puts "# Ejected from `#{source_file[:relative_path] || source_file[:package_name]}`.\n\n"
@@ -95,7 +95,7 @@ module BulletTrain
         end
 
         if open
-          path = source_file[:package_name] ? source_file[:absolute_path] : (source_file[:project_path]).to_s
+          path = source_file[:package_name] ? source_file[:absolute_path] : source_file[:project_path].to_s
           puts "Opening `#{path}`.\n".green
 
           # TODO: Use TerminalCommands to open this file

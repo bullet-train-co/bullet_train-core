@@ -231,7 +231,9 @@ namespace :bullet_train do
     puts "Run `bin/hack --watch-js` to see which other npm packages you can watch.".blue
     puts "When you're done, you can hit <Control + C> and we'll clean all off this up.".blue
     puts ""
-    bt_package = framework_packages.select { |k, v| k == :bullet_train }
+    # TODO: On this next line we're disabling standard for now. We should circle back and remove the comment
+    # that disables standard and then try the recommendation that it makes. And test it to make sure it works.
+    bt_package = framework_packages.select { |k, v| k == :bullet_train } # standard:disable Style/HashSlice
     set_npm_package("--watch-js", bt_package)
 
     puts ""
