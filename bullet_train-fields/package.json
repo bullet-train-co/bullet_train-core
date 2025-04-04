@@ -42,7 +42,6 @@
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@rails/actiontext": "^7.0.0",
     "babel-loader": "^8.2.2",
-    "cp-cli": "^2.0.0",
     "emoji-mart": "^5.1.0",
     "microbundle": "^0.13.0",
     "moment-timezone": "^0.5.43",
