@@ -1,0 +1,11 @@
+<% value ||= "0.0%" %>
+
+<%
+if value == "0.0%"
+  label_classes = "bg-green-200 text-green-600"
+else
+  label_classes = "bg-red-200 text-red-900"
+end
+%>
+
+<span class="<%= label_classes %> p-1 rounded-xl"><%= value %></span>
