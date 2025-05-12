@@ -86,7 +86,7 @@ PATH
       doorkeeper
       factory_bot
       jbuilder-schema (~> 2.6.6)
-      pagy (~> 8)
+      pagy (>= 8.0)
       pagy_cursor
       rails (>= 6.0.0)
 
