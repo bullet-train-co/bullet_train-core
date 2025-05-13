@@ -120,7 +120,7 @@ git merge v1.4.1
 It's quite possible you'll get some merge conflicts at this point. No big deal! Just go through and
 resolve them like you would if you were integrating code from another developer on your team. We tend
 to comment our code heavily, but if you have any questions about the code you're trying to understand,
-let us know on [Discord!](https://discord.gg/bullettrain)
+let us know on [Discord!](https://discord.gg/gmfybM8kA6)
 
 One of the files that's likely to have conflicts, and which can be the most frustrating to resolve is
 `Gemfile.lock`. You can try to sort it out by hand, or you can checkout a clean copy and then let bundler
