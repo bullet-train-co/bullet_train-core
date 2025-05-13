@@ -290,4 +290,4 @@ As mentioned earlier, all of the links we provided for configuration steps on St
 
 ## 10. You should be done!
 
-[Let us know on Discord](http://discord.gg/bullettrain) if any part of this guide was not clear or could be improved!
+[Let us know on Discord](https://discord.gg/gmfybM8kA6) if any part of this guide was not clear or could be improved!
