@@ -14,8 +14,9 @@
     "update-local-installs": "app/javascript/**/*.js"
   },
   "scripts": {
-    "prebuild": "$npm_execpath run clean; $npm_execpath run copy:intl-tel-input-utils",
+    "prebuild": "$npm_execpath run clean; $npm_execpath run mkdir:app-assets-javascripts; $npm_execpath run copy:intl-tel-input-utils",
     "build": "microbundle",
+    "mkdir:app-assets-javascripts": "node -e \"require('fs').mkdirSync('app/assets/javascripts/', { recursive: true })\"",
     "copy:intl-tel-input-utils": "node -e \"require('fs').copyFileSync('node_modules/intl-tel-input/build/js/utils.js', 'app/assets/javascripts/intl-tel-input-utils.js')\"",
     "clean": "rimraf app/assets/javascripts",
     "prewatch": "$npm_execpath run update-local-installs",
