@@ -1,0 +1,56 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.description do %>
+    <p>The code editor field is a custom field that allows you to edit code in a monaco editor, which supports a <a target="_blank" href="https://github.com/microsoft/monaco-editor/tree/main/src/basic-languages">wide range of programming languages</a>.</p>
+    <p class="mt-2">
+      <strong>Note:</strong>
+      The code editor loads the Monaco editor from a CDN on first load. If the CDN is not available, the code editor
+      will fall back to a plain text area.
+    </p>
+  <% end %>
+
+  <% showcase.sample "CSS Example (Default Language)" do %>
+    <%
+      code_field = :text_area_value
+      form.object.text_area_value = <<~CSS
+        .example {
+          color: red;
+        }
+      CSS
+    %>
+    <%= render 'shared/fields/code_editor', form: form, method: code_field %>
+  <% end %>
+
+  <% showcase.sample "JS Example" do %>
+    <%
+      code_field = :text_area_value
+      form.object.text_area_value = <<~JS
+        import { Component } from "@hotwired/stimulus"
+
+        export default class extends Component {
+          connect() {
+            console.log("Hello, world!");
+          }
+        }
+      JS
+    %>
+    <%= render 'shared/fields/code_editor', form: form, method: code_field, language: :javascript %>
+  <% end %>
+
+  <% showcase.sample "HTML Example" do %>
+    <%
+      code_field = :text_area_value
+      form.object.text_area_value = <<~HTML
+        <div class="example">Hello, world!</div>
+      HTML
+    %>
+    <%= render 'shared/fields/code_editor', form: form, method: code_field, language: :html %>
+  <% end %>
+
+  <% showcase.options do |o| %>
+    <% o.optional :language, "The <a target=\"_blank\" href=\"https://github.com/microsoft/monaco-editor/tree/main/src/basic-languages\">coding language</a> of the editor".html_safe, default: "css" %>
+    <% o.optional :theme_light, "The theme of the editor in light mode", default: "vs" %>
+    <% o.optional :theme_dark, "The theme of the editor in dark mode", default: "vs-dark" %>
+    <% o.optional :monaco_config, "Extra config properties to pass to the monaco editor" %>
+    <% o.optional :code_field_options, "Options to pass to the wrapper div of the code editor e.g. for custom data-action properties" %>
+  <% end %>
+<% end %>

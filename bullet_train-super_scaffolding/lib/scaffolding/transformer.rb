@@ -661,12 +661,13 @@ class Scaffolding::Transformer
     attributes.each_with_index do |attribute_definition, index|
       attribute = Scaffolding::Attribute.new(attribute_definition, scaffolding_options[:type], index)
 
-      if attribute.is_first_attribute? && ["trix_editor", "ckeditor", "text_area"].include?(attribute.type)
+      if attribute.is_first_attribute? && ["trix_editor", "ckeditor", "text_area", "code_editor"].include?(attribute.type)
         puts ""
         puts "The first attribute of your model cannot be any of the following types:".red
         puts "1. trix_editor"
         puts "2. ckeditor"
         puts "3. text_area"
+        puts "4. code_editor"
         puts ""
         puts "Please ensure you have another attribute type as the first attribute for your model and try again."
 
@@ -682,7 +683,7 @@ class Scaffolding::Transformer
       end
 
       # don't do table columns for certain types of fields and attribute partials
-      if ["trix_editor", "ckeditor", "text_area"].include?(attribute.type) || ["html", "has_many"].include?(attribute.partial_name)
+      if ["trix_editor", "ckeditor", "text_area", "code_editor"].include?(attribute.type) || ["html", "has_many"].include?(attribute.partial_name)
         cli_options["skip-table"] = true
       end
 

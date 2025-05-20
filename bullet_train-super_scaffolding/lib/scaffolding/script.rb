@@ -27,7 +27,8 @@ FIELD_PARTIALS = {
   text_area: "text",
   text_field: "string",
   number_field: "integer",
-  trix_editor: "text"
+  trix_editor: "text",
+  code_editor: "text"
 }
 
 # filter out options.
