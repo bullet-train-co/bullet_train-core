@@ -816,31 +816,31 @@ class Scaffolding::Transformer
 
         # TODO: Seems like this block of code is useless?
         # standard:disable Lint/Void
-        if attribute.is_id?
-          raise "raise at attribute.is_id?"
-          <<~ERB
-            <% if @tangible_thing.#{attribute.name_without_id} %>
-              <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
-                <div>
-                  <%= link_to @tangible_thing.#{attribute.name_without_id}.#{attribute.options[:label]}, [:account, @tangible_thing.#{attribute.name_without_id}] %>
-                </div>
-              </div>
-            <% end %>
-          ERB
-        elsif attribute.is_ids?
-          raise "raise at attribute.is_ids?"
-          <<~ERB
-            <% if @tangible_thing.#{attribute.collection_name}.any? %>
-              <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
-                <div>
-                  <%= @tangible_thing.#{attribute.collection_name}.map { |#{attribute.name_without_ids}| link_to #{attribute.name_without_ids}.#{attribute.options[:label]}, [:account, #{attribute.name_without_ids}] }.to_sentence.html_safe %>
-                </div>
-              </div>
-            <% end %>
-          ERB
-        end
+        #if attribute.is_id?
+          #raise "raise at attribute.is_id?"
+          #<<~ERB
+            #<% if @tangible_thing.#{attribute.name_without_id} %>
+              #<div class="form-group">
+                #<label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
+                #<div>
+                  #<%= link_to @tangible_thing.#{attribute.name_without_id}.#{attribute.options[:label]}, [:account, @tangible_thing.#{attribute.name_without_id}] %>
+                #</div>
+              #</div>
+            #<% end %>
+          #ERB
+        #elsif attribute.is_ids?
+          #raise "raise at attribute.is_ids?"
+          #<<~ERB
+            #<% if @tangible_thing.#{attribute.collection_name}.any? %>
+              #<div class="form-group">
+                #<label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
+                #<div>
+                  #<%= @tangible_thing.#{attribute.collection_name}.map { |#{attribute.name_without_ids}| link_to #{attribute.name_without_ids}.#{attribute.options[:label]}, [:account, #{attribute.name_without_ids}] }.to_sentence.html_safe %>
+                #</div>
+              #</div>
+            #<% end %>
+          #ERB
+        #end
         # standard:enable Lint/Void
 
         # this gets stripped and is one line, so indentation isn't a problem.
