@@ -30,8 +30,7 @@ module Api::Controllers::Base
 
     def set_pagination_headers
       return unless @pagy
-
-      if @pagy.has_more?
+      if collection_has_more?
         if (collection = instance_variable_get(collection_variable))
           next_cursor = collection.last.id
           link_header = response.headers["Link"]
@@ -40,6 +39,13 @@ module Api::Controllers::Base
           response.headers["Pagination-Next"] = next_cursor
         end
       end
+    end
+
+    def collection_has_more?
+      collection = instance_variable_get(collection_variable)
+      last_id = collection.last.id
+      remaining_collection = @unpaginated_collection.order(id: :asc).where("id > ?", last_id)
+      remaining_collection.any?
     end
 
     rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
@@ -99,7 +105,12 @@ module Api::Controllers::Base
 
   def apply_pagination
     collection = instance_variable_get collection_variable
-    @pagy, collection = pagy_cursor collection, after: params[:after], order: {id: :asc}
+    @unpaginated_collection = collection
+    collection = collection.order(id: :asc)
+    if params[:after]
+      collection = collection.where("id > ?", params[:after])
+    end
+    @pagy, collection = pagy collection
     instance_variable_set collection_variable, collection
   end
 
