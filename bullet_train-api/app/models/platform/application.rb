@@ -39,6 +39,7 @@ class Platform::Application < BulletTrain::Api.base_class.constantize
   end
 
   def create_access_token
+    raise "raise in create_access_token"
     access_tokens.create(resource_owner_id: user.id, description: "Default Access Token", provisioned: true)
   end
 
