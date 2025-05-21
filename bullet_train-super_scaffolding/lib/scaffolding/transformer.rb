@@ -814,33 +814,6 @@ class Scaffolding::Transformer
 
       unless cli_options["skip-show"]
 
-        # TODO: Seems like this block of code is useless?
-        # standard:disable Lint/Void
-        if attribute.is_id?
-          <<~ERB
-            <% if @tangible_thing.#{attribute.name_without_id} %>
-              <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
-                <div>
-                  <%= link_to @tangible_thing.#{attribute.name_without_id}.#{attribute.options[:label]}, [:account, @tangible_thing.#{attribute.name_without_id}] %>
-                </div>
-              </div>
-            <% end %>
-          ERB
-        elsif attribute.is_ids?
-          <<~ERB
-            <% if @tangible_thing.#{attribute.collection_name}.any? %>
-              <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
-                <div>
-                  <%= @tangible_thing.#{attribute.collection_name}.map { |#{attribute.name_without_ids}| link_to #{attribute.name_without_ids}.#{attribute.options[:label]}, [:account, #{attribute.name_without_ids}] }.to_sentence.html_safe %>
-                </div>
-              </div>
-            <% end %>
-          ERB
-        end
-        # standard:enable Lint/Void
-
         # this gets stripped and is one line, so indentation isn't a problem.
         field_content = <<-ERB
           <%= render 'shared/attributes/#{attribute.partial_name}', attribute: :#{attribute.is_vanilla? ? attribute.name : attribute.name_without_id_suffix} %>
