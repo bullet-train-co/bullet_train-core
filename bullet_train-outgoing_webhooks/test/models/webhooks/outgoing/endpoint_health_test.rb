@@ -17,7 +17,7 @@ def default_enabled_config
   {
     automatic_deactivation_endpoint_enabled: true,
     automatic_deactivation_endpoint_settings: {
-      max_limit: 50,
+      max_limit: 5, # lowered for testing
       deactivation_in: 1.day,
     }
   }
@@ -74,42 +74,54 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     @team = Team.create!(name: "test-team")
   end
 
-  test "#deactivate_failed_endpoints! returns nil when the feature is disabled" do
+  test "#mark_to_deactivate! returns nil when the feature is disabled" do
     config = {automatic_deactivation_endpoint_enabled: false}
-    assert_nil deactivate_subject(config)
+    assert_nil mark_to_deactivate_subject(config)
   end
 
-  test "#deactivate_failed_endpoints! do not deactivate endpoints when the feature is enabled and no endpoints are exists" do
-    assert_equal [], deactivate_subject(default_enabled_config)
+  test "#mark_to_deactivate! do not deactivate endpoints when the feature is enabled and no endpoints are exists" do
+    assert_equal [], mark_to_deactivate_subject(default_enabled_config)
   end
 
-  test "#deactivate_failed_endpoints! do not deactivate endpoints when all endpoints are healthy" do
+  test "#mark_to_deactivate! do not deactivate endpoints when all endpoints are healthy" do
     user = create_user
     endpoint = create_endpoint
     event = create_event(subject: user)
     create_delivery(endpoint: endpoint, event: event, delivered_at: Time.current - 5.minutes, created_at: Time.current - 5.minutes)
     create_delivery(endpoint: endpoint, event: event, delivered_at: Time.current, created_at: Time.current)
 
-    assert_equal [], deactivate_subject(default_enabled_config)
-  end
-
-  test "#deactivate_failed_endpoints! deactivates endpoints when all deliveries are failed" do
-    user = create_user
-    endpoint = create_endpoint
-    event = create_event(subject: user)
-    create_delivery(endpoint: endpoint, event: event, created_at: Time.current - 8.days)
-    create_list_of_deliveries(49, endpoint: endpoint, event: event)
-
-    assert_equal [endpoint.id], deactivate_subject(default_enabled_config)
+    assert_equal [], mark_to_deactivate_subject(default_enabled_config)
   end
 
   test "#mark_to_deactivate! deactivates endpoints when all deliveries are failed" do
     user = create_user
-    endpoint = create_endpoint
     event = create_event(subject: user)
-    create_delivery(endpoint: endpoint, event: event, created_at: Time.current - 8.days)
-    create_list_of_deliveries(49, endpoint: endpoint, event: event)
+    endpoint_to_deactivate = create_endpoint
+    create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event)
 
-    assert_equal [endpoint.id], mark_to_deactivate_subject(default_enabled_config)
+    good_endpoint = create_endpoint
+    create_list_of_deliveries(5, endpoint: good_endpoint, event: event, delivered_at: 7.days.ago, created_at: 7.days.ago)
+
+    assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(default_enabled_config)
+  end
+
+  test "#mark_to_deactivate! deactivates endpoints when there is a successful delivery after failed" do
+    user = create_user
+    event = create_event(subject: user)
+    recovered_endpoint = create_endpoint
+    create_list_of_deliveries(5, endpoint: recovered_endpoint, event: event, created_at: 10.minutes.ago)
+    create_delivery(endpoint: recovered_endpoint, event: event, delivered_at: 5.minutes.ago, created_at: 5.minutes.ago)
+
+    assert_equal [], mark_to_deactivate_subject(default_enabled_config)
+  end
+
+  test "#mark_to_deactivate! deactivates endpoints when there is a successful delivery before failed" do
+    user = create_user
+    event = create_event(subject: user)
+    endpoint_to_deactivate = create_endpoint
+    create_delivery(endpoint: endpoint_to_deactivate, event: event, delivered_at: 5.minutes.ago, created_at: 5.minutes.ago)
+    create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event)
+
+    assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(default_enabled_config)
   end
 end

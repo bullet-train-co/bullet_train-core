@@ -14,13 +14,19 @@ class Webhooks::Outgoing::EndpointHealth
       .select("MAX(id) as id", :endpoint_id)
       .where.not(delivered_at: nil)
       .group(:endpoint_id)
+    active_endpoints = Webhooks::Outgoing::Endpoint
+      .select(:id)
+    # .where(deactivation_limit_reached_at: nil, deactivated_at: nil)
 
     not_delivered = Webhooks::Outgoing::Delivery
       .select("MIN(#{deliveries_table}.id) as first_id", "count(#{deliveries_table}.id) count_failed", :endpoint_id)
+      .joins("INNER JOIN (#{active_endpoints.to_sql}) AS endpoints ON #{deliveries_table}.endpoint_id = endpoints.id")
       .joins("LEFT JOIN (#{last_delivered.to_sql}) AS last_deliveries ON #{deliveries_table}.endpoint_id = last_deliveries.endpoint_id")
       .where(delivered_at: nil)
       .where("#{deliveries_table}.id > COALESCE(last_deliveries.id, 0)")
       .group(:endpoint_id)
+    # .having("count_failed >= ?", settings.max_limit)
+
     not_delivered.pluck(:endpoint_id)
   end
 
