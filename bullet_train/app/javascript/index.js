@@ -1,3 +1,5 @@
 export * from './controllers'
 import './electron'
-import './support/turn'
+
+import Turn from '@domchristie/turn'
+Turn.start();
