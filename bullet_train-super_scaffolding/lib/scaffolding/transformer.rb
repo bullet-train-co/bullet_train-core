@@ -817,6 +817,7 @@ class Scaffolding::Transformer
         # TODO: Seems like this block of code is useless?
         # standard:disable Lint/Void
         if attribute.is_id?
+          raise "raise at attribute.is_id?"
           <<~ERB
             <% if @tangible_thing.#{attribute.name_without_id} %>
               <div class="form-group">
@@ -828,6 +829,7 @@ class Scaffolding::Transformer
             <% end %>
           ERB
         elsif attribute.is_ids?
+          raise "raise at attribute.is_ids?"
           <<~ERB
             <% if @tangible_thing.#{attribute.collection_name}.any? %>
               <div class="form-group">
