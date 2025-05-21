@@ -22,7 +22,12 @@ module BulletTrain
           allowed_schemes: %w[http https],
           custom_block_callback: nil,
           custom_allow_callback: nil,
-          audit_callback: ->(obj, uri) { Rails.logger.error("BlockedURI obj=#{obj.persisted? ? obj.to_global_id : "New #{obj.class}"} uri=#{uri}") }
+          audit_callback: ->(obj, uri) { Rails.logger.error("BlockedURI obj=#{obj.persisted? ? obj.to_global_id : "New #{obj.class}"} uri=#{uri}") },
+          automatic_deactivation_endpoint_enabled: false,
+          automatic_deactivation_endpoint_settings: {
+            max_limit: 50,
+            deactivation_in: 1.day,
+          },
         }
       end
     end
