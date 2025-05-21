@@ -104,13 +104,12 @@ module Api::Controllers::Base
   end
 
   def apply_pagination
-    collection = instance_variable_get collection_variable
+    collection = instance_variable_get(collection_variable).order(id: :asc)
     @unpaginated_collection = collection
-    collection = collection.order(id: :asc)
     if params[:after]
       collection = collection.where("id > ?", params[:after])
     end
-    @pagy, collection = pagy collection
+    @pagy, collection = pagy(collection)
     instance_variable_set collection_variable, collection
   end
 
