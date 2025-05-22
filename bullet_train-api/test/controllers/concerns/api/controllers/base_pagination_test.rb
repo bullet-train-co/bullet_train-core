@@ -26,7 +26,8 @@ class Api::Controllers::Base::Test < ActionController::TestCase
     end
 
     @page_size = Pagy::DEFAULT[:items]
-    @teams_to_create = @page_size + 2
+    @half_page_size = @page_size / 2
+    @teams_to_create = @page_size + @half_page_size
 
     create_list(:team, @teams_to_create)
   end
@@ -48,7 +49,7 @@ class Api::Controllers::Base::Test < ActionController::TestCase
     assert_equal last_response_id, response.headers["pagination-next"]
 
     get :index, params: {after: last_response_id}
-    assert_equal 2, response.parsed_body.length
+    assert_equal @half_page_size, response.parsed_body.length
     assert_nil response.headers["pagination-next"]
   end
 end
