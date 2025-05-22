@@ -19,7 +19,8 @@ class Webhooks::Outgoing::EndpointHealth
     # .where(deactivation_limit_reached_at: nil, deactivated_at: nil)
 
     not_delivered = Webhooks::Outgoing::Delivery
-      .select("MIN(#{deliveries_table}.id) as first_id", "count(#{deliveries_table}.id) count_failed", :endpoint_id)
+      .select("MIN(#{deliveries_table}.id) as first_id", "count(#{deliveries_table}.id) count_failed", :endpoint_id) # debug select
+      # .select(:endpoint_id) # release select
       .joins("INNER JOIN (#{active_endpoints.to_sql}) AS endpoints ON #{deliveries_table}.endpoint_id = endpoints.id")
       .joins("LEFT JOIN (#{last_delivered.to_sql}) AS last_deliveries ON #{deliveries_table}.endpoint_id = last_deliveries.endpoint_id")
       .where(delivered_at: nil)
