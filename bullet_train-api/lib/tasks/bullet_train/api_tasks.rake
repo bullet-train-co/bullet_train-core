@@ -1,5 +1,5 @@
-require "scaffolding"
-require "scaffolding/file_manipulator"
+# require "scaffolding"
+# require "scaffolding/file_manipulator"
 
 require "faraday"
 require "tempfile"
