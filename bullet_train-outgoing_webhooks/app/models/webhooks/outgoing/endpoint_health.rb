@@ -25,7 +25,7 @@ class Webhooks::Outgoing::EndpointHealth
       .where(delivered_at: nil)
       .where("#{deliveries_table}.id > COALESCE(last_deliveries.id, 0)")
       .group(:endpoint_id)
-    # .having("count_failed >= ?", settings.max_limit)
+      .having("count(#{deliveries_table}.id) >= ?", settings.max_limit)
 
     not_delivered.pluck(:endpoint_id)
   end

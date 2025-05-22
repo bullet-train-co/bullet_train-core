@@ -8,12 +8,13 @@ def deactivate_subject(config = {})
 end
 
 def mark_to_deactivate_subject(config = {})
-  instance = Webhooks::Outgoing::EndpointHealth.new
-  instance.define_singleton_method(:config) { config }
-  instance.mark_to_deactivate!
+  BulletTrain::OutgoingWebhooks::Engine.config.stub(:outgoing_webhooks, config) do
+    instance = Webhooks::Outgoing::EndpointHealth.new
+    instance.mark_to_deactivate!
+  end
 end
 
-def default_enabled_config
+def test_enabled_config
   {
     automatic_deactivation_endpoint_enabled: true,
     automatic_deactivation_endpoint_settings: {
@@ -80,7 +81,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
   end
 
   test "#mark_to_deactivate! do not deactivate endpoints when the feature is enabled and no endpoints are exists" do
-    assert_equal [], mark_to_deactivate_subject(default_enabled_config)
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
   end
 
   test "#mark_to_deactivate! do not deactivate endpoints when all endpoints are healthy" do
@@ -90,10 +91,10 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_delivery(endpoint: endpoint, event: event, delivered_at: Time.current - 5.minutes, created_at: Time.current - 5.minutes)
     create_delivery(endpoint: endpoint, event: event, delivered_at: Time.current, created_at: Time.current)
 
-    assert_equal [], mark_to_deactivate_subject(default_enabled_config)
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
   end
 
-  test "#mark_to_deactivate! deactivates endpoints when all deliveries are failed" do
+  test "#mark_to_deactivate! deactivates endpoints when all deliveries are failed and the count is more than limit" do
     user = create_user
     event = create_event(subject: user)
     endpoint_to_deactivate = create_endpoint
@@ -102,7 +103,16 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     good_endpoint = create_endpoint
     create_list_of_deliveries(5, endpoint: good_endpoint, event: event, delivered_at: 7.days.ago, created_at: 7.days.ago)
 
-    assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(default_enabled_config)
+    assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
+  end
+
+  test "#mark_to_deactivate! deactivates endpoints when all deliveries are failed and the count is less than limit" do
+    user = create_user
+    event = create_event(subject: user)
+    endpoint_to_deactivate = create_endpoint
+    create_list_of_deliveries(4, endpoint: endpoint_to_deactivate, event: event)
+
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
   end
 
   test "#mark_to_deactivate! deactivates endpoints when there is a successful delivery after failed" do
@@ -112,7 +122,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_list_of_deliveries(5, endpoint: recovered_endpoint, event: event, created_at: 10.minutes.ago)
     create_delivery(endpoint: recovered_endpoint, event: event, delivered_at: 5.minutes.ago, created_at: 5.minutes.ago)
 
-    assert_equal [], mark_to_deactivate_subject(default_enabled_config)
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
   end
 
   test "#mark_to_deactivate! deactivates endpoints when there is a successful delivery before failed" do
@@ -122,6 +132,6 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_delivery(endpoint: endpoint_to_deactivate, event: event, delivered_at: 5.minutes.ago, created_at: 5.minutes.ago)
     create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event)
 
-    assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(default_enabled_config)
+    assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
   end
 end
