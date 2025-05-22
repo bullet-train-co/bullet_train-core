@@ -70,6 +70,12 @@ def create_list_of_deliveries(count, options = {})
   deliveries
 end
 
+def reached_limit_endpoints
+  Webhooks::Outgoing::Endpoint
+    .where.not(deactivation_limit_reached_at: nil)
+    .where(deactivated_at: nil)
+end
+
 class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
@@ -94,6 +100,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_delivery(endpoint: endpoint, event: event, delivered_at: Time.current, created_at: Time.current)
 
     assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+    assert reached_limit_endpoints.count.zero?
   end
 
   test "#mark_to_deactivate! do not deactivate already deactivated endpoints" do
@@ -103,6 +110,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_list_of_deliveries(5, endpoint: endpoint, event: event)
 
     assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+    assert reached_limit_endpoints.count.zero?
   end
 
   test "#mark_to_deactivate! do not deactivate endpoints marked as reached the deactivation limit" do
@@ -112,6 +120,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_list_of_deliveries(5, endpoint: endpoint, event: event)
 
     assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+    assert [endpoint.id], reached_limit_endpoints.pluck(:id) # marked on test setup
   end
 
   test "#mark_to_deactivate! deactivates endpoints when all deliveries are failed and the count is more than limit" do
@@ -124,6 +133,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_list_of_deliveries(5, endpoint: good_endpoint, event: event, delivered_at: 7.days.ago, created_at: 7.days.ago)
 
     assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
+    assert_equal [endpoint_to_deactivate.id], reached_limit_endpoints.pluck(:id)
   end
 
   test "#mark_to_deactivate! deactivates endpoints when all deliveries are failed and the count is less than limit" do
@@ -133,6 +143,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_list_of_deliveries(4, endpoint: endpoint_to_deactivate, event: event)
 
     assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+    assert reached_limit_endpoints.count.zero?
   end
 
   test "#mark_to_deactivate! deactivates endpoints when there is a successful delivery after failed" do
@@ -153,5 +164,6 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event)
 
     assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
+    assert_equal [endpoint_to_deactivate.id], reached_limit_endpoints.pluck(:id)
   end
 end
