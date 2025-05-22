@@ -3,7 +3,6 @@ PATH
   specs:
     bullet_train-api (1.20.0)
       bullet_train
-      bullet_train-super_scaffolding
       doorkeeper
       factory_bot
       jbuilder-schema (~> 2.6.6)
