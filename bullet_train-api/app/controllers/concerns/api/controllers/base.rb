@@ -43,6 +43,7 @@ module Api::Controllers::Base
 
     def collection_has_more?
       collection = instance_variable_get(collection_variable)
+      return false unless collection.any?
       last_id = collection.last.id
       remaining_collection = @unpaginated_collection.order(id: :asc).where("id > ?", last_id)
       remaining_collection.any?
