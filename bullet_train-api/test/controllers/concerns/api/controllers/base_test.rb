@@ -25,22 +25,30 @@ class Api::Controllers::Base::Test < ActionController::TestCase
       get "index" => "anonymous#index"
     end
 
-    create_list(:team, 30)
+    @page_size = Pagy::DEFAULT[:items]
+    @teams_to_create = @page_size + 2
+
+    create_list(:team, @teams_to_create)
   end
 
   teardown do
   end
 
   test "index can paginate" do
-    assert_equal 30, Team.all.count
+    all_teams = Team.all.order(id: :asc)
+    assert_equal @teams_to_create, all_teams.count
+
+    expected_last_item_on_first_page = all_teams[@page_size - 1]
+    expected_last_id = expected_last_item_on_first_page.id
 
     get :index
-    assert_equal 20, response.parsed_body.length
+    assert_equal @page_size, response.parsed_body.length
     last_response_id = response.parsed_body.last["id"]
+    assert_equal expected_last_id, last_response_id
     assert_equal last_response_id, response.headers["pagination-next"]
 
     get :index, params: { after: last_response_id }
-    assert_equal 10, response.parsed_body.length
+    assert_equal 2, response.parsed_body.length
     assert_nil response.headers["pagination-next"]
   end
 
