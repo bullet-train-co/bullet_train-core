@@ -47,9 +47,8 @@ class Api::Controllers::Base::Test < ActionController::TestCase
     assert_equal expected_last_id, last_response_id
     assert_equal last_response_id, response.headers["pagination-next"]
 
-    get :index, params: { after: last_response_id }
+    get :index, params: {after: last_response_id}
     assert_equal 2, response.parsed_body.length
     assert_nil response.headers["pagination-next"]
   end
-
 end
