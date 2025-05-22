@@ -893,6 +893,11 @@
     "@babel/helper-string-parser" "^7.25.9"
     "@babel/helper-validator-identifier" "^7.25.9"
 
+"@domchristie/turn@^3.1.1":
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@domchristie/turn/-/turn-3.1.1.tgz#404536f25878eda1ac74e90285441a3fd7d428f3"
+  integrity sha512-hdS58VV28fhOCQbVu/tMKv5UIv8wDl12fiS2mmuD1sNhyMfeA99TqxsrM2IzvoXh3Izi/ry0QvfgQjwDiAOzow==
+
 "@hotwired/stimulus-webpack-helpers@^1.0.1":
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/@hotwired/stimulus-webpack-helpers/-/stimulus-webpack-helpers-1.0.1.tgz#4cd74487adeca576c9865ac2b9fe5cb20cef16dd"
