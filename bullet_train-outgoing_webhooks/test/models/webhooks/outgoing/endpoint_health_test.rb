@@ -36,7 +36,9 @@ def create_endpoint(options = {})
     url: options[:url] || "https://example.com/webhook",
     name: options[:name] || "test",
     team: options[:team] || @team,
-    event_type_ids: options[:event_type_ids] || ["fake-thing.create"]
+    event_type_ids: options[:event_type_ids] || ["fake-thing.create"],
+    deactivation_limit_reached_at: options[:deactivation_limit_reached_at] || nil,
+    deactivated_at: options[:deactivated_at] || nil,
   )
 end
 
@@ -90,6 +92,24 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     event = create_event(subject: user)
     create_delivery(endpoint: endpoint, event: event, delivered_at: Time.current - 5.minutes, created_at: Time.current - 5.minutes)
     create_delivery(endpoint: endpoint, event: event, delivered_at: Time.current, created_at: Time.current)
+
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+  end
+
+  test "#mark_to_deactivate! do not deactivate already deactivated endpoints" do
+    user = create_user
+    endpoint = create_endpoint(deactivated_at: Time.current)
+    event = create_event(subject: user)
+    create_list_of_deliveries(5, endpoint: endpoint, event: event)
+
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+  end
+
+  test "#mark_to_deactivate! do not deactivate endpoints marked as reached the deactivation limit" do
+    user = create_user
+    endpoint = create_endpoint(deactivation_limit_reached_at: Time.current)
+    event = create_event(subject: user)
+    create_list_of_deliveries(5, endpoint: endpoint, event: event)
 
     assert_equal [], mark_to_deactivate_subject(test_enabled_config)
   end

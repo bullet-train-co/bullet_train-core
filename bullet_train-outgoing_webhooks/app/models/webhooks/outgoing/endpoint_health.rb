@@ -16,7 +16,7 @@ class Webhooks::Outgoing::EndpointHealth
       .group(:endpoint_id)
     active_endpoints = Webhooks::Outgoing::Endpoint
       .select(:id)
-    # .where(deactivation_limit_reached_at: nil, deactivated_at: nil)
+      .where(deactivation_limit_reached_at: nil, deactivated_at: nil)
 
     not_delivered = Webhooks::Outgoing::Delivery
       .select("MIN(#{deliveries_table}.id) as first_id", "count(#{deliveries_table}.id) count_failed", :endpoint_id) # debug select
