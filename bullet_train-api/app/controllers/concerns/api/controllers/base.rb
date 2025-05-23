@@ -110,12 +110,12 @@ module Api::Controllers::Base
   end
 
   def apply_pagination
-    _collection = collection.order(id: :asc)
+    pagination_collection = collection.order(id: :asc)
     if params[:after]
-      _collection = _collection.where("id > ?", params[:after])
+      pagination_collection = pagination_collection.where("id > ?", params[:after])
     end
-    @pagy, _collection = pagy(_collection)
-    self.collection = _collection
+    @pagy, pagination_collection = pagy(pagination_collection)
+    self.collection = pagination_collection
   end
 
   def set_default_response_format
