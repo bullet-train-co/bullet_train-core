@@ -41,7 +41,7 @@
 
         <% unless @membership.tombstone? %>
           <% if @membership.admin? %>
-            <%= link_to t('.buttons.demote'), [:demote, :account, @membership], data: {turbo_method: :post, turbo_confirm: t('global.confirm_message') }, class: first_button_primary if can? :demote, @membership %>
+            <%= link_to t('.buttons.demote'), [:demote, :account, @membership], data: { turbo_method: :post, turbo_confirm: t('global.confirm_message') }, class: first_button_primary if can? :demote, @membership %>
           <% else %>
             <%= link_to t('.buttons.promote'), [:promote, :account, @membership], data: { turbo_method: :post, turbo_confirm: t('global.confirm_message') }, class: first_button_primary if can? :promote, @membership %>
           <% end %>
