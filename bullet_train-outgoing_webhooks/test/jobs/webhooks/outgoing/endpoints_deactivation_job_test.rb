@@ -43,7 +43,7 @@ class Webhooks::Outgoing::EndpointsDeactivationJobTest < ActiveSupport::TestCase
   end
 
   test "job is enqueued with correct queue" do
-    assert_enqueued_with(job: Webhooks::Outgoing::EndpointsDeactivationJob, queue: 'default') do
+    assert_enqueued_with(job: Webhooks::Outgoing::EndpointsDeactivationJob, queue: "default") do
       Webhooks::Outgoing::EndpointsDeactivationJob.perform_later
     end
   end
