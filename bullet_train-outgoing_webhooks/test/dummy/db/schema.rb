@@ -10,9 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_22_080219) do
   # These are extensions that must be enabled in order to support this database
-  enable_extension "plpgsql"
+  enable_extension "pg_catalog.plpgsql"
 
   create_table "bullet_train_webhooks", force: :cascade do |t|
     t.jsonb "data"
@@ -92,6 +92,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_12_31_003438) do
     t.jsonb "event_type_ids", default: []
     t.bigint "scaffolding_absolutely_abstract_creative_concept_id"
     t.integer "api_version", null: false
+    t.datetime "deactivation_limit_reached_at"
+    t.datetime "deactivated_at"
     t.index ["scaffolding_absolutely_abstract_creative_concept_id"], name: "index_endpoints_on_abstract_creative_concept_id"
     t.index ["team_id"], name: "index_webhooks_outgoing_endpoints_on_team_id"
   end
