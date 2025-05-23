@@ -1,0 +1,6 @@
+<%= render "showcase/previews/field_partials/about_field_partials", showcase: showcase do |form| %>
+  <% showcase.sample "Basic", description: "Requires an `ENV['CLOUDINARY_URL']` is set to render anything." do %>
+    <%= "ENV['CLOUDINARY_URL'] hasn't been set." unless cloudinary_enabled? %>
+    <%= render 'shared/fields/cloudinary_image', form: form, method: :cloudinary_image_value %>
+  <% end %>
+<% end %>
