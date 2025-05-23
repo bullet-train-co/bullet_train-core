@@ -1,10 +1,11 @@
 require "test_helper"
 require "minitest/mock"
-require "sidekiq/testing"
 
-class Webhooks::Outgoing::EndpointsDeactivationWorkerTest < ActiveSupport::TestCase
-  def worker
-    Webhooks::Outgoing::EndpointsDeactivationWorker.new
+class Webhooks::Outgoing::EndpointsDeactivationJobTest < ActiveSupport::TestCase
+  include ActiveJob::TestHelper
+
+  def job
+    Webhooks::Outgoing::EndpointsDeactivationJob.new
   end
 
   def endpoint_health_mock
@@ -25,7 +26,7 @@ class Webhooks::Outgoing::EndpointsDeactivationWorkerTest < ActiveSupport::TestC
 
   test "perform does not call EndpointHealth methods when feature is disabled" do
     stub_config({automatic_deactivation_endpoint_enabled: false}) do
-      assert_nil worker.perform # early return
+      assert_nil job.perform # early return
     end
   end
 
@@ -35,9 +36,15 @@ class Webhooks::Outgoing::EndpointsDeactivationWorkerTest < ActiveSupport::TestC
         endpoint_health_mock.expect :deactivate_failed_endpoints!, true
         endpoint_health_mock.expect :mark_to_deactivate!, true
 
-        worker.perform
+        job.perform
       end
     end
     endpoint_health_mock.verify
+  end
+
+  test "job is enqueued with correct queue" do
+    assert_enqueued_with(job: Webhooks::Outgoing::EndpointsDeactivationJob, queue: 'default') do
+      Webhooks::Outgoing::EndpointsDeactivationJob.perform_later
+    end
   end
 end

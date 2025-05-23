@@ -1,5 +1,5 @@
-class Webhooks::Outgoing::EndpointsDeactivationWorker
-  include Sidekiq::Worker
+class Webhooks::Outgoing::EndpointsDeactivationJob < ApplicationJob
+  queue_as :default
 
   def perform
     return unless automatic_deactivation_endpoint_enabled?
