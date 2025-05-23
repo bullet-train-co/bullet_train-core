@@ -7,7 +7,6 @@ require "bullet_train/platform/connection_workflow"
 
 # require "wine_bouncer"
 require "pagy"
-require "pagy_cursor"
 require "doorkeeper"
 require "scaffolding"
 require "scaffolding/block_manipulator"
