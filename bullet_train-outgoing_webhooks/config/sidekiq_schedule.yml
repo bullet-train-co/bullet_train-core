@@ -1,0 +1,6 @@
+schedule:
+  deactivate_failed_endpoints_task:
+    interval:
+      - <%= BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks[:automatic_deactivation_endpoint_settings].fetch(:run_job_every, 6.hours).inspect %>
+      - first_in: "1m"
+    class: Webhooks::Outgoing::EndpointsDeactivationWorker
