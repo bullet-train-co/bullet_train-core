@@ -1,13 +1,6 @@
 <% method ||= nil %>
 <% active ||= request.path == url %>
 
-<% # TODO: This one may be nasty to untangle. Syntax for turbo is different between button_to and link_to... %>
-<%
-  if method
-    raise "raising from menu/_item for method = #{method}"
-  end
-%>
-
 <%= send (method ? :button_to : :link_to), url, class: "block group/item hover:text-white hover:no-underline #{'bg-primary-900 dark:bg-black dark:bg-opacity-10' if active} text-white #{@menu_orientation == :top ? "px-5 py-5" : "px-3 py-2 rounded-md"} #{"rounded-tl-lg" unless @not_first || BulletTrain::Themes::Light.show_logo_in_account} dark:text-white", data: {"desktop-menu-target": "menuItemLink"}, tabIndex: 0, method: method do %>
   <div class="inline-block <%= "transition group-hover/item:translate-x-3 duration-200" if @menu_orientation == :side %> flex items-center">
     <!-- Heroicon name: home -->
