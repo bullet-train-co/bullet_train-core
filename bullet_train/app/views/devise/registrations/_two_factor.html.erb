@@ -52,9 +52,9 @@
       <% end %>
 
       <% if current_user.otp_required_for_login? %>
-        <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, method: :delete, remote: true, class: "button" %>
+        <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, data:{turbo_method: :delete}, remote: true, class: "button" %>
       <% else %>
-        <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, method: :post, remote: true, class: "button" %>
+        <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, data:{turbo_method: :post}, remote: true, class: "button" %>
       <% end %>
     </div>
   <% end %>

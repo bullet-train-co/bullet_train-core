@@ -39,7 +39,7 @@
           <% if other_teams.any? %>
             <%= link_to t('global.buttons.back'), main_app.account_teams_path, class: first_button_primary %>
           <% else %>
-            <%= link_to t('menus.main.labels.logout'), main_app.destroy_user_session_path(@user, onboard_logout: true), class: first_button_primary, method: 'delete' %>
+            <%= link_to t('menus.main.labels.logout'), main_app.destroy_user_session_path(@user, onboard_logout: true), class: first_button_primary, data: {turbo_method: 'delete'} %>
           <% end %>
         </div>
       <% end %>

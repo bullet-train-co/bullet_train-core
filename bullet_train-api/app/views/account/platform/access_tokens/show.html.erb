@@ -21,7 +21,7 @@
         <% box.actions do %>
           <%= link_to t('.buttons.edit'), [:edit, :account, @access_token], class: first_button_primary if can? :edit, @access_token %>
           <%# 🚅 super scaffolding will insert new action model buttons above this line. %>
-          <%= button_to t('.buttons.destroy'), [:account, @access_token], method: :delete, class: first_button_primary, data: { confirm: t('.buttons.confirmations.destroy', model_locales(@access_token)) } if can? :destroy, @access_token %>
+          <%= button_to t('.buttons.destroy'), [:account, @access_token], method: :delete, class: first_button_primary, data: { turbo_confirm: t('.buttons.confirmations.destroy', model_locales(@access_token)) } if can? :destroy, @access_token %>
           <%= link_to t('global.buttons.back'), [:account, @application, :access_tokens], class: first_button_primary %>
         <% end %>
 

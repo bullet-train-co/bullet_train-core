@@ -13,17 +13,17 @@
 
         <div class="space-y-3 pb-1">
           <p><%= raw t('.accept_the_invitation', user_email: current_user.email) %></p>
-          <%= link_to t('.buttons.join_team'), accept_account_invitation_path(@invitation.uuid), method: :post, class: 'button full' %>
+          <%= link_to t('.buttons.join_team'), accept_account_invitation_path(@invitation.uuid), data: { turbo_method: :post }, class: 'button full' %>
         </div>
 
         <%= render 'account/shared/decision_line' %>
 
         <div class="space-y-3">
           <p><%= t('.sign_out') %></p>
-          <%= link_to t('.buttons.logout'), main_app.destroy_user_session_path, method: 'delete', class: 'button-alternative full' %>
+          <%= link_to t('.buttons.logout'), main_app.destroy_user_session_path, data: { turbo_method: 'delete' }, class: 'button-alternative full' %>
         </div>
       <% else %>
-        <%= link_to t('.buttons.join_team'), accept_account_invitation_path(@invitation.uuid), method: :post, class: 'button full' %>
+        <%= link_to t('.buttons.join_team'), accept_account_invitation_path(@invitation.uuid), data: { turbo_method: :post }, class: 'button full' %>
       <% end %>
     </div>
   <% end %>
