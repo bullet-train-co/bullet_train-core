@@ -96,7 +96,6 @@ PATH
     bullet_train-outgoing_webhooks (1.19.2)
       public_suffix
       rails (>= 6.0.0)
-      sidekiq-scheduler
 
 GEM
   remote: https://rubygems.org/
@@ -216,8 +215,6 @@ GEM
       railties (>= 5)
     drb (2.2.1)
     erubi (1.13.1)
-    et-orbi (1.2.11)
-      tzinfo
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
     faraday (2.12.2)
@@ -233,9 +230,6 @@ GEM
     fastimage (2.4.0)
     figaro (1.2.0)
       thor (>= 0.14.0, < 2)
-    fugit (1.11.1)
-      et-orbi (~> 1, >= 1.2.11)
-      raabro (~> 1.4)
     globalid (1.2.1)
       activesupport (>= 6.1)
     hashie (5.0.0)
@@ -326,7 +320,6 @@ GEM
       stringio
     public_suffix (6.0.1)
     pwned (2.4.1)
-    raabro (1.4.0)
     racc (1.8.1)
     rack (3.1.12)
     rack-protection (4.1.1)
@@ -373,8 +366,6 @@ GEM
     rake (13.2.1)
     rdoc (6.13.1)
       psych (>= 4.0.0)
-    redis-client (0.24.0)
-      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -400,20 +391,9 @@ GEM
       rubocop (>= 1.72.1, < 2.0)
       rubocop-ast (>= 1.38.0, < 2.0)
     ruby-progressbar (1.13.0)
-    rufus-scheduler (3.9.2)
-      fugit (~> 1.1, >= 1.11.1)
     securerandom (0.4.1)
     showcase-rails (0.4.6)
       rails (>= 6.1.0)
-    sidekiq (8.0.3)
-      connection_pool (>= 2.5.0)
-      json (>= 2.9.0)
-      logger (>= 1.6.2)
-      rack (>= 3.1.0)
-      redis-client (>= 0.23.2)
-    sidekiq-scheduler (6.0.1)
-      rufus-scheduler (~> 3.2)
-      sidekiq (>= 7.3, < 9)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
