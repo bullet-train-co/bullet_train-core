@@ -104,13 +104,18 @@ module Api::Controllers::Base
     @collection ||= instance_variable_get(collection_variable)
   end
 
+  def collection=(new_collection)
+    @collection = new_collection
+    instance_variable_set collection_variable, new_collection
+  end
+
   def apply_pagination
-    collection = instance_variable_get(collection_variable).order(id: :asc)
+    _collection = collection.order(id: :asc)
     if params[:after]
-      collection = collection.where("id > ?", params[:after])
+      _collection = _collection.where("id > ?", params[:after])
     end
-    @pagy, collection = pagy(collection)
-    instance_variable_set collection_variable, collection
+    @pagy, _collection = pagy(_collection)
+    self.collection = _collection
   end
 
   def set_default_response_format
