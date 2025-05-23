@@ -366,6 +366,8 @@ GEM
     rake (13.2.1)
     rdoc (6.13.1)
       psych (>= 4.0.0)
+    redis-client (0.24.0)
+      connection_pool
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
@@ -394,6 +396,12 @@ GEM
     securerandom (0.4.1)
     showcase-rails (0.4.6)
       rails (>= 6.1.0)
+    sidekiq (8.0.3)
+      connection_pool (>= 2.5.0)
+      json (>= 2.9.0)
+      logger (>= 1.6.2)
+      rack (>= 3.1.0)
+      redis-client (>= 0.23.2)
     simplecov (0.22.0)
       docile (~> 1.1)
       simplecov-html (~> 0.11)
@@ -460,6 +468,7 @@ DEPENDENCIES
   jbuilder
   minitest-reporters
   pg (~> 1.3)
+  sidekiq
   simplecov
   sprockets-rails
   sqlite3
