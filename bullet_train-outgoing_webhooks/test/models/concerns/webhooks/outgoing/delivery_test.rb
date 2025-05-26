@@ -30,4 +30,25 @@ class Webhooks::Outgoing::DeliveryTest < ActiveSupport::TestCase
 
     assert_equal Webhooks::Outgoing::Delivery::ATTEMPT_SCHEDULE.size, Webhooks::Outgoing::DeliveryAttempt.count, "amount of attempts should e equal to ATTEMPT_SCHEDULE"
   end
+
+  test "clears endpoint deactivation_limit_reached_at when delivery is marked as delivered" do
+    @endpoint.update!(deactivation_limit_reached_at: 1.hour.ago)
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event)
+
+    assert_changes -> { @endpoint.reload.deactivation_limit_reached_at }, from: ->(v) { v.present? }, to: nil do
+      delivery.update!(delivered_at: Time.current)
+    end
+  end
+
+  test "does not clear endpoint deactivation_limit_reached_at when delivery is not delivered" do
+    @endpoint.update!(deactivation_limit_reached_at: 1.hour.ago)
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event)
+
+    assert_not_nil @endpoint.deactivation_limit_reached_at
+
+    # Update delivery but don't mark as delivered
+    delivery.update!(created_at: 1.minute.ago)
+
+    assert_not_nil @endpoint.reload.deactivation_limit_reached_at
+  end
 end

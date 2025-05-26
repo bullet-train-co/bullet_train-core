@@ -7,6 +7,8 @@ module Webhooks::Outgoing::DeliverySupport
 
     has_one :team, through: :endpoint unless BulletTrain::OutgoingWebhooks.parent_class_specified?
     has_many :delivery_attempts, class_name: "Webhooks::Outgoing::DeliveryAttempt", dependent: :destroy, foreign_key: :delivery_id
+
+    after_commit :clear_endpoint_deactivation_limit_reached_at, if: :delivered?
   end
 
   ATTEMPT_SCHEDULE = {
@@ -64,5 +66,9 @@ module Webhooks::Outgoing::DeliverySupport
 
   def max_attempts
     ATTEMPT_SCHEDULE.keys.max
+  end
+
+  def clear_endpoint_deactivation_limit_reached_at
+    endpoint.clear_deactivation_limit_reached_at!
   end
 end
