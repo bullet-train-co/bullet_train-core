@@ -13,6 +13,7 @@ import PhoneController from './fields/phone_controller'
 import SuperSelectController from './fields/super_select_controller'
 import DependableController from './dependable_controller'
 import DependentFieldsFrameController from './dependent_fields_frame_controller'
+import CodeEditorController from './fields/code_editor_controller'
 
 export const controllerDefinitions = [
   [FieldController, 'fields/field_controller.js'],
@@ -28,6 +29,7 @@ export const controllerDefinitions = [
   [SuperSelectController, 'fields/super_select_controller.js'],
   [DependableController, 'dependable_controller.js'],
   [DependentFieldsFrameController, 'dependent_fields_frame_controller.js'],
+  [CodeEditorController, 'fields/code_editor_controller.js'],
 ].map(function(d) {
   const key = d[1]
   const controller = d[0]
@@ -51,4 +53,5 @@ export {
   SuperSelectController,
   DependableController,
   DependentFieldsFrameController,
+  CodeEditorController,
 }

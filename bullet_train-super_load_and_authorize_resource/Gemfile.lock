@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-super_load_and_authorize_resource (1.19.2)
+    bullet_train-super_load_and_authorize_resource (1.20.0)
       cancancan
       rails (>= 6.0.0)
 

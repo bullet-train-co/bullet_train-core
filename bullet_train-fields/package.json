@@ -1,6 +1,6 @@
 {
   "name": "@bullet-train/fields",
-  "version": "1.19.2",
+  "version": "1.20.0",
   "description": "Bullet Train Fields",
   "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/fields.esm.js",
@@ -14,9 +14,10 @@
     "update-local-installs": "app/javascript/**/*.js"
   },
   "scripts": {
-    "prebuild": "$npm_execpath run clean; $npm_execpath run copy:intl-tel-input-utils",
+    "prebuild": "$npm_execpath run clean; $npm_execpath run mkdir:app-assets-javascripts; $npm_execpath run copy:intl-tel-input-utils",
     "build": "microbundle",
-    "copy:intl-tel-input-utils": "cp-cli node_modules/intl-tel-input/build/js/utils.js app/assets/javascripts/intl-tel-input-utils.js",
+    "mkdir:app-assets-javascripts": "node -e \"require('fs').mkdirSync('app/assets/javascripts/', { recursive: true })\"",
+    "copy:intl-tel-input-utils": "node -e \"require('fs').copyFileSync('node_modules/intl-tel-input/build/js/utils.js', 'app/assets/javascripts/intl-tel-input-utils.js')\"",
     "clean": "rimraf app/assets/javascripts",
     "prewatch": "$npm_execpath run update-local-installs",
     "watch": "npm-watch",
@@ -42,7 +43,6 @@
     "@hotwired/stimulus-webpack-helpers": "^1.0.1",
     "@rails/actiontext": "^7.0.0",
     "babel-loader": "^8.2.2",
-    "cp-cli": "^2.0.0",
     "emoji-mart": "^5.1.0",
     "microbundle": "^0.13.0",
     "moment-timezone": "^0.5.43",
@@ -58,6 +58,7 @@
     "i18n-js": "^3.8.0",
     "intl-tel-input": "^17.0.8",
     "jquery": "^3.7.1",
+    "monaco-editor": "^0.52.2",
     "select2": "^4.0.13",
     "tributejs": "^5.1.3",
     "trix": "^2.0.1",

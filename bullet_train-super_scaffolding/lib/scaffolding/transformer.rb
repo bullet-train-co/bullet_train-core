@@ -661,12 +661,13 @@ class Scaffolding::Transformer
     attributes.each_with_index do |attribute_definition, index|
       attribute = Scaffolding::Attribute.new(attribute_definition, scaffolding_options[:type], index)
 
-      if attribute.is_first_attribute? && ["trix_editor", "ckeditor", "text_area"].include?(attribute.type)
+      if attribute.is_first_attribute? && ["trix_editor", "ckeditor", "text_area", "code_editor"].include?(attribute.type)
         puts ""
         puts "The first attribute of your model cannot be any of the following types:".red
         puts "1. trix_editor"
         puts "2. ckeditor"
         puts "3. text_area"
+        puts "4. code_editor"
         puts ""
         puts "Please ensure you have another attribute type as the first attribute for your model and try again."
 
@@ -682,7 +683,7 @@ class Scaffolding::Transformer
       end
 
       # don't do table columns for certain types of fields and attribute partials
-      if ["trix_editor", "ckeditor", "text_area"].include?(attribute.type) || ["html", "has_many"].include?(attribute.partial_name)
+      if ["trix_editor", "ckeditor", "text_area", "code_editor"].include?(attribute.type) || ["html", "has_many"].include?(attribute.partial_name)
         cli_options["skip-table"] = true
       end
 
@@ -812,33 +813,6 @@ class Scaffolding::Transformer
       #
 
       unless cli_options["skip-show"]
-
-        # TODO: Seems like this block of code is useless?
-        # standard:disable Lint/Void
-        if attribute.is_id?
-          <<~ERB
-            <% if @tangible_thing.#{attribute.name_without_id} %>
-              <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
-                <div>
-                  <%= link_to @tangible_thing.#{attribute.name_without_id}.#{attribute.options[:label]}, [:account, @tangible_thing.#{attribute.name_without_id}] %>
-                </div>
-              </div>
-            <% end %>
-          ERB
-        elsif attribute.is_ids?
-          <<~ERB
-            <% if @tangible_thing.#{attribute.collection_name}.any? %>
-              <div class="form-group">
-                <label class="col-form-label"><%= t('.fields.#{attribute.name}.heading') %></label>
-                <div>
-                  <%= @tangible_thing.#{attribute.collection_name}.map { |#{attribute.name_without_ids}| link_to #{attribute.name_without_ids}.#{attribute.options[:label]}, [:account, #{attribute.name_without_ids}] }.to_sentence.html_safe %>
-                </div>
-              </div>
-            <% end %>
-          ERB
-        end
-        # standard:enable Lint/Void
 
         # this gets stripped and is one line, so indentation isn't a problem.
         field_content = <<-ERB
