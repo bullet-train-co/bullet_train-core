@@ -31,6 +31,14 @@ class Webhooks::Outgoing::EndpointHealth
 
     Webhooks::Outgoing::Endpoint.where(id: not_delivered).update_all(deactivation_limit_reached_at: Time.current)
 
+    # Send notifications for endpoints marked for deactivation
+    not_delivered.each do |endpoint_id|
+      Webhooks::Outgoing::EndpointNotificationJob.perform_later(
+        endpoint_id: endpoint_id,
+        notification_type: "deactivation_limit_reached"
+      )
+    end
+
     not_delivered
   end
 
