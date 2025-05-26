@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_05_22_080219) do
+ActiveRecord::Schema[8.0].define(version: 2025_05_26_132225) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -22,6 +22,18 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_080219) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "invitations", id: :serial, force: :cascade do |t|
+    t.string "email"
+    t.string "uuid"
+    t.integer "from_membership_id"
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
+    t.integer "team_id"
+    t.bigint "invitation_list_id"
+    t.index ["invitation_list_id"], name: "index_invitations_on_invitation_list_id"
+    t.index ["team_id"], name: "index_invitations_on_team_id"
+  end
+
   create_table "memberships", force: :cascade do |t|
     t.jsonb "role_ids"
     t.bigint "user_id", null: false
@@ -29,6 +41,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_05_22_080219) do
     t.string "user_email"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "invitation_id"
+    t.index ["invitation_id"], name: "index_memberships_on_invitation_id"
     t.index ["team_id"], name: "index_memberships_on_team_id"
     t.index ["user_id"], name: "index_memberships_on_user_id"
   end
