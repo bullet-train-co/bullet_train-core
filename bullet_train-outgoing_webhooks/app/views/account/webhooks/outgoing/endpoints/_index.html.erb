@@ -28,9 +28,9 @@
                 <td><%= render 'shared/attributes/code', attribute: :url %></td>
                 <td>
                   <% if endpoint.active? %>
-                    <span class="badge badge-success"><%= t('.status.active') %></span>
+                    <%= t('.status.active') %>
                   <% else %>
-                    <span class="badge badge-secondary"><%= t('.status.deactivated') %></span>
+                    <%= t('.status.deactivated') %>
                   <% end %>
                 </td>
                 <%# 🚅 super scaffolding will insert new fields above this line. %>
@@ -38,6 +38,13 @@
                   <% unless hide_actions %>
                     <% if can? :edit, endpoint %>
                       <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, endpoint], class: 'button-secondary button-smaller' %>
+                    <% end %>
+                    <% if can? :edit, endpoint %>
+                      <% if endpoint.active? %>
+                        <%= button_to t('.buttons.shorthand.deactivate'), [:deactivate, :account, endpoint], method: :delete, data: { confirm: t('.buttons.confirmations.deactivate', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>
+                      <% else %>
+                        <%= button_to t('.buttons.shorthand.activate'), [:activate, :account, endpoint], method: :post, class: 'button-secondary button-smaller' %>
+                      <% end %>
                     <% end %>
                     <% if can? :destroy, endpoint %>
                       <%= button_to t('.buttons.shorthand.destroy'), [:account, endpoint], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>

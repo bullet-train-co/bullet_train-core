@@ -15,9 +15,12 @@ en:
       shorthand:
         edit: Settings
         destroy: Delete
+        activate: Activate
+        deactivate: Deactivate
       confirmations:
         # TODO customize for your use-case.
         destroy: Are you sure you want to remove %{endpoint_name}? This will also remove it's associated data. This can't be undone.
+        deactivate: Are you sure you want to deactivate %{endpoint_name}? This will prevent webhooks from being sent to this endpoint.
     fields: &fields
       id:
         _: &id Endpoint ID
@@ -135,6 +138,10 @@ en:
       created: Endpoint was successfully created.
       updated: Endpoint was successfully updated.
       destroyed: Endpoint was successfully destroyed.
+      activated: Endpoint was successfully activated.
+      deactivated: Endpoint was successfully deactivated.
+      activation_failed: Failed to activate endpoint.
+      deactivation_failed: Failed to deactivate endpoint.
   account:
     webhooks:
       outgoing:
