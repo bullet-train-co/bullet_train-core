@@ -15,6 +15,9 @@ module Api::Controllers::Base
     before_action :set_default_response_format
     after_action :set_pagination_headers
 
+    before_action :apply_filters, only: [:index]
+    before_action :apply_pagination, only: [:index]
+
     def modify_url_params(url, new_params)
       uri = URI.parse(url)
       query = Rack::Utils.parse_query(uri.query)
@@ -52,8 +55,6 @@ module Api::Controllers::Base
     rescue_from NotAuthenticatedError do |exception|
       render json: {error: "Invalid token or no user signed in"}, status: :unauthorized
     end
-
-    before_action :apply_pagination, only: [:index]
   end
 
   def permitted_fields
@@ -109,8 +110,15 @@ module Api::Controllers::Base
     instance_variable_set collection_variable, new_collection
   end
 
+  def apply_filters
+    # An empty method that descendant controllers can override
+    # A possible implementaiton might look like:
+    #
+    # self.collection = collection.where(status: params[:filter_status]) if params[:filter_status]
+  end
+
   def apply_pagination
-    pagination_collection = collection.order(id: :asc)
+    pagination_collection = collection
     if params[:after]
       pagination_collection = pagination_collection.where("id > ?", params[:after])
     end
