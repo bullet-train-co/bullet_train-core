@@ -65,7 +65,8 @@ en:
         all: All Events
       event_types: *event_types
 
-      scaffolding_absolutely_abstract_creative_concept_id: &scaffolding_absolutely_abstract_creative_concept
+      scaffolding_absolutely_abstract_creative_concept_id:
+        &scaffolding_absolutely_abstract_creative_concept
         _: &scaffolding_absolutely_abstract_creative_concept_id Within Creative Concept
         label: *scaffolding_absolutely_abstract_creative_concept_id
         heading: *scaffolding_absolutely_abstract_creative_concept_id
@@ -106,6 +107,10 @@ en:
           description_empty: No Endpoints have been added for %{team_name}.
       fields: *fields
       buttons: *buttons
+      status:
+        heading: Status
+        active: Active
+        deactivated: Deactivated
     show:
       section: "%{endpoint_name}"
       header: Webhooks Endpoint Details

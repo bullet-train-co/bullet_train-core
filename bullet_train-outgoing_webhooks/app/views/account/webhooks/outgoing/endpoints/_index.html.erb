@@ -15,6 +15,7 @@
           <tr>
             <th><%= t('.fields.name.heading') %></th>
             <th><%= t('.fields.url.heading') %></th>
+            <th><%= t('.status.heading') %></th>
             <%# 🚅 super scaffolding will insert new field headers above this line. %>
             <th class="text-right"></th>
           </tr>
@@ -25,6 +26,13 @@
               <tr data-id="<%= endpoint.id %>">
                 <td><%= render 'shared/attributes/text', attribute: :name, url: [:account, endpoint] %></td>
                 <td><%= render 'shared/attributes/code', attribute: :url %></td>
+                <td>
+                  <% if endpoint.active? %>
+                    <span class="badge badge-success"><%= t('.status.active') %></span>
+                  <% else %>
+                    <span class="badge badge-secondary"><%= t('.status.deactivated') %></span>
+                  <% end %>
+                </td>
                 <%# 🚅 super scaffolding will insert new fields above this line. %>
                 <td class="buttons">
                   <% unless hide_actions %>
