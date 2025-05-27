@@ -7,6 +7,8 @@ class Webhooks::Outgoing::EndpointNotificationJob < ApplicationJob
     case notification_type
     when "deactivation_limit_reached"
       Webhooks::Outgoing::EndpointMailer.deactivation_limit_reached(endpoint)&.deliver_now
+    when "deactivated"
+      Webhooks::Outgoing::EndpointMailer.deactivated(endpoint)&.deliver_now
     end
   rescue ActiveRecord::RecordNotFound
     Rails.logger.error "EndpointNotificationJob: Endpoint not found for ID #{endpoint_id}"

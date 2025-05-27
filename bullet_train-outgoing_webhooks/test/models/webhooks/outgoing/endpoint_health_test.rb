@@ -138,7 +138,9 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     good_endpoint = create_endpoint
     create_list_of_deliveries(5, endpoint: good_endpoint, event: event, delivered_at: 7.days.ago, created_at: 7.days.ago)
 
-    assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
+    assert_enqueued_with(job: Webhooks::Outgoing::EndpointNotificationJob, args: [{endpoint_id: endpoint_to_deactivate.id, notification_type: "deactivation_limit_reached"}]) do
+      assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
+    end
     assert_equal [endpoint_to_deactivate.id], reached_limit_endpoints.pluck(:id)
   end
 
@@ -216,7 +218,9 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     endpoint = create_endpoint(deactivation_limit_reached_at: 2.days.ago)
     create_delivery(endpoint: endpoint, event: event, created_at: 5.minutes.ago)
 
-    assert_equal [endpoint.id], deactivate_subject(test_enabled_config)
+    assert_enqueued_with(job: Webhooks::Outgoing::EndpointNotificationJob, args: [{endpoint_id: endpoint.id, notification_type: "deactivated"}]) do
+      assert_equal [endpoint.id], deactivate_subject(test_enabled_config)
+    end
     assert_equal [endpoint.id], deactivated_endpoints.pluck(:id)
   end
 end

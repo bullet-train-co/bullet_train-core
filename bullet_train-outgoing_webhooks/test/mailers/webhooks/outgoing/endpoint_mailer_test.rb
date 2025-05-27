@@ -26,4 +26,15 @@ class Webhooks::Outgoing::EndpointMailerTest < ActionMailer::TestCase
     assert_equal [@user.email], email.to
     assert_equal email.subject, "Webhook Endpoint Failure Limit Reached - Test Endpoint"
   end
+
+  test "deactivated email" do
+    email = Webhooks::Outgoing::EndpointMailer.deactivated(@endpoint)
+
+    assert_emails 1 do
+      email.deliver_now
+    end
+
+    assert_equal [@user.email], email.to
+    assert_equal email.subject, "Webhook Endpoint Deactivated - Test Endpoint"
+  end
 end

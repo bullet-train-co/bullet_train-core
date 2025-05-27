@@ -4,3 +4,5 @@ en:
       endpoint_mailer:
         deactivation_limit_reached:
           subject: "Webhook Endpoint Failure Limit Reached - %{endpoint_name}"
+        deactivated:
+          subject: "Webhook Endpoint Deactivated - %{endpoint_name}"

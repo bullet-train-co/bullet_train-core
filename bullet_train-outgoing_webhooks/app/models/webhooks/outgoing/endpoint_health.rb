@@ -59,6 +59,14 @@ class Webhooks::Outgoing::EndpointHealth
 
     Webhooks::Outgoing::Endpoint.where(id: endpoints_to_deactivate).update_all(deactivated_at: Time.current)
 
+    # Send notifications for endpoints that have been deactivated
+    endpoints_to_deactivate.each do |endpoint_id|
+      Webhooks::Outgoing::EndpointNotificationJob.perform_later(
+        endpoint_id: endpoint_id,
+        notification_type: "deactivated"
+      )
+    end
+
     endpoints_to_deactivate
   end
 end

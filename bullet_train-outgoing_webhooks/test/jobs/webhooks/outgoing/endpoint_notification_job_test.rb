@@ -27,6 +27,15 @@ class Webhooks::Outgoing::EndpointNotificationJobTest < ActiveSupport::TestCase
     end
   end
 
+  test "performs deactivated notification" do
+    assert_emails 1 do
+      Webhooks::Outgoing::EndpointNotificationJob.perform_now(
+        endpoint_id: @endpoint.id,
+        notification_type: "deactivated"
+      )
+    end
+  end
+
   test "handles missing endpoint gracefully" do
     assert_no_emails do
       Webhooks::Outgoing::EndpointNotificationJob.perform_now(
