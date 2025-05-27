@@ -5,7 +5,8 @@ class Webhooks::Outgoing::EndpointMailer < ApplicationMailer
     return if email.blank?
     @values = {
       endpoint_name: @endpoint.name,
-      endpoint_events: @endpoint.event_type_ids.join(", ")
+      endpoint_events: @endpoint.event_type_ids.join(", "),
+      cta_url: webhooks_outgoing_endpoint_url(@endpoint),
     }
 
     mail(
