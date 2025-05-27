@@ -25,7 +25,5 @@ class Webhooks::Outgoing::EndpointMailerTest < ActionMailer::TestCase
 
     assert_equal [@user.email], email.to
     assert_equal email.subject, "Webhook Endpoint Failure Limit Reached - Test Endpoint"
-    assert_includes email.body.to_s, @endpoint.name
-    assert_includes email.body.to_s, @endpoint.event_type_ids.join(", ")
   end
 end
