@@ -118,7 +118,7 @@ module Api::Controllers::Base
   end
 
   def apply_pagination
-    pagination_collection = collection
+    pagination_collection = collection.order(id: :asc)
     if params[:after]
       pagination_collection = pagination_collection.where("id > ?", params[:after])
     end
