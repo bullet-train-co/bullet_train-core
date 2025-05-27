@@ -45,6 +45,10 @@ module Webhooks::Outgoing::EndpointSupport
     deactivated_at.nil?
   end
 
+  def deactivated?
+    deactivated_at.present?
+  end
+
   def marked_for_deactivation?
     deactivation_limit_reached_at.present? && deactivated_at.nil?
   end

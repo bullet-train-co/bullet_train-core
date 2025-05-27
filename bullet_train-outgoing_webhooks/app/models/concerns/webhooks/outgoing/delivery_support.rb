@@ -34,6 +34,7 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def deliver
+    return if endpoint.deactivated?
     # TODO If we ever do away with the `async: true` default for webhook generation, then I believe this needs to
     # change otherwise we'd be attempting the first delivery of webhooks inline.
     if delivery_attempts.new.attempt
