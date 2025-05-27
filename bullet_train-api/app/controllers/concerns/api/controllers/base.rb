@@ -42,7 +42,7 @@ module Api::Controllers::Base
     end
 
     def last_id_in_collection
-      @last_id_in_collection ||= collection&.any? ? collection.last&.id : nil
+      @last_id_in_collection ||= collection&.last&.id
     end
 
     rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
