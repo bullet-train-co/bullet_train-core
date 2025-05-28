@@ -58,7 +58,19 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def failed?
-    !(delivered? || still_attempting?)
+    !delivered? && !still_attempting?
+  end
+
+  def not_attempted?
+    attempt_count.zero?
+  end
+
+  def attempts_schedule_period_elapsed?
+    created_at < max_attempts_period.ago
+  end
+
+  def failed_and_not_attempted_or_elapsed?
+    failed? && (not_attempted? || created_at < max_attempts_period.ago)
   end
 
   def name
@@ -67,6 +79,10 @@ module Webhooks::Outgoing::DeliverySupport
 
   def max_attempts
     ATTEMPT_SCHEDULE.keys.max
+  end
+
+  def max_attempts_period
+    ATTEMPT_SCHEDULE.values.sum
   end
 
   def clear_endpoint_deactivation_limit_reached_at
