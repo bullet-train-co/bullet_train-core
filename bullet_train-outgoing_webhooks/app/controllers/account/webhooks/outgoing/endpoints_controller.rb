@@ -1,5 +1,5 @@
 class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationController
-  account_load_and_authorize_resource :endpoint, through: BulletTrain::OutgoingWebhooks.parent_association, through_association: :webhooks_outgoing_endpoints
+  account_load_and_authorize_resource :endpoint, through: BulletTrain::OutgoingWebhooks.parent_association, through_association: :webhooks_outgoing_endpoints, member_actions: [:activate, :deactivate]
   before_action { @parent = instance_variable_get("@#{BulletTrain::OutgoingWebhooks.parent_association}") }
 
   # GET /account/teams/:team_id/webhooks/outgoing/endpoints
