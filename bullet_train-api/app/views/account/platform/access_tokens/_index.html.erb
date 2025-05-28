@@ -43,7 +43,7 @@
                           <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, access_token], class: 'button-secondary button-smaller' %>
                         <% end %>
                         <% if can? :destroy, access_token %>
-                          <%= button_to t('.buttons.shorthand.destroy'), [:account, access_token], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(access_token)) }, class: 'button-secondary button-smaller' %>
+                          <%= button_to t('.buttons.shorthand.destroy'), [:account, access_token], method: :delete, data: { turbo_confirm: t('.buttons.confirmations.destroy', model_locales(access_token)) }, class: 'button-secondary button-smaller' %>
                         <% end %>
                         <%# 🚅 super scaffolding will insert new action model buttons above this line. %>
                       <% end %>
