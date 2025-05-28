@@ -70,7 +70,7 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def failed_or_not_attempted_or_elapsed?
-    failed? || not_attempted? || created_at < max_attempts_period.ago
+    failed? || not_attempted? || attempts_schedule_period_elapsed?
   end
 
   def name

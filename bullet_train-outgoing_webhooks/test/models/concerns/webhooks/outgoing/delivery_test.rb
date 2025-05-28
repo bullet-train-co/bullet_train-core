@@ -88,4 +88,53 @@ class Webhooks::Outgoing::DeliveryTest < ActiveSupport::TestCase
 
     assert_not_nil @endpoint.reload.deactivation_limit_reached_at
   end
+
+  test "#failed_or_not_attempted_or_elapsed? returns true when delivery has failed" do
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
+
+    max_attempts = delivery.max_attempts
+    (max_attempts + 1).times do |i|
+      delivery.delivery_attempts.create!(attempt_number: i + 1, response_code: 500, error_message: "Server error")
+    end
+
+    assert delivery.failed?, "Delivery should be failed"
+    assert delivery.failed_or_not_attempted_or_elapsed?, "Should return true for failed delivery"
+  end
+
+  test "#failed_or_not_attempted_or_elapsed? returns true when delivery has not been attempted" do
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
+
+    assert delivery.not_attempted?, "Delivery should not be attempted"
+    assert delivery.failed_or_not_attempted_or_elapsed?, "Should return true for not attempted delivery"
+  end
+
+  test "#failed_or_not_attempted_or_elapsed? returns true when attempts schedule period has elapsed" do
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
+
+    old_created_at = delivery.max_attempts_period.ago - 1.hour
+    delivery.update!(created_at: old_created_at)
+
+    assert delivery.attempts_schedule_period_elapsed?, "Schedule period should have elapsed"
+    assert delivery.failed_or_not_attempted_or_elapsed?, "Should return true when schedule period elapsed"
+  end
+
+  test "#failed_or_not_attempted_or_elapsed? returns false when delivery is delivered" do
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url, delivered_at: Time.current)
+
+    delivery.delivery_attempts.create!(attempt_number: 1, response_code: 200)
+
+    assert delivery.delivered?, "Delivery should be delivered"
+    refute delivery.failed_or_not_attempted_or_elapsed?, "Should return false for delivered delivery"
+  end
+
+  test "#failed_or_not_attempted_or_elapsed? returns false when delivery is still attempting" do
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
+
+    # Create some attempts but not more than max allowed, and not delivered
+    delivery.delivery_attempts.create!(attempt_number: 1, response_code: 500, error_message: "Server error")
+    delivery.delivery_attempts.create!(attempt_number: 2, response_code: 500, error_message: "Server error")
+
+    assert delivery.still_attempting?, "Delivery should still be attempting"
+    refute delivery.failed_or_not_attempted_or_elapsed?, "Should return false when still attempting"
+  end
 end
