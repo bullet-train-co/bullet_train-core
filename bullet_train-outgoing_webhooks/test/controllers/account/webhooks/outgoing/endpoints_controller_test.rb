@@ -26,23 +26,27 @@ class Account::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
   end
 
   test "activate action with POST request" do
-    @endpoint.update(deactivated_at: Time.current)
+    @endpoint.update(deactivated_at: Time.current, deactivation_limit_reached_at: Time.current)
     assert_not @endpoint.active?
+    assert_not_nil @endpoint.deactivation_limit_reached_at
 
     post "/account/webhooks/outgoing/endpoints/#{@endpoint.id}/activate"
 
     assert_redirected_to "/account/teams/#{@team.id}/webhooks/outgoing/endpoints"
     assert @endpoint.reload.active?
+    assert_nil @endpoint.deactivation_limit_reached_at
   end
 
   test "deactivate action with DELETE request" do
-    @endpoint.update(deactivated_at: nil)
+    @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: Time.current)
     assert @endpoint.active?
+    assert_not_nil @endpoint.deactivation_limit_reached_at
 
     delete "/account/webhooks/outgoing/endpoints/#{@endpoint.id}/deactivate"
 
     assert_redirected_to "/account/teams/#{@team.id}/webhooks/outgoing/endpoints"
     assert_not @endpoint.reload.active?
     assert_not_nil @endpoint.deactivated_at
+    assert_nil @endpoint.deactivation_limit_reached_at
   end
 end

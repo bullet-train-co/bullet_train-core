@@ -66,7 +66,7 @@ module Api::V1::Webhooks::Outgoing::Endpoints::ControllerBase
 
   # POST /api/v1/webhooks/outgoing/endpoints/:id/activate
   def activate
-    if @endpoint.update(deactivated_at: nil)
+    if @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: nil)
       render :show
     else
       render json: @endpoint.errors, status: :unprocessable_entity
@@ -75,7 +75,7 @@ module Api::V1::Webhooks::Outgoing::Endpoints::ControllerBase
 
   # DELETE /api/v1/webhooks/outgoing/endpoints/:id/deactivate
   def deactivate
-    if @endpoint.update(deactivated_at: Time.current)
+    if @endpoint.update(deactivated_at: Time.current, deactivation_limit_reached_at: nil)
       render :show
     else
       render json: @endpoint.errors, status: :unprocessable_entity
