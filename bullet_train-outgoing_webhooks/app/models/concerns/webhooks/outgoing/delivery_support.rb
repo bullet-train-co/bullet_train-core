@@ -11,6 +11,12 @@ module Webhooks::Outgoing::DeliverySupport
     after_commit :clear_endpoint_deactivation_limit_reached_at, if: :delivered?
   end
 
+  class_methods do
+    def max_attempts_period
+      ATTEMPT_SCHEDULE.values.sum
+    end
+  end
+
   ATTEMPT_SCHEDULE = {
     1 => 15.seconds,
     2 => 1.minute,
@@ -82,7 +88,7 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def max_attempts_period
-    ATTEMPT_SCHEDULE.values.sum
+    self.class.max_attempts_period
   end
 
   def clear_endpoint_deactivation_limit_reached_at

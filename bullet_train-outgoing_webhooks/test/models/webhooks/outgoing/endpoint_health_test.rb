@@ -82,6 +82,10 @@ def deactivated_endpoints
     .where.not(deactivated_at: nil)
 end
 
+def created_at_that_considered_failed
+  Webhooks::Outgoing::Delivery.max_attempts_period.ago - 1.hour
+end
+
 class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
 
@@ -133,7 +137,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     user = create_user
     event = create_event(subject: user)
     endpoint_to_deactivate = create_endpoint
-    create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event)
+    create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event, created_at: created_at_that_considered_failed)
 
     good_endpoint = create_endpoint
     create_list_of_deliveries(5, endpoint: good_endpoint, event: event, delivered_at: 7.days.ago, created_at: 7.days.ago)
@@ -169,9 +173,50 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     event = create_event(subject: user)
     endpoint_to_deactivate = create_endpoint
     create_delivery(endpoint: endpoint_to_deactivate, event: event, delivered_at: 5.minutes.ago, created_at: 5.minutes.ago)
-    create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event)
+    create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event, created_at: created_at_that_considered_failed)
 
     assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
+    assert_equal [endpoint_to_deactivate.id], reached_limit_endpoints.pluck(:id)
+  end
+
+
+  test "#mark_to_deactivate! does not mark to deactivate endpoints when failed deliveries are created within max_attempts_period" do
+    user = create_user
+    event = create_event(subject: user)
+    endpoint = create_endpoint
+
+    [30.minutes, 1.hour].each do |time|
+      create_delivery(endpoint: endpoint, event: event, created_at: time.ago)
+    end
+
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+    assert reached_limit_endpoints.count.zero?
+  end
+
+  test "#mark_to_deactivate! handles mixed scenario: some deliveries within max_attempts_period, some beyond" do
+    user = create_user
+    event = create_event(subject: user)
+    endpoint_to_deactivate = create_endpoint
+
+    create_list_of_deliveries(4, endpoint: endpoint_to_deactivate, event: event, created_at: created_at_that_considered_failed)
+    create_delivery(endpoint: endpoint_to_deactivate, event: event, created_at: 30.minutes.ago)
+
+    # Only the 4 old deliveries should count, which is less than the limit of 5
+    assert_equal [], mark_to_deactivate_subject(test_enabled_config)
+    assert reached_limit_endpoints.count.zero?
+  end
+
+  test "#mark_to_deactivate! marks endpoint when enough old failed deliveries exceed limit, ignoring recent ones" do
+    user = create_user
+    event = create_event(subject: user)
+    endpoint_to_deactivate = create_endpoint
+
+    create_list_of_deliveries(5, endpoint: endpoint_to_deactivate, event: event, created_at: created_at_that_considered_failed)
+    create_list_of_deliveries(2, endpoint: endpoint_to_deactivate, event: event, created_at: 30.minutes.ago)
+
+    assert_enqueued_with(job: Webhooks::Outgoing::EndpointNotificationJob, args: [{endpoint_id: endpoint_to_deactivate.id, notification_type: "deactivation_limit_reached"}]) do
+      assert_equal [endpoint_to_deactivate.id], mark_to_deactivate_subject(test_enabled_config)
+    end
     assert_equal [endpoint_to_deactivate.id], reached_limit_endpoints.pluck(:id)
   end
 

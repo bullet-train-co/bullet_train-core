@@ -24,6 +24,7 @@ class Webhooks::Outgoing::EndpointHealth
       .joins("INNER JOIN (#{active_endpoints.to_sql}) AS endpoints ON #{deliveries_table}.endpoint_id = endpoints.id")
       .joins("LEFT JOIN (#{last_delivered.to_sql}) AS last_deliveries ON #{deliveries_table}.endpoint_id = last_deliveries.endpoint_id")
       .where(delivered_at: nil)
+      .where("created_at < ?", Webhooks::Outgoing::Delivery.max_attempts_period.ago)
       .where("#{deliveries_table}.id > COALESCE(last_deliveries.id, 0)")
       .group(:endpoint_id)
       .having("count(#{deliveries_table}.id) >= ?", settings.max_limit)
