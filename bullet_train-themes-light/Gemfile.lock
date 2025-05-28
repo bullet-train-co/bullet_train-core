@@ -38,7 +38,7 @@ PATH
   remote: ../bullet_train-scope_validator
   specs:
     bullet_train-scope_validator (1.20.0)
-      rails
+      rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_load_and_authorize_resource
@@ -327,12 +327,12 @@ GEM
       stringio
     pwned (2.4.1)
     racc (1.8.1)
-    rack (3.1.12)
+    rack (3.1.15)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
-    rack-session (2.1.0)
+    rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
     rack-test (2.2.0)
