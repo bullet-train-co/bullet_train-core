@@ -29,6 +29,10 @@
                 <td>
                   <% if endpoint.active? %>
                     <%= t('.status.active') %>
+                    <% if endpoint.deactivation_limit_reached_at.present? %>
+                      <br>
+                      <%= t('.deactivation_limit_reached.description', reached_at: l(endpoint.deactivation_limit_reached_at)) %>
+                    <% end %>
                   <% else %>
                     <%= t('.status.deactivated') %>
                   <% end %>
