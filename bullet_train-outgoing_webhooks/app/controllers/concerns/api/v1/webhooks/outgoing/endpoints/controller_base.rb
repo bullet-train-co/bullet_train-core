@@ -25,7 +25,8 @@ module Api::V1::Webhooks::Outgoing::Endpoints::ControllerBase
   included do
     account_load_and_authorize_resource :endpoint,
       through: BulletTrain::OutgoingWebhooks.parent_association,
-      through_association: :webhooks_outgoing_endpoints
+      through_association: :webhooks_outgoing_endpoints,
+      member_actions: [:activate, :deactivate]
 
     private
 
@@ -61,5 +62,23 @@ module Api::V1::Webhooks::Outgoing::Endpoints::ControllerBase
   # DELETE /api/v1/webhooks/outgoing/endpoints/:id
   def destroy
     @endpoint.destroy
+  end
+
+  # POST /api/v1/webhooks/outgoing/endpoints/:id/activate
+  def activate
+    if @endpoint.update(deactivated_at: nil)
+      render :show
+    else
+      render json: @endpoint.errors, status: :unprocessable_entity
+    end
+  end
+
+  # DELETE /api/v1/webhooks/outgoing/endpoints/:id/deactivate
+  def deactivate
+    if @endpoint.update(deactivated_at: Time.current)
+      render :show
+    else
+      render json: @endpoint.errors, status: :unprocessable_entity
+    end
   end
 end

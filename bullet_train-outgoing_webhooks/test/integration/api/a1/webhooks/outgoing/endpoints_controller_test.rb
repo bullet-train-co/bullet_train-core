@@ -59,4 +59,62 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
 
     assert_response :success
   end
+
+  test "activates an endpoint" do
+    @endpoint.update(deactivated_at: Time.current)
+    assert @endpoint.reload.deactivated?
+
+    post activate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.active?
+    assert_nil response.parsed_body["deactivated_at"]
+  end
+
+  test "deactivates an endpoint" do
+    @endpoint.update(deactivated_at: nil)
+    assert @endpoint.reload.active?
+
+    delete deactivate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.deactivated?
+    assert_not_nil response.parsed_body["deactivated_at"]
+  end
+
+  test "activate handles already active endpoint" do
+    @endpoint.update(deactivated_at: nil)
+    assert @endpoint.reload.active?
+
+    post activate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.active?
+    assert_nil response.parsed_body["deactivated_at"]
+  end
+
+  test "deactivate handles already inactive endpoint" do
+    @endpoint.update(deactivated_at: Time.current)
+    assert @endpoint.reload.deactivated?
+
+    delete deactivate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.deactivated?
+    assert_not_nil response.parsed_body["deactivated_at"]
+  end
+
+  test "activate fails with invalid endpoint" do
+    # Since the setup hooks always find from Team.first, this test will never raise RecordNotFound
+    # Instead we test that a non-existent endpoint ID results in a 404 response
+    post activate_api_v1_webhooks_outgoing_endpoint_path(99999), as: :json
+    assert_response :not_found
+  end
+
+  test "deactivate fails with invalid endpoint" do
+    # Since the setup hooks always find from Team.first, this test will never raise RecordNotFound
+    # Instead we test that a non-existent endpoint ID results in a 404 response
+    delete deactivate_api_v1_webhooks_outgoing_endpoint_path(99999), as: :json
+    assert_response :not_found
+  end
 end

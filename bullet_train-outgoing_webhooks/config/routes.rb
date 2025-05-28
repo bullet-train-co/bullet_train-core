@@ -27,7 +27,12 @@ Rails.application.routes.draw do
         resources :teams, extending do
           namespace :webhooks do
             namespace :outgoing do
-              resources :endpoints, defaults: {format: :json}
+              resources :endpoints, defaults: {format: :json} do
+                member do
+                  post :activate
+                  delete :deactivate
+                end
+              end
               resources :events, only: %i[index show], defaults: {format: :json}
             end
           end
