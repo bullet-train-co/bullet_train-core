@@ -54,7 +54,6 @@ module Webhooks::Outgoing::DeliverySupport
 
   def still_attempting?
     return false if delivered?
-    return false if attempt_count.zero?
     attempt_count <= max_attempts
   end
 
