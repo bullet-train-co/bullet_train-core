@@ -1,6 +1,3 @@
-require "pagy_cursor/pagy/extras/cursor"
-require "pagy_cursor/pagy/extras/uuid_cursor"
-
 module Api::Controllers::Base
   extend ActiveSupport::Concern
 
@@ -30,16 +27,22 @@ module Api::Controllers::Base
 
     def set_pagination_headers
       return unless @pagy
-
-      if @pagy.has_more?
-        if (collection = instance_variable_get(collection_variable))
-          next_cursor = collection.last.id
-          link_header = response.headers["Link"]
-          link_value = "<#{modify_url_params(request.url, after: next_cursor)}>; rel=\"next\""
-          response.headers["Link"] = link_header ? "#{link_header}, #{link_value}" : link_value
-          response.headers["Pagination-Next"] = next_cursor
-        end
+      if collection_has_more?
+        link_header = response.headers["Link"]
+        link_value = "<#{modify_url_params(request.url, after: last_id_in_collection)}>; rel=\"next\""
+        response.headers["Link"] = link_header ? "#{link_header}, #{link_value}" : link_value
+        response.headers["Pagination-Next"] = last_id_in_collection
       end
+    end
+
+    def collection_has_more?
+      return false unless last_id_in_collection
+      remaining_collection = collection.limit(nil).order(id: :asc).where("id > ?", last_id_in_collection)
+      remaining_collection.any?
+    end
+
+    def last_id_in_collection
+      @last_id_in_collection ||= collection&.last&.id
     end
 
     rescue_from CanCan::AccessDenied, ActiveRecord::RecordNotFound do |exception|
@@ -97,10 +100,22 @@ module Api::Controllers::Base
     @collection_variable ||= "@#{self.class.name.split("::").last.gsub("Controller", "").underscore}"
   end
 
+  def collection
+    @collection ||= instance_variable_get(collection_variable)
+  end
+
+  def collection=(new_collection)
+    @collection = new_collection
+    instance_variable_set collection_variable, new_collection
+  end
+
   def apply_pagination
-    collection = instance_variable_get collection_variable
-    @pagy, collection = pagy_cursor collection, after: params[:after], order: {id: :asc}
-    instance_variable_set collection_variable, collection
+    pagination_collection = collection.order(id: :asc)
+    if params[:after]
+      pagination_collection = pagination_collection.where("id > ?", params[:after])
+    end
+    @pagy, pagination_collection = pagy(pagination_collection)
+    self.collection = pagination_collection
   end
 
   def set_default_response_format
