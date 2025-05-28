@@ -31,7 +31,7 @@
                     <%= t('.status.active') %>
                     <% if endpoint.deactivation_limit_reached_at.present? %>
                       <br>
-                      <%= t('.deactivation_limit_reached.description', reached_at: l(endpoint.deactivation_limit_reached_at)) %>
+                      <%= t('.deactivation_limit_reached.description', reached_at: l(endpoint.deactivation_limit_reached_at, format: :date_and_time_field)) %>
                     <% end %>
                   <% else %>
                     <%= t('.status.deactivated') %>
