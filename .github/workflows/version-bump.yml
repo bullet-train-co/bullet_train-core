@@ -65,7 +65,7 @@ jobs:
 
           Tag v${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}
 
-          Note: Merging this PR with trigger the following actions:
+          Note: Merging this PR will trigger the following actions:
             * The `main` branch will be tagged with `v${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}`
             * A GitHub Release will be created for `v${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}`
             * Version `${{ steps.bump-all.outputs.NEW_VERSION_NUMBER }}` of the gems will be pushed to rubygems.org
