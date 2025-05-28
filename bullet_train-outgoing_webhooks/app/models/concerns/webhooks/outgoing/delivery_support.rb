@@ -69,8 +69,8 @@ module Webhooks::Outgoing::DeliverySupport
     created_at < max_attempts_period.ago
   end
 
-  def failed_and_not_attempted_or_elapsed?
-    failed? && (not_attempted? || created_at < max_attempts_period.ago)
+  def failed_or_not_attempted_or_elapsed?
+    failed? || not_attempted? || created_at < max_attempts_period.ago
   end
 
   def name
