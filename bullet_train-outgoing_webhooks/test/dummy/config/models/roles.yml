@@ -32,4 +32,5 @@ admin:
   models:
     Team: manage
     Membership: manage
+    Webhooks::Outgoing::Endpoint: manage
     Scaffolding::AbsolutelyAbstract::CreativeConcept: manage
