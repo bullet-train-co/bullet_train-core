@@ -60,6 +60,19 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
     end
   end
 
+  # POST /account/webhooks/outgoing/endpoints/:id/rotate_secret
+  def rotate_secret
+    @endpoint ||= Webhooks::Outgoing::Endpoint.accessible_by(current_ability).find(params[:id])
+
+    respond_to do |format|
+      if @endpoint.rotate_webhook_secret!
+        format.html { redirect_to [:account, @endpoint], notice: I18n.t("webhooks/outgoing/endpoints.notifications.secret_rotated") }
+      else
+        format.html { render :show, status: :unprocessable_entity }
+      end
+    end
+  end
+
   private
 
   # Never trust parameters from the scary internet, only allow the white list through.

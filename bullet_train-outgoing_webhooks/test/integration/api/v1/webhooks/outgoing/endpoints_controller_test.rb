@@ -43,6 +43,27 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
     assert_equal "http://example.com/webhook", response.parsed_body["url"]
   end
 
+  test "webhook_secret is shown in the API only on create" do
+    assert_difference -> { Webhooks::Outgoing::Endpoint.count } do
+      post api_v1_team_webhooks_outgoing_endpoints_path(team_id: 1),
+        params: {webhooks_outgoing_endpoint: {name: "Ahoy!", url: "http://example.com/webhook"}}
+    end
+
+    assert_response :success
+    assert_equal "Ahoy!", response.parsed_body["name"]
+    assert response.parsed_body["webhook_secret"].present?
+
+    endpoint = Webhooks::Outgoing::Endpoint.last
+    patch api_v1_webhooks_outgoing_endpoint_path(endpoint.id),
+      params: {webhooks_outgoing_endpoint: {name: "EDITED", url: "http://example.com/updated-webhook"}}
+    assert_equal "EDITED", response.parsed_body["name"]
+    assert response.parsed_body["webhook_secret"].nil?
+
+    get api_v1_webhooks_outgoing_endpoint_path(endpoint.id)
+    assert_equal "EDITED", response.parsed_body["name"]
+    assert response.parsed_body["webhook_secret"].nil?
+  end
+
   test "updates an endpoint" do
     patch api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), params: {webhooks_outgoing_endpoint: {name: "Ahoy!", url: "http://example.com/updated-webhook"}}, as: :json
 
