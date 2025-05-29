@@ -51,7 +51,7 @@
                       <% end %>
                     <% end %>
                     <% if can? :destroy, endpoint %>
-                      <%= button_to t('.buttons.shorthand.destroy'), [:account, endpoint], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>
+                      <%= button_to t('.buttons.shorthand.destroy'), [:account, endpoint], method: :delete, data: { turbo_confirm: t('.buttons.confirmations.destroy', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>
                     <% end %>
                   <% end %>
                 </td>

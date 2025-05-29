@@ -11,7 +11,7 @@
       <% unless hide_actions %>
         <%# We write the full path here since this partial is called from different scopes. %>
         <%= link_to t('account.scaffolding.absolutely_abstract.creative_concepts.buttons.shorthand.edit'), [:edit, :account, creative_concept], class: 'button-secondary button-smaller' if can? :edit, creative_concept %>
-        <%= button_to t('account.scaffolding.absolutely_abstract.creative_concepts.buttons.shorthand.destroy'), [:account, creative_concept], method: :delete, data: { confirm: t('account.scaffolding.absolutely_abstract.creative_concepts.buttons.confirmations.destroy', model_locales(creative_concept)) }, class: 'button-secondary button-smaller' if can? :destroy, creative_concept %>
+        <%= button_to t('account.scaffolding.absolutely_abstract.creative_concepts.buttons.shorthand.destroy'), [:account, creative_concept], method: :delete, data: { turbo_confirm: t('account.scaffolding.absolutely_abstract.creative_concepts.buttons.confirmations.destroy', model_locales(creative_concept)) }, class: 'button-secondary button-smaller' if can? :destroy, creative_concept %>
       <% end %>
     </td>
   </tr>

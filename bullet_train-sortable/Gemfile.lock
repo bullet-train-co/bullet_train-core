@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-api
   specs:
-    bullet_train-api (1.20.0)
+    bullet_train-api (1.21.0)
       bullet_train
       bullet_train-super_scaffolding
       doorkeeper
@@ -14,7 +14,7 @@ PATH
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.20.0)
+    bullet_train-fields (1.21.0)
       chronic
       cloudinary
       phonelib
@@ -23,13 +23,13 @@ PATH
 PATH
   remote: ../bullet_train-has_uuid
   specs:
-    bullet_train-has_uuid (1.20.0)
+    bullet_train-has_uuid (1.21.0)
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-roles
   specs:
-    bullet_train-roles (1.20.0)
+    bullet_train-roles (1.21.0)
       active_hash (>= 3.3.1)
       activesupport
       cancancan
@@ -37,20 +37,20 @@ PATH
 PATH
   remote: ../bullet_train-scope_validator
   specs:
-    bullet_train-scope_validator (1.20.0)
-      rails
+    bullet_train-scope_validator (1.21.0)
+      rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_load_and_authorize_resource
   specs:
-    bullet_train-super_load_and_authorize_resource (1.20.0)
+    bullet_train-super_load_and_authorize_resource (1.21.0)
       cancancan
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.20.0)
+    bullet_train-super_scaffolding (1.21.0)
       colorize
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -59,7 +59,7 @@ PATH
 PATH
   remote: ../bullet_train-themes
   specs:
-    bullet_train-themes (1.20.0)
+    bullet_train-themes (1.21.0)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -67,7 +67,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.20.0)
+    bullet_train (1.21.0)
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
@@ -93,7 +93,7 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-sortable (1.20.0)
+    bullet_train-sortable (1.21.0)
       rails (>= 6.0.0)
 
 GEM
@@ -276,7 +276,7 @@ GEM
     multipart-post (2.4.1)
     net-http (0.6.0)
       uri
-    net-imap (0.5.6)
+    net-imap (0.5.8)
       date
       net-protocol
     net-pop (0.1.2)
@@ -288,9 +288,9 @@ GEM
     nice_partials (0.10.1)
       actionview (>= 4.2.6)
     nio4r (2.7.4)
-    nokogiri (1.18.7-arm64-darwin)
+    nokogiri (1.18.8-arm64-darwin)
       racc (~> 1.4)
-    nokogiri (1.18.7-x86_64-linux-gnu)
+    nokogiri (1.18.8-x86_64-linux-gnu)
       racc (~> 1.4)
     observer (0.1.2)
     omniauth (2.1.3)
@@ -318,12 +318,12 @@ GEM
       stringio
     pwned (2.4.1)
     racc (1.8.1)
-    rack (3.1.12)
+    rack (3.1.15)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
       rack (>= 3.0.0, < 4)
-    rack-session (2.1.0)
+    rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)
     rack-test (2.2.0)

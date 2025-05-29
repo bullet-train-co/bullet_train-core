@@ -43,7 +43,7 @@
                       <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, delivery], class: 'button-secondary button-smaller' %>
                     <% end %>
                     <% if can? :destroy, delivery %>
-                      <%= button_to t('.buttons.shorthand.destroy'), [:account, delivery], method: :delete, data: { confirm: t('.buttons.confirmations.destroy', model_locales(delivery)) }, class: 'button-secondary button-smaller' %>
+                      <%= button_to t('.buttons.shorthand.destroy'), [:account, delivery], method: :delete, data: { turbo_confirm: t('.buttons.confirmations.destroy', model_locales(delivery)) }, class: 'button-secondary button-smaller' %>
                     <% end %>
                   <% end %>
                 </td>
