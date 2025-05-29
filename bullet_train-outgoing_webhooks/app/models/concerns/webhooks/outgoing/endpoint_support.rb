@@ -40,4 +40,20 @@ module Webhooks::Outgoing::EndpointSupport
   def touch_parent
     send(BulletTrain::OutgoingWebhooks.parent_association).touch
   end
+
+  def active?
+    deactivated_at.nil?
+  end
+
+  def deactivated?
+    deactivated_at.present?
+  end
+
+  def marked_for_deactivation?
+    deactivation_limit_reached_at.present? && deactivated_at.nil?
+  end
+
+  def clear_deactivation_limit_reached_at!
+    update(deactivation_limit_reached_at: nil)
+  end
 end

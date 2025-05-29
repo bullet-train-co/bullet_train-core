@@ -7,6 +7,14 @@ module Webhooks::Outgoing::DeliverySupport
 
     has_one :team, through: :endpoint unless BulletTrain::OutgoingWebhooks.parent_class_specified?
     has_many :delivery_attempts, class_name: "Webhooks::Outgoing::DeliveryAttempt", dependent: :destroy, foreign_key: :delivery_id
+
+    after_commit :clear_endpoint_deactivation_limit_reached_at, if: :delivered?
+  end
+
+  class_methods do
+    def max_attempts_period
+      ATTEMPT_SCHEDULE.values.sum
+    end
   end
 
   ATTEMPT_SCHEDULE = {
@@ -32,6 +40,7 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def deliver
+    return if endpoint.deactivated?
     # TODO If we ever do away with the `async: true` default for webhook generation, then I believe this needs to
     # change otherwise we'd be attempting the first delivery of webhooks inline.
     if delivery_attempts.new.attempt
@@ -55,7 +64,19 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def failed?
-    !(delivered? || still_attempting?)
+    !delivered? && !still_attempting?
+  end
+
+  def not_attempted?
+    attempt_count.zero?
+  end
+
+  def attempts_schedule_period_elapsed?
+    created_at < max_attempts_period.ago
+  end
+
+  def failed_or_not_attempted_or_elapsed?
+    failed? || not_attempted? || attempts_schedule_period_elapsed?
   end
 
   def name
@@ -64,5 +85,13 @@ module Webhooks::Outgoing::DeliverySupport
 
   def max_attempts
     ATTEMPT_SCHEDULE.keys.max
+  end
+
+  def max_attempts_period
+    self.class.max_attempts_period
+  end
+
+  def clear_endpoint_deactivation_limit_reached_at
+    endpoint.clear_deactivation_limit_reached_at!
   end
 end
