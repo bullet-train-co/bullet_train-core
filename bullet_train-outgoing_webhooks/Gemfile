@@ -22,7 +22,5 @@ gem "bullet_train-themes", path: "../bullet_train-themes"
 
 group :test do
   gem "minitest-reporters"
+  gem "webmock"
 end
-
-# Start debugger with binding.b [https://github.com/ruby/debug]
-# gem "debug", ">= 1.0.0"

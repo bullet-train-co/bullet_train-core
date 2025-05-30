@@ -11,8 +11,16 @@
       choices: @endpoint.valid_event_types.map { |event_type| [event_type.label_string, event_type.id] } %>
     <%= render 'shared/fields/super_select', method: :scaffolding_absolutely_abstract_creative_concept_id,
       choices: [['None', '']] + @endpoint.creative_concepts.map { |event_type| [event_type.name, event_type.id] }, other_options: {search: true} %>
+
+    <% if endpoint.persisted? %>
+    <br>
+    <%= t('.fields.webhook_secret.label') %>
+    <br>
+      <%= "#{endpoint.webhook_secret[0..5]}#{t('.fields.webhook_secret.truncation_with_instructions')}" %>
+    <% end %>
     <%# 🚅 super scaffolding will insert new fields above this line. %>
   <% end %>
+
 
   <div class="buttons">
     <%= form.submit (form.object.persisted? ? t('.buttons.update') : t('.buttons.create')), class: "button" %>
@@ -23,4 +31,13 @@
     <% end %>
   </div>
 
+<% end %>
+
+<% if endpoint.persisted? %>
+  <%=
+    button_to t('.buttons.rotate_secret'),
+      rotate_secret_account_webhooks_outgoing_endpoint_path(endpoint),
+      method: :post, class: "button-secondary",
+      data: { confirm: t('.buttons.confirmations.rotate_secret', model_locales(@endpoint)) }
+  %>
 <% end %>
