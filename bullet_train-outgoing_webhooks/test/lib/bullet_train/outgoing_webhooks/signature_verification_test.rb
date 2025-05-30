@@ -37,7 +37,7 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
   end
 
   test "#verify_signature returns false for invalid signatures" do
-    invalid_signature = "invalid" + @valid_signature[7..-1]
+    invalid_signature = "invalid" + @valid_signature[7..]
 
     result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
       @payload,
