@@ -16,6 +16,10 @@ export default class extends Controller {
       document.querySelector("#user_password").focus();
       document.querySelector("#new_user").setAttribute('action', '/users/sign_in')
       document.querySelector("#new_user").setAttribute('data-remote', 'false');
+
+      // TODO: Why do we need this? How is the button getting disabled?
+      // Does Turbo automatically disable submit buttons in a turbo form when it is submitted?
+      document.querySelector("#sign_in_submit").removeAttribute('disabled');
     }, 1);
     this.element.remove();
   }
