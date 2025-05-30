@@ -30,6 +30,8 @@ en:
           enable: Enable
           disable: Disable
           verify: Verify
+          confirmations:
+            disable: "Are you sure you want to disable 2FA?"
       buttons: *buttons
     notifications:
       updated: User was successfully updated.

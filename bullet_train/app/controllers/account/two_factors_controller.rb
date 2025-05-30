@@ -1,6 +1,8 @@
 class Account::TwoFactorsController < Account::ApplicationController
   before_action :authenticate_user!
 
+  layout false
+
   def verify
     @user = current_user
 

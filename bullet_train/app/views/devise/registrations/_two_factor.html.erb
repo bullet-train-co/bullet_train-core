@@ -1,62 +1,64 @@
-<%= render 'account/shared/box', divider: @backup_codes do |box| %>
-  <% box.title t("users.edit.two_factor.header") %>
-  <% box.description t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
-  <% if current_user.otp_secret %>
-    <% if @backup_codes %>
-      <% box.body do %>
-        <%= render 'account/shared/alert' do %>
-          <%= t('users.edit.two_factor.warning').html_safe %>
-        <% end %>
-
-        <p><%= t('users.edit.two_factor.instructions').html_safe %></p>
-
-        <center class="py-4">
-          <%= current_user.otp_qr_code.as_svg(
-            offset: 0,
-            color: '000',
-            shape_rendering: 'crispEdges',
-            module_size: 4,
-            standalone: true
-          ).html_safe %>
-        </center>
-
-        <p><%= t('users.edit.two_factor.recovery_codes').html_safe %></p>
-
-        <center>
-          <% @backup_codes.each do |code| %>
-            <p><code><%= code %></code></p>
+<%= turbo_frame_tag "two-factor-frame" do %>
+  <%= render 'account/shared/box', divider: @backup_codes do |box| %>
+    <% box.title t("users.edit.two_factor.header") %>
+    <% box.description t("users.edit.two_factor.description_#{@user.otp_required_for_login? ? 'enabled' : 'disabled'}") %>
+    <% if current_user.otp_secret %>
+      <% if @backup_codes %>
+        <% box.body do %>
+          <%= render 'account/shared/alert' do %>
+            <%= t('users.edit.two_factor.warning').html_safe %>
           <% end %>
-        </center>
 
-        <%= form_for current_user, url: verify_account_two_factor_path, method: :post, remote:true, html: {class: 'form'} do |form| %>
-          <div class="py-4">
-            <%= render 'shared/fields/text_field', form: form, method: :otp_attempt %>
-          </div>
-          <%= form.submit t('users.edit.two_factor.buttons.verify'), class: 'button' %>
-        <% end %> 
+          <p><%= t('users.edit.two_factor.instructions').html_safe %></p>
+
+          <center class="py-4">
+            <%= current_user.otp_qr_code.as_svg(
+              offset: 0,
+              color: '000',
+              shape_rendering: 'crispEdges',
+              module_size: 4,
+              standalone: true
+            ).html_safe %>
+          </center>
+
+          <p><%= t('users.edit.two_factor.recovery_codes').html_safe %></p>
+
+          <center>
+            <% @backup_codes.each do |code| %>
+              <p><code><%= code %></code></p>
+            <% end %>
+          </center>
+
+          <%= form_for current_user, url: verify_account_two_factor_path, method: :post, remote:true, html: {class: 'form'} do |form| %>
+            <div class="py-4">
+              <%= render 'shared/fields/text_field', form: form, method: :otp_attempt %>
+            </div>
+            <%= form.submit t('users.edit.two_factor.buttons.verify'), class: 'button' %>
+          <% end %>
+        <% end %>
       <% end %>
     <% end %>
-  <% end %>
-  <% box.actions do %>
-    <div class="<%= 'hidden' if @backup_codes %> space-y">
-      <% if local_assigns.has_key? :verified %>
-        <% if verified %>
-          <%= render 'account/shared/alert', color: 'blue' do %>
-            <%= t('users.edit.two_factor.verification_success').html_safe %>
-          <% end %>
-        <% else %>
-          <%= render 'account/shared/alert' do %>
-            <%= t('users.edit.two_factor.verification_fail').html_safe %>
+    <% box.actions do %>
+      <div class="<%= 'hidden' if @backup_codes %> space-y">
+        <% if local_assigns.has_key? :verified %>
+          <% if verified %>
+            <%= render 'account/shared/alert', color: 'blue' do %>
+              <%= t('users.edit.two_factor.verification_success').html_safe %>
+            <% end %>
+          <% else %>
+            <%= render 'account/shared/alert' do %>
+              <%= t('users.edit.two_factor.verification_fail').html_safe %>
+            <% end %>
           <% end %>
         <% end %>
-      <% end %>
 
-      <% if current_user.otp_required_for_login? %>
-        <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, data:{turbo_method: :delete}, remote: true, class: "button" %>
-      <% else %>
-        <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, data:{turbo_method: :post}, remote: true, class: "button" %>
-      <% end %>
-    </div>
+        <% if current_user.otp_required_for_login? %>
+          <%= link_to t('users.edit.two_factor.buttons.disable'), account_two_factor_path, data:{turbo_method: :delete, turbo_confirm: t('users.edit.two_factor.buttons.confirmations.disable')}, class: "button" %>
+        <% else %>
+          <%= link_to t('users.edit.two_factor.buttons.enable'), account_two_factor_path, data:{turbo_method: :post}, class: "button" %>
+        <% end %>
+      </div>
+    <% end %>
   <% end %>
 <% end %>
 

@@ -9,6 +9,7 @@ import MobileMenuController from './mobile_menu_controller'
 import TextToggleController from './text_toggle_controller'
 import SelectAllController from './select_all_controller'
 import ConnectionWorkflowController from './connection_workflow_controller'
+import OtpResponseController from './otp_response_controller'
 
 export const controllerDefinitions = [
   [BulkActionFormController, 'bulk_action_form_controller.js'],
@@ -20,6 +21,7 @@ export const controllerDefinitions = [
   [TextToggleController, 'text_toggle_controller.js'],
   [SelectAllController, 'select_all_controller.js'],
   [ConnectionWorkflowController, 'connection_workflow_controller.js'],
+  [OtpResponseController, 'otp_response_controller.js'],
 ].map(function(d) {
   const key = d[1]
   const controller = d[0]
