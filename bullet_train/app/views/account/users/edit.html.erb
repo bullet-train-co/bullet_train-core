@@ -14,7 +14,9 @@
 
         <% if two_factor_authentication_enabled? %>
           <div id="two-factor">
-            <%= render partial: "devise/registrations/two_factor" %>
+            <%= turbo_frame_tag "two-factor-frame" do %>
+              <%= render partial: "devise/registrations/two_factor" %>
+            <% end %>
           </div>
         <% end %>
       </div>

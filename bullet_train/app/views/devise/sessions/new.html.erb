@@ -39,7 +39,7 @@
               </div>
             <% end %>
 
-            <%= form.submit t('global.buttons.sign_in'), class: 'button full' %>
+            <%= form.submit t('global.buttons.sign_in'), class: 'button full', id: 'sign_in_submit' %>
           </div>
 
           <% if devise_mapping.rememberable? %>
