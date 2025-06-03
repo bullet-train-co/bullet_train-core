@@ -25,7 +25,7 @@ class Api::Controllers::Base::PaginationTest < ActionController::TestCase
       get "index" => "anonymous#index"
     end
 
-    @page_size = Pagy::DEFAULT[:items]
+    @page_size = Pagy::DEFAULT[:limit]
     @half_page_size = @page_size / 2
     @teams_to_create = @page_size + @half_page_size
 
