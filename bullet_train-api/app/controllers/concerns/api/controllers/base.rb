@@ -112,9 +112,12 @@ module Api::Controllers::Base
 
   def apply_filters
     # An empty method that descendant controllers can override
-    # A possible implementaiton might look like:
+    # A possible implementation might look like:
     #
     # self.collection = collection.where(status: params[:filter_status]) if params[:filter_status]
+    #
+    # Keep in mind that for adding filters to auto-generated documentation, you
+    # will need to override index.yaml.erb or _paths.yaml.erbs.
   end
 
   def apply_pagination
