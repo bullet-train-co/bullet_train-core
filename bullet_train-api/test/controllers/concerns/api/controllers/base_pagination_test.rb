@@ -1,6 +1,6 @@
 require "test_helper"
 
-class Api::Controllers::Base::Test < ActionController::TestCase
+class Api::Controllers::Base::PaginationTest < ActionController::TestCase
   class PaginationTestController < ActionController::Base
     include Api::Controllers::Base
     prepend_before_action :load_teams
