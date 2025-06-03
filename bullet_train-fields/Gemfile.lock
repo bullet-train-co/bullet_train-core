@@ -8,7 +8,6 @@ PATH
       factory_bot
       jbuilder-schema (~> 2.6.6)
       pagy (~> 8)
-      pagy_cursor
       rails (>= 6.0.0)
 
 PATH
@@ -303,9 +302,6 @@ GEM
     orm_adapter (0.5.0)
     ostruct (0.6.1)
     pagy (8.6.3)
-    pagy_cursor (0.8.0)
-      activerecord (>= 5)
-      pagy (>= 6, < 9)
     parallel (1.26.3)
     parser (3.3.7.4)
       ast (~> 2.4.1)
