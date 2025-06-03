@@ -7,7 +7,7 @@ PATH
       doorkeeper
       factory_bot
       jbuilder-schema (~> 2.6.6)
-      pagy (~> 8)
+      pagy (~> 9)
       rails (>= 6.0.0)
 
 PATH
@@ -84,7 +84,7 @@ PATH
       http_accept_language
       nice_partials (~> 0.9)
       omniauth (~> 2.0)
-      pagy (~> 8)
+      pagy (~> 9)
       possessive
       rails (>= 6.0.0)
       showcase-rails
@@ -301,7 +301,7 @@ GEM
       rack-protection
     orm_adapter (0.5.0)
     ostruct (0.6.1)
-    pagy (8.6.3)
+    pagy (9.3.4)
     pg (1.5.9)
     phonelib (0.10.6)
     possessive (1.0.1)

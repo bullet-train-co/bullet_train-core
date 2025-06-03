@@ -72,7 +72,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "commonmarker", ">= 1.0.0"
 
   # Pagination.
-  spec.add_runtime_dependency "pagy", "~> 8"
+  spec.add_runtime_dependency "pagy", "~> 9"
 
   # We don't want to develop in a world where we don't have `binding.pry` or `object.pry` for debugging.
   spec.add_development_dependency "pry"
