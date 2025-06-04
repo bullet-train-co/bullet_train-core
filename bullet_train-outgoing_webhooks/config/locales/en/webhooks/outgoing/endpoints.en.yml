@@ -78,6 +78,20 @@ en:
 
       scaffolding_absolutely_abstract_creative_concept: *scaffolding_absolutely_abstract_creative_concept
 
+      deactivation_limit_reached_at:
+        _: &deactivation_limit_reached_at Deactivation Limit Reached At
+        label: *deactivation_limit_reached_at
+        heading: *deactivation_limit_reached_at
+        api_title: *deactivation_limit_reached_at
+        api_description: *deactivation_limit_reached_at
+
+      deactivated_at:
+        _: &deactivated_at Deactivated At
+        label: *deactivated_at
+        heading: *deactivated_at
+        api_title: *deactivated_at
+        api_description: *deactivated_at
+
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Added
