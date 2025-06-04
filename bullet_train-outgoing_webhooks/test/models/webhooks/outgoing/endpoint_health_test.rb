@@ -179,7 +179,6 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
     assert_equal [endpoint_to_deactivate.id], reached_limit_endpoints.pluck(:id)
   end
 
-
   test "#mark_to_deactivate! does not mark to deactivate endpoints when failed deliveries are created within max_attempts_period" do
     user = create_user
     event = create_event(subject: user)
