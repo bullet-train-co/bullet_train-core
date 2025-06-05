@@ -67,8 +67,6 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
     respond_to do |format|
       if @endpoint.rotate_webhook_secret!
         format.html { redirect_to [:account, @endpoint], notice: I18n.t("webhooks/outgoing/endpoints.notifications.secret_rotated") }
-      else
-        format.html { render :show, status: :unprocessable_entity }
       end
     end
   end

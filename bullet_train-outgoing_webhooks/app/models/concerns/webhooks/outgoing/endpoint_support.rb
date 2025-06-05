@@ -48,6 +48,6 @@ module Webhooks::Outgoing::EndpointSupport
   end
 
   def rotate_webhook_secret!
-    update(webhook_secret: SecureRandom.hex(32))
+    update!(webhook_secret: SecureRandom.hex(32))
   end
 end
