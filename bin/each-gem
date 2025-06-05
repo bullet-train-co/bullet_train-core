@@ -1,0 +1,36 @@
+#!/usr/bin/env ruby
+
+require 'thor'
+
+class CoreBumpCLI < Thor
+  desc "do COMMAND", "Loop through each sub-gem and run the command provided."
+  # For example:
+  # ./bin/each-gem do "bundle update rack --conservative"
+  option :allow_local
+  def do(command)
+    ruby_gems.each do |package|
+      puts "running for: #{package}"
+      Dir.chdir "./#{package}"
+      puts output = `#{command}`
+      Dir.chdir ".."
+    end
+  end
+
+  # This allows failure to be reported to the shell correctly.
+  # https://github.com/rails/thor/wiki/Making-An-Executable
+  def self.exit_on_failure?
+    true
+  end
+
+  # This allows us to define helper methods that aren't attached to thor commands
+  no_commands do
+    def ruby_gems
+      Dir.glob("*/*.gemspec").map{|gemspec| gemspec.split("/").first }
+    end
+  end
+end
+
+# We create our own args array so that we don't have to ask the user to include `bump` on the command line
+#args = ["bump"] + ARGV
+
+CoreBumpCLI.start(ARGV)
