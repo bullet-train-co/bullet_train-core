@@ -20,7 +20,4 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
   ActiveSupport::TestCase.fixtures :all
 end
 
-# Enable running tests inside RubyMine IDE.
-unless ENV["RM_INFO"]
-  require_relative "../../test_support/minitest_reporters"
-end
+require_relative "../../test_support/minitest_reporters"
