@@ -28,6 +28,7 @@
           <% end %>
 
           <%= render 'shared/attributes/belongs_to', attribute: :scaffolding_absolutely_abstract_creative_concept %>
+          <%= render 'shared/attributes/code', attribute: :webhook_secret, secret: true %>
           <%# 🚅 super scaffolding will insert new fields above this line. %>
         <% end %>
       <% end %>
@@ -36,6 +37,14 @@
         <%= link_to t('.buttons.edit'), [:edit, :account, @endpoint], class: first_button_primary if can? :edit, @endpoint %>
         <%= button_to t('.buttons.destroy'), [:account, @endpoint], method: :delete, class: first_button_primary, data: { turbo_confirm: t('.buttons.confirmations.destroy', model_locales(@endpoint)) } if can? :destroy, @endpoint %>
         <%= link_to t('global.buttons.back'), [:account, @parent, :webhooks_outgoing_endpoints], class: first_button_primary %>
+        <% if can? :edit, @endpoint %>
+          <%=
+            button_to t('.buttons.rotate_secret'),
+              rotate_secret_account_webhooks_outgoing_endpoint_path(@endpoint),
+              method: :post, class: first_button_primary,
+              data: { turbo_confirm: t('.buttons.confirmations.rotate_secret', model_locales(@endpoint)) }
+          %>
+        <% end %>
       <% end %>
     <% end %>
 
