@@ -43,9 +43,6 @@ module Api::V1::Webhooks::Outgoing::Endpoints::ControllerBase
   # POST /api/v1/teams/:team_id/webhooks/outgoing/endpoints
   def create
     if @endpoint.save
-      # Set instance variable to indicate this is a newly created endpoint.
-      # This will be used in the Jbuilder template to determine whether to include the webhook_secret.
-      @newly_created_endpoint = true
       render :show, status: :created, location: [:api, :v1, @endpoint]
     else
       render json: @endpoint.errors, status: :unprocessable_entity

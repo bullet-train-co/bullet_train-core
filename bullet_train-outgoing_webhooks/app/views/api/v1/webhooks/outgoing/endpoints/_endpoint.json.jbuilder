@@ -11,4 +11,4 @@ json.extract! endpoint,
 # Avoid spilling secrets via the API. We still need to show it once on create so
 # endpoints created programmaticly via the API can save it and use it to verify
 # the signature.
-json.webhook_secret endpoint.webhook_secret if defined?(@newly_created_endpoint) && @newly_created_endpoint
+json.webhook_secret endpoint.webhook_secret if endpoint.previously_new_record?
