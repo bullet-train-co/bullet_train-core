@@ -11,7 +11,7 @@ class CoreBumpCLI < Thor
     ruby_gems.each do |package|
       puts "running for: #{package}"
       Dir.chdir "./#{package}"
-      puts output = `#{command}`
+      system command
       Dir.chdir ".."
     end
   end
