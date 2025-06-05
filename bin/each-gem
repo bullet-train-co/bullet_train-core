@@ -3,11 +3,11 @@
 require 'thor'
 
 class CoreBumpCLI < Thor
-  desc "do COMMAND", "Loop through each sub-gem and run the command provided."
+  desc "run-command COMMAND", "Loop through each sub-gem and run the command provided."
   # For example:
-  # ./bin/each-gem do "bundle update rack --conservative"
+  # ./bin/each-gem run-command "bundle update rack --conservative"
   option :allow_local
-  def do(command)
+  def run_command(command)
     ruby_gems.each do |package|
       puts "running for: #{package}"
       Dir.chdir "./#{package}"
