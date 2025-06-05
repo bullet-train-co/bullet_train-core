@@ -45,7 +45,7 @@
                     <% end %>
                     <% if can? :edit, endpoint %>
                       <% if endpoint.active? %>
-                        <%= button_to t('.buttons.shorthand.deactivate'), [:deactivate, :account, endpoint], method: :delete, data: { confirm: t('.buttons.confirmations.deactivate', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>
+                        <%= button_to t('.buttons.shorthand.deactivate'), [:deactivate, :account, endpoint], method: :delete, data: { turbo_confirm: t('.buttons.confirmations.deactivate', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>
                       <% else %>
                         <%= button_to t('.buttons.shorthand.activate'), [:activate, :account, endpoint], method: :post, class: 'button-secondary button-smaller' %>
                       <% end %>
