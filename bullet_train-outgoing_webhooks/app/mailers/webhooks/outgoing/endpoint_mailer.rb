@@ -29,7 +29,7 @@ class Webhooks::Outgoing::EndpointMailer < ApplicationMailer
     @values ||= {
       endpoint_name: endpoint.name,
       endpoint_events: endpoint.event_type_ids.join(", "),
-      cta_url: account_webhooks_outgoing_endpoint_url(endpoint),
+      app_name: I18n.t("application.name"),
     }
   end
 end

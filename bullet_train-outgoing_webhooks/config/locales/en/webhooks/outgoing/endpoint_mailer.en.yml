@@ -28,7 +28,7 @@ en:
           signature: &SIGNATURE
             html:
               <p>If you have any questions, please don't hesitate to <a href="mailto:%{support_email}">send us an email</a>.</p>
-              <p>Thanks,<br>The Untitled Application Team</p>
+              <p>Thanks,<br>%{app_name}</p>
         deactivated:
           subject: "Webhook Endpoint Deactivated - %{endpoint_name}"
           preview: "Your webhook endpoint %{endpoint_name} has been deactivated due to repeated failures"
