@@ -3,7 +3,7 @@ module BulletTrain
     # Provides methods for webhook signatures. This module also serves as an
     # example that can be used by receiving applications to verify webhook
     # authenticity.
-    module SignatureVerification
+    module Signature
       # Verifies the authenticity of a webhook request.
       #
       # @param payload [String] The raw request body as a string.
@@ -11,7 +11,7 @@ module BulletTrain
       # @param signature [String] The signature from the Signature request header.
       # @param secret [String] The webhook secret attached to the endpoint the event comes from.
       # @return [Boolean] True if the signature is valid, false otherwise.
-      def self.verify_signature(payload, signature, timestamp, secret)
+      def self.verify(payload, signature, timestamp, secret)
         return false if payload.blank? || signature.blank? || timestamp.blank? || secret.blank?
 
         tolerance = Rails.configuration.outgoing_webhooks[:event_verification_tolerance_seconds]
@@ -46,14 +46,14 @@ module BulletTrain
 
         return false if signature.blank? || timestamp.blank?
 
-        verify_signature(payload, signature, timestamp, secret)
+        verify(payload, signature, timestamp, secret)
       end
 
       # Algorithm to generate the signature.
       #
       # @payload [Hash] The payload to be encoded into a signature.
       # @secret [String] The secret stored on each webhook endpoint.
-      def self.generate_signature(payload, secret)
+      def self.generate(payload, secret)
         timestamp = Time.now.to_i.to_s
         signature_payload = "#{timestamp}.#{payload.to_json}"
         signature = OpenSSL::HMAC.hexdigest("SHA256", secret, signature_payload)

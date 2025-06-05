@@ -1,12 +1,12 @@
 require "test_helper"
 
-class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::TestCase
+class BulletTrain::OutgoingWebhooks::SignatureTest < ActiveSupport::TestCase
   setup do
     @secret = "test-webhook-secret"
     payload_hash = {"test" => "data"}
     @payload = payload_hash.to_json
 
-    signature_data = BulletTrain::OutgoingWebhooks::SignatureVerification.generate_signature(
+    signature_data = BulletTrain::OutgoingWebhooks::Signature.generate(
       payload_hash,
       @secret
     )
@@ -14,8 +14,8 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     @timestamp = signature_data[:timestamp]
   end
 
-  test "#verify_signature returns true for valid signatures" do
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+  test "#verify returns true for valid signatures" do
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       @payload,
       @valid_signature,
       @timestamp,
@@ -25,8 +25,8 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert result, "Should return true for valid signature"
   end
 
-  test "#verify_signature returns false for wrong webhook secret" do
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+  test "#verify returns false for wrong webhook secret" do
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       @payload,
       @valid_signature,
       @timestamp,
@@ -36,10 +36,10 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert_not result, "Should return false for wrong webhook secret"
   end
 
-  test "#verify_signature returns false for invalid signatures" do
+  test "#verify returns false for invalid signatures" do
     invalid_signature = "invalid" + @valid_signature[7..]
 
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       @payload,
       invalid_signature,
       @timestamp,
@@ -49,10 +49,10 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert_not result, "Should return false for invalid signature"
   end
 
-  test "#verify_signature returns false for empty string signatures" do
+  test "#verify returns false for empty string signatures" do
     invalid_signature = ""
 
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       @payload,
       invalid_signature,
       @timestamp,
@@ -62,10 +62,10 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert_not result, "Should return false for empty string signature"
   end
 
-  test "#verify_signature returns false for nil signatures" do
+  test "#verify returns false for nil signatures" do
     invalid_signature = nil
 
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       @payload,
       invalid_signature,
       @timestamp,
@@ -75,9 +75,9 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert_not result, "Should return false for nil signature"
   end
 
-  test "#verify_signature returns false for expired timestamps" do
+  test "#verify returns false for expired timestamps" do
     tolerance_seconds = Rails.configuration.outgoing_webhooks[:event_verification_tolerance_seconds]
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       @payload,
       @valid_signature,
       (tolerance_seconds + 5.seconds).from_now.to_i,
@@ -86,9 +86,9 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert_not result, "Should return false for expired timestamps"
   end
 
-  test "#verify_signature returns false for future timestamps" do
+  test "#verify returns false for future timestamps" do
     tolerance_seconds = Rails.configuration.outgoing_webhooks[:event_verification_tolerance_seconds]
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       @payload,
       @valid_signature,
       (tolerance_seconds + 5.seconds).ago.to_i,
@@ -100,13 +100,13 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
   test "#verify_request verifies a request's signature" do
     mock_request = Struct.new(:headers, :raw_post).new(
       {
-        "X-Bullet-Train-Webhook-Signature" => @valid_signature,
-        "X-Bullet-Train-Webhook-Timestamp" => @timestamp
+        "X-Webhook-Bullet-Train-Signature" => @valid_signature,
+        "X-Webhook-Bullet-Train-Timestamp" => @timestamp
       },
       @payload
     )
 
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_request(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify_request(
       mock_request,
       @secret
     )
@@ -122,7 +122,7 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
       @payload
     )
 
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_request(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify_request(
       mock_request,
       @secret
     )
@@ -130,10 +130,10 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert_not result, "Should fail with missing headers"
   end
 
-  test "#generate_signature generates a valid signature that can be verified" do
+  test "#generate generates a valid signature that can be verified" do
     payload_hash = {"test" => "data2"}
 
-    signature_data = BulletTrain::OutgoingWebhooks::SignatureVerification.generate_signature(
+    signature_data = BulletTrain::OutgoingWebhooks::Signature.generate(
       payload_hash,
       @secret
     )
@@ -142,7 +142,7 @@ class BulletTrain::OutgoingWebhooks::SignatureVerificationTest < ActiveSupport::
     assert signature_data[:timestamp].present?, "Should generate a timestamp"
 
     # Verify the generated signature works
-    result = BulletTrain::OutgoingWebhooks::SignatureVerification.verify_signature(
+    result = BulletTrain::OutgoingWebhooks::Signature.verify(
       payload_hash.to_json,
       signature_data[:signature],
       signature_data[:timestamp],

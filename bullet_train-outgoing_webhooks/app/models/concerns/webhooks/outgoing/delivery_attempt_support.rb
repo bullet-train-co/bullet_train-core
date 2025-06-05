@@ -66,8 +66,8 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
 
     # Generate and add signature headers
     payload = delivery.event.payload
-    signature_data = BulletTrain::OutgoingWebhooks::SignatureVerification
-      .generate_signature(payload, delivery.endpoint.webhook_secret)
+    signature_data = BulletTrain::OutgoingWebhooks::Signature
+      .generate(payload, delivery.endpoint.webhook_secret)
 
     webhook_headers_namespace = Rails.configuration.outgoing_webhooks[:webhook_headers_namespace]
     request.add_field("#{webhook_headers_namespace}-Signature", signature_data[:signature])

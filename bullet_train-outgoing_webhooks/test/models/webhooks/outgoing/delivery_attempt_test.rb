@@ -36,9 +36,9 @@ class Webhooks::Outgoing::DeliveryAttemptTest < ActiveSupport::TestCase
 
     assert_requested :post, "https://example.com/webhook", {
       headers: {
-        "X-Bullet-Train-Webhook-Timestamp" => /.+/,
-        "X-Bullet-Train-Webhook-Signature" => /.+/,
-        "X-Bullet-Train-Webhook-Id" => @event.uuid,
+        "X-Webhook-Bullet-Train-Timestamp" => /.+/,
+        "X-Webhook-Bullet-Train-Signature" => /.+/,
+        "X-Webhook-Bullet-Train-Id" => @event.uuid,
         "Content-Type" => "application/json"
       },
       body: {
