@@ -38,7 +38,8 @@ class Account::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
   end
 
   test "deactivate action with DELETE request" do
-    @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: Time.current)
+    current_time = Time.current
+    @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: current_time)
     assert @endpoint.active?
     assert_not_nil @endpoint.deactivation_limit_reached_at
 
@@ -47,6 +48,6 @@ class Account::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
     assert_redirected_to "/account/teams/#{@team.id}/webhooks/outgoing/endpoints"
     assert_not @endpoint.reload.active?
     assert_not_nil @endpoint.deactivated_at
-    assert_nil @endpoint.deactivation_limit_reached_at
+    assert_equal @endpoint.deactivation_limit_reached_at, current_time
   end
 end

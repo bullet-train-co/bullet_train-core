@@ -74,7 +74,8 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
   end
 
   test "deactivates an endpoint" do
-    @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: Time.current)
+    current_time = Time.current
+    @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: current_time)
     assert @endpoint.reload.active?
     assert_not_nil @endpoint.deactivation_limit_reached_at
 
@@ -83,7 +84,7 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
     assert_response :success
     assert @endpoint.reload.deactivated?
     assert_not_nil response.parsed_body["deactivated_at"]
-    assert_nil @endpoint.reload.deactivation_limit_reached_at
+    assert_equal @endpoint.reload.deactivation_limit_reached_at, current_time
   end
 
   test "activate handles already active endpoint" do
@@ -100,7 +101,8 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
   end
 
   test "deactivate handles already inactive endpoint" do
-    @endpoint.update(deactivated_at: Time.current, deactivation_limit_reached_at: Time.current)
+    current_time = Time.current
+    @endpoint.update(deactivated_at: current_time, deactivation_limit_reached_at: current_time)
     assert @endpoint.reload.deactivated?
     assert_not_nil @endpoint.deactivation_limit_reached_at
 
@@ -109,7 +111,7 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
     assert_response :success
     assert @endpoint.reload.deactivated?
     assert_not_nil response.parsed_body["deactivated_at"]
-    assert_nil @endpoint.reload.deactivation_limit_reached_at
+    assert_equal @endpoint.reload.deactivation_limit_reached_at, current_time
   end
 
   test "activate fails with invalid endpoint" do
