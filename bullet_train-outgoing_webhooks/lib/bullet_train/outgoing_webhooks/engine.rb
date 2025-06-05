@@ -26,7 +26,7 @@ module BulletTrain
           automatic_deactivation_endpoint_enabled: false,
           automatic_deactivation_endpoint_settings: {
             max_limit: 50,
-            deactivation_in: 1.day
+            deactivation_in: 3.day
           },
         }
       end
