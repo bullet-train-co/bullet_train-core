@@ -23,6 +23,7 @@ module Webhooks::Outgoing::DeliverySupport
     3 => 5.minutes,
     4 => 15.minutes,
     5 => 1.hour,
+    6 => 24.hours,
   }
 
   def label_string
