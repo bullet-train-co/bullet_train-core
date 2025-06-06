@@ -17,8 +17,8 @@ end
 
 def test_enabled_config
   {
-    automatic_deactivation_endpoint_enabled: true,
-    automatic_deactivation_endpoint_settings: {
+    automatic_endpoint_deactivation_enabled: true,
+    automatic_endpoint_deactivation_settings: {
       max_limit: 5, # lowered for testing
       deactivation_in: 1.day,
     }
@@ -94,7 +94,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
   end
 
   test "#mark_to_deactivate! returns nil when the feature is disabled" do
-    config = {automatic_deactivation_endpoint_enabled: false}
+    config = {automatic_endpoint_deactivation_enabled: false}
     assert_nil mark_to_deactivate_subject(config)
   end
 
@@ -220,7 +220,7 @@ class Webhooks::Outgoing::EndpointHealthTest < ActiveSupport::TestCase
   end
 
   test "#deactivate_failed_endpoints! returns nil if the feature is disabled" do
-    config = {automatic_deactivation_endpoint_enabled: false}
+    config = {automatic_endpoint_deactivation_enabled: false}
     assert_nil deactivate_subject(config)
   end
 

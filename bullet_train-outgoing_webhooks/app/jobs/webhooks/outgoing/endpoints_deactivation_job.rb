@@ -2,7 +2,7 @@ class Webhooks::Outgoing::EndpointsDeactivationJob < ApplicationJob
   queue_as :default
 
   def perform
-    return unless automatic_deactivation_endpoint_enabled?
+    return unless automatic_endpoint_deactivation_enabled?
 
     endpoint_health = Webhooks::Outgoing::EndpointHealth.new
     endpoint_health.deactivate_failed_endpoints!
@@ -11,7 +11,7 @@ class Webhooks::Outgoing::EndpointsDeactivationJob < ApplicationJob
 
   private
 
-  def automatic_deactivation_endpoint_enabled?
-    BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks[:automatic_deactivation_endpoint_enabled]
+  def automatic_endpoint_deactivation_enabled?
+    BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks[:automatic_endpoint_deactivation_enabled]
   end
 end

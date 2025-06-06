@@ -25,13 +25,13 @@ class Webhooks::Outgoing::EndpointsDeactivationJobTest < ActiveSupport::TestCase
   end
 
   test "perform does not call EndpointHealth methods when feature is disabled" do
-    stub_config({automatic_deactivation_endpoint_enabled: false}) do
+    stub_config({automatic_endpoint_deactivation_enabled: false}) do
       assert_nil job.perform # early return
     end
   end
 
   test "perform calls EndpointHealth methods when feature is enabled" do
-    stub_config({automatic_deactivation_endpoint_enabled: true}) do
+    stub_config({automatic_endpoint_deactivation_enabled: true}) do
       stub_endpoint_health do
         endpoint_health_mock.expect :deactivate_failed_endpoints!, true
         endpoint_health_mock.expect :mark_to_deactivate!, true

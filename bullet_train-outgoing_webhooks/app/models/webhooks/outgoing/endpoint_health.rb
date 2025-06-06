@@ -3,13 +3,13 @@ class Webhooks::Outgoing::EndpointHealth
 
   def initialize
     @config = BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks
-    @settings = OpenStruct.new(config[:automatic_deactivation_endpoint_settings])
+    @settings = OpenStruct.new(config[:automatic_endpoint_deactivation_settings])
     @deliveries_table = Webhooks::Outgoing::Delivery.table_name
     @endpoints_table = Webhooks::Outgoing::Endpoint.table_name
   end
 
   def mark_to_deactivate!
-    return unless config[:automatic_deactivation_endpoint_enabled]
+    return unless config[:automatic_endpoint_deactivation_enabled]
 
     max_attempts_period = Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour # Adding 1 hour to ensure it covers all delays
     last_delivered = Webhooks::Outgoing::Delivery
@@ -44,7 +44,7 @@ class Webhooks::Outgoing::EndpointHealth
   end
 
   def deactivate_failed_endpoints!
-    return unless config[:automatic_deactivation_endpoint_enabled]
+    return unless config[:automatic_endpoint_deactivation_enabled]
     delivered_webhooks = Webhooks::Outgoing::Delivery
       .select(:endpoint_id, "MAX(delivered_at) as delivered_at")
       .where.not(delivered_at: nil)
