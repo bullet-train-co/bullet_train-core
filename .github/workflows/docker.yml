@@ -67,6 +67,7 @@ jobs:
 
   build-and-push-build-image:
     runs-on: ubuntu-latest
+    needs: build-and-push-base-image
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
       contents: read
