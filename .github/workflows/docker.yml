@@ -32,13 +32,16 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           # generate Docker tags based on the following events/attributes
+          # TODO: We don't want to hard code the `version` value in the semver tags below. I'm just doing it now for testing.
+          # Once this is wired up to run automatically when a new version tag is pushed then the tags should be populated correctly.
+          # I'm not sure if we need any of the ones that I've commented out...
           tags: |
-            type=schedule
-            type=ref,event=branch
-            type=ref,event=pr
-            type=semver,pattern={{version}}
-            type=semver,pattern={{major}}.{{minor}}
-            type=semver,pattern={{major}}
+            #type=schedule
+            #type=ref,event=branch
+            #type=ref,event=pr
+            type=semver,pattern={{version}},value=1.23.0
+            type=semver,pattern={{major}}.{{minor}},value=1.23.0
+            type=semver,pattern={{major}},value=1.23.0
             type=sha
       # This step uses the `docker/build-push-action` action to build the image, based on your repository's `Dockerfile`. If the build succeeds, it pushes the image to GitHub Packages.
       # It uses the `context` parameter to define the build's context as the set of files located in the specified path. For more information, see [Usage](https://github.com/docker/build-push-action#usage) in the README of the `docker/build-push-action` repository.
