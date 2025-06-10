@@ -41,9 +41,9 @@ jobs:
             #type=ref,event=branch
             #type=ref,event=pr
             type=semver,pattern={{version}},value=1.23.0
-            type=semver,pattern={{major}}.{{minor}},value=1.23.0
-            type=semver,pattern={{major}},value=1.23.0
-            type=sha
+            #type=semver,pattern={{major}}.{{minor}},value=1.23.0
+            #type=semver,pattern={{major}},value=1.23.0
+            #type=sha
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -113,9 +113,9 @@ jobs:
             #type=ref,event=branch
             #type=ref,event=pr
             type=semver,pattern={{version}},value=1.23.0
-            type=semver,pattern={{major}}.{{minor}},value=1.23.0
-            type=semver,pattern={{major}},value=1.23.0
-            type=sha
+            #type=semver,pattern={{major}}.{{minor}},value=1.23.0
+            #type=semver,pattern={{major}},value=1.23.0
+            #type=sha
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
