@@ -10,7 +10,7 @@
 
 #######################################################################################################
 # TODO: How can we get this number automatically from somewhere?
-BULLET_TRAIN_VERSION=1.23.0
+ARG BULLET_TRAIN_VERSION=1.23.0
 FROM ghcr.io/bullet-train-co/bullet_train-core/base:$BULLET_TRAIN_VERSION AS base
 
 # Install packages needed to build gems
