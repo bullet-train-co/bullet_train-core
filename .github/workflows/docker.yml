@@ -92,7 +92,7 @@ jobs:
           target_dir: tmp/starter
           repository: bullet-train-co/bullet_train
           # TODO: We don't want to hard code this
-          target_branch: jeremy/dockerfiler
+          target_branch: jeremy/dockerfiles
 
       - name: Log in to the Container registry
         uses: docker/login-action@65b78e6e13532edd9afa3aa52ac7964289d1a9c1
