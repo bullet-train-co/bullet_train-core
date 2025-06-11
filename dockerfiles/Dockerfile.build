@@ -11,7 +11,7 @@
 #######################################################################################################
 # TODO: How can we get this number automatically from somewhere?
 ARG BULLET_TRAIN_VERSION=1.23.0
-FROM ghcr.io/bullet-train-co/bullet_train-core/base:$BULLET_TRAIN_VERSION AS base
+FROM ghcr.io/bullet-train-co/bullet_train/base:$BULLET_TRAIN_VERSION AS base
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
