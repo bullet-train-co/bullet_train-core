@@ -27,7 +27,8 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get update && \
     apt-get install -y yarn && \
     #apt-get install -y ffmpeg && \
-    corepack enable
+    corepack enable && \
+    corepack install
 
 # Install application gems
 # TODO: Is there something like WORKDIR for the outer container so we
