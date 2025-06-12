@@ -37,6 +37,14 @@ module CreateWebhooksTestHelpers
     )
   end
 
+  def create_list_of_deliveries(count, options = {})
+    deliveries = []
+    count.times do
+      deliveries << create_delivery(options)
+    end
+    deliveries
+  end
+
   def create_delivery_attempts(delivery, count, options = {})
     count.times do |i|
       delivery.delivery_attempts.create!(
