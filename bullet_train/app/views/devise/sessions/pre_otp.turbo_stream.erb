@@ -1,0 +1,7 @@
+<turbo-stream action="append" target="new_user">
+  <template>
+    <template
+      data-controller="otp-response"
+      data-otp-response-otp-required-value="<%= @user&.otp_required_for_login || false %>"></template>
+  </template>
+</turbo-stream>
