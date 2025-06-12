@@ -74,7 +74,8 @@ module Webhooks::Outgoing::EndpointSupport
     return unless BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks[:automatic_endpoint_deactivation_enabled]
     return if deactivated?
 
-    # If the endpoint is marked for deactivation, we check if the cooling-off period (deactivation_in setting) has passed. If so, we mark it as deactivated.
+    # If the endpoint is marked for deactivation, we check if the cooling-off period (deactivation_in setting) has passed.
+    # If so, we mark it as deactivated.
     if should_be_deactivated?
       deactivate!
     elsif should_be_marked_for_deactivation?
@@ -96,8 +97,11 @@ module Webhooks::Outgoing::EndpointSupport
     max_attempts_period = Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour # Adding 1 hour to ensure it covers all delays
     max_limit = BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks.dig(:automatic_endpoint_deactivation_settings, :max_limit)
     last_successful_delivery = deliveries.where.not(delivered_at: nil).maximum(:delivered_at)
-    return false if last_successful_delivery && last_successful_delivery < (Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour).ago
+    return false if last_successful_delivery && last_successful_delivery > (Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour).ago
 
-    deliveries.where(delivered_at: nil).where("created_at < ?", max_attempts_period.ago).last(max_limit).pluck(:delivered_at).all?(&:nil?)
+    failed_deliveries = deliveries.where(delivered_at: nil).where("created_at < ?", max_attempts_period.ago).last(max_limit).pluck(:delivered_at)
+    return false if failed_deliveries.empty?
+
+    failed_deliveries.all?(&:nil?) && failed_deliveries.size >= max_limit
   end
 end
