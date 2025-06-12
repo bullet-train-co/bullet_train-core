@@ -14,8 +14,10 @@ module Webhooks::Outgoing::EndpointSupport
     validates :name, presence: true
 
     before_validation { url&.strip! }
+    before_validation :generate_webhook_secret, on: :create
 
     validates :url, presence: true, allowed_uri: BulletTrain::OutgoingWebhooks.advanced_hostname_security
+    validates :webhook_secret, presence: true
 
     after_initialize do
       self.event_type_ids ||= []
@@ -39,5 +41,13 @@ module Webhooks::Outgoing::EndpointSupport
 
   def touch_parent
     send(BulletTrain::OutgoingWebhooks.parent_association).touch
+  end
+
+  def generate_webhook_secret
+    self.webhook_secret ||= SecureRandom.hex(32)
+  end
+
+  def rotate_webhook_secret!
+    update!(webhook_secret: SecureRandom.hex(32))
   end
 end

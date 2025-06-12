@@ -10,6 +10,10 @@ Rails.application.routes.draw do
               resources :deliveries, only: %i[index show] do
                 resources :delivery_attempts, only: %i[index show]
               end
+
+              member do
+                post :rotate_secret
+              end
             end
           end
         end
