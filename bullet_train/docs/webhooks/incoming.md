@@ -33,9 +33,8 @@ before_action :verify_authenticity, only: [:create]
 
 def verify_authenticity
   unless BulletTrain::OutgoingWebhooks::Signature.verify_request(request, ENV["BULLET_TRAIN_WEBHOOK_SECRET"])
-    # Consider alerts here and responding with a status and error message that
-    # don't reveal that there is an endpoint at all.
-    render json: {error: "Signature verification failed"}, status: :forbidden
+    # Respond with an error code and message that you usually have for non-existent endpoints.
+    render json: {error: "Not found"}, status: :not_found
   end
 end
 ```
@@ -56,10 +55,9 @@ After adding `BulletTrain::OutgoingWebhooks::Signature` to your project you can 
 before_action :verify_authenticity, only: [:create]
 
 def verify_authenticity
-  # Consider alerts here and responding with a status and error message that
-  # don't reveal that there is an endpoint at all.
   unless BulletTrain::OutgoingWebhooks::Signature.verify_request(request, ENV["BULLET_TRAIN_WEBHOOK_SECRET"])
-    render json: {error: "Signature verification failed"}, status: :forbidden
+    # Respond with an error code and message that you usually have for non-existent endpoints.`
+    render json: {error: "Not found"}, status: :not_found
   end
 end
 ```
