@@ -56,4 +56,49 @@ module Webhooks::Outgoing::EndpointSupport
   def clear_deactivation_limit_reached_at!
     update(deactivation_limit_reached_at: nil)
   end
+
+  def deactivate!
+    return if deactivated?
+
+    update(deactivated_at: Time.current)
+  end
+
+  def mark_for_deactivation!
+    return if marked_for_deactivation?
+    return if deactivated?
+
+    update(deactivation_limit_reached_at: Time.current)
+  end
+
+  def deactivation_processing
+    return unless Rails.config.outgoing_webhooks[:automatic_endpoint_deactivation_enabled]
+    return if deactivated?
+
+    # If the endpoint is marked for deactivation, we check if the cooling-off period (deactivation_in setting) has passed. If so, we mark it as deactivated.
+    if should_be_deactivated?
+      deactivate!
+    elsif should_be_marked_for_deactivation?
+      mark_for_deactivation!
+    end
+  end
+
+  def should_be_deactivated?
+    return false unless deactivation_limit_reached_at
+    return false if deactivated_at
+
+    deactivation_limit_reached_at <= Rails.config.outgoing_webhooks.dig(:automatic_endpoint_deactivation_settings, :deactivation_in).ago
+  end
+
+  def should_be_marked_for_deactivation?
+    return false if deactivated?
+    return false if deactivation_limit_reached_at
+
+    max_attempts_period = Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour # Adding 1 hour to ensure it covers all delays
+
+    last_successful_delivery = deliveries.where.not(delivered_at: nil).maximum(:delivered_at)
+    max_limit = Rails.config.outgoing_webhooks.dig(:automatic_endpoint_deactivation_settings, :max_limit)
+    return false if last_successful_delivery && last_successful_delivery < (Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour).ago
+
+    deliveries.where(delivered_at: nil).where("created_at < ?", max_attempts_period.ago).last(max_limit).pluck(:delivered_at).all?(&:nil?)
+  end
 end
