@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-integrations (1.21.0)
+    bullet_train-integrations (1.23.0)
       rails (>= 6.0.0)
 
 GEM
@@ -137,7 +137,7 @@ GEM
       date
       stringio
     racc (1.8.1)
-    rack (3.1.15)
+    rack (3.1.16)
     rack-session (2.1.1)
       base64 (>= 0.1.0)
       rack (>= 3.0.0)

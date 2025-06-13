@@ -1,7 +1,7 @@
 PATH
   remote: ../bullet_train-fields
   specs:
-    bullet_train-fields (1.21.0)
+    bullet_train-fields (1.23.0)
       chronic
       cloudinary
       phonelib
@@ -10,13 +10,13 @@ PATH
 PATH
   remote: ../bullet_train-has_uuid
   specs:
-    bullet_train-has_uuid (1.21.0)
+    bullet_train-has_uuid (1.23.0)
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-roles
   specs:
-    bullet_train-roles (1.21.0)
+    bullet_train-roles (1.23.0)
       active_hash (>= 3.3.1)
       activesupport
       cancancan
@@ -24,20 +24,20 @@ PATH
 PATH
   remote: ../bullet_train-scope_validator
   specs:
-    bullet_train-scope_validator (1.21.0)
+    bullet_train-scope_validator (1.23.0)
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_load_and_authorize_resource
   specs:
-    bullet_train-super_load_and_authorize_resource (1.21.0)
+    bullet_train-super_load_and_authorize_resource (1.23.0)
       cancancan
       rails (>= 6.0.0)
 
 PATH
   remote: ../bullet_train-super_scaffolding
   specs:
-    bullet_train-super_scaffolding (1.21.0)
+    bullet_train-super_scaffolding (1.23.0)
       colorize
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -46,7 +46,7 @@ PATH
 PATH
   remote: ../bullet_train-themes
   specs:
-    bullet_train-themes (1.21.0)
+    bullet_train-themes (1.23.0)
       bullet_train-fields
       nice_partials (~> 0.9)
       rails (>= 6.0.0)
@@ -54,7 +54,7 @@ PATH
 PATH
   remote: ../bullet_train
   specs:
-    bullet_train (1.21.0)
+    bullet_train (1.23.0)
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
@@ -72,7 +72,7 @@ PATH
       http_accept_language
       nice_partials (~> 0.9)
       omniauth (~> 2.0)
-      pagy (~> 8)
+      pagy (~> 9)
       possessive
       rails (>= 6.0.0)
       showcase-rails
@@ -80,14 +80,13 @@ PATH
 PATH
   remote: .
   specs:
-    bullet_train-api (1.21.0)
+    bullet_train-api (1.23.0)
       bullet_train
       bullet_train-super_scaffolding
       doorkeeper
       factory_bot
       jbuilder-schema (~> 2.6.6)
-      pagy (~> 8)
-      pagy_cursor
+      pagy (~> 9)
       rails (>= 6.0.0)
 
 GEM
@@ -293,10 +292,7 @@ GEM
       rack-protection
     orm_adapter (0.5.0)
     ostruct (0.6.1)
-    pagy (8.6.3)
-    pagy_cursor (0.8.0)
-      activerecord (>= 5)
-      pagy (>= 6, < 9)
+    pagy (9.3.4)
     parallel (1.26.3)
     parser (3.3.7.4)
       ast (~> 2.4.1)
@@ -312,7 +308,7 @@ GEM
       stringio
     pwned (2.4.1)
     racc (1.8.1)
-    rack (3.1.15)
+    rack (3.1.16)
     rack-protection (4.1.1)
       base64 (>= 0.1.0)
       logger (>= 1.6.0)
