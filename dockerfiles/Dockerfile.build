@@ -1,10 +1,10 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t bullet_train/build -f Dockerfile.build .
-# TODO: Fix this command. Or is it even useful to run this directly? Maybe for investigative purposes?
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name untitled_application untitled_application
+# If you have the core repo symlinked into your starter repo dir, you can run this from the starter repo:
+# docker build -t bullet_train/build -f core/dockerfiles/Dockerfile.build --build-arg BULLET_TRAIN_VERSION=x.x.x .
+# You can then get a console to see what's on the build image by doing:
+# docker run -it bullet_train/build /bin/bash
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
@@ -27,18 +27,14 @@ RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - && \
     apt-get update && \
     apt-get install -y yarn && \
     #apt-get install -y ffmpeg && \
-    corepack enable && \
-    corepack install
+    corepack enable
 
 # Install application gems
 # TODO: Is there something like WORKDIR for the outer container so we
 # don't have to specify tmp/starter on all of these?
-COPY Gemfile Gemfile.lock .ruby-version ./
+COPY Gemfile Gemfile.lock .ruby-version package.json yarn.lock ./
 
 RUN bundle install && \
     rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    bundle exec bootsnap precompile --gemfile
-
-
-
-
+    bundle exec bootsnap precompile --gemfile && \
+    yarn install
