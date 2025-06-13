@@ -58,11 +58,15 @@ class Webhooks::Outgoing::EndpointDeactivationTest < ActiveSupport::TestCase
     assert endpoint.should_be_deactivated?
     assert_not endpoint.deactivated?
 
-    assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
-      endpoint.deactivation_processing
+    notify_deactivated_called = false
+    endpoint.stub(:notify_deactivated, -> { notify_deactivated_called = true }) do
+      assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
+        endpoint.deactivation_processing
+      end
     end
 
     assert endpoint.deactivated?
+    assert notify_deactivated_called, "notify_deactivated should be called when endpoint is deactivated"
   end
 
   test "#deactivation_processing marks for deactivation when created enough failed deliveries" do
@@ -75,11 +79,15 @@ class Webhooks::Outgoing::EndpointDeactivationTest < ActiveSupport::TestCase
     assert endpoint.should_be_marked_for_deactivation?
     assert_not endpoint.marked_for_deactivation?
 
-    assert_changes -> { endpoint.deactivation_limit_reached_at }, from: nil, to: ->(v) { v.present? } do
-      endpoint.deactivation_processing
+    notify_deactivation_limit_reached_called = false
+    endpoint.stub(:notify_deactivation_limit_reached, -> { notify_deactivation_limit_reached_called = true }) do
+      assert_changes -> { endpoint.deactivation_limit_reached_at }, from: nil, to: ->(v) { v.present? } do
+        endpoint.deactivation_processing
+      end
     end
 
     assert endpoint.marked_for_deactivation?
+    assert notify_deactivation_limit_reached_called, "notify_deactivation_limit_reached should be called when endpoint is marked for deactivation"
   end
 
   test "#deactivation_processing does nothing when neither deactivation condition is met" do
@@ -301,18 +309,26 @@ class Webhooks::Outgoing::EndpointDeactivationTest < ActiveSupport::TestCase
     create_list_of_deliveries(6, endpoint: endpoint, event: event, created_at: created_at_that_considered_failed)
 
     # Step 2: First deactivation_processing should mark for deactivation
-    assert_changes -> { endpoint.deactivation_limit_reached_at }, from: nil, to: ->(v) { v.present? } do
-      endpoint.deactivation_processing
+    notify_deactivation_limit_reached_called = false
+    endpoint.stub(:notify_deactivation_limit_reached, -> { notify_deactivation_limit_reached_called = true }) do
+      assert_changes -> { endpoint.deactivation_limit_reached_at }, from: nil, to: ->(v) { v.present? } do
+        endpoint.deactivation_processing
+      end
     end
+    assert notify_deactivation_limit_reached_called, "notify_deactivation_limit_reached should be called when marking for deactivation"
 
     # Step 3: Move time forward past deactivation_in period
     travel 4.days do
       # Step 4: Second deactivation_processing should deactivate
-      assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
-        endpoint.deactivation_processing
+      notify_deactivated_called = false
+      endpoint.stub(:notify_deactivated, -> { notify_deactivated_called = true }) do
+        assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
+          endpoint.deactivation_processing
+        end
       end
 
       assert endpoint.deactivated?
+      assert notify_deactivated_called, "notify_deactivated should be called when endpoint is deactivated"
     end
   end
 
