@@ -78,8 +78,10 @@ module Webhooks::Outgoing::EndpointSupport
     # If so, we mark it as deactivated.
     if should_be_deactivated?
       deactivate!
+      notify_deactivated
     elsif should_be_marked_for_deactivation?
       mark_for_deactivation!
+      notify_deactivation_limit_reached
     end
   end
 
@@ -103,5 +105,13 @@ module Webhooks::Outgoing::EndpointSupport
     return false if failed_deliveries.empty?
 
     failed_deliveries.all?(&:nil?) && failed_deliveries.size >= max_limit
+  end
+
+  def notify_deactivation_limit_reached
+    Webhooks::Outgoing::EndpointMailer.deactivation_limit_reached(self).deliver_later
+  end
+
+  def notify_deactivated
+    Webhooks::Outgoing::EndpointMailer.deactivated(self).deliver_later
   end
 end
