@@ -59,4 +59,72 @@ class Api::V1::Webhooks::Outgoing::EndpointsControllerTest < ActionDispatch::Int
 
     assert_response :success
   end
+
+  test "activates an endpoint" do
+    @endpoint.update(deactivated_at: Time.current, deactivation_limit_reached_at: Time.current)
+    assert @endpoint.reload.deactivated?
+    assert_not_nil @endpoint.deactivation_limit_reached_at
+
+    post activate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.active?
+    assert_nil response.parsed_body["deactivated_at"]
+    assert_nil @endpoint.reload.deactivation_limit_reached_at
+  end
+
+  test "deactivates an endpoint" do
+    time = Time.parse("2025-01-01 12:00:00 UTC")
+    @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: time)
+    assert @endpoint.reload.active?
+    assert_not_nil @endpoint.deactivation_limit_reached_at
+
+    delete deactivate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.deactivated?
+    assert_not_nil response.parsed_body["deactivated_at"]
+    assert_equal @endpoint.reload.deactivation_limit_reached_at, time
+  end
+
+  test "activate handles already active endpoint" do
+    @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: Time.current)
+    assert @endpoint.reload.active?
+    assert_not_nil @endpoint.deactivation_limit_reached_at
+
+    post activate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.active?
+    assert_nil response.parsed_body["deactivated_at"]
+    assert_nil @endpoint.reload.deactivation_limit_reached_at
+  end
+
+  test "deactivate handles already inactive endpoint" do
+    time = Time.parse("2025-01-01 12:00:00 UTC")
+    @endpoint.update(deactivated_at: time, deactivation_limit_reached_at: time)
+    assert @endpoint.reload.deactivated?
+    assert_not_nil @endpoint.deactivation_limit_reached_at
+
+    delete deactivate_api_v1_webhooks_outgoing_endpoint_path(@endpoint.id), as: :json
+
+    assert_response :success
+    assert @endpoint.reload.deactivated?
+    assert_not_nil response.parsed_body["deactivated_at"]
+    assert_equal @endpoint.reload.deactivation_limit_reached_at, time
+  end
+
+  test "activate fails with invalid endpoint" do
+    # Since the setup hooks always find from Team.first, this test will never raise RecordNotFound
+    # Instead we test that a non-existent endpoint ID results in a 404 response
+    post activate_api_v1_webhooks_outgoing_endpoint_path(99999), as: :json
+    assert_response :not_found
+  end
+
+  test "deactivate fails with invalid endpoint" do
+    # Since the setup hooks always find from Team.first, this test will never raise RecordNotFound
+    # Instead we test that a non-existent endpoint ID results in a 404 response
+    delete deactivate_api_v1_webhooks_outgoing_endpoint_path(99999), as: :json
+    assert_response :not_found
+  end
 end
