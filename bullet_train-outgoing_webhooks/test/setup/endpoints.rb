@@ -24,6 +24,16 @@ module EndpointsControllerHooks
     @endpoint = Team.first.webhooks_outgoing_endpoints.find(params[:id])
     super
   end
+
+  def activate
+    @endpoint = Team.first.webhooks_outgoing_endpoints.find(params[:id])
+    super
+  end
+
+  def deactivate
+    @endpoint = Team.first.webhooks_outgoing_endpoints.find(params[:id])
+    super
+  end
 end
 
 Api::V1::Webhooks::Outgoing::EndpointsController.prepend EndpointsControllerHooks
