@@ -10,6 +10,7 @@ require "rails/test_help"
 
 require "setup/active_record"
 require "setup/endpoints"
+require "webmock/minitest"
 
 # Load fixtures from the engine
 if ActiveSupport::TestCase.respond_to?(:fixture_path=)
