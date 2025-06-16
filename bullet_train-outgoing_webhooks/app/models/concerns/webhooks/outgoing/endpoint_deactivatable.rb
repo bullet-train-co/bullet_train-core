@@ -56,17 +56,8 @@ module Webhooks::Outgoing::EndpointDeactivatable
     return false if deactivated?
     return false if deactivation_limit_reached_at
 
-    max_attempts_period = Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour # Adding 1 hour to ensure it covers all delays
     max_limit = BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks.dig(:automatic_endpoint_deactivation_settings, :max_limit)
-    last_successful_delivery = deliveries.where.not(delivered_at: nil).maximum(:delivered_at)
-    # There is a recent successful delivery, so we don't deactivate
-    return false if last_successful_delivery && last_successful_delivery > (Webhooks::Outgoing::Delivery.max_attempts_period + 1.hour).ago
-
-    # All recent deliveries are failed and it's number is enough to trigger deactivation
-    failed_deliveries = deliveries.where(delivered_at: nil).where("created_at < ?", max_attempts_period.ago).last(max_limit).pluck(:delivered_at)
-    return false if failed_deliveries.empty?
-
-    failed_deliveries.all?(&:nil?) && failed_deliveries.size >= max_limit
+    failed_deliveries_count >= max_limit
   end
 
   def notify_deactivation_limit_reached
