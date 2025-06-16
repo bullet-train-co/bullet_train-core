@@ -1,5 +1,8 @@
 class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationController
-  account_load_and_authorize_resource :endpoint, through: BulletTrain::OutgoingWebhooks.parent_association, through_association: :webhooks_outgoing_endpoints
+  account_load_and_authorize_resource :endpoint,
+    through: BulletTrain::OutgoingWebhooks.parent_association,
+    through_association: :webhooks_outgoing_endpoints,
+    member_actions: [:activate, :deactivate]
   before_action { @parent = instance_variable_get("@#{BulletTrain::OutgoingWebhooks.parent_association}") }
 
   # GET /account/teams/:team_id/webhooks/outgoing/endpoints
@@ -57,6 +60,32 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
     respond_to do |format|
       format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.destroyed") }
       format.json { head :no_content }
+    end
+  end
+
+  # POST /account/webhooks/outgoing/endpoints/:id/activate
+  def activate
+    respond_to do |format|
+      if @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: nil)
+        format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.activated") }
+        format.json { render :show, status: :ok, location: [:account, @endpoint] }
+      else
+        format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], alert: I18n.t("webhooks/outgoing/endpoints.notifications.activation_failed") }
+        format.json { render json: @endpoint.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  # DELETE /account/webhooks/outgoing/endpoints/:id/deactivate
+  def deactivate
+    respond_to do |format|
+      if @endpoint.update(deactivated_at: Time.current)
+        format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.deactivated") }
+        format.json { render :show, status: :ok, location: [:account, @endpoint] }
+      else
+        format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], alert: I18n.t("webhooks/outgoing/endpoints.notifications.deactivation_failed") }
+        format.json { render json: @endpoint.errors, status: :unprocessable_entity }
+      end
     end
   end
 
