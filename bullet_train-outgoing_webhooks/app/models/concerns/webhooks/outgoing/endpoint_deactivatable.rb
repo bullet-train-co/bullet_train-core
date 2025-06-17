@@ -13,8 +13,8 @@ module Webhooks::Outgoing::EndpointDeactivatable
     deactivation_limit_reached_at.present? && deactivated_at.nil?
   end
 
-  def clear_deactivation_limit_reached_at!
-    update(deactivation_limit_reached_at: nil)
+  def reset_failed_deliveries_marks!
+    update_columns(deactivation_limit_reached_at: nil, consecutive_failed_deliveries: 0)
   end
 
   def deactivate!
