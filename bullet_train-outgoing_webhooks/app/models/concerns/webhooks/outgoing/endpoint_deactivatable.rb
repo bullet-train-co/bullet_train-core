@@ -34,7 +34,7 @@ module Webhooks::Outgoing::EndpointDeactivatable
     return unless BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks[:automatic_endpoint_deactivation_enabled]
     return if deactivated?
 
-    endpoint.increment!(:failed_deliveries_count)
+    increment!(:consecutive_failed_deliveries)
 
     # If the endpoint is marked for deactivation, we check if the cooling-off period (deactivation_in setting) has passed.
     # If so, we mark it as deactivated.
@@ -59,7 +59,7 @@ module Webhooks::Outgoing::EndpointDeactivatable
     return false if deactivation_limit_reached_at
 
     max_limit = BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks.dig(:automatic_endpoint_deactivation_settings, :max_limit)
-    failed_deliveries_count >= max_limit
+    consecutive_failed_deliveries >= max_limit
   end
 
   def notify_deactivation_limit_reached
