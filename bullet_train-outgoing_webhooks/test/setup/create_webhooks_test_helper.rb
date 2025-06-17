@@ -14,6 +14,7 @@ module CreateWebhooksTestHelpers
       event_type_ids: options[:event_type_ids] || ["fake-thing.create"],
       deactivation_limit_reached_at: options[:deactivation_limit_reached_at] || nil,
       deactivated_at: options[:deactivated_at] || nil,
+      consecutive_failed_deliveries: options[:consecutive_failed_deliveries] || 0,
     )
   end
 
