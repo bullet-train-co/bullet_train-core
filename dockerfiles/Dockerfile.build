@@ -44,11 +44,9 @@ RUN apt-get update -qq && \
 RUN corepack enable
 
 # Install application gems
-# TODO: Is there something like WORKDIR for the outer container so we
-# don't have to specify tmp/starter on all of these?
-#COPY Gemfile Gemfile.lock .ruby-version package.json yarn.lock ./
+COPY Gemfile Gemfile.lock .ruby-version package.json yarn.lock ./
 
-#RUN bundle install && \
-    #rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    #bundle exec bootsnap precompile --gemfile && \
-    #yarn install
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    bundle exec bootsnap precompile --gemfile && \
+    yarn install
