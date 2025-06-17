@@ -34,6 +34,8 @@ module Webhooks::Outgoing::EndpointDeactivatable
     return unless BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks[:automatic_endpoint_deactivation_enabled]
     return if deactivated?
 
+    endpoint.increment!(:failed_deliveries_count)
+
     # If the endpoint is marked for deactivation, we check if the cooling-off period (deactivation_in setting) has passed.
     # If so, we mark it as deactivated.
     if should_be_deactivated?
