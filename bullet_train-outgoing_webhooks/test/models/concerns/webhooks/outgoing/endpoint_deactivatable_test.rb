@@ -229,4 +229,53 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
       endpoint.deactivate!
     end
   end
+
+  # Integration tests combining multiple methods
+  test "full deactivation workflow: mark then deactivate" do
+    set_config(test_enabled_config)
+    endpoint = create_endpoint(consecutive_failed_deliveries: 3)
+
+    # Step 1: Not enough failed deliveries to mark for deactivation so just increment the counter
+    assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 3, to: 4 do
+      endpoint.deactivation_processing
+    end
+
+    # Step 2: Now deactivation_processing should mark for deactivation
+    notify_deactivation_limit_reached_called = false
+    endpoint.stub(:notify_deactivation_limit_reached, -> { notify_deactivation_limit_reached_called = true }) do
+      assert_changes -> { endpoint.deactivation_limit_reached_at }, from: nil, to: ->(v) { v.present? } do
+        assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 4, to: 5 do
+          endpoint.deactivation_processing
+        end
+      end
+    end
+    assert notify_deactivation_limit_reached_called, "notify_deactivation_limit_reached should be called when marking for deactivation"
+
+    # Step 3: Move time forward past deactivation_in period
+    travel 4.days do
+      # Step 4: Second deactivation_processing should deactivate
+      notify_deactivated_called = false
+      endpoint.stub(:notify_deactivated, -> { notify_deactivated_called = true }) do
+        assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
+          assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 5, to: 6 do
+            endpoint.deactivation_processing
+          end
+        end
+      end
+
+      assert endpoint.deactivated?
+      assert notify_deactivated_called, "notify_deactivated should be called when endpoint is deactivated"
+    end
+  end
+
+  test "endpoint recovery: successful delivery clears marking and consecutive_failed_deliveries" do
+    endpoint = create_endpoint(deactivation_limit_reached_at: 1.hour.ago, consecutive_failed_deliveries: 5)
+    delivery = create_delivery(endpoint: endpoint, delivered_at: nil)
+
+    assert_changes -> { endpoint.deactivation_limit_reached_at }, from: ->(v) { v.present? }, to: nil do
+      assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 5, to: 0 do
+        delivery.update!(delivered_at: Time.current)
+      end
+    end
+  end
 end
