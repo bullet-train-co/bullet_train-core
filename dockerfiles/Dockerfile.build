@@ -42,13 +42,11 @@ RUN apt-get update -qq && \
 
 # Enable corepack
 RUN corepack enable
-#RUN corepack enable && \
-    #corepack use yarn@4.2.2
 
 # Install application gems
-#COPY Gemfile Gemfile.lock .ruby-version package.json yarn.lock ./
+COPY Gemfile Gemfile.lock .ruby-version package.json yarn.lock ./
 
-#RUN bundle install && \
-    #rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
-    #bundle exec bootsnap precompile --gemfile && \
-    #yarn install
+RUN bundle install && \
+    rm -rf ~/.bundle/ "${BUNDLE_PATH}"/ruby/*/cache "${BUNDLE_PATH}"/ruby/*/bundler/gems/*/.git && \
+    bundle exec bootsnap precompile --gemfile && \
+    yarn install
