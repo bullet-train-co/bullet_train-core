@@ -35,13 +35,15 @@ RUN apt-get update -qq && \
     libyaml-dev \
     pkg-config  \
     nodejs \
-    yarn \
+    # yarn \
     # ffmpeg \
     && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
 # Enable corepack
 RUN corepack enable
+#RUN corepack enable && \
+    #corepack use yarn@4.2.2
 
 # Install application gems
 COPY Gemfile Gemfile.lock .ruby-version package.json yarn.lock ./
