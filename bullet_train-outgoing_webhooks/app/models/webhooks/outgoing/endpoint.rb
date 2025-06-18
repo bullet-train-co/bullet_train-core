@@ -1,5 +1,6 @@
 class Webhooks::Outgoing::Endpoint < BulletTrain::OutgoingWebhooks.base_class.constantize
   include Webhooks::Outgoing::EndpointSupport
+  include Webhooks::Outgoing::EndpointDeactivatable
   # 🚅 add concerns above.
 
   # 🚅 add belongs_to associations above.

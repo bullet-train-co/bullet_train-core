@@ -10,6 +10,9 @@ module Api::V1::Webhooks::Outgoing::Endpoints::ControllerBase
         :name,
         :api_version,
         :scaffolding_absolutely_abstract_creative_concept_id,
+        :deactivation_limit_reached_at,
+        :deactivated_at,
+        :consecutive_failed_deliveries,
         # 🚅 super scaffolding will insert new fields above this line.
         *permitted_arrays,
         event_type_ids: [],
