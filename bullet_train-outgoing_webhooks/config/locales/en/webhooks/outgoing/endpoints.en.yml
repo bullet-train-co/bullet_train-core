@@ -92,6 +92,13 @@ en:
         api_title: *deactivated_at
         api_description: *deactivated_at
 
+      consecutive_failed_deliveries:
+        _: &consecutive_failed_deliveries Consecutive Failed Deliveries
+        label: *consecutive_failed_deliveries
+        heading: *consecutive_failed_deliveries
+        api_title: *consecutive_failed_deliveries
+        api_description: *consecutive_failed_deliveries
+
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Added
