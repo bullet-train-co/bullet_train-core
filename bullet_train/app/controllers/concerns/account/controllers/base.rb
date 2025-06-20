@@ -64,7 +64,7 @@ module Account::Controllers::Base
   def ensure_onboarding_is_complete
     # This is temporary, but if we've gotten this far and `@team` is loaded, we need to ensure current_team is
     # updated for the checks below. This entire concept of `current_team` is going away soon.
-    current_user.update(current_team: @team) if @team&.persisted?
+    current_user.update(current_team: @team) if @team&.persisted? && current_user.teams.include?(@team)
 
     # since the onboarding controllers are child classes of this class,
     # we actually have to check to make sure we're not currently on that
