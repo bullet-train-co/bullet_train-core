@@ -20,14 +20,14 @@ module Webhooks::Outgoing::EndpointDeactivatable
   def deactivate!
     return if deactivated?
 
-    update(deactivated_at: Time.current)
+    update!(deactivated_at: Time.current)
   end
 
   def mark_for_deactivation!
     return if marked_for_deactivation?
     return if deactivated?
 
-    update(deactivation_limit_reached_at: Time.current)
+    update!(deactivation_limit_reached_at: Time.current)
   end
 
   def deactivation_processing
