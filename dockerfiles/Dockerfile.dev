@@ -38,10 +38,11 @@ RUN apt-get update -qq && \
     apt-get install --no-install-recommends -y \
     build-essential \
     git \
+    graphviz \
     libpq-dev \
     libyaml-dev \
-    pkg-config  \
     nodejs \
+    pkg-config  \
     # yarn \
     # ffmpeg \
     && \
