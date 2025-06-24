@@ -79,6 +79,10 @@ module Webhooks::Outgoing::DeliverySupport
     created_at < max_attempts_period.ago
   end
 
+  # This method is used to display delivery statuses in the UI.
+  # For deactivated endpoints, we don't make any delivery attempts, however, the delivery itself is still created,
+  # so we show it as "failed" in the UI.
+  # We also show deliveries as failed when the maximum attempt period has elapsed.
   def failed_or_not_attempted_or_elapsed?
     failed? || not_attempted? || attempts_schedule_period_elapsed?
   end
