@@ -8,7 +8,7 @@ module Webhooks::Outgoing::DeliverySupport
     has_one :team, through: :endpoint unless BulletTrain::OutgoingWebhooks.parent_class_specified?
     has_many :delivery_attempts, class_name: "Webhooks::Outgoing::DeliveryAttempt", dependent: :destroy, foreign_key: :delivery_id
 
-    after_commit :reset_endpoint_failed_deliveries_marks, if: :delivered?
+    after_commit :reset_endpoint_failed_deliveries_tracking!, if: :delivered?
   end
 
   class_methods do
@@ -102,7 +102,7 @@ module Webhooks::Outgoing::DeliverySupport
     self.class.max_attempts_period
   end
 
-  def reset_endpoint_failed_deliveries_marks
-    endpoint.reset_failed_deliveries_marks!
+  def reset_endpoint_failed_deliveries_tracking!
+    endpoint.reset_failed_deliveries_tracking!
   end
 end
