@@ -43,6 +43,9 @@ module Webhooks::Outgoing::DeliverySupport
     end
   end
 
+  # This method is used to create an attempt and deliver a webhook.
+  # If the endpoint is disabled, the attempt will not be created and the webhook will not be delivered.
+  # You can bypass this condition by passing `force: true`
   def deliver(force: false)
     return if endpoint.deactivated? && !force
     # TODO If we ever do away with the `async: true` default for webhook generation, then I believe this needs to
