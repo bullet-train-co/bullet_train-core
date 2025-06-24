@@ -66,7 +66,7 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
   # POST /account/webhooks/outgoing/endpoints/:id/activate
   def activate
     respond_to do |format|
-      if @endpoint.update(deactivated_at: nil, deactivation_limit_reached_at: nil, consecutive_failed_deliveries: 0)
+      if @endpoint.reactivate!
         format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.activated") }
         format.json { render :show, status: :ok, location: [:account, @endpoint] }
       else
@@ -79,7 +79,7 @@ class Account::Webhooks::Outgoing::EndpointsController < Account::ApplicationCon
   # DELETE /account/webhooks/outgoing/endpoints/:id/deactivate
   def deactivate
     respond_to do |format|
-      if @endpoint.update(deactivated_at: Time.current)
+      if @endpoint.deactivate!
         format.html { redirect_to [:account, @parent, :webhooks_outgoing_endpoints], notice: I18n.t("webhooks/outgoing/endpoints.notifications.deactivated") }
         format.json { render :show, status: :ok, location: [:account, @endpoint] }
       else
