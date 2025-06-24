@@ -111,7 +111,7 @@ class Webhooks::Outgoing::DeliveryTest < ActiveSupport::TestCase
   test "#failed_or_not_attempted_or_elapsed? returns true when attempts schedule period has elapsed" do
     delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
 
-    old_created_at = delivery.max_attempts_period.ago - 1.hour
+    old_created_at = Webhooks::Outgoing::Delivery::ATTEMPT_SCHEDULE.values.sum.ago - 1.hour
     delivery.update!(created_at: old_created_at)
 
     assert delivery.attempts_schedule_period_elapsed?, "Schedule period should have elapsed"

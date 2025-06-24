@@ -11,12 +11,6 @@ module Webhooks::Outgoing::DeliverySupport
     after_commit :reset_endpoint_failed_deliveries_tracking!, if: :delivered?
   end
 
-  class_methods do
-    def max_attempts_period
-      ATTEMPT_SCHEDULE.values.sum
-    end
-  end
-
   ATTEMPT_SCHEDULE = {
     1 => 15.seconds,
     2 => 1.minute,
@@ -79,6 +73,7 @@ module Webhooks::Outgoing::DeliverySupport
   end
 
   def attempts_schedule_period_elapsed?
+    max_attempts_period = ATTEMPT_SCHEDULE.values.sum
     created_at < max_attempts_period.ago
   end
 
@@ -96,10 +91,6 @@ module Webhooks::Outgoing::DeliverySupport
 
   def max_attempts
     ATTEMPT_SCHEDULE.keys.max
-  end
-
-  def max_attempts_period
-    self.class.max_attempts_period
   end
 
   def reset_endpoint_failed_deliveries_tracking!

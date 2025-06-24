@@ -58,6 +58,6 @@ module CreateWebhooksTestHelpers
   end
 
   def created_at_that_considered_failed
-    Webhooks::Outgoing::Delivery.max_attempts_period.ago - 1.hour
+    Webhooks::Outgoing::Delivery::ATTEMPT_SCHEDULE.values.sum.ago - 1.hour
   end
 end
