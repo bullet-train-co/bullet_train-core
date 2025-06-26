@@ -43,7 +43,8 @@ jobs:
             return versionString.toString().trim()
 
       - name: Build Image
-        uses: ./.github/workflows/_build_docker_image.yml
+        uses: ./.github/workflows/_build_docker_image
+        secrets: inherit
 
   build-and-push-build-image:
     runs-on: ubuntu-latest
