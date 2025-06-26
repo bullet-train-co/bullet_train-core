@@ -10,6 +10,9 @@
 # You can then get a console to see what's on the build image by doing:
 # docker run -it bullet_train/build /bin/bash
 
+# For local testing you may want to pass a FROM_IMAGE build arg to use a locally build verison of the base image instead of a published one:
+# docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) --build-arg NODE_VERSION=$(cat .nvmrc) --build-arg NODE_MAJOR_VERSION=$(cat .nvmrc | cut -d '.' -f 1)  --build-arg FROM_IMAGE=bullet_train/base .
+
 # BULLET_TRAIN_VERSION must be passed in as an ENV var. The GitHub Actions workflow that uses this file
 # will take care of it for building the official images.
 #######################################################################################################
