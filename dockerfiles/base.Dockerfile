@@ -1,12 +1,11 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t bullet_train/base -f Dockerfile.base .
-# TODO: Fix this command. Or is it even useful to run this directly? Maybe for investigative purposes?
-# docker run -d -p 80:80 -e RAILS_MASTER_KEY=<value from config/master.key> --name untitled_application untitled_application
+# Build this image fro the top level of the core repo:
+# docker build -t bullet_train/base -f dockerfiles/base.Dockerfile --build-arg RUBY_VERSION=$(cat .ruby-version) .
 
-# For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
+# You can then get a console to see what's on the build image by doing:
+# docker run -it bullet_train/base /bin/bash
 
 # RUBY_VERSION must be passed in as an ENV var. The GitHub Actions workflow that uses this file
 # will take care of it for building the official images.
@@ -31,6 +30,3 @@ ENV RAILS_ENV="production" \
 # Add a user and group that will be used to run the app
 RUN groupadd --system --gid 1000 rails && \
     useradd rails --uid 1000 --gid 1000 --create-home --shell /bin/bash
-
-
-
