@@ -23,7 +23,8 @@ jobs:
     uses: ./.github/workflows/_build_docker_image.yml
     secrets: inherit
     with:
-      image-name: ${{ env.IMAGE_NAME }}
+      # TODO: Why does it not accept ENV values here...
+      image-name: bullet-train-co/bullet_train/base
 
   build-and-push-build-image:
     runs-on: ubuntu-latest
