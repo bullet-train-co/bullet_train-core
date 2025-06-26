@@ -20,7 +20,7 @@ jobs:
   build-and-push-base-image:
     name: "Build and push base image"
     # TODO: Better file naming?
-    uses: ./.github/workflows/_build_docker_image/action.yml
+    uses: ./.github/workflows/_build_docker_image.yml
     secrets: inherit
     with:
       image-name: ${{ env.IMAGE_NAME }}
