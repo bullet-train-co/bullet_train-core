@@ -3,7 +3,7 @@
 # This workflow is meant to be called by other workflows.
 name: "🚢 ~ Build Docker Image"
 on:
-  workflow_dispatch:
+  workflow_call:
     inputs:
       image-name:  # id of input
         description: 'The target name of the image to build'
