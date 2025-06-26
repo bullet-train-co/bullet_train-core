@@ -1,12 +1,16 @@
 # This workflow builds a Docker image based on some input parameters
 #
 # This workflow is meant to be called by other workflows.
-name: "🚢 ~ Build Docker Image"
+name: "Build & Push Image"
 on:
   workflow_call:
     inputs:
-      image-name:  # id of input
+      image-name:
         description: 'The target name of the image to build'
+        required: true
+        type: string
+      dockerfile:
+        description: 'The Dockerfile to use to build the image'
         required: true
         type: string
 env:
@@ -14,7 +18,7 @@ env:
 
 jobs:
   build_image:
-    name: "🚢  Build Image"
+    name: "Build & Push Image"
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
@@ -37,6 +41,24 @@ jobs:
             const versionString = fs.readFileSync('.ruby-version')
             console.log('versionString is', versionString)
             return versionString.toString().trim()
+
+      - name: Extract Bullet Train Version
+        id: extract-bullet-train-version
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs')
+            const gemString = fs.readFileSync('bullet_train/lib/bullet_train/version.rb').toString()
+            const lines = gemString.split('\n')
+            const versionToken = "VERSION = ";
+            const equalToken = " = "
+            for await (const line of lines) {
+              if (line.includes(versionToken)) {
+                return line.split(equalToken)[1].trim().replaceAll('"','')
+              }
+            }
+
 
 
       # Uses the `docker/login-action` action to log in to the Container registry registry using the account and password that will publish the packages. Once published, the packages are scoped to the account defined here.
@@ -61,9 +83,9 @@ jobs:
             #type=schedule
             #type=ref,event=branch
             #type=ref,event=pr
-            type=semver,pattern={{version}},value=1.23.0
-            #type=semver,pattern={{major}}.{{minor}},value=1.23.0
-            #type=semver,pattern={{major}},value=1.23.0
+            type=semver,pattern={{version}},value=${{ steps.extract-bullet-train-version.outputs.result }}
+            #type=semver,pattern={{major}}.{{minor}},value=${{ steps.extract-bullet-train-version.outputs.result }}
+            #type=semver,pattern={{major}},value=${{ steps.extract-bullet-train-version.outputs.result }}
             #type=sha
 
       - name: Set up QEMU
@@ -80,7 +102,7 @@ jobs:
         uses: docker/build-push-action@f2a1d5e99d037542a71f64918e516c093c6f3fc4
         with:
           context: .
-          file: dockerfiles/base.Dockerfile
+          file: ${{ inputs.dockerfile }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
