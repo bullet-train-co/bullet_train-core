@@ -42,6 +42,27 @@ jobs:
             console.log('versionString is', versionString)
             return versionString.toString().trim()
 
+      - name: Extract Node Version
+        id: extract-node-version
+        uses: actions/github-script@v7
+        with:
+          result-encoding: string
+          script: |
+            const fs = require('fs')
+            const versionString = fs.readFileSync('.nvmrc')
+            console.log('versionString is', versionString)
+            return versionString.toString().trim()
+
+      - name: Extract Node Version
+        id: extract-node-major-version
+        uses: actions/github-script@v7
+        env:
+          NODE_VERSION: ${{ steps.extract-node-version.outputs.result }}
+        with:
+          result-encoding: string
+          script: |
+            return process.env.NODE_VERSION.toString().split(".")[0]
+
       - name: Extract Bullet Train Version
         id: extract-bullet-train-version
         uses: actions/github-script@v7
@@ -107,6 +128,8 @@ jobs:
           platforms: linux/amd64,linux/arm64
           build-args: |
             RUBY_VERSION=${{ steps.extract-ruby-version.outputs.result }}
+            NODE_VERSION=${{ steps.extract-node-version.outputs.result }}
+            NODE_MAJOR_VERSION=${{ steps.extract-node-major-version.outputs.result }}
             BULLET_TRAIN_VERSION=${{ steps.extract-bullet-train-version.outputs.result }}
 
       # This step generates an artifact attestation for the image, which is an unforgeable statement about where and how it was built. It increases supply chain security for people who consume the image. For more information, see [Using artifact attestations to establish provenance for builds](/actions/security-guides/using-artifact-attestations-to-establish-provenance-for-builds).
