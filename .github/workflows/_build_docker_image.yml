@@ -1,7 +1,7 @@
 # This workflow builds a Docker image based on some input parameters
 #
 # This workflow is meant to be called by other workflows.
-name: "Build & Push Image"
+name: "Build & Push"
 on:
   workflow_call:
     inputs:
@@ -18,7 +18,7 @@ env:
 
 jobs:
   build_image:
-    name: "Build & Push Image"
+    name: "Build & Push"
     runs-on: ubuntu-latest
     # Sets the permissions granted to the `GITHUB_TOKEN` for the actions in this job.
     permissions:
