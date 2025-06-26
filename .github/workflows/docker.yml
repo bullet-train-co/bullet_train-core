@@ -18,13 +18,14 @@ env:
 
 jobs:
   build-and-push-base-image:
-    name: "Build and push base image"
+    name: "base"
     # TODO: Better file naming?
     uses: ./.github/workflows/_build_docker_image.yml
     secrets: inherit
     with:
       # TODO: Why does it not accept ENV values here...
       image-name: bullet-train-co/bullet_train/base
+      dockerfile: dockerfiles/base.Dockerfile
 
   build-and-push-build-image:
     runs-on: ubuntu-latest
