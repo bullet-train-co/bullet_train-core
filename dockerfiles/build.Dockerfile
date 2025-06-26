@@ -2,10 +2,10 @@
 # check=error=true
 
 # Build this image:
-# docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) .
+# docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) --build-arg NODE_VERSION=$(cat .nvmrc) --build-arg NODE_MAJOR_VERSION=$(cat .nvmrc | cut -d '.' -f 1) .
 
 # Sometimes it's handy to get long output and skip the cache:
-# docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) . --no-cache --progress=plain
+# docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) --build-arg NODE_VERSION=$(cat .nvmrc) --build-arg NODE_MAJOR_VERSION=$(cat .nvmrc | cut -d '.' -f 1) . --no-cache --progress=plain
 
 # You can then get a console to see what's on the build image by doing:
 # docker run -it bullet_train/build /bin/bash
@@ -17,14 +17,16 @@ ARG BULLET_TRAIN_VERSION=fake.version
 ARG FROM_IMAGE=ghcr.io/bullet-train-co/bullet_train/base:$BULLET_TRAIN_VERSION
 FROM $FROM_IMAGE AS base
 
+ARG NODE_VERSION=fake.version
+ARG NODE_MAJOR_VERSION=fake
+
 # Ensure that apt-get doesn't try to run interactive configuration of installed packages
 ENV DEBIAN_FRONTEND="noninteractive" \
     COREPACK_ENABLE_DOWNLOAD_PROMPT=0
 
 # TODO: Is this the best way to install node?
-# TODO: Can we make it so that node stays up to date with what we expect?
 # Prepare node and yarn for installation via apt-get
-RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash -
+RUN curl -fsSL https://deb.nodesource.com/setup_$NODE_MAJOR_VERSION.x | bash -
 
 # Install packages needed to build gems
 RUN apt-get update -qq && \
@@ -33,7 +35,7 @@ RUN apt-get update -qq && \
     git \
     libpq-dev \
     libyaml-dev \
-    nodejs \
+    nodejs=$NODE_VERSION-1nodesource1 \
     pkg-config  \
     && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
