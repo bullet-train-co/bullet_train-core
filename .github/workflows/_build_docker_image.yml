@@ -95,9 +95,7 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ inputs.image-name }}
           # generate Docker tags based on the following events/attributes
-          # TODO: We don't want to hard code the `version` value in the semver tags below. I'm just doing it now for testing.
-          # Once this is wired up to run automatically when a new version tag is pushed then the tags should be populated correctly.
-          # I'm not sure if we need any of the ones that I've commented out...
+          # TODO: Do we need any of these tags other than the primary semver one?
           tags: |
             #type=schedule
             #type=ref,event=branch
@@ -139,5 +137,3 @@ jobs:
           subject-name: ${{ env.REGISTRY }}/${{ inputs.image-name }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
-
-
