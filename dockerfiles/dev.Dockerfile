@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
-# If you have the core repo symlinked into your starter repo dir, you can run this from the starter repo:
+# Build this image fro the top level of the core repo:
 # docker build -t bullet_train/dev -f dockerfiles/dev.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) .
 
 # Sometimes it's handy to get long output and skip the cache:
@@ -9,6 +9,9 @@
 
 # You can then get a console to see what's on the dev image by doing:
 # docker run -it bullet_train/dev /bin/bash
+
+# For local testing you may want to pass a FROM_IMAGE build arg to use a locally build verison of the build image instead of a published one:
+# docker build -t bullet_train/dev -f dockerfiles/dev.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) --build-arg FROM_IMAGE=bullet_train/build .
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
