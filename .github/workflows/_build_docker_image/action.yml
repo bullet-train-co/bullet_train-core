@@ -5,6 +5,12 @@ name: "🚢 ~ Build Docker Image"
 on:
   workflow_call:
   workflow_dispatch:
+inputs:
+  image-name:  # id of input
+    description: 'The target name of the image to build'
+    required: true
+env:
+  REGISTRY: ghcr.io
 
 jobs:
   build_image:
@@ -24,7 +30,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
         with:
-          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ inputs.image-name }}
           # generate Docker tags based on the following events/attributes
           # TODO: We don't want to hard code the `version` value in the semver tags below. I'm just doing it now for testing.
           # Once this is wired up to run automatically when a new version tag is pushed then the tags should be populated correctly.
@@ -64,7 +70,7 @@ jobs:
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-name: ${{ env.REGISTRY }}/${{ inputs.image-name }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
 

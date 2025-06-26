@@ -44,6 +44,8 @@ jobs:
 
       - name: Build Image
         uses: ./.github/workflows/_build_docker_image
+        with:
+          image-name: ${{ env.IMAGE_NAME }}
 
   build-and-push-build-image:
     runs-on: ubuntu-latest
