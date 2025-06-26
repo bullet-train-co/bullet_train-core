@@ -8,6 +8,7 @@ on:
       image-name:  # id of input
         description: 'The target name of the image to build'
         required: true
+        type: string
 env:
   REGISTRY: ghcr.io
 
