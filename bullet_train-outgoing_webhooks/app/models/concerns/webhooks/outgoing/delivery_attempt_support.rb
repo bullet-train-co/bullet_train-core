@@ -29,6 +29,15 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
   end
 
   def attempt
+    # With reader lag we can end up in the situation where the event is not found
+    unless delivery.event
+      self.response_code = 0
+      self.error_message = "Event is not ready for delivery yet"
+      save
+
+      return false
+    end
+
     uri = URI.parse(delivery.endpoint_url)
 
     if BulletTrain::OutgoingWebhooks.advanced_hostname_security
