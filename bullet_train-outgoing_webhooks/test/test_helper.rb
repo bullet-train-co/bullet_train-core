@@ -20,3 +20,5 @@ if ActiveSupport::TestCase.respond_to?(:fixture_path=)
 end
 
 require_relative "../../test_support/minitest_reporters"
+
+require "webmock/minitest"
