@@ -16,6 +16,7 @@ module Webhooks::Outgoing::EndpointSupport
     before_validation { url&.strip! }
 
     validates :url, presence: true, allowed_uri: BulletTrain::OutgoingWebhooks.advanced_hostname_security
+    validates :event_type_ids, inclusion: {in: ->(endpoint) { endpoint.valid_event_types.map(&:id) }}
 
     after_initialize do
       self.event_type_ids ||= []
