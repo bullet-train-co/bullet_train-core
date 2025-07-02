@@ -47,7 +47,7 @@ In this case you can use rails scaffolding to generate a route and controller fo
 rails g controller BulletTrainWebhooks create
 ```
 
-You'll also want to copy Bullet Train's `BulletTrain::OutgoingWebhooks::Signature` class into your project. (Here we should link to the actual implementation in the `core` repo so that we always point to the current implementation and not one that's frozen in time.)
+You'll also want to copy Bullet Train's `BulletTrain::OutgoingWebhooks::Signature` class into your project. [You can find the current implementation here.](https://github.com/bullet-train-co/bullet_train-core/blob/main/bullet_train-outgoing_webhooks/lib/bullet_train/outgoing_webhooks/signature.rb)
 
 After adding `BulletTrain::OutgoingWebhooks::Signature` to your project you can edit `app/controllers/bullet_train_webhooks_controller.rb` to add a `before_action :verify_authenticity` call that looks like this:
 
