@@ -22,7 +22,9 @@ module BulletTrain
           allowed_schemes: %w[http https],
           custom_block_callback: nil,
           custom_allow_callback: nil,
-          audit_callback: ->(obj, uri) { Rails.logger.error("BlockedURI obj=#{obj.persisted? ? obj.to_global_id : "New #{obj.class}"} uri=#{uri}") }
+          audit_callback: ->(obj, uri) { Rails.logger.error("BlockedURI obj=#{obj.persisted? ? obj.to_global_id : "New #{obj.class}"} uri=#{uri}") },
+          webhook_headers_namespace: "X-Webhook-Bullet-Train",
+          event_verification_tolerance_seconds: 600 # 5-10 minutes is industry-default.
         }
       end
     end

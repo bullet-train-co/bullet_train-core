@@ -59,10 +59,22 @@ module Webhooks::Outgoing::DeliveryAttemptSupport
         http.verify_mode = BulletTrain::OutgoingWebhooks.http_verify_mode
       end
     end
+
     request = Net::HTTP::Post.new(uri.request_uri)
     request.add_field("Host", uri.host)
     request.add_field("Content-Type", "application/json")
-    request.body = delivery.event.payload.to_json
+
+    # Generate and add signature headers
+    payload = delivery.event.payload
+    signature_data = BulletTrain::OutgoingWebhooks::Signature
+      .generate(payload, delivery.endpoint.webhook_secret)
+
+    webhook_headers_namespace = Rails.configuration.outgoing_webhooks[:webhook_headers_namespace]
+    request.add_field("#{webhook_headers_namespace}-Signature", signature_data[:signature])
+    request.add_field("#{webhook_headers_namespace}-Timestamp", signature_data[:timestamp])
+    request.add_field("#{webhook_headers_namespace}-Id", delivery.event.uuid)
+
+    request.body = payload.to_json
 
     begin
       response = http.request(request)
