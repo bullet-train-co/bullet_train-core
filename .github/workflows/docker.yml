@@ -20,7 +20,7 @@ jobs:
       dockerfile: dockerfiles/base.Dockerfile
 
   build-and-push-build-image:
-    name: "base"
+    name: "build"
     needs: build-and-push-base-image
     # TODO: Better file naming?
     uses: ./.github/workflows/_build_docker_image.yml
