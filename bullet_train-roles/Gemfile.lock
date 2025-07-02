@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-roles (1.25.0)
+    bullet_train-roles (1.25.1)
       active_hash (>= 3.3.1)
       activesupport
       cancancan
