@@ -32,7 +32,7 @@ jobs:
 
   build-and-push-dev-image:
     name: "dev"
-    needs: build-and-push-base-image
+    needs: build-and-push-build-image
     # TODO: Better file naming?
     uses: ./.github/workflows/_build_docker_image.yml
     secrets: inherit
