@@ -27,7 +27,7 @@
 
       <% if multiple_locales? %>
         <div class="sm:col-span-2">
-          <%= render 'shared/fields/buttons', method: :locale, options: {"": t("locale.default")}.merge(t("locale.locales")) %>
+          <%= render 'shared/fields/buttons', method: :locale, button_field_options: {"": t("locale.default")}.merge(t("locale.locales")) %>
         </div>
       <% end %>
 
