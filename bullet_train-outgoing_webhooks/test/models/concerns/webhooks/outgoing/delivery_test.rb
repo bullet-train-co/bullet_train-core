@@ -48,11 +48,13 @@ class Webhooks::Outgoing::DeliveryTest < ActiveSupport::TestCase
 
     delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
 
+    stub_request(:post, "https://example.com/webhook").to_return(status: 200, body: "", headers: {})
+
     assert_changes -> { delivery.delivery_attempts.count }, from: 0, to: 1 do
       delivery.deliver
     end
 
-    assert_enqueued_jobs 1, only: Webhooks::Outgoing::DeliveryJob
+    assert_no_enqueued_jobs only: Webhooks::Outgoing::DeliveryJob # do not schedule an another attempt
   end
 
   test "#deliver respects deactivated endpoint even with existing delivery attempts" do
