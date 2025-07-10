@@ -12,14 +12,17 @@ en:
       edit: Edit Settings
       update: Update Endpoint
       destroy: Remove Endpoint
+      rotate_secret: Rotate Secret
       shorthand:
         edit: Settings
         destroy: Delete
         activate: Activate
         deactivate: Deactivate
       confirmations:
-        # TODO customize for your use-case.
         destroy: Are you sure you want to remove %{endpoint_name}? This will also remove it's associated data. This can't be undone.
+        rotate_secret: >
+          Are you sure you want to rotate the secret of the endpoint %{endpoint_name}?
+          Your webhook event verification system will need to start handling the new secret.
         deactivate: Are you sure you want to deactivate %{endpoint_name}? This will prevent webhooks from being sent to this endpoint.
     fields: &fields
       id:
@@ -77,6 +80,16 @@ en:
         api_description: *scaffolding_absolutely_abstract_creative_concept_id
 
       scaffolding_absolutely_abstract_creative_concept: *scaffolding_absolutely_abstract_creative_concept
+
+      webhook_secret:
+        _: &webhook_secret Webhook Secret
+        label: *webhook_secret
+        heading: *webhook_secret
+        api_description: |
+          Each webhook endpoint has a rollable secret. If you create your endpoints programmatically
+          via the API, the secret is only shown after creating the endpoint. If you missed to store
+          it, you will need to look it up on the app's UI endpoint show or index pages.
+        truncation_with_instructions: ... (use button below to rotate)
 
       deactivation_limit_reached_at:
         _: &deactivation_limit_reached_at Deactivation Limit Reached At
@@ -161,6 +174,7 @@ en:
       created: Endpoint was successfully created.
       updated: Endpoint was successfully updated.
       destroyed: Endpoint was successfully destroyed.
+      secret_rotated: Endpoint's webhook secret successfully rotated.
       activated: Endpoint was successfully activated.
       deactivated: Endpoint was successfully deactivated.
       activation_failed: Failed to activate endpoint.
@@ -177,6 +191,7 @@ en:
         api_version: *api_version
         event_type_ids: *event_type_ids
         scaffolding_absolutely_abstract_creative_concept_id: *scaffolding_absolutely_abstract_creative_concept_id
+        webhook_secret: *webhook_secret
         # 🚅 super scaffolding will insert new activerecord attributes above this line.
         created_at: *created_at
         updated_at: *updated_at

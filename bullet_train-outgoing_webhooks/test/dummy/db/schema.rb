@@ -135,6 +135,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_06_16_143032) do
     t.jsonb "event_type_ids", default: []
     t.bigint "scaffolding_absolutely_abstract_creative_concept_id"
     t.integer "api_version", null: false
+    t.string "webhook_secret", null: false
     t.datetime "deactivation_limit_reached_at"
     t.datetime "deactivated_at"
     t.integer "consecutive_failed_deliveries", default: 0, null: false

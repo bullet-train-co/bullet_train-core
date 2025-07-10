@@ -15,6 +15,7 @@
           <tr>
             <th><%= t('.fields.name.heading') %></th>
             <th><%= t('.fields.url.heading') %></th>
+            <th><%= t('.fields.webhook_secret.heading') %></th>
             <th><%= t('.status.heading') %></th>
             <%# 🚅 super scaffolding will insert new field headers above this line. %>
             <th class="text-right"></th>
@@ -26,6 +27,7 @@
               <tr data-id="<%= endpoint.id %>">
                 <td><%= render 'shared/attributes/text', attribute: :name, url: [:account, endpoint] %></td>
                 <td><%= render 'shared/attributes/code', attribute: :url %></td>
+                <td><%= render 'shared/attributes/code', attribute: :webhook_secret, secret: true %></td>
                 <td>
                   <% if endpoint.active? %>
                     <%= t('.status.active') %>

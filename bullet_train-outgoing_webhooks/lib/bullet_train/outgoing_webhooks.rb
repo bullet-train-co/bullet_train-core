@@ -1,5 +1,6 @@
 require "bullet_train/outgoing_webhooks/version"
 require "bullet_train/outgoing_webhooks/engine"
+require "bullet_train/outgoing_webhooks/signature"
 
 module BulletTrain
   module OutgoingWebhooks

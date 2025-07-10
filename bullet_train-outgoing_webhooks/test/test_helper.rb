@@ -10,6 +10,7 @@ require "rails/test_help"
 
 require "setup/active_record"
 require "setup/endpoints"
+require "webmock/minitest"
 require "setup/create_webhooks_test_helper"
 
 # Load fixtures from the engine
