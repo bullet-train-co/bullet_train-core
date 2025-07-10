@@ -24,7 +24,7 @@ module BulletTrain
           custom_allow_callback: nil,
           audit_callback: ->(obj, uri) { Rails.logger.error("BlockedURI obj=#{obj.persisted? ? obj.to_global_id : "New #{obj.class}"} uri=#{uri}") },
           webhook_headers_namespace: "X-Webhook-Bullet-Train",
-          event_verification_tolerance_seconds: 600 # 5-10 minutes is industry-default.
+          event_verification_tolerance_seconds: 600, # 5-10 minutes is industry-default.
           automatic_endpoint_deactivation_enabled: false,
           automatic_endpoint_deactivation_settings: {
             max_limit: 50,
