@@ -56,16 +56,16 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
 
   test "#handle_exhausted_delivery_attempts deactivates endpoint when deactivation_in period has passed" do
     set_config(test_enabled_config)
-    endpoint = create_endpoint(deactivation_limit_reached_at: 4.days.ago)
+    endpoint = create_endpoint(deactivation_limit_reached_at: 4.days.ago, consecutive_failed_deliveries: 5)
 
     assert endpoint.should_be_deactivated?
     assert_not endpoint.deactivated?
-    assert_equal 0, endpoint.consecutive_failed_deliveries
+    assert_equal 5, endpoint.consecutive_failed_deliveries
 
     notify_deactivated_called = false
     endpoint.stub(:notify_deactivated, -> { notify_deactivated_called = true }) do
       assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
-        assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 0, to: 1 do
+        assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 5, to: 6 do
           endpoint.handle_exhausted_delivery_attempts
         end
       end
@@ -73,7 +73,6 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
 
     assert endpoint.deactivated?
     assert notify_deactivated_called, "notify_deactivated should be called when endpoint is deactivated"
-    assert_equal 1, endpoint.consecutive_failed_deliveries
   end
 
   test "#handle_exhausted_delivery_attempts marks for deactivation when created enough failed deliveries" do
