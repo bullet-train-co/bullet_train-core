@@ -16,11 +16,14 @@ en:
       shorthand:
         edit: Settings
         destroy: Delete
+        activate: Activate
+        deactivate: Deactivate
       confirmations:
         destroy: Are you sure you want to remove %{endpoint_name}? This will also remove it's associated data. This can't be undone.
         rotate_secret: >
           Are you sure you want to rotate the secret of the endpoint %{endpoint_name}?
           Your webhook event verification system will need to start handling the new secret.
+        deactivate: Are you sure you want to deactivate %{endpoint_name}? This will prevent webhooks from being sent to this endpoint.
     fields: &fields
       id:
         _: &id Endpoint ID
@@ -68,7 +71,8 @@ en:
         all: All Events
       event_types: *event_types
 
-      scaffolding_absolutely_abstract_creative_concept_id: &scaffolding_absolutely_abstract_creative_concept
+      scaffolding_absolutely_abstract_creative_concept_id:
+        &scaffolding_absolutely_abstract_creative_concept
         _: &scaffolding_absolutely_abstract_creative_concept_id Within Creative Concept
         label: *scaffolding_absolutely_abstract_creative_concept_id
         heading: *scaffolding_absolutely_abstract_creative_concept_id
@@ -86,6 +90,28 @@ en:
           via the API, the secret is only shown after creating the endpoint. If you missed to store
           it, you will need to look it up on the app's UI endpoint show or index pages.
         truncation_with_instructions: ... (use button below to rotate)
+
+      deactivation_limit_reached_at:
+        _: &deactivation_limit_reached_at Deactivation Limit Reached At
+        label: *deactivation_limit_reached_at
+        heading: *deactivation_limit_reached_at
+        api_title: *deactivation_limit_reached_at
+        api_description: *deactivation_limit_reached_at
+
+      deactivated_at:
+        _: &deactivated_at Deactivated At
+        label: *deactivated_at
+        heading: *deactivated_at
+        api_title: *deactivated_at
+        api_description: *deactivated_at
+
+      consecutive_failed_deliveries:
+        _: &consecutive_failed_deliveries Consecutive Failed Deliveries
+        label: *consecutive_failed_deliveries
+        heading: *consecutive_failed_deliveries
+        api_title: *consecutive_failed_deliveries
+        api_description: *consecutive_failed_deliveries
+
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Added
@@ -118,6 +144,12 @@ en:
           description_empty: No Endpoints have been added for %{team_name}.
       fields: *fields
       buttons: *buttons
+      status:
+        heading: Status
+        active: Active
+        deactivated: Deactivated
+      deactivation_limit_reached:
+        description: ⚠️ You have reached the maximum number of failed deliveries allowed for the endpoint. The limit was reached at %{reached_at}, and the endpoint will soon be deactivated if it does not process the webhooks.
     show:
       section: "%{endpoint_name}"
       header: Webhooks Endpoint Details
@@ -143,6 +175,10 @@ en:
       updated: Endpoint was successfully updated.
       destroyed: Endpoint was successfully destroyed.
       secret_rotated: Endpoint's webhook secret successfully rotated.
+      activated: Endpoint was successfully activated.
+      deactivated: Endpoint was successfully deactivated.
+      activation_failed: Failed to activate endpoint.
+      deactivation_failed: Failed to deactivate endpoint.
   account:
     webhooks:
       outgoing:

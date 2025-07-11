@@ -7,6 +7,10 @@ Rails.application.routes.draw do
         namespace :webhooks do
           namespace :outgoing do
             resources :endpoints do
+              member do
+                post :activate
+                delete :deactivate
+              end
               resources :deliveries, only: %i[index show] do
                 resources :delivery_attempts, only: %i[index show]
               end

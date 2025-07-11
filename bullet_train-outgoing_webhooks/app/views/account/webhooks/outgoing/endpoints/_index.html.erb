@@ -16,6 +16,7 @@
             <th><%= t('.fields.name.heading') %></th>
             <th><%= t('.fields.url.heading') %></th>
             <th><%= t('.fields.webhook_secret.heading') %></th>
+            <th><%= t('.status.heading') %></th>
             <%# 🚅 super scaffolding will insert new field headers above this line. %>
             <th class="text-right"></th>
           </tr>
@@ -27,11 +28,29 @@
                 <td><%= render 'shared/attributes/text', attribute: :name, url: [:account, endpoint] %></td>
                 <td><%= render 'shared/attributes/code', attribute: :url %></td>
                 <td><%= render 'shared/attributes/code', attribute: :webhook_secret, secret: true %></td>
+                <td>
+                  <% if endpoint.active? %>
+                    <%= t('.status.active') %>
+                    <% if endpoint.deactivation_limit_reached_at.present? %>
+                      <br>
+                      <%= t('.deactivation_limit_reached.description', reached_at: l(endpoint.deactivation_limit_reached_at, format: :date_and_time_field)) %>
+                    <% end %>
+                  <% else %>
+                    <%= t('.status.deactivated') %>
+                  <% end %>
+                </td>
                 <%# 🚅 super scaffolding will insert new fields above this line. %>
                 <td class="buttons">
                   <% unless hide_actions %>
                     <% if can? :edit, endpoint %>
                       <%= link_to t('.buttons.shorthand.edit'), [:edit, :account, endpoint], class: 'button-secondary button-smaller' %>
+                    <% end %>
+                    <% if can? :edit, endpoint %>
+                      <% if endpoint.active? %>
+                        <%= button_to t('.buttons.shorthand.deactivate'), [:deactivate, :account, endpoint], method: :delete, data: { turbo_confirm: t('.buttons.confirmations.deactivate', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>
+                      <% else %>
+                        <%= button_to t('.buttons.shorthand.activate'), [:activate, :account, endpoint], method: :post, class: 'button-secondary button-smaller' %>
+                      <% end %>
                     <% end %>
                     <% if can? :destroy, endpoint %>
                       <%= button_to t('.buttons.shorthand.destroy'), [:account, endpoint], method: :delete, data: { turbo_confirm: t('.buttons.confirmations.destroy', model_locales(endpoint)) }, class: 'button-secondary button-smaller' %>
