@@ -54,8 +54,8 @@ module Webhooks::Outgoing::EndpointDeactivatable
   end
 
   def should_be_deactivated?
-    return false unless deactivation_limit_reached_at
-    return false if deactivated_at
+    return false unless marked_for_deactivation?
+    return false if deactivated?
 
     deactivation_limit_reached_at <= BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks.dig(:automatic_endpoint_deactivation_settings, :deactivation_in).ago
   end
