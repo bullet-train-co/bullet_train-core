@@ -36,7 +36,7 @@ module Webhooks::Outgoing::EndpointDeactivatable
     update!(deactivated_at: nil, deactivation_limit_reached_at: nil, consecutive_failed_deliveries: 0)
   end
 
-  def deactivation_processing
+  def handle_exhausted_delivery_attempts
     return unless BulletTrain::OutgoingWebhooks::Engine.config.outgoing_webhooks[:automatic_endpoint_deactivation_enabled]
     return if deactivated?
 

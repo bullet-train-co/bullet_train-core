@@ -33,7 +33,7 @@ module Webhooks::Outgoing::DeliverySupport
       Webhooks::Outgoing::DeliveryJob.set(wait: next_reattempt_delay).perform_later(self)
     else
       # All delivery attempts have now failed, should we deactivate the endpoint?
-      endpoint.deactivation_processing
+      endpoint.handle_exhausted_delivery_attempts
     end
   end
 

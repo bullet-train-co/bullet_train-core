@@ -11,7 +11,7 @@ class Webhooks::Outgoing::DeliveryDeactivationTest < ActiveSupport::TestCase
     @delivery = create_delivery(endpoint: @endpoint)
   end
 
-  test "#deliver_async calls endpoint.deactivation_processing when all delivery attempts have failed" do
+  test "#deliver_async calls endpoint.handle_exhausted_delivery_attempts when all delivery attempts have failed" do
     # Create max available attempts to not trigger deactivation yet
     create_delivery_attempts(@delivery, @delivery.max_attempts)
 
@@ -24,9 +24,9 @@ class Webhooks::Outgoing::DeliveryDeactivationTest < ActiveSupport::TestCase
     assert @delivery.failed?, "Delivery should be failed"
     assert_not @delivery.still_attempting?, "Delivery should not be still attempting"
 
-    # Mock the endpoint to verify deactivation_processing is called
+    # Mock the endpoint to verify handle_exhausted_delivery_attempts is called
     endpoint_mock = Minitest::Mock.new
-    endpoint_mock.expect :deactivation_processing, nil
+    endpoint_mock.expect :handle_exhausted_delivery_attempts, nil
 
     @delivery.stub(:endpoint, endpoint_mock) do
       @delivery.deliver_async
@@ -36,7 +36,7 @@ class Webhooks::Outgoing::DeliveryDeactivationTest < ActiveSupport::TestCase
     assert_no_enqueued_jobs only: Webhooks::Outgoing::DeliveryJob
   end
 
-  test "#deliver_async does not call endpoint.deactivation_processing when still attempting" do
+  test "#deliver_async does not call endpoint.handle_exhausted_delivery_attempts when still attempting" do
     # Create fewer attempts than max to ensure delivery is still attempting
     create_delivery_attempts(@delivery, 2)
 
@@ -45,7 +45,7 @@ class Webhooks::Outgoing::DeliveryDeactivationTest < ActiveSupport::TestCase
 
     endpoint_mock = Minitest::Mock.new
 
-    # We don't expect deactivation_processing to be called
+    # We don't expect handle_exhausted_delivery_attempts to be called
     @delivery.stub(:endpoint, endpoint_mock) do
       assert_enqueued_jobs 1, only: Webhooks::Outgoing::DeliveryJob do
         @delivery.deliver_async

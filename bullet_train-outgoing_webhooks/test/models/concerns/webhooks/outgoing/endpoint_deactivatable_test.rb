@@ -27,18 +27,18 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
     @team = Team.create!(name: "test-team")
   end
 
-  test "#deactivation_processing does nothing when feature is disabled" do
+  test "#handle_exhausted_delivery_attempts does nothing when feature is disabled" do
     set_config(test_disabled_config)
     endpoint = create_endpoint
 
     endpoint.stub(:deactivate!, -> { raise "deactivate! should not be called" }) do
       endpoint.stub(:mark_for_deactivation!, -> { raise "mark_for_deactivation! should not be called" }) do
-        assert_nil endpoint.deactivation_processing
+        assert_nil endpoint.handle_exhausted_delivery_attempts
       end
     end
   end
 
-  test "#deactivation_processing does nothing when endpoint is already deactivated" do
+  test "#handle_exhausted_delivery_attempts does nothing when endpoint is already deactivated" do
     set_config(test_enabled_config)
     endpoint = create_endpoint(deactivated_at: 1.hour.ago)
 
@@ -47,13 +47,13 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
     endpoint.stub(:deactivate!, -> { raise "deactivate! should not be called" }) do
       endpoint.stub(:mark_for_deactivation!, -> { raise "mark_for_deactivation! should not be called" }) do
         endpoint.stub(:increment!, -> { raise "increment! should not be called" }) do
-          assert_nil endpoint.deactivation_processing
+          assert_nil endpoint.handle_exhausted_delivery_attempts
         end
       end
     end
   end
 
-  test "#deactivation_processing deactivates endpoint when deactivation_in period has passed" do
+  test "#handle_exhausted_delivery_attempts deactivates endpoint when deactivation_in period has passed" do
     set_config(test_enabled_config)
     endpoint = create_endpoint(deactivation_limit_reached_at: 4.days.ago)
 
@@ -65,7 +65,7 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
     endpoint.stub(:notify_deactivated, -> { notify_deactivated_called = true }) do
       assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
         assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 0, to: 1 do
-          endpoint.deactivation_processing
+          endpoint.handle_exhausted_delivery_attempts
         end
       end
     end
@@ -75,7 +75,7 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
     assert_equal 1, endpoint.consecutive_failed_deliveries
   end
 
-  test "#deactivation_processing marks for deactivation when created enough failed deliveries" do
+  test "#handle_exhausted_delivery_attempts marks for deactivation when created enough failed deliveries" do
     set_config(test_enabled_config)
     endpoint = create_endpoint(consecutive_failed_deliveries: 4)
 
@@ -85,7 +85,7 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
     endpoint.stub(:notify_deactivation_limit_reached, -> { notify_deactivation_limit_reached_called = true }) do
       assert_changes -> { endpoint.deactivation_limit_reached_at }, from: nil, to: ->(v) { v.present? } do
         assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 4, to: 5 do
-          endpoint.deactivation_processing
+          endpoint.handle_exhausted_delivery_attempts
         end
       end
     end
@@ -94,7 +94,7 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
     assert notify_deactivation_limit_reached_called, "notify_deactivation_limit_reached should be called when endpoint is marked for deactivation"
   end
 
-  test "#deactivation_processing does nothing when neither deactivation condition is met" do
+  test "#handle_exhausted_delivery_attempts does nothing when neither deactivation condition is met" do
     set_config(test_enabled_config)
     endpoint = create_endpoint
 
@@ -104,7 +104,7 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
     assert_no_changes -> { endpoint.deactivated_at } do
       assert_no_changes -> { endpoint.deactivation_limit_reached_at } do
         assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 0, to: 1 do
-          endpoint.deactivation_processing
+          endpoint.handle_exhausted_delivery_attempts
         end
       end
     end
@@ -237,15 +237,15 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
 
     # Step 1: Not enough failed deliveries to mark for deactivation so just increment the counter
     assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 3, to: 4 do
-      endpoint.deactivation_processing
+      endpoint.handle_exhausted_delivery_attempts
     end
 
-    # Step 2: Now deactivation_processing should mark for deactivation
+    # Step 2: Now handle_exhausted_delivery_attempts should mark for deactivation
     notify_deactivation_limit_reached_called = false
     endpoint.stub(:notify_deactivation_limit_reached, -> { notify_deactivation_limit_reached_called = true }) do
       assert_changes -> { endpoint.deactivation_limit_reached_at }, from: nil, to: ->(v) { v.present? } do
         assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 4, to: 5 do
-          endpoint.deactivation_processing
+          endpoint.handle_exhausted_delivery_attempts
         end
       end
     end
@@ -253,12 +253,12 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
 
     # Step 3: Move time forward past deactivation_in period
     travel 4.days do
-      # Step 4: Second deactivation_processing should deactivate
+      # Step 4: Second handle_exhausted_delivery_attempts should deactivate
       notify_deactivated_called = false
       endpoint.stub(:notify_deactivated, -> { notify_deactivated_called = true }) do
         assert_changes -> { endpoint.deactivated_at }, from: nil, to: ->(v) { v.present? } do
           assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 5, to: 6 do
-            endpoint.deactivation_processing
+            endpoint.handle_exhausted_delivery_attempts
           end
         end
       end
