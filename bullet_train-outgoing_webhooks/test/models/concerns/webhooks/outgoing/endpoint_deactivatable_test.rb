@@ -1,5 +1,6 @@
 require "test_helper"
 require "minitest/mock"
+require "setup/create_webhooks_test_helper"
 
 class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
   include ActiveJob::TestHelper
