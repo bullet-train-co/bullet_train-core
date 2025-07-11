@@ -7,8 +7,6 @@ module Webhooks::Outgoing::DeliverySupport
 
     has_one :team, through: :endpoint unless BulletTrain::OutgoingWebhooks.parent_class_specified?
     has_many :delivery_attempts, class_name: "Webhooks::Outgoing::DeliveryAttempt", dependent: :destroy, foreign_key: :delivery_id
-
-    after_commit :reset_endpoint_failed_deliveries_tracking!, if: :delivered?
   end
 
   ATTEMPT_SCHEDULE = {
@@ -45,7 +43,7 @@ module Webhooks::Outgoing::DeliverySupport
     # TODO If we ever do away with the `async: true` default for webhook generation, then I believe this needs to
     # change otherwise we'd be attempting the first delivery of webhooks inline.
     if delivery_attempts.new.attempt
-      touch(:delivered_at)
+      mark_as_delivered!
     else
       deliver_async
     end
@@ -93,7 +91,10 @@ module Webhooks::Outgoing::DeliverySupport
     ATTEMPT_SCHEDULE.keys.max
   end
 
-  def reset_endpoint_failed_deliveries_tracking!
-    endpoint.reset_failed_deliveries_tracking!
+  def mark_as_delivered!
+    ActiveRecord::Base.transaction do
+      touch(:delivered_at)
+      endpoint.reset_failed_deliveries_tracking!
+    end
   end
 end

@@ -267,15 +267,4 @@ class Webhooks::Outgoing::EndpointDeactivatableTest < ActiveSupport::TestCase
       assert notify_deactivated_called, "notify_deactivated should be called when endpoint is deactivated"
     end
   end
-
-  test "endpoint recovery: successful delivery clears marking and consecutive_failed_deliveries" do
-    endpoint = create_endpoint(deactivation_limit_reached_at: 1.hour.ago, consecutive_failed_deliveries: 5)
-    delivery = create_delivery(endpoint: endpoint, delivered_at: nil)
-
-    assert_changes -> { endpoint.deactivation_limit_reached_at }, from: ->(v) { v.present? }, to: nil do
-      assert_changes -> { endpoint.consecutive_failed_deliveries }, from: 5, to: 0 do
-        delivery.update!(delivered_at: Time.current)
-      end
-    end
-  end
 end

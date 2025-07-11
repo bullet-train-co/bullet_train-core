@@ -54,7 +54,21 @@ class Webhooks::Outgoing::DeliveryTest < ActiveSupport::TestCase
       delivery.deliver
     end
 
+    assert_not_nil delivery.reload.delivered_at, "delivery should be marked as delivered"
     assert_no_enqueued_jobs only: Webhooks::Outgoing::DeliveryJob # do not schedule an another attempt
+  end
+
+  test "#deliver does not mark as delivered when delivery attempt fails" do
+    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
+
+    stub_request(:post, "https://example.com/webhook").to_return(status: 500, body: "", headers: {})
+
+    assert_changes -> { delivery.delivery_attempts.count }, from: 0, to: 1 do
+      delivery.deliver
+    end
+
+    assert_nil delivery.reload.delivered_at, "delivery should not be marked as delivered when attempt fails"
+    assert_enqueued_jobs 1, only: Webhooks::Outgoing::DeliveryJob # should schedule retry
   end
 
   test "#deliver respects deactivated endpoint even with existing delivery attempts" do
@@ -67,16 +81,8 @@ class Webhooks::Outgoing::DeliveryTest < ActiveSupport::TestCase
     assert_no_changes -> { delivery.delivery_attempts.count } do
       delivery.deliver
     end
+    assert_nil delivery.reload.delivered_at, "delivery should not be marked as delivered"
     assert_no_enqueued_jobs only: Webhooks::Outgoing::DeliveryJob
-  end
-
-  test "clears endpoint deactivation_limit_reached_at when delivery is marked as delivered" do
-    @endpoint.update!(deactivation_limit_reached_at: 1.hour.ago)
-    delivery = Webhooks::Outgoing::Delivery.create!(endpoint: @endpoint, event: @event, endpoint_url: @endpoint.url)
-
-    assert_changes -> { @endpoint.reload.deactivation_limit_reached_at }, from: ->(v) { v.present? }, to: nil do
-      delivery.update!(delivered_at: Time.current)
-    end
   end
 
   test "does not clear endpoint deactivation_limit_reached_at when delivery is not delivered" do
