@@ -18,6 +18,15 @@ class FakeModel
   end
 end
 
+# This model simulates a Model.new instance that is not persisted yet.
+class FakeModelWithNilId
+  include ObfuscatesId
+
+  def id
+    nil
+  end
+end
+
 class BulletTrain::ObfuscatesIdConcernTest < ActiveSupport::TestCase
   test "FakeModel has an id" do
     fake_model = FakeModel.new
@@ -32,5 +41,9 @@ class BulletTrain::ObfuscatesIdConcernTest < ActiveSupport::TestCase
   test "FakeModel can accurately decode an id" do
     fake_model = FakeModel.new
     assert_equal fake_model.id, FakeModel.decode_id(fake_model.expected_obfuscated_id)
+  end
+
+  test "FakeModelWithNilId returns nil when id is nil" do
+    assert_nil FakeModelWithNilId.new.to_param
   end
 end
