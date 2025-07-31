@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "standard", "~> 1.5.0"
   spec.add_development_dependency "simplecov"
 
-  spec.add_runtime_dependency "active_hash", ">= 3.3.1"
+  spec.add_runtime_dependency "active_hash", "~> 3.3.1"
   spec.add_runtime_dependency "activesupport"
   spec.add_runtime_dependency "cancancan"
   # For more information and examples about making a new gem, checkout our
