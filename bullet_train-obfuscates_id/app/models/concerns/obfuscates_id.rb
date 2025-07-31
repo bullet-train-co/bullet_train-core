@@ -14,6 +14,7 @@ module ObfuscatesId
     end
 
     def encode_id(id)
+      return if id.nil?
       hashids.encode(id)
     end
 
