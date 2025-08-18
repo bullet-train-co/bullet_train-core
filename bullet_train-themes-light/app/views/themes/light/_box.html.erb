@@ -5,8 +5,9 @@
 <% border_top ||= false %>
 <% body = partial.body.presence || partial.raw_body.presence %>
 <% pagy ||= nil %>
+<% overflow_hidden ||= local_assigns.fetch(:overflow_hidden, true) %>
 
-<div class="<%= "bg-white rounded-md shadow dark:bg-slate-700 dark:bg-opacity-50" unless no_background %> overflow-hidden <%= border_top ? "border-t dark:border-slate-500" : "" %>">
+<div class="<%= "bg-white rounded-md shadow dark:bg-slate-700 dark:bg-opacity-50" unless no_background %> <%= "overflow-hidden" if overflow_hidden %> <%= border_top ? "border-t dark:border-slate-500" : "" %>">
   <% if partial.title? || partial.description? %>
     <div class="py-6 px-8 <%= title_padding %> space-y-2 <%= 'border-b shadow-sm dark:border-slate-600' if divider %>">
       <% if partial.title? %>
