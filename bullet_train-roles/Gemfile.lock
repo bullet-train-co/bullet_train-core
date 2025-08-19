@@ -96,6 +96,7 @@ GEM
     date (3.4.1)
     docile (1.4.1)
     drb (2.2.1)
+    erb (5.0.2)
     erubi (1.13.1)
     factory_bot (6.5.1)
       activesupport (>= 6.1.0)
@@ -196,7 +197,8 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.2.1)
-    rdoc (6.13.1)
+    rdoc (6.14.2)
+      erb
       psych (>= 4.0.0)
     regexp_parser (2.10.0)
     reline (0.6.0)
