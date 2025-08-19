@@ -180,7 +180,15 @@ def silence_logs?
 end
 
 def openai_enabled?
-  ENV["OPENAI_ACCESS_TOKEN"].present?
+  if ENV["OPENAI_ACCESS_TOKEN"].present? && !defined?(OpenAI)
+    Rails.logger.warn "OpenAI access token is set, but the OpenAI gem is not loaded. Please add the 'ruby-openai' gem to your Gemfile to enable OpenAI features."
+  end
+
+  if !ENV["OPENAI_ACCESS_TOKEN"].present? && defined?(OpenAI)
+    Rails.logger.warn "OpenAI access token is not set, but the OpenAI gem is loaded. Please set the OPENAI_ACCESS_TOKEN environment variable to enable OpenAI features."
+  end
+
+  ENV["OPENAI_ACCESS_TOKEN"].present? && defined?(OpenAI)
 end
 
 def openai_organization_exists?
