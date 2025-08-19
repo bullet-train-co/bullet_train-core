@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    bullet_train-has_uuid (1.26.1)
+    bullet_train-has_uuid (1.27.0)
       rails (>= 6.0.0)
 
 GEM
