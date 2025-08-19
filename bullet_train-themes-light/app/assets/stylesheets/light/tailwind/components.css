@@ -115,7 +115,7 @@
   }
 
   .table {
-    @apply w-full divide-y divide-slate-900 dark:divide-slate-700 divide-opacity-5 text-left;
+    @apply w-full divide-y divide-slate-900/5 dark:divide-slate-700/5 text-left;
 
 
     th {
@@ -132,8 +132,8 @@
     }
 
     tbody {
-      @apply divide-y divide-slate-900 divide-opacity-5;
-      @apply dark:divide-slate-700;
+      @apply divide-y divide-slate-900/5;
+      @apply dark:divide-slate-700/5;
     }
 
     td {
