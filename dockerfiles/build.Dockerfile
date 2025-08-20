@@ -1,20 +1,42 @@
 # syntax=docker/dockerfile:1
 # check=error=true
 
+#######################################################################################################
+#
+# This is the `build` Dockerfile which we use to produce the `bullet_train/build` image.
+# Here we install build-time dependencies that are needed to be able to get the project ready to run,
+# but that aren't needed to actually run the app. This allows us to avoid shipping build-time dependencies
+# to production.
+#
+# Here we install things like NodeJS, which is needed to precompile assets, but is not needed at runtime.
+#
+# Things that we DO NOT install here:
+# * development tools
+# * testing tools
+# * production specific dependencies
+#
+# This image is intended as a buiding block for other images and isn't really intended to be used directly.
+#
+# We use a GitHub Actions workflow (`.github/workflows/docker.yml`) to build this, and other images
+# as a part of the release process.
+#
+#######################################################################################################
+#
 # Build this image:
 # docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) --build-arg NODE_VERSION=$(cat .nvmrc) --build-arg NODE_MAJOR_VERSION=$(cat .nvmrc | cut -d '.' -f 1) .
-
+#
 # Sometimes it's handy to get long output and skip the cache:
 # docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) --build-arg NODE_VERSION=$(cat .nvmrc) --build-arg NODE_MAJOR_VERSION=$(cat .nvmrc | cut -d '.' -f 1) . --no-cache --progress=plain
-
+#
 # You can then get a console to see what's on the build image by doing:
 # docker run -it bullet_train/build /bin/bash
-
+#
 # For local testing you may want to pass a FROM_IMAGE build arg to use a locally build verison of the base image instead of a published one:
 # docker build -t bullet_train/build -f dockerfiles/build.Dockerfile --build-arg BULLET_TRAIN_VERSION=$(grep VERSION bullet_train/lib/bullet_train/version.rb | cut -d '"' -f 2) --build-arg NODE_VERSION=$(cat .nvmrc) --build-arg NODE_MAJOR_VERSION=$(cat .nvmrc | cut -d '.' -f 1)  --build-arg FROM_IMAGE=bullet_train/base .
-
+#
 # BULLET_TRAIN_VERSION must be passed in as an ENV var. The GitHub Actions workflow that uses this file
 # will take care of it for building the official images.
+#
 #######################################################################################################
 ARG BULLET_TRAIN_VERSION=fake.version
 ARG FROM_IMAGE=ghcr.io/bullet-train-co/bullet_train/base:$BULLET_TRAIN_VERSION
@@ -43,5 +65,5 @@ RUN apt-get update -qq && \
     && \
     rm -rf /var/lib/apt/lists /var/cache/apt/archives
 
-# Enable corepack
+# Enable corepack, which activates yarn 2
 RUN corepack enable
