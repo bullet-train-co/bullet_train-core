@@ -48,8 +48,8 @@ shipped to production. In this stage there is a block where you can install any 
 `dev.Dockerfile` is intended to be used for running your app locally within Docker. This file uses `bullet_train/dev` as
 the base image and gives you a block where you can install any runtime and development dependencies.
 
-This file will mount the local copy of the application into the image and your local changes will be reflected into
-the Docker image immediately.
+This file assumes that the local copy of the application will be mounted into the image. The convenience scripts below handle
+that for you, and then your local changes will be reflected into the Docker image immediately.
 
 To make easy use of `dev.Dockerfile` we've included a number of convenience scripts in `bin/docker-dev`
 
