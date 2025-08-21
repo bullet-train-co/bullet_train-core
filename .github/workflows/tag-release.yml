@@ -49,7 +49,7 @@ jobs:
     secrets: inherit
   docker:
     name: Docker
-    needs: tag
+    needs: [tag, release]
     if: ${{ startsWith(needs.tag.outputs.tag, 'v') }}
     uses: ./.github/workflows/docker.yml
     secrets: inherit
