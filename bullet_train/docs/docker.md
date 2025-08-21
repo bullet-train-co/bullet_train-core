@@ -16,6 +16,8 @@ The images that we publish are layered to give us flexibility in how final image
   is not needed at runtime.
 * `bullet_train/dev` - This image starts with `build` and adds dependencies that are needed in
   development mode, but that aren't needed in production.
+* `bullet_train` - This image contains the full starter repo and is ready to run. You generally
+  won't use this image, but if you wanted to give Bullet Train a quick test run it might be useful.
 
 The `Dockerfile`s for these building-block images are in the `dockerfiles` directory of the `core` repo.
 
@@ -24,6 +26,18 @@ The `Dockerfile`s for these building-block images are in the `dockerfiles` direc
 These images are versioned along with the gems, and they're built and published as part of our release process.
 
 You can find the packages here: <https://github.com/orgs/bullet-train-co/packages>
+
+You can install one of the images directly by doing something like this:
+
+```
+docker pull ghcr.io/bullet-train-co/bullet_train/base:1.27.0
+```
+
+And in a `Dockerfile` you can do this:
+
+```
+FROM ghcr.io/bullet-train-co/bullet_train/base:1.27.0
+```
 
 ## Application Images
 
