@@ -1,6 +1,6 @@
 {
   "name": "@bullet-train/bullet-train-sortable",
-  "version": "1.27.0",
+  "version": "1.28.0",
   "description": "Bullet Train - Sortable",
   "source": "app/javascript/index.js",
   "module": "app/assets/javascripts/bullet-train.esm.js",
