@@ -2,12 +2,32 @@
 name: "🚢 ~ Docker"
 
 on:
+  workflow_call:
   workflow_dispatch:
 
 jobs:
-  placeholder-job:
-    runs-on: ubuntu-latest
+  build-and-push-base-image:
+    name: "base"
+    uses: ./.github/workflows/_build_docker_image.yml
+    secrets: inherit
+    with:
+      image-name: bullet-train-co/bullet_train/base
+      dockerfile: dockerfiles/base.Dockerfile
 
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
+  build-and-push-build-image:
+    name: "build"
+    needs: build-and-push-base-image
+    uses: ./.github/workflows/_build_docker_image.yml
+    secrets: inherit
+    with:
+      image-name: bullet-train-co/bullet_train/build
+      dockerfile: dockerfiles/build.Dockerfile
+
+  build-and-push-dev-image:
+    name: "dev"
+    needs: build-and-push-build-image
+    uses: ./.github/workflows/_build_docker_image.yml
+    secrets: inherit
+    with:
+      image-name: bullet-train-co/bullet_train/dev
+      dockerfile: dockerfiles/dev.Dockerfile
