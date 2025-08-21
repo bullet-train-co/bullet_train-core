@@ -19,9 +19,7 @@ The images that we publish are layered to give us flexibility in how final image
 * `bullet_train` - This image contains the full starter repo and is ready to run. You generally
   won't use this image, but if you wanted to give Bullet Train a quick test run it might be useful.
 
-The `Dockerfile`s for these building-block images are in the `dockerfiles` directory of the `core` repo.
-
-**TODO: Once the branch with the dockerfiles is merged, add a link to the appropriate spot in the core repo.**
+The `Dockerfile`s for these building-block images are in the [`dockerfiles` directory of the `core` repo.](https://github.com/bullet-train-co/bullet_train-core/tree/main/dockerfiles)
 
 These images are versioned along with the gems, and they're built and published as part of our release process.
 
