@@ -1,45 +1,33 @@
 #
 name: "🚢 ~ Docker"
 
-# TODO: Wire this up to happen automatically at the right time (whenever that is...). For now it's
-# set to be able to be run by hand.
 on:
+  workflow_call:
   workflow_dispatch:
-  #push:
-    #branches: ['release']
 
 jobs:
   build-and-push-base-image:
     name: "base"
-    # TODO: Better file naming?
     uses: ./.github/workflows/_build_docker_image.yml
     secrets: inherit
     with:
-      # TODO: Why does it not accept ENV values here...
       image-name: bullet-train-co/bullet_train/base
       dockerfile: dockerfiles/base.Dockerfile
 
   build-and-push-build-image:
     name: "build"
     needs: build-and-push-base-image
-    # TODO: Better file naming?
     uses: ./.github/workflows/_build_docker_image.yml
     secrets: inherit
     with:
-      # TODO: Why does it not accept ENV values here...
       image-name: bullet-train-co/bullet_train/build
       dockerfile: dockerfiles/build.Dockerfile
 
   build-and-push-dev-image:
     name: "dev"
     needs: build-and-push-build-image
-    # TODO: Better file naming?
     uses: ./.github/workflows/_build_docker_image.yml
     secrets: inherit
     with:
-      # TODO: Why does it not accept ENV values here...
       image-name: bullet-train-co/bullet_train/dev
       dockerfile: dockerfiles/dev.Dockerfile
-
-
-

@@ -95,15 +95,8 @@ jobs:
         with:
           images: ${{ env.REGISTRY }}/${{ inputs.image-name }}
           # generate Docker tags based on the following events/attributes
-          # TODO: Do we need any of these tags other than the primary semver one?
           tags: |
-            #type=schedule
-            #type=ref,event=branch
-            #type=ref,event=pr
             type=semver,pattern={{version}},value=${{ steps.extract-bullet-train-version.outputs.result }}
-            #type=semver,pattern={{major}}.{{minor}},value=${{ steps.extract-bullet-train-version.outputs.result }}
-            #type=semver,pattern={{major}},value=${{ steps.extract-bullet-train-version.outputs.result }}
-            #type=sha
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
