@@ -49,8 +49,22 @@ BulletTrain::Themes::Light.color = :foo
 ## Adding a New Theme (ejecting standard views)
 
 If you want to add a new theme, you can use the following command. For example, let's make a new theme called "foo":
+
 ```
 > rake bullet_train:themes:light:eject[foo]
+```
+
+Note: The command above may complain with an error like this:
+
+```
+no matches found: bullet_train:themes:light:eject[foo]
+```
+
+This is usually an indication that your shell is interpreting the square brackets before they get passed along to `rake`.
+In that case you should escape the brackets like this:
+
+```
+> rake bullet_train:themes:light:eject\[foo\]
 ```
 
 This will copy all of the standard views from `bullet_train-themes-light` to `app/views/themes/` and configure your application to use the new theme.
