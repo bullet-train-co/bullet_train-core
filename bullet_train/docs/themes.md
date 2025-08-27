@@ -54,13 +54,13 @@ If you want to add a new theme, you can use the following command. For example, 
 > rake bullet_train:themes:light:eject[foo]
 ```
 
-Note: If the command above may complain with an error like this:
+Note: The command above may complain with an error like this:
 
 ```
 no matches found: bullet_train:themes:light:eject[foo]
 ```
 
-This is usually an indication that your shell is interpreting the square brackets before they get passed along to rake.
+This is usually an indication that your shell is interpreting the square brackets before they get passed along to `rake`.
 In that case you should escape the brackets like this:
 
 ```
