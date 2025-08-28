@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Tag on PR merge
         id: tag-on-pr-merge
-        # TODO: Switch this back to  after this PR is merged:
+        # TODO: Switch this back to David-Lor/action-tag-on-pr-merge@main after this PR is merged:
         # https://github.com/David-Lor/action-tag-on-pr-merge/pull/28
         # uses: David-Lor/action-tag-on-pr-merge@main
         uses: jagthedrummer/action-tag-on-pr-merge@jeremy/replace-set-output
