@@ -20,7 +20,7 @@ jobs:
     steps:
       - name: Tag on PR merge
         id: tag-on-pr-merge
-        uses: David-Lor/action-tag-on-pr-merge@main
+        uses: jagthedrummer/action-tag-on-pr-merge@jeremy/replace-set-output
         with:
           push-tag: true
       - name: Print fetched tag
