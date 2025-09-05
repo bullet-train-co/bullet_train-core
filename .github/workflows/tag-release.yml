@@ -23,7 +23,7 @@ jobs:
         # TODO: Switch this back to David-Lor/action-tag-on-pr-merge@main after this PR is merged:
         # https://github.com/David-Lor/action-tag-on-pr-merge/pull/28
         # uses: David-Lor/action-tag-on-pr-merge@main
-        uses: jagthedrummer/action-tag-on-pr-merge@jeremy/replace-set-output
+        uses: jagthedrummer/action-tag-on-pr-merge@jeremy/replace-set-output-bug-fix
         with:
           push-tag: true
       - name: Print fetched tag
