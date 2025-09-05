@@ -9,37 +9,40 @@ on:
       - main
 
 jobs:
-  # This is a temporary job to work around a release bug.
-  tag:
-    name: Temporary tag
-    runs-on: ubuntu-latest
-    outputs:
-      tag: v1.29.0
-    # This 'if' condition is important for ensuring the workflow only runs for merged PRs
-    #  (avoid running when a PR is discarded - closed without merging)
-    if: github.event.pull_request.merged == true
-    steps:
-      - name: Do nothing
-        run: echo "empty step"
+  # This is a temporary job that can be used to work around a release bug that prevents a release
+  # from happening. To use it, ucomment this job and set the tag.outputs.tag version appropriately.
+  # Also comment out the lower tag job. Then create a PR with those changes. When that PR is merged
+  # a release should be created with the version number specified in this job.
   #tag:
-    #name: Tag
+    #name: Temporary tag
     #runs-on: ubuntu-latest
     #outputs:
-      #tag: ${{ steps.tag-on-pr-merge.outputs.tag }}
+      #tag: v1.29.0
     ## This 'if' condition is important for ensuring the workflow only runs for merged PRs
     ##  (avoid running when a PR is discarded - closed without merging)
     #if: github.event.pull_request.merged == true
     #steps:
-      #- name: Tag on PR merge
-        #id: tag-on-pr-merge
-        ## TODO: Switch this back to David-Lor/action-tag-on-pr-merge@main after this PR is merged:
-        ## https://github.com/David-Lor/action-tag-on-pr-merge/pull/28
-        ## uses: David-Lor/action-tag-on-pr-merge@main
-        #uses: jagthedrummer/action-tag-on-pr-merge@jeremy/replace-set-output-bug-fix
-        #with:
-          #push-tag: true
-      #- name: Print fetched tag
-        #run: echo "${{ steps.tag-on-pr-merge.outputs.tag }}"
+      #- name: Do nothing
+        #run: echo "empty step"
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    outputs:
+      tag: ${{ steps.tag-on-pr-merge.outputs.tag }}
+    # This 'if' condition is important for ensuring the workflow only runs for merged PRs
+    #  (avoid running when a PR is discarded - closed without merging)
+    if: github.event.pull_request.merged == true
+    steps:
+      - name: Tag on PR merge
+        id: tag-on-pr-merge
+        # TODO: Switch this back to David-Lor/action-tag-on-pr-merge@main after this PR is merged:
+        # https://github.com/David-Lor/action-tag-on-pr-merge/pull/28
+        # uses: David-Lor/action-tag-on-pr-merge@main
+        uses: jagthedrummer/action-tag-on-pr-merge@jeremy/replace-set-output-bug-fix
+        with:
+          push-tag: true
+      - name: Print fetched tag
+        run: echo "${{ steps.tag-on-pr-merge.outputs.tag }}"
   release:
     name: Release
     runs-on: ubuntu-latest
