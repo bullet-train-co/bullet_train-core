@@ -26,4 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
 
   spec.add_dependency "rails", ">= 6.0.0"
+  # TODO: Ideally we'd be able to declare this dependency and have everything work in the starter repo.
+  # For some reason I seem to need this to be declared in the starter repo for the JS file to be made available.
+  spec.add_dependency "requestjs-rails"
 end

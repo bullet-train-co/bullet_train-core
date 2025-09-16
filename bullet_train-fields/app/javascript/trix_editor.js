@@ -1,8 +1,14 @@
 import Tribute from 'tributejs'
-require("trix/dist/trix.css");
 
-require("trix")
-require("@rails/actiontext")
+// TODO: How do we get the trix css included with importmaps?
+//import "trix/dist/trix.css";
+console.log('about to load sheet')
+import sheet from 'trix/dist/trix.css' with { type: 'css' };
+console.log('sheet = ', sheet);
+document.adoptedStyleSheets = [sheet];
+
+import "trix";
+import "@rails/actiontext";
 
 // only show the editor tool bar when the user is editing the field.
 // inspired by https://github.com/basecamp/trix/issues/343 and `app/assets/stylesheets/account/fields/trix_editor.scss`
