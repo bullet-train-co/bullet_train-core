@@ -21,5 +21,19 @@ end
 
 module BulletTrain
   class Engine < ::Rails::Engine
+    initializer "bullet_train.importmap", before: "importmap" do |app|
+      # NOTE: this will add pins from this engine to the main app
+      # https://github.com/rails/importmap-rails#composing-import-maps
+      app.config.importmap.paths << BulletTrain::Engine.root.join("config/importmap.rb")
+
+      # https://github.com/rails/importmap-rails#sweeping-the-cache-in-development-and-test
+      app.config.importmap.cache_sweepers << BulletTrain::Engine.root.join("app/javascript")
+    end
+    initializer "bullet_train.assets" do
+      if Rails.application.config.respond_to?(:assets)
+        Rails.application.config.assets.paths << BulletTrain::Engine.root.join("app/javascript")
+        #Rails.application.config.assets.precompile += PRECOMPILE_ASSETS
+      end
+    end
   end
 end

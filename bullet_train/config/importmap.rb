@@ -1,0 +1,13 @@
+pin_all_from File.expand_path("../app/javascript/controllers", __dir__), under: "controllers"
+#pin_all_from 'controllers', under: 'controllers'#, integrity: true
+#pin "controllers/bulk_action_form_controller"
+
+
+
+
+#pin_all_from File.expand_path("../app/javascript/controllers", __dir__), under: "bullet_train-sortable"
+#pin "controllers/sortabl_controller"
+#pin "bullet-train/sortable", to: "controllers/sortable_controller"
+#pin "controllers/sortable_controller"
+#pin "@rails/request.js", to: "requestjs.js"
+
