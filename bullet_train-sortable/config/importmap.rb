@@ -1,0 +1,5 @@
+#pin_all_from File.expand_path("../app/javascript/controllers", __dir__), under: "bullet_train-sortable"
+#pin "controllers/sortabl_controller"
+#pin "bullet-train/sortable", to: "controllers/sortable_controller"
+pin "controllers/sortable_controller"
+pin "@rails/request.js", to: "requestjs.js"
