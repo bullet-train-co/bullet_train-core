@@ -1,6 +1,7 @@
 import { Controller } from '@hotwired/stimulus'
-import { version as MONACO_VERSION } from 'monaco-editor/package.json'
+//import { version as MONACO_VERSION } from 'monaco-editor/package.json'
 
+const MONACO_VERSION = '0.52.2'
 const MONACO_LOADED_EVENT = 'monaco:loaded'
 const MONACO_ERROR_EVENT = 'monaco:error'
 export default class extends Controller {
