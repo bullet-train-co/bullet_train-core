@@ -5,8 +5,7 @@ import { post } from '@rails/request.js'
 export default class extends Controller {
   static values = {
     reorderPath: String,
-    saveOnReorder: { type: Boolean, default: true },
-    addDragHandles: { type: Boolean, default: true }
+    saveOnReorder: { type: Boolean, default: true }
   }
   static classes = ["activeDropzone", "activeItem", "dropTarget"];
   static targets = [ "handle"];
@@ -23,7 +22,6 @@ export default class extends Controller {
     this.sortableTable = new SortableTable(
       this.element,
       saveOrderCallback,
-      //this.addDragHandlesValue,
       this.handleTargets,
       {
         activeDropzoneClasses: this.activeDropzoneClasses,
@@ -58,11 +56,10 @@ class SortableTable{
     "dropTargetClasses": "shadow-inner shadow-gray-500 hover:shadow-inner bg-gray-100 *:opacity-0 *:bg-gray-100"
   };
 
-  constructor(tbodyElement, saveSortOrder, /*addDragHandles,*/ handleTargets, styles, customEventPrefix){
+  constructor(tbodyElement, saveSortOrder, handleTargets, styles, customEventPrefix){
     this.element = tbodyElement;
     this.saveSortOrder = saveSortOrder;
     this.handleTargets = handleTargets;
-    //this.addDragHandlesValue = addDragHandles;
 
     this.activeDropzoneClassesWithDefaults = styles.activeDropzoneClasses.length == 0 ? this.constructor.defaultClasses["activeDropzoneClasses"].split(" ") : styles.activeDropzoneClasses;
     this.activeItemClassesWithDefaults = styles.activeItemClasses.length == 0 ? this.constructor.defaultClasses["activeItemClasses"].split(" ") : styles.activeItemClasses;
@@ -76,11 +73,6 @@ class SortableTable{
     this.element.addEventListener('dragend', this.dragend.bind(this));
     this.element.addEventListener('drop', this.drop.bind(this));
 
-    /*
-    if(this.addDragHandlesValue){
-      this.addDragHandles();
-    }
-    */
     if(this.handleTargets.length == 0){
       this.addDragHandles();
     }
