@@ -11,13 +11,12 @@ export default class extends Controller {
   static classes = ["activeDropzone", "activeItem", "dropTarget"];
 
   saveSortOrder(idsInOrder) {
-    console.log('controller saveSortOrder', idsInOrder, this.reorderPathValue);
-    //var idsInOrder = Array.from(this.element.childNodes).map((el) => { return parseInt(el.dataset?.id) });
     post(this.reorderPathValue, { body: JSON.stringify({ids_in_order: idsInOrder}) })
   }
 
   connect() {
-    console.log('sortable controller connect', this.reorderPathValue, this.saveOnReorderValue)
+    // TODO: Remove this console.log before release
+    console.log('new sortable controller connect')
 
     const saveOrderCallback = this.saveOnReorderValue ? this.saveSortOrder.bind(this) : null;
     this.sortableTable = new SortableTable(
@@ -74,7 +73,6 @@ class SortableTable{
     this.element.addEventListener('dragend', this.dragend.bind(this));
     this.element.addEventListener('drop', this.drop.bind(this));
 
-    console.log('this.addDragHandlesValue', this.addDragHandlesValue)
     if(this.addDragHandlesValue){
       this.addDragHandles();
     }
@@ -89,7 +87,6 @@ class SortableTable{
   }
 
   destroy(){
-    console.log('SortableTable destroy')
     this.element.removeEventListener('dragstart', this.dragstart.bind(this));
     this.element.removeEventListener('dragover', this.dragover.bind(this));
     this.element.removeEventListener('dragenter', this.dragenter.bind(this));
@@ -233,7 +230,6 @@ class SortableTable{
       }
 
       if (this.saveSortOrder) {
-        console.log('end of drop handler saveSortOrder = ', this.saveSortOrder)
         var idsInOrder = Array.from(this.element.childNodes).map((el) => { return el.dataset?.id ? parseInt(el.dataset?.id) : null });
         idsInOrder = idsInOrder.filter(element => element !== null);
         this.saveSortOrder(idsInOrder);
@@ -267,8 +263,6 @@ class SortableTable{
 
     const draggables = this.element.querySelectorAll('tr');
     for (const draggable of draggables) {
-      console.log('draggable', draggable);
-
       const newCell = document.createElement('td');
       newCell.classList.add(...'dragHandle cursor-grab'.split(' '));
 
