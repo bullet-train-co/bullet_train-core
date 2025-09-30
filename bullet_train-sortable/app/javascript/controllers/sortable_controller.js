@@ -9,6 +9,7 @@ export default class extends Controller {
     addDragHandles: { type: Boolean, default: true }
   }
   static classes = ["activeDropzone", "activeItem", "dropTarget"];
+  static targets = [ "handle"];
 
   saveSortOrder(idsInOrder) {
     post(this.reorderPathValue, { body: JSON.stringify({ids_in_order: idsInOrder}) })
@@ -22,7 +23,8 @@ export default class extends Controller {
     this.sortableTable = new SortableTable(
       this.element,
       saveOrderCallback,
-      this.addDragHandlesValue,
+      //this.addDragHandlesValue,
+      this.handleTargets,
       {
         activeDropzoneClasses: this.activeDropzoneClasses,
         activeItemClasses: this.activeItemClasses,
@@ -56,10 +58,11 @@ class SortableTable{
     "dropTargetClasses": "shadow-inner shadow-gray-500 hover:shadow-inner bg-gray-100 *:opacity-0 *:bg-gray-100"
   };
 
-  constructor(tbodyElement, saveSortOrder, addDragHandles, styles, customEventPrefix){
+  constructor(tbodyElement, saveSortOrder, /*addDragHandles,*/ handleTargets, styles, customEventPrefix){
     this.element = tbodyElement;
     this.saveSortOrder = saveSortOrder;
-    this.addDragHandlesValue = addDragHandles;
+    this.handleTargets = handleTargets;
+    //this.addDragHandlesValue = addDragHandles;
 
     this.activeDropzoneClassesWithDefaults = styles.activeDropzoneClasses.length == 0 ? this.constructor.defaultClasses["activeDropzoneClasses"].split(" ") : styles.activeDropzoneClasses;
     this.activeItemClassesWithDefaults = styles.activeItemClasses.length == 0 ? this.constructor.defaultClasses["activeItemClasses"].split(" ") : styles.activeItemClasses;
@@ -73,12 +76,17 @@ class SortableTable{
     this.element.addEventListener('dragend', this.dragend.bind(this));
     this.element.addEventListener('drop', this.drop.bind(this));
 
+    /*
     if(this.addDragHandlesValue){
       this.addDragHandles();
     }
+    */
+    if(this.handleTargets.length == 0){
+      this.addDragHandles();
+    }
 
-    let handles = this.element.querySelectorAll('.dragHandle')
-    for (const handle of handles) {
+    //let handles = this.element.querySelectorAll('.dragHandle')
+    for (const handle of this.handleTargets) {
       handle.addEventListener('mousedown', this.dragHandleMouseDown.bind(this));
       handle.addEventListener('mouseup', this.dragHandleMouseUp.bind(this));
     }
@@ -264,13 +272,15 @@ class SortableTable{
     const draggables = this.element.querySelectorAll('tr');
     for (const draggable of draggables) {
       const newCell = document.createElement('td');
-      newCell.classList.add(...'dragHandle cursor-grab'.split(' '));
+      newCell.dataset.sortableTarget = 'handle';
+      newCell.classList.add(...'cursor-grab'.split(' '));
 
       const icon = document.createElement('i');
       icon.classList.add(...'ti ti-line-double'.split(' '));
 
       newCell.append(icon);
       draggable.prepend(newCell);
+      this.handleTargets.push(newCell);
     }
   }
 
