@@ -1455,7 +1455,7 @@ class Scaffolding::Transformer
     # add sortability.
     if cli_options["sortable"]
       scaffold_replace_line_in_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb",
-                                    transform_string("<tbody data-controller=\"sortable\" data-new-sortable-add-drag-handles-value=\"false\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"),
+                                    transform_string("<tbody data-controller=\"sortable\" data-sortable-add-drag-handles-value=\"false\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"),
                                     "<tbody>"
                                    )
 
