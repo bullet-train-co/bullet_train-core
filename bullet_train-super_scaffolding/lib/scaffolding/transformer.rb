@@ -1454,10 +1454,11 @@ class Scaffolding::Transformer
 
     # add sortability.
     if cli_options["sortable"]
-      scaffold_replace_line_in_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb",
-                                    transform_string("<tbody data-controller=\"sortable\" data-sortable-add-drag-handles-value=\"false\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"),
-                                    "<tbody>"
-                                   )
+      scaffold_replace_line_in_file(
+        "./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb",
+        transform_string("<tbody data-controller=\"sortable\" data-sortable-add-drag-handles-value=\"false\" data-sortable-reorder-path-value=\"<%= url_for [:reorder, :account, context, collection] %>\">"),
+        "<tbody>"
+      )
 
       # TODO: Is looking for particular markup valid here, or should we add new hooks to the files?
       scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", "<th></th>", "<%= render \"shared/tables/select_all\" %>", prepend: true)
