@@ -1,0 +1,303 @@
+import { Controller } from "@hotwired/stimulus"
+import { post } from '@rails/request.js'
+
+// Connects to data-controller="sortable"
+export default class extends Controller {
+  static values = {
+    reorderPath: String,
+    saveOnReorder: { type: Boolean, default: true },
+    addDragHandles: { type: Boolean, default: true }
+  }
+  static classes = ["activeDropzone", "activeItem", "dropTarget"];
+
+  saveSortOrder(idsInOrder) {
+    console.log('controller saveSortOrder', idsInOrder, this.reorderPathValue);
+    //var idsInOrder = Array.from(this.element.childNodes).map((el) => { return parseInt(el.dataset?.id) });
+    post(this.reorderPathValue, { body: JSON.stringify({ids_in_order: idsInOrder}) })
+  }
+
+  connect() {
+    console.log('sortable controller connect', this.reorderPathValue, this.saveOnReorderValue)
+
+    const saveOrderCallback = this.saveOnReorderValue ? this.saveSortOrder.bind(this) : null;
+    this.sortableTable = new SortableTable(
+      this.element,
+      saveOrderCallback,
+      this.addDragHandlesValue,
+      {
+        activeDropzoneClasses: this.activeDropzoneClasses,
+        activeItemClasses: this.activeItemClasses,
+        dropTargetClasses: this.dropTargetClasses
+      }
+    );
+  }
+
+  disconnect() {
+    this.sortableTable.destroy();
+  }
+}
+
+function getDataNode(node) {
+  return node.closest("[data-id]");
+}
+
+function getMetaValue(name) {
+  const element = document.head.querySelector(`meta[name="${name}"]`);
+  return element.getAttribute("content");
+}
+
+class SortableTable{
+  // We'll emit events using this prefix. `sortable:drag` & `sortable:drop` for instance.
+  static eventPrefix = "sortable";
+  // These are defaults so that we don't have to require people to update their templates.
+  // If the template does contain values for any of these the template values will be used instead.
+  static defaultClasses = {
+    "activeDropzoneClasses": "border-dashed bg-gray-50 border-slate-400",
+    "activeItemClasses": "shadow bg-white cursor-grabbing bg-white *:bg-white opacity-100 *:opacity-100",
+    "dropTargetClasses": "shadow-inner shadow-gray-500 hover:shadow-inner bg-gray-100 *:opacity-0 *:bg-gray-100"
+  };
+
+  constructor(tbodyElement, saveSortOrder, addDragHandles, styles, customEventPrefix){
+    this.element = tbodyElement;
+    this.saveSortOrder = saveSortOrder;
+    this.addDragHandlesValue = addDragHandles;
+
+    this.activeDropzoneClassesWithDefaults = styles.activeDropzoneClasses.length == 0 ? this.constructor.defaultClasses["activeDropzoneClasses"].split(" ") : styles.activeDropzoneClasses;
+    this.activeItemClassesWithDefaults = styles.activeItemClasses.length == 0 ? this.constructor.defaultClasses["activeItemClasses"].split(" ") : styles.activeItemClasses;
+    this.dropTargetClassesWithDefaults = styles.dropTargetClasses.length == 0 ? this.constructor.defaultClasses["dropTargetClasses"].split(" ") : styles.dropTargetClasses;
+    this.eventPrefixWithDefaults = customEventPrefix ? customEventPrefix : this.constructor.eventPrefix;
+
+    this.element.addEventListener('dragstart', this.dragstart.bind(this));
+    this.element.addEventListener('dragover', this.dragover.bind(this));
+    this.element.addEventListener('dragenter', this.dragenter.bind(this));
+    this.element.addEventListener('dragleave', this.dragleave.bind(this));
+    this.element.addEventListener('dragend', this.dragend.bind(this));
+    this.element.addEventListener('drop', this.drop.bind(this));
+
+    console.log('this.addDragHandlesValue', this.addDragHandlesValue)
+    if(this.addDragHandlesValue){
+      this.addDragHandles();
+    }
+
+    let handles = this.element.querySelectorAll('.dragHandle')
+    for (const handle of handles) {
+      handle.addEventListener('mousedown', this.dragHandleMouseDown.bind(this));
+      handle.addEventListener('mouseup', this.dragHandleMouseUp.bind(this));
+    }
+
+    //this.initReissuePluginEventsAsNativeEvents();
+  }
+
+  destroy(){
+    console.log('SortableTable destroy')
+    this.element.removeEventListener('dragstart', this.dragstart.bind(this));
+    this.element.removeEventListener('dragover', this.dragover.bind(this));
+    this.element.removeEventListener('dragenter', this.dragenter.bind(this));
+    this.element.removeEventListener('dragleave', this.dragleave.bind(this));
+    this.element.removeEventListener('dragend', this.dragend.bind(this));
+    this.element.removeEventListener('drop', this.drop.bind(this));
+
+    let handles = this.element.querySelectorAll('.dragHangle')
+    for (const handle of handles) {
+      handle.removeEventListener('mousedown', this.dragHandleMouseDown.bind(this));
+      handle.removeEventListener('mouseup', this.dragHandleMouseUp.bind(this));
+    }
+  }
+
+  dragHandleMouseDown(event){
+    const draggableItem = getDataNode(event.target);
+    draggableItem.setAttribute('draggable', true);
+  }
+
+  dragHandleMouseUp(event){
+    const draggableItem = getDataNode(event.target);
+    draggableItem.setAttribute('draggable', false);
+  }
+
+  dragstart(event) {
+    event.stopPropagation();
+    this.element.classList.add(...this.activeDropzoneClassesWithDefaults);
+    const draggableItem = getDataNode(event.target);
+    draggableItem.classList.add(...this.activeItemClassesWithDefaults);
+    event.dataTransfer.setData(
+      "application/drag-key",
+      draggableItem.dataset.id
+    );
+    event.dataTransfer.effectAllowed = "move";
+    // For most browsers we could rely on the dataTransfer.setData call above,
+    // but Safari doesn't seem to allow us access to that data at any time other
+    // than during a drop. But we need it during dragenter to reorder the list
+    // as the drag happens. So, we just stash the value here and then use it later.
+    this.draggingDataId = draggableItem.dataset.id;
+
+    // We're dispatching drag here instead of dragstart to retain backwards compatibility with dragula.js.
+    // It emits a single 'drag' event when an item is first dragged, but not on each movement thereafter.
+    this.dispatch('drag', { detail: { type: 'drag', args: [draggableItem, this.element] }})
+  }
+
+  dragover(event) {
+    event.stopPropagation();
+    event.preventDefault();
+    return true;
+  }
+
+  dragenter(event) {
+    event.stopPropagation();
+    let parent = getDataNode(event.target);
+
+    // We keep a count of the `dragenter` events for the row being dragged to fix jank. When dragging between cells
+    // (or cell content) within a row a dragenter event is fired before the dragleave event from the previous cell.
+    // If we removed the activeItemClasses when the dragleave happens then the UI doesn't match expectations.
+    if(parent.dataset.dragEnterCount){
+      parent.dataset.dragEnterCount = parseInt(parent.dataset.dragEnterCount) + 1;
+    }else{
+      parent.dataset.dragEnterCount = 1;
+    }
+
+    if (parent != null && parent.dataset.id != null) {
+      parent.classList.add(...this.dropTargetClassesWithDefaults);
+      var data = this.draggingDataId;
+      const draggedItem = this.element.querySelector(
+        `[data-id='${data}']`
+      );
+
+      if (draggedItem) {
+        draggedItem.classList.remove(...this.activeItemClassesWithDefaults);
+
+        if (
+          parent.compareDocumentPosition(draggedItem) &
+          Node.DOCUMENT_POSITION_FOLLOWING
+        ) {
+          let result = parent.insertAdjacentElement(
+            "beforebegin",
+            draggedItem
+          );
+        } else if (
+          parent.compareDocumentPosition(draggedItem) &
+          Node.DOCUMENT_POSITION_PRECEDING
+        ) {
+          let result = parent.insertAdjacentElement("afterend", draggedItem);
+        }
+
+        // We're dispatching 'shadow' here to retain backwards compatibility with dragula.js.
+        // It emits a 'shadow' event when the items in the list are rearranged mid-drag.
+        // TODO: This is firing more often than dragula fires it. Is that a problem?
+        this.dispatch('shadow', { detail: { type: 'shadow', args: [draggedItem, this.element, this.element] }});
+      }
+      event.preventDefault();
+    }
+  }
+
+  dragleave(event) {
+    event.stopPropagation();
+    let parent = getDataNode(event.target);
+
+    if(parent.dataset.dragEnterCount > 0){
+      parent.dataset.dragEnterCount = parseInt(parent.dataset.dragEnterCount) - 1;
+    }
+
+    if (parent != null && parent.dataset.id != null && parent.dataset.dragEnterCount == 0) {
+      parent.classList.remove(...this.dropTargetClassesWithDefaults);
+      event.preventDefault();
+    }
+  }
+
+  drop(event) {
+    event.stopPropagation();
+    this.element.classList.remove(...this.activeDropzoneClassesWithDefaults);
+
+    const dropTarget = getDataNode(event.target);
+    dropTarget.classList.remove(...this.dropTargetClassesWithDefaults);
+
+    var data = this.draggingDataId;
+    const draggedItem = this.element.querySelector(
+      `[data-id='${data}']`
+    );
+
+    if (draggedItem) {
+      draggedItem.classList.remove(...this.activeItemClassesWithDefaults);
+
+      if (
+        dropTarget.compareDocumentPosition(draggedItem) &
+        Node.DOCUMENT_POSITION_FOLLOWING
+      ) {
+        let result = dropTarget.insertAdjacentElement(
+          "beforebegin",
+          draggedItem
+        );
+      } else if (
+        dropTarget.compareDocumentPosition(draggedItem) &
+        Node.DOCUMENT_POSITION_PRECEDING
+      ) {
+        let result = dropTarget.insertAdjacentElement("afterend", draggedItem);
+      }
+
+      if (this.saveSortOrder) {
+        console.log('end of drop handler saveSortOrder = ', this.saveSortOrder)
+        var idsInOrder = Array.from(this.element.childNodes).map((el) => { return el.dataset?.id ? parseInt(el.dataset?.id) : null });
+        idsInOrder = idsInOrder.filter(element => element !== null);
+        this.saveSortOrder(idsInOrder);
+      }
+
+      // TODO: This fires more often than dragula fires it. Dragula does not fire this when an item was dragged but not moved/reorded.
+      // Instead dragula fires a `cancel` event. But we're firing a `drop` and no `cancel` in that situation.
+      this.dispatch('drop', { detail: { type: 'drop', args: [draggedItem, this.element, this.element, draggedItem.nextElementSibling] }})
+    }
+    event.preventDefault();
+  }
+
+  dragend(event) {
+    event.stopPropagation();
+    this.element.classList.remove(...this.activeDropzoneClassesWithDefaults);
+
+    const draggableItem = getDataNode(event.target);
+    draggableItem.setAttribute('draggable', false);
+    draggableItem.dataset.dragEnterCount = 0;
+
+    this.dispatch('dragend', { detail: { type: 'dragend', args: [draggableItem] }})
+  }
+
+  addDragHandles(){
+    // Here we assume that this controller is connected to a tbody element
+    const table = this.element.parentNode;
+    const thead = table.querySelector('thead');
+    const headRow = thead.querySelector('tr');
+    const newTh = document.createElement('th');
+    headRow.prepend(newTh);
+
+    const draggables = this.element.querySelectorAll('tr');
+    for (const draggable of draggables) {
+      console.log('draggable', draggable);
+
+      const newCell = document.createElement('td');
+      newCell.classList.add(...'dragHandle cursor-grab'.split(' '));
+
+      const icon = document.createElement('i');
+      icon.classList.add(...'ti ti-line-double'.split(' '));
+
+      newCell.append(icon);
+      draggable.prepend(newCell);
+    }
+  }
+
+  dispatch(eventName,data){
+    const fullEventName = this.eventPrefixWithDefaults + ":" + eventName;
+    const event = new CustomEvent(fullEventName, data);
+    this.element.dispatchEvent(event);
+  }
+
+  // TODO: I'm not sure this is adequate. I think we may need to "manually" dispatch these from within the
+  // approriate event handles so that we can add more info to `args`. For instance, the "drop" event may
+  // need to include the sibling that the dropped element was dropped in front of. Related, do people actually
+  // use these re-issued events?
+  /*
+  initReissuePluginEventsAsNativeEvents() {
+    this.constructor.pluginEventsToReissue.forEach((eventName) => {
+      this.element.addEventListener(eventName, (...args) => {
+        this.dispatch(eventName, { detail: { type: eventName, args: args }})
+      })
+    })
+  }
+  */
+
+}

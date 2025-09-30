@@ -10,7 +10,7 @@ export default class extends Controller {
     reorderPath: String,
     saveOnReorder: { type: Boolean, default: true }
   }
-  
+
   // will be reissued as native dom events name prepended with 'sortable:' e.g. 'sortable:drag', 'sortable:drop', etc
   static pluginEventsToReissue = [ "drag", "dragend", "drop", "cancel", "remove", "shadow", "over", "out", "cloned" ]
 
@@ -60,10 +60,10 @@ export default class extends Controller {
       // deselect any text fields, or else things go slow!
       jQuery(document.activeElement).blur()
     })
-    
+
     this.initReissuePluginEventsAsNativeEvents()
   }
-  
+
   initReissuePluginEventsAsNativeEvents() {
     this.constructor.pluginEventsToReissue.forEach((eventName) => {
       this.plugin.on(eventName, (...args) => {
@@ -78,10 +78,10 @@ export default class extends Controller {
     // revert to original markup, remove any event listeners
     this.plugin.destroy()
   }
-  
+
   saveSortOrder() {
     var idsInOrder = Array.from(this.element.childNodes).map((el) => { return parseInt(el.dataset?.id) });
-    
+
     post(this.reorderPathValue, { body: JSON.stringify({ids_in_order: idsInOrder}) })
   }
 
