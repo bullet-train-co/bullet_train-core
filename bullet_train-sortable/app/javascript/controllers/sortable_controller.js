@@ -296,7 +296,7 @@ class SortableTable{
       newCell.classList.add(...'cursor-grab'.split(' '));
 
       const icon = document.createElement('i');
-      icon.classList.add(...'ti ti-menu invisible group-hover:visible'.split(' '));
+      icon.classList.add(...'ti ti-menu opacity-25 group-hover:opacity-100'.split(' '));
 
       newCell.append(icon);
       draggable.prepend(newCell);
