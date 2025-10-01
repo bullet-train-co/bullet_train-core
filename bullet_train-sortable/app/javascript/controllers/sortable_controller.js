@@ -100,13 +100,6 @@ class SortableTable{
 
     this.element.removeEventListener('mousedown', this.dragHandleMouseDown.bind(this));
     this.element.removeEventListener('mouseup', this.dragHandleMouseUp.bind(this));
-    /*
-    let handles = this.element.querySelectorAll('.dragHangle')
-    for (const handle of handles) {
-      handle.removeEventListener('mousedown', this.dragHandleMouseDown.bind(this));
-      handle.removeEventListener('mouseup', this.dragHandleMouseUp.bind(this));
-    }
-    */
   }
 
   dragHandleMouseDown(event){
