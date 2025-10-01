@@ -197,7 +197,7 @@ In `app/views/account/pages/_index.html.erb` you should add a `<td>` as the firs
 
 ```html
 <tr data-id="<%= page.id %>">
-    <td class="cursor-grab" data-sortable-target="handle"><i class="ti ti-menu"></i></td> <!-- Add this line! -->
+    <td class="cursor-grab" data-sortable-target="handle"><i class="ti ti-menu invisible group-hover:visible"></i></td> <!-- Add this line! -->
     <!-- Your existing cells here -->
 </tr>
 ```
