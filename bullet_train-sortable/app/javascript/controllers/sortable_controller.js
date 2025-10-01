@@ -268,7 +268,7 @@ class SortableTable{
       newCell.classList.add(...'cursor-grab'.split(' '));
 
       const icon = document.createElement('i');
-      icon.classList.add(...'ti ti-line-double'.split(' '));
+      icon.classList.add(...'ti ti-menu'.split(' '));
 
       newCell.append(icon);
       draggable.prepend(newCell);
