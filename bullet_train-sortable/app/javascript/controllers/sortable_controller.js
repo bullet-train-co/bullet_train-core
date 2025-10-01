@@ -84,14 +84,10 @@ class SortableTable{
     this.element.addEventListener('mousedown', this.dragHandleMouseDown.bind(this));
     this.element.addEventListener('mouseup', this.dragHandleMouseUp.bind(this));
 
+    // We set this when we've detected `mousedown` in a handle. Then all of the `drag*` handlers
+    // bail out if we don't have a draggable row. This prevents problems and weird behavior if you
+    // drag something other than the handle. Like highlighted text, or a link, for instance.
     this.aRowIsDraggable = false;
-    //let handles = this.element.querySelectorAll('.dragHandle')
-    //for (const handle of this.handleTargets) {
-      //handle.addEventListener('mousedown', this.dragHandleMouseDown.bind(this));
-      //handle.addEventListener('mouseup', this.dragHandleMouseUp.bind(this));
-    //}
-
-    //this.initReissuePluginEventsAsNativeEvents();
   }
 
   destroy(){
