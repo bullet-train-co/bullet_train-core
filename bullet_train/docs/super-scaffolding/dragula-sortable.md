@@ -2,15 +2,13 @@
 
 <div class="rounded-md border bg-amber-100 border-amber-200 py-4 px-5 mb-3 not-prose">
   <h3 class="text-sm text-amber-800 font-light mb-2">
-    Note: The sortable controller and these docs have recently changed.
+    Note: These docs are for the old sortable controller based on `dragula`.
   </h3>
-  <p class="text-sm text-amber-800 font-light mb-2">
-    These instructions are for the new `sortable_controller.js` which has removed the dependency on `dragula` and which works slightly differently.
-  </p>
   <p class="text-sm text-amber-800 font-light">
-    <a href="/docs/super-scaffolding/dragula-sortable">You can find the old documentation for the `dragula` based controller here.</a>
+    <a href="/docs/super-scaffolding/sortable">You can find the new documentation here.</a>
   </p>
 </div>
+
 
 When issuing a `rails generate super_scaffold` command, you can pass the `--sortable` option like this:
 
@@ -81,35 +79,23 @@ And on the `sortable` element, catch the `save-sort-order` event and define it a
 
 ## Events
 
-Under the hood, the `sortable` Stimulus controller uses native drag and drop event handling as provided by modern browsers.
+Under the hood, the `sortable` Stimulus controller uses the [dragula](https://github.com/bevacqua/dragula) library.
 
-The following events are dispatched when significant events related to the list occur. (Note these are new events that were not previously emitted by the `dragula` based controller.)
+All of the events that `dragula` defines are re-dispatched as native DOM events. The native DOM event name is prefixed with `sortable:`
 
-| Event name         | Fired when                                          |
-|--------------------|-----------------------------------------------------|
-| sortable:start     | a drag via drag handle is started                   |
-| sortable:reordered | the items in the list are reorderd during a drag    |
-| sortable:end       | a sortable item is released                         |
-| sortable:saved     | the new order has been persisted after a drop       |
+| dragula event name  | DOM event name       |
+|---------------------|----------------------|
+| drag                | sortable:drag        |
+| dragend             | sortable:dragend     |
+| drop                | sortable:drop        |
+| cancel              | sortable:cancel      |
+| remove              | sortable:remove      |
+| shadow              | sortable:shadow      |
+| over                | sortable:over        |
+| out                 | sortable:out         |
+| cloned              | sortable:cloned      |
 
-These are events that we'll emit to retain some backwards compatibility with the old `dragula` based controller. Be aware that they may not behave exactly the same. In general you should prefer the events above.
-
-| Event name       | Fired when                                         | Better option      |
-|------------------|----------------------------------------------------|--------------------|
-| sortable:drag    | a drag via drag handle is started                  | sortable:start     |
-| sortable:dragend | a sortable item is released                        | sortable:end       |
-| sortable:drop    | a sortable item is released                        | sortable:end       |
-| sortable:shadow  | the items in the list are reorderd during a drag   | sortable:reordered |
-
-**Note**: The old `dragula` based controller used to emit a few events that were particular to `dragula`. The new controller **does not** emit the following events:
-
-| event name           |
-|----------------------|
-| sortable:cancel      |
-| sortable:remove      |
-| sortable:over        |
-| sortable:out         |
-| sortable:cloned      |
+The original event's listener arguments are passed to the native DOM event as a simple numbered Array under `event.detail.args`. See [dragula's list of events](https://github.com/bevacqua/dragula#drakeon-events) for the listener arguments.
 
 ### Example: Asking for Confirmation on the `drop` Event
 
@@ -157,12 +143,12 @@ export default class extends Controller {
 }
 ```
 
-And on the `sortable` element, catch the `sortable:end`, `sortable:start` (for catching when dragging starts) and `save-sort-order` events. Also define it as the `sortable` target for the `confirm-reorder` controller:
+And on the `sortable` element, catch the `sortable:drop`, `sortable:drag` (for catching when dragging starts) and `save-sort-order` events. Also define it as the `sortable` target for the `confirm-reorder` controller:
 
 ```html
 <tbody data-controller="sortable"
   data-sortable-save-on-reorder-value="false"
-  data-action="sortable:end->confirm-reorder#requestConfirmation sortable:start->confirm-reorder#prepareForRevertOnCancel save-sort-order->sortable#saveSortOrder"
+  data-action="sortable:drop->confirm-reorder#requestConfirmation sortable:drag->confirm-reorder#prepareForRevertOnCancel save-sort-order->sortable#saveSortOrder"
   data-confirm-reorder-target="sortable"
   ...
 >

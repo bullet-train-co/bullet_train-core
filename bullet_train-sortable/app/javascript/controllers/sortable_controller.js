@@ -145,7 +145,8 @@ class SortableTable{
     // as the drag happens. So, we just stash the value here and then use it later.
     this.draggingDataId = draggableItem.dataset.id;
 
-    // We're dispatching drag here instead of dragstart to retain backwards compatibility with dragula.js.
+    this.dispatch('start', { detail: { type: 'start', args: [draggableItem, this.element] }})
+    // We're dispatching drag here in addition to start to retain backwards compatibility with dragula.js.
     // It emits a single 'drag' event when an item is first dragged, but not on each movement thereafter.
     this.dispatch('drag', { detail: { type: 'drag', args: [draggableItem, this.element] }})
   }
@@ -185,25 +186,25 @@ class SortableTable{
       if (draggedItem) {
         draggedItem.classList.remove(...this.activeItemClassesWithDefaults);
 
-        if (
-          parent.compareDocumentPosition(draggedItem) &
-          Node.DOCUMENT_POSITION_FOLLOWING
-        ) {
-          let result = parent.insertAdjacentElement(
-            "beforebegin",
-            draggedItem
-          );
-        } else if (
-          parent.compareDocumentPosition(draggedItem) &
-          Node.DOCUMENT_POSITION_PRECEDING
-        ) {
+        let dispatchEvent = false;
+
+        if (parent.compareDocumentPosition(draggedItem) & Node.DOCUMENT_POSITION_FOLLOWING) {
+          let result = parent.insertAdjacentElement( "beforebegin", draggedItem);
+          dispatchEvent = true;
+        } else if (parent.compareDocumentPosition(draggedItem) & Node.DOCUMENT_POSITION_PRECEDING) {
           let result = parent.insertAdjacentElement("afterend", draggedItem);
+          dispatchEvent = true;
         }
 
-        // We're dispatching 'shadow' here to retain backwards compatibility with dragula.js.
-        // It emits a 'shadow' event when the items in the list are rearranged mid-drag.
-        // TODO: This is firing more often than dragula fires it. Is that a problem?
-        this.dispatch('shadow', { detail: { type: 'shadow', args: [draggedItem, this.element, this.element] }});
+        if(dispatchEvent){
+          console.log('dispatching reordered/shadow')
+          this.dispatch('reordered', { detail: { type: 'shadow', args: [draggedItem, this.element, this.element] }});
+          // We're dispatching 'shadow' here to retain backwards compatibility with dragula.js.
+          // It emits a 'shadow' event when the items in the list are rearranged mid-drag.
+          // TODO: This is firing more often than dragula fires it. Is that a problem?
+          this.dispatch('shadow', { detail: { type: 'shadow', args: [draggedItem, this.element, this.element] }});
+        }
+
       }
       event.preventDefault();
     }
@@ -263,6 +264,7 @@ class SortableTable{
         var idsInOrder = Array.from(this.element.childNodes).map((el) => { return el.dataset?.id ? parseInt(el.dataset?.id) : null });
         idsInOrder = idsInOrder.filter(element => element !== null);
         this.saveSortOrder(idsInOrder);
+        this.dispatch('saved', { detail: { type: 'saved', args: [this.element] }})
       }
 
       // TODO: This fires more often than dragula fires it. Dragula does not fire this when an item was dragged but not moved/reorded.
@@ -283,7 +285,9 @@ class SortableTable{
     draggableItem.setAttribute('draggable', false);
     draggableItem.dataset.dragEnterCount = 0;
 
-    this.dispatch('dragend', { detail: { type: 'dragend', args: [draggableItem] }})
+    this.dispatch('end', { detail: { type: 'end', args: [draggableItem, this.element] }})
+    // We emit dragend here as well to maintain some backwards compatiblity with the old dragula controller.
+    this.dispatch('dragend', { detail: { type: 'dragend', args: [draggableItem, this.element] }})
   }
 
   addDragHandles(){
