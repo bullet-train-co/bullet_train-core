@@ -16,7 +16,7 @@ export default class extends Controller {
 
   connect() {
     // TODO: Remove this console.log before release
-    console.log('new sortable controller connect')
+    console.log('new sortable controller connect - event listener change 1')
 
     const saveOrderCallback = this.saveOnReorderValue ? this.saveSortOrder.bind(this) : null;
     this.sortingPlugin = new SortableTable(
@@ -38,6 +38,10 @@ export default class extends Controller {
 
 function getDataNode(node) {
   return node.closest("[data-id]");
+}
+
+function getHandleNode(node) {
+  return node.closest("[data-sortable-target='handle']");
 }
 
 function getMetaValue(name) {
@@ -77,11 +81,15 @@ class SortableTable{
       this.addDragHandles();
     }
 
+    this.element.addEventListener('mousedown', this.dragHandleMouseDown.bind(this));
+    this.element.addEventListener('mouseup', this.dragHandleMouseUp.bind(this));
+
+    this.aRowIsDraggable = false;
     //let handles = this.element.querySelectorAll('.dragHandle')
-    for (const handle of this.handleTargets) {
-      handle.addEventListener('mousedown', this.dragHandleMouseDown.bind(this));
-      handle.addEventListener('mouseup', this.dragHandleMouseUp.bind(this));
-    }
+    //for (const handle of this.handleTargets) {
+      //handle.addEventListener('mousedown', this.dragHandleMouseDown.bind(this));
+      //handle.addEventListener('mouseup', this.dragHandleMouseUp.bind(this));
+    //}
 
     //this.initReissuePluginEventsAsNativeEvents();
   }
@@ -94,24 +102,45 @@ class SortableTable{
     this.element.removeEventListener('dragend', this.dragend.bind(this));
     this.element.removeEventListener('drop', this.drop.bind(this));
 
+    this.element.removeEventListener('mousedown', this.dragHandleMouseDown.bind(this));
+    this.element.removeEventListener('mouseup', this.dragHandleMouseUp.bind(this));
+    /*
     let handles = this.element.querySelectorAll('.dragHangle')
     for (const handle of handles) {
       handle.removeEventListener('mousedown', this.dragHandleMouseDown.bind(this));
       handle.removeEventListener('mouseup', this.dragHandleMouseUp.bind(this));
     }
+    */
   }
 
   dragHandleMouseDown(event){
+    const handle = getHandleNode(event.target);
+    if(!handle){
+      return;
+    }
     const draggableItem = getDataNode(event.target);
-    draggableItem.setAttribute('draggable', true);
+    if(draggableItem){
+      draggableItem.setAttribute('draggable', true);
+      this.aRowIsDraggable = true;
+    }
   }
 
   dragHandleMouseUp(event){
+    const handle = getHandleNode(event.target);
+    if(!handle){
+      return;
+    }
     const draggableItem = getDataNode(event.target);
-    draggableItem.setAttribute('draggable', false);
+    if(draggableItem){
+      draggableItem.setAttribute('draggable', false);
+      this.aRowIsDraggable = false;
+    }
   }
 
   dragstart(event) {
+    if(!this.aRowIsDraggable){
+      return;
+    }
     event.stopPropagation();
     this.element.classList.add(...this.activeDropzoneClassesWithDefaults);
     const draggableItem = getDataNode(event.target);
@@ -133,12 +162,18 @@ class SortableTable{
   }
 
   dragover(event) {
+    if(!this.aRowIsDraggable){
+      return;
+    }
     event.stopPropagation();
     event.preventDefault();
     return true;
   }
 
   dragenter(event) {
+    if(!this.aRowIsDraggable){
+      return;
+    }
     event.stopPropagation();
     let parent = getDataNode(event.target);
 
@@ -186,6 +221,9 @@ class SortableTable{
   }
 
   dragleave(event) {
+    if(!this.aRowIsDraggable){
+      return;
+    }
     event.stopPropagation();
     let parent = getDataNode(event.target);
 
@@ -200,6 +238,9 @@ class SortableTable{
   }
 
   drop(event) {
+    if(!this.aRowIsDraggable){
+      return;
+    }
     event.stopPropagation();
     this.element.classList.remove(...this.activeDropzoneClassesWithDefaults);
 
@@ -243,6 +284,9 @@ class SortableTable{
   }
 
   dragend(event) {
+    if(!this.aRowIsDraggable){
+      return;
+    }
     event.stopPropagation();
     this.element.classList.remove(...this.activeDropzoneClassesWithDefaults);
 
