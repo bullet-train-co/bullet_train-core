@@ -167,3 +167,37 @@ And on the `sortable` element, catch the `sortable:end`, `sortable:start` (for c
   ...
 >
 ```
+
+## Drag handles
+
+With the release of the new `sortable_controller` new super scaffolds will include a cell at the begining of each row with an icon as a drag handle.
+
+For pre-existing super scaffolds the new controller will detect that the handles are missing and it will programatically add them to the table.
+
+If you want more control over the handles you should update your tempaltes to include handles, which will prevent them from being automatically added.
+
+Using the example of a sortable `Page` model from above you'll want to update two files.
+
+### `app/views/account/pages/_index.html.erb`
+
+In `app/views/account/pages/_index.html.erb` you should add an empty `<td>` as the first cell within the `<tr>` in the `<thead>`. You probably want to set a width for that cell to make things look nice.
+
+```html
+<thead>
+    <tr>
+        <th class="w-6"></th> <!-- Add this line! -->
+        <!-- Your existing cells here -->
+    </tr>
+</thead>
+```
+
+### `app/views/account/pages/_page.html.erb`
+
+In `app/views/account/pages/_index.html.erb` you should add a `<td>` as the first cell in the `<tr>`. Be sure to include `data-sortable-target="handle"` on the cell so that the controller recognizes it as a handle.
+
+```html
+<tr data-id="<%= page.id %>">
+    <td class="cursor-grab" data-sortable-target="handle"><i class="ti ti-menu"></i></td> <!-- Add this line! -->
+    <!-- Your existing cells here -->
+</tr>
+```
