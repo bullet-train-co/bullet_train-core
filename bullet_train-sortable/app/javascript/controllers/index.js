@@ -16,3 +16,4 @@ export const controllerDefinitions = [
 export {
   SortableController
 }
+
