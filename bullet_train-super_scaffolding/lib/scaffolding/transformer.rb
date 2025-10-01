@@ -1469,7 +1469,7 @@ class Scaffolding::Transformer
       )
       scaffold_add_line_to_file(
         "./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.html.erb",
-        "<td data-sortable-target=\"handle\" class=\"cursor-grab\"><i class=\"ti ti-menu opacity-25 group-hover:opacity-100\"></i></td>",
+        "<td data-sortable-target=\"handle\" class=\"cursor-grab active:cursor-grabbing\"><i class=\"ti ti-menu opacity-25 group-hover:opacity-100\"></i></td>",
         "<%= render \"shared/tables/checkbox\", object: tangible_thing %>",
         prepend: true
       )
