@@ -10,14 +10,11 @@ export default class extends Controller {
   static classes = ["activeDropzone", "activeItem", "dropTarget"];
   static targets = [ "handle"];
 
-  saveSortOrder(idsInOrder) {
-    post(this.reorderPathValue, { body: JSON.stringify({ids_in_order: idsInOrder}) })
+  async saveSortOrder(idsInOrder) {
+    await post(this.reorderPathValue, { body: JSON.stringify({ids_in_order: idsInOrder}) })
   }
 
   connect() {
-    // TODO: Remove this console.log before release
-    console.log('new sortable controller connect - event listener change 1')
-
     const saveOrderCallback = this.saveOnReorderValue ? this.saveSortOrder.bind(this) : null;
     this.sortingPlugin = new SortableTable(
       this.element,
@@ -130,7 +127,6 @@ class SortableTable{
     if(!this.aRowIsDraggable){
       return;
     }
-    event.stopPropagation();
     this.element.classList.add(...this.activeDropzoneClassesWithDefaults);
     const draggableItem = getDataNode(event.target);
     draggableItem.classList.add(...this.activeItemClassesWithDefaults);
@@ -155,7 +151,6 @@ class SortableTable{
     if(!this.aRowIsDraggable){
       return;
     }
-    event.stopPropagation();
     event.preventDefault();
     return true;
   }
@@ -164,7 +159,6 @@ class SortableTable{
     if(!this.aRowIsDraggable){
       return;
     }
-    event.stopPropagation();
     let parent = getDataNode(event.target);
 
     // We keep a count of the `dragenter` events for the row being dragged to fix jank. When dragging between cells
@@ -214,7 +208,6 @@ class SortableTable{
     if(!this.aRowIsDraggable){
       return;
     }
-    event.stopPropagation();
     let parent = getDataNode(event.target);
 
     if(parent.dataset.dragEnterCount > 0){
@@ -227,11 +220,10 @@ class SortableTable{
     }
   }
 
-  drop(event) {
+  async drop(event) {
     if(!this.aRowIsDraggable){
       return;
     }
-    event.stopPropagation();
     this.element.classList.remove(...this.activeDropzoneClassesWithDefaults);
 
     const dropTarget = getDataNode(event.target);
@@ -263,7 +255,7 @@ class SortableTable{
       if (this.saveSortOrder) {
         var idsInOrder = Array.from(this.element.childNodes).map((el) => { return el.dataset?.id ? parseInt(el.dataset?.id) : null });
         idsInOrder = idsInOrder.filter(element => element !== null);
-        this.saveSortOrder(idsInOrder);
+        await this.saveSortOrder(idsInOrder);
         this.dispatch('saved', { detail: { type: 'saved', args: [this.element] }})
       }
 
@@ -278,7 +270,6 @@ class SortableTable{
     if(!this.aRowIsDraggable){
       return;
     }
-    event.stopPropagation();
     this.element.classList.remove(...this.activeDropzoneClassesWithDefaults);
 
     const draggableItem = getDataNode(event.target);
