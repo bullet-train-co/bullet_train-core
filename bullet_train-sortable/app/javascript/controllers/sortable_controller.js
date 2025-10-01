@@ -19,7 +19,7 @@ export default class extends Controller {
     console.log('new sortable controller connect')
 
     const saveOrderCallback = this.saveOnReorderValue ? this.saveSortOrder.bind(this) : null;
-    this.sortableTable = new SortableTable(
+    this.sortingPlugin = new SortableTable(
       this.element,
       saveOrderCallback,
       this.handleTargets,
@@ -32,7 +32,7 @@ export default class extends Controller {
   }
 
   disconnect() {
-    this.sortableTable.destroy();
+    this.sortingPlugin.destroy();
   }
 }
 
