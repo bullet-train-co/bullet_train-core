@@ -191,7 +191,6 @@ class SortableTable{
         }
 
         if(dispatchEvent){
-          console.log('dispatching reordered/shadow')
           this.dispatch('reordered', { detail: { type: 'shadow', args: [draggedItem, this.element, this.element] }});
           // We're dispatching 'shadow' here to retain backwards compatibility with dragula.js.
           // It emits a 'shadow' event when the items in the list are rearranged mid-drag.
