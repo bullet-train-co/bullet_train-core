@@ -1461,7 +1461,7 @@ class Scaffolding::Transformer
       )
 
       # TODO: Is looking for particular markup valid here, or should we add new hooks to the files?
-      scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", "<th></th>", "<%= render \"shared/tables/select_all\" %>", prepend: true)
+      scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_index.html.erb", "<th class=\"w-6\"></th>", "<%= render \"shared/tables/select_all\" %>", prepend: true)
       scaffold_add_line_to_file("./app/views/account/scaffolding/completely_concrete/tangible_things/_tangible_thing.html.erb", "<td data-sortable-target=\"handle\" class=\"cursor-grab\"><i class=\"ti ti-menu\"></i></td>", "<%= render \"shared/tables/checkbox\", object: tangible_thing %>", prepend: true)
 
       unless cli_options["skip-model"]

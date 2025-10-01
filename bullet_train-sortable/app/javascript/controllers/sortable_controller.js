@@ -259,6 +259,7 @@ class SortableTable{
     const thead = table.querySelector('thead');
     const headRow = thead.querySelector('tr');
     const newTh = document.createElement('th');
+    newTh.classList.add(...'w-6'.split(' '))
     headRow.prepend(newTh);
 
     const draggables = this.element.querySelectorAll('tr');
