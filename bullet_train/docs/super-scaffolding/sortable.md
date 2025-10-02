@@ -178,6 +178,17 @@ If you want more control over the handles you should update your templates to in
 
 Using the example of a sortable `Page` model from above you'll want to update two files.
 
+### `app/views/account/pages/_page.html.erb`
+
+In `app/views/account/pages/_page.html.erb` you should add a `<td>` as the first cell in the `<tr>`. Be sure to include `data-sortable-target="handle"` on the cell so that the controller recognizes it as a handle.
+
+```html
+<tr data-id="<%= page.id %>">
+    <td class="cursor-grab active:cursor-grabbing" data-sortable-target="handle"><i class="ti ti-menu opacity-25 group-hover:opacity-100"></i></td> <!-- Add this line! -->
+    <!-- Your existing cells here -->
+</tr>
+```
+
 ### `app/views/account/pages/_index.html.erb`
 
 In `app/views/account/pages/_index.html.erb` you should add an empty `<td>` as the first cell within the `<tr>` in the `<thead>`. You probably want to set a width for that cell to make things look nice.
@@ -191,13 +202,4 @@ In `app/views/account/pages/_index.html.erb` you should add an empty `<td>` as t
 </thead>
 ```
 
-### `app/views/account/pages/_page.html.erb`
 
-In `app/views/account/pages/_index.html.erb` you should add a `<td>` as the first cell in the `<tr>`. Be sure to include `data-sortable-target="handle"` on the cell so that the controller recognizes it as a handle.
-
-```html
-<tr data-id="<%= page.id %>">
-    <td class="cursor-grab active:cursor-grabbing" data-sortable-target="handle"><i class="ti ti-menu opacity-25 group-hover:opacity-100"></i></td> <!-- Add this line! -->
-    <!-- Your existing cells here -->
-</tr>
-```
