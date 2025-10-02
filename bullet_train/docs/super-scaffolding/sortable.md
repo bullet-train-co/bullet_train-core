@@ -174,7 +174,7 @@ With the release of the new `sortable_controller` new super scaffolds will inclu
 
 For pre-existing super scaffolds the new controller will detect that the handles are missing and it will programatically add them to the table.
 
-If you want more control over the handles you should update your tempaltes to include handles, which will prevent them from being automatically added.
+If you want more control over the handles you should update your templates to include handles, which will prevent them from being automatically added.
 
 Using the example of a sortable `Page` model from above you'll want to update two files.
 
