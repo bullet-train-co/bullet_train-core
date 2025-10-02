@@ -42,3 +42,12 @@ html.turn-exit [data-turn-exit] {
    transform: translateZ(0)
   }
 }
+
+/*
+ * A (possibly) temporary fix for a weird interaction between Turbo and turn.js
+ * https://github.com/bullet-train-co/bullet_train/issues/2214#issuecomment-3349556410
+ */
+.turn-view-transitions.turn-transition [data-turn-enter],
+.turn-view-transitions.turn-before-transition [data-turn-enter] {
+  opacity: 0;
+}
