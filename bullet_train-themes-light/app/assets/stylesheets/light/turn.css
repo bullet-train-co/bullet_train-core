@@ -51,3 +51,10 @@ html.turn-exit [data-turn-exit] {
 .turn-view-transitions.turn-before-transition [data-turn-enter] {
   opacity: 0;
 }
+
+/*
+ * This mostly prevents sudden side-to-side jumping due to the addition of a scrollbar during transition.
+ */
+html.turn-advance{
+  overflow: hidden;
+}
