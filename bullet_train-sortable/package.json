@@ -50,9 +50,7 @@
   },
   "dependencies": {
     "@hotwired/stimulus": "^3.0.1",
-    "@rails/request.js": "^0.0.6",
-    "dragula": "^3.7.3",
-    "jquery": "^3.7.1"
+    "@rails/request.js": "^0.0.6"
   },
   "packageManager": "yarn@1.22.22"
 }
