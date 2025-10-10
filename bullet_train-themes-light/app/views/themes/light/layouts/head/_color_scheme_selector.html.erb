@@ -6,16 +6,20 @@
       this.el = document.documentElement;
       this.mq = window.matchMedia('(prefers-color-scheme: dark)');
       
-      this.mq.addEventListener('change', e => !this.stored && this.set(e.matches ? 'dark' : 'light', false));
-      if (!this.el.className.match(/\b(light|dark)\b/)) this.set(this.stored ?? this.#auto(), !this.stored);
+      this.mq.addEventListener('change', e => !this.stored && this.set(e.matches ? 'dark' : 'light'));
+      if (!this.el.className.match(/\b(light|dark)\b/)) this.set(this.stored ?? this.#auto());
     }
 
-    set(scheme, persist = true) {
+    set(scheme) {
       if (!['dark', 'light', null].includes(scheme)) throw new Error('Invalid color scheme');
       this.el.classList.remove('dark', 'light');
       this.el.classList.add(scheme ?? this.#auto());
       document.dispatchEvent(new CustomEvent(this.eventName, { detail: { colorScheme: scheme } }));
-      if (persist) scheme === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
+    }
+
+    persist(scheme) {
+      this.set(scheme);
+      scheme === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
     }
 
     get current() { return this.el.classList.contains('dark') ? 'dark' : 'light'; }
