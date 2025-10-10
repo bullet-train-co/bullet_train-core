@@ -2,7 +2,7 @@
   class ColorSchemeSelector {
     constructor() {
       this.storageKey = 'prefers_color_scheme';
-      this.eventName = 'color-scheme-changed';
+      this.eventName = 'color-scheme-changed'; // dispatched when the color scheme changes
       this.el = document.documentElement;
       this.mq = window.matchMedia('(prefers-color-scheme: dark)');
       
