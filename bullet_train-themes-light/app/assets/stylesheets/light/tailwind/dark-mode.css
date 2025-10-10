@@ -1,5 +1,5 @@
 @layer utilities {
-  @media (prefers-color-scheme: dark) {
+  .dark {
     /**
      * Custom components
      **/

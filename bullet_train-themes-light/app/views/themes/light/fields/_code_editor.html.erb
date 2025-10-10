@@ -42,6 +42,7 @@ code_field_options[:class] += " #{field_class}"
 code_field_options[:data] ||= {}
 code_field_options[:data]["#{stimulus_controller}-target"] = "codeField"
 code_field_options[:data][:action] ||= ""
+code_field_options[:data][:action] += " color-scheme:changed@window->#{stimulus_controller}#updateTheme"
 %>
 
 <%= tag.div(**wrapper_options) do %>

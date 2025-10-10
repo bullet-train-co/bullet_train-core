@@ -27,12 +27,10 @@ export default class extends Controller {
 
   connect() {
     this.loadEditorFramework()
-    this.watchColorScheme()
   }
 
   disconnect() {
     this.teardownCodeEditor()
-    this.unwatchColorScheme()
   }
 
   initCodeEditor() {
@@ -167,16 +165,13 @@ export default class extends Controller {
     this.codeEditor?.updateOptions({ theme: this.theme })
   }
 
+  get userPrefersDarkScheme() {
+    return window?.colorScheme?.current === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches
+  }
+
   get theme() {
     return this.userPrefersDarkScheme
       ? this.themeDarkValue
       : this.themeLightValue
-  }
-
-  get userPrefersDarkScheme() {
-    if (this.userPrefersDarkSchemeQuery === undefined) {
-      return false
-    }
-    return this.userPrefersDarkSchemeQuery.matches
   }
 }
