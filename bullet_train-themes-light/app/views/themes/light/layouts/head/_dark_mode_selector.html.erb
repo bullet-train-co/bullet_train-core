@@ -1,73 +1,26 @@
 <script>
   class ColorSchemeSelector {
     constructor() {
-      this.storageKey = '<%= Rails.application.class.module_parent_name.underscore %>_color_scheme';
+      this.storageKey = 'prefers_color_scheme';
       this.eventName = 'color-scheme-changed';
-      this.html = document.documentElement;
-      this.validSchemes = ['dark', 'light', null]; // null = auto
+      this.el = document.documentElement;
+      this.mq = window.matchMedia('(prefers-color-scheme: dark)');
       
-      this.#setupMediaQueryListener();
-      this.#initialize();
+      this.mq.addEventListener('change', e => !this.stored && this.set(e.matches ? 'dark' : 'light', false));
+      if (!this.el.className.match(/\b(light|dark)\b/)) this.set(this.stored ?? this.#auto(), !this.stored);
     }
 
     set(scheme, persist = true) {
-      if (!this.validSchemes.includes(scheme)) {
-        throw new Error(`Invalid color scheme: ${scheme}. Must be 'dark', 'light', or null`);
-      }
-
-      this.#applyClass(scheme);
-      this.#dispatchEvent(scheme);
-      
-      if (persist) {
-        scheme === null 
-          ? localStorage.removeItem(this.storageKey)
-          : localStorage.setItem(this.storageKey, scheme);
-      }
+      if (!['dark', 'light', null].includes(scheme)) throw new Error('Invalid color scheme');
+      this.el.classList.remove('dark', 'light');
+      this.el.classList.add(scheme ?? this.#auto());
+      document.dispatchEvent(new CustomEvent(this.eventName, { detail: { colorScheme: scheme } }));
+      if (persist) scheme === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
     }
 
-    get current() {
-      return this.html.classList.contains('dark') ? 'dark' : 'light';
-    }
-
-    get stored() {
-      return localStorage.getItem(this.storageKey);
-    }
-
-    #applyClass(scheme) {
-      this.html.classList.remove('dark', 'light');
-      const resolved = scheme ?? this.#getBrowserPreference();
-      this.html.classList.add(resolved);
-    }
-
-    #getBrowserPreference() {
-      return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    }
-
-    #dispatchEvent(scheme) {
-      document.dispatchEvent(
-        new CustomEvent(this.eventName, { detail: { colorScheme: scheme } })
-      );
-    }
-
-    #setupMediaQueryListener() {
-      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-        if (this.stored === null) {
-          this.set(e.matches ? 'dark' : 'light', false);
-        }
-      });
-    }
-
-    #initialize() {
-      // Skip if HTML already has a color scheme class
-      if (this.html.className.match(/\b(light|dark)\b/)) return;
-
-      const stored = this.stored;
-      if (stored) {
-        this.html.classList.add(stored);
-      } else {
-        this.set(this.#getBrowserPreference(), false);
-      }
-    }
+    get current() { return this.el.classList.contains('dark') ? 'dark' : 'light'; }
+    get stored() { return localStorage.getItem(this.storageKey); }
+    #auto() { return this.mq.matches ? 'dark' : 'light'; }
   }
 
   window.colorScheme = new ColorSchemeSelector();
