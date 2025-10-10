@@ -1,0 +1,40 @@
+<script>
+  (() => {
+    // color scheme selector, implemented in the head to avoid FOUC
+    const storageKey = 'prefers_color_scheme';
+    const eventName = 'color-scheme-changed';
+    const h = document.documentElement;
+    const ls = localStorage;
+
+    function setColorSchemeClass(className) {
+      const values = ['dark', 'light', null]; // null is for auto
+      if (!values.includes(className)) { throw new Error('Invalid color scheme'); }
+
+      h.classList.remove('light', 'dark');
+      const newClass = className !== null ? className : window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      h.classList.add(newClass);
+    }
+
+    window.setColorScheme = (colorScheme, alsoStore = true) => {
+      setColorSchemeClass(colorScheme);
+      
+      document.dispatchEvent(new CustomEvent(eventName, { detail: { colorScheme: colorScheme } }));
+      
+      if (alsoStore) { colorScheme === null ? ls.removeItem(storageKey) : ls.setItem(storageKey, colorScheme); }
+    };
+
+    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+      if (ls.getItem(storageKey) === null) {
+        window.setColorScheme(e.matches ? 'dark' : 'light', false);
+      }
+    });
+
+    if (!h.className.match(/\b(light|dark)\b/)) {
+      if (ls.getItem(storageKey)) {
+        h.classList.add(ls.getItem(storageKey));
+      } else {
+        window.setColorScheme(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light', false);
+      }
+    }
+  })();
+</script>
