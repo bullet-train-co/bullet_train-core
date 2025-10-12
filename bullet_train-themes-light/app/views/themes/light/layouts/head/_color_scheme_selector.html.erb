@@ -4,10 +4,10 @@
       this.validSchemes = ['dark', 'light', 'system'];
       this.storageKey = 'color_scheme_preference';
       this.eventName = 'color-scheme:changed'; // custom event dispatched on change
+      this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       this.el = document.documentElement;
-      this.mq = window.matchMedia('(prefers-color-scheme: dark)');
       
-      this.mq.addEventListener('change', e => this.preference === 'system' && (this.#shown = e.matches ? 'dark' : 'light'));
+      this.mediaQuery.addEventListener('change', e => this.preference === 'system' && (this.#shown = e.matches ? 'dark' : 'light'));
       if (!this.el.className.match(/\b(light|dark)\b/)) this.#shown = this.preference !== 'system' ?? this.#auto();
     }
 
@@ -22,7 +22,7 @@
 
     get #shown() { return this.el.classList.contains('dark') ? 'dark' : 'light'; }
     set #shown(scheme) { this.el.classList.remove('dark', 'light'); this.el.classList.add(scheme); }
-    #auto() { return this.mq.matches ? 'dark' : 'light'; }
+    #auto() { return this.mediaQuery.matches ? 'dark' : 'light'; }
   }
 
   window.colorScheme = new ColorSchemeSelector();
