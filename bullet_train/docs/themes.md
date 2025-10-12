@@ -134,7 +134,7 @@ You're going to have to call your theme something and there are practical reason
 
 ## Dark and Light Mode
 
-Bullet Train themes include support for both dark and light color schemes. Users can toggle between dark mode, light mode, or system preference in their Account Details (accessible from the user menu). 
+Bullet Train themes include support for both dark and light color schemes. Users can toggle between dark mode, light mode, or system preference in their Account Details (accessible from the user menu). This preference is per-device and stored in the browser's `LocalStorage`.
 
 If you're building custom components that need to respond to color scheme changes, see [Responding to Color Scheme Changes](/docs/javascript.md#responding-to-color-scheme-changes) in the JavaScript documentation.
 
