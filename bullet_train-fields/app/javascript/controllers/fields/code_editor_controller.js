@@ -142,35 +142,16 @@ export default class extends Controller {
     return window.monacoInstance
   }
 
-  watchColorScheme() {
-    this.userPrefersDarkSchemeQuery = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    )
-    this.userPrefersDarkSchemeQuery.addEventListener(
-      'change',
-      this.updateTheme.bind(this)
-    )
-  }
-
-  unwatchColorScheme() {
-    if (this.userPrefersDarkSchemeQuery === undefined) return
-    this.userPrefersDarkSchemeQuery.removeEventListener(
-      'change',
-      this.updateTheme.bind(this)
-    )
-    this.userPrefersDarkSchemeQuery = undefined
-  }
-
   updateTheme() {
     this.codeEditor?.updateOptions({ theme: this.theme })
   }
 
-  get userPrefersDarkScheme() {
-    return window?.colorScheme?.current === 'dark' || window.matchMedia('(prefers-color-scheme: dark)').matches
+  get colorSchemeIsDark() {
+    return window?.colorScheme?.current === 'dark'
   }
 
   get theme() {
-    return this.userPrefersDarkScheme
+    return this.colorSchemeIsDark
       ? this.themeDarkValue
       : this.themeLightValue
   }
