@@ -1,29 +1,25 @@
 <script>
   class ColorSchemeSelector {
     constructor() {
-      this.storageKey = 'prefers_color_scheme';
+      this.storageKey = 'color_scheme_prefers';
       this.eventName = 'color-scheme:changed'; // custom event dispatched on change
       this.el = document.documentElement;
       this.mq = window.matchMedia('(prefers-color-scheme: dark)');
       
-      this.mq.addEventListener('change', e => !this.stored && this.set(e.matches ? 'dark' : 'light'));
-      if (!this.el.className.match(/\b(light|dark)\b/)) this.set(this.stored ?? this.#auto());
+      this.mq.addEventListener('change', e => !this.prefers && (this.#shown = e.matches ? 'dark' : 'light'));
+      if (!this.el.className.match(/\b(light|dark)\b/)) this.#shown = this.prefers ?? this.#auto();
     }
 
-    persist(scheme) {
-      this.set(scheme);
-      scheme === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
-    }
-
-    set(scheme) {
+    get prefers() { return localStorage.getItem(this.storageKey); }
+    set prefers(scheme) {
       if (!['dark', 'light', null].includes(scheme)) throw new Error('Invalid color scheme');
-      this.el.classList.remove('dark', 'light');
-      this.el.classList.add(scheme ?? this.#auto());
+      this.#shown = scheme ?? this.#auto();
+      scheme === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
       document.dispatchEvent(new CustomEvent(this.eventName, { detail: { colorScheme: scheme } }));
     }
 
-    get current() { return this.el.classList.contains('dark') ? 'dark' : 'light'; }
-    get stored() { return localStorage.getItem(this.storageKey); }
+    get #shown() { return this.el.classList.contains('dark') ? 'dark' : 'light'; }
+    set #shown(scheme) { this.el.classList.remove('dark', 'light'); this.el.classList.add(scheme); }
     #auto() { return this.mq.matches ? 'dark' : 'light'; }
   }
 
