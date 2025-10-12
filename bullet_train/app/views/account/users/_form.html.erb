@@ -25,7 +25,9 @@
           other_options: {search: true} %>
       </div>
 
-      <div class="sm:col-span-2">
+      <div class="sm:col-span-2"
+        data-controller="fields--color-scheme-preference"
+        data-action="color-scheme:changed@window->fields--color-scheme-preference#updateRadioButtons input->fields--color-scheme-preference#updateColorSchemePreference">
         <%= render 'shared/fields/buttons', method: :color_scheme_preference %>
       </div>
 
