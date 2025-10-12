@@ -79,3 +79,44 @@ If you experience slow Turbo interactions, check for script tags in the body of 
 <script src="third-party-tracker.js" defer></script>
 </head>
 ```
+
+## Responding to Color Scheme Changes
+
+Bullet Train's theme system includes a color scheme preference system that manages light/dark mode switching. When the color scheme changes (either through user preference or system settings), a `color-scheme:changed` event is dispatched on the window.
+
+### Accessing the Current Color Scheme
+
+The color scheme preference is available globally via `window.colorScheme`:
+
+```javascript
+// Get the current color scheme ('light' or 'dark')
+const current = window.colorScheme.current
+
+// Check if dark mode is active
+const isDark = window.colorScheme.current === 'dark'
+
+// Get the user's preference ('light', 'dark', or 'system')
+const preference = window.colorScheme.preference
+```
+
+### Listening for Color Scheme Changes
+
+To respond to color scheme changes in your Stimulus controllers, listen for the `color-scheme:changed` event on the window:
+
+```erb
+<div data-controller="my-custom-controller"
+     data-action="color-scheme:changed@window->my-custom-controller#updateComponentTheme">
+  <!-- Your content -->
+</div>
+```
+
+In your Stimulus controller:
+
+```javascript
+export default class extends Controller {
+  updateComponentTheme() {
+    const isDark = window.colorScheme.current === 'dark'
+    // Apply dark or light theme to your component
+  }
+}
+```

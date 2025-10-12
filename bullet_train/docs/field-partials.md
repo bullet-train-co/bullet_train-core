@@ -198,6 +198,10 @@ These concepts are currently used by the `address_field` to dynamically update t
 
 [Read more about Dynamic Forms and Dependent Fields](/docs/field-partials/dynamic-forms-dependent-fields.md)
 
+## Color Scheme Awareness in Custom Fields
+
+If you're creating custom field partials that need to respond to light/dark mode changes (e.g., for initializing third-party libraries with theme support), see [Responding to Color Scheme Changes](/docs/javascript.md#responding-to-color-scheme-changes) in the JavaScript documentation. The `code_editor` field partial provides a working example of this pattern.
+
 ## Additional Field Partials Documentation
  - [`address_field`](/docs/field-partials/address-field.md)
  - [`buttons`](/docs/field-partials/buttons.md)
