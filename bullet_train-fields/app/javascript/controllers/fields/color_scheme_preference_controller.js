@@ -4,6 +4,10 @@ export default class extends Controller {
 
   connect() {
     this.updateRadioButtons()
+    if (window.colorScheme === undefined) {
+      this.hideOptions()
+      console.warn(`window.colorScheme is not defined in the head. Update your local theme's light/layouts/_head.html.erb file.`)
+    }
   }
 
   updateRadioButtons() {
@@ -26,5 +30,9 @@ export default class extends Controller {
 
   get radioButtons() {
     return Array.from(this.element.querySelectorAll('input[type="radio"]'))
+  }
+
+  hideOptions() {
+    this.element.hidden = true
   }
 }
