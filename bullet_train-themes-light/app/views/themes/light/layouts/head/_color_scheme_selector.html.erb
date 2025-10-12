@@ -1,20 +1,22 @@
 <script>
   class ColorSchemeSelector {
     constructor() {
-      this.storageKey = 'color_scheme_prefers';
+      this.validSchemes = ['dark', 'light', 'system'];
+      this.storageKey = 'color_scheme_preference';
       this.eventName = 'color-scheme:changed'; // custom event dispatched on change
       this.el = document.documentElement;
       this.mq = window.matchMedia('(prefers-color-scheme: dark)');
       
-      this.mq.addEventListener('change', e => !this.prefers && (this.#shown = e.matches ? 'dark' : 'light'));
-      if (!this.el.className.match(/\b(light|dark)\b/)) this.#shown = this.prefers ?? this.#auto();
+      this.mq.addEventListener('change', e => this.preference === 'system' && (this.#shown = e.matches ? 'dark' : 'light'));
+      if (!this.el.className.match(/\b(light|dark)\b/)) this.#shown = this.preference !== 'system' ?? this.#auto();
     }
 
-    get prefers() { return localStorage.getItem(this.storageKey); }
-    set prefers(scheme) {
-      if (!['dark', 'light', null].includes(scheme)) throw new Error('Invalid color scheme');
-      this.#shown = scheme ?? this.#auto();
-      scheme === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
+    get preference() { return localStorage.getItem(this.storageKey) || 'system'; }
+    set preference(scheme) {
+      if (!this.validSchemes.includes(scheme)) throw new Error('Invalid color scheme');
+      const stored = scheme === 'system' ? null : scheme;
+      this.#shown = stored ?? this.#auto();
+      stored === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
       document.dispatchEvent(new CustomEvent(this.eventName, { detail: { colorScheme: scheme } }));
     }
 
