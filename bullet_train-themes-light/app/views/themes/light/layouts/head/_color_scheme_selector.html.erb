@@ -3,7 +3,7 @@
     constructor() {
       this.validSchemes = ['dark', 'light', 'system'];
       this.storageKey = 'color_scheme_preference';
-      this.eventName = 'color-scheme:changed'; // custom event dispatched on change
+      this.eventName = 'color-scheme:changed';
       this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
       this.el = document.documentElement;
       
