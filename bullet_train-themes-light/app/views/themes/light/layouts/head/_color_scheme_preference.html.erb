@@ -18,8 +18,9 @@
       const stored = scheme === 'system' ? null : scheme;
       this.#shown = stored ?? this.#auto();
       stored === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
-      document.dispatchEvent(new CustomEvent(this.eventName, { detail: { colorScheme: scheme } }));
+      window.dispatchEvent(new CustomEvent(this.eventName, { detail: { colorScheme: scheme } }));
     }
+    get current() { return this.#shown; }
 
     get #shown() { return this.el.classList.contains('dark') ? 'dark' : 'light'; }
     set #shown(scheme) { this.el.classList.remove('dark', 'light'); this.el.classList.add(scheme); }
