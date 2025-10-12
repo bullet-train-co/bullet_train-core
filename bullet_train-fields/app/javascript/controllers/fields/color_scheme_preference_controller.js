@@ -7,12 +7,17 @@ export default class extends Controller {
   }
 
   updateRadioButtons() {
+    if (!window?.colorScheme) { return }
     const preference = window?.colorScheme?.preference
-    this.radioButtonsWithValue(preference)?.checked = true
+    const button = this.radioButtonWithValue(preference)
+    if (button) {
+      button.checked = true
+    }
   }
 
   updateColorSchemePreference() {
-    window?.colorScheme?.preference = this.radioButtons.find(button => button.checked)?.value
+    if (!window?.colorScheme) { return }
+    window.colorScheme.preference = this.radioButtons.find(button => button.checked)?.value
   }
 
   radioButtonWithValue(value) {
@@ -20,6 +25,6 @@ export default class extends Controller {
   }
 
   get radioButtons() {
-    return this.element.querySelectorAll('input[type="radio"]')
+    return Array.from(this.element.querySelectorAll('input[type="radio"]'))
   }
 }
