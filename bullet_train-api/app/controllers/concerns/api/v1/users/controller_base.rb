@@ -17,7 +17,8 @@ module Api::V1::Users::ControllerBase
         :locale,
         :profile_photo_id, # For Cloudinary
         :profile_photo,    # For ActiveStorage
-        :profile_photo_removal
+        :profile_photo_removal,
+        :color_scheme_preference # not stored, per-device
       ]
 
       selected_fields = if params.is_a?(BulletTrain::Api::StrongParametersReporter)
