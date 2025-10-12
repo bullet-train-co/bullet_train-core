@@ -1,5 +1,5 @@
 <script>
-  class ColorSchemeSelector {
+  class ColorSchemePreference {
     constructor() {
       this.validSchemes = ['dark', 'light', 'system'];
       this.storageKey = 'color_scheme_preference';
@@ -25,5 +25,5 @@
     #auto() { return this.mediaQuery.matches ? 'dark' : 'light'; }
   }
 
-  window.colorScheme = new ColorSchemeSelector();
+  window.colorScheme = new ColorSchemePreference();
 </script>
