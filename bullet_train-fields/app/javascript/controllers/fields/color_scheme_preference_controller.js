@@ -10,6 +10,11 @@ export default class extends Controller {
     }
   }
 
+  // this saves us from manually adding field target to options in the partial
+  get radioButtons() {
+    return Array.from(this.element.querySelectorAll('input[type="radio"]'))
+  }
+
   updateRadioButtons() {
     if (!window?.colorScheme) { return }
     const preference = window?.colorScheme?.preference
@@ -24,15 +29,11 @@ export default class extends Controller {
     window.colorScheme.preference = this.radioButtons.find(button => button.checked)?.value
   }
 
-  radioButtonWithValue(value) {
-    return this.radioButtons.find(button => button.value === value)
-  }
-
-  get radioButtons() {
-    return Array.from(this.element.querySelectorAll('input[type="radio"]'))
-  }
-
   hideOptions() {
     this.element.hidden = true
+  }
+
+  radioButtonWithValue(value) {
+    return this.radioButtons.find(button => button.value === value)
   }
 }
