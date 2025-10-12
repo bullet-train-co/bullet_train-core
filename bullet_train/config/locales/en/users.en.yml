@@ -101,6 +101,17 @@ en:
         api_title: *locale
         api_description: *locale
         help: By default the interface language will adjust based on each team's language setting, but you can set a global personal preference for your account here.
+      color_scheme_preference:
+        _: &color_scheme_preference Appearance
+        label: *color_scheme_preference
+        heading: *color_scheme_preference
+        api_title: *color_scheme_preference
+        api_description: *color_scheme_preference
+        options:
+          system: Same as System
+          light: Always Light
+          dark: Always Dark
+        help: Only affects the appearance of this device.
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Signed Up At

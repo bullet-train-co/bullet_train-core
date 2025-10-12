@@ -25,6 +25,10 @@
           other_options: {search: true} %>
       </div>
 
+      <div class="sm:col-span-2">
+        <%= render 'shared/fields/buttons', method: :color_scheme_preference %>
+      </div>
+
       <% if multiple_locales? %>
         <div class="sm:col-span-2">
           <%= render 'shared/fields/buttons', method: :locale, button_field_options: {"": t("locale.default")}.merge(t("locale.locales")) %>
