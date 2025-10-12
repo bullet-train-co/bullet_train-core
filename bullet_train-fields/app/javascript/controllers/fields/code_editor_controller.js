@@ -142,7 +142,7 @@ export default class extends Controller {
     return window.monacoInstance
   }
 
-  updateTheme() {
+  updateComponentTheme() {
     this.codeEditor?.updateOptions({ theme: this.theme })
   }
 
