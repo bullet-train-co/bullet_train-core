@@ -111,7 +111,7 @@ en:
           system: Same as System
           light: Always Light
           dark: Always Dark
-        help: Only affects the appearance of this device.
+        help: This only changes the appearance of this device.
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Signed Up At
