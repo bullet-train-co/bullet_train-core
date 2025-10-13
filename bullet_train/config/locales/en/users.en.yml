@@ -108,9 +108,9 @@ en:
         api_title: *color_scheme_preference
         api_description: *color_scheme_preference
         options:
-          system: Same as System
           light: Always Light
           dark: Always Dark
+          system: Same as System
         help: This only changes the appearance of this device.
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
