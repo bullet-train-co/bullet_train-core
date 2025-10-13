@@ -9,7 +9,7 @@
       this.el = document.documentElement;
       
       this.mediaQuery.addEventListener('change', e => this.preference === 'system' && (this.#shown = e.matches ? 'dark' : 'light'));
-      if (!this.el.className.match(/\b(light|dark)\b/)) this.#shown = this.preference !== 'system' ?? this.#auto();
+      if (!this.el.classList.contains("light", "dark")) this.#shown = this.preference === 'system' ? this.#auto() : this.preference;
     }
 
     get preference() { return localStorage.getItem(this.storageKey) || 'system'; }
