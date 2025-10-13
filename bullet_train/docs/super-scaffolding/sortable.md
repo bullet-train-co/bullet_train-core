@@ -180,7 +180,7 @@ Using the example of a sortable `Page` model from above you'll want to update tw
 
 ### `app/views/account/pages/_page.html.erb`
 
-In `app/views/account/pages/_page.html.erb` you should add a `class="group"` attribute to the `<tr>`, and add a `<td>` as the first cell inside the `<tr>`. Be sure to include `data-sortable-target="handle"` on the cell so that the controller recognizes it as a handle.
+In `app/views/account/pages/_page.html.erb` you should add a `class="group"` attribute to the `<tr>`, and add a `<td>` containing a drag handle as the first cell inside the `<tr>`. Be sure to include `data-sortable-target="handle"` on the cell so that the controller recognizes it as a handle.
 
 ```html
 <tr data-id="<%= page.id %>" class="group"> <!-- Add the class attribute on this line! -->
