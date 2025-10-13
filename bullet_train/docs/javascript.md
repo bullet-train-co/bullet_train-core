@@ -99,6 +99,14 @@ const isDark = window.colorScheme.current === 'dark'
 const preference = window.colorScheme.preference
 ```
 
+If you want your custom theme to be always light, or always dark, set the following property in your project's `config/initializers/theme.rb` file:
+
+```rb
+# Force the color scheme to :light or :dark.
+# Defaults to nil, which offers users the ability to choose their preference in Account Details.
+BulletTrain::Themes::Light.force_color_scheme_to = :light
+```
+
 ### Listening for Color Scheme Changes
 
 To respond to color scheme changes in your Stimulus controllers, listen for the `color-scheme:changed` event on the window:
