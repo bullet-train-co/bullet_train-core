@@ -5,7 +5,7 @@
 <% hide_back ||= false %>
 
 <% with_attribute_settings object: tangible_thing do %>
-  <tr data-id="<%= tangible_thing.id %>">
+  <tr data-id="<%= tangible_thing.id %>" class="group">
     <%= render "shared/tables/checkbox", object: tangible_thing %>
     <%# 🚅 skip this section when scaffolding. %>
     <td><%= render 'shared/attributes/text', attribute: :text_field_value, url: [:account, tangible_thing] %></td>
