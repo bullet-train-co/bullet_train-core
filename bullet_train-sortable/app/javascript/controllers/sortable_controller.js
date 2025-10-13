@@ -53,7 +53,7 @@ class SortableTable{
   // If the template does contain values for any of these the template values will be used instead.
   static defaultClasses = {
     "activeDropzoneClasses": "border-dashed bg-gray-50 border-slate-400",
-    "activeItemClasses": "shadow bg-white bg-white *:bg-white opacity-100 *:opacity-100",
+    "activeItemClasses": "shadow bg-white *:bg-white opacity-100 *:opacity-100",
     "dropTargetClasses": "shadow-inner shadow-gray-500 hover:shadow-inner bg-gray-100 *:opacity-0 *:bg-gray-100"
   };
 
