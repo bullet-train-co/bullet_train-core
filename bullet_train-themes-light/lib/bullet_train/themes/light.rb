@@ -40,14 +40,14 @@ module BulletTrain
       mattr_accessor :logo_color_shift, default: false
       mattr_accessor :show_logo_in_account, default: false
       mattr_accessor :navigation, default: :top
-      
+
       # Custom accessor with validation for force_color_scheme_to
       @@force_color_scheme_to = nil
-      
+
       def self.force_color_scheme_to
         @@force_color_scheme_to
       end
-      
+
       def self.force_color_scheme_to=(value)
         unless [nil, :dark, :light].include?(value)
           raise ArgumentError, "force_color_scheme_to must be :dark, :light, or nil, got: #{value.inspect}"
