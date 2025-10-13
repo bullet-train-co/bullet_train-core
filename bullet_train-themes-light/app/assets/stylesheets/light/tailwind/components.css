@@ -195,4 +195,16 @@
   details > summary.list-none::marker {
     display: none;
   }
+
+  .sortable-active-dropzone {
+    @apply border-dashed bg-gray-50 border-slate-400;
+  }
+
+  .sortable-active-item {
+    @apply shadow bg-white *:bg-white opacity-100 *:opacity-100;
+  }
+
+  .sortable-drop-target {
+    @apply shadow-inner shadow-gray-500 hover:shadow-inner bg-gray-100 *:opacity-0 *:bg-gray-100;
+  }
 }
