@@ -183,7 +183,7 @@ Using the example of a sortable `Page` model from above you'll want to update tw
 In `app/views/account/pages/_page.html.erb` you should add a `<td>` as the first cell in the `<tr>`. Be sure to include `data-sortable-target="handle"` on the cell so that the controller recognizes it as a handle.
 
 ```html
-<tr data-id="<%= page.id %>">
+<tr data-id="<%= page.id %>" class="group"> <!-- Add the class attribute on this line! -->
     <td class="cursor-grab active:cursor-grabbing" data-sortable-target="handle"><i class="ti ti-menu opacity-25 group-hover:opacity-100"></i></td> <!-- Add this line! -->
     <!-- Your existing cells here -->
 </tr>
