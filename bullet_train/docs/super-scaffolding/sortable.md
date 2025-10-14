@@ -202,4 +202,39 @@ In `app/views/account/pages/_index.html.erb` you should add an empty `<td>` as t
 </thead>
 ```
 
+## Drag styling
 
+The visual styling of dragged items and drop targets is handled by the addition and removal of specific class names by the controller.
+
+To override the default styles you could write some custom CSS like this:
+
+```css
+  .sortable-active-dropzone {
+    /* Styles for the entire table when a drag is in progress. */
+  }
+
+  .sortable-active-item {
+    /* Styles for the item that is being dragged. */
+  }
+
+  .sortable-drop-target {
+    /* Styles for the empty space representing the new location for the item being dragged. */
+  }
+```
+
+Any styles you add to those classes will be combined with the defaults.
+
+If you'd like to start fresh with a clean set of classes you can tell the controller to use different class names by adding some data attributes to the primary `sortable` target (the `<tbody>` tag by default).
+
+For instance:
+
+```erb
+<tbody data-controller="sortable" data-sortable-reorder-path-value="<%= url_for [:reorder, :account, context, collection] %>"
+
+       <%# Use Stimulus class attributes to make the controller apply different class names: %>
+       data-sortable-active-dropzone-class="your-custom-active-dropzone-class-name"
+       data-sortable-active-item-class="your-custom-active-item-class-name"
+       data-sortable-drop-target-class="your-custom-drop-target-class-name"
+
+>
+```
