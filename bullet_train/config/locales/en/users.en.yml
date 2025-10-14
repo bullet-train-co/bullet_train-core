@@ -11,6 +11,9 @@ en:
       profile:
         header: Update Your Profile
         description: You can update the way your name is displayed and your time zone.
+      preferences:
+        header: Update Your Preferences
+        description: You can update the way this app looks on your current device.
       email_and_password:
         header: Update Your Email Address & Password
         description: When you change these credentials we'll email you a confirmation.
