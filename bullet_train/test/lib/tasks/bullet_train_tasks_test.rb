@@ -6,7 +6,7 @@ module BulletTrain::Tasks; end
 
 class BulletTrain::Tasks::ResolveTaskTest < ActiveSupport::TestCase
   setup do
-    light_theme_gem = `bundle show bullet_train-themes-light`.chomp
+    light_theme_gem = Gem::Specification.find_by_name("bullet_train-themes-light").gem_dir
     light_box_path = "#{light_theme_gem}/app/views/themes/light/workflow/_box.html.erb"
     @annotated_path = "<!-- BEGIN #{light_box_path} -->"
   end

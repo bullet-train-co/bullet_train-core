@@ -55,7 +55,7 @@ namespace :bullet_train do
       gem_names = I18n.t("framework_packages").map { |key, value| key.to_s }
       gem_names.each do |gem|
         puts "Searching for locales in #{gem}...".blue
-        gem_path = `bundle show #{gem}`.chomp
+        gem_path = Gem::Specification.find_by_name(gem).gem_dir
         gem_with_version = gem_path.split("/").last
         locales = Dir.glob("#{gem_path}/**/config/locales/**/*.yml").reject { |path| path.match?("dummy") }
         next if locales.empty?
