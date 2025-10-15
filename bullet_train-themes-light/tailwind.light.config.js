@@ -13,7 +13,7 @@ module.exports = {
     './tmp/gems/*/app/assets/stylesheets/**/*.css',
     './tmp/gems/*/app/javascript/**/*.js',
   ],
-  darkMode: 'media',
+  darkMode: 'selector',
   theme: {
     extend: {
       fontSize: {

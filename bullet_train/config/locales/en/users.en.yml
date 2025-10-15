@@ -11,6 +11,9 @@ en:
       profile:
         header: Update Your Profile
         description: You can update the way your name is displayed and your time zone.
+      preferences:
+        header: Update Your Preferences
+        description: You can update the way this app looks on your current device.
       email_and_password:
         header: Update Your Email Address & Password
         description: When you change these credentials we'll email you a confirmation.
@@ -101,6 +104,17 @@ en:
         api_title: *locale
         api_description: *locale
         help: By default the interface language will adjust based on each team's language setting, but you can set a global personal preference for your account here.
+      color_scheme_preference:
+        _: &color_scheme_preference Appearance
+        label: *color_scheme_preference
+        heading: *color_scheme_preference
+        api_title: *color_scheme_preference
+        api_description: *color_scheme_preference
+        options:
+          light: Always Light
+          dark: Always Dark
+          system: Same as System
+        help: This only changes the appearance of this device.
       # 🚅 super scaffolding will insert new fields above this line.
       created_at:
         _: &created_at Signed Up At

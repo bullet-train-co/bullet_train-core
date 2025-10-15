@@ -27,12 +27,10 @@ export default class extends Controller {
 
   connect() {
     this.loadEditorFramework()
-    this.watchColorScheme()
   }
 
   disconnect() {
     this.teardownCodeEditor()
-    this.unwatchColorScheme()
   }
 
   initCodeEditor() {
@@ -144,39 +142,17 @@ export default class extends Controller {
     return window.monacoInstance
   }
 
-  watchColorScheme() {
-    this.userPrefersDarkSchemeQuery = window.matchMedia(
-      '(prefers-color-scheme: dark)'
-    )
-    this.userPrefersDarkSchemeQuery.addEventListener(
-      'change',
-      this.updateTheme.bind(this)
-    )
-  }
-
-  unwatchColorScheme() {
-    if (this.userPrefersDarkSchemeQuery === undefined) return
-    this.userPrefersDarkSchemeQuery.removeEventListener(
-      'change',
-      this.updateTheme.bind(this)
-    )
-    this.userPrefersDarkSchemeQuery = undefined
-  }
-
-  updateTheme() {
+  updateComponentTheme() {
     this.codeEditor?.updateOptions({ theme: this.theme })
   }
 
-  get theme() {
-    return this.userPrefersDarkScheme
-      ? this.themeDarkValue
-      : this.themeLightValue
+  get colorSchemeIsDark() {
+    return window?.colorScheme?.current === 'dark'
   }
 
-  get userPrefersDarkScheme() {
-    if (this.userPrefersDarkSchemeQuery === undefined) {
-      return false
-    }
-    return this.userPrefersDarkSchemeQuery.matches
+  get theme() {
+    return this.colorSchemeIsDark
+      ? this.themeDarkValue
+      : this.themeLightValue
   }
 }

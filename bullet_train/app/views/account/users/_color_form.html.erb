@@ -1,0 +1,9 @@
+<%= form_for [:account, @user], html: {id: dom_id(@user, :details), class: 'form'} do |form| %>
+  <% with_field_settings form: form do %>
+    <div class="sm:col-span-2"
+         data-controller="fields--color-scheme-preference"
+         data-action="color-scheme:changed@window->fields--color-scheme-preference#updateRadioButtons input->fields--color-scheme-preference#updateColorSchemePreference">
+         <%= render 'shared/fields/buttons', method: :color_scheme_preference %>
+    </div>
+  <% end %>
+<% end %>

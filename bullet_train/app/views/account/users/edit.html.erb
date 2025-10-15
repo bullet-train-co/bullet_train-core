@@ -12,6 +12,13 @@
           <% box.body.render "account/users/form", user: @user %>
         <% end %>
 
+        <% unless BulletTrain::Themes::Light.force_color_scheme_to.presence %>
+          <%= render 'account/shared/box', divider: true do |box| %>
+            <% box.t title: '.preferences.header', description: '.preferences.description' %>
+            <% box.body.render "account/users/color_form", user: @user %>
+          <% end %>
+        <% end %>
+
         <% if two_factor_authentication_enabled? %>
           <div id="two-factor">
             <%= render partial: "devise/registrations/two_factor" %>

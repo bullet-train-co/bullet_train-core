@@ -1,0 +1,31 @@
+<script>
+  // change under Account Details
+  class ColorSchemePreference {
+    constructor() {
+      this.validSchemes = ['dark', 'light', 'system'];
+      this.storageKey = 'color_scheme_preference';
+      this.eventName = 'color-scheme:changed';
+      this.mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+      this.el = document.documentElement;
+      
+      this.mediaQuery.addEventListener('change', e => this.preference === 'system' && (this.#shown = e.matches ? 'dark' : 'light'));
+      if (!this.el.classList.contains("light", "dark")) this.#shown = this.preference === 'system' ? this.#auto() : this.preference;
+    }
+
+    get preference() { return localStorage.getItem(this.storageKey) || 'system'; }
+    set preference(scheme) {
+      if (!this.validSchemes.includes(scheme)) throw new Error('Invalid color scheme');
+      const stored = scheme === 'system' ? null : scheme;
+      this.#shown = stored ?? this.#auto();
+      stored === null ? localStorage.removeItem(this.storageKey) : localStorage.setItem(this.storageKey, scheme);
+      window.dispatchEvent(new CustomEvent(this.eventName, { detail: { colorScheme: scheme } }));
+    }
+    get current() { return this.#shown; }
+
+    get #shown() { return this.el.classList.contains('dark') ? 'dark' : 'light'; }
+    set #shown(scheme) { this.el.classList.remove('dark', 'light'); this.el.classList.add(scheme); }
+    #auto() { return this.mediaQuery.matches ? 'dark' : 'light'; }
+  }
+
+  window.colorScheme = new ColorSchemePreference();
+</script>

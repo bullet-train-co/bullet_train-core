@@ -19,6 +19,8 @@ wrapper_options[:data]["#{stimulus_controller}-language-value"] = language
 wrapper_options[:data]["#{stimulus_controller}-theme-light-value"] = theme_light
 wrapper_options[:data]["#{stimulus_controller}-theme-dark-value"] = theme_dark
 wrapper_options[:data]["#{stimulus_controller}-monaco-config-value"] = monaco_config if monaco_config.present?
+wrapper_options[:data][:action] ||= ""
+wrapper_options[:data][:action] += " color-scheme:changed@window->#{stimulus_controller}#updateComponentTheme"
 
 field_class = "min-h-32 w-full text-base md:text-[0.75rem] font-mono text-input px-0 "
 field_class += " bg-[color:--code-editor-background] [--code-editor-background:theme('colors.slate.50')] dark:[--code-editor-background:theme('colors.slate.800')]"

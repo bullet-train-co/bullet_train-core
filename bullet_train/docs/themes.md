@@ -132,6 +132,12 @@ This allows the theme engine to resolve which theme in the inheritance chain wil
 
 You're going to have to call your theme something and there are practical reasons to not call it something generic. If you're pursuing a heavily customized design, consider allowing the designer or designers who are creating the look-and-feel of your application to name their own masterpiece. Giving it a distinct name will really help differentiate things when you're ready to start introducing additional facets to your application or a totally new look-and-feel down the road.
 
+## Dark and Light Mode
+
+Bullet Train themes include support for both dark and light color schemes. Users can toggle between dark mode, light mode, or system preference in their Account Details (accessible from the user menu). This preference is per-device and stored in the browser's `LocalStorage`.
+
+If you're building custom components that need to respond to color scheme changes, see [Responding to Color Scheme Changes](/docs/javascript.md#responding-to-color-scheme-changes) in the JavaScript documentation.
+
 ## Additional Themes Documentation
 
 * [Installing Bullet Train Themes on Other Rails Projects](/docs/themes/on-other-rails-projects.md)

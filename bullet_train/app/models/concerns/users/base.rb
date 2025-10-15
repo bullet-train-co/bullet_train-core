@@ -4,6 +4,7 @@ module Users::Base
   included do
     extend Devise::Models
     attr_accessor :profile_photo_removal
+    attr_accessor :color_scheme_preference # not stored, per-device
 
     if two_factor_authentication_enabled?
       devise :two_factor_authenticatable, :two_factor_backupable
