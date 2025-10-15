@@ -306,4 +306,4 @@ See [`account/users_helper` in BT core repo](https://github.com/bullet-train-co/
 
 ### For ejecting a theme partial and modifying it
 
-We recommend firing up a Bullet Train project and using its `bin/resolve` (see docs on [Indirection](indirection)) to get a copy of the partial field locally to modify.
+We recommend firing up a Bullet Train project and using its `bin/resolve` (see docs on [Indirection](/docs/indirection)) to get a copy of the partial field locally to modify.
