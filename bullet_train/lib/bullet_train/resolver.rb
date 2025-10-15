@@ -65,7 +65,7 @@ module BulletTrain
 
               # Look for showcase preview.
               file_name = source_file[:absolute_path].split("/").last
-              showcase_partials = Dir.glob(`bundle show bullet_train-themes-light`.chomp + "/app/views/showcase/**/*.html.erb")
+              showcase_partials = Dir.glob(Gem::Specification.find_by_name("bullet_train-themes-light").gem_dir + "/app/views/showcase/**/*.html.erb")
               showcase_preview = showcase_partials.find { |partial| partial.split("/").last == file_name }
               if showcase_preview
                 puts "Ejecting showcase preview for #{source_file[:relative_path]}"
@@ -191,11 +191,11 @@ module BulletTrain
           # If it's a full path, we need to make sure we're getting it from the right package.
           _, partial_view_package, partial_path_without_package = @needle.partition(/(bullet_train-core\/)?bullet_train[a-z|\-._0-9]*/)
 
-          # Pop off `bullet_train-core` and the gem's version so we can call `bundle show` correctly.
+          # Pop off `bullet_train-core` and the gem's version so we can call `Gem::Specification.find_by_name` correctly.
           partial_view_package.gsub!("bullet_train-core/", "")
           partial_view_package.gsub!(/[-|.0-9]*$/, "") if partial_view_package.match?(/[-|.0-9]*$/)
 
-          local_package_path = `bundle show #{partial_view_package}`.chomp
+          local_package_path = Gem::Specification.find_by_name(partial_view_package).gem_dir
           return local_package_path + partial_path_without_package
         else
           puts "You passed the absolute path for a partial literal, but we couldn't find the package name in the string:".red
@@ -223,7 +223,7 @@ module BulletTrain
         # If the developer enters a partial that is in bullet_train-base like devise/shared/oauth or devise/shared/links,
         # it will return a string starting with app/ so we simply point them to the file in this repository.
         if annotated_path.match?(/^<!-- BEGIN app/) && !ejected_theme?
-          gem_path = `bundle show bullet_train`.chomp
+          gem_path = Gem::Specification.find_by_name("bullet_train").gem_dir
           "#{gem_path}/#{$1}"
         else
           $1
@@ -283,7 +283,7 @@ module BulletTrain
         absolute_file_path
       else
         # Search for the file in its respective gem. Fall back to the `light` theme if no gem is available.
-        gem_path = [`bundle show bullet_train-themes-#{current_theme}`, `bundle show bullet_train-themes-light`].map(&:chomp).find(&:present?)
+        gem_path = [Gem::Specification.find_by_name("bullet_train-themes-#{current_theme}").gem_dir, Gem::Specification.find_by_name("bullet_train-themes-light").gem_dir].map(&:chomp).find(&:present?)
         return nil unless gem_path
 
         # At this point we can be more generic since we're inside the gem.

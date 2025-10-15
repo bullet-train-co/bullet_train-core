@@ -20,7 +20,7 @@ module Api
     end
 
     def gem_paths
-      @gem_paths ||= `bundle show --paths`.lines.map { |gem_path| gem_path.chomp }
+      @gem_paths ||= Bundler.load.specs.map(&:gem_dir)
     end
 
     def automatic_paths_for(model, parent, except: [])

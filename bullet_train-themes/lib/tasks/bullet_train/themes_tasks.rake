@@ -18,7 +18,7 @@ namespace :bt do
     `touch tmp/gems/.keep`
 
     BulletTrain.linked_gems.each do |linked_gem|
-      target = `bundle show #{linked_gem}`.chomp
+      target = Gem::Specification.find_by_name(linked_gem).gem_dir
       if target.present?
         puts "Linking '#{linked_gem}' to '#{target}'."
         `ln -s #{target} tmp/gems/#{linked_gem}`

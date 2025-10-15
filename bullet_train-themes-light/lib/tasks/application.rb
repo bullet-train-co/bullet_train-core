@@ -4,7 +4,7 @@ module BulletTrain
   module Themes
     module Application
       def self.eject_theme_main_css(theme_name)
-        theme_base_path = `bundle show --paths bullet_train-themes-#{theme_name}`.chomp
+        theme_base_path = Gem::Specification.find_by_name("bullet_train-themes-#{theme_name}").gem_dir
 
         puts "Ejecting app/assets/stylesheets/#{theme_name}.tailwind.css."
         Rails.root.join("app/assets/stylesheets").mkpath
@@ -16,7 +16,7 @@ module BulletTrain
         constantized_theme = theme_parts.join
         humanized_theme = theme_parts.join(" ")
 
-        theme_base_path = `bundle show --paths bullet_train-themes-#{theme_name}`.chomp
+        theme_base_path = Gem::Specification.find_by_name("bullet_train-themes-#{theme_name}").gem_dir
         puts "Ejecting from #{humanized_theme} theme in `#{theme_base_path}`."
 
         puts "Ejecting Tailwind configuration into `./tailwind.#{ejected_theme_name}.config.js`."
@@ -46,7 +46,7 @@ module BulletTrain
           "bullet_train-themes-tailwind_css" => "tailwind_css",
           "bullet_train-themes-light" => "light"
         }.each do |gem, theme_name|
-          gem_path = `bundle show --paths #{gem}`.chomp
+          gem_path = Gem::Specification.find_by_name(gem).gem_dir
           showcase_partials = Dir.glob("#{gem_path}/app/views/showcase/**/*.html.erb")
 
           `find #{gem_path}/app/views/themes`.lines.map(&:chomp).each do |file_or_directory|
@@ -239,9 +239,9 @@ module BulletTrain
       end
 
       def self.clean_theme(theme_name, args)
-        light_base_path = `bundle show --paths bullet_train-themes-light`.chomp
-        tailwind_base_path = `bundle show --paths bullet_train-themes-tailwind_css`.chomp
-        theme_base_path = `bundle show --paths bullet_train-themes`.chomp
+        light_base_path = Gem::Specification.find_by_name("bullet_train-themes-light").gem_dir
+        tailwind_base_path = Gem::Specification.find_by_name("bullet_train-themes-tailwind_css").gem_dir
+        theme_base_path = Gem::Specification.find_by_name("bullet_train-themes").gem_dir
 
         directory_content = `find . | grep 'app/.*#{args[:theme]}'`.lines.map(&:chomp)
         directory_content = directory_content.reject { |content| content.match?("app/assets/builds/") }
