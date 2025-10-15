@@ -1,5 +1,19 @@
 require "test_helper"
 
+# A minimal ActiveRecord model including Records::Base for testing purposes
+class TestTeam < ActiveRecord::Base
+  self.table_name = "teams"
+
+  include Records::Base
+
+  attr_accessor :name
+  attr_accessor :name_was
+
+  def self.label_attribute
+    :name
+  end
+end
+
 class TeamTest < ActiveSupport::TestCase
   test "a new team defaults time_zone to UTC" do
     team = Team.new
@@ -71,5 +85,26 @@ class TeamTest < ActiveSupport::TestCase
 
     team.reload
     assert_equal "Central Time (US & Canada)", team.time_zone
+  end
+
+  test "#label_string returns the name of the model if name is nil" do
+    team = TestTeam.new
+
+    assert_equal "Test Team", team.label_string
+  end
+
+  test "#label_string returns the value of #name ('Test Name')" do
+    @team = TestTeam.new
+    @team.name = "Test Name"
+
+    assert_equal @team.name, @team.label_string # fails, returning nil (the value of name_was)
+  end
+
+  test "#label_string returns the value of #name_was if set ('Old Name')" do
+    @team = TestTeam.new
+    @team.name = "Test Name"
+
+    @team.name_was = "Old Name"
+    assert_equal "Old Name", @team.label_string # passes
   end
 end
