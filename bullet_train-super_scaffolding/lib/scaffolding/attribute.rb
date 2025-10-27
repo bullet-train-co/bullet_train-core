@@ -216,13 +216,13 @@ class Scaffolding::Attribute
   def default_value
     case type
     when "text_field", "password_field", "text_area"
-      "'Alternative String Value'"
+      "\"Alternative String Value\""
     when "email_field"
-      "'another.email@test.com'"
+      "\"another.email@test.com\""
     when "phone_field"
-      "'+19053871234'"
+      "\"+19053871234\""
     when "color_picker"
-      "'#47E37F'"
+      "\"#47E37F\""
     end
   end
 
