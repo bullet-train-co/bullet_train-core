@@ -12,7 +12,7 @@ trix-toolbar {
 /* Override Tailwind's preflight styles */
 /* https://github.com/tailwindlabs/tailwindcss/issues/989#issuecomment-506555308 */
 .trix-button {
-  @apply dark:bg-slate-800 !important;
+  @apply dark:bg-base-800 !important;
 }
 
 /* Prevent red ring on Trix Editor */
@@ -87,13 +87,13 @@ trix-editor [data-trix-cursor-target] {
 trix-editor {
   padding-right: 0.75rem;
   padding-left: 0.75rem;
-  @apply shadow-sm border-slate-300 font-light rounded-md;
+  @apply shadow-sm border-base-300 font-light rounded-md;
   &:focus, &:active {
     border-color: var(--primary-500);
     box-shadow: inset 0 0 0 1px var(--primary-500);
   }
   &[disabled]{
-    @apply bg-slate-200 dark:bg-slate-700 hover:bg-slate-200 hover:dark:bg-slate-700
+    @apply bg-base-200 dark:bg-base-700 hover:bg-base-200 hover:dark:bg-base-700
   }
 }
 

@@ -33,6 +33,6 @@
     background-attachment: scroll;
     background-clip: text;
     background-color: rgba(0,0,0,0);
-    @apply bg-slate-800 bg-gradient-to-r from-primary-500
+    @apply bg-base-800 bg-gradient-to-r from-primary-500
   }
 }

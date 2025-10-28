@@ -5,10 +5,10 @@
      **/
     /* Color picker */
     .pcr-app {
-      @apply bg-slate-800 border border-solid border-slate-900;
+      @apply bg-base-800 border border-solid border-base-900;
 
       .pcr-interaction .pcr-result {
-        @apply text-slate-300 border border-solid border-slate-900 bg-slate-800;
+        @apply text-base-300 border border-solid border-base-900 bg-base-800;
 
         &:focus {
           box-shadow: 0 0 0 1px theme('colors.primary.500'), 0 0 0 3px theme('colors.primary.500');
@@ -18,18 +18,18 @@
 
     /* Date range picker */
     .daterangepicker {
-      @apply bg-slate-800 border-slate-900;
+      @apply bg-base-800 border-base-900;
 
       &::before {
-        border-bottom-color: theme('colors.slate.900');
+        border-bottom-color: theme('colors.base.900');
       }
 
       &::after {
-        border-bottom-color: theme('colors.slate.800');
+        border-bottom-color: theme('colors.base.800');
       }
 
       .calendar-table {
-        @apply bg-slate-800 text-slate-300;
+        @apply bg-base-800 text-base-300;
 
         /* navigation arrows */
         .available {
@@ -41,53 +41,53 @@
 
       /* Clear and Apply buttons wrapper */
       .drp-buttons {
-        border-top-color: theme('colors.slate.900');
-        @apply text-slate-300;
+        border-top-color: theme('colors.base.900');
+        @apply text-base-300;
       }
 
       th {
         &.available:hover {
-          @apply bg-slate-600;
+          @apply bg-base-600;
         }
       }
 
       td {
         &.off {
-          @apply bg-slate-800 text-white;
+          @apply bg-base-800 text-white;
         }
 
         &.available:hover {
-          @apply bg-slate-600;
+          @apply bg-base-600;
         }
       }
 
       .hourselect, .minuteselect, .ampmselect {
-        @apply text-slate-300 border-slate-900 bg-slate-800 !important;
+        @apply text-base-300 border-base-900 bg-base-800 !important;
       }
     }
 
     /* Phone field */
     .iti__country-list {
-      @apply bg-slate-800 border border-solid border-slate-900;
+      @apply bg-base-800 border border-solid border-base-900;
     }
 
     /* Select2 */
     .select2-container {
       .select2-selection__rendered {
-        @apply text-slate-300 !important;
+        @apply text-base-300 !important;
       }
 
       .select2-dropdown {
-        @apply bg-slate-700;
+        @apply bg-base-700;
       }
 
       .select2-search__field {
-        @apply bg-slate-800 border-slate-900 !important;
+        @apply bg-base-800 border-base-900 !important;
       }
 
       .select2-selection--multiple, .select2-selection--single {
-        @apply bg-slate-800 focus:ring-primary-500 border-slate-900 !important;
-        @apply text-slate-300;
+        @apply bg-base-800 focus:ring-primary-500 border-base-900 !important;
+        @apply text-base-300;
       }
 
       /* For the selected options in the multiple select2 component */
@@ -105,13 +105,13 @@
       }
 
       .select2-results__option {
-        @apply text-slate-300;
+        @apply text-base-300;
       }
     }
 
     /* Trix Editor */
     trix-editor {
-      @apply bg-slate-800 border-slate-900 !important;
+      @apply bg-base-800 border-base-900 !important;
 
       &:focus, &:active {
         @apply border-primary-500 !important;
@@ -126,7 +126,7 @@
       }
 
       .trix-button-group, .trix-button {
-        @apply border-slate-400 !important;
+        @apply border-base-400 !important;
       }
 
       .trix-button:disabled::before {
@@ -134,39 +134,39 @@
       }
 
       .trix-dialog {
-        @apply bg-slate-800 border-slate-900 shadow-lg shadow-slate-900 !important;
+        @apply bg-base-800 border-base-900 shadow-lg shadow-base-900 !important;
 
         .trix-button--dialog {
           @apply text-white;
         }
 
         .trix-input--dialog {
-          @apply bg-slate-800 dark:text-slate-300 focus:ring-primary-500 focus:border-primary-500;
+          @apply bg-base-800 dark:text-base-300 focus:ring-primary-500 focus:border-primary-500;
         }
       }
     }
 
     .tribute-container {
       ul {
-        @apply bg-slate-800 border-slate-900 !important;
+        @apply bg-base-800 border-base-900 !important;
       }
     }
 
     .trix-dialogs {
-      @apply bg-slate-800 border-slate-900 !important;
+      @apply bg-base-800 border-base-900 !important;
     }
 
     .trix-content a[href^="bullettrain://"] {
-      @apply text-white bg-slate-500;
+      @apply text-white bg-base-500;
     }
 
     /* CKEditor */
     .ck {
-      --ck-color-base-background: theme('colors.slate.800');
-      --ck-color-base-border: theme('colors.slate.900');
-      --ck-color-toolbar-background: theme('colors.slate.800');
-      --ck-color-toolbar-border: theme('colors.slate.900');
-      --ck-color-text: theme('colors.slate.300');
+      --ck-color-base-background: theme('colors.base.800');
+      --ck-color-base-border: theme('colors.base.900');
+      --ck-color-toolbar-background: theme('colors.base.800');
+      --ck-color-toolbar-border: theme('colors.base.900');
+      --ck-color-text: theme('colors.base.300');
 
       .ck-editor__editable:not(.ck-editor__nested-editable) {
         @apply shadow-none;
