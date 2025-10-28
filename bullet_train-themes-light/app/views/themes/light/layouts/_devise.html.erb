@@ -3,7 +3,7 @@
   <head>
     <%= render 'shared/layouts/head' %>
   </head>
-  <body class="devise_layout electron-draggable <%= BulletTrain::Themes::Light.background || "bg-white dark:bg-slate-700 sm:bg-gradient-to-br from-secondary-200 to-primary-400 dark:from-primary-900 dark:to-primary-600" %> text-slate-700 text-sm font-normal dark:text-slate-300">
+  <body class="devise_layout electron-draggable <%= BulletTrain::Themes::Light.background || "bg-white dark:bg-base-700 sm:bg-gradient-to-br from-secondary-200 to-primary-400 dark:from-primary-900 dark:to-primary-600" %> text-base-700 text-sm font-normal dark:text-base-300">
     <div data-turn-enter data-turn-exit>
       <%= yield %>
     </div>

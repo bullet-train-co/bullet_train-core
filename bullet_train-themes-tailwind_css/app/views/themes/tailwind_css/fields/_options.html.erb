@@ -68,7 +68,7 @@ end
     <div class="flex">
       <%= tag.div class: [
           "hidden",
-          "inline-block dark:border-slate-600",
+          "inline-block dark:border-base-600",
           "border-b pb-4 mb-4": show_select_all_top && !show_select_all_bottom,
           "border-t pt-4 mt-4": !show_select_all_top && show_select_all_bottom
       ], data: {
@@ -79,7 +79,7 @@ end
             <%= check_box_tag "#{options[:id]}-select_all", 'select-all', false, data: {
               "select-all-target": 'toggleCheckbox',
               'action': "select-all#selectAllOrNone"
-            }, class: "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 rounded disabled:bg-slate-200 disabled:dark:bg-slate-700" %>
+            }, class: "focus:ring-primary-500 h-4 w-4 text-primary-500 border-base-300 rounded disabled:bg-base-200 disabled:dark:bg-base-700" %>
           </div>
           <div class="ml-2.5 text-sm pr-4">
             <%= t("global.bulk_select.all") %>

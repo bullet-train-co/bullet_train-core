@@ -1,8 +1,8 @@
 <% link_url ||= "#" %>
 <% memberships ||= [] %>
 
-<li class="bg-white shadow overflow-hidden sm:rounded-md dark:bg-slate-700">
-  <%= link_to link_url, class: "group block hover:bg-slate-50 dark:hover:bg-slate-400 dark:text-slate-800", data: { turbo_prefetch: false } do %>
+<li class="bg-white shadow overflow-hidden sm:rounded-md dark:bg-base-700">
+  <%= link_to link_url, class: "group block hover:bg-base-50 dark:hover:bg-base-400 dark:text-base-800", data: { turbo_prefetch: false } do %>
     <div class="px-4 py-4 flex items-center sm:pl-8 sm:pr-6">
       <div class="min-w-0 flex-1 sm:flex sm:items-center sm:justify-between">
         <div>
@@ -19,7 +19,7 @@
         </div>
       </div>
       <div class="ml-5 flex-shrink-0">
-        <svg class="h-5 w-5 text-slate-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+        <svg class="h-5 w-5 text-base-400" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
           <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
         </svg>
       </div>
