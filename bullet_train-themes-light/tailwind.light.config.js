@@ -48,6 +48,7 @@ module.exports = {
           900: 'var(--secondary-900)',
         },
         base: colors.slate,
+        ...colors
       }),
       fontFamily: {
         // "Avenir Next W01", "Proxima Nova W01", "", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
