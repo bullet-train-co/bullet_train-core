@@ -20,7 +20,7 @@ module.exports = {
         'xs': '.81rem',
         '2xs': ['0.65rem', { lineHeight: '0.9rem', letterSpacing: '1px' }]
       },
-      colors: {
+      colors: ({ colors }) => ({
         primary: {
           50: 'var(--primary-50)',
           100: 'var(--primary-100)',
@@ -47,7 +47,8 @@ module.exports = {
           800: 'var(--secondary-800)',
           900: 'var(--secondary-900)',
         },
-      },
+        base: colors.slate,
+      }),
       fontFamily: {
         // "Avenir Next W01", "Proxima Nova W01", "", -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif
         sans: ['Inter var', ...defaultTheme.fontFamily.sans],
