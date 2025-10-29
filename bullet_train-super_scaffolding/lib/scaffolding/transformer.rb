@@ -799,6 +799,10 @@ class Scaffolding::Transformer
           field_attributes[:color_picker_field_options] = "t('#{child.pluralize.underscore}.fields.#{attribute.name}.options')"
         end
 
+        if attribute.type == "code_editor" && attribute.options[:language]
+          field_attributes[:language] = "\"#{attribute.options[:language]}\""
+        end
+
         field_content = "<%= render 'shared/fields/#{attribute.type}'#{", " if field_attributes.any?}#{field_attributes.map { |key, value| "#{key}: #{value}" }.join(", ")} %>"
 
         # TODO Add more of these from other packages?

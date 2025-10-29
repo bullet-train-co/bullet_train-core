@@ -181,11 +181,25 @@ rails generate model Project team:references multiple_buttons:jsonb
 ## Formating `date` and `date_and_time`
 After Super Scaffolding a `date` or `date_and_time` field, you can pass a format for the object like so:
 
-```
+```erb
 <%= render 'shared/attributes/date', attribute: date_object, format: :short %>
 ```
 
 Please refer to the [Ruby on Rails documentation](https://guides.rubyonrails.org/i18n.html#adding-date-time-formats) for more information.
+
+## Setting a `language` for `code_editor` fields
+
+When rendering the `code_editor` attribute you can pass in a language to affect syntax highlighting and what not.
+
+```erb
+<%= render 'shared/fields/code_editor', method: :source, language: "ruby" %>
+```
+
+During Super Scaffolding you can pass in the language when declaring the attribute and it will be added to your form:
+
+````
+rails generate super_scaffold:field Project source:code_editor{language=ruby}
+````
 
 ## Dynamic Forms and Dependent Fields
 
