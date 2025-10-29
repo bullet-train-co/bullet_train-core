@@ -8,7 +8,7 @@
       <%= resource.class.human_attribute_name(attribute) %> <%= resource.errors[attribute].to_sentence %>.
       <% end %>
     <% else %>
-      Please correct the errors below.
+      <%= t("global.notifications.validation_error") %>
     <% end %>
   <% end %>
 <% end %>
