@@ -69,6 +69,7 @@ en:
     notifications:
       not_found: not found
       all_fields_required: All of these fields are required.
+      validation_error: Please correct the errors below.
     dates:
       today: Today
       day:
