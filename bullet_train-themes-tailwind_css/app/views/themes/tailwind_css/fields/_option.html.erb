@@ -22,8 +22,8 @@ end
 # 3. form.radio_button
 #
 # the `append_class` local can be used to append any other styles desired for the element.
-options[:class] ||= "focus:ring-primary-500 h-4 w-4 text-primary-500 border-slate-300 dark:bg-slate-800 dark:border-slate-900 #{"rounded" if options[:multiple] || single_check_box}"
-options[:class] += " disabled:bg-slate-200 disabled:dark:bg-slate-700" # classes to give a visual indicator when a field is disabled
+options[:class] ||= "focus:ring-primary-500 h-4 w-4 text-primary-500 border-base-300 dark:bg-base-800 dark:border-base-900 #{"rounded" if options[:multiple] || single_check_box}"
+options[:class] += " disabled:bg-base-200 disabled:dark:bg-base-700" # classes to give a visual indicator when a field is disabled
 options[:class] += " #{append_class}"
 %>
 
@@ -52,7 +52,7 @@ options[:class] += " #{append_class}"
       <div class="ml-2.5 text-sm">
         <div class="select-none"><%= label %></div>
         <% if labels.options_help&.dig(value)&.present? %>
-          <p class="mt-0.5 text-xs text-slate-500">
+          <p class="mt-0.5 text-xs text-base-500">
             <%= labels.options_help.dig(value) %>
           </p>
         <% end %>

@@ -13,7 +13,7 @@
 
   .button {
     @apply shadow-sm text-white hover:text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 hover:no-underline;
-    @apply dark:ring-offset-slate-700;
+    @apply dark:ring-offset-base-700;
 
     &.button-red {
       @apply bg-red-500 hover:bg-red-600 focus:ring-red-600;
@@ -22,7 +22,7 @@
 
   .button-secondary {
     @apply text-secondary-500 hover:text-secondary-600 hover:underline;
-    /* @apply dark:text-slate-200; */
+    /* @apply dark:text-base-200; */
 
     &.button-increase-contrast {
       @apply text-secondary-700 hover:text-secondary-900;
@@ -45,8 +45,8 @@
   }
 
   .button-alternative {
-    @apply border-slate-300 rounded-md shadow-sm bg-white text-slate-500 hover:bg-slate-50 no-underline hover:no-underline;
-    @apply dark:bg-slate-800 dark:border-slate-900 dark:text-white dark:hover:bg-slate-700;
+    @apply border-base-300 rounded-md shadow-sm bg-white text-base-500 hover:bg-base-50 no-underline hover:no-underline;
+    @apply dark:bg-base-800 dark:border-base-900 dark:text-white dark:hover:bg-base-700;
   }
 
   .button-color {
@@ -115,12 +115,12 @@
   }
 
   .table {
-    @apply w-full divide-y divide-slate-900/5 dark:divide-slate-700/5 text-left;
+    @apply w-full divide-y divide-base-900/5 dark:divide-base-700/5 text-left;
 
 
     th {
       @apply px-3 py-3 text-2xs font-semibold font-normal uppercase;
-      @apply dark:text-slate-400;
+      @apply dark:text-base-400;
 
       &:first-child {
         @apply pl-5;
@@ -132,13 +132,13 @@
     }
 
     tbody {
-      @apply divide-y divide-slate-900/5;
-      @apply dark:divide-slate-700/5;
+      @apply divide-y divide-base-900/5;
+      @apply dark:divide-base-700/5;
     }
 
     td {
       @apply px-3 py-3.5;
-      @apply dark:text-slate-400;
+      @apply dark:text-base-400;
 
       &:first-child {
         @apply pl-5;
@@ -197,14 +197,14 @@
   }
 
   .sortable-active-dropzone {
-    @apply border-dashed bg-gray-50 dark:bg-slate-800 border-slate-400;
+    @apply border-dashed bg-gray-50 dark:bg-base-800 border-base-400;
   }
 
   .sortable-active-item {
-    @apply shadow bg-white *:bg-white dark:bg-slate-700 dark:*:bg-slate-700 opacity-100 *:opacity-100;
+    @apply shadow bg-white *:bg-white dark:bg-base-700 dark:*:bg-base-700 opacity-100 *:opacity-100;
   }
 
   .sortable-drop-target {
-    @apply shadow-inner shadow-gray-500 dark:shadow-black hover:shadow-inner bg-gray-100 *:bg-gray-100 dark:bg-slate-900 dark:*:bg-slate-900 *:opacity-0;
+    @apply shadow-inner shadow-gray-500 dark:shadow-black hover:shadow-inner bg-gray-100 *:bg-gray-100 dark:bg-base-900 dark:*:bg-base-900 *:opacity-0;
   }
 }

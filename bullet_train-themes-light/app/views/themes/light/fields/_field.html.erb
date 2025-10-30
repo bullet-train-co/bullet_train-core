@@ -52,14 +52,14 @@ has_errors = errors.any? || partial.error? || other_options[:error].present?
 
 # TODO: Partials which invoke form helpers inline aren't using
 # these classes, although we have the `has_errors` conditional with some style below.
-options[:class] = "#{options[:class]} block w-full rounded-md shadow-sm font-light dark:bg-slate-800 dark:text-slate-300"
+options[:class] = "#{options[:class]} block w-full rounded-md shadow-sm font-light dark:bg-base-800 dark:text-base-300"
 options[:class] += " text-base md:text-sm" # default to 16px on mobile to prevent zooming
-options[:class] += " disabled:bg-slate-200 disabled:dark:bg-slate-700" # classes to give a visual indicator when a field is disabled
+options[:class] += " disabled:bg-base-200 disabled:dark:bg-base-700" # classes to give a visual indicator when a field is disabled
 
 options[:class] += if has_errors
-  " pr-10 border-red-500 text-red-900 placeholder-red-500 outline-none focus:ring-red-500 focus:border-red-500 dark:text-slate-300"
+  " pr-10 border-red-500 text-red-900 placeholder-red-500 outline-none focus:ring-red-500 focus:border-red-500 dark:text-base-300"
 else
-  " focus:ring-primary-500 focus:border-primary-500 border-slate-300 dark:border-slate-900"
+  " focus:ring-primary-500 focus:border-primary-500 border-base-300 dark:border-base-900"
 end
 %>
 
@@ -105,7 +105,7 @@ end
 
   <% # any help text. %>
   <% if partial.help? || other_options[:help].present? || partial.after_help? %>
-    <p class="mt-1.5 text-xs text-slate-500 dark:text-slate-400">
+    <p class="mt-1.5 text-xs text-base-500 dark:text-base-400">
       <%= partial.help %>
       <%= other_options[:help]&.html_safe %>
       <%= partial.after_help %>

@@ -1,5 +1,59 @@
 # Themes
 
+## Changing your color scheme
+
+The first thing you may want to do is to change the color scheme for your app. The place to do that is in `config/initializers/theme.rb`.
+
+There you can set a primary `color` value, as well as a `secondary_color` if you want to add some variation.
+If you don't set a `secondary_color` it will be set the same as the primary `color`.
+
+```ruby
+# The application's main color scheme.
+BulletTrain::Themes::Light.color = :green
+BulletTrain::Themes::Light.secondary_color = :red
+```
+
+Any of the [default color schemes provided by Tailwind CSS](https://v3.tailwindcss.com/docs/customizing-colors#default-color-palette) should work for the primary and secondary colors.
+
+### Dark and Light Mode
+
+Bullet Train themes include support for both dark and light color schemes. Users can toggle between dark mode, light mode, or system preference in their Account Details (accessible from the user menu). This preference is per-device and stored in the browser's `LocalStorage`.
+
+You can force your app to either light or dark mode by setting the `force_color_scheme_to` option in `theme.rb`.
+
+```ruby
+# Force the color scheme to :light or :dark.
+# Defaults to nil, which offers users the ability to choose their preference in Account Details.
+BulletTrain::Themes::Light.force_color_scheme_to = :light
+```
+
+If you're building custom components that need to respond to color scheme changes, see [Responding to Color Scheme Changes](/docs/javascript.md#responding-to-color-scheme-changes) in the JavaScript documentation.
+
+### Changing the background color
+
+<div class="rounded-md border bg-amber-100 border-amber-200 py-4 px-5 mb-3 not-prose">
+  <h3 class="text-sm text-amber-800 font-light mb-2">
+    Note: This section is likely to change soon. The following only applies to apps that are upgraded to Bullet Train `1.33.0` or later.
+  </h3>
+</div>
+
+Starting in Bullet Train version `1.33.0` we've added a way to change the `base` color, which affects the background color of many elements.
+
+To customize this you can add a block like this to `tailwind.config.js`:
+
+```javascript
+themeConfig.theme.extend.colors = ({colors}) => ({
+  base: colors.stone,
+  primary: colors.blue,
+  secondary: colors.blue,
+})
+```
+
+Here you need to include `primary` and `secondary` as well as `base`. The settings in `tailwind.config.js` will **mostly** clobber the settings
+in `theme.rb`, but not entirely. So for the best results you should make sure that those two files agree about the primary and secondary colors.
+
+## The Theme Subsystem
+
 Bullet Train has a theme subsystem designed to allow you the flexibility to either extend or completely replace the stock “Light” UI theme.
 To reduce duplication of code across themes, Bullet Train implements the following three packages:
 1. `bullet_train-themes`
@@ -131,12 +185,6 @@ This allows the theme engine to resolve which theme in the inheritance chain wil
 ### Let your designer name their theme.
 
 You're going to have to call your theme something and there are practical reasons to not call it something generic. If you're pursuing a heavily customized design, consider allowing the designer or designers who are creating the look-and-feel of your application to name their own masterpiece. Giving it a distinct name will really help differentiate things when you're ready to start introducing additional facets to your application or a totally new look-and-feel down the road.
-
-## Dark and Light Mode
-
-Bullet Train themes include support for both dark and light color schemes. Users can toggle between dark mode, light mode, or system preference in their Account Details (accessible from the user menu). This preference is per-device and stored in the browser's `LocalStorage`.
-
-If you're building custom components that need to respond to color scheme changes, see [Responding to Color Scheme Changes](/docs/javascript.md#responding-to-color-scheme-changes) in the JavaScript documentation.
 
 ## Additional Themes Documentation
 

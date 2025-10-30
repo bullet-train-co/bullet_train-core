@@ -33,22 +33,22 @@
 
       <% if action.completed? %>
         <% if action.is_a?(Actions::HasProgress) %>
-          <div class="uppercase text-xs text-slate-400">
+          <div class="uppercase text-xs text-base-400">
             <%= t('action_models.processed_of', performed_count: action.performed_count, target_count: action.target_count, at: display_date_and_time(action.completed_at)) %>
           </div>
         <% else %>
-          <div class="uppercase text-xs text-slate-400">
+          <div class="uppercase text-xs text-base-400">
             <%= t('action_models.processed', at: display_date_and_time(action.completed_at)) %>
           </div>
         <% end %>
 
       <% elsif action.is_a?(Actions::RequiresApproval) && !action.approved? %>
-        <div class="uppercase text-xs text-slate-400">
+        <div class="uppercase text-xs text-base-400">
           <%= t('action_models.awaiting') %>
         </div>
 
       <% elsif action.is_a?(Actions::SupportsScheduling) && action.scheduled_for && !action.started? %>
-        <div class="uppercase text-xs text-slate-400">
+        <div class="uppercase text-xs text-base-400">
           <%= t('action_models.scheduled_for', for: display_date_and_time(action.scheduled_for)) %>
         </div>
 
@@ -57,17 +57,17 @@
           <%= render "shared/attributes/progress_bar", object: action, attribute: :performed_count, total: :target_count %>
         </div>
 
-        <div class="mt-2 uppercase text-xs text-slate-400">
+        <div class="mt-2 uppercase text-xs text-base-400">
           <%= t('action_models.processing_of', performed_count: action.performed_count, target_count: action.target_count) %>
         </div>
 
       <% elsif action.is_a?(Actions::HasProgress) %>
-        <div class="uppercase text-xs text-slate-400">
+        <div class="uppercase text-xs text-base-400">
           <%= t('action_models.preparing_to_process_of', performed_count: action.performed_count, target_count: action.target_count) %>
         </div>
 
       <% else %>
-        <div class="uppercase text-xs text-slate-400">
+        <div class="uppercase text-xs text-base-400">
           <%= t('action_models.preparing_to_process') %>
         </div>
 

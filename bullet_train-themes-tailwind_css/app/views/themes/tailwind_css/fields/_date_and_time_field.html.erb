@@ -24,7 +24,7 @@ data_options = data_options.merge({ data: {"#{stimulus_controller}-target": 'fie
 
 # localized display options
 options[:id] ||=  "#{form.field_id(method)}_display"
-options[:class] = "form-control single-daterange w-full border-slate-300 dark:bg-slate-800 dark:border-slate-900 disabled:bg-slate-200 disabled:dark:bg-slate-700 #{options[:class]}".strip
+options[:class] = "form-control single-daterange w-full border-base-300 dark:bg-base-800 dark:border-base-900 disabled:bg-base-200 disabled:dark:bg-base-700 #{options[:class]}".strip
 raw_value = form.object.send(method)&.in_time_zone(current_user&.time_zone || current_team_time_zone || "UTC")
 options[:value] = raw_value && I18n.l(raw_value, format: :date_and_time_field)
 options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField' }})
@@ -57,7 +57,7 @@ options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField'
       </button>
       <% end %>
       <% if current_user&.time_zone != current_team_time_zone %>
-        <div class="mt-1.5 text-xs text-slate-500">
+        <div class="mt-1.5 text-xs text-base-500">
           <input class="hidden" data-<%=stimulus_controller%>-target="timeZoneField" value="<%= current_time_zone %>">
           <div data-<%= stimulus_controller %>-target="currentTimeZoneWrapper">
             <%= link_to (current_user&.time_zone || current_team_time_zone || "UTC"), '#', class: 'button-secondary p-0', data: {action: "#{stimulus_controller}#showTimeZoneButtons"} %>
