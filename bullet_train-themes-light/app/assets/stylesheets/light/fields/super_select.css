@@ -112,7 +112,8 @@
     @apply border-base-300 !important;
 
     &:focus {
-      border-color: #5897fb !important;
+      @apply border-primary-500 !important;
+      @apply ring-primary-500 !important;
     }
   }
 }
