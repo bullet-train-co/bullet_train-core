@@ -33,7 +33,7 @@ If you're building custom components that need to respond to color scheme change
 
 <div class="rounded-md border bg-amber-100 border-amber-200 py-4 px-5 mb-3 not-prose">
   <h3 class="text-sm text-amber-800 font-light mb-2">
-    Note: This section is likely to change soon.
+    Note: This section is likely to change soon. The following only applies to apps that are upgraded to Bullet Train `1.33.0` or later.
   </h3>
 </div>
 
