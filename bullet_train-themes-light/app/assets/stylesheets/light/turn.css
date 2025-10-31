@@ -55,6 +55,17 @@ html.turn-exit [data-turn-exit] {
 /*
  * This mostly prevents sudden side-to-side jumping due to the addition of a scrollbar during transition.
  */
-html.turn-advance{
+html.turn-advance:has(body.devise_layout){
   overflow: hidden;
+}
+
+/*
+ * This disables the view transitions that turn automatically injects just by being present.
+ */
+@supports (view-transition-name: root) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none !important;
+    opacity: 1 !important;
+  }
 }
