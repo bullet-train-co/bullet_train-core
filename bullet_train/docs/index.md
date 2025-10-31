@@ -24,6 +24,8 @@
  - [Test Suite](/docs/testing.md)
  - [Magic Test: Point-and-Click Test Writing](https://github.com/bullet-train-co/magic_test) <i class="ti ti-new-window ml-2"></i>
  - [Application Options](/docs/application-options.md)
+ - [Application Hash](/docs/application-hash.md)
+ - [Contributing to Bullet Train](/docs/contributing.md)
 
 ## Accounts & Teams
  - [Authentication](/docs/authentication.md)

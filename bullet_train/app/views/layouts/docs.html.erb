@@ -171,6 +171,12 @@
                     <i class="fal fa-brackets-curly ti ti-view-list-alt"></i>
                   <% end %>
                 <% end %>
+
+                <%= render 'account/shared/menu/item', url: '/docs/contributing.md', label: 'Contributing' do |p| %>
+                  <% p.content_for :icon do %>
+                    <i class="fal fa-github-alt ti ti-github"></i>
+                  <% end %>
+                <% end %>
               <% end %>
 
               <%= render 'account/shared/menu/section', title: 'Accounts & Teams' do %>
