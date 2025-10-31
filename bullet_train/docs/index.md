@@ -1,8 +1,6 @@
-# Bullet Train Developer Documentation??
+# Bullet Train Developer Documentation
 
 > Some of the open-source Bullet Train packages are considered pre-release, so please pardon the dust while we work to complete the documentation for certain topics.
-
-wat
 
 ## Introduction
  - [What is Bullet Train?](https://bullettrain.co) <i class="ti ti-new-window ml-2"></i>
