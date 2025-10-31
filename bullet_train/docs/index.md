@@ -1,6 +1,8 @@
-# Bullet Train Developer Documentation
+# Bullet Train Developer Documentation??
 
 > Some of the open-source Bullet Train packages are considered pre-release, so please pardon the dust while we work to complete the documentation for certain topics.
+
+wat
 
 ## Introduction
  - [What is Bullet Train?](https://bullettrain.co) <i class="ti ti-new-window ml-2"></i>
@@ -24,6 +26,8 @@
  - [Test Suite](/docs/testing.md)
  - [Magic Test: Point-and-Click Test Writing](https://github.com/bullet-train-co/magic_test) <i class="ti ti-new-window ml-2"></i>
  - [Application Options](/docs/application-options.md)
+ - [Application Hash](/docs/application-hash.md)
+ - [Contributing to Bullet Train](/docs/contributing.md)
 
 ## Accounts & Teams
  - [Authentication](/docs/authentication.md)
