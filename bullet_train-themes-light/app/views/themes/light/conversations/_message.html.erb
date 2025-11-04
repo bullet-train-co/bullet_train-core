@@ -109,7 +109,7 @@
         <% end %>
       <% end %>
 
-      <div class="flex flex-grow order-1 <%= current_user_message ? 'justify-end items-end pr-8' : 'justify-start items-start pl-8' %> <%= 'mb-3' unless next_message_in_series %>">
+      <div class="flex grow order-1 <%= current_user_message ? 'justify-end items-end pr-8' : 'justify-start items-start pl-8' %> <%= 'mb-3' unless next_message_in_series %>">
         <div class="<%= show_as_thread ? 'text-base-400' : 'text-base-300' %> text-sm">
           <strong><%= message.author.name %></strong>
           <%= timestamp %>

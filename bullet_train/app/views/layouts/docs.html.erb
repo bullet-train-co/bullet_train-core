@@ -42,7 +42,7 @@
       >
 
         <% menu = capture do %>
-          <div class="flex items-center flex-shrink-0 p-4 bg-blue-700 md:rounded-tl-lg">
+          <div class="flex items-center shrink-0 p-4 bg-blue-700 md:rounded-tl-lg">
             <%= image_tag image_path("logo/logo.png"), class: 'h-5 w-auto mx-auto' %>
 
             <div class="lg:hidden absolute right-0">
@@ -359,11 +359,11 @@
             >
               <%= menu %>
             </div>
-            <div class="flex-shrink-0 w-14" aria-hidden="true"></div>
+            <div class="shrink-0 w-14" aria-hidden="true"></div>
           </div>
         </div>
 
-        <div class="hidden lg:flex lg:flex-shrink-0 overflow-y-auto bg-gradient-to-b from-primary-700 to-primary-800 dark:from-base-800 dark:to-base-800">
+        <div class="hidden lg:flex lg:shrink-0 overflow-y-auto bg-gradient-to-b from-primary-700 to-primary-800 dark:from-base-800 dark:to-base-800">
           <div class="w-64">
             <%= menu %>
           </div>

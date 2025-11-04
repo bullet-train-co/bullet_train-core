@@ -70,7 +70,7 @@ options = options.merge({ data: {"#{stimulus_controller}-target": 'displayField'
             <%= link_to t('global.buttons.cancel'), '#', class: 'button-secondary button-smaller', data: {action: "#{stimulus_controller}#resetTimeZoneUI"} %>
           </div>
           <div class="hidden flex flex-row items-center mt-3 text-sm" data-<%= stimulus_controller %>-target="timeZoneSelectWrapper">
-            <div class="flex-grow">
+            <div class="grow">
               <%= select_tag :time_zone, 
                   options_for_select(ActiveSupport::TimeZone.all.map{|tz| [tz.name.to_s, tz.tzinfo.name.to_s]}, [  user_tz || team_tz ]), 
                   class: 'form-control select2',
