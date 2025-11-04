@@ -1,5 +1,5 @@
 module BulletTrain
   module SuperLoadAndAuthorizeResource
-    VERSION = "1.33.0"
+    VERSION = "1.34.0"
   end
 end
