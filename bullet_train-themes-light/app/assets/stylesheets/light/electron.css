@@ -6,8 +6,8 @@
   a {
     outline-color: var(--tw-ring-color);
     /* TODO: Will --tw-ring-opacity still be available in tailwindcss v4? */
-    --tw-ring-color: rgba(3, 98, 198, var(--tw-ring-opacity));
     --tw-ring-opacity: 1;
+    --tw-ring-color: rgba(3, 98, 198, var(--tw-ring-opacity));
   }
 
   .electron-mobile-only {

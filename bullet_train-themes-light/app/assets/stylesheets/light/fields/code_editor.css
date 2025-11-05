@@ -5,6 +5,6 @@
   
   .monaco-editor, .monaco-editor-background,
   .monaco-editor .margin {
-    background-color: var(--code-editor-background);
+    background-color: var(--code-editor-background,transparent);
   }
 }
