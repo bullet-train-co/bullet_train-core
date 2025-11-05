@@ -8,7 +8,7 @@ We also provide a Stripe-specific adapter package with support for auto-configur
 
 We recently fully open-sourced our PRO-level features, but haven't yet merged these projects into our core repo. Until we do, you can install the billing gems via git.
 
-### 1. Add the Git Repositories
+### 1. Add the gems via git
 
 ```
 # Below the comment labelled YOUR GEMS in your Gemfile
