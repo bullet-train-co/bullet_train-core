@@ -4,34 +4,11 @@ When you're ready to start billing customers for the product you've created with
 
 We also provide a Stripe-specific adapter package with support for auto-configuring those products and prices in your Stripe account. It also takes advantage of completely modern Stripe workflows, like allowing customers to purchase your product with Stripe Checkout and later manage their subscription using Stripe Billing's customer portal. It also automatically handles incoming Stripe webhooks as well, to keep subscription state in your application up-to-date with activity that has happened on Stripe's platform.
 
-## Option A: Using the Paid Bullet Train Pro gem via Gemfury
+## Install the Bullet Train Billing gems via git
 
-### A.1. Purchase Bullet Train Billing for Stripe
+We recently fully open-sourced our PRO-level features, but haven't yet merged these projects into our core repo. Until we do, you can install the billing gems via git.
 
-First, [purchase Bullet Train Billing for Stripe](https://buy.stripe.com/28o8zg4dBbrd59u7sM). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. (This process is currently completed manually, so please be patient.)
-
-### A.2. Add the Private Ruby Gems
-
-You'll need to specify both Ruby gems in your `Gemfile`, since we have to specify a private source for both:
-
-```ruby
-source "https://YOUR_TOKEN_HERE@gem.fury.io/bullettrain" do
-  gem "bullet_train-billing"
-  gem "bullet_train-billing-stripe"
-end
-```
-
-### A.3. Bundle Install
-
-```
-bundle install
-```
-
-**Proceed to the [Installation Instructions](#installation-instructions) section below**
-
-## Option B: Using the Open Source version of Bullet Train Billing via git
-
-### B.1. Add the Git Repositories
+### 1. Add the Git Repositories
 
 ```
 # Below the comment labelled YOUR GEMS in your Gemfile
@@ -39,7 +16,7 @@ gem "bullet_train-billing", git: "https://github.com/bullet-train-pro/bullet_tra
 gem "bullet_train-billing-stripe", git: "https://github.com/bullet-train-pro/bullet_train-billing-stripe.git"
 ```
 
-### B.2. Bundle Install
+### 2. Bundle Install
 
 ```
 bundle install
@@ -53,8 +30,6 @@ Fetching https://github.com/bullet-train-pro/bullet_train-billing.git
 Fetching gem metadata from https://rubygems.org/........
 <all of your normal gems>
 ```
-
-**Proceed to the [Installation Instructions](#installation-instructions) section below**
 
 ## Installation Instructions
 
