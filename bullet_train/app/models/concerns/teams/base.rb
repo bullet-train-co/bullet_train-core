@@ -14,7 +14,6 @@ module Teams::Base
     has_many :users, through: :memberships
     has_many :invitations
 
-    # oauth for grape api
     has_many :platform_applications, class_name: "Platform::Application", dependent: :destroy, foreign_key: :team_id
 
     # integrations

@@ -4,31 +4,24 @@ Bullet Train provides a holistic method for defining model-based usage limits in
 
 ## Installation
 
-### 1. Purchase Bullet Train Pro
+### 1. Add the gems via git
 
-First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to wait a little to receive your keys.
+We recently fully open-sourced our PRO-level features, but haven't yet merged these projects into our core repo. Until we do, you can install the action-model gem via git.
 
-### 2. Install the Package
-
-### 2.1. Add the Private Ruby Gems
-
-You'll need to specify both Ruby gems in your `Gemfile`, since we have to specify a private source for both:
-
-```ruby
-source "https://YOUR_TOKEN_HERE@gem.fury.io/bullettrain" do
-  gem "bullet_train-billing"
-  gem "bullet_train-billing-stripe" # Or whichever billing provider you're using.
-  gem "bullet_train-billing-usage"
-end
+```
+# Below the comment labelled YOUR GEMS in your Gemfile
+gem "bullet_train-billing", git: "https://github.com/bullet-train-pro/bullet_train-billing.git"
+gem "bullet_train-billing-stripe", git: "https://github.com/bullet-train-pro/bullet_train-billing-stripe.git"
+gem "bullet_train-billing-usage", git: "https://github.com/bullet-train-pro/bullet_train-billing-usage.git"
 ```
 
-### 2.2. Bundle Install
+### 2. Bundle Install
 
 ```
 bundle install
 ```
 
-### 2.3. Copy Database Migrations
+### 3. Copy Database Migrations
 
 Use the following two commands on your shell to copy the required migrations into your local project:
 

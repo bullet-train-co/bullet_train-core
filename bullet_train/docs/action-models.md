@@ -42,18 +42,11 @@ end
 
 ## Installation
 
-### 1. Purchase Bullet Train Pro
+We recently fully open-sourced our PRO-level features, but haven't yet merged these projects into our core repo. Until we do, you can install the action-model gem via git.
 
-First, [purchase Bullet Train Pro](https://buy.stripe.com/aEU7vc4dBfHtfO89AV). Once you've completed this process, you'll be issued a private token for the Bullet Train Pro package server. The process is currently completed manually, so you may have to wait a little to receive your keys.
-
-### 2. Install the Package
-
-Then you can specify the Ruby gem in your `Gemfile`:
-
-```ruby
-source "https://YOUR_TOKEN_HERE@gem.fury.io/bullettrain" do
-  gem "bullet_train-action_models"
-end
+```
+# Below the comment labelled YOUR GEMS in your Gemfile
+gem "bullet_train-action_models", git: "https://github.com/bullet-train-pro/bullet_train-action_models.git"
 ```
 
 Don't forget to run `bundle install` and `rails restart`.

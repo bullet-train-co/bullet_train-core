@@ -5,7 +5,6 @@ require "bullet_train/api/example_bot"
 require "bullet_train/api/attributes"
 require "bullet_train/platform/connection_workflow"
 
-# require "wine_bouncer"
 require "pagy"
 require "doorkeeper"
 require "scaffolding"
