@@ -1,4 +1,8 @@
-@import "tailwindcss/import";
+/*
+ * This is an extra level of indirection because for some reason using @tailwind directives directly inside this file doesn't work.
+ * When we move to v4 we should be able to just to `@import "tailwindcss"` here.
+ */
+@import "tailwindcss_import";
 
 @import "$ThemeStylesheetsDir/application.css"; /* alias used to support ejecting the file to local */
 
