@@ -1,13 +1,8 @@
 <% object ||= current_attributes_object %>
-<% strategy ||= current_attributes_strategy || :none %>
-<% url ||= nil %>
+<% attribute ||= :image %>
 <% options ||= {} %>
-<% options[:height] ||= 200 %>
 
-<% if cloudinary_enabled? %>
-  <%= cloudinary_image_tag object.public_send(attribute), options %>
-<% else %>
-  <% if object.public_send(attribute).attached? %>
-    <%= image_tag photo_url_for_active_storage_attachment(object.public_send(attribute), options) %>
-  <% end %>
+<% attachment = object.public_send(attribute) %>
+<% if attachment && attachment.attached? %>
+  <%= render 'active_storage/blobs/blob', blob: attachment, options: options %>
 <% end %>
