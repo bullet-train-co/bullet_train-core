@@ -1,4 +1,4 @@
-@import "tailwindcss/base";
+@import "tailwindcss/import";
 
 @import "$ThemeStylesheetsDir/application.css"; /* alias used to support ejecting the file to local */
 
