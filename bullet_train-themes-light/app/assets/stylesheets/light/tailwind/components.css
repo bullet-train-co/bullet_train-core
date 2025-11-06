@@ -50,7 +50,7 @@
   }
 
   .button-color {
-    @extend .button;
+    @apply button;
     @apply rounded-full;
   }
 
@@ -59,7 +59,7 @@
       display: none;
       &:checked {
         & + button {
-          @extend .button;
+          @apply button;
         }
       }
     }

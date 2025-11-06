@@ -65,7 +65,7 @@
     @apply rounded-md shadow-sm pt-0 focus:ring-primary-500 !important;
 
     &.focus-visible {
-      @extend .select2-border;
+      @apply select2-border !important;
     }
 
     &:focus {
@@ -89,7 +89,7 @@
 
   .select2-container--open, .select2-container--focus {
     .select2-selection--single, .select2-selection--multiple {
-      @extend .select2-border;
+      @apply select2-border !important;
     }
   }
 
