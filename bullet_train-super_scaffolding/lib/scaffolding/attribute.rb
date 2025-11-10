@@ -163,6 +163,7 @@ class Scaffolding::Attribute
   def partial_name
     return options[:attribute] if options[:attribute]
 
+    # TODO: We should put these in alphabetical order.
     case type
     when "trix_editor", "ckeditor"
       "html"
@@ -208,6 +209,8 @@ class Scaffolding::Attribute
       "number"
     when "address_field"
       "address"
+    when "slug"
+      "text"
     else
       raise "Invalid field type: #{type}."
     end

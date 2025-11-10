@@ -23,6 +23,7 @@ FIELD_PARTIALS = {
   options: "string",
   password_field: "string",
   phone_field: "string",
+  slug: "string",
   super_select: "string",
   text_area: "text",
   text_field: "string",

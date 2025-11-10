@@ -652,7 +652,7 @@ class Scaffolding::Transformer
       # 'primary_key' => '',
       # 'references' => '',
       "string" => "text_field",
-      "text" => "text_area"
+      "text" => "text_area",
       # 'time' => '',
       # 'timestamp' => '',
     }
@@ -1299,6 +1299,38 @@ class Scaffolding::Transformer
           if attribute.is_boolean?
             scaffold_add_line_to_file("./app/models/scaffolding/completely_concrete/tangible_thing.rb", "validates :#{attribute.name}, inclusion: [true, false]", VALIDATIONS_HOOK, prepend: true)
           end
+        when "slug"
+          slug_methods = <<~RUBY
+            def slug
+              #{attribute.name}
+            end
+
+            def self.slug_attribute
+              :#{attribute.name}
+            end
+
+            # Define which paths you don't want to show up when defining slugs.
+            def self.restricted_paths
+              [
+                "admin",
+                "admins"
+              ]
+            end
+          RUBY
+
+          scaffold_add_line_to_file(
+            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+            "include Sluggable",
+            CONCERNS_HOOK,
+            prepend: true
+          )
+
+          scaffold_add_line_to_file(
+            "./app/models/scaffolding/completely_concrete/tangible_thing.rb",
+            slug_methods,
+            METHODS_HOOK,
+            prepend: true
+          )
         end
 
       end
