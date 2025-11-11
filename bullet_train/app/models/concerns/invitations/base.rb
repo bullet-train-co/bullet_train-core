@@ -48,7 +48,7 @@ module Invitations::Base
   end
 
   def hoist_membership_email_error
-    # This is special handling for the email field because we have a uniquness validation in the
+    # This is special handling for the email field because we have a uniqueness validation in the
     # `Membership` model for the `user_email` field. Since we copy the value from `invitation.email`
     # into `invitation.membership.user_email` the error isn't passed through to the form in the normal way.
     errors[:"membership.user_email"]&.each do |error|
