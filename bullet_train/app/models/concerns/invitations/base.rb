@@ -51,10 +51,8 @@ module Invitations::Base
     # This is special handling for the email field because we have a uniquness validation in the
     # `Membership` model for the `user_email` field. Since we copy the value from `invitation.email`
     # into `invitation.membership.user_email` the error isn't passed through to the form in the normal way.
-    if errors[:"membership.user_email"]
-      errors[:"membership.user_email"].each do |error|
-        errors.add(:email, error)
-      end
+    errors[:"membership.user_email"]&.each do |error|
+      errors.add(:email, error)
     end
   end
 end
