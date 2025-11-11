@@ -102,6 +102,14 @@ module Account::Invitations::ControllerBase
         format.html { redirect_to account_team_invitations_path(@team), notice: I18n.t("invitations.notifications.created") }
         format.json { render :show, status: :created, location: [:account, @team, @invitation] }
       else
+        # This is special handling for the email field since we have a uniquness validation in the `Membership` model
+        # for the `user_email` field. Since we copy the value from `invitation.email` into `invitation.membership.user_email`
+        # the error isn't passed through to the form in the normal way.
+        if @invitation.errors[:"membership.user_email"]
+          @invitation.errors[:"membership.user_email"].each do |error|
+            @invitation.errors.add(:email, error)
+          end
+        end
         format.html { render :new, status: :unprocessable_entity }
         format.json { render json: @invitation.errors, status: :unprocessable_entity }
       end
