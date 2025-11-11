@@ -44,6 +44,7 @@ module Users::Base
     # callbacks
     after_validation :remove_profile_photo, if: :profile_photo_removal?
     after_update :set_teams_time_zone
+    after_update :set_memberships_email
   end
 
   def email_is_oauth_placeholder?
@@ -156,6 +157,12 @@ module Users::Base
   def set_teams_time_zone
     teams.where(time_zone: [nil, "UTC"]).each do |team|
       team.update(time_zone: time_zone) if team.users.count == 1
+    end
+  end
+
+  def set_memberships_email
+    if email_previously_changed?
+      memberships.where.not(user_email: email).update(user_email: email)
     end
   end
 
