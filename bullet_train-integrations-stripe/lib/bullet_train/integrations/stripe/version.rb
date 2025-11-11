@@ -1,7 +1,7 @@
 module BulletTrain
   module Integrations
     module Stripe
-      VERSION = "1.35.0"
+      VERSION = "1.36.0"
     end
   end
 end
