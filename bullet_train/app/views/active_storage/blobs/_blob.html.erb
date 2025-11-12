@@ -1,5 +1,9 @@
 <figure class="attachment attachment--<%= blob.representable? ? "preview" : "file" %> attachment--<%= blob.filename.extension %>">
-  <% if blob.representable? %>
+  <% if blob.video? %>
+    <video controls width="<%= local_assigns[:in_gallery] ? 800 : 1024 %>" preload="metadata" class="max-w-full h-auto rounded-md">
+      <source src="<%= rails_blob_url(blob) %>" type="<%= blob.content_type %>">
+    </video>
+  <% elsif blob.representable? %>
     <%
       # loader_options are passed through to lib-vips: https://www.libvips.org/API/current/ctor.Image.gifload.html
       # By default the loader uses page = 1, and n = 1 to pick just the first "page" (aka frame) of a GIF.
