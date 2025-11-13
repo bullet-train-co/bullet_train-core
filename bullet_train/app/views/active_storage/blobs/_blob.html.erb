@@ -1,13 +1,10 @@
 <figure class="attachment attachment--<%= blob.representable? ? "preview" : "file" %> attachment--<%= blob.filename.extension %>">
   <% if blob.video? %>
-    <video controls width="<%= local_assigns[:in_gallery] ? 800 : 1024 %>" preload="metadata" class="max-w-full h-auto rounded-md">
+    <video controls width="<%= local_assigns[:in_gallery] ? 800 : 1024 %>" preload="metadata" class="max-w-full h-auto rounded-md"
+      poster="<%= url_for(blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ])) %>"
+    >
       <source src="<%= rails_blob_url(blob) %>" type="<%= blob.content_type %>">
     </video>
-    <%
-      # This next thing kind of sucks, but seems necessary. If we don't force an image representation to be created after a record
-      # is saved then when you edit the record we show a broken image link instead of a good one in the editor.
-    %>
-    <%= image_tag blob.representation(resize_to_limit: local_assigns[:in_gallery] ? [ 800, 600 ] : [ 1024, 768 ]), class: 'hidden' %>
   <% elsif blob.representable? %>
     <%
       # loader_options are passed through to lib-vips: https://www.libvips.org/API/current/ctor.Image.gifload.html
