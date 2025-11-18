@@ -25,12 +25,19 @@ module Api::Controllers::SuperSelectable
     
     return unless label_column # Skip search if no label attribute is defined
     
-    # Apply a loose search using ILIKE (PostgreSQL) or LIKE (other databases)
-    search_term = "%#{params[:search]}%"
-    if collection.connection.adapter_name.downcase.include?("postgres")
-      self.collection = collection.where("#{label_column}::text ILIKE ?", search_term)
+    # Check if this is an ActiveHash model
+    if collection.model < ActiveHash::Base
+      # ActiveHash uses regex-based searching
+      search_pattern = /#{Regexp.escape(params[:search])}/i
+      self.collection = collection.where(label_column => search_pattern)
     else
-      self.collection = collection.where("#{label_column} LIKE ?", search_term)
+      # Apply a loose search using ILIKE (PostgreSQL) or LIKE (other databases)
+      search_term = "%#{params[:search]}%"
+      if collection.connection.adapter_name.downcase.include?("postgres")
+        self.collection = collection.where("#{label_column}::text ILIKE ?", search_term)
+      else
+        self.collection = collection.where("#{label_column} LIKE ?", search_term)
+      end
     end
   end
 
