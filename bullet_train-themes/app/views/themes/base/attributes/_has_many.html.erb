@@ -3,10 +3,11 @@
 <% link_source ||= nil %>
 <% disable_links ||= false %>
 <% link_options ||= {} %>
+<% html_options ||= {} %>
 <% label_string_method ||= :label_string %>
 
 <% if object.public_send(attribute).any? %>
-  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy do %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, html_options: html_options do %>
     <%= object.public_send(attribute).map do |child_object| %>
       <% label_string = child_object.public_send(label_string_method) %>
 
