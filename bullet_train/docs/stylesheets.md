@@ -14,3 +14,7 @@ You can eject only the theme files you wish to override or you can eject the who
 To add your own custom CSS, add to the `app/assets/stylesheets/application.css` file found in your app. In this file, you'll be able to use Tailwind `@apply` directives and add `@import` statements to include the CSS from third-party `npm` packages.
 
 For further modifications to the theme's style sheet (for example, to change the order in which base Tailwind stylesheets are included), you can eject the theme's css by using the command `rake bullet_train:themes:light:eject_css`.
+
+## Using Custom Fonts
+
+For information on customizing fonts in your application, see the [Customizing Fonts](/docs/themes.md#customizing-fonts) section in the Themes documentation.
