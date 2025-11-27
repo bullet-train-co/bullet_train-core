@@ -52,6 +52,52 @@ themeConfig.theme.extend.colors = ({colors}) => ({
 Here you need to include `primary` and `secondary` as well as `base`. The settings in `tailwind.config.js` will **mostly** clobber the settings
 in `theme.rb`, but not entirely. So for the best results you should make sure that those two files agree about the primary and secondary colors.
 
+## Customizing Fonts
+
+By default, Bullet Train uses [Inter](https://rsms.me/inter/) as its font family. You can customize this to use your own fonts.
+
+### Removing the Default Font
+
+To remove the default Inter font, which appears as a stylesheet `<link>` tag in the `<head>`, you'll need to eject the `shared/layouts/head/_fonts.html.erb` partial locally and modify or remove the link tag. To eject this partial, use `bin/resolve shared/layouts/head/fonts --eject` (see [Dealing with Indirection](#dealing-with-indirection) below for more details).
+
+Once ejected to `app/views/themes/light/layouts/head/_fonts.html.erb` (or your custom theme directory), you can remove the stylesheet `<link>` tag.
+
+### Adding a Custom Font
+
+To add your own custom fonts, hosted locally:
+
+_Note: if you'd like to use a CDN-hosted font different than `inter`, you can replace the stylesheet `<link>` tag for inter found in the head (see Removing the Default Font above) and skip to step 3 below on updating the Tailwind config._
+
+1. **Add font files** to your application's `app/assets/fonts/` directory.
+
+2. **Add `@font-face` rules** in your `app/assets/stylesheets/application.css` file:
+
+```css
+@font-face {
+  font-family: 'YourFontName';
+  src: url('YourFontFile.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+```
+
+Note: When you use `url('FontFileName.woff2')`, Propshaft will automatically replace it with a full fingerprinted public path to the font file.
+
+3. **Update `tailwind.config.js`** to use your custom font in the Tailwind configuration:
+
+```javascript
+const defaultTheme = require('tailwindcss/defaultTheme')
+
+// ... existing config ...
+
+themeConfig.theme.extend.fontFamily.sans = [
+  'YourFontName',
+  ...defaultTheme.fontFamily.sans,
+]
+```
+
+This configuration sets your custom font as the primary sans-serif font while keeping the default system font stack as fallbacks.
+
 ## The Theme Subsystem
 
 Bullet Train has a theme subsystem designed to allow you the flexibility to either extend or completely replace the stock “Light” UI theme.
