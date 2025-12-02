@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag 'https://rsms.me/inter/inter.css', media: 'all', 'data-turbo-track': 'reload' %>
+<%= render 'shared/layouts/head/fonts' %>
 <link href="<%= image_path('logo/favicon.png') %>" rel="shortcut icon" />
 <link href="<%= image_path('logo/icon.png') %>" rel="apple-touch-icon" />
 <%= render 'shared/layouts/head/color_scheme_preference' unless BulletTrain::Themes::Light.force_color_scheme_to.presence %>
