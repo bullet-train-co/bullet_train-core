@@ -2,10 +2,10 @@
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
 <% options ||= {} %>
-<% html_options ||= {} %>
+<% link_html_options ||= {} %>
 
 <% if object.public_send(attribute).present? %>
-  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url, html_options: html_options do %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url, link_html_options: link_html_options do %>
     <%= options[:password] ? "●" * object.public_send(attribute).length : object.public_send(attribute) %>
   <% end %>
 <% end %>
