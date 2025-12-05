@@ -1,9 +1,10 @@
 <% object ||= current_attributes_object %>
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
+<% link_html_options ||= {} %>
 
 <% if object.public_send(attribute).any? %>
-  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url, link_html_options: link_html_options do %>
     <%# TODO: Multiple option partials return arrays with blank characters in them. Is this expected? %>
     <%= object.public_send(attribute).reject(&:blank?).map do |value| %>
       <% t("#{object.class.name.underscore.pluralize}.fields.#{attribute}.options.#{value}") %>

@@ -1,7 +1,8 @@
 <% url ||= nil %>
 <% strategy ||= current_attributes_strategy || :none %>
+<% link_html_options ||= {} %>
 
-<% body = link_to_if url.present?, partial.body, url %>
+<% body = link_to_if url.present?, partial.body, url, link_html_options %>
 
 <% case strategy %>
 <% when :label %>
