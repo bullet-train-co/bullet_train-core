@@ -1,11 +1,12 @@
 <% object ||= current_attributes_object %>
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
+<% link_html_options ||= {} %>
 <% default_message = local_assigns[:default_message] || t("global.not_set") %>
 <% display_when_blank = local_assigns[:display_when_blank] || false %>
 
 <% if !object[attribute].nil? || display_when_blank %>
-  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url, link_html_options: link_html_options do %>
     <% unless object[attribute].nil? %>
       <%= t("#{object.class.name.underscore.pluralize}.fields.#{attribute}.options.#{object.public_send(attribute)}") %>
     <% else %>

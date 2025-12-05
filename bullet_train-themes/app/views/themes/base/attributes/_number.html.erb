@@ -1,13 +1,14 @@
 <% object ||= current_attributes_object %>
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
+<% link_html_options ||= {} %>
 <% format ||= nil %>
 <% format_helper ||= nil %>
 <% format_helper_args ||= {} %>
 <% options ||= {} %>
 
 <% if object.public_send(attribute).present? %>
-  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy do %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, link_html_options: link_html_options do %>
     <% if format %>
       <%= sprintf(format, object.public_send(attribute)) %>
     <% elsif format_helper %>
