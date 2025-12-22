@@ -2,9 +2,10 @@
 <% strategy ||= current_attributes_strategy || :none %>
 <% url ||= nil %>
 <% one_line ||= false %>
+<% link_html_options ||= {} %>
 
 <% if object.send(attribute).present? && !object.send(attribute).all_blank? %>
-  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url do %>
+  <%= render 'shared/attributes/attribute', object: object, attribute: attribute, strategy: strategy, url: url, link_html_options: link_html_options do %>
     <address class="not-italic">
       <%= address_formatted(object.send(attribute), one_line: one_line) %>
     </address>
