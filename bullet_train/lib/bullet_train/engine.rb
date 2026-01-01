@@ -21,5 +21,15 @@ end
 
 module BulletTrain
   class Engine < ::Rails::Engine
+    config.bullet_train = ActiveSupport::OrderedOptions.new
+    config.bullet_train.instrument_callbacks = Rails.env.development? || Rails.env.test?
+
+    initializer "callbacks.instrumentation" do
+      if config.bullet_train.instrument_callbacks
+        config.after_initialize do
+          require_relative "../bullet_train/core_ext/callbacks_instrumentation"
+        end
+      end
+    end
   end
 end
