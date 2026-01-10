@@ -3,6 +3,7 @@ require "scaffolding/file_manipulator"
 
 require "faraday"
 require "tempfile"
+require "fileutils"
 
 namespace :bullet_train do
   namespace :api do
@@ -145,6 +146,35 @@ namespace :bullet_train do
           )
         )
       end
+    end
+
+    desc "Generate static OpenAPI YAML files for all API versions"
+    task generate_static_openapi: :environment do
+      BulletTrain::Api.all_versions.each do |version|
+        version_string = version.to_s
+        dir = "public/api/#{version_string}"
+        FileUtils.mkdir_p(dir)
+
+        output_path = "#{dir}/openapi.yaml"
+
+        puts "Generating OpenAPI schema for #{version_string}..."
+
+        File.open(output_path, "w+") do |f|
+          f.binmode
+          f.write(
+            ApplicationController.renderer.render(
+              template: "api/#{version_string}/open_api/index",
+              layout: false,
+              format: :text,
+              assigns: {version: version_string}
+            )
+          )
+        end
+
+        puts "  ✓ Generated #{output_path}"
+      end
+
+      puts "\nSuccessfully generated OpenAPI schemas for #{BulletTrain::Api.all_versions.count} version(s)"
     end
 
     desc "Create `api_title` and `api_description` translations"
