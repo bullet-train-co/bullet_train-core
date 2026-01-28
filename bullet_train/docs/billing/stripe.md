@@ -201,7 +201,7 @@ basic:
 
 Each root level entry (i.e. `free` and `basic`) are the types of subscriptions that will be available to your customers. Each subscription has the following:
 
-  - `price`: A unique identifer for this price
+  - `price`: A unique identifier for this price
   - `image`: The product image from `assets/images/products` that is presented to the buyer from the new subscription page
   - `limits`: The resource constraints on what a user can do on this subscription. To learn more, refer to [Bullet Train Usage Limits](/docs/billing/usage.md)
   - `prices`: The list of pricing options for this product, where each price will have the following:
@@ -251,7 +251,6 @@ Subscription translations can be retrieved directly [from github](https://github
 `curl -o config/locales/en/billing/subscriptions.en.yml https://raw.githubusercontent.com/bullet-train-pro/bullet_train-billing/refs/heads/main/config/locales/en/billing/subscriptions.en.yml`
 ```
 
-
 ## 9. Rinse and Repeat Configuration Steps for Production
 
 As mentioned earlier, all of the links we provided for configuration steps on Stripe were linked to the "test mode" on your Stripe account. When you're ready to launch payments in production, you will need to:
@@ -261,8 +260,34 @@ As mentioned earlier, all of the links we provided for configuration steps on St
  - Run `STRIPE_SECRET_KEY=... rake billing:stripe:populate_products_in_stripe` (where `...` is your live secret key) in order to create live versions of your products and prices.
  - Copy the environment variables output by that rake task into your production environment.
  - Configure a live version of your webhooks endpoint for the production environment by following the same steps as before, but replacing the ngrok host with your production host in the endpoint URL.
- - After creating the live webhooks endpoint, configure the corresponding signing secret as the `STRIPE_WEBHOOKS_ENDPOINT_SECRET` enviornment variable in your production environment.
+ - After creating the live webhooks endpoint, configure the corresponding signing secret as the `STRIPE_WEBHOOKS_ENDPOINT_SECRET` environment variable in your production environment.
 
-## 10. You should be done!
+## 10. Allow Customers to Purchase a Subscription as a Business
+
+Some of your customers may be businesses that need to be invoiced under their business name and tax ID rather than a personal name. Stripe Checkout supports [collecting tax IDs](https://docs.stripe.com/tax/checkout/tax-ids?payment-ui=stripe-hosted) during the subscription purchase flow, and this feature is enabled by default in Bullet Train.
+
+When tax ID collection is enabled:
+
+- Customers in supported regions will see a checkbox to indicate they're purchasing as a business
+- When checked, Checkout displays fields for entering a tax ID and legal business name
+- The tax ID and business name are automatically saved to the Stripe Customer object
+- The business name appears on invoices generated for that customer
+- If you use Stripe Tax, providing a valid tax ID can result in reverse charge or zero-rate tax application according to applicable laws
+
+**Note:** Checkout only collects tax IDs for customers that don't already have one. If a customer already has a tax ID saved, the form won't appear even if tax ID collection is enabled.
+
+### 10.1. Allow Customers to Update their Tax Information
+
+While tax ID collection during checkout is enabled by default, you can also allow customers to add or update their tax information and business name through the customer portal (which you configured in [section 7](#7-configure-stripe-billings-customer-portal)):
+
+  - Visit https://dashboard.stripe.com/test/settings/billing/portal
+  - Under the "Customer Information" section turn on:
+    - Tax ID
+
+This enables customers to add or update their tax ID and business name after their initial subscription purchase.
+
+**Note:** When you configure this for production, you'll need to repeat this step in your live Stripe account's customer portal settings.
+
+## 11. You should be done!
 
 [Let us know on Discord](https://discord.gg/gmfybM8kA6) if any part of this guide was not clear or could be improved!
