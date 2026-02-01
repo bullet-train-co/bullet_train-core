@@ -4,10 +4,22 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <title>Welcome to <%= t('application.name') %>!</title>
 
-    <%= stylesheet_link_tag 'application.mailer.light', media: 'all' %>
-
-    <% # TODO: Find out why Tailwind colors aren't working properly. %>
+    <% # Tailwind stylesheet disabled for v4 - CSS variables and modern features not supported by email clients %>
+    <% # Using inline styles instead for email compatibility %>
     <style type="text/css">
+      /* Tailwind utility replacements for email compatibility */
+      .w-full { width: 100%; }
+      .m-0 { margin: 0; }
+      .m-auto { margin: auto; }
+      .p-0 { padding: 0; }
+      .p-6 { padding: 24px; }
+      .p-9 { padding: 36px; }
+      .mt-6 { margin-top: 24px; }
+      .pt-6 { padding-top: 24px; }
+      .text-center { text-align: center; }
+      .text-base { font-size: 16px; }
+      .text-xs { font-size: 13px; }
+      .no-underline { text-decoration: none; }
       *:not(br):not(tr):not(html) {
         font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
         box-sizing: border-box;
