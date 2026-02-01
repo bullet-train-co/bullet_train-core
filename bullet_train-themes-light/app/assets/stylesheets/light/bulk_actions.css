@@ -1,6 +1,6 @@
 @layer components {
   .bulk-action-unavailable {
-    @apply hidden !important;
+    @apply hidden!;
   }
 
   .bulk-actions-selectable-item-checkbox-wrapper {

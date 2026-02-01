@@ -11,7 +11,7 @@
         @apply text-base-300 border border-solid border-base-900 bg-base-800;
 
         &:focus {
-          box-shadow: 0 0 0 1px theme('colors.primary.500'), 0 0 0 3px theme('colors.primary.500');
+          box-shadow: 0 0 0 1px var(--color-primary-500), 0 0 0 3px var(--color-primary-500);
         }
       }
     }
@@ -21,11 +21,11 @@
       @apply bg-base-800 border-base-900;
 
       &::before {
-        border-bottom-color: theme('colors.base.900');
+        border-bottom-color: var(--color-base-900);
       }
 
       &::after {
-        border-bottom-color: theme('colors.base.800');
+        border-bottom-color: var(--color-base-800);
       }
 
       .calendar-table {
@@ -41,7 +41,7 @@
 
       /* Clear and Apply buttons wrapper */
       .drp-buttons {
-        border-top-color: theme('colors.base.900');
+        border-top-color: var(--color-base-900);
         @apply text-base-300;
       }
 
@@ -62,7 +62,7 @@
       }
 
       .hourselect, .minuteselect, .ampmselect {
-        @apply text-base-300 border-base-900 bg-base-800 !important;
+        @apply text-base-300! border-base-900! bg-base-800!;
       }
     }
 
@@ -74,7 +74,7 @@
     /* Select2 */
     .select2-container {
       .select2-selection__rendered {
-        @apply text-base-300 !important;
+        @apply text-base-300!;
       }
 
       .select2-dropdown {
@@ -82,17 +82,17 @@
       }
 
       .select2-search__field {
-        @apply bg-base-800 border-base-900 !important;
+        @apply bg-base-800! border-base-900!;
       }
 
       .select2-selection--multiple, .select2-selection--single {
-        @apply bg-base-800 focus:ring-primary-500 border-base-900 !important;
+        @apply bg-base-800! focus:ring-primary-500! border-base-900!;
         @apply text-base-300;
       }
 
       /* For the selected options in the multiple select2 component */
       .select2-selection__choice {
-        @apply bg-primary-500 border-primary-500 !important;
+        @apply bg-primary-500! border-primary-500!;
         @apply text-white;
 
         .select2-selection__choice__remove {
@@ -111,22 +111,22 @@
 
     /* Trix Editor */
     trix-editor {
-      @apply bg-base-800 border-base-900 !important;
+      @apply bg-base-800! border-base-900!;
 
       &:focus, &:active {
-        @apply border-primary-500 !important;
+        @apply border-primary-500!;
       }
     }
 
     trix-toolbar {
-      @apply opacity-50 !important;
+      @apply opacity-50!;
 
       &.visible {
-        @apply opacity-100 !important;
+        @apply opacity-100!;
       }
 
       .trix-button-group, .trix-button {
-        @apply border-base-400 !important;
+        @apply border-base-400!;
       }
 
       .trix-button:disabled::before {
@@ -134,7 +134,7 @@
       }
 
       .trix-dialog {
-        @apply bg-base-800 border-base-900 shadow-lg shadow-base-900 !important;
+        @apply bg-base-800! border-base-900! shadow-lg! shadow-base-900!;
 
         .trix-button--dialog {
           @apply text-white;
@@ -148,12 +148,12 @@
 
     .tribute-container {
       ul {
-        @apply bg-base-800 border-base-900 !important;
+        @apply bg-base-800! border-base-900!;
       }
     }
 
     .trix-dialogs {
-      @apply bg-base-800 border-base-900 !important;
+      @apply bg-base-800! border-base-900!;
     }
 
     .trix-content a[href^="bullettrain://"] {
@@ -162,11 +162,11 @@
 
     /* CKEditor */
     .ck {
-      --ck-color-base-background: theme('colors.base.800');
-      --ck-color-base-border: theme('colors.base.900');
-      --ck-color-toolbar-background: theme('colors.base.800');
-      --ck-color-toolbar-border: theme('colors.base.900');
-      --ck-color-text: theme('colors.base.300');
+      --ck-color-base-background: var(--color-base-800);
+      --ck-color-base-border: var(--color-base-900);
+      --ck-color-toolbar-background: var(--color-base-800);
+      --ck-color-toolbar-border: var(--color-base-900);
+      --ck-color-text: var(--color-base-300);
 
       .ck-editor__editable:not(.ck-editor__nested-editable) {
         @apply shadow-none;

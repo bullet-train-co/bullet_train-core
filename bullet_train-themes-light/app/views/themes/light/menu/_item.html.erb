@@ -2,7 +2,7 @@
 <% active ||= request.path == url %>
 
 <%= send (method ? :button_to : :link_to), url, class: "block group/item hover:text-white hover:no-underline #{'bg-primary-900 dark:bg-black/10' if active} text-white #{@menu_orientation == :top ? "px-5 py-5" : "px-3 py-2 rounded-md"} #{"rounded-tl-lg" unless @not_first || BulletTrain::Themes::Light.show_logo_in_account} dark:text-white", data: {"desktop-menu-target": "menuItemLink"}, tabIndex: 0, method: method do %>
-  <div class="inline-block <%= "transition group-hover/item:translate-x-3 duration-200" if @menu_orientation == :side %> flex items-center">
+  <div class="inline-flex <%= "transition group-hover/item:translate-x-3 duration-200" if @menu_orientation == :side %> items-center">
     <!-- Heroicon name: home -->
     <% if partial.icon? %>
       <span class="mr-3 h-6 w-6 text-center text-secondary-300 text-xl leading-6 dark:text-base-400">

@@ -8,7 +8,7 @@
   }
 
   .buttons {
-    @apply space-x;
+    @apply space-x-3;
   }
 
   .button {
@@ -50,8 +50,10 @@
   }
 
   .button-color {
-    @apply button;
-    @apply rounded-full;
+    @apply shadow-sm text-white hover:text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 hover:no-underline;
+    @apply dark:ring-offset-base-700;
+    @apply py-2 px-4 border border-transparent rounded-full;
+    @apply inline-flex items-center whitespace-nowrap;
   }
 
   .btn-toggle {
@@ -59,7 +61,10 @@
       display: none;
       &:checked {
         & + button {
-          @apply button;
+          @apply shadow-sm text-white hover:text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 hover:no-underline;
+          @apply dark:ring-offset-base-700;
+          @apply py-2 px-4 border border-transparent rounded-md;
+          @apply inline-flex items-center whitespace-nowrap;
         }
       }
     }
@@ -68,7 +73,7 @@
       input[type=checkbox], input[type=radio] {
         &:checked {
           & + button {
-            @apply ring ring-offset-2 rounded-full;
+            @apply ring-3 ring-offset-2 rounded-full;
           }
         }
       }
@@ -110,7 +115,7 @@
     }
 
     .buttons {
-      @apply pt-1 space-x;
+      @apply pt-1 space-x-3;
     }
   }
 
@@ -178,10 +183,14 @@
     @apply flex space-x-1;
 
     a:not(.gap) {
-      @apply button-alternative;
+      @apply border-base-300 rounded-md shadow-sm bg-white text-base-500 hover:bg-base-50 no-underline hover:no-underline;
+      @apply dark:bg-base-800 dark:border-base-900 dark:text-white dark:hover:bg-base-700;
+      @apply py-2 px-4 border border-transparent rounded-md;
+      @apply inline-flex items-center whitespace-nowrap;
 
       &:not([href]) { /* disabled links (aka: the current page) */
-        @apply button;
+        @apply shadow-sm text-white hover:text-white bg-primary-500 hover:bg-primary-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-primary-600 hover:no-underline;
+        @apply dark:ring-offset-base-700;
 
         &:not([aria-current]){ /* the prev link when on first page, next link when on last page */
           @apply hidden;

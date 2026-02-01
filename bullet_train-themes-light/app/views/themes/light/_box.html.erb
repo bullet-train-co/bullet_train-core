@@ -9,7 +9,7 @@
 
 <div class="<%= "bg-white rounded-md shadow dark:bg-base-700/50" unless no_background %> <%= "overflow-hidden" if overflow_hidden %> <%= border_top ? "border-t dark:border-base-500" : "" %>">
   <% if partial.title? || partial.description? %>
-    <div class="py-6 px-8 <%= title_padding %> space-y-2 <%= 'border-b shadow-sm dark:border-base-600' if divider %>">
+    <div class="py-6 px-8 <%= title_padding %> space-y-2 <%= 'border-b border-base-200 shadow-xs dark:border-base-600' if divider %>">
       <% if partial.title? %>
         <h2 class="text-xl font-semibold dark:text-white <%= title_size %>">
           <%= partial.title %>

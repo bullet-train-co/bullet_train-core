@@ -12,7 +12,7 @@ trix-toolbar {
 /* Override Tailwind's preflight styles */
 /* https://github.com/tailwindlabs/tailwindcss/issues/989#issuecomment-506555308 */
 .trix-button {
-  @apply dark:bg-base-800 !important;
+  @apply dark:bg-base-800!;
 }
 
 /* Prevent red ring on Trix Editor */
