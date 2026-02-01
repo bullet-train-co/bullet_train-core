@@ -2,24 +2,26 @@
 @import "./utilities/billing";
 @import "./utilities/scroll-reveal";
 
-@layer utilities {
-  .space-y {
-    @apply space-y-5;
+@utility space-y {
+  & > :not(:first-child) {
+    margin-top: calc(var(--spacing) * 5);
   }
+}
 
-  .space-x {
-    @apply space-x-3;
+@utility space-x {
+  & > :not(:first-child) {
+    margin-left: calc(var(--spacing) * 3);
   }
+}
 
-  .gap-y {
-    @apply gap-y-5;
-  }
+@utility gap-y {
+  row-gap: calc(var(--spacing) * 5);
+}
 
-  .gap-x {
-    @apply gap-x-4;
-  }
- 
-  [hidden] {
-    display: none !important;
-  }
+@utility gap-x {
+  column-gap: calc(var(--spacing) * 4);
+}
+
+[hidden] {
+  display: none !important;
 }

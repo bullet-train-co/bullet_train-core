@@ -1,12 +1,12 @@
 .theme-secondary-zinc {
-  --secondary-50: theme('colors.zinc.50');
-  --secondary-100: theme('colors.zinc.100');
-  --secondary-200: theme('colors.zinc.200');
-  --secondary-300: theme('colors.zinc.300');
-  --secondary-400: theme('colors.zinc.400');
-  --secondary-500: theme('colors.zinc.500');
-  --secondary-600: theme('colors.zinc.600');
-  --secondary-700: theme('colors.zinc.700');
-  --secondary-800: theme('colors.zinc.800');
-  --secondary-900: theme('colors.zinc.900');
+  --secondary-50: var(--color-zinc-50);
+  --secondary-100: var(--color-zinc-100);
+  --secondary-200: var(--color-zinc-200);
+  --secondary-300: var(--color-zinc-300);
+  --secondary-400: var(--color-zinc-400);
+  --secondary-500: var(--color-zinc-500);
+  --secondary-600: var(--color-zinc-600);
+  --secondary-700: var(--color-zinc-700);
+  --secondary-800: var(--color-zinc-800);
+  --secondary-900: var(--color-zinc-900);
 }

@@ -1,8 +1,67 @@
-/*
- * This is an extra level of indirection because for some reason using @tailwind directives directly inside this file doesn't work.
- * When we move to v4 we should be able to just to `@import "tailwindcss"` here.
- */
-@import "tailwindcss_import";
+@import "tailwindcss";
 
-@import "$ThemeStylesheetsDir/application.css"; /* alias used to support ejecting the file to local */
+@source "../../../../../../config/initializers/theme.rb";
+@source "../../../../../../app/views/**/*.html.{erb,slim,haml}";
+@source "../../../../../../app/helpers/**/*.rb";
+@source "../../../../../../app/assets/stylesheets/**/*.css";
+@source "../../../../../../app/javascript/**/*.js";
+@source "../../../../../../tmp/gems/*/app/views/**/*.html.erb";
+@source "../../../../../../tmp/gems/*/app/helpers/**/*.rb";
+@source "../../../../../../tmp/gems/*/app/assets/stylesheets/**/*.css";
+@source "../../../../../../tmp/gems/*/app/javascript/**/*.js";
 
+@plugin "@tailwindcss/forms";
+@plugin "@tailwindcss/typography";
+
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --font-sans: "Inter var", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --text-xs: 0.81rem;
+  --text-xs--line-height: 1.25rem;
+
+  --text-2xs: 0.65rem;
+  --text-2xs--line-height: 0.9rem;
+  --text-2xs--letter-spacing: 1px;
+}
+
+/* Use @theme inline for colors that reference CSS variables (for dynamic theming) */
+@theme inline {
+  --color-primary-50: var(--primary-50);
+  --color-primary-100: var(--primary-100);
+  --color-primary-200: var(--primary-200);
+  --color-primary-300: var(--primary-300);
+  --color-primary-400: var(--primary-400);
+  --color-primary-500: var(--primary-500);
+  --color-primary-600: var(--primary-600);
+  --color-primary-700: var(--primary-700);
+  --color-primary-800: var(--primary-800);
+  --color-primary-900: var(--primary-900);
+
+  --color-secondary-50: var(--secondary-50);
+  --color-secondary-100: var(--secondary-100);
+  --color-secondary-200: var(--secondary-200);
+  --color-secondary-300: var(--secondary-300);
+  --color-secondary-400: var(--secondary-400);
+  --color-secondary-500: var(--secondary-500);
+  --color-secondary-600: var(--secondary-600);
+  --color-secondary-700: var(--secondary-700);
+  --color-secondary-800: var(--secondary-800);
+  --color-secondary-900: var(--secondary-900);
+
+  --color-base-50: var(--color-slate-50);
+  --color-base-100: var(--color-slate-100);
+  --color-base-200: var(--color-slate-200);
+  --color-base-300: var(--color-slate-300);
+  --color-base-400: var(--color-slate-400);
+  --color-base-500: var(--color-slate-500);
+  --color-base-600: var(--color-slate-600);
+  --color-base-700: var(--color-slate-700);
+  --color-base-800: var(--color-slate-800);
+  --color-base-900: var(--color-slate-900);
+  --color-base-950: var(--color-slate-950);
+}
+
+/* Theme's application styles - uses Tailwind's native import handling */
+@import "./light/application.css";

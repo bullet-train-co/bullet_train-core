@@ -41,7 +41,7 @@
 }
 
 .select2-results__option--highlighted {
-  @apply bg-primary-400 !important;
+  @apply bg-primary-400!;
 }
 
 @layer components {
@@ -50,7 +50,7 @@
   }
 
   .select2-border {
-    @apply border-primary-500 !important;
+    @apply border-primary-500!;
     box-shadow: inset 0 0 0 1px var(--primary-500) !important;
     outline: 0 !important;
   }
@@ -62,10 +62,12 @@
 
   .select2-selection--single, .select2-selection--multiple {
     @apply border-base-300;
-    @apply rounded-md shadow-sm pt-0 focus:ring-primary-500 !important;
+    @apply rounded-md! shadow-sm! pt-0! focus:ring-primary-500!;
 
     &.focus-visible {
-      @apply select2-border !important;
+      @apply border-primary-500!;
+      box-shadow: inset 0 0 0 1px var(--primary-500) !important;
+      outline: 0 !important;
     }
 
     &:focus {
@@ -77,7 +79,7 @@
     }
 
     .select2-selection__rendered {
-      @apply text-base-500 pl-3 !important;
+      @apply text-base-500! pl-3!;
       line-height: 35px !important;
     }
   }
@@ -89,7 +91,9 @@
 
   .select2-container--open, .select2-container--focus {
     .select2-selection--single, .select2-selection--multiple {
-      @apply select2-border !important;
+      @apply border-primary-500!;
+      box-shadow: inset 0 0 0 1px var(--primary-500) !important;
+      outline: 0 !important;
     }
   }
 
@@ -99,21 +103,21 @@
   }
 
   .select2-container .select2-dropdown {
-    @apply border-2 border-base-300 shadow-sm overflow-hidden !important;
-    @apply border-primary-500 !important;
+    @apply border-2! border-base-300! shadow-sm! overflow-hidden!;
+    @apply border-primary-500!;
   }
 
   .select2-container--default .select2-results__option[aria-selected=true] {
-    @apply text-white bg-primary-500 !important;
+    @apply text-white! bg-primary-500!;
   }
 
   .select2-search__field {
     @apply rounded-md;
-    @apply border-base-300 !important;
+    @apply border-base-300!;
 
     &:focus {
-      @apply border-primary-500 !important;
-      @apply ring-primary-500 !important;
+      @apply border-primary-500!;
+      @apply ring-primary-500!;
     }
   }
 }

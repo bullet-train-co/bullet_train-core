@@ -8,12 +8,12 @@
   .daterangepicker {
     .hourselect, .minuteselect, .ampmselect {
       @apply rounded-md shadow-sm focus:ring-primary-500 font-light;
-      @apply border-base-300 focus:border-primary-500 bg-white !important;
+      @apply border-base-300! focus:border-primary-500! bg-white!;
       text-align-last: center;
     }
 
     .calendar-table .active {
-      @apply bg-primary-500 !important;
+      @apply bg-primary-500!;
     }
   }
 }
