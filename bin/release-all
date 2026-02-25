@@ -71,6 +71,7 @@ class CoreBumpCLI < Thor
         puts "releasing npm package: #{package}"
         Dir.chdir "./#{package}"
 
+        puts `corepack enable`
         puts `yarn`
         puts `yarn build`
         puts output = `yarn pack`

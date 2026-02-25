@@ -64,5 +64,5 @@
     "trix": "^2.0.1",
     "zxcvbn": "^4.4.2"
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@4.2.2"
 }

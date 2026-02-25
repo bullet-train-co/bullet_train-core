@@ -52,5 +52,5 @@
     "@domchristie/turn": "^3.1.1",
     "@hotwired/stimulus": "^3.0.1"
   },
-  "packageManager": "yarn@1.22.22"
+  "packageManager": "yarn@4.2.2"
 }
