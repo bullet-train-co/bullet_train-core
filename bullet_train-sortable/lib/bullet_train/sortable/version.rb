@@ -1,5 +1,5 @@
 module BulletTrain
   module Sortable
-    VERSION = "1.40.6"
+    VERSION = "1.40.7"
   end
 end
