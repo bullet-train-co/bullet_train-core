@@ -2,6 +2,6 @@
 
 module BulletTrain
   module ScopeValidator
-    VERSION = "1.40.3"
+    VERSION = "1.40.4"
   end
 end
