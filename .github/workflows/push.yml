@@ -4,6 +4,11 @@ on:
   workflow_call:
   workflow_dispatch:
 
+# This allows the workflow to generate OIDC "trusted publisher" tokens for npmjs.com
+# https://docs.npmjs.com/trusted-publishers
+permissions:
+  id-token: write
+
 jobs:
   push:
     runs-on: ubuntu-latest
