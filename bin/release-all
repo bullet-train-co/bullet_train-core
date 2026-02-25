@@ -78,7 +78,7 @@ class CoreBumpCLI < Thor
         npm_file = output.chomp.lines[1].split("/").last.split("\"").first
         puts "Built npm file: #{npm_file}"
 
-        puts output = `yarn publish #{npm_file} --new-version #{@version}`
+        puts output = `yarn npm publish --access public`
 
         File.delete(npm_file)
 
