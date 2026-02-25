@@ -12,3 +12,15 @@ node_modules
 app/assets/javascripts/
 *.tgz
 *.gem
+
+# The non-zero-installs set of ignores for yarn.
+# https://yarnpkg.com/getting-started/qa#which-files-should-be-gitignored
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+

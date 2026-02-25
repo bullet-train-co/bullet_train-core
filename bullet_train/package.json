@@ -13,7 +13,6 @@
   "watch": {
     "update-local-installs": "app/javascript/**/*.js"
   },
-  "private": false,
   "repository": "https://github.com/bullet-train-co/bullet_train",
   "scripts": {
     "prebuild": "$npm_execpath run clean",

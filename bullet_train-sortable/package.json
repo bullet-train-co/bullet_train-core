@@ -14,7 +14,6 @@
     "update-local-installs": "app/javascript/**/*.js"
   },
   "repository": "https://github.com/bullet-train-co/bullet_train-sortable",
-  "private": false,
   "scripts": {
     "prebuild": "$npm_execpath run clean",
     "build": "microbundle",
