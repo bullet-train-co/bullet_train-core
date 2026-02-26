@@ -19,7 +19,7 @@
   },
   "scripts": {
     "prebuild": "$npm_execpath run clean",
-    "build": "microbundle",
+    "build": "yarn prebuild && microbundle",
     "clean": "rimraf app/assets/javascripts",
     "prewatch": "$npm_execpath run update-local-installs",
     "watch": "npm-watch",

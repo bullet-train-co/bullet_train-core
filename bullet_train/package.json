@@ -19,7 +19,7 @@
   },
   "scripts": {
     "prebuild": "$npm_execpath run clean",
-    "build": "microbundle -i app/javascript/index.js -o app/assets/javascripts/bullet-train.js --no-pkg-main -f esm",
+    "build": "yarn prebuild && microbundle -i app/javascript/index.js -o app/assets/javascripts/bullet-train.js --no-pkg-main -f esm",
     "clean": "rimraf app/assets/javascripts",
     "prewatch": "$npm_execpath run update-local-installs",
     "watch": "npm-watch",
