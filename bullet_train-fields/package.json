@@ -13,6 +13,10 @@
   "watch": {
     "update-local-installs": "app/javascript/**/*.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bullet-train-co/bullet_train-core"
+  },
   "scripts": {
     "prebuild": "$npm_execpath run clean; $npm_execpath run mkdir:app-assets-javascripts; $npm_execpath run copy:intl-tel-input-utils",
     "build": "microbundle",

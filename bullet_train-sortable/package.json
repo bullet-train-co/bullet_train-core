@@ -13,7 +13,10 @@
   "watch": {
     "update-local-installs": "app/javascript/**/*.js"
   },
-  "repository": "https://github.com/bullet-train-co/bullet_train-sortable",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bullet-train-co/bullet_train-core"
+  },
   "scripts": {
     "prebuild": "$npm_execpath run clean",
     "build": "microbundle",
