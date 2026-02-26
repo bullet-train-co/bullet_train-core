@@ -77,7 +77,7 @@ class CoreBumpCLI < Thor
         puts output = `yarn pack`
 
         #puts output = `yarn npm publish --access public`
-        puts output = `npm publish --access public`
+        puts output = `npm publish --provenance --access public`
 
         Dir.chdir ".."
       end
