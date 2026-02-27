@@ -22,7 +22,7 @@ Gem::Specification.new do |spec|
     Dir["{app,config,db,lib}/**/*", "test/controllers/webhooks/incoming/bullet_train_webhooks_controller_test.rb", "MIT-LICENSE", "Rakefile", "README.md"]
   end
 
-  spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "rails", ">= 7.0.0"
   spec.add_dependency "bullet_train-super_scaffolding"
   spec.add_dependency "bullet_train-api"
   spec.add_dependency "bullet_train"

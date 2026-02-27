@@ -33,7 +33,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "standard"
   spec.add_development_dependency "simplecov"
 
-  spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "rails", ">= 7.0.0"
   spec.add_dependency "bullet_train-roles"
   spec.add_dependency "bullet_train-super_load_and_authorize_resource"
   spec.add_dependency "bullet_train-has_uuid"

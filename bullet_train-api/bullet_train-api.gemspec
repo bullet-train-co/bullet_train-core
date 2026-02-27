@@ -37,7 +37,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-super_scaffolding"
   spec.add_dependency "bullet_train"
 
-  spec.add_dependency "rails", ">= 6.0.0"
+  spec.add_dependency "rails", ">= 7.0.0"
   spec.add_dependency "pagy", "~> 9"
   spec.add_dependency "doorkeeper"
   spec.add_dependency "jbuilder-schema", "~> 2.6.6"
