@@ -60,7 +60,7 @@ en:
         api_title: *last_name
         api_description: *last_name
       email:
-        _: &email Email Address
+        _: &email Email
         label: *email
         heading: *email
         api_title: *email
