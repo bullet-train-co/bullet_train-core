@@ -456,7 +456,6 @@ DEPENDENCIES
   bullet_train-themes!
   bullet_train-themes-tailwind_css!
   minitest-reporters
-  rails (= 8.0.4.1)
   simplecov
   sprockets-rails
   sqlite3

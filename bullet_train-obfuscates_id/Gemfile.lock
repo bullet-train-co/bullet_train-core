@@ -224,7 +224,6 @@ PLATFORMS
 DEPENDENCIES
   bullet_train-obfuscates_id!
   minitest-reporters
-  rails (= 8.0.4.1)
   simplecov
   sprockets-rails
   sqlite3

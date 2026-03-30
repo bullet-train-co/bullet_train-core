@@ -471,7 +471,6 @@ DEPENDENCIES
   jbuilder
   minitest-reporters
   pg (~> 1.3)
-  rails (= 8.0.4.1)
   simplecov
   sprockets-rails
   sqlite3

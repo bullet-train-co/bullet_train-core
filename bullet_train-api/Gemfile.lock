@@ -449,7 +449,6 @@ DEPENDENCIES
   bullet_train-themes!
   factory_bot
   minitest-reporters
-  rails (= 8.0.4.1)
   simplecov
   sprockets-rails
   sqlite3

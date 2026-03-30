@@ -260,7 +260,6 @@ DEPENDENCIES
   bullet_train-scope_validator!
   minitest (~> 5.0)
   minitest-reporters
-  rails (= 8.0.4.1)
   rake (~> 13.0)
   simplecov
   standard (~> 1.3)
