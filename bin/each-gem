@@ -6,6 +6,7 @@ class CoreBumpCLI < Thor
   desc "run-command COMMAND", "Loop through each sub-gem and run the command provided."
   # For example:
   # ./bin/each-gem run-command "bundle update rack --conservative"
+  # ./bin/each-gem run-command "yarn up -R tar"
   option :allow_local
   def run_command(command)
     ruby_gems.each do |package|
