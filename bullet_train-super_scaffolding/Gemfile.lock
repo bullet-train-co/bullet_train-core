@@ -67,7 +67,7 @@ PATH
       cable_ready (~> 5.0.0)
       cancancan
       colorize
-      commonmarker (>= 1.0.0)
+      commonmarker (>= 2.7.0)
       devise (~> 5.0)
       devise-pwned_password
       fastimage

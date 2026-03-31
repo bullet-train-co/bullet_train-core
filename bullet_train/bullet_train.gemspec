@@ -69,7 +69,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency "figaro"
 
   # Allow users to supply content with markdown formatting. Powers our markdown() view helper.
-  spec.add_dependency "commonmarker", ">= 1.0.0"
+  spec.add_dependency "commonmarker", ">= 2.7.0"
 
   # Pagination.
   spec.add_runtime_dependency "pagy", "~> 9"
