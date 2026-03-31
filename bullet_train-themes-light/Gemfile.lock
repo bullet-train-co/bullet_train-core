@@ -84,7 +84,7 @@ PATH
       cancancan
       colorize
       commonmarker (>= 1.0.0)
-      devise
+      devise (~> 5.0)
       devise-pwned_password
       fastimage
       figaro
