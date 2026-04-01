@@ -71,8 +71,10 @@
         // update the select2 as well. is there a better way to handle this?
         // why don't _they_ handle this for us?
         var select2 = document.querySelector("#select2-user_time_zone-container");
-        select2.attributes.title = option.text;
-        select2.textContent = option.text;
+        if (select2) {
+          select2.attributes.title = option.text;
+          select2.textContent = option.text;
+        }
       }else{
         console.log('We were unable to find a timezone matching the rails detected value of ', railsValue);
       }
