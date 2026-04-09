@@ -313,7 +313,7 @@ GEM
       prettyprint
     prettyprint (0.2.0)
     prism (1.4.0)
-    psych (5.2.3)
+    psych (5.3.1)
       date
       stringio
     pwned (2.4.1)
