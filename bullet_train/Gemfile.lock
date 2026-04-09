@@ -323,7 +323,9 @@ GEM
     parser (3.3.7.4)
       ast (~> 2.4.1)
       racc
-    pg (1.5.9)
+    pg (1.6.3)
+    pg (1.6.3-arm64-darwin)
+    pg (1.6.3-x86_64-linux)
     phonelib (0.10.6)
     possessive (1.0.1)
     pp (0.6.2)
