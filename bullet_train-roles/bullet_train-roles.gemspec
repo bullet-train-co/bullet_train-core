@@ -30,7 +30,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pg", "~> 1.3"
   spec.add_development_dependency "rails", ">= 7.0.0"
   spec.add_development_dependency "rake", "~> 13.0"
-  spec.add_development_dependency "standard", "~> 1.5.0"
+  spec.add_development_dependency "standard"
   spec.add_development_dependency "simplecov"
 
   spec.add_runtime_dependency "active_hash", "~> 3.3.1"

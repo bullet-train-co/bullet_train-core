@@ -364,7 +364,7 @@ GEM
       tsort (>= 0.2)
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
-    rake (13.2.1)
+    rake (13.3.1)
     rake-compiler-dock (1.11.0)
     rb_sys (0.9.125)
       json (>= 2)
