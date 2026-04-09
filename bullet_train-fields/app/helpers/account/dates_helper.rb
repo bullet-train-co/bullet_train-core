@@ -41,7 +41,7 @@ module Account::DatesHelper
       if local_time(timestamp).to_date == local_time(Time.now).to_date
         "Today at #{display_time(timestamp, custom_time_format)}"
       # yesterday?
-      elsif (local_time(timestamp).to_date) == (local_time(Time.now).to_date - 1.day)
+      elsif local_time(timestamp).to_date == (local_time(Time.now).to_date - 1.day)
         "Yesterday at #{display_time(timestamp, custom_time_format)}"
       else
         "#{display_date(timestamp, custom_date_format)} at #{display_time(timestamp, custom_time_format)}"

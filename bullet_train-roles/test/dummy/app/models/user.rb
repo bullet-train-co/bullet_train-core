@@ -2,6 +2,7 @@
 
 class User < ApplicationRecord
   include Roles::User
+
   belongs_to :current_team, class_name: "Team", optional: true
 
   has_many :memberships, dependent: :destroy

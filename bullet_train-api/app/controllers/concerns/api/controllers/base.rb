@@ -7,6 +7,7 @@ module Api::Controllers::Base
 
   included do
     include ActionController::Helpers
+
     helper ApplicationHelper
 
     include LoadsAndAuthorizesResource

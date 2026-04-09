@@ -21,7 +21,7 @@ module BulletTrain
 
     def self.theme_invocation_path_for(path)
       # Themes only support `<%= render 'shared/box' ... %>` style calls to `render`, so check `path` is a string first.
-      if path.is_a?(String) && (pattern = INVOCATION_PATTERNS.find { _1.match? path })
+      if path.is_a?(String) && (pattern = INVOCATION_PATTERNS.find { it.match? path })
         path.remove(pattern)
       end
     end
@@ -39,7 +39,7 @@ module BulletTrain
           BulletTrain::Themes.partial_paths.fetch(path) do
             if (theme_path = BulletTrain::Themes.theme_invocation_path_for(path))
               # TODO directory_order should probably come from the `Current` model.
-              if (partial = lookup_context.find_all(theme_path, directory_order.map { "themes/#{_1}" }, true, locals.keys).first)
+              if (partial = lookup_context.find_all(theme_path, directory_order.map { "themes/#{it}" }, true, locals.keys).first)
                 resolved_partial = partial.virtual_path.gsub("/_", "/")
                 if Rails.env.development?
                   partial_paths[path] = resolved_partial

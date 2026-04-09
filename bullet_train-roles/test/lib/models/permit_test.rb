@@ -8,6 +8,7 @@ class PermitTest < ActiveSupport::TestCase
     class TestAbility
       include ::CanCan::Ability
       include ::Roles::Permit
+
       def initialize(user)
       end
     end

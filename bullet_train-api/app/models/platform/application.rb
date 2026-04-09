@@ -2,6 +2,7 @@ class Platform::Application < BulletTrain::Api.base_class.constantize
   self.table_name = "oauth_applications"
 
   include Doorkeeper::Orm::ActiveRecord::Mixins::Application
+
   # 🚅 add concerns above.
 
   belongs_to :team, optional: true

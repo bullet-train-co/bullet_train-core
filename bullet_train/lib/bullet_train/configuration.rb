@@ -1,6 +1,7 @@
 module BulletTrain
   class Configuration
     include Singleton
+
     attr_accessor :strong_passwords, :enable_bulk_invitations, :incoming_webhooks_parent_class_name
 
     @@config = nil

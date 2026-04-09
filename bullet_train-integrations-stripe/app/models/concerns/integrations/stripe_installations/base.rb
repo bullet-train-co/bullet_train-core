@@ -1,5 +1,6 @@
 module Integrations::StripeInstallations::Base
   extend ActiveSupport::Concern
+
   # 🚅 add concerns above.
 
   included do

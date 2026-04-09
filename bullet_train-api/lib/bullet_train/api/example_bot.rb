@@ -31,6 +31,7 @@ module FactoryBot
     end
 
     include ::Api::OpenApiHelper
+
     def _path_examples(method, model, **options)
       version = options.delete(:version) || "v1"
 

@@ -5,7 +5,7 @@ require "scaffolding/block_manipulator"
 module Scaffolding::FileManipulator
   def self.find(lines, needle, within = 0)
     lines_within(lines, within).each_with_index do |line, line_number|
-      return (within + (within ? 1 : 0) + line_number) if line.match?(needle)
+      return within + (within ? 1 : 0) + line_number if line.match?(needle)
     end
     nil
   end

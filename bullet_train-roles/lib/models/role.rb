@@ -4,6 +4,7 @@ require "active_hash"
 
 class Role < ActiveYaml::Base
   include ActiveYaml::Aliases
+
   set_root_path "config/models"
   set_filename "roles"
 

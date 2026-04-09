@@ -1,5 +1,6 @@
 module Oauth::StripeAccounts::Base
   extend ActiveSupport::Concern
+
   # 🚅 add concerns above.
 
   included do

@@ -179,7 +179,7 @@ class Scaffolding::RoutesFileManipulator
       end
 
       next if ignore_line
-      return (within + (within ? 1 : 0) + reversed_line_number) if line.match?(needle)
+      return within + (within ? 1 : 0) + reversed_line_number if line.match?(needle)
     end
 
     nil
@@ -204,7 +204,7 @@ class Scaffolding::RoutesFileManipulator
       end
 
       next if ignore_line
-      return (within + (within ? 1 : 0) + line_number) if line.match?(needle)
+      return within + (within ? 1 : 0) + line_number if line.match?(needle)
     end
 
     nil
@@ -214,7 +214,7 @@ class Scaffolding::RoutesFileManipulator
     within = options[:within]
     parts = parts.dup
     resource = parts.pop
-    needle = /resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)? do(\s.*)?$/
+    needle = /resources :#{resource}#{", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" if options[:options]}(,?\s.*)? do(\s.*)?$/
 
     # TODO this doesn't take into account any options like we do in `find_resource`.
     if options[:find_last]
@@ -227,7 +227,7 @@ class Scaffolding::RoutesFileManipulator
   def find_resource(parts, options = {})
     parts = parts.dup
     resource = parts.pop
-    needle = /resources :#{resource}#{options[:options] ? ", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" : ""}(,?\s.*)?$/
+    needle = /resources :#{resource}#{", #{options[:options].gsub(/({)(.*)(})/, '{\2}')}" if options[:options]}(,?\s.*)?$/
 
     if options[:find_last]
       find_last_in_namespace(needle, parts, options[:within], options[:ignore])

@@ -23,6 +23,7 @@ module Records::Base
     include BulletTrain::Api::Attributes
 
     include CableReady::Updatable
+
     enable_cable_ready_updates
 
     extend ActiveHash::Associations::ActiveRecordExtensions

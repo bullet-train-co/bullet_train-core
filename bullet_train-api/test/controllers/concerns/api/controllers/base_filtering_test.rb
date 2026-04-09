@@ -3,6 +3,7 @@ require "test_helper"
 class Api::Controllers::Base::FilteringTest < ActionController::TestCase
   class FilteringTestController < ActionController::Base
     include Api::Controllers::Base
+
     prepend_before_action :load_teams
     def index
       render json: @teams.as_json
