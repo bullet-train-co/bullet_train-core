@@ -363,9 +363,10 @@ GEM
     rb_sys (0.9.125)
       json (>= 2)
       rake-compiler-dock (= 1.11.0)
-    rdoc (6.14.2)
+    rdoc (7.2.0)
       erb
       psych (>= 4.0.0)
+      tsort
     regexp_parser (2.10.0)
     reline (0.6.0)
       io-console (~> 0.5)
