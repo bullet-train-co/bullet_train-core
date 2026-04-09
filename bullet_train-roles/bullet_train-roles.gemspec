@@ -25,7 +25,6 @@ Gem::Specification.new do |spec|
 
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "byebug", "~> 11.1.0"
   spec.add_development_dependency "factory_bot_rails"
   spec.add_development_dependency "minitest", "~> 6.0"
   spec.add_development_dependency "pg", "~> 1.3"
