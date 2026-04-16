@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pg", "~> 1.3"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "webmock"
+  spec.add_development_dependency "minitest-mock"
 
   spec.add_dependency "rails", ">= 7.0.0"
   spec.add_dependency "public_suffix"

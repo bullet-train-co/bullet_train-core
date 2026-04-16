@@ -41,7 +41,7 @@ class TeamTest < ActiveSupport::TestCase
     team.time_zone = nil
     team.save
     team.reload
-    assert_equal nil, team.time_zone
+    assert_nil team.time_zone
 
     user = User.create!(email: "test@test.com", password: "password", password_confirmation: "password", time_zone: "Central Time (US & Canada)")
     Membership.create!(team: team, user: user)
@@ -78,7 +78,7 @@ class TeamTest < ActiveSupport::TestCase
     team.time_zone = nil
     team.save
     team.reload
-    assert_equal nil, team.time_zone
+    assert_nil team.time_zone
 
     user.time_zone = "Central Time (US & Canada)"
     user.save
