@@ -211,7 +211,7 @@ module BulletTrain
       end
 
       begin
-        annotated_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[1].chomp
+        annotated_path = ApplicationController.render(template: "bullet_train/partial_resolver", layout: nil, assigns: {needle: @needle}).lines[2].chomp
       rescue ActionView::Template::Error => e
         # This is a really hacky way to get the file name, but the reason we're getting an error in the first place is because
         # the partial requires locals that we aren't providing in the ApplicationController.render call above,
@@ -219,7 +219,7 @@ module BulletTrain
         return e.file_name
       end
 
-      if annotated_path =~ /<!-- BEGIN (\S*) -->/
+      if annotated_path =~ /<!-- BEGIN (\S*)/
         # If the developer enters a partial that is in bullet_train-base like devise/shared/oauth or devise/shared/links,
         # it will return a string starting with app/ so we simply point them to the file in this repository.
         if annotated_path.match?(/^<!-- BEGIN app/) && !ejected_theme?
