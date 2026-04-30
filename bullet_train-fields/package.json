@@ -48,7 +48,7 @@
     "@rails/actiontext": "^7.0.0",
     "babel-loader": "^8.2.2",
     "emoji-mart": "^5.1.0",
-    "microbundle": "^0.13.0",
+    "microbundle": "^0.15.0",
     "moment-timezone": "^0.5.43",
     "npm-watch": "^0.11.0",
     "rimraf": "^3.0.2",
