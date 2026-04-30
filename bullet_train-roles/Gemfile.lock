@@ -97,7 +97,7 @@ GEM
     date (3.4.1)
     docile (1.4.1)
     drb (2.2.1)
-    erb (5.0.2)
+    erb (6.0.4)
     erubi (1.13.1)
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
