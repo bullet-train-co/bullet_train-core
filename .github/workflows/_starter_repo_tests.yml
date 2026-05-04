@@ -98,7 +98,7 @@ jobs:
           core_dir: tmp/starter/local/bullet_train-core
 
       - name: runtime log cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v5
         with:
           path: |
             tmp/starter/tmp/parallel_runtime_test.log
