@@ -80,7 +80,7 @@ jobs:
           repository: bullet-train-co/bullet_train
 
       - name: Checkout Core Repo
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           path: tmp/starter/local/bullet_train-core
 
