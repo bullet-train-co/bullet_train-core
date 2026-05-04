@@ -26,7 +26,7 @@ jobs:
       # We have to put the core code into place so that simplecov will recognize
       # it as being part of the probject when it collates all the coverage data.
       - name: Checkout Core Repo
-        uses: actions/checkout@v5
+        uses: actions/checkout@v6
         with:
           path: tmp/starter/local/bullet_train-core
 
