@@ -28,4 +28,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "pry"
   spec.add_development_dependency "simplecov"
   spec.add_development_dependency "minitest-mock"
+  spec.add_development_dependency "ostruct"
 end

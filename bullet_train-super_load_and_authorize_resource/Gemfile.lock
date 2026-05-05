@@ -141,6 +141,7 @@ GEM
       racc (~> 1.4)
     nokogiri (1.19.1-x86_64-linux-gnu)
       racc (~> 1.4)
+    ostruct (0.6.3)
     pp (0.6.2)
       prettyprint
     prettyprint (0.2.0)
@@ -239,6 +240,7 @@ DEPENDENCIES
   bullet_train-super_load_and_authorize_resource!
   minitest-mock
   minitest-reporters
+  ostruct
   pry
   simplecov
   sprockets-rails
