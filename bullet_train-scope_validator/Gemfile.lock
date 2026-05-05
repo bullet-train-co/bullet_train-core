@@ -123,7 +123,7 @@ GEM
       builder
       minitest (>= 5.0, < 7)
       ruby-progressbar
-    net-imap (0.5.8)
+    net-imap (0.6.4)
       date
       net-protocol
     net-pop (0.1.2)
