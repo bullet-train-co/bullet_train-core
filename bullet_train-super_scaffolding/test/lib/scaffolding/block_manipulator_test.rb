@@ -1,5 +1,4 @@
 require "test_helper"
-require "pathname"
 require "scaffolding/block_manipulator"
 
 class Scaffolding::BlockManipulatorTest < ActiveSupport::TestCase
