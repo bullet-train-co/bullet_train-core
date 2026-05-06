@@ -4,4 +4,4 @@ This is the repo for the core gems that make up a Bullet Train application. They
 
 If you're new to Bullet Train, start with the [Bullet Train Developer Documentation](https://bullettrain.co/docs) and the [Getting Started](https://bullettrain.co/docs/getting-started) guide. You should also [join the community Discord server](https://discord.gg/bullettrain)!
 
-See <RELEASE.md> for details about releasing new versions of Bullet Train.
+See [RELEASE.md](RELEASE.md) for details about releasing new versions of Bullet Train.
