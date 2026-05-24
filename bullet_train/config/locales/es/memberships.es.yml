@@ -1,0 +1,1098 @@
+---
+es:
+  memberships:
+    label: Miembros del equipo
+    singular: Miembro del equipo
+    navigation:
+      label: Miembros del equipo
+      icon: fa-light fa-users
+    breadcrumbs:
+      label: Miembros del equipo
+    buttons:
+      edit: Ajustes
+      show: Detalles
+      resend: Reenviar
+      update: Actualizar membresía
+      demote: Degradación de administrador
+      promote: Ascender a administrador
+      destroy: Eliminar del equipo
+      destroy_own: Abandona este equipo
+      reinvite: Volver a invitar al equipo
+      confirmations:
+        destroy: "¿Está seguro de que desea eliminar %{membership_name} de %{team_name}?"
+        destroy_own: "¿Estás seguro de que quieres eliminarte de %{team_name}? No
+          podrás deshacer esta acción."
+        reinvite: "¿Estás seguro de que quieres volver a invitar a %{membership_name}
+          a %{team_name}?"
+    fields:
+      id:
+        _: ID de membresía
+        label: ID de membresía
+        heading: ID de membresía
+        api_title: ID de membresía
+        api_description: ID de membresía
+      user_id:
+        name: ID de usuario
+        heading: ID de usuario
+        api_title: ID de usuario
+        api_description: ID de usuario
+      team_id:
+        name: ID del equipo
+        heading: ID del equipo
+        api_title: ID del equipo
+        api_description: ID del equipo
+      invitation_id:
+        name: ID de invitación
+        heading: ID de invitación
+        api_title: ID de invitación
+        api_description: ID de invitación
+      name:
+        name: Nombre completo
+        heading: Nombre completo
+        api_title: Nombre completo
+        api_description: Nombre completo
+      user_first_name:
+        name: Nombre
+        label: Nombre
+        heading: Nombre
+        api_title: Nombre
+        api_description: Nombre
+      user_last_name:
+        name: Apellido
+        label: Apellido
+        heading: Apellido
+        api_title: Apellido
+        api_description: Apellido
+      user_profile_photo_id:
+        name: Foto de perfil
+        label: Foto de perfil
+        heading: Foto de perfil
+        api_title: Foto de perfil
+        api_description: Foto de perfil
+      user_profile_photo:
+        name: Foto de perfil
+        label: Foto de perfil
+        heading: Foto de perfil
+        api_title: Foto de perfil
+        api_description: Foto de perfil
+      user_email:
+        name: Correo del usuario
+        heading: Correo del usuario
+        api_title: Correo del usuario
+        api_description: Correo del usuario
+      added_by_id:
+        name: ID del usuario que agregó
+        heading: ID del usuario que agregó
+        api_title: ID del usuario que agregó
+        api_description: ID del usuario que agregó
+      platform_agent_of_id:
+        name: ID del agente de plataforma de
+        heading: ID del agente de plataforma de
+        api_title: ID del agente de plataforma de
+        api_description: ID del agente de plataforma de
+      platform_agent:
+        name: Agente de plataforma
+        heading: Agente de plataforma
+        api_title: Agente de plataforma
+        api_description: Agente de plataforma
+      role_ids:
+        name: Rol
+        label: Rol
+        heading: Rol
+        api_title: Rol
+        api_description: Rol
+        options:
+          default:
+            label: Visualizador
+            description: Solo puede ver los datos del equipo
+          admin:
+            label: Administrador del equipo
+            description: Los administradores del equipo pueden gestionar la facturación
+              y los privilegios especiales de otros usuarios.
+          editor:
+            label: Editor
+            description: Puede editar todos los recursos de este equipo y permitir
+              que otros hagan lo mismo.
+        none: Visualizador
+      created_at:
+        _: Creado el
+        heading: Creado el
+        api_title: Creado el
+        api_description: Creado el
+      updated_at:
+        _: Actualizado el
+        heading: Actualizado el
+        api_title: Actualizado el
+        api_description: Actualizado el
+    index:
+      section: Miembros del equipo %{team_name}
+      contexts:
+        team:
+          header: Miembros del equipo
+          description: Las siguientes personas son miembros de tu equipo. También
+            puedes invitar nuevos miembros del equipo.
+          fields:
+            id:
+              _: ID de membresía
+              label: ID de membresía
+              heading: ID de membresía
+              api_title: ID de membresía
+              api_description: ID de membresía
+            user_id:
+              name: ID de usuario
+              heading: ID de usuario
+              api_title: ID de usuario
+              api_description: ID de usuario
+            team_id:
+              name: ID del equipo
+              heading: ID del equipo
+              api_title: ID del equipo
+              api_description: ID del equipo
+            invitation_id:
+              name: ID de invitación
+              heading: ID de invitación
+              api_title: ID de invitación
+              api_description: ID de invitación
+            name:
+              name: Nombre completo
+              heading: Nombre completo
+              api_title: Nombre completo
+              api_description: Nombre completo
+            user_first_name:
+              name: Nombre
+              label: Nombre
+              heading: Nombre
+              api_title: Nombre
+              api_description: Nombre
+            user_last_name:
+              name: Apellido
+              label: Apellido
+              heading: Apellido
+              api_title: Apellido
+              api_description: Apellido
+            user_profile_photo_id:
+              name: Foto de perfil
+              label: Foto de perfil
+              heading: Foto de perfil
+              api_title: Foto de perfil
+              api_description: Foto de perfil
+            user_profile_photo:
+              name: Foto de perfil
+              label: Foto de perfil
+              heading: Foto de perfil
+              api_title: Foto de perfil
+              api_description: Foto de perfil
+            user_email:
+              name: Correo del usuario
+              heading: Correo del usuario
+              api_title: Correo del usuario
+              api_description: Correo del usuario
+            added_by_id:
+              name: ID del usuario que agregó
+              heading: ID del usuario que agregó
+              api_title: ID del usuario que agregó
+              api_description: ID del usuario que agregó
+            platform_agent_of_id:
+              name: ID del agente de plataforma de
+              heading: ID del agente de plataforma de
+              api_title: ID del agente de plataforma de
+              api_description: ID del agente de plataforma de
+            platform_agent:
+              name: Agente de plataforma
+              heading: Agente de plataforma
+              api_title: Agente de plataforma
+              api_description: Agente de plataforma
+            role_ids:
+              name: Rol
+              label: Rol
+              heading: Rol
+              api_title: Rol
+              api_description: Rol
+              options:
+                default:
+                  label: Visualizador
+                  description: Solo puede ver los datos del equipo
+                admin:
+                  label: Administrador del equipo
+                  description: Los administradores del equipo pueden gestionar la
+                    facturación y los privilegios especiales de otros usuarios.
+                editor:
+                  label: Editor
+                  description: Puede editar todos los recursos de este equipo y permitir
+                    que otros hagan lo mismo.
+              none: Visualizador
+            created_at:
+              _: Creado el
+              heading: Creado el
+              api_title: Creado el
+              api_description: Creado el
+            updated_at:
+              _: Actualizado el
+              heading: Actualizado el
+              api_title: Actualizado el
+              api_description: Actualizado el
+      buttons:
+        edit: Configuración
+        show: Detalles
+        resend: Reenviar
+        update: Actualizar membresía
+        demote: Degradar de administrador
+        promote: Promover a administrador
+        destroy: Eliminar del equipo
+        destroy_own: Abandonar este equipo
+        reinvite: Invitar al equipo
+        confirmations:
+          destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+          destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás deshacer
+            esta acción."
+          reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+    tombstones:
+      contexts:
+        team:
+          header: Miembros en espera de invitación
+          description: Las siguientes personas han sido eliminadas de %{team_name},
+            pero aún puedes administrar su perfil y reasignar sus asignaciones a otros
+            miembros del equipo.
+      buttons:
+        edit: Configuración
+        show: Detalles
+        resend: Reenviar
+        update: Actualizar membresía
+        demote: Degradar de administrador
+        promote: Promover a administrador
+        destroy: Eliminar del equipo
+        destroy_own: Abandonar este equipo
+        reinvite: Invitar al equipo
+        confirmations:
+          destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+          destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás deshacer
+            esta acción."
+          reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+    form:
+      grant_privileges_of: Conceder privilegios de %{role_key}
+      buttons:
+        edit: Configuración
+        show: Detalles
+        resend: Reenviar
+        update: Actualizar membresía
+        demote: Degradar de administrador
+        promote: Promover a administrador
+        destroy: Eliminar del equipo
+        destroy_own: Abandonar este equipo
+        reinvite: Invitar al equipo
+        confirmations:
+          destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+          destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás deshacer
+            esta acción."
+          reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+      fields:
+        id:
+          _: ID de membresía
+          label: ID de membresía
+          heading: ID de membresía
+          api_title: ID de membresía
+          api_description: ID de membresía
+        user_id:
+          name: ID de usuario
+          heading: ID de usuario
+          api_title: ID de usuario
+          api_description: ID de usuario
+        team_id:
+          name: ID del equipo
+          heading: ID del equipo
+          api_title: ID del equipo
+          api_description: ID del equipo
+        invitation_id:
+          name: ID de invitación
+          heading: ID de invitación
+          api_title: ID de invitación
+          api_description: ID de invitación
+        name:
+          name: Nombre completo
+          heading: Nombre completo
+          api_title: Nombre completo
+          api_description: Nombre completo
+        user_first_name:
+          name: Nombre
+          label: Nombre
+          heading: Nombre
+          api_title: Nombre
+          api_description: Nombre
+        user_last_name:
+          name: Apellido
+          label: Apellido
+          heading: Apellido
+          api_title: Apellido
+          api_description: Apellido
+        user_profile_photo_id:
+          name: Foto de perfil
+          label: Foto de perfil
+          heading: Foto de perfil
+          api_title: Foto de perfil
+          api_description: Foto de perfil
+        user_profile_photo:
+          name: Foto de perfil
+          label: Foto de perfil
+          heading: Foto de perfil
+          api_title: Foto de perfil
+          api_description: Foto de perfil
+        user_email:
+          name: Correo del usuario
+          heading: Correo del usuario
+          api_title: Correo del usuario
+          api_description: Correo del usuario
+        added_by_id:
+          name: ID del usuario que agregó
+          heading: ID del usuario que agregó
+          api_title: ID del usuario que agregó
+          api_description: ID del usuario que agregó
+        platform_agent_of_id:
+          name: ID del agente de plataforma de
+          heading: ID del agente de plataforma de
+          api_title: ID del agente de plataforma de
+          api_description: ID del agente de plataforma de
+        platform_agent:
+          name: Agente de plataforma
+          heading: Agente de plataforma
+          api_title: Agente de plataforma
+          api_description: Agente de plataforma
+        role_ids:
+          name: Rol
+          label: Rol
+          heading: Rol
+          api_title: Rol
+          api_description: Rol
+          options:
+            default:
+              label: Visualizador
+              description: Solo puede ver los datos del equipo
+            admin:
+              label: Administrador del equipo
+              description: Los administradores del equipo pueden gestionar la facturación
+                y los privilegios especiales de otros usuarios.
+            editor:
+              label: Editor
+              description: Puede editar todos los recursos de este equipo y permitir
+                que otros hagan lo mismo.
+          none: Visualizador
+        created_at:
+          _: Creado el
+          heading: Creado el
+          api_title: Creado el
+          api_description: Creado el
+        updated_at:
+          _: Actualizado el
+          heading: Actualizado el
+          api_title: Actualizado el
+          api_description: Actualizado el
+    edit:
+      section: "%{membership_name} en %{team_name}"
+      header: Actualizar configuración de membresía
+      description: Puedes editar la configuración de la membresía %{memberships_possessive}
+        en %{team_name} a continuación.
+      grant_privileges_of: Conceder privilegios de %{role_key}
+      remove_header: Eliminar miembro del equipo
+      remove_description: Eliminar a %{membership_name} no eliminará ninguna asignación
+        de recursos. En su lugar, tendrás la opción de reasignar recursos a otro miembro
+        del equipo. También podrás volver a invitar a %{membership_name} al equipo
+        en el futuro.
+      buttons:
+        edit: Configuración
+        show: Detalles
+        resend: Reenviar
+        update: Actualizar membresía
+        demote: Degradar de administrador
+        promote: Promover a administrador
+        destroy: Eliminar del equipo
+        destroy_own: Abandonar este equipo
+        reinvite: Invitar al equipo
+        confirmations:
+          destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+          destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás deshacer
+            esta acción."
+          reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+    show:
+      section: Membresía %{memberships_possessive} en %{team_name}
+      header: Detalles de la membresía
+      invitation_header: Detalles de la invitación
+      tombstone_header: Exmiembro del equipo
+      description: A continuación se detallan los datos de la membresía %{memberships_possessive}
+        en %{team_name}.
+      buttons:
+        edit: Configuración
+        show: Detalles
+        resend: Reenviar
+        update: Actualizar membresía
+        demote: Degradar de administrador
+        promote: Promover a administrador
+        destroy: Eliminar del equipo
+        destroy_own: Abandonar este equipo
+        reinvite: Invitar al equipo
+        confirmations:
+          destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+          destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás deshacer
+            esta acción."
+          reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+      fields:
+        id:
+          _: ID de membresía
+          label: ID de membresía
+          heading: ID de membresía
+          api_title: ID de membresía
+          api_description: ID de membresía
+        user_id:
+          name: ID de usuario
+          heading: ID de usuario
+          api_title: ID de usuario
+          api_description: ID de usuario
+        team_id:
+          name: ID del equipo
+          heading: ID del equipo
+          api_title: ID del equipo
+          api_description: ID del equipo
+        invitation_id:
+          name: ID de invitación
+          heading: ID de invitación
+          api_title: ID de invitación
+          api_description: ID de invitación
+        name:
+          name: Nombre completo
+          heading: Nombre completo
+          api_title: Nombre completo
+          api_description: Nombre completo
+        user_first_name:
+          name: Nombre
+          label: Nombre
+          heading: Nombre
+          api_title: Nombre
+          api_description: Nombre
+        user_last_name:
+          name: Apellido
+          label: Apellido
+          heading: Apellido
+          api_title: Apellido
+          api_description: Apellido
+        user_profile_photo_id:
+          name: Foto de perfil
+          label: Foto de perfil
+          heading: Foto de perfil
+          api_title: Foto de perfil
+          api_description: Foto de perfil
+        user_profile_photo:
+          name: Foto de perfil
+          label: Foto de perfil
+          heading: Foto de perfil
+          api_title: Foto de perfil
+          api_description: Foto de perfil
+        user_email:
+          name: Correo del usuario
+          heading: Correo del usuario
+          api_title: Correo del usuario
+          api_description: Correo del usuario
+        added_by_id:
+          name: ID del usuario que agregó
+          heading: ID del usuario que agregó
+          api_title: ID del usuario que agregó
+          api_description: ID del usuario que agregó
+        platform_agent_of_id:
+          name: ID del agente de plataforma de
+          heading: ID del agente de plataforma de
+          api_title: ID del agente de plataforma de
+          api_description: ID del agente de plataforma de
+        platform_agent:
+          name: Agente de plataforma
+          heading: Agente de plataforma
+          api_title: Agente de plataforma
+          api_description: Agente de plataforma
+        role_ids:
+          name: Rol
+          label: Rol
+          heading: Rol
+          api_title: Rol
+          api_description: Rol
+          options:
+            default:
+              label: Visualizador
+              description: Solo puede ver los datos del equipo
+            admin:
+              label: Administrador del equipo
+              description: Los administradores del equipo pueden gestionar la facturación
+                y los privilegios especiales de otros usuarios.
+            editor:
+              label: Editor
+              description: Puede editar todos los recursos de este equipo y permitir
+                que otros hagan lo mismo.
+          none: Visualizador
+        created_at:
+          _: Creado el
+          heading: Creado el
+          api_title: Creado el
+          api_description: Creado el
+        updated_at:
+          _: Actualizado el
+          heading: Actualizado el
+          api_title: Actualizado el
+          api_description: Actualizado el
+    notifications:
+      updated: Membresía actualizada correctamente.
+      destroyed: Ese usuario ha sido eliminado del equipo correctamente.
+      no_members: "¡Aún no tienes otros miembros del equipo! Comienza enviando una
+        invitación."
+      cant_demote: No puedes degradar al último administrador de un equipo. Primero
+        asigna a otra persona como administrador.
+      cant_remove: No puedes eliminar al último administrador de un equipo. Primero
+        asigna a otra persona como administrador.
+      you_removed_yourself: Te has eliminado a ti mismo de %{team_name}.
+      reinvited: El usuario ha sido invitado correctamente. Recibirá un correo para
+        unirse al equipo.
+  account:
+    memberships:
+      label: Miembros del equipo
+      singular: Miembro del equipo
+      navigation:
+        label: Miembros del equipo
+        icon: fa-light fa-users
+      breadcrumbs:
+        label: Miembros del equipo
+      buttons:
+        edit: Ajustes
+        show: Detalles
+        resend: Reenviar
+        update: Actualizar membresía
+        demote: Degradación de administrador
+        promote: Ascender a administrador
+        destroy: Eliminar del equipo
+        destroy_own: Abandona este equipo
+        reinvite: Volver a invitar al equipo
+        confirmations:
+          destroy: "¿Está seguro de que desea eliminar %{membership_name} de %{team_name}?"
+          destroy_own: "¿Estás seguro de que quieres eliminarte de %{team_name}? No
+            podrás deshacer esta acción."
+          reinvite: "¿Estás seguro de que quieres volver a invitar a %{membership_name}
+            a %{team_name}?"
+      fields:
+        id:
+          _: ID de membresía
+          label: ID de membresía
+          heading: ID de membresía
+          api_title: ID de membresía
+          api_description: ID de membresía
+        user_id:
+          name: ID de usuario
+          heading: ID de usuario
+          api_title: ID de usuario
+          api_description: ID de usuario
+        team_id:
+          name: ID del equipo
+          heading: ID del equipo
+          api_title: ID del equipo
+          api_description: ID del equipo
+        invitation_id:
+          name: ID de invitación
+          heading: ID de invitación
+          api_title: ID de invitación
+          api_description: ID de invitación
+        name:
+          name: Nombre completo
+          heading: Nombre completo
+          api_title: Nombre completo
+          api_description: Nombre completo
+        user_first_name:
+          name: Nombre
+          label: Nombre
+          heading: Nombre
+          api_title: Nombre
+          api_description: Nombre
+        user_last_name:
+          name: Apellido
+          label: Apellido
+          heading: Apellido
+          api_title: Apellido
+          api_description: Apellido
+        user_profile_photo_id:
+          name: Foto de perfil
+          label: Foto de perfil
+          heading: Foto de perfil
+          api_title: Foto de perfil
+          api_description: Foto de perfil
+        user_profile_photo:
+          name: Foto de perfil
+          label: Foto de perfil
+          heading: Foto de perfil
+          api_title: Foto de perfil
+          api_description: Foto de perfil
+        user_email:
+          name: Correo del usuario
+          heading: Correo del usuario
+          api_title: Correo del usuario
+          api_description: Correo del usuario
+        added_by_id:
+          name: ID del usuario que agregó
+          heading: ID del usuario que agregó
+          api_title: ID del usuario que agregó
+          api_description: ID del usuario que agregó
+        platform_agent_of_id:
+          name: ID del agente de plataforma de
+          heading: ID del agente de plataforma de
+          api_title: ID del agente de plataforma de
+          api_description: ID del agente de plataforma de
+        platform_agent:
+          name: Agente de plataforma
+          heading: Agente de plataforma
+          api_title: Agente de plataforma
+          api_description: Agente de plataforma
+        role_ids:
+          name: Rol
+          label: Rol
+          heading: Rol
+          api_title: Rol
+          api_description: Rol
+          options:
+            default:
+              label: Visualizador
+              description: Solo puede ver los datos del equipo
+            admin:
+              label: Administrador del equipo
+              description: Los administradores del equipo pueden gestionar la facturación
+                y los privilegios especiales de otros usuarios.
+            editor:
+              label: Editor
+              description: Puede editar todos los recursos de este equipo y permitir
+                que otros hagan lo mismo.
+          none: Visualizador
+        created_at:
+          _: Creado el
+          heading: Creado el
+          api_title: Creado el
+          api_description: Creado el
+        updated_at:
+          _: Actualizado el
+          heading: Actualizado el
+          api_title: Actualizado el
+          api_description: Actualizado el
+      index:
+        section: Miembros del equipo %{team_name}
+        contexts:
+          team:
+            header: Miembros del equipo
+            description: Las siguientes personas son miembros de tu equipo. También
+              puedes invitar nuevos miembros del equipo.
+            fields:
+              id:
+                _: ID de membresía
+                label: ID de membresía
+                heading: ID de membresía
+                api_title: ID de membresía
+                api_description: ID de membresía
+              user_id:
+                name: ID de usuario
+                heading: ID de usuario
+                api_title: ID de usuario
+                api_description: ID de usuario
+              team_id:
+                name: ID del equipo
+                heading: ID del equipo
+                api_title: ID del equipo
+                api_description: ID del equipo
+              invitation_id:
+                name: ID de invitación
+                heading: ID de invitación
+                api_title: ID de invitación
+                api_description: ID de invitación
+              name:
+                name: Nombre completo
+                heading: Nombre completo
+                api_title: Nombre completo
+                api_description: Nombre completo
+              user_first_name:
+                name: Nombre
+                label: Nombre
+                heading: Nombre
+                api_title: Nombre
+                api_description: Nombre
+              user_last_name:
+                name: Apellido
+                label: Apellido
+                heading: Apellido
+                api_title: Apellido
+                api_description: Apellido
+              user_profile_photo_id:
+                name: Foto de perfil
+                label: Foto de perfil
+                heading: Foto de perfil
+                api_title: Foto de perfil
+                api_description: Foto de perfil
+              user_profile_photo:
+                name: Foto de perfil
+                label: Foto de perfil
+                heading: Foto de perfil
+                api_title: Foto de perfil
+                api_description: Foto de perfil
+              user_email:
+                name: Correo del usuario
+                heading: Correo del usuario
+                api_title: Correo del usuario
+                api_description: Correo del usuario
+              added_by_id:
+                name: ID del usuario que agregó
+                heading: ID del usuario que agregó
+                api_title: ID del usuario que agregó
+                api_description: ID del usuario que agregó
+              platform_agent_of_id:
+                name: ID del agente de plataforma de
+                heading: ID del agente de plataforma de
+                api_title: ID del agente de plataforma de
+                api_description: ID del agente de plataforma de
+              platform_agent:
+                name: Agente de plataforma
+                heading: Agente de plataforma
+                api_title: Agente de plataforma
+                api_description: Agente de plataforma
+              role_ids:
+                name: Rol
+                label: Rol
+                heading: Rol
+                api_title: Rol
+                api_description: Rol
+                options:
+                  default:
+                    label: Visualizador
+                    description: Solo puede ver los datos del equipo
+                  admin:
+                    label: Administrador del equipo
+                    description: Los administradores del equipo pueden gestionar la
+                      facturación y los privilegios especiales de otros usuarios.
+                  editor:
+                    label: Editor
+                    description: Puede editar todos los recursos de este equipo y
+                      permitir que otros hagan lo mismo.
+                none: Visualizador
+              created_at:
+                _: Creado el
+                heading: Creado el
+                api_title: Creado el
+                api_description: Creado el
+              updated_at:
+                _: Actualizado el
+                heading: Actualizado el
+                api_title: Actualizado el
+                api_description: Actualizado el
+        buttons:
+          edit: Configuración
+          show: Detalles
+          resend: Reenviar
+          update: Actualizar membresía
+          demote: Degradar de administrador
+          promote: Promover a administrador
+          destroy: Eliminar del equipo
+          destroy_own: Abandonar este equipo
+          reinvite: Invitar al equipo
+          confirmations:
+            destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+            destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás
+              deshacer esta acción."
+            reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+      tombstones:
+        contexts:
+          team:
+            header: Miembros en espera de invitación
+            description: Las siguientes personas han sido eliminadas de %{team_name},
+              pero aún puedes administrar su perfil y reasignar sus asignaciones a
+              otros miembros del equipo.
+        buttons:
+          edit: Configuración
+          show: Detalles
+          resend: Reenviar
+          update: Actualizar membresía
+          demote: Degradar de administrador
+          promote: Promover a administrador
+          destroy: Eliminar del equipo
+          destroy_own: Abandonar este equipo
+          reinvite: Invitar al equipo
+          confirmations:
+            destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+            destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás
+              deshacer esta acción."
+            reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+      form:
+        grant_privileges_of: Conceder privilegios de %{role_key}
+        buttons:
+          edit: Configuración
+          show: Detalles
+          resend: Reenviar
+          update: Actualizar membresía
+          demote: Degradar de administrador
+          promote: Promover a administrador
+          destroy: Eliminar del equipo
+          destroy_own: Abandonar este equipo
+          reinvite: Invitar al equipo
+          confirmations:
+            destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+            destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás
+              deshacer esta acción."
+            reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+        fields:
+          id:
+            _: ID de membresía
+            label: ID de membresía
+            heading: ID de membresía
+            api_title: ID de membresía
+            api_description: ID de membresía
+          user_id:
+            name: ID de usuario
+            heading: ID de usuario
+            api_title: ID de usuario
+            api_description: ID de usuario
+          team_id:
+            name: ID del equipo
+            heading: ID del equipo
+            api_title: ID del equipo
+            api_description: ID del equipo
+          invitation_id:
+            name: ID de invitación
+            heading: ID de invitación
+            api_title: ID de invitación
+            api_description: ID de invitación
+          name:
+            name: Nombre completo
+            heading: Nombre completo
+            api_title: Nombre completo
+            api_description: Nombre completo
+          user_first_name:
+            name: Nombre
+            label: Nombre
+            heading: Nombre
+            api_title: Nombre
+            api_description: Nombre
+          user_last_name:
+            name: Apellido
+            label: Apellido
+            heading: Apellido
+            api_title: Apellido
+            api_description: Apellido
+          user_profile_photo_id:
+            name: Foto de perfil
+            label: Foto de perfil
+            heading: Foto de perfil
+            api_title: Foto de perfil
+            api_description: Foto de perfil
+          user_profile_photo:
+            name: Foto de perfil
+            label: Foto de perfil
+            heading: Foto de perfil
+            api_title: Foto de perfil
+            api_description: Foto de perfil
+          user_email:
+            name: Correo del usuario
+            heading: Correo del usuario
+            api_title: Correo del usuario
+            api_description: Correo del usuario
+          added_by_id:
+            name: ID del usuario que agregó
+            heading: ID del usuario que agregó
+            api_title: ID del usuario que agregó
+            api_description: ID del usuario que agregó
+          platform_agent_of_id:
+            name: ID del agente de plataforma de
+            heading: ID del agente de plataforma de
+            api_title: ID del agente de plataforma de
+            api_description: ID del agente de plataforma de
+          platform_agent:
+            name: Agente de plataforma
+            heading: Agente de plataforma
+            api_title: Agente de plataforma
+            api_description: Agente de plataforma
+          role_ids:
+            name: Rol
+            label: Rol
+            heading: Rol
+            api_title: Rol
+            api_description: Rol
+            options:
+              default:
+                label: Visualizador
+                description: Solo puede ver los datos del equipo
+              admin:
+                label: Administrador del equipo
+                description: Los administradores del equipo pueden gestionar la facturación
+                  y los privilegios especiales de otros usuarios.
+              editor:
+                label: Editor
+                description: Puede editar todos los recursos de este equipo y permitir
+                  que otros hagan lo mismo.
+            none: Visualizador
+          created_at:
+            _: Creado el
+            heading: Creado el
+            api_title: Creado el
+            api_description: Creado el
+          updated_at:
+            _: Actualizado el
+            heading: Actualizado el
+            api_title: Actualizado el
+            api_description: Actualizado el
+      edit:
+        section: "%{membership_name} en %{team_name}"
+        header: Actualizar configuración de membresía
+        description: Puedes editar la configuración de la membresía %{memberships_possessive}
+          en %{team_name} a continuación.
+        grant_privileges_of: Conceder privilegios de %{role_key}
+        remove_header: Eliminar miembro del equipo
+        remove_description: Eliminar a %{membership_name} no eliminará ninguna asignación
+          de recursos. En su lugar, tendrás la opción de reasignar recursos a otro
+          miembro del equipo. También podrás volver a invitar a %{membership_name}
+          al equipo en el futuro.
+        buttons:
+          edit: Configuración
+          show: Detalles
+          resend: Reenviar
+          update: Actualizar membresía
+          demote: Degradar de administrador
+          promote: Promover a administrador
+          destroy: Eliminar del equipo
+          destroy_own: Abandonar este equipo
+          reinvite: Invitar al equipo
+          confirmations:
+            destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+            destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás
+              deshacer esta acción."
+            reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+      show:
+        section: Membresía %{memberships_possessive} en %{team_name}
+        header: Detalles de la membresía
+        invitation_header: Detalles de la invitación
+        tombstone_header: Exmiembro del equipo
+        description: A continuación se detallan los datos de la membresía %{memberships_possessive}
+          en %{team_name}.
+        buttons:
+          edit: Configuración
+          show: Detalles
+          resend: Reenviar
+          update: Actualizar membresía
+          demote: Degradar de administrador
+          promote: Promover a administrador
+          destroy: Eliminar del equipo
+          destroy_own: Abandonar este equipo
+          reinvite: Invitar al equipo
+          confirmations:
+            destroy: "¿Seguro que deseas eliminar a %{membership_name} de %{team_name}?"
+            destroy_own: "¿Seguro que deseas eliminarte de %{team_name}? No podrás
+              deshacer esta acción."
+            reinvite: "¿Seguro que deseas invitar a %{membership_name} a %{team_name}?"
+        fields:
+          id:
+            _: ID de membresía
+            label: ID de membresía
+            heading: ID de membresía
+            api_title: ID de membresía
+            api_description: ID de membresía
+          user_id:
+            name: ID de usuario
+            heading: ID de usuario
+            api_title: ID de usuario
+            api_description: ID de usuario
+          team_id:
+            name: ID del equipo
+            heading: ID del equipo
+            api_title: ID del equipo
+            api_description: ID del equipo
+          invitation_id:
+            name: ID de invitación
+            heading: ID de invitación
+            api_title: ID de invitación
+            api_description: ID de invitación
+          name:
+            name: Nombre completo
+            heading: Nombre completo
+            api_title: Nombre completo
+            api_description: Nombre completo
+          user_first_name:
+            name: Nombre
+            label: Nombre
+            heading: Nombre
+            api_title: Nombre
+            api_description: Nombre
+          user_last_name:
+            name: Apellido
+            label: Apellido
+            heading: Apellido
+            api_title: Apellido
+            api_description: Apellido
+          user_profile_photo_id:
+            name: Foto de perfil
+            label: Foto de perfil
+            heading: Foto de perfil
+            api_title: Foto de perfil
+            api_description: Foto de perfil
+          user_profile_photo:
+            name: Foto de perfil
+            label: Foto de perfil
+            heading: Foto de perfil
+            api_title: Foto de perfil
+            api_description: Foto de perfil
+          user_email:
+            name: Correo del usuario
+            heading: Correo del usuario
+            api_title: Correo del usuario
+            api_description: Correo del usuario
+          added_by_id:
+            name: ID del usuario que agregó
+            heading: ID del usuario que agregó
+            api_title: ID del usuario que agregó
+            api_description: ID del usuario que agregó
+          platform_agent_of_id:
+            name: ID del agente de plataforma de
+            heading: ID del agente de plataforma de
+            api_title: ID del agente de plataforma de
+            api_description: ID del agente de plataforma de
+          platform_agent:
+            name: Agente de plataforma
+            heading: Agente de plataforma
+            api_title: Agente de plataforma
+            api_description: Agente de plataforma
+          role_ids:
+            name: Rol
+            label: Rol
+            heading: Rol
+            api_title: Rol
+            api_description: Rol
+            options:
+              default:
+                label: Visualizador
+                description: Solo puede ver los datos del equipo
+              admin:
+                label: Administrador del equipo
+                description: Los administradores del equipo pueden gestionar la facturación
+                  y los privilegios especiales de otros usuarios.
+              editor:
+                label: Editor
+                description: Puede editar todos los recursos de este equipo y permitir
+                  que otros hagan lo mismo.
+            none: Visualizador
+          created_at:
+            _: Creado el
+            heading: Creado el
+            api_title: Creado el
+            api_description: Creado el
+          updated_at:
+            _: Actualizado el
+            heading: Actualizado el
+            api_title: Actualizado el
+            api_description: Actualizado el
+      notifications:
+        updated: Membresía actualizada correctamente.
+        destroyed: Ese usuario ha sido eliminado del equipo correctamente.
+        no_members: "¡Aún no tienes otros miembros del equipo! Comienza enviando una
+          invitación."
+        cant_demote: No puedes degradar al último administrador de un equipo. Primero
+          asigna a otra persona como administrador.
+        cant_remove: No puedes eliminar al último administrador de un equipo. Primero
+          asigna a otra persona como administrador.
+        you_removed_yourself: Te has eliminado a ti mismo de %{team_name}.
+        reinvited: El usuario ha sido invitado correctamente. Recibirá un correo para
+          unirse al equipo.
+  activerecord:
+    attributes:
+      memberships:
+        user_first_name: Nombre
+        user_last_name: Apellido

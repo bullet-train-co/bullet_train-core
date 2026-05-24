@@ -1,0 +1,113 @@
+---
+zh-CN:
+  devise:
+    titles:
+      reset_password: 重置密码
+      sign_in: 登入
+    headers:
+      resend_confirm: 重新发送确认说明
+      change_password: 更改密码
+      reset_password: 重置密码
+      edit_registration: 编辑 %{resource_name}
+      cancel_account: 取消我的帐户
+      create_account: 创建您的帐户
+      sign_in: 登入
+      resend_unlock: 重新发送解锁说明
+    labels:
+      wait_confirm: 目前正在等待确认：%{unconfirmed_email}
+    hints:
+      leave_blank: "（如果您不想更改，请留空）"
+      length: "%{password_length} 字符数最少"
+      need_password: "（我们需要您当前的密码来确认您的更改）"
+    buttons:
+      resend_confirm: 重新发送确认说明
+      change_password: 更改我的密码
+      reset_password: 通过电子邮件重置密码
+      cancel_account: 取消我的帐户
+      resend_unlock: 重新发送解锁说明
+    links:
+      account: 还没有账号？
+      have_account: 已有账号？
+      forgot_password: 忘记密码了吗？
+      log_in: 登录
+      sign_up: 报名
+      new_confirm: 没有收到确认说明？
+      new_unlock: 没有收到解锁说明？
+      sign_in_with: 使用 %{provider} 登录
+    confirmations:
+      confirmed: 您的电子邮件地址已成功验证。
+      send_instructions: 几分钟后，您将收到一封电子邮件，其中包含如何验证您的电子邮件地址的说明。
+      send_paranoid_instructions: 如果您的电子邮件地址已存在于我们的数据库中，您将在几分钟内收到一封电子邮件，其中包含如何确认您的电子邮件地址的说明。
+    failure:
+      already_authenticated: 您已登录。
+      inactive: 您的账户尚未激活。
+      invalid: 无效的 %{authentication_keys} 或密码。
+      locked: 您的账户已被锁定。
+      last_attempt: 你的账号将被锁定，你还有最后一次尝试机会。
+      not_found_in_database: 无效的 %{authentication_keys} 或密码。
+      timeout: 您的会话已过期。请重新登录以继续。
+      unauthenticated: 您需要先登录或注册才能继续。
+      unconfirmed: 您必须先确认您的电子邮件地址才能继续。
+    mailer:
+      confirmation_instructions:
+        subject: 确认说明
+        welcome: 欢迎来到%{email}！
+        description: 您可以通过以下链接确认您的账户邮箱：
+        confirm_account: 确认我的账户
+      reset_password_instructions:
+        subject: 重置密码说明
+        hello: 你好 %{email}！
+        requested_change: 有人请求提供修改密码的链接。您可以通过以下链接进行修改。
+        ignore: 如果您没有提出此项请求，请忽略此邮件。
+        access_change: 您的密码不会更改，直到您访问上面的链接并创建一个新密码。
+        change_password: 更改我的密码
+      unlock_instructions:
+        subject: 解锁说明
+        hello: 你好 %{email}！
+        account_blocked: 由于登录失败次数过多，您的账户已被锁定。
+        click_link: 点击下方链接解锁您的账户：
+        unlock: 解锁我的账户
+      password_change:
+        subject: 密码已更改
+        hello: 你好 %{email}！
+        description: 我们联系您是为了通知您，您的密码已更改。
+      email_changed:
+        subject: 电子邮件已更改
+        hello: 你好 %{email}！
+        description: 我们联系您是为了通知您，您的电子邮件地址已更改为 %{email}。
+    omniauth_callbacks:
+      failure: 无法通过 %{kind} 验证您的身份，因为“%{reason}”。
+      success: 已成功通过 %{kind} 帐户进行身份验证。
+    passwords:
+      no_token: 您必须通过密码重置邮件才能访问此页面。如果您是通过密码重置邮件访问的，请确保您使用了邮件中提供的完整URL。
+      send_instructions: 几分钟后，您将收到一封电子邮件，其中包含重置密码的说明。
+      send_paranoid_instructions: 如果您的电子邮件地址存在于我们的数据库中，您将在几分钟内收到一封包含密码恢复链接的电子邮件。
+      updated: 您的密码已成功更改。您现在已登录。
+      updated_not_active: 您的密码已成功更改。
+    registrations:
+      destroyed: 再见！您的账户已成功注销。希望很快能再次见到您。
+      signed_up: 欢迎！您已成功注册。
+      signed_up_but_inactive: 您已成功注册。但是，由于您的帐户尚未激活，我们无法让您登录。
+      signed_up_but_locked: 您已成功注册。但是，由于您的帐户已被锁定，我们无法让您登录。
+      signed_up_but_unconfirmed: 我们已向您的邮箱发送了一封包含确认链接的邮件。请点击链接激活您的账户。
+      update_needs_confirmation: 您已成功更新账户，但我们需要验证您的新邮箱地址。请查看您的邮箱并点击确认链接以验证您的新邮箱地址。
+      updated: 您的账户已成功更新。
+    sessions:
+      signed_in: 登录成功。
+      signed_out: 已成功登出。
+      already_signed_out: 已成功登出。
+    unlocks:
+      send_instructions: 几分钟后，您将收到一封电子邮件，其中包含解锁帐户的说明。
+      send_paranoid_instructions: 如果您的账户存在，您将在几分钟内收到一封电子邮件，其中包含解锁账户的说明。
+      unlocked: 您的账户已成功解锁。请登录以继续。
+  errors:
+    messages:
+      already_confirmed: 已确认，请尝试登录。
+      confirmation_period_expired: 需要在%{period}范围内确认，请申请新的确认。
+      expired: 已过期，请申请新的。
+      not_found: 未找到
+      not_locked: 未锁定
+      not_saved:
+        one: 1 个错误导致此 %{resource} 无法保存：
+        other: 由于 %{count} 错误，无法保存此 %{resource}：
+      pwned_password: 曾出现在数据泄露事件中，绝对不应该使用。

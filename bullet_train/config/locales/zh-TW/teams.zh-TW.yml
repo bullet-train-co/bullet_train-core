@@ -1,0 +1,371 @@
+---
+zh-TW:
+  teams:
+    label: 團隊
+    singular: 團隊
+    breadcrumbs:
+      label: 團隊
+      team_settings: 團隊設定
+      dashboard: 儀表板
+    navigation:
+      label: 團隊
+    buttons:
+      new: 新增團隊
+      create: 創建團隊
+      edit: 編輯團隊
+      update: 更新團隊
+      destroy: 刪除團隊
+      confirmations:
+        destroy: 您確定要刪除該團隊嗎？
+    index:
+      section: 團隊
+      header: 您的團隊
+      create: 創建新團隊
+      buttons:
+        new: 新增團隊
+        create: 創建團隊
+        edit: 編輯團隊
+        update: 更新團隊
+        destroy: 刪除團隊
+        confirmations:
+          destroy: 您確定要刪除該團隊嗎？
+    show:
+      header: "%{teams_possessive} 合規性儀錶板"
+    new:
+      header: 創建新團隊
+      former_user_header: 加入團隊
+      default_team_name: 你的團隊
+      buttons:
+        new: 新增團隊
+        create: 創建團隊
+        edit: 編輯團隊
+        update: 更新團隊
+        destroy: 刪除團隊
+        confirmations:
+          destroy: 您確定要刪除該團隊嗎？
+      you_can: 您可以：
+      invitation_header: 接受邀請
+      logout_header: 登出該帳戶
+      new_team_header: 創建一個新團隊
+      alert: 帳號<b>%{user_email}</b>目前不是任何團隊的成員。
+      invitation: 如果您收到邀請您加入新團隊的電子郵件，請點擊該電子郵件中的連結以接受邀請。
+      log_out: 您可以登出此帳戶並使用屬於團隊成員的其他帳戶登入。
+      new_team: 您可以使用下面的表格來建立自己的新團隊。
+    edit:
+      section: "%{team_name}"
+      header: 編輯團隊詳情
+      description: 您可以在下面更新該團隊的詳細資訊和設定。
+    notifications:
+      created: 團隊已成功建立。
+      updated: 團隊更新已成功。
+      destroyed: 隊伍已被成功摧毀。
+      invitation_only: 目前，創建新團隊僅限於受邀搶先體驗的用戶。如果您收到了搶先造訪網址，請先造訪該網址，然後再重試。
+      cannot_delete_last_team: 您無法刪除您所屬的最後一個團隊。
+    form:
+      buttons:
+        new: 新增團隊
+        create: 創建團隊
+        edit: 編輯團隊
+        update: 更新團隊
+        destroy: 刪除團隊
+        confirmations:
+          destroy: 您確定要刪除該團隊嗎？
+    fields:
+      id:
+        _: 團隊ID
+        label: 團隊ID
+        heading: 團隊ID
+        api_title: 團隊ID
+        api_description: 團隊ID
+      name:
+        _: 團隊名稱
+        label: 團隊名稱
+        heading: 團隊名稱
+        api_title: 團隊名稱
+        api_description: 團隊名稱
+      time_zone:
+        _: 主要時區
+        label: 主要時區
+        heading: 主要時區
+        api_title: 主要時區
+        api_description: 主要時區
+      locale:
+        _: 主要語言
+        label: 主要語言
+        heading: 主要語言
+        api_title: 主要語言
+        api_description: 主要語言
+      created_at:
+        _: 註冊於
+        heading: 註冊於
+        api_title: 註冊於
+        api_description: 註冊於
+      updated_at:
+        _: 更新於
+        heading: 更新於
+        api_title: 更新於
+        api_description: 更新於
+    _:
+      name:
+        label: 你的團隊名稱
+    self:
+      id:
+        _: 團隊ID
+        label: 團隊ID
+        heading: 團隊ID
+        api_title: 團隊ID
+        api_description: 團隊ID
+      name:
+        label: 你的團隊名稱
+      time_zone:
+        _: 主要時區
+        label: 主要時區
+        heading: 主要時區
+        api_title: 主要時區
+        api_description: 主要時區
+      locale:
+        _: 語言
+        label: 主要語言
+        heading: 語言
+        api_title: 語言
+        api_description: 語言
+      created_at:
+        _: 註冊於
+        heading: 註冊於
+        api_title: 註冊於
+        api_description: 註冊於
+      updated_at:
+        _: 更新於
+        heading: 更新於
+        api_title: 更新於
+        api_description: 更新於
+    api:
+      actions: 團隊行動
+      index: 列出團隊
+      create: 新增團隊
+      show: 找回隊伍
+      update: 更新團隊
+      fields:
+        id:
+          _: 團隊ID
+          label: 團隊ID
+          heading: 團隊ID
+          api_title: 團隊ID
+          api_description: 團隊ID
+        name:
+          _: 團隊名稱
+          label: 團隊名稱
+          heading: 團隊
+          api_title: 團隊名稱
+          api_description: 團隊名稱
+        time_zone:
+          _: 主要時區
+          label: 主要時區
+          heading: 主要時區
+          api_title: 主要時區
+          api_description: 主要時區
+        locale:
+          _: 語言
+          label: 主要語言
+          heading: 語言
+          api_title: 語言
+          api_description: 語言
+        created_at:
+          _: 註冊於
+          heading: 註冊於
+          api_title: 註冊於
+          api_description: 註冊於
+        updated_at:
+          _: 更新於
+          heading: 更新於
+          api_title: 更新於
+          api_description: 更新於
+  account:
+    teams:
+      label: 團隊
+      singular: 團隊
+      breadcrumbs:
+        label: 團隊
+        team_settings: 團隊設定
+        dashboard: 儀表板
+      navigation:
+        label: 團隊
+      buttons:
+        new: 新增團隊
+        create: 創建團隊
+        edit: 編輯團隊
+        update: 更新團隊
+        destroy: 刪除團隊
+        confirmations:
+          destroy: 您確定要刪除該團隊嗎？
+      index:
+        section: 團隊
+        header: 你的團隊
+        create: 創建新團隊
+        buttons:
+          new: 新增團隊
+          create: 創建團隊
+          edit: 編輯團隊
+          update: 更新團隊
+          destroy: 刪除團隊
+          confirmations:
+            destroy: 您確定要刪除該團隊嗎？
+      show:
+        header: "%{teams_possessive} 合規性儀錶板"
+      new:
+        header: 創建一個新團隊
+        former_user_header: 加入團隊
+        default_team_name: 你的團隊
+        buttons:
+          new: 新增團隊
+          create: 創建團隊
+          edit: 編輯團隊
+          update: 更新團隊
+          destroy: 刪除團隊
+          confirmations:
+            destroy: 您確定要刪除該團隊嗎？
+        you_can: 您可以：
+        invitation_header: 接受邀請
+        logout_header: 登出該帳戶
+        new_team_header: 創建一個新團隊
+        alert: 帳號<b>%{user_email}</b>目前不是任何團隊的成員。
+        invitation: 如果您收到邀請您加入新團隊的電子郵件，請點擊該電子郵件中的連結以接受邀請。
+        log_out: 您可以登出此帳戶並使用屬於團隊成員的其他帳戶登入。
+        new_team: 您可以使用下面的表格來建立自己的新團隊。
+      edit:
+        section: "%{team_name}"
+        header: 編輯團隊詳細信息
+        description: 您可以在下面更新該團隊的詳細資訊和設定。
+      notifications:
+        created: 團隊已成功建立。
+        updated: 團隊更新已成功。
+        destroyed: 隊伍已被成功摧毀。
+        invitation_only: 目前，創建新團隊僅限於受邀搶先體驗的用戶。如果您收到了搶先造訪網址，請先造訪該網址，然後再重試。
+        cannot_delete_last_team: 您無法刪除您所屬的最後一個團隊。
+      form:
+        buttons:
+          new: 新增團隊
+          create: 創建團隊
+          edit: 編輯團隊
+          update: 更新團隊
+          destroy: 刪除團隊
+          confirmations:
+            destroy: 您確定要刪除該團隊嗎？
+      fields:
+        id:
+          _: 團隊ID
+          label: 團隊ID
+          heading: 團隊ID
+          api_title: 團隊ID
+          api_description: 團隊ID
+        name:
+          _: 團隊名稱
+          label: 團隊名稱
+          heading: 團隊名稱
+          api_title: 團隊名稱
+          api_description: 團隊名稱
+        time_zone:
+          _: 主要時區
+          label: 主要時區
+          heading: 主要時區
+          api_title: 主要時區
+          api_description: 主要時區
+        locale:
+          _: 主要語言
+          label: 主要語言
+          heading: 主要語言
+          api_title: 主要語言
+          api_description: 主要語言
+        created_at:
+          _: 註冊於
+          heading: 註冊於
+          api_title: 註冊於
+          api_description: 註冊於
+        updated_at:
+          _: 更新於
+          heading: 更新於
+          api_title: 更新於
+          api_description: 更新於
+      _:
+        name:
+          label: 你的團隊名稱
+      self:
+        id:
+          _: 團隊ID
+          label: 團隊ID
+          heading: 團隊ID
+          api_title: 團隊ID
+          api_description: 團隊ID
+        name:
+          label: 你的團隊名稱
+        time_zone:
+          _: 主要時區
+          label: 主要時區
+          heading: 主要時區
+          api_title: 主要時區
+          api_description: 主要時區
+        locale:
+          _: 語言
+          label: 主要語言
+          heading: 語言
+          api_title: 語言
+          api_description: 語言
+        created_at:
+          _: 註冊於
+          heading: 註冊於
+          api_title: 註冊於
+          api_description: 註冊於
+        updated_at:
+          _: 更新於
+          heading: 更新於
+          api_title: 更新於
+          api_description: 更新於
+      api:
+        actions: 團隊行動
+        index: 列出團隊
+        create: 新增團隊
+        show: 找回隊伍
+        update: 更新團隊
+        fields:
+          id:
+            _: 團隊ID
+            label: 團隊ID
+            heading: 團隊ID
+            api_title: 團隊ID
+            api_description: 團隊ID
+          name:
+            _: 團隊名稱
+            label: 團隊名稱
+            heading: 團隊
+            api_title: 團隊名稱
+            api_description: 團隊名稱
+          time_zone:
+            _: 主要時區
+            label: 主要時區
+            heading: 主要時區
+            api_title: 主要時區
+            api_description: 主要時區
+          locale:
+            _: 語言
+            label: 主要語言
+            heading: 語言
+            api_title: 語言
+            api_description: 語言
+          created_at:
+            _: 註冊於
+            heading: 註冊於
+            api_title: 註冊於
+            api_description: 註冊於
+          updated_at:
+            _: 更新於
+            heading: 更新於
+            api_title: 更新於
+            api_description: 更新於
+  activerecord:
+    attributes:
+      team:
+        name: 團隊名稱
+        time_zone: 主要時區
+        locale: 語言
+        created_at: 註冊於
+        updated_at: 更新於

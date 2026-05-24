@@ -1,0 +1,386 @@
+---
+es:
+  teams:
+    label: Equipos
+    singular: Equipo
+    breadcrumbs:
+      label: Equipos
+      team_settings: Configuración del equipo
+      dashboard: Panel
+    navigation:
+      label: Equipo
+    buttons:
+      new: Agregar nuevo equipo
+      create: Crear equipo
+      edit: Editar equipo
+      update: Actualizar equipo
+      destroy: Eliminar equipo
+      confirmations:
+        destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+    index:
+      section: Equipos
+      header: Tus equipos
+      create: Crear nuevo equipo
+      buttons:
+        new: Agregar nuevo equipo
+        create: Crear equipo
+        edit: Editar equipo
+        update: Actualizar equipo
+        destroy: Eliminar equipo
+        confirmations:
+          destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+    show:
+      header: Dashboard de %{teams_possessive}
+    new:
+      header: Crear un nuevo equipo
+      former_user_header: Unirse a un equipo
+      default_team_name: Tu equipo
+      buttons:
+        new: Agregar nuevo equipo
+        create: Crear equipo
+        edit: Editar equipo
+        update: Actualizar equipo
+        destroy: Eliminar equipo
+        confirmations:
+          destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+      you_can: 'Puedes:'
+      invitation_header: Aceptar una invitación
+      logout_header: Cerrar sesión de esta cuenta
+      new_team_header: Crear un nuevo equipo
+      alert: La cuenta <b>%{user_email}</b> no es actualmente miembro de ningún equipo.
+      invitation: Si has recibido un correo electrónico invitándote a unirte a un
+        nuevo equipo, haz clic en el enlace de ese correo para aceptar la invitación.
+      log_out: Puedes cerrar sesión de esta cuenta e iniciar sesión con una cuenta
+        diferente que sea miembro de un equipo.
+      new_team: Puedes usar el formulario a continuación para crear un nuevo equipo
+        propio.
+    edit:
+      section: "%{team_name}"
+      header: Editar detalles del equipo
+      description: Puedes actualizar los detalles y configuraciones de este equipo
+        a continuación.
+    notifications:
+      created: El equipo se creó exitosamente.
+      updated: El equipo se actualizó exitosamente.
+      destroyed: El equipo se eliminó exitosamente.
+      invitation_only: Actualmente, la creación de nuevos equipos está limitada a
+        los usuarios que han recibido una invitación para el acceso anticipado. Si
+        ha recibido un enlace de acceso anticipado, visítelo antes de intentarlo de
+        nuevo.
+      cannot_delete_last_team: No puedes eliminar el último equipo al que perteneciste.
+    form:
+      buttons:
+        new: Agregar nuevo equipo
+        create: Crear equipo
+        edit: Editar equipo
+        update: Actualizar equipo
+        destroy: Eliminar equipo
+        confirmations:
+          destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+    fields:
+      id:
+        _: ID del equipo
+        label: ID del equipo
+        heading: ID del equipo
+        api_title: ID del equipo
+        api_description: ID del equipo
+      name:
+        _: Nombre del equipo
+        label: Nombre del equipo
+        heading: Equipo
+        api_title: Nombre del equipo
+        api_description: Nombre del equipo
+      time_zone:
+        _: Zona horaria principal
+        label: Zona horaria principal
+        heading: Zona horaria principal
+        api_title: Zona horaria principal
+        api_description: Zona horaria principal
+      locale:
+        _: Idioma
+        label: Idioma principal
+        heading: Idioma
+        api_title: Idioma
+        api_description: Idioma
+      created_at:
+        _: Fecha de registro
+        heading: Fecha de registro
+        api_title: Fecha de registro
+        api_description: Fecha de registro
+      updated_at:
+        _: Actualizado el
+        heading: Actualizado el
+        api_title: Actualizado el
+        api_description: Actualizado el
+    _:
+      name:
+        label: Nombre de tu equipo
+    self:
+      id:
+        _: ID del equipo
+        label: ID del equipo
+        heading: ID del equipo
+        api_title: ID del equipo
+        api_description: ID del equipo
+      name:
+        label: Nombre de tu equipo
+      time_zone:
+        _: Zona horaria principal
+        label: Zona horaria principal
+        heading: Zona horaria principal
+        api_title: Zona horaria principal
+        api_description: Zona horaria principal
+      locale:
+        _: Idioma
+        label: Idioma principal
+        heading: Idioma
+        api_title: Idioma
+        api_description: Idioma
+      created_at:
+        _: Fecha de registro
+        heading: Fecha de registro
+        api_title: Fecha de registro
+        api_description: Fecha de registro
+      updated_at:
+        _: Actualizado el
+        heading: Actualizado el
+        api_title: Actualizado el
+        api_description: Actualizado el
+    api:
+      actions: Acciones para equipos
+      index: Listar equipos
+      create: Agregar un nuevo equipo
+      show: Recuperar un equipo
+      update: Actualizar un equipo
+      fields:
+        id:
+          _: ID del equipo
+          label: ID del equipo
+          heading: ID del equipo
+          api_title: ID del equipo
+          api_description: ID del equipo
+        name:
+          _: Nombre del equipo
+          label: Nombre del equipo
+          heading: Equipo
+          api_title: Nombre del equipo
+          api_description: Nombre del equipo
+        time_zone:
+          _: Zona horaria principal
+          label: Zona horaria principal
+          heading: Zona horaria principal
+          api_title: Zona horaria principal
+          api_description: Zona horaria principal
+        locale:
+          _: Idioma
+          label: Idioma principal
+          heading: Idioma
+          api_title: Idioma
+          api_description: Idioma
+        created_at:
+          _: Fecha de registro
+          heading: Fecha de registro
+          api_title: Fecha de registro
+          api_description: Fecha de registro
+        updated_at:
+          _: Actualizado el
+          heading: Actualizado el
+          api_title: Actualizado el
+          api_description: Actualizado el
+  account:
+    teams:
+      label: Equipos
+      singular: Equipo
+      breadcrumbs:
+        label: Equipos
+        team_settings: Configuración del equipo
+        dashboard: Panel
+      navigation:
+        label: Equipo
+      buttons:
+        new: Agregar nuevo equipo
+        create: Crear equipo
+        edit: Equipo de edición
+        update: Actualizar equipo
+        destroy: Eliminar equipo
+        confirmations:
+          destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+      index:
+        section: Equipos
+        header: Tus equipos
+        create: Crear nuevo equipo
+        buttons:
+          new: Agregar nuevo equipo
+          create: Crear equipo
+          edit: Editar equipo
+          update: Actualizar equipo
+          destroy: Eliminar equipo
+          confirmations:
+            destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+      show:
+        header: Dashboard de %{teams_possessive}
+      new:
+        header: Crear un nuevo equipo
+        former_user_header: Unirse a un equipo
+        default_team_name: Tu equipo
+        buttons:
+          new: Agregar nuevo equipo
+          create: Crear equipo
+          edit: Editar equipo
+          update: Actualizar equipo
+          destroy: Eliminar equipo
+          confirmations:
+            destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+        you_can: 'Puedes:'
+        invitation_header: Aceptar una invitación
+        logout_header: Cerrar sesión de esta cuenta
+        new_team_header: Crear un nuevo equipo
+        alert: La cuenta <b>%{user_email}</b> no es actualmente miembro de ningún
+          equipo.
+        invitation: Si has recibido un correo electrónico invitándote a unirte a un
+          nuevo equipo, haz clic en el enlace de ese correo para aceptar la invitación.
+        log_out: Puedes cerrar sesión de esta cuenta e iniciar sesión con una cuenta
+          diferente que sea miembro de un equipo.
+        new_team: Puedes usar el formulario a continuación para crear un nuevo equipo
+          propio.
+      edit:
+        section: "%{team_name}"
+        header: Editar detalles del equipo
+        description: Puedes actualizar los detalles y configuraciones de este equipo
+          a continuación.
+      notifications:
+        created: El equipo se creó exitosamente.
+        updated: El equipo se actualizó exitosamente.
+        destroyed: El equipo se eliminó exitosamente.
+        invitation_only: Actualmente, la creación de nuevos equipos está limitada
+          a los usuarios que han recibido una invitación para el acceso anticipado.
+          Si ha recibido un enlace de acceso anticipado, visítelo antes de intentarlo
+          de nuevo.
+        cannot_delete_last_team: No puedes eliminar el último equipo al que perteneciste.
+      form:
+        buttons:
+          new: Agregar nuevo equipo
+          create: Crear equipo
+          edit: Editar equipo
+          update: Actualizar equipo
+          destroy: Eliminar equipo
+          confirmations:
+            destroy: "¿Estás seguro de que quieres eliminar este equipo?"
+      fields:
+        id:
+          _: ID del equipo
+          label: ID del equipo
+          heading: ID del equipo
+          api_title: ID del equipo
+          api_description: ID del equipo
+        name:
+          _: Nombre del equipo
+          label: Nombre del equipo
+          heading: Equipo
+          api_title: Nombre del equipo
+          api_description: Nombre del equipo
+        time_zone:
+          _: Zona horaria principal
+          label: Zona horaria principal
+          heading: Zona horaria principal
+          api_title: Zona horaria principal
+          api_description: Zona horaria principal
+        locale:
+          _: Idioma
+          label: Idioma principal
+          heading: Idioma
+          api_title: Idioma
+          api_description: Idioma
+        created_at:
+          _: Me registré en
+          heading: Me registré en
+          api_title: Me registré en
+          api_description: Me registré en
+        updated_at:
+          _: Actualizado en
+          heading: Actualizado en
+          api_title: Actualizado en
+          api_description: Actualizado en
+      _:
+        name:
+          label: Nombre de tu equipo
+      self:
+        id:
+          _: ID del equipo
+          label: ID del equipo
+          heading: ID del equipo
+          api_title: ID del equipo
+          api_description: ID del equipo
+        name:
+          label: Nombre de tu equipo
+        time_zone:
+          _: Zona horaria principal
+          label: Zona horaria principal
+          heading: Zona horaria principal
+          api_title: Zona horaria principal
+          api_description: Zona horaria principal
+        locale:
+          _: Idioma
+          label: Idioma principal
+          heading: Idioma
+          api_title: Idioma
+          api_description: Idioma
+        created_at:
+          _: Fecha de registro
+          heading: Fecha de registro
+          api_title: Fecha de registro
+          api_description: Fecha de registro
+        updated_at:
+          _: Actualizado el
+          heading: Actualizado el
+          api_title: Actualizado el
+          api_description: Actualizado el
+      api:
+        actions: Acciones para equipos
+        index: Listar equipos
+        create: Agregar un nuevo equipo
+        show: Recuperar un equipo
+        update: Actualizar un equipo
+        fields:
+          id:
+            _: ID del equipo
+            label: ID del equipo
+            heading: ID del equipo
+            api_title: ID del equipo
+            api_description: ID del equipo
+          name:
+            _: Nombre del equipo
+            label: Nombre del equipo
+            heading: Equipo
+            api_title: Nombre del equipo
+            api_description: Nombre del equipo
+          time_zone:
+            _: Zona horaria principal
+            label: Zona horaria principal
+            heading: Zona horaria principal
+            api_title: Zona horaria principal
+            api_description: Zona horaria principal
+          locale:
+            _: Idioma
+            label: Idioma principal
+            heading: Idioma
+            api_title: Idioma
+            api_description: Idioma
+          created_at:
+            _: Fecha de registro
+            heading: Fecha de registro
+            api_title: Fecha de registro
+            api_description: Fecha de registro
+          updated_at:
+            _: Actualizado el
+            heading: Actualizado el
+            api_title: Actualizado el
+            api_description: Actualizado el
+  activerecord:
+    attributes:
+      team:
+        name: Nombre del equipo
+        time_zone: Zona horaria principal
+        locale: Idioma
+        created_at: Fecha de registro
+        updated_at: Actualizado el

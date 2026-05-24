@@ -1,0 +1,19 @@
+---
+fr:
+  onboarding:
+    user_details:
+      buttons:
+        next: Suivant
+      edit:
+        header: Parlez-nous de vous
+        buttons:
+          next: Suivant
+  account:
+    onboarding:
+      user_details:
+        buttons:
+          next: Suivant
+        edit:
+          header: Parlez-nous de vous
+          buttons:
+            next: Suivant
