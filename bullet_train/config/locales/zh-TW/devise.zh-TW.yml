@@ -1,0 +1,113 @@
+---
+zh-TW:
+  devise:
+    titles:
+      reset_password: 重設密碼
+      sign_in: 登入
+    headers:
+      resend_confirm: 重新發送確認說明
+      change_password: 更改密碼
+      reset_password: 重設密碼
+      edit_registration: 編輯 %{resource_name}
+      cancel_account: 取消我的帳戶
+      create_account: 建立您的帳戶
+      sign_in: 登入
+      resend_unlock: 重新發送解鎖說明
+    labels:
+      wait_confirm: 目前正在等待確認：%{unconfirmed_email}
+    hints:
+      leave_blank: "（如果不想更改就留空）"
+      length: 最少 %{password_length} 個字符
+      need_password: "（我們需要您目前的密碼來確認您的變更）"
+    buttons:
+      resend_confirm: 重新發送確認說明
+      change_password: 更改我的密碼
+      reset_password: 透過電子郵件重設密碼
+      cancel_account: 取消我的帳戶
+      resend_unlock: 重新發送解鎖說明
+    links:
+      account: 還沒有帳號？
+      have_account: 已有帳號？
+      forgot_password: 忘記密碼了嗎？
+      log_in: 登入
+      sign_up: 報名
+      new_confirm: 沒有收到確認說明？
+      new_unlock: 沒有收到解鎖說明？
+      sign_in_with: 使用 %{provider} 登入
+    confirmations:
+      confirmed: 您的電子郵件地址已成功確認。
+      send_instructions: 您將在幾分鐘內收到一封電子郵件，其中包含如何確認您的電子郵件地址的說明。
+      send_paranoid_instructions: 如果您的電子郵件地址存在於我們的資料庫中，您將在幾分鐘內收到一封電子郵件，其中包含如何確認您的電子郵件地址的說明。
+    failure:
+      already_authenticated: 您已經登入。
+      inactive: 您的帳戶尚未啟動。
+      invalid: "%{authentication_keys} 或密碼無效。"
+      locked: 您的帳戶已被鎖定。
+      last_attempt: 在您的帳戶被鎖定之前，您還有一次嘗試機會。
+      not_found_in_database: "%{authentication_keys} 或密碼無效。"
+      timeout: 您的會話已過期。請重新登入以繼續。
+      unauthenticated: 您需要登入或註冊才能繼續。
+      unconfirmed: 在繼續之前，您必須確認您的電子郵件地址。
+    mailer:
+      confirmation_instructions:
+        subject: 確認說明
+        welcome: 歡迎 %{email}！
+        description: 您可以透過以下連結確認您的帳戶電子郵件：
+        confirm_account: 確認我的帳戶
+      reset_password_instructions:
+        subject: 重設密碼說明
+        hello: 你好，%{email}！
+        requested_change: 有人請求提供更改密碼的連結。您可以透過下面的連結執行此操作。
+        ignore: 如果您沒有提出此要求，請忽略這封電子郵件。
+        access_change: 在您訪問上面的連結並建立新密碼之前，您的密碼不會更改。
+        change_password: 更改我的密碼
+      unlock_instructions:
+        subject: 解鎖說明
+        hello: 你好，%{email}！
+        account_blocked: 由於登入嘗試失敗次數過多，您的帳戶已被鎖定。
+        click_link: 點擊下面的連結解鎖您的帳戶：
+        unlock: 解鎖我的帳戶
+      password_change:
+        subject: 密碼已更改
+        hello: 你好，%{email}！
+        description: 我們與您聯絡是為了通知您密碼已更改。
+      email_changed:
+        subject: 電子郵件已更改
+        hello: 你好，%{email}！
+        description: 我們聯絡您是為了通知您，您的電子郵件已更改為 %{email}
+    omniauth_callbacks:
+      failure: 由於“%{reason}”，無法透過 %{kind} 對您進行身份驗證。
+      success: 已成功透過 %{kind} 帳戶進行身份驗證。
+    passwords:
+      no_token: 如果沒有密碼重設電子郵件，您將無法存取此頁面。如果您確實收到了密碼重設電子郵件，請確保您使用了提供的完整 URL。
+      send_instructions: 您將在幾分鐘內收到一封電子郵件，其中包含有關如何重設密碼的說明。
+      send_paranoid_instructions: 如果您的電子郵件地址存在於我們的資料庫中，您將在幾分鐘內透過您的電子郵件地址收到密碼恢復連結。
+      updated: 您的密碼已成功變更。您現在已登入。
+      updated_not_active: 您的密碼已成功變更。
+    registrations:
+      destroyed: 再見！您的帳戶已成功取消。我們希望很快能再次見到您。
+      signed_up: 歡迎！您已註冊成功。
+      signed_up_but_inactive: 您已註冊成功。但是，我們無法讓您登錄，因為您的帳戶尚未啟用。
+      signed_up_but_locked: 您已註冊成功。但是，我們無法讓您登錄，因為您的帳戶已被鎖定。
+      signed_up_but_unconfirmed: 帶有確認連結的訊息已發送到您的電子郵件地址。請點擊連結以啟動您的帳戶。
+      update_needs_confirmation: 您已成功更新帳戶，但我們需要驗證您的新電子郵件地址。請檢查您的電子郵件並點擊確認連結來確認您的新電子郵件地址。
+      updated: 您的帳戶已成功更新。
+    sessions:
+      signed_in: 登入成功。
+      signed_out: 已成功登出。
+      already_signed_out: 退出成功。
+    unlocks:
+      send_instructions: 您將在幾分鐘內收到一封電子郵件，其中包含如何解鎖帳戶的說明。
+      send_paranoid_instructions: 如果您的帳戶存在，您將在幾分鐘內收到一封電子郵件，其中包含如何解鎖該帳戶的說明。
+      unlocked: 您的帳戶已成功解鎖。請登入以繼續。
+  errors:
+    messages:
+      already_confirmed: 已確認，請嘗試登入
+      confirmation_period_expired: 需要在 %{period} 內確認，請申請新的
+      expired: 已過期，請申請新的
+      not_found: 未找到
+      not_locked: 沒有被鎖定
+      not_saved:
+        one: 1 個錯誤禁止儲存此 %{resource}：
+        other: "%{count} 錯誤禁止儲存此 %{resource}："
+      pwned_password: 之前曾出現過資料外洩事件，切勿使用

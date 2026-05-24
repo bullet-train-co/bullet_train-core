@@ -1,0 +1,19 @@
+---
+zh-CN:
+  onboarding:
+    user_details:
+      buttons:
+        next: 下一个
+      edit:
+        header: 请告诉我们您的情况。
+        buttons:
+          next: 下一个
+  account:
+    onboarding:
+      user_details:
+        buttons:
+          next: 下一个
+        edit:
+          header: 请告诉我们您的情况。
+          buttons:
+            next: 下一个

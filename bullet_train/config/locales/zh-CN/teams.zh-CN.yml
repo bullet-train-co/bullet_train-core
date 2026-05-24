@@ -1,0 +1,371 @@
+---
+zh-CN:
+  teams:
+    label: 团队
+    singular: 团队
+    breadcrumbs:
+      label: 团队
+      team_settings: 团队设置
+      dashboard: 仪表板
+    navigation:
+      label: 团队
+    buttons:
+      new: 添加新团队
+      create: 创建团队
+      edit: 编辑团队
+      update: 更新团队
+      destroy: 删除团队
+      confirmations:
+        destroy: 您确定要删除此团队吗？
+    index:
+      section: 团队
+      header: 您的团队
+      create: 创建新团队
+      buttons:
+        new: 添加新团队
+        create: 创建团队
+        edit: 编辑团队
+        update: 更新团队
+        destroy: 删除团队
+        confirmations:
+          destroy: 您确定要删除此团队吗？
+    show:
+      header: "%{teams_possessive} 合规性仪表盘"
+    new:
+      header: 创建新团队
+      former_user_header: 加入团队
+      default_team_name: 你的团队
+      buttons:
+        new: 添加新团队
+        create: 创建团队
+        edit: 编辑团队
+        update: 更新团队
+        destroy: 删除团队
+        confirmations:
+          destroy: 您确定要删除此团队吗？
+      you_can: 你可以选择：
+      invitation_header: 接受邀请
+      logout_header: 退出此帐户
+      new_team_header: 组建一支新团队
+      alert: 账户 <b>%{user_email}</b> 目前不属于任何团队。
+      invitation: 如果您收到邀请您加入新团队的电子邮件，请点击该电子邮件中的链接接受邀请。
+      log_out: 您可以注销此帐户，然后使用团队成员的其他帐户登录。
+      new_team: 您可以使用下面的表格创建自己的新团队。
+    edit:
+      section: "%{team_name}"
+      header: 编辑团队详情
+      description: 您可以在下方更新此团队的详细信息和设置。
+    notifications:
+      created: 团队已成功创建。
+      updated: 团队更新已成功。
+      destroyed: 队伍已被成功摧毁。
+      invitation_only: 目前，创建新团队的功能仅限于已受邀参与抢先体验的用户。如果您已收到抢先体验链接，请先访问该链接，然后再尝试创建新团队。
+      cannot_delete_last_team: 您无法删除您所属的最后一个团队。
+    form:
+      buttons:
+        new: 添加新团队
+        create: 创建团队
+        edit: 编辑团队
+        update: 更新团队
+        destroy: 删除团队
+        confirmations:
+          destroy: 您确定要删除此团队吗？
+    fields:
+      id:
+        _: 团队 ID
+        label: 团队 ID
+        heading: 团队 ID
+        api_title: 团队 ID
+        api_description: 团队 ID
+      name:
+        _: 团队名称
+        label: 团队名称
+        heading: 团队名称
+        api_title: 团队名称
+        api_description: 团队名称
+      time_zone:
+        _: 主要时区
+        label: 主要时区
+        heading: 主要时区
+        api_title: 主要时区
+        api_description: 主要时区
+      locale:
+        _: 主要语言
+        label: 主要语言
+        heading: 主要语言
+        api_title: 主要语言
+        api_description: 主要语言
+      created_at:
+        _: 已注册
+        heading: 已注册
+        api_title: 已注册
+        api_description: 已注册
+      updated_at:
+        _: 更新于
+        heading: 更新于
+        api_title: 更新于
+        api_description: 更新于
+    _:
+      name:
+        label: 您的团队名称
+    self:
+      id:
+        _: 团队 ID
+        label: 团队 ID
+        heading: 团队 ID
+        api_title: 团队 ID
+        api_description: 团队 ID
+      name:
+        label: 您的团队名称
+      time_zone:
+        _: 主要时区
+        label: 主要时区
+        heading: 主要时区
+        api_title: 主要时区
+        api_description: 主要时区
+      locale:
+        _: 语言
+        label: 主要语言
+        heading: 语言
+        api_title: 语言
+        api_description: 语言
+      created_at:
+        _: 已注册
+        heading: 已注册
+        api_title: 已注册
+        api_description: 已注册
+      updated_at:
+        _: 更新于
+        heading: 更新于
+        api_title: 更新于
+        api_description: 更新于
+    api:
+      actions: 团队行动
+      index: 列出球队
+      create: 添加新团队
+      show: 找回团队
+      update: 团队更新
+      fields:
+        id:
+          _: 团队 ID
+          label: 团队 ID
+          heading: 团队 ID
+          api_title: 团队 ID
+          api_description: 团队 ID
+        name:
+          _: 团队名称
+          label: 团队名称
+          heading: 团队
+          api_title: 团队名称
+          api_description: 团队名称
+        time_zone:
+          _: 主要时区
+          label: 主要时区
+          heading: 主要时区
+          api_title: 主要时区
+          api_description: 主要时区
+        locale:
+          _: 语言
+          label: 主要语言
+          heading: 语言
+          api_title: 语言
+          api_description: 语言
+        created_at:
+          _: 已注册
+          heading: 已注册
+          api_title: 已注册
+          api_description: 已注册
+        updated_at:
+          _: 更新于
+          heading: 更新于
+          api_title: 更新于
+          api_description: 更新于
+  account:
+    teams:
+      label: 团队
+      singular: 团队
+      breadcrumbs:
+        label: 团队
+        team_settings: 团队设置
+        dashboard: 仪表板
+      navigation:
+        label: 团队
+      buttons:
+        new: 添加新团队
+        create: 创建团队
+        edit: 编辑团队
+        update: 更新团队
+        destroy: 删除团队
+        confirmations:
+          destroy: 您确定要删除此团队吗？
+      index:
+        section: 团队
+        header: 您的团队
+        create: 创建新团队
+        buttons:
+          new: 添加新团队
+          create: 创建团队
+          edit: 编辑团队
+          update: 更新团队
+          destroy: 删除团队
+          confirmations:
+            destroy: 您确定要删除此团队吗？
+      show:
+        header: "%{teams_possessive} 合规性仪表盘"
+      new:
+        header: 创建新团队
+        former_user_header: 加入团队
+        default_team_name: 你的团队
+        buttons:
+          new: 添加新团队
+          create: 创建团队
+          edit: 编辑团队
+          update: 更新团队
+          destroy: 删除团队
+          confirmations:
+            destroy: 您确定要删除此团队吗？
+        you_can: 你可以选择：
+        invitation_header: 接受邀请
+        logout_header: 退出此帐户
+        new_team_header: 组建一支新团队
+        alert: 账户 <b>%{user_email}</b> 目前不属于任何团队。
+        invitation: 如果您收到邀请您加入新团队的电子邮件，请点击该电子邮件中的链接接受邀请。
+        log_out: 您可以注销此帐户，然后使用团队成员的其他帐户登录。
+        new_team: 您可以使用下面的表格创建自己的新团队。
+      edit:
+        section: "%{team_name}"
+        header: 编辑团队详情
+        description: 您可以在下方更新此团队的详细信息和设置。
+      notifications:
+        created: 团队已成功创建。
+        updated: 团队更新已成功。
+        destroyed: 队伍已被成功摧毁。
+        invitation_only: 目前，创建新团队的功能仅限于已受邀参与抢先体验的用户。如果您已收到抢先体验链接，请先访问该链接，然后再尝试创建新团队。
+        cannot_delete_last_team: 您无法删除您所属的最后一个团队。
+      form:
+        buttons:
+          new: 添加新团队
+          create: 创建团队
+          edit: 编辑团队
+          update: 更新团队
+          destroy: 删除团队
+          confirmations:
+            destroy: 您确定要删除此团队吗？
+      fields:
+        id:
+          _: 团队 ID
+          label: 团队 ID
+          heading: 团队 ID
+          api_title: 团队 ID
+          api_description: 团队 ID
+        name:
+          _: 团队名称
+          label: 团队名称
+          heading: 团队名称
+          api_title: 团队名称
+          api_description: 团队名称
+        time_zone:
+          _: 主要时区
+          label: 主要时区
+          heading: 主要时区
+          api_title: 主要时区
+          api_description: 主要时区
+        locale:
+          _: 主要语言
+          label: 主要语言
+          heading: 主要语言
+          api_title: 主要语言
+          api_description: 主要语言
+        created_at:
+          _: 已注册
+          heading: 已注册
+          api_title: 已注册
+          api_description: 已注册
+        updated_at:
+          _: 更新于
+          heading: 更新于
+          api_title: 更新于
+          api_description: 更新于
+      _:
+        name:
+          label: 您的团队名称
+      self:
+        id:
+          _: 团队 ID
+          label: 团队 ID
+          heading: 团队 ID
+          api_title: 团队 ID
+          api_description: 团队 ID
+        name:
+          label: 您的团队名称
+        time_zone:
+          _: 主要时区
+          label: 主要时区
+          heading: 主要时区
+          api_title: 主要时区
+          api_description: 主要时区
+        locale:
+          _: 语言
+          label: 主要语言
+          heading: 语言
+          api_title: 语言
+          api_description: 语言
+        created_at:
+          _: 已注册
+          heading: 已注册
+          api_title: 已注册
+          api_description: 已注册
+        updated_at:
+          _: 更新于
+          heading: 更新于
+          api_title: 更新于
+          api_description: 更新于
+      api:
+        actions: 团队行动
+        index: 列出球队
+        create: 添加新团队
+        show: 找回团队
+        update: 团队更新
+        fields:
+          id:
+            _: 团队 ID
+            label: 团队 ID
+            heading: 团队 ID
+            api_title: 团队 ID
+            api_description: 团队 ID
+          name:
+            _: 团队名称
+            label: 团队名称
+            heading: 团队
+            api_title: 团队名称
+            api_description: 团队名称
+          time_zone:
+            _: 主要时区
+            label: 主要时区
+            heading: 主要时区
+            api_title: 主要时区
+            api_description: 主要时区
+          locale:
+            _: 语言
+            label: 主要语言
+            heading: 语言
+            api_title: 语言
+            api_description: 语言
+          created_at:
+            _: 已注册
+            heading: 已注册
+            api_title: 已注册
+            api_description: 已注册
+          updated_at:
+            _: 更新于
+            heading: 更新于
+            api_title: 更新于
+            api_description: 更新于
+  activerecord:
+    attributes:
+      team:
+        name: 团队名称
+        time_zone: 主要时区
+        locale: 语言
+        created_at: 已注册
+        updated_at: 更新于

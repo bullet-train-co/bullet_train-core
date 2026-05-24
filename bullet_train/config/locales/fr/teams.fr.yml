@@ -1,0 +1,385 @@
+---
+fr:
+  teams:
+    label: Label
+    singular: Équipe
+    breadcrumbs:
+      label: Équipes
+      team_settings: Paramètres d'équipe
+      dashboard: Tableau de bord
+    navigation:
+      label: Équipe
+    buttons:
+      new: Ajouter une nouvelle équipe
+      create: Créer une équipe
+      edit: Modifier l'équipe
+      update: Mettre à jour l'équipe
+      destroy: Supprimer l'équipe
+      confirmations:
+        destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+    index:
+      section: Équipes
+      header: Vos équipes
+      create: Créer une nouvelle équipe
+      buttons:
+        new: Ajouter une nouvelle équipe
+        create: Créer une équipe
+        edit: Équipe de montage
+        update: Équipe de mise à jour
+        destroy: Supprimer l'équipe
+        confirmations:
+          destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+    show:
+      header: Tableau de bord de conformité %{teams_possessive}
+    new:
+      header: Créer une nouvelle équipe
+      former_user_header: Rejoignez une équipe
+      default_team_name: Votre équipe
+      buttons:
+        new: Ajouter une nouvelle équipe
+        create: Créer une équipe
+        edit: Équipe de montage
+        update: Équipe de mise à jour
+        destroy: Supprimer l'équipe
+        confirmations:
+          destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+      you_can: 'Vous pouvez soit :'
+      invitation_header: Accepter une invitation
+      logout_header: Déconnectez-vous de ce compte
+      new_team_header: Créer une nouvelle équipe
+      alert: Le compte <b>%{user_email}</b> n'est actuellement membre d'aucune équipe.
+      invitation: Si vous avez reçu un courriel vous invitant à rejoindre une nouvelle
+        équipe, cliquez sur le lien contenu dans ce courriel pour accepter l'invitation.
+      log_out: Vous pouvez vous déconnecter de ce compte et vous connecter avec un
+        autre compte membre d'une équipe.
+      new_team: Vous pouvez utiliser le formulaire ci-dessous pour créer votre propre
+        équipe.
+    edit:
+      section: "%{team_name}"
+      header: Modifier les détails de l'équipe
+      description: Vous pouvez mettre à jour les informations et les paramètres de
+        cette équipe ci-dessous.
+    notifications:
+      created: L'équipe a été créée avec succès.
+      updated: L'équipe a été mise à jour avec succès.
+      destroyed: L'équipe a été supprimée avec succès.
+      invitation_only: La création de nouvelles équipes est actuellement réservée
+        aux utilisateurs ayant reçu une invitation pour un accès anticipé. Si vous
+        avez reçu une URL d'accès anticipé, veuillez la consulter avant de réessayer.
+      cannot_delete_last_team: Vous ne pouvez pas supprimer la dernière équipe à laquelle
+        vous appartenez.
+    form:
+      buttons:
+        new: Ajouter une nouvelle équipe
+        create: Créer une équipe
+        edit: Équipe de montage
+        update: Équipe de mise à jour
+        destroy: Supprimer l'équipe
+        confirmations:
+          destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+    fields:
+      id:
+        _: ID d'équipe
+        label: ID d'équipe
+        heading: ID d'équipe
+        api_title: ID d'équipe
+        api_description: ID d'équipe
+      name:
+        _: Nom de l'équipe
+        label: Nom de l'équipe
+        heading: Nom de l'équipe
+        api_title: Nom de l'équipe
+        api_description: Nom de l'équipe
+      time_zone:
+        _: Fuseau horaire principal
+        label: Fuseau horaire principal
+        heading: Fuseau horaire principal
+        api_title: Fuseau horaire principal
+        api_description: Fuseau horaire principal
+      locale:
+        _: Langue principale
+        label: Langue principale
+        heading: Langue principale
+        api_title: Langue principale
+        api_description: Langue principale
+      created_at:
+        _: Inscrit à
+        heading: Inscrit à
+        api_title: Inscrit à
+        api_description: Inscrit à
+      updated_at:
+        _: Mise à jour le
+        heading: Mise à jour le
+        api_title: Mise à jour le
+        api_description: Mise à jour le
+    _:
+      name:
+        label: Nom de votre équipe
+    self:
+      id:
+        _: ID d'équipe
+        label: ID d'équipe
+        heading: ID d'équipe
+        api_title: ID d'équipe
+        api_description: ID d'équipe
+      name:
+        label: Nom de votre équipe
+      time_zone:
+        _: Fuseau horaire principal
+        label: Fuseau horaire principal
+        heading: Fuseau horaire principal
+        api_title: Fuseau horaire principal
+        api_description: Fuseau horaire principal
+      locale:
+        _: Langue
+        label: Langue principale
+        heading: Langue
+        api_title: Langue
+        api_description: Langue
+      created_at:
+        _: Inscrit à
+        heading: Inscrit à
+        api_title: Inscrit à
+        api_description: Inscrit à
+      updated_at:
+        _: Mise à jour le
+        heading: Mise à jour le
+        api_title: Mise à jour le
+        api_description: Mise à jour le
+    api:
+      actions: Actions pour les équipes
+      index: Liste des équipes
+      create: Ajouter une nouvelle équipe
+      show: Récupérer une équipe
+      update: Mettre à jour une équipe
+      fields:
+        id:
+          _: ID d'équipe
+          label: ID d'équipe
+          heading: ID d'équipe
+          api_title: ID d'équipe
+          api_description: ID d'équipe
+        name:
+          _: Nom de l'équipe
+          label: Nom de l'équipe
+          heading: Équipe
+          api_title: Nom de l'équipe
+          api_description: Nom de l'équipe
+        time_zone:
+          _: Fuseau horaire principal
+          label: Fuseau horaire principal
+          heading: Fuseau horaire principal
+          api_title: Fuseau horaire principal
+          api_description: Fuseau horaire principal
+        locale:
+          _: Langue
+          label: Langue principale
+          heading: Langue
+          api_title: Langue
+          api_description: Langue
+        created_at:
+          _: Inscrit à
+          heading: Inscrit à
+          api_title: Inscrit à
+          api_description: Inscrit à
+        updated_at:
+          _: Mise à jour le
+          heading: Mise à jour le
+          api_title: Mise à jour le
+          api_description: Mise à jour le
+  account:
+    teams:
+      label: Équipes
+      singular: Équipe
+      breadcrumbs:
+        label: Équipes
+        team_settings: Paramètres d'équipe
+        dashboard: Tableau de bord
+      navigation:
+        label: Équipe
+      buttons:
+        new: Ajouter une nouvelle équipe
+        create: Créer une équipe
+        edit: Modifier l'équipe
+        update: Mettre à jour l'équipe
+        destroy: Supprimer l'équipe
+        confirmations:
+          destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+      index:
+        section: Équipes
+        header: Vos équipes
+        create: Créer une nouvelle équipe
+        buttons:
+          new: Ajouter une nouvelle équipe
+          create: Créer une équipe
+          edit: Équipe de montage
+          update: Équipe de mise à jour
+          destroy: Supprimer l'équipe
+          confirmations:
+            destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+      show:
+        header: Tableau de bord de conformité %{teams_possessive}
+      new:
+        header: Créer une nouvelle équipe
+        former_user_header: Rejoignez une équipe
+        default_team_name: Votre équipe
+        buttons:
+          new: Ajouter une nouvelle équipe
+          create: Créer une équipe
+          edit: Équipe de montage
+          update: Équipe de mise à jour
+          destroy: Supprimer l'équipe
+          confirmations:
+            destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+        you_can: 'Vous pouvez soit :'
+        invitation_header: Accepter une invitation
+        logout_header: Déconnectez-vous de ce compte
+        new_team_header: Créer une nouvelle équipe
+        alert: Le compte <b>%{user_email}</b> n'est actuellement membre d'aucune équipe.
+        invitation: Si vous avez reçu un courriel vous invitant à rejoindre une nouvelle
+          équipe, cliquez sur le lien contenu dans ce courriel pour accepter l'invitation.
+        log_out: Vous pouvez vous déconnecter de ce compte et vous connecter avec
+          un autre compte membre d'une équipe.
+        new_team: Vous pouvez utiliser le formulaire ci-dessous pour créer votre propre
+          équipe.
+      edit:
+        section: "%{team_name}"
+        header: Modifier les détails de l'équipe
+        description: Vous pouvez mettre à jour les informations et les paramètres
+          de cette équipe ci-dessous.
+      notifications:
+        created: L'équipe a été créée avec succès.
+        updated: L'équipe a été mise à jour avec succès.
+        destroyed: L'équipe a été supprimée avec succès.
+        invitation_only: La création de nouvelles équipes est actuellement réservée
+          aux utilisateurs ayant reçu une invitation pour un accès anticipé. Si vous
+          avez reçu une URL d'accès anticipé, veuillez la consulter avant de réessayer.
+        cannot_delete_last_team: Vous ne pouvez pas supprimer la dernière équipe à
+          laquelle vous appartenez.
+      form:
+        buttons:
+          new: Ajouter une nouvelle équipe
+          create: Create
+          edit: Équipe de montage
+          update: Update
+          destroy: Supprimer l'équipe
+          confirmations:
+            destroy: Êtes-vous sûr de vouloir supprimer cette équipe ?
+      fields:
+        id:
+          _: ID d'équipe
+          label: ID d'équipe
+          heading: ID d'équipe
+          api_title: ID d'équipe
+          api_description: ID d'équipe
+        name:
+          _: Nom de l'équipe
+          label: Nom de l'équipe
+          heading: Nom de l'équipe
+          api_title: Nom de l'équipe
+          api_description: Nom de l'équipe
+        time_zone:
+          _: Fuseau horaire principal
+          label: Fuseau horaire principal
+          heading: Fuseau horaire principal
+          api_title: Fuseau horaire principal
+          api_description: Fuseau horaire principal
+        locale:
+          _: Langue principale
+          label: Langue principale
+          heading: Langue principale
+          api_title: Langue principale
+          api_description: Langue principale
+        created_at:
+          _: Inscrit à
+          heading: Inscrit à
+          api_title: Inscrit à
+          api_description: Inscrit à
+        updated_at:
+          _: Mise à jour le
+          heading: Mise à jour le
+          api_title: Mise à jour le
+          api_description: Mise à jour le
+      _:
+        name:
+          label: Nom de votre équipe
+      self:
+        id:
+          _: ID d'équipe
+          label: ID d'équipe
+          heading: ID d'équipe
+          api_title: ID d'équipe
+          api_description: ID d'équipe
+        name:
+          label: Nom de votre équipe
+        time_zone:
+          _: Fuseau horaire principal
+          label: Fuseau horaire principal
+          heading: Fuseau horaire principal
+          api_title: Fuseau horaire principal
+          api_description: Fuseau horaire principal
+        locale:
+          _: Langue
+          label: Langue principale
+          heading: Langue
+          api_title: Langue
+          api_description: Langue
+        created_at:
+          _: Inscrit à
+          heading: Inscrit à
+          api_title: Inscrit à
+          api_description: Inscrit à
+        updated_at:
+          _: Mise à jour le
+          heading: Mise à jour le
+          api_title: Mise à jour le
+          api_description: Mise à jour le
+      api:
+        actions: Actions pour les équipes
+        index: Liste des équipes
+        create: Ajouter une nouvelle équipe
+        show: Récupérer une équipe
+        update: Mettre à jour une équipe
+        fields:
+          id:
+            _: ID d'équipe
+            label: ID d'équipe
+            heading: ID d'équipe
+            api_title: ID d'équipe
+            api_description: ID d'équipe
+          name:
+            _: Nom de l'équipe
+            label: Nom de l'équipe
+            heading: Équipe
+            api_title: Nom de l'équipe
+            api_description: Nom de l'équipe
+          time_zone:
+            _: Fuseau horaire principal
+            label: Fuseau horaire principal
+            heading: Fuseau horaire principal
+            api_title: Fuseau horaire principal
+            api_description: Fuseau horaire principal
+          locale:
+            _: Langue
+            label: Langue principale
+            heading: Langue
+            api_title: Langue
+            api_description: Langue
+          created_at:
+            _: Inscrit à
+            heading: Inscrit à
+            api_title: Inscrit à
+            api_description: Inscrit à
+          updated_at:
+            _: Mise à jour le
+            heading: Mise à jour le
+            api_title: Mise à jour le
+            api_description: Mise à jour le
+  activerecord:
+    attributes:
+      team:
+        name: Nom de l'équipe
+        time_zone: Fuseau horaire principal
+        locale: Langue
+        created_at: Inscrit à
+        updated_at: Mise à jour le
