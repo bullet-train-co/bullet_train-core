@@ -9,6 +9,8 @@ module Controllers::Base
     include DeviseCurrentAttributes
     include Pagy::Backend
 
+    include Controllers::SuperSelectable
+
     around_action :set_locale
     layout :layout_by_resource
 

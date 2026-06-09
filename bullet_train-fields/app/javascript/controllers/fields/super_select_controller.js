@@ -73,7 +73,8 @@ export default class extends Controller {
         data: function(params) {
           var query = {
             search: params.term,
-            page: params.page || 1
+            page: params.page || 1,
+            format: 'super_select' // the SuperSelectable concern turns every api endpoint into a super_selectable endpoint
           }
           return query
         }
