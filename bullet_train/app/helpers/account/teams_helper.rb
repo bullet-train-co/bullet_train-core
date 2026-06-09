@@ -2,7 +2,7 @@ module Account::TeamsHelper
   def current_team
     # TODO We do not want this to be based on the `current_team_id`.
     # TODO We want this to be based on the current resource being loaded.
-    @team || current_user&.current_team
+    current_user&.current_team || @team
   end
 
   def other_teams
