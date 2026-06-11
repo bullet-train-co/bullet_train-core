@@ -45,7 +45,15 @@ module Teams::Base
   end
 
   def admin_users
-    admins.map(&:user).compact
+    # Exclude platform agents: they are synthetic service accounts (an OAuth
+    # application / team-level connection) added as admins for authorization,
+    # but they are not people. Their email is an intentionally-undeliverable
+    # noreply+<hex>@bullettrain.co placeholder, so including them here would let
+    # a machine account become a team's #primary_contact / #formatted_email_address
+    # and pull undeliverable addresses into admin notification recipients.
+    # #admins is intentionally left inclusive so authorization and the
+    # "last remaining admin" guard still count platform agents.
+    admins.excluding_platform_agents.map(&:user).compact
   end
 
   def primary_contact
