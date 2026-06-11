@@ -107,4 +107,24 @@ class TeamTest < ActiveSupport::TestCase
     @team.name_was = "Old Name"
     assert_equal "Old Name", @team.label_string # passes
   end
+
+  test "#admin_users excludes platform agents while #admins still counts them" do
+    team = Team.create!(name: "platform agents team")
+    human = User.create!(email: "human@test.com", password: "password", password_confirmation: "password")
+    agent = User.create!(email: "noreply+#{SecureRandom.hex}@bullettrain.co", password: "password", password_confirmation: "password")
+
+    Membership.create!(team: team, user: human, role_ids: [Role.admin.id])
+    agent_membership = Membership.create!(team: team, user: agent, role_ids: [Role.admin.id])
+    # Mark the membership as a platform agent (an OAuth application / team-level
+    # connection service account). platform_agent_of_id has no FK, so a sentinel
+    # value is enough to exercise the Membership.excluding_platform_agents scope.
+    agent_membership.update_column(:platform_agent_of_id, agent.id)
+
+    # #admins stays inclusive so authorization and the "last admin" guard still count agents.
+    assert_includes team.admins.map(&:user), agent
+
+    # #admin_users (team contact + admin notification recipients) excludes the agent.
+    assert_includes team.admin_users, human
+    refute_includes team.admin_users, agent
+  end
 end
