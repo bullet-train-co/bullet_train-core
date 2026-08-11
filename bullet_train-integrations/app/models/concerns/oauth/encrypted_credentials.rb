@@ -1,53 +1,92 @@
-# Keeps provider access and refresh tokens out of the plaintext `data` payload.
+# Keeps provider secrets out of the plaintext `data` payload.
 #
-# Providers assign the whole OmniAuth hash with `self.data = auth`, and that hash
-# carries a `credentials` subtree holding the access token. This concern moves
-# that subtree into its own encrypted column on the way to the database, which is
-# the one seam every write already passes through — no provider has to remember
-# to do it.
+# Providers assign the whole OmniAuth hash with `self.data = auth`, which lands
+# an access token in a plaintext column where any read of the table returns live,
+# replayable credentials.
 #
-# Only `credentials` is encrypted. `data` keeps the `info`/`extra` payload so it
-# stays queryable with SQL json paths, which apps commonly rely on for provider
-# account ids and for functional indexes. Encrypting the whole column would break
-# those lookups without protecting any additional secret.
+# OmniAuth's schema splits that payload into `info` — normalized, documented
+# profile fields — and `credentials`/`extra`. Only `info` is safe to leave in the
+# clear, so this concern relocates the other two into encrypted columns. That is
+# a whitelist on purpose: `extra` is the provider's raw response and strategies
+# put whatever they like in it, so any list of known-secret key names would be
+# wrong the moment a strategy invents a new one. Real examples today —
+# omniauth-apple puts a bearer JWT in `extra.raw_info.id_token`,
+# omniauth-google-oauth2 puts one in `extra.id_token` and falls back to the raw
+# access token when the provider returns no id_token, and OAuth1 strategies put a
+# live token object there whose instance variables serialize straight into jsonb.
 #
-# Requires a `credentials` column on the model's table and Active Record
-# Encryption keys (`bin/rails db:encryption:init`).
+# `data` keeps `provider`, `uid` and `info`, so SQL json path lookups and
+# functional indexes against profile fields keep working. Anything you need to
+# query out of `extra` has to be denormalized into its own column.
+#
+# Requires `credentials` and `extra` columns and Active Record Encryption keys
+# (`bin/rails db:encryption:init`).
 module Oauth::EncryptedCredentials
   extend ActiveSupport::Concern
 
+  ENCRYPTED_SUBTREES = %w[credentials extra].freeze
+
   included do
     encrypts :credentials
+    encrypts :extra
 
-    before_save :extract_credentials_from_data
+    # Catches what the writer below can't see: rows written before this concern
+    # was added, and in-place mutation of `data` (which never calls a writer).
+    before_save :relocate_encrypted_subtrees
   end
 
-  # Falls back to the payload still sitting in `data` for records built but not
-  # yet saved, since the callback hasn't relocated it at that point and callers
-  # do read the token off an unsaved account while verifying a new connection.
-  #
-  # Note the asymmetry: the fallback only wins when the column is empty. On a
-  # persisted account being re-authed, reading between `data = auth` and the save
-  # returns the OLD token. Assign `credentials` directly rather than reaching
-  # into `data` if you need the new one before saving.
+  # Splitting at assignment rather than only on save means a caller reading the
+  # token between `data = auth` and `save` gets the new one, not the previous.
+  def data=(value)
+    super
+    relocate_encrypted_subtrees
+  end
+
+  # Falls back to a payload still sitting in `data` — a record built but not yet
+  # saved, or a row written before this concern existed.
   def credentials
-    super.presence || pending_credentials_in_data
+    super.presence || pending_subtree_in_data("credentials")
+  end
+
+  def extra
+    super.presence || pending_subtree_in_data("extra")
   end
 
   private
 
-  def pending_credentials_in_data
-    return {} unless data.respond_to?(:key?) && data.key?("credentials")
+  def pending_subtree_in_data(subtree)
+    payload = read_attribute(:data)
+    return {} unless payload.is_a?(Hash)
 
-    data["credentials"].to_h
+    payload[subtree].is_a?(Hash) ? payload[subtree] : {}
   end
 
-  def extract_credentials_from_data
-    return if data.blank?
-    return unless data.respond_to?(:key?) && data.key?("credentials")
+  def relocate_encrypted_subtrees
+    # Without the columns, `encrypts` still declares attributes that go nowhere —
+    # so this has to check the table, not `has_attribute?`, which they satisfy.
+    # Relocating in that state would strip the subtree out of `data` and drop it
+    # on the floor; leaving the payload alone keeps it readable until the
+    # migration that adds the columns has run.
+    return unless ENCRYPTED_SUBTREES.all? { |subtree| self.class.column_names.include?(subtree) }
 
-    incoming = data["credentials"]
-    self.data = data.to_h.except("credentials")
-    self.credentials = incoming.to_h if incoming.present?
+    payload = read_attribute(:data)
+    return unless payload.is_a?(Hash)
+
+    remaining = payload
+
+    ENCRYPTED_SUBTREES.each do |subtree|
+      next unless remaining.key?(subtree)
+
+      value = remaining[subtree]
+      remaining = remaining.except(subtree)
+
+      # An explicit assignment wins over whatever is still in `data`, so a caller
+      # refreshing a token doesn't silently lose it to a stale payload.
+      next if attribute_changed?(subtree)
+
+      write_attribute(subtree, value) if value.present?
+    end
+
+    write_attribute(:data, remaining) unless remaining.equal?(payload)
   end
 end

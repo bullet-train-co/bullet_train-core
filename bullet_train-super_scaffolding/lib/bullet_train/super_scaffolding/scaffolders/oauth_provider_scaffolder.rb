@@ -42,12 +42,18 @@ module BulletTrain
             api_secret: api_secret
           }
 
+          # Whether we generated the models here, which tells us further down
+          # whether the `credentials`/`extra` columns actually exist.
+          generated_models = false
+
           unless File.exist?(oauth_transform_string("./app/models/oauth/stripe_account.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/integrations/stripe_installation.rb", options)) &&
               File.exist?(oauth_transform_string("./app/models/webhooks/incoming/oauth/stripe_account_webhook.rb", options))
 
+            generated_models = true
+
             oauth_model_data = {
-              "Oauth::StripeAccount": "rails generate model Oauth::StripeAccount uid:string data:jsonb credentials:jsonb user:references",
+              "Oauth::StripeAccount": "rails generate model Oauth::StripeAccount uid:string data:jsonb credentials:jsonb extra:jsonb user:references",
               "Integrations::StripeInstallation": "rails generate model Integrations::StripeInstallation team:references oauth_stripe_account:references name:string",
               "Webhooks::Incoming::Oauth::StripeAccountWebhook": "rails generate model Webhooks::Incoming::Oauth::StripeAccountWebhook data:jsonb processed_at:datetime verified_at:datetime oauth_stripe_account:references"
             }
@@ -148,10 +154,16 @@ module BulletTrain
             end
           end
 
-          # Encrypt the provider's access token at rest. Injected here rather than in the
+          # Encrypt the provider's secrets at rest. Injected here rather than in the
           # template so it only applies to newly generated providers — the templates are
           # also the Stripe integration's own files, which existing apps already run.
-          oauth_scaffold_add_line_to_file("./app/models/oauth/stripe_account.rb", "include Oauth::EncryptedCredentials", "include Oauth::StripeAccounts::Base", options)
+          #
+          # Only when we generated the models, so re-running against a provider that
+          # predates this doesn't include the concern into a model whose table has no
+          # `credentials`/`extra` columns.
+          if generated_models
+            oauth_scaffold_add_line_to_file("./app/models/oauth/stripe_account.rb", "include Oauth::EncryptedCredentials", "include Oauth::StripeAccounts::Base", options)
+          end
 
           oauth_scaffold_add_line_to_file("./app/views/devise/shared/_oauth.html.erb", "<%= render 'devise/shared/oauth/stripe', verb: verb if stripe_enabled? %>", "<%# 🚅 super scaffolding will insert new oauth providers above this line. %>", options, prepend: true)
           oauth_scaffold_add_line_to_file("./app/views/account/users/_oauth.html.erb", "<%= render 'account/oauth/stripe_accounts/index', context: @user, stripe_accounts: @user.oauth_stripe_accounts if stripe_enabled? %>", "<% # 🚅 super scaffolding will insert new oauth providers above this line. %>", options, prepend: true)
