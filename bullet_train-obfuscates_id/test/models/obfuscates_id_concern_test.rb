@@ -27,6 +27,16 @@ class FakeModelWithNilId
   end
 end
 
+class FakeModelWithMutableId
+  include ObfuscatesId
+
+  attr_accessor :id
+
+  def initialize(id)
+    @id = id
+  end
+end
+
 class BulletTrain::ObfuscatesIdConcernTest < ActiveSupport::TestCase
   test "FakeModel has an id" do
     fake_model = FakeModel.new
@@ -45,5 +55,15 @@ class BulletTrain::ObfuscatesIdConcernTest < ActiveSupport::TestCase
 
   test "FakeModelWithNilId returns nil when id is nil" do
     assert_nil FakeModelWithNilId.new.to_param
+  end
+
+  test "a duplicate uses its own id when generating an obfuscated id" do
+    original = FakeModelWithMutableId.new(42)
+    original.obfuscated_id
+
+    duplicate = original.dup
+    duplicate.id = 43
+
+    assert_equal FakeModelWithMutableId.encode_id(43), duplicate.obfuscated_id
   end
 end
