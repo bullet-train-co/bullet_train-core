@@ -51,7 +51,7 @@ module ObfuscatesId
   end
 
   def obfuscated_id
-    @obfuscated_id ||= self.class.encode_id(id)
+    self.class.encode_id(id)
   end
 
   def to_param
