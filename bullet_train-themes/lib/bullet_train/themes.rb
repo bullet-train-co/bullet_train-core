@@ -33,6 +33,11 @@ module BulletTrain
         end
 
         def resolved_partial_path_for(lookup_context, path, locals)
+          # Only String paths can be theme partials (see `theme_invocation_path_for`), so return before the cache
+          # lookup below: it hashes `path`, and hashing a non-String `render` argument can raise. jbuilder's
+          # `json.partial!` passes an options Hash whose locals hold the Jbuilder itself, which answers `#hash` with nil.
+          return unless path.is_a?(String)
+
           # We disable partial path caching in development so new templates are taken into account without restarting the server.
           partial_paths = {}
 
