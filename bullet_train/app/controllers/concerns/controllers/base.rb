@@ -107,7 +107,8 @@ module Controllers::Base
 
   # TODO Extract this into an optional `bullet_train-sentry` package.
   def set_sentry_context
-    return unless ENV["SENTRY_DSN"]
+    # sentry-ruby isn't a dependency, so SENTRY_DSN alone doesn't mean the `Sentry` constant exists.
+    return unless ENV["SENTRY_DSN"] && defined?(::Sentry)
 
     Sentry.configure_scope do |scope|
       scope.set_user(id: current_user.id, email: current_user.email) if current_user
