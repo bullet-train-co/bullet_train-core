@@ -1,5 +1,8 @@
 require "bullet_train/super_scaffolding/version"
 require "bullet_train/super_scaffolding/engine"
+
+# This gem's `config/routes.rb` uses the `model` DSL, so make sure it's installed.
+require "bullet_train/routes"
 require "bullet_train/super_scaffolding/exceptions"
 require "bullet_train/super_scaffolding/scaffolder"
 require "bullet_train/super_scaffolding/scaffolders/crud_scaffolder"

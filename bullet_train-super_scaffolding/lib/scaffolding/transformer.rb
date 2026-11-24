@@ -1517,19 +1517,33 @@ class Scaffolding::Transformer
           FileUtils.mkdir_p("config/routes")
         end
 
-        File.write(routes_path, <<~RUBY)
-          collection_actions = [:index, :new, :create]
+        File.write(routes_path, if cli_options["rails-routes"]
+          <<~RUBY
+            collection_actions = [:index, :new, :create]
 
-          # 🚅 Don't remove this block, it will break Super Scaffolding.
-          begin
-            namespace :#{routes_namespace} do
-              shallow do
-                resources :teams do
+            # 🚅 Don't remove this block, it will break Super Scaffolding.
+            begin
+              namespace :#{routes_namespace} do
+                shallow do
+                  resources :teams do
+                  end
                 end
               end
             end
-          end
-        RUBY
+          RUBY
+        else
+          <<~RUBY
+            # 🚅 Don't remove this block, it will break Super Scaffolding.
+            begin
+              namespace :#{routes_namespace} do
+                shallow do
+                  model "Team" do
+                  end
+                end
+              end
+            end
+          RUBY
+        end)
 
         retry
       end
@@ -1537,6 +1551,10 @@ class Scaffolding::Transformer
       begin
         routes_manipulator.apply([routes_namespace])
         Scaffolding::FileManipulator.write(routes_path, routes_manipulator.lines)
+
+        if routes_manipulator.rails_routes_fallback
+          add_additional_step :yellow, "We drew your `#{routes_namespace}` routes with native Rails routing, because `#{parent}` isn't declared in `#{routes_path}` in a way we can nest a `model` under. That's fine — they're still correct routes. If you'd like them drawn with the `model` DSL, declare the parent as `model \"#{parent}\"` and re-run this command."
+        end
       rescue => _
         add_additional_step :red, "We weren't able to automatically add your `#{routes_namespace}` routes for you. In theory this should be very rare, so if you could reach out on Discord, you could probably provide context that will help us fix whatever the problem was. In the meantime, to add the routes manually, we've got a guide at https://blog.bullettrain.co/nested-namespaced-rails-routing-examples/ ."
       end

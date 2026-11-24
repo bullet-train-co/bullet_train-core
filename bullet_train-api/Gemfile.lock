@@ -22,6 +22,12 @@ PATH
       cancancan
 
 PATH
+  remote: ../bullet_train-routes
+  specs:
+    bullet_train-routes (1.45.1)
+      rails (>= 7.0.0)
+
+PATH
   remote: ../bullet_train-scope_validator
   specs:
     bullet_train-scope_validator (1.45.1)
@@ -38,6 +44,7 @@ PATH
   remote: ../bullet_train-super_scaffolding
   specs:
     bullet_train-super_scaffolding (1.45.1)
+      bullet_train-routes
       colorize
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -58,6 +65,7 @@ PATH
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
+      bullet_train-routes
       bullet_train-scope_validator
       bullet_train-super_load_and_authorize_resource
       bullet_train-themes
@@ -82,6 +90,7 @@ PATH
   specs:
     bullet_train-api (1.45.1)
       bullet_train
+      bullet_train-routes
       bullet_train-super_scaffolding
       doorkeeper
       factory_bot
@@ -363,10 +372,9 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.4.2)
-    rake-compiler-dock (1.11.0)
-    rb_sys (0.9.125)
-      json (>= 2)
-      rake-compiler-dock (= 1.11.0)
+    rake-compiler-dock (1.12.0)
+    rb_sys (0.9.130)
+      rake-compiler-dock (= 1.12.0)
     rdoc (7.2.0)
       erb
       psych (>= 4.0.0)
@@ -452,6 +460,7 @@ PLATFORMS
   arm64-darwin-22
   arm64-darwin-23
   arm64-darwin-24
+  arm64-darwin-25
   ruby
   x86_64-linux
 
@@ -461,6 +470,7 @@ DEPENDENCIES
   bullet_train-fields!
   bullet_train-has_uuid!
   bullet_train-roles!
+  bullet_train-routes!
   bullet_train-scope_validator!
   bullet_train-super_load_and_authorize_resource!
   bullet_train-super_scaffolding!

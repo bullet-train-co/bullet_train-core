@@ -6,17 +6,10 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       shallow do
-        resources :teams, extending do
+        model "Team", extending do
           unless scaffolding_things_disabled?
-            namespace :scaffolding do
-              namespace :absolutely_abstract do
-                resources :creative_concepts
-              end
-              resources :absolutely_abstract_creative_concepts, path: "absolutely_abstract/creative_concepts" do
-                namespace :completely_concrete do
-                  resources :tangible_things
-                end
-              end
+            model "Scaffolding::AbsolutelyAbstract::CreativeConcept" do
+              model "Scaffolding::CompletelyConcrete::TangibleThing"
             end
           end
         end
@@ -26,17 +19,10 @@ Rails.application.routes.draw do
 
   namespace :account do
     shallow do
-      resources :teams do
+      model "Team" do
         unless scaffolding_things_disabled?
-          namespace :scaffolding do
-            namespace :absolutely_abstract do
-              resources :creative_concepts
-            end
-            resources :absolutely_abstract_creative_concepts, path: "absolutely_abstract/creative_concepts" do
-              namespace :completely_concrete do
-                resources :tangible_things
-              end
-            end
+          model "Scaffolding::AbsolutelyAbstract::CreativeConcept" do
+            model "Scaffolding::CompletelyConcrete::TangibleThing"
           end
         end
       end

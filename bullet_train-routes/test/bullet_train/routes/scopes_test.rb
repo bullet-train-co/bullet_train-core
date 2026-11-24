@@ -210,6 +210,54 @@ class BulletTrain::Routes::ScopesTest < BulletTrain::Routes::TestCase
     assert_recognizes_route set, "shipping/packages#show", :get, "/shipping/packages/2"
   end
 
+  test "inside an ambient shallow block, as Bullet Train wraps its routes" do
+    # `shallow do` around the whole route file must not change what `model` draws: Rails would
+    # otherwise apply its shallow path to the nesting as well, prepending it a second time.
+    shallow = draw do
+      namespace :account do
+        shallow do
+          model "Project" do
+            model "Projects::Deliverable"
+          end
+        end
+      end
+    end
+
+    plain = draw do
+      namespace :account do
+        model "Project" do
+          model "Projects::Deliverable"
+        end
+      end
+    end
+
+    assert_equal route_table(plain), route_table(shallow)
+    assert_recognizes_route shallow, "account/projects/deliverables#index", :get, "/account/projects/1/deliverables"
+    assert_recognizes_route shallow, "account/projects/deliverables#show", :get, "/account/projects/deliverables/2"
+  end
+
+  test "inside an ambient shallow block, three levels deep" do
+    shallow = draw do
+      shallow do
+        model "Form" do
+          model "Forms::FieldSet" do
+            model "Forms::Field"
+          end
+        end
+      end
+    end
+
+    plain = draw do
+      model "Form" do
+        model "Forms::FieldSet" do
+          model "Forms::Field"
+        end
+      end
+    end
+
+    assert_equal route_table(plain), route_table(shallow)
+  end
+
   test "a surrounding namespace composes with the model's own namespace" do
     set = draw do
       namespace :account do

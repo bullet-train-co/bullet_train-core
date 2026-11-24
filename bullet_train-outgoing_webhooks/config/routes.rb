@@ -3,22 +3,19 @@ Rails.application.routes.draw do
 
   namespace :account do
     shallow do
-      resources BulletTrain::OutgoingWebhooks.parent_resource do
-        namespace :webhooks do
-          namespace :outgoing do
-            resources :endpoints do
-              member do
-                post :activate
-                delete :deactivate
-              end
-              resources :deliveries, only: %i[index show] do
-                resources :delivery_attempts, only: %i[index show]
-              end
+      model BulletTrain::OutgoingWebhooks.parent_class do
+        model "Webhooks::Outgoing::Endpoint" do
+          member do
+            post :activate
+            delete :deactivate
+          end
 
-              member do
-                post :rotate_secret
-              end
-            end
+          model "Webhooks::Outgoing::Delivery", only: %i[index show] do
+            model "Webhooks::Outgoing::DeliveryAttempt", only: %i[index show]
+          end
+
+          member do
+            post :rotate_secret
           end
         end
       end
@@ -28,13 +25,9 @@ Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
       shallow do
-        resources :teams, extending do
-          namespace :webhooks do
-            namespace :outgoing do
-              resources :endpoints, defaults: {format: :json}
-              resources :events, only: %i[index show], defaults: {format: :json}
-            end
-          end
+        model "Team", extending do
+          model "Webhooks::Outgoing::Endpoint", defaults: {format: :json}
+          model "Webhooks::Outgoing::Event", only: %i[index show], defaults: {format: :json}
         end
       end
     end

@@ -8,6 +8,7 @@ require "bullet_train/roles"
 require "bullet_train/super_load_and_authorize_resource"
 require "bullet_train/has_uuid"
 require "bullet_train/scope_validator"
+require "bullet_train/routes"
 
 require "exceptions"
 

@@ -23,6 +23,7 @@ class SuperScaffoldGenerator < Rails::Generators::Base
   class_option :skip_model, type: :boolean, default: false, desc: "Don't generate a model file"
   class_option :skip_controller, type: :boolean, default: false, desc: "Don't generate a controller file"
   class_option :skip_routes, type: :boolean, default: false, desc: "Don't generate any routes"
+  class_option :rails_routes, type: :boolean, default: false, desc: "Draw routes with native Rails routing instead of the `model` DSL from bullet_train-routes"
   class_option :skip_parent, type: :boolean, default: false, desc: "Don't add child models to the show page of their parent"
 
   def generate

@@ -7,11 +7,9 @@ Rails.application.routes.draw do
 
   namespace :account do
     shallow do
-      resources :teams, extending do
-        namespace :platform do
-          resources :applications do
-            resources :access_tokens
-          end
+      model "Team", extending do
+        model "Platform::Application" do
+          model "Platform::AccessToken"
         end
       end
     end
@@ -25,18 +23,16 @@ Rails.application.routes.draw do
     BulletTrain::Api.all_versions.each do |version|
       namespace version do
         shallow do
-          resources :users
-          resources :teams do
-            resources :invitations do
+          model "User"
+          model "Team" do
+            model "Invitation" do
               member do
                 post :resend
               end
             end
-            resources :memberships
-            namespace :platform do
-              resources :applications do
-                resources :access_tokens
-              end
+            model "Membership"
+            model "Platform::Application" do
+              model "Platform::AccessToken"
             end
           end
         end

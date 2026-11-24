@@ -3,6 +3,7 @@ PATH
   specs:
     bullet_train-api (1.45.1)
       bullet_train
+      bullet_train-routes
       bullet_train-super_scaffolding
       doorkeeper
       factory_bot
@@ -25,6 +26,12 @@ PATH
       cancancan
 
 PATH
+  remote: ../bullet_train-routes
+  specs:
+    bullet_train-routes (1.45.1)
+      rails (>= 7.0.0)
+
+PATH
   remote: ../bullet_train-scope_validator
   specs:
     bullet_train-scope_validator (1.45.1)
@@ -41,6 +48,7 @@ PATH
   remote: ../bullet_train-super_scaffolding
   specs:
     bullet_train-super_scaffolding (1.45.1)
+      bullet_train-routes
       colorize
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -61,6 +69,7 @@ PATH
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
+      bullet_train-routes
       bullet_train-scope_validator
       bullet_train-super_load_and_authorize_resource
       bullet_train-themes
@@ -189,8 +198,6 @@ GEM
       faraday-multipart (~> 1.0, >= 1.0.4)
       ostruct
     colorize (1.1.0)
-    commonmarker (2.7.0)
-      rb_sys (~> 0.9)
     commonmarker (2.7.0-arm64-darwin)
     commonmarker (2.7.0-x86_64-darwin)
     commonmarker (2.7.0-x86_64-linux)
@@ -266,7 +273,6 @@ GEM
       prism (>= 0.14.0)
     method_source (1.1.0)
     mini_mime (1.1.5)
-    mini_portile2 (2.8.8)
     minitest (6.0.4)
       drb (~> 2.0)
       prism (~> 1.5)
@@ -290,9 +296,6 @@ GEM
     nice_partials (0.10.1)
       actionview (>= 4.2.6)
     nio4r (2.7.4)
-    nokogiri (1.19.1)
-      mini_portile2 (~> 2.8.2)
-      racc (~> 1.4)
     nokogiri (1.19.1-arm64-darwin)
       racc (~> 1.4)
     nokogiri (1.19.1-x86_64-darwin)
@@ -366,9 +369,6 @@ GEM
       zeitwerk (~> 2.6)
     rainbow (3.1.1)
     rake (13.4.2)
-    rake-compiler-dock (1.9.1)
-    rb_sys (0.9.111)
-      rake-compiler-dock (= 1.9.1)
     rdoc (7.2.0)
       erb
       psych (>= 4.0.0)
@@ -414,8 +414,6 @@ GEM
       actionpack (>= 6.1)
       activesupport (>= 6.1)
       sprockets (>= 3.0.0)
-    sqlite3 (2.9.3)
-      mini_portile2 (~> 2.8.0)
     sqlite3 (2.9.3-arm64-darwin)
     sqlite3 (2.9.3-x86_64-darwin)
     sqlite3 (2.9.3-x86_64-linux-gnu)
@@ -455,7 +453,7 @@ PLATFORMS
   arm64-darwin-20
   arm64-darwin-21
   arm64-darwin-22
-  ruby
+  arm64-darwin-25
   x86_64-darwin-21
   x86_64-darwin-22
   x86_64-linux
@@ -466,6 +464,7 @@ DEPENDENCIES
   bullet_train-fields!
   bullet_train-has_uuid!
   bullet_train-roles!
+  bullet_train-routes!
   bullet_train-scope_validator!
   bullet_train-super_load_and_authorize_resource!
   bullet_train-super_scaffolding!
