@@ -1,5 +1,8 @@
 require "bullet_train/outgoing_webhooks/version"
 require "bullet_train/outgoing_webhooks/engine"
+
+# This gem's `config/routes.rb` uses the `model` DSL, so make sure it's installed.
+require "bullet_train/routes"
 require "bullet_train/outgoing_webhooks/signature"
 
 module BulletTrain

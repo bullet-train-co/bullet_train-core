@@ -1,25 +1,15 @@
 Rails.application.routes.draw do
-  namespace :webhooks do
-    namespace :incoming do
-      namespace :oauth do
-        resources :stripe_account_webhooks
-      end
-    end
-  end
+  model "Webhooks::Incoming::Oauth::StripeAccountWebhook"
 
   namespace :account do
     shallow do
       # user specific resources.
-      resources :users do
-        namespace :oauth do
-          resources :stripe_accounts
-        end
+      model "User" do
+        model "Oauth::StripeAccount"
       end
 
-      resources :teams do
-        namespace :integrations do
-          resources :stripe_installations
-        end
+      model "Team" do
+        model "Integrations::StripeInstallation"
       end
     end
   end

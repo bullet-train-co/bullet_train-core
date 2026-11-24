@@ -47,11 +47,11 @@ Rails.application.routes.draw do
       end
 
       # user specific resources.
-      resources :users
+      model "User"
 
       # team-level resources.
-      resources :teams do
-        resources :invitations do
+      model "Team" do
+        model "Invitation" do
           member do
             get :accept
             post :accept
@@ -59,7 +59,7 @@ Rails.application.routes.draw do
           end
         end
 
-        resources :memberships do
+        model "Membership" do
           member do
             post :demote
             post :promote

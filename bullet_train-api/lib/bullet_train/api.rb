@@ -1,5 +1,8 @@
 require "bullet_train/api/version"
 require "bullet_train/api/engine"
+
+# This gem's `config/routes.rb` uses the `model` DSL, so make sure it's installed.
+require "bullet_train/routes"
 require "bullet_train/api/strong_parameters_reporter"
 require "bullet_train/api/example_bot"
 require "bullet_train/api/attributes"

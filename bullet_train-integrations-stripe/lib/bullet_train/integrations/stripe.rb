@@ -1,6 +1,9 @@
 require "bullet_train/integrations/stripe/version"
 require "bullet_train/integrations/stripe/engine"
 
+# This gem's `config/routes.rb` uses the `model` DSL, so make sure it's installed.
+require "bullet_train/routes"
+
 require "stripe"
 require "omniauth"
 require "omniauth-stripe-connect-v2"
