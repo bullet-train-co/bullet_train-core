@@ -3,6 +3,7 @@ require "masamune"
 
 class Scaffolding::RoutesFileManipulator
   attr_accessor :child, :parent, :lines, :transformer_options, :concerns
+  attr_reader :rails_routes_fallback
 
   def initialize(filename, child, parent, transformer_options = {})
     @concerns = []
@@ -351,6 +352,36 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def apply(base_namespaces)
+    if transformer_options["rails-routes"]
+      apply_with_rails_routes(base_namespaces)
+    else
+      apply_with_model_dsl(base_namespaces)
+    end
+  end
+
+  # Draws the child with the `model` DSL that `bullet_train-routes` adds to the routing DSL: one
+  # line, nested inside its parent's `model` block. The DSL derives the namespacing and the
+  # shallow member routes from the model name, so none of the `scope module:` / `namespace` /
+  # `only: collection_actions` juggling that `apply_with_rails_routes` does is needed here.
+  def apply_with_model_dsl(base_namespaces)
+    within = find_or_create_namespaces(base_namespaces)
+
+    add_concern(:sortable) if transformer_options["sortable"]
+
+    parent_within = begin
+      find_or_convert_model_block(parent, within: within)
+    rescue BulletTrain::SuperScaffolding::CannotFindParentResourceException
+      # The parent is declared in a way we can't express as a `model` — a namespaced
+      # `resources` from before the DSL, say. Hand-written routes are still correct routes, so
+      # draw them that way and let the developer know.
+      @rails_routes_fallback = true
+      return apply_with_rails_routes(base_namespaces)
+    end
+
+    find_or_create_model(child, options: formatted_concerns, within: parent_within)
+  end
+
+  def apply_with_rails_routes(base_namespaces)
     child_namespaces, child_resource, parent_namespaces, parent_resource = divergent_parts
 
     within = find_or_create_namespaces(base_namespaces)
@@ -454,6 +485,60 @@ class Scaffolding::RoutesFileManipulator
     end
   end
 
+  # Matches `model "Foo::Bar"`, with or without options or a block.
+  def model_needle(class_name, with_block: false)
+    /model ["']#{Regexp.escape(class_name)}["'](,?\s.*)?#{" do(\\s.*)?" if with_block}$/
+  end
+
+  def find_model(class_name, options = {})
+    find_in_namespace(model_needle(class_name), [], options[:within], options[:ignore])
+  end
+
+  def find_model_block(class_name, options = {})
+    find_in_namespace(model_needle(class_name, with_block: true), [], options[:within])
+  end
+
+  def find_or_create_model(class_name, options = {})
+    find_model(class_name, options) ||
+      insert(["model \"#{class_name}\"" + (options[:options] ? ", #{options[:options]}" : "")], options[:within])
+  end
+
+  # Returns the line number of the parent's `model` block, converting its declaration into a block
+  # first if it isn't one already.
+  def find_or_convert_model_block(class_name, options = {})
+    statement_line = find_model(class_name, options) || convert_resource_declaration_to_model(class_name, options)
+
+    unless statement_line
+      raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent model (`#{class_name}`) doesn't appear to exist in `#{@filename}`.")
+    end
+
+    unless lines[statement_line].match?(/ do(\s.*)?$/)
+      lines[statement_line].gsub!("\n", " do\n")
+      insert_after(["end"], statement_line)
+    end
+
+    unless (within = find_model_block(class_name, options))
+      raise "tried to convert the parent model to a block, but failed?"
+    end
+
+    within
+  end
+
+  # Route files that predate the DSL declare the parent as `resources :teams, extending`. A `model`
+  # nested inside a plain `resources` block is drawn right there instead of shallowly, so rewrite
+  # the declaration in place. Only the un-namespaced form is rewritten: moving a namespaced
+  # `resources` out of its `namespace` block would be a bigger edit than Super Scaffolding should
+  # make on its own, so those fall back to hand-written routes.
+  def convert_resource_declaration_to_model(class_name, options = {})
+    return nil if class_name.include?("::")
+
+    resource = class_name.underscore.pluralize
+    return nil unless (line = find_resource([resource], options))
+
+    lines[line] = lines[line].sub(/resources :#{resource}/, "model \"#{class_name}\"")
+    line
+  end
+
   def add_concern(concern)
     @concerns.push(concern)
   end
@@ -475,6 +560,8 @@ class Scaffolding::RoutesFileManipulator
       lines[line_number].gsub!(/concerns: \[(.*)\]/, "concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]")
     elsif line.squish.ends_with?(" do")
       lines[line_number].gsub!(/ do$/, ", concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}] do")
+    elsif line.match?(/model ["']/)
+      lines[line_number].gsub!(/(model ["'][^"']+["'])(.*)$/, "\\1, concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]\\2")
     else
       lines[line_number].gsub!(/resources :(.*)$/, "resources :\\1, concerns: [#{existing_concerns.map { |e| ":#{e}" }.join(", ")}]")
     end
