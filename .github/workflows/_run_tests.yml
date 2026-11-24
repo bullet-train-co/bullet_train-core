@@ -9,7 +9,7 @@ on:
 jobs:
   calculate_matrix:
     name: 💎 Generate Gem List
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       gems: ${{ steps.generate-gem-list.outputs.result }}
     steps:
@@ -36,7 +36,7 @@ jobs:
             return gems
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     needs: calculate_matrix
     strategy:
       fail-fast: false
