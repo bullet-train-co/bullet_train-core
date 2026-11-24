@@ -1,5 +1,5 @@
 module BulletTrain
   module SuperScaffolding
-    VERSION = "1.45.1"
+    VERSION = "1.46.0"
   end
 end

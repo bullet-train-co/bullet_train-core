@@ -1,5 +1,5 @@
 module BulletTrain
   module HasUuid
-    VERSION = "1.45.1"
+    VERSION = "1.46.0"
   end
 end
