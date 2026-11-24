@@ -9,7 +9,7 @@ on:
 jobs:
   calculate_matrix:
     name: 🧮 Calculate Dynamic Matrix
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     outputs:
       matrix: ${{ steps.dynamic-matrix.outputs.matrix }}
       totalRunners: ${{ steps.dynamic-matrix.outputs.totalRunners }}
@@ -26,7 +26,7 @@ jobs:
           # You can explicitly set the number of runners per node, or it will default to 4 for public repos and 2 for private
           # testRunnersPerNode: 2
   starter_repo:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     name: "🧪"
     needs: calculate_matrix
     strategy:
