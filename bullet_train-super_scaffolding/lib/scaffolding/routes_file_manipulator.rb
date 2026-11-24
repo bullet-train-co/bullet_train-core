@@ -57,8 +57,8 @@ class Scaffolding::RoutesFileManipulator
     results = {}
     reinstantiate_masamune_object
 
-    # `within` can refer to either a `resources`, `namespace`, `scope`, or `shallow` block.
-    blocks = @msmn.method_calls.select { |node| node.token_value.match?(/resources|namespace|scope|shallow/) }
+    # `within` can refer to a `resources`, `model`, `namespace`, `scope`, or `shallow` block.
+    blocks = @msmn.method_calls.select { |node| node.token_value.match?(/resources|model|namespace|scope|shallow/) }
     namespace_nodes = blocks.select { |node| node.token_value.match?(/namespace/) }
 
     if within
@@ -317,23 +317,41 @@ class Scaffolding::RoutesFileManipulator
   end
 
   def find_or_convert_resource_block(parent_resource, options = {})
-    resource_statement_line = find_resource([parent_resource], options)
-    if resource_statement_line
-      resource_statement = lines[resource_statement_line]
-      if !resource_statement.match?(/ do(\s.*)?$/)
-        lines[resource_statement_line].gsub!("\n", " do\n")
-        insert_after(["end"], resource_statement_line)
+    if (statement_line = find_resource([parent_resource], options))
+      convert_statement_to_block(statement_line)
+
+      unless (within = find_resource_block([parent_resource], options))
+        raise "tried to convert the parent resource to a block, but failed?"
       end
+
+      within
+    # The parent may be declared with the `model` DSL instead — `model "Team"` rather than
+    # `resources :teams`. That's still a perfectly good block to nest a `resources` inside, so
+    # `--rails-routes` keeps working in a route file that has adopted the DSL.
+    elsif declared_as_model?(parent_resource) && (statement_line = find_model(parent, options))
+      convert_statement_to_block(statement_line)
+
+      unless (within = find_model_block(parent, options))
+        raise "tried to convert the parent model to a block, but failed?"
+      end
+
+      within
     else
       raise BulletTrain::SuperScaffolding::CannotFindParentResourceException.new("the parent resource (`#{parent_resource}`) doesn't appear to exist in `#{@filename}`.")
     end
+  end
 
-    # capture the line number of the block of code we're working within.
-    unless (within = find_resource_block([parent_resource], options))
-      raise "tried to convert the parent resource to a block, but failed?"
-    end
+  def convert_statement_to_block(line_number)
+    return if lines[line_number].match?(/ do(\s.*)?$/)
 
-    within
+    lines[line_number].gsub!("\n", " do\n")
+    insert_after(["end"], line_number)
+  end
+
+  # True when `parent_resource` is the resource name of this manipulator's parent model, so that
+  # looking the parent up as a `model` declaration is the same question asked a different way.
+  def declared_as_model?(parent_resource)
+    parent.is_a?(String) && parent_parts.last == parent_resource
   end
 
   # TODO: Remove this and use the BlockManipulator

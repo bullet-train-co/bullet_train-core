@@ -132,6 +132,26 @@ class Scaffolding::RoutesFileManipulatorTest < ActiveSupport::TestCase
     assert_equal before - 1, declarations.count("resources :teams do")
   end
 
+  test "--rails-routes still works in a route file that declares its parents with the DSL" do
+    # Convert the parent to `model "Team"` the way the default mode does, then ask for Rails
+    # routes: a `resources` nested inside a `model` block is an ordinary nested resource, so the
+    # flag has to keep working once an app has adopted the DSL.
+    FileUtils.cp example_file, test_file
+    converted = subject.new(test_file, "Project", "Team", {})
+    converted.apply(["account"])
+    Scaffolding::FileManipulator.write(test_file, converted.lines)
+
+    manipulator = subject.new(test_file, "Example", "Team", {"rails-routes" => true})
+    manipulator.apply(["account"])
+
+    declarations = manipulator.lines.map(&:squish)
+    assert_includes declarations, 'model "Team" do'
+    assert_includes declarations, "resources :examples"
+    assert_nil manipulator.rails_routes_fallback
+
+    FileUtils.rm(test_file)
+  end
+
   MODES.each do |mode, config|
     options = config[:options]
     suffix = config[:suffix]
