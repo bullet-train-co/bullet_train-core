@@ -102,7 +102,7 @@ module BulletTrain
           bullet_train_draw_nested(namespaces, collection, options, parent, &resource_block)
         else
           bullet_train_namespaces(namespaces) do
-            resources collection, options, &resource_block
+            resources collection, **options, &resource_block
           end
         end
 
@@ -130,11 +130,13 @@ module BulletTrain
         implied = bullet_train_common_prefix(parent_segments, child_segments)
         nested = child_segments[implied.size..]
 
+        nesting_name, nesting_options = bullet_train_nesting_arguments(parent_segments, parent[:options])
+
         bullet_train_namespaces(shared) do
-          resources(*bullet_train_nesting_arguments(parent_segments, parent[:options])) do
+          resources nesting_name, **nesting_options do
             bullet_train_implied_scope(implied) do
               bullet_train_namespaces(nested) do
-                resources collection, {shallow: true}.merge(options), &resource_block
+                resources collection, shallow: true, **options, &resource_block
               end
             end
           end
@@ -148,7 +150,11 @@ module BulletTrain
         last = parent_segments.last
 
         path = leading + [parent_options[:path]&.to_s || last]
-        options = {path: path.join("/"), only: []}
+        # `shallow: false` keeps an ambient `shallow` scope — e.g. a `shallow do` block around the
+        # whole route file — from applying Rails' shallow path to the nesting itself, which would
+        # prepend the child's shallow path to its nested path a second time. The child re-enables
+        # `shallow` for its own routes.
+        options = {path: path.join("/"), only: [], shallow: false}
         options[:param] = parent_options[:param] if parent_options[:param]
         options[:as] = (leading + [parent_options[:as].to_s]).join("_") if parent_options[:as]
 
