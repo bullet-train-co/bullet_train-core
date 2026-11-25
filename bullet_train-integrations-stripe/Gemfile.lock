@@ -3,7 +3,7 @@ PATH
   specs:
     bullet_train-api (1.45.1)
       bullet_train
-      bullet_train-routes
+      bullet_train-routes (>= 1.45.1)
       bullet_train-super_scaffolding
       doorkeeper
       factory_bot
@@ -32,7 +32,7 @@ PATH
     bullet_train-incoming_webhooks (1.45.1)
       bullet_train
       bullet_train-api
-      bullet_train-routes
+      bullet_train-routes (>= 1.45.1)
       bullet_train-super_scaffolding
       rails (>= 7.0.0)
 
@@ -67,7 +67,7 @@ PATH
   remote: ../bullet_train-super_scaffolding
   specs:
     bullet_train-super_scaffolding (1.45.1)
-      bullet_train-routes
+      bullet_train-routes (>= 1.45.1)
       colorize
       indefinite_article
       masamune-ast (~> 2.0.2)
@@ -88,7 +88,7 @@ PATH
       bullet_train-fields
       bullet_train-has_uuid
       bullet_train-roles
-      bullet_train-routes
+      bullet_train-routes (>= 1.45.1)
       bullet_train-scope_validator
       bullet_train-super_load_and_authorize_resource
       bullet_train-themes
@@ -112,7 +112,7 @@ PATH
   remote: .
   specs:
     bullet_train-integrations-stripe (1.45.1)
-      bullet_train-routes
+      bullet_train-routes (>= 1.45.1)
       omniauth (~> 2.0)
       omniauth-rails_csrf_protection (~> 1.0)
       omniauth-stripe-connect-v2

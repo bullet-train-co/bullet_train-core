@@ -40,7 +40,9 @@ Gem::Specification.new do |spec|
   spec.add_dependency "bullet_train-scope_validator"
   spec.add_dependency "bullet_train-themes"
   spec.add_dependency "bullet_train-fields"
-  spec.add_dependency "bullet_train-routes"
+  # Constrained so that a failed `bullet_train-routes` push can never silently resolve to the
+  # 1.0.0 release from the old standalone repo, which predates the `model` routing DSL.
+  spec.add_dependency "bullet_train-routes", ">= 1.45.1"
   spec.add_dependency "colorize"
   spec.add_dependency "devise", "~> 5.0"
   spec.add_dependency "omniauth", "~> 2.0"

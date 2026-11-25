@@ -35,7 +35,7 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "simplecov"
 
   spec.add_dependency "bullet_train-super_scaffolding"
-  spec.add_dependency "bullet_train-routes"
+  spec.add_dependency "bullet_train-routes", ">= 1.45.1"
   spec.add_dependency "bullet_train"
 
   spec.add_dependency "rails", ">= 7.0.0"

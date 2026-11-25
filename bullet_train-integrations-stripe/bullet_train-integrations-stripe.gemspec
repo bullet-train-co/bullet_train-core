@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
   end
 
   spec.add_dependency "rails", ">= 7.0.0"
-  spec.add_dependency "bullet_train-routes"
+  spec.add_dependency "bullet_train-routes", ">= 1.45.1"
   spec.add_dependency "stripe"
   spec.add_dependency "omniauth", "~> 2.0"
   spec.add_dependency "omniauth-stripe-connect-v2"
