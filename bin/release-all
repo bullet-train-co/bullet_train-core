@@ -31,9 +31,12 @@ class CoreBumpCLI < Thor
     @version = output.chomp.lines.last.chomp
     "Releasing version: #{@version}"
 
+    @failures = []
+
     release_ruby_gems
     release_npm_packages
     write_to_github_output_file
+    report_failures
   end
 
   # This allows failure to be reported to the shell correctly.
@@ -54,12 +57,29 @@ class CoreBumpCLI < Thor
         Dir.chdir "./#{package}"
 
         puts output = `gem build`
+        unless $?.success?
+          record_failure package, "`gem build` failed"
+          Dir.chdir ".."
+          next
+        end
+
         gem_file = output.chomp.lines.last.chomp.split.last
         puts "Built gem file: #{gem_file}"
 
-        puts output = `gem push #{gem_file}`
+        # `gem push` reports permission and MFA problems on stderr, so we merge it into the
+        # captured output to tell "already published" apart from a genuine failure.
+        puts output = `gem push #{gem_file} 2>&1`
+        push_succeeded = $?.success?
 
         File.delete(gem_file)
+
+        if !push_succeeded
+          if already_published?(output)
+            puts "#{package} #{@version} is already on rubygems.org. Skipping."
+          else
+            record_failure package, "`gem push` failed"
+          end
+        end
 
         Dir.chdir ".."
 
@@ -74,13 +94,49 @@ class CoreBumpCLI < Thor
         puts `corepack enable`
         puts `yarn`
         puts `yarn build`
+        unless $?.success?
+          record_failure package, "`yarn build` failed"
+          Dir.chdir ".."
+          next
+        end
+
         puts output = `yarn pack`
 
         #puts output = `yarn npm publish --access public`
-        puts output = `npm publish --provenance --access public`
+        puts output = `npm publish --provenance --access public 2>&1`
+
+        if !$?.success?
+          if already_published?(output)
+            puts "#{package} #{@version} is already on npmjs.com. Skipping."
+          else
+            record_failure package, "`npm publish` failed"
+          end
+        end
 
         Dir.chdir ".."
       end
+    end
+
+    # A re-run of this script after a partial failure will re-attempt every package, so a
+    # registry rejecting a version we already published is expected and must not fail the build.
+    def already_published?(output)
+      output.match?(/Repushing of gem versions is not allowed/i) ||
+        output.match?(/cannot publish over the previously published version/i)
+    end
+
+    def record_failure(package, message)
+      say_error "#{message} for #{package}.", :red
+      @failures << "#{package}: #{message}"
+    end
+
+    # Without this the script exits 0 even when pushes were rejected, and the workflow reports
+    # a green release that never actually published some of the packages.
+    def report_failures
+      return if @failures.empty?
+
+      say_error "\nThe following packages were NOT published:", :red
+      @failures.each { |failure| say_error "  - #{failure}", :red }
+      exit 1
     end
 
     def write_to_github_output_file
